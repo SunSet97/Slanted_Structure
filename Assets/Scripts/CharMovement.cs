@@ -21,6 +21,8 @@ public class CharMovement : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
   
         isLanding = true;
+        isRight = false;
+        isLeft = false;
     }
 
     // Update is called once per frame
