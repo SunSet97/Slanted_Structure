@@ -21,6 +21,7 @@ public class NPCInteractor : MonoBehaviour
 
     private void FindInteractableNPC(float interactableDist)
     {
+        // 가장 가까운 NPC를 찾는다
         Transform closestNPC = getClosestNPC();
         
         if(isInteractable(closestNPC))
@@ -32,6 +33,7 @@ public class NPCInteractor : MonoBehaviour
 
     private bool isInteractable(Transform NPC)
     {
+        // 상호작용 거리 내에 있는지 확인
         float dist = Vector3.Distance(player.transform.position, NPC.transform.position);
         return dist < interactableDistance;
     }
