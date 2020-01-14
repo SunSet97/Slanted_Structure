@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class QuarterCharMovement : MonoBehaviour
 {
@@ -10,6 +8,7 @@ public class QuarterCharMovement : MonoBehaviour
     [Header("디버깅용")]
     [Range(1, 5)]
     public float moveSpeed;
+    public float gravity = 10f;
 
     private Camera cam;
     private Quaternion camRotation;
@@ -29,15 +28,17 @@ public class QuarterCharMovement : MonoBehaviour
 
     void Update()
     {
-
     }
 
     private void FixedUpdate()
     {
-        Vector3 joyStickInput = new Vector3(joyStick.Horizontal, 0, joyStick.Vertical);
+
+        Vector3 input = new Vector3(joyStick.Horizontal , 0, joyStick.Vertical);
         // JoyStick 입력을 카메라 각도만큼 회전
-        movement = camRotation * joyStickInput * moveSpeed;
+
+        movement = camRotation * input * moveSpeed;
 
         ctrl.Move(movement * Time.fixedDeltaTime);
+
     }
 }
