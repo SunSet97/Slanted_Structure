@@ -25,6 +25,7 @@ public class SceneController : MonoBehaviour
 
     }
 
+    //세이브 된 게임 데이터 파일을 여는 함수
     public void SaveFileOpen(int fileNum)
     {
         if (DataManager.Instance.isExistdata[fileNum])

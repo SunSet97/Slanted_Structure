@@ -7,7 +7,8 @@ using System;
 
 public class DataController : MonoBehaviour
 {
-   
+    [Header("싱글톤")]
+
     private static GameObject container;
     static GameObject Container
     {
@@ -41,18 +42,13 @@ public class DataController : MonoBehaviour
     {
         get
         {
-            //if(_charData == null)
-            //{
-            //    print("2");
-            //    LoadCharData();
-            //    SaveCharData();
-            //}
             return _charData;
         }
     }
 
     //저장할 데이터의 파일이름 
     public string CharDataFileName;
+
     // 세이브 데이터를 불러오는 함수 
     // 저장된 파일이 있을 경우 기존의 파일을 가져오고 없다면 새로 생성  
     public void LoadCharData(string fileName)
@@ -83,8 +79,5 @@ public class DataController : MonoBehaviour
         Debug.Log("저장");
     }
 
-    //private void OnApplicationQuit()
-    //{
-    //    SaveCharData("SaveData.json");
-    //}
+    
 }

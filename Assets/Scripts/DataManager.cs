@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 
 public class DataManager : MonoBehaviour
 {
+    [Header("싱글톤")]
+
     public bool[] isExistdata = new bool[3];
     CanvasControl canvasCtrl;
     GameObject player;
@@ -18,7 +20,6 @@ public class DataManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         ExistsData();
@@ -44,7 +45,7 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    // 데이터를 저장 버튼을 누르면 불리는 함수
+    // 데이터 저장 버튼을 누르면 불리는 함수
     public void SelectData(int fileNum)
     {
         if (player == null)
@@ -65,7 +66,8 @@ public class DataManager : MonoBehaviour
                 isExistdata[fileNum] = true;
                 canvasCtrl.saveText[fileNum].text = "FULL DATA";
             }
-            // 데이터 저장 시 연필 개수, 캐릭터 위치 업데이트
+
+            // 데이터 저장 시 연필 개수, 캐릭터 위치, 현재 씬 등 업데이트 (점점 추가할 예정)
             DataController.Instance.charData.pencilCnt -= 1;
             DataController.Instance.charData.endPosition = player.transform.position;
             DataController.Instance.charData.currentScene = SceneManager.GetActiveScene().name;
@@ -75,7 +77,8 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    void ExistsData()
+    // 데이터 파일이 존재하는 지 확인하는 함수
+    public void ExistsData()
     {
         for (int i = 0; i < 3; i++)
         {
