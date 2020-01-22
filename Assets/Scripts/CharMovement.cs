@@ -8,6 +8,7 @@ public class CharMovement : MonoBehaviour
     CharacterController ctrl; //캐릭터컨트롤러
     public Vector3 moveHorDir = Vector3.zero; //수평 이동 방향 벡터
     public Vector3 moveVerDir = Vector3.zero; //수직 이동 방향 벡터
+    private IEnumerator dieAction;
 
     [Header("시점")]
     public Camera cam;
@@ -23,11 +24,22 @@ public class CharMovement : MonoBehaviour
     public bool isJump; // 캐릭터가 점프 여부
     public float jumpForce = 6f; //점프력
     public float gravityScale = 1f; //중력 배수
+    public bool isDie = false;
 
     void Start()
     {
         joyStick = Joystick.FindObjectOfType<Joystick>();
         ctrl = GetComponent<CharacterController>();
+        dieAction = DieAction();
+
+        // 세이브데이터를 불러왔을 경우 저장된 위치로 캐릭터 위치를 초기화 
+        if (DataController.Instance != null)
+        {
+            DataController.Instance.charData.pencilCnt = 4; // 디버깅용
+            ctrl.enabled = false;
+            transform.position = DataController.Instance.charData.endPosition;
+            ctrl.enabled = true;
+        }
     }
 
     void Update()
@@ -107,7 +119,71 @@ public class CharMovement : MonoBehaviour
         //땅에서 떨어져 있을 경우 기본적으로 중력이 적용되고 중력은 가속도이므로 +=를 써서 계속해서 더해줌
         if (!ctrl.isGrounded)
             moveVerDir.y += Physics.gravity.y * gravityScale * Time.deltaTime;
+        
+        // 캐릭터 컨트롤러가 활성화일때만 캐릭터를 움직임
+        if(ctrl.enabled == true) 
+            ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 이동 시킴
+    }
 
-        ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 이동 시킴
+    private void OnTriggerEnter(Collider other)
+    {
+        // 리스폰 포지션을 데이터에 저장 
+        if (other.gameObject.CompareTag("RespawnPoint"))
+        {
+            
+            DataController.Instance.charData.respawnLocation = other.gameObject;
+
+        }
+
+        // 획득한 아이템을 데이터에 저장 
+        if (other.gameObject.CompareTag("Item"))
+        {
+            Destroy(other.gameObject);
+            DataController.Instance.charData.item.Add(other.gameObject.name);
+        }
+
+        // 몬스터와 닿으면 사망
+        if (other.gameObject.CompareTag("Monster"))
+        {
+
+            isDie = true;
+              
+            //CharDie();
+            StartCoroutine(dieAction);
+            Destroy(other.gameObject);
+        }
+    }
+
+    //// 플레이어가 죽으면 불리는 함수
+    //void CharDie()
+    //{
+    //    StartCoroutine(dieAction);
+    //}
+
+    // 디버깅용. 플레이어가 죽은 후 리스폰 장소에서 부활하기까지의 행동 (플레이어의 투명도 조절 후 이동) 
+    IEnumerator DieAction()
+    {
+        while (isDie)
+        {
+            Color color = gameObject.GetComponent<MeshRenderer>().material.color;
+
+            // 플레이어가 죽었음을 보여줌 (반투명) 
+            gameObject.GetComponent<MeshRenderer>().material.color = new Color(color.r, color.g, color.b, 0.5f);
+            yield return new WaitForSeconds(2);
+
+            // 캐릭터컨트롤러를 끄고 플레이어를 리스폰 위치로 이동시킴 
+            ctrl.enabled = false;
+            transform.position = DataController.Instance.charData.respawnLocation.transform.position;
+
+            // 투명도를 원상태로 복귀
+            gameObject.GetComponent<MeshRenderer>().material.color = new Color(color.r, color.g, color.b, 1f);
+
+            isDie = false;
+
+        }
+        
+        // 플레이어가 부활한 후 다시 캐릭터컨트롤러 활성화 
+        ctrl.enabled = true;
+
     }
 }

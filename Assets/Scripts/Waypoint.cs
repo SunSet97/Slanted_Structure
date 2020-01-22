@@ -26,6 +26,7 @@ public class Waypoint : MonoBehaviour
     
     void Update()
     {
+        
         if (checkedWaypoint == null)
             GetNearestWaypoint();
 
@@ -207,4 +208,6 @@ public class Waypoint : MonoBehaviour
             }
         }
     }
+
+
 }
