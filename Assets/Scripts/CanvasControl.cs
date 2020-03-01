@@ -17,12 +17,12 @@ public class CanvasControl : MonoBehaviour
         {
             savePanel.SetActive(true);
             // 세이브 데이터 패널이 열릴 때마다 각 세이브 파일이 존재하는 지 확인 
-            DataManager.Instance.ExistsData();
+            DataManager.instance_DataManager.ExistsData();
 
             for (int i = 0; i < 3; i++)
             {
 
-                if (DataManager.Instance.isExistdata[i])
+                if (DataManager.instance_DataManager.isExistdata[i])
                 {
                     // 해당 칸에 데이턱 존재하면 버튼 텍스트 업데이트
                     saveText[i].text = "FULL DATA";

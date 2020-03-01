@@ -50,11 +50,11 @@ public class Camera_Moving : MonoBehaviour
         float position_storage;
 
         //카메라 경계값정보 Information_Scene오브젝트에서 받아오기
-        float min_x = GameObject.Find("Information_Scene").GetComponent<Information_Scene>().min_x;
-        float max_x = GameObject.Find("Information_Scene").GetComponent<Information_Scene>().max_x;
-        float min_y = GameObject.Find("Information_Scene").GetComponent<Information_Scene>().min_y;
-        float max_y = GameObject.Find("Information_Scene").GetComponent<Information_Scene>().max_y;
-        float Z = GameObject.Find("Information_Scene").GetComponent<Information_Scene>().Z_Value;
+        float min_x = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().min_x;
+        float max_x = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().max_x;
+        float min_y = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().min_y;
+        float max_y = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().max_y;
+        float Z = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().Z_Value;
 
         //카메라 위치 제한 설정
         position.x = Mathf.Clamp(position.x,min_x,max_x);
