@@ -36,6 +36,11 @@ public class SceneInformation : MonoBehaviour
     public float max_y = 1.3f;
     public float Z_Value = -10; //카메라 Z값 고정하기 위한 상수값
 
+    [Header("카메라 각도")]
+    public float Rot_x;
+    public float Rot_y;
+    public float Rot_z;
+
     [Header("플레이 방식")]
     public string playMethod = "Plt"; //2D 플랫포머(2D Platformer)=Plt, 쿼터뷰(Quarter view)=Qrt, 라인트레이서(Line tracer)=Line
 

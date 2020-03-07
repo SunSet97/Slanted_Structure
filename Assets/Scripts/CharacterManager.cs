@@ -47,6 +47,7 @@ public class CharacterManager : MonoBehaviour
     {
         //조이스틱 설정
         if (!joyStick) joyStick = SceneInformation.instance_SceneInformation.joyStick;
+        //ScreenInformation.instance_SceneInformation.playMethod="Cut";
     }
 
     private void FixedUpdate()
