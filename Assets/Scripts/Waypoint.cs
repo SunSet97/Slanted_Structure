@@ -183,6 +183,7 @@ public class Waypoint : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+       
         //waypoint gizmo 표시
         if (waypointArray.Length > 0)
         {
