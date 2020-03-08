@@ -46,29 +46,65 @@ public class DataController : MonoBehaviour
         }
     }
 
+    public DialogueData _dialogueData;
+    public DialogueData dialogueData
+    {
+        get
+        {
+            return _dialogueData;
+        }
+    }
+
     //저장할 데이터의 파일이름 
-    public string CharDataFileName;
+    public string DataFileName;
 
     // 세이브 데이터를 불러오는 함수 
     // 저장된 파일이 있을 경우 기존의 파일을 가져오고 없다면 새로 생성  
-    public void LoadCharData(string fileName)
+    public void LoadData(string dataType, string fileName)
     {
-        CharDataFileName = fileName;
-        string filePath = Application.persistentDataPath + "/" + CharDataFileName;
+        DataFileName = fileName;
 
-        if(File.Exists(filePath))
+
+        if (dataType == "Save")
         {
-            
-            Debug.Log("로드 성공");
-            string FromJsonData = File.ReadAllText(filePath);
-            _charData = JsonUtility.FromJson<CharData>(FromJsonData);
+
+            string filePath = Application.persistentDataPath + "/" + DataFileName;
+
+            if (File.Exists(filePath))
+            {
+
+                Debug.Log("로드 성공");
+                string FromJsonData = File.ReadAllText(filePath);
+                _charData = JsonUtility.FromJson<CharData>(FromJsonData);
+            }
+            else
+            {
+                print(Application.persistentDataPath);
+                Debug.Log("새 파일 생성");
+                _charData = new CharData();
+            }
         }
         else
         {
-            print(Application.persistentDataPath);
-            Debug.Log("새 파일 생성");
-            _charData = new CharData();
+            string filePath = Application.dataPath + "/Resources/DialogueScripts/" + dataType + "/" + DataFileName;
+
+            if (File.Exists(filePath))
+            {
+                Debug.Log("로드 성공");
+                string FromJsonData = File.ReadAllText(filePath);
+                _dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
+                Instance.charData.dialogue_index++;
+            }
+            else
+            {
+                Debug.Log("기본 대사 파일");
+                filePath = Application.dataPath + "/Resources/DialogueScripts/" + dataType + "/Default.json";
+                string FromJsonData = File.ReadAllText(filePath);
+                _dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
+            }
         }
+
+
     }
 
     public void SaveCharData(string fileName)
