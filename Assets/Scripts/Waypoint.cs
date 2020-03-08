@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Waypoint : MonoBehaviour
 {
-    Joystick joyStick; //조이스틱
-    public Transform player; //플레이어
+    private Joystick joyStick; //조이스틱
+    private Transform character; //선택된 캐릭터
     private Transform[] waypointArray; //waypoint 배열
 
-    public float checkingDistance = 0.7f; //check 가능한 거리
+    public float checkingDistance = 0.3f; //check 가능한 거리
     public Vector3 moveTo = Vector3.zero; //waypoint간 이동 방향 벡터
 
     private int wayIndex; //check된 포인트 순서
@@ -19,14 +19,19 @@ public class Waypoint : MonoBehaviour
     
     void Start()
     {
-        joyStick = Joystick.FindObjectOfType<Joystick>();
         waypointArray = GetComponentsInChildren<Transform>();
         DisablePointMeshrenderer();
     }
     
     void Update()
     {
-        
+        //조이스틱 설정
+        if (!joyStick) joyStick = SceneInformation.instance_SceneInformation.joyStick;
+        //움직일 캐릭터 설정
+        for (int i = 0; i < 3; i++)
+            if (SceneInformation.instance_SceneInformation.char_info[i].char_mng.isSelected)
+                character = SceneInformation.instance_SceneInformation.char_info[i].char_mng.transform;
+
         if (checkedWaypoint == null)
             GetNearestWaypoint();
 
@@ -35,9 +40,8 @@ public class Waypoint : MonoBehaviour
         if (checkedWaypoint != null)
             SetMoveDirection();
     }
-
-    //모든 waypoint의 meshrenderer를 끄는 함수
-    //scene 구성시에는 보이는게 편하고 ingame에서는 안보이는게 편하므로
+    
+    //모든 waypoint의 meshrenderer를 끄는 함수(scene 구성시에는 보이는게 편하고 ingame에서는 안보이는게 편하므로)
     private void DisablePointMeshrenderer()
     {
         foreach (Transform waypoint in waypointArray)
@@ -75,7 +79,7 @@ public class Waypoint : MonoBehaviour
             //Waypoint Manager는 스킵
             if (waypoint.name == "WaypointManager") continue;
 
-            float dist = Vector3.Distance(player.position, waypoint.position); //플레이어와 waypoint간 거리
+            float dist = Vector3.Distance(character.position, waypoint.position); //플레이어와 waypoint간 거리
             i++; //순서 증가
 
             //플레이어와 waypoint의 거리가 최소 거리가 되면 해당 포인트를 check해줌
@@ -102,7 +106,7 @@ public class Waypoint : MonoBehaviour
             //Waypoint Manager는 스킵
             if (waypoint.name == "WaypointManager") continue;
 
-            float dist = HorizontalDistance(player, waypoint); //플레이어와 waypoint간 거리
+            float dist = HorizontalDistance(character, waypoint); //플레이어와 waypoint간 거리
             i++; //순서 증가
 
             //플레이어와 waypoint의 거리가 check 가능한 거리가 되면 해당 포인트를 check해줌
@@ -118,7 +122,7 @@ public class Waypoint : MonoBehaviour
     //이동 방향 설정 함수
     private void SetMoveDirection()
     {
-        float dist = HorizontalDistance(player, checkedWaypoint); //플레이어와 check포인트간 거리
+        float dist = HorizontalDistance(character, checkedWaypoint); //플레이어와 check포인트간 거리
 
         //조이스틱 방향 설정
         if (joyStick.Horizontal > 0)
@@ -132,7 +136,7 @@ public class Waypoint : MonoBehaviour
         //point와 닿아있을 경우
         if (isInPoint)
         {
-            Vector3 moveDir = CharMovement.FindObjectOfType<CharMovement>().moveHorDir; //플레이어의 수평 이동 속도
+            Vector3 moveDir = character.GetComponent<CharacterManager>().moveHorDir; //플레이어의 수평 이동 속도
             float moveSpeed = Mathf.Sqrt(moveDir.x * moveDir.x + moveDir.z * moveDir.z); //플레이어의 수평 이동 속도 크기
 
             //처음 접했을 때
@@ -170,9 +174,9 @@ public class Waypoint : MonoBehaviour
 
             //이동하는 방향에 따라 꺽어지는 부분에서 속도를 유지하도록 함
             if (isRight)
-                CharMovement.FindObjectOfType<CharMovement>().moveHorDir = moveTo * moveSpeed;
+                character.GetComponent<CharacterManager>().moveHorDir = moveTo * moveSpeed;
             else
-                CharMovement.FindObjectOfType<CharMovement>().moveHorDir = -moveTo * moveSpeed;
+                character.GetComponent<CharacterManager>().moveHorDir = -moveTo * moveSpeed;
 
             isInPoint = false; //이동 후 벗어나게되면 닿아있음 해제
         }
@@ -185,7 +189,7 @@ public class Waypoint : MonoBehaviour
     {
        
         //waypoint gizmo 표시
-        if (waypointArray.Length > 0)
+        if (waypointArray.Length >= 0)
         {
             foreach (Transform waypoint in waypointArray)
             {
