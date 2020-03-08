@@ -5,8 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
-    
+    // 씬 부르는 함수
     public void OpenScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    } 
+
+    //처음 게임 시작할 때 (새로운 데이터로)
+    public void StartGame(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
 
@@ -18,7 +24,7 @@ public class SceneController : MonoBehaviour
         //    DataController.Instance.LoadCharData("NewData.json");
         //}
 
-        DataController.Instance.LoadCharData("NewData.json");
+        DataController.Instance.LoadData("Save", "NewData.json");
         
         // 씬 이동 시 현재 씬 이름 데이터 파일에 저장
         DataController.Instance.charData.currentScene = sceneName;
@@ -30,7 +36,7 @@ public class SceneController : MonoBehaviour
     {
         if (DataManager.Instance.isExistdata[fileNum])
         {
-            DataController.Instance.LoadCharData("SaveData" + fileNum);
+            DataController.Instance.LoadData("Save", "SaveData" + fileNum);
             
             SceneManager.LoadScene(DataController.Instance.charData.currentScene);
             print("SaveData" + fileNum + ".json");
