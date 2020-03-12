@@ -38,7 +38,7 @@ public class SceneController : MonoBehaviour
         //    DataController.Instance.LoadCharData("NewData.json");
         //}
 
-        DataController.instance_DataController.LoadCharData("NewData.json");
+        DataController.instance_DataController.LoadData("Save", "NewData.json");
         
         // 씬 이동 시 현재 씬 이름 데이터 파일에 저장
         DataController.instance_DataController.charData.currentScene = sceneName;
@@ -49,7 +49,7 @@ public class SceneController : MonoBehaviour
     {
         if (DataManager.instance_DataManager.isExistdata[fileNum])
         {
-            DataController.instance_DataController.LoadCharData("SaveData" + fileNum);
+            DataController.instance_DataController.LoadData("Dialogue" , "SaveData" + fileNum);
             
             SceneManager.LoadScene(DataController.instance_DataController.charData.currentScene);
             print("SaveData" + fileNum + ".json");

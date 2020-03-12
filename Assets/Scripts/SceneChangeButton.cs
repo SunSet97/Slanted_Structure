@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class SceneChangeButton : MonoBehaviour
 {
     public void ChangeScene(string sceneName)

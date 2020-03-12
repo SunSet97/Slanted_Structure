@@ -37,13 +37,13 @@ public class CharacterManager : MonoBehaviour
         if (DataController.instance_DataController != null)
         {
             // 디버깅용
-            DataController.Instance.charData.pencilCnt = 4;
-            DataController.Instance.charData.selfEstm = 500;
-            DataController.Instance.charData.intimacy_speat = 200;
-            DataController.Instance.charData.intimacy_oun = 150;
-            DataController.Instance.charData.story = 1;
-            DataController.Instance.charData.story_branch = 2;
-            DataController.Instance.charData.dialogue_index = 3;
+            DataController.instance_DataController.charData.pencilCnt = 4;
+            DataController.instance_DataController.charData.selfEstm = 500;
+            DataController.instance_DataController.charData.intimacy_speat = 200;
+            DataController.instance_DataController.charData.intimacy_oun = 150;
+            DataController.instance_DataController.charData.story = 1;
+            DataController.instance_DataController.charData.story_branch = 2;
+            DataController.instance_DataController.charData.dialogue_index = 3;
 
             ctrl.enabled = false;
             transform.position = DataController.instance_DataController.charData.endPosition;

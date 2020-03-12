@@ -7,6 +7,7 @@ using System;
 
 public class DataController : MonoBehaviour
 {
+    
     //인스턴스화
     private static DataController instance = null;
     public static DataController instance_DataController
@@ -85,7 +86,7 @@ public class DataController : MonoBehaviour
                 Debug.Log("로드 성공");
                 string FromJsonData = File.ReadAllText(filePath);
                 _dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
-                Instance.charData.dialogue_index++;
+                instance.charData.dialogue_index++;
             }
             else
             {

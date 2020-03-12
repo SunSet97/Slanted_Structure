@@ -43,15 +43,16 @@ public class NPCInteractor : MonoBehaviour
                 int cameraIndex = 0;
 
                 // 현재 활성화 되어있는 카메라를 찾음 
-                for (int i = 0; i < 4; i ++)
+                //for (int i = 0; i < 4; i ++)
+                //{
+
+                Camera curCamera = null;
+
+                if (Camera.main.CompareTag("MainCamera"))
                 {
-                    if (cameraManager.GetComponent<CameraManager>().toggle[i].isOn)
-                    {
-                        cameraIndex = i;
-                        break;
-                    }
+                    curCamera = Camera.main.GetComponent<Camera>();
                 }
-                Camera curCamera = cameraManager.transform.GetChild(cameraIndex).GetComponent<Camera>();
+                 
 
                 // 카메라 ~ 터치 지점으로의 ray 
                 Ray ray = curCamera.ScreenPointToRay(Input.mousePosition);
@@ -62,8 +63,8 @@ public class NPCInteractor : MonoBehaviour
                 {
                     if (hit.collider.gameObject.name == closestNPC.gameObject.name && dialogueController.isPossibleCnvs == true)
                     {
-                        DataController.Instance.LoadData(closestNPC.gameObject.name, DataController.Instance.charData.story + "_" 
-                            + DataController.Instance.charData.story_branch + "_" + DataController.Instance.charData.dialogue_index + ".json");
+                        DataController.instance_DataController.LoadData(closestNPC.gameObject.name, DataController.instance_DataController.charData.story + "_" 
+                            + DataController.instance_DataController.charData.story_branch + "_" + DataController.instance_DataController.charData.dialogue_index + ".json");
 
                         dialogueController.StartConversation();
 
