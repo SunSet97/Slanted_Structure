@@ -35,15 +35,7 @@ public class CharMovement : MonoBehaviour
         // 세이브데이터를 불러왔을 경우 저장된 위치로 캐릭터 위치를 초기화 
         if (DataController.Instance != null)
         {
-            // 디버깅용
-            DataController.Instance.charData.pencilCnt = 4;
-            DataController.Instance.charData.selfEstm = 500;
-            DataController.Instance.charData.intimacy_speat = 200;
-            DataController.Instance.charData.intimacy_oun = 150;
-            DataController.Instance.charData.story = 1;
-            DataController.Instance.charData.story_branch = 2;
-            DataController.Instance.charData.dialogue_index = 3;
-
+            DataController.Instance.charData.pencilCnt = 4; // 디버깅용
             ctrl.enabled = false;
             transform.position = DataController.Instance.charData.endPosition;
             ctrl.enabled = true;
