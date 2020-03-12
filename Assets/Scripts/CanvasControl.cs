@@ -9,22 +9,7 @@ public class CanvasControl : MonoBehaviour
 {
     public Text[] saveText = new Text[3];
     public GameObject savePanel;
-    public Text intimacyText_speat;
-    public Text intimacyText_oun;
-    public Text selfEstmText;
-
-    private bool isExistFile;
-
-    private void Start()
-    {
-        if (DataController.Instance != null && selfEstmText != null)
-        {
-            selfEstmText.text = "자존감: " + DataController.Instance.charData.selfEstm;
-            intimacyText_speat.text = "스핏 친밀도: " + DataController.Instance.charData.intimacy_speat;
-            intimacyText_oun.text = "오운 친밀도: " + DataController.Instance.charData.intimacy_oun;
-        }
-
-    }
+    bool isExistFile;
 
     public void OpenPanel(string panelName)
     {
@@ -41,14 +26,13 @@ public class CanvasControl : MonoBehaviour
                 {
                     // 해당 칸에 데이턱 존재하면 버튼 텍스트 업데이트
                     saveText[i].text = "FULL DATA";
-
+     
                 }
                 else
                 {
-
                     // 데이터 없을 때
                     saveText[i].text = "NO DATA";
-                }
+                } 
             }
         }
     }
@@ -59,15 +43,6 @@ public class CanvasControl : MonoBehaviour
         {
             savePanel.SetActive(false);
         }
-
-    }
-
-    // 자존감 및 친밀도 text 업데이트
-    public void UpdateStats(){
-
-        selfEstmText.text = "자존감: " + DataController.Instance.charData.selfEstm;
-        intimacyText_speat.text = "스핏 친밀도: " + DataController.Instance.charData.intimacy_speat;
-        intimacyText_oun.text = "오운 친밀도: " + DataController.Instance.charData.intimacy_oun;
 
     }
 }
