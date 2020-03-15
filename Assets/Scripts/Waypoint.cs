@@ -184,10 +184,10 @@ public class Waypoint : MonoBehaviour
             isInit = false; //닿아있음 벗어나면 처음 접할 수 있는 상태이므로 false로 만들어줌
     }
 
+<<<<<<< Updated upstream
 
     private void OnDrawGizmos()
     {
-       
         //waypoint gizmo 표시
         if (waypointArray.Length >= 0)
         {
@@ -213,6 +213,9 @@ public class Waypoint : MonoBehaviour
             }
         }
     }
+=======
+    
+>>>>>>> Stashed changes
 
 
 }

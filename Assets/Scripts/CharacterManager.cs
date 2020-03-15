@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterManager : MonoBehaviour
 {
@@ -33,18 +34,10 @@ public class CharacterManager : MonoBehaviour
         ctrl = this.GetComponent<CharacterController>();
         dieAction = DieAction();
 
-        // 세이브데이터를 불러왔을 경우 저장된 위치로 캐릭터 위치를 초기화
+        // 세이브데이터를 불러왔을 경우 저장된 위치로 캐릭터 위치를 초기화 
         if (DataController.instance_DataController != null)
         {
-            // 디버깅용
-            DataController.instance_DataController.charData.pencilCnt = 4;
-            DataController.instance_DataController.charData.selfEstm = 500;
-            DataController.instance_DataController.charData.intimacy_speat = 200;
-            DataController.instance_DataController.charData.intimacy_oun = 150;
-            DataController.instance_DataController.charData.story = 1;
-            DataController.instance_DataController.charData.story_branch = 2;
-            DataController.instance_DataController.charData.dialogue_index = 3;
-
+            DataController.instance_DataController.charData.pencilCnt = 4; // 디버깅용
             ctrl.enabled = false;
             transform.position = DataController.instance_DataController.charData.endPosition;
             ctrl.enabled = true;
@@ -56,7 +49,122 @@ public class CharacterManager : MonoBehaviour
         //조이스틱 설정
         if (!joyStick) joyStick = SceneInformation.instance_SceneInformation.joyStick;
         //ScreenInformation.instance_SceneInformation.playMethod="Cut";
+        AbilityUISet();
     }
+
+    //---------------------------------------------------------------------------------------
+    [Header("기능구현 테스트")]
+    public bool isPowered = false;
+    public int passedNum = 0;
+    public Image abilityImg;
+    public Text abilityText;
+    public Image abilityButt;
+    public GameObject hitHorObj;
+    public GameObject hitVerrObj;
+    public float cooltime=0;
+    public float duration=10;
+
+    public void Ability()
+    {
+        //능력해제시
+        if (isPowered)
+        {
+            isPowered = false;
+            passedNum = 0;
+            cooltime = 0;
+            duration = 10;
+            abilityButt.gameObject.SetActive(true);
+            abilityText.gameObject.SetActive(false);
+        }
+        //능력사용시
+        else if(!isPowered && cooltime >= 3)
+        {
+            isPowered = true;
+            passedNum = 0;
+            duration = 10;
+            abilityButt.gameObject.SetActive(false);
+            abilityText.gameObject.SetActive(true);
+        }
+    }
+
+    private void AbilityUISet()
+    {
+        RaycastHit hit;
+        Ray ray_forward = new Ray(transform.position, (Vector3.right * joyStick.Horizontal).normalized); //전방 ray
+        Ray ray_backward = new Ray(transform.position, (Vector3.left * joyStick.Horizontal).normalized); //후방 ray
+        Ray ray_upward = new Ray(transform.position + Vector3.up*0.2f, (Vector3.up * joyStick.Vertical).normalized); //위 ray
+        Ray ray_downward = new Ray(transform.position + Vector3.up * 0.2f, (Vector3.down * joyStick.Vertical).normalized); //아래 ray
+
+        //수평 능력
+        if (isPowered && (joyStick.Horizontal <= -0.7f || joyStick.Horizontal >= 0.7f))
+            Physics.IgnoreLayerCollision(0, 9, true);
+        else
+            Physics.IgnoreLayerCollision(0, 9, false);
+
+        //전방 충돌감지
+        if (Physics.Raycast(ray_forward, out hit, 0.5f)) {
+            if (hit.transform.gameObject.layer == 9 && hitHorObj != hit.transform.gameObject)
+                hitHorObj = hit.transform.gameObject;
+        }
+
+        //후방 충돌감지
+        if (Physics.Raycast(ray_backward, out hit, 0.4f))
+        {
+            if (hit.transform.gameObject.layer == 9 && hitHorObj == hit.transform.gameObject)
+                passedNum++;
+            hitHorObj = null;
+        }
+
+        //수직 능력
+        if (isPowered && (joyStick.Vertical <= -0.7f || joyStick.Vertical>=0.7f))
+            Physics.IgnoreLayerCollision(0, 10, true);
+        else
+            Physics.IgnoreLayerCollision(0, 10, false);
+
+        //위 충돌감지
+        if (Physics.Raycast(ray_upward, out hit, 0.3f))
+        {
+            if (hit.transform.gameObject.layer == 10 && hitVerrObj != hit.transform.gameObject)
+                hitVerrObj = hit.transform.gameObject;
+        }
+
+        //아래 충돌감지
+        if (Physics.Raycast(ray_downward, out hit, 0.2f))
+        {
+            if (hit.transform.gameObject.layer == 10 && hitVerrObj == hit.transform.gameObject)
+                passedNum++;
+            hitVerrObj = null;
+        }
+
+        //UI update
+        abilityText.text = passedNum.ToString();
+        //능력 자동 해제 조건
+        if (passedNum >= 5 || duration < 0)
+        {
+            isPowered = false;
+            passedNum = 0;
+            cooltime = 0;
+            duration = 10;
+            abilityButt.gameObject.SetActive(true);
+            abilityText.gameObject.SetActive(false);
+            Physics.IgnoreLayerCollision(0, 9, false);
+        }
+
+        //쿨타임
+        if (!isPowered && cooltime <= 3)
+        {
+            cooltime += Time.deltaTime;
+            abilityImg.fillAmount = (cooltime / 3);
+        }
+
+        //지속시간
+        if (isPowered && duration >=0)
+        {
+            duration -= Time.deltaTime;
+            abilityImg.fillAmount = (duration / 10);
+        }
+    }
+    //---------------------------------------------------------------------------------------
 
     private void FixedUpdate()
     {
@@ -137,13 +245,13 @@ public class CharacterManager : MonoBehaviour
         //땅에서 떨어져 있을 경우 기본적으로 중력이 적용되고 중력은 가속도이므로 +=를 써서 계속해서 더해줌
         if (!ctrl.isGrounded || isDie)
             moveVerDir.y += Physics.gravity.y * gravityScale * Time.deltaTime;
-
+        
             ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 최종 이동 시킴
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // 리스폰 포지션을 데이터에 저장
+        // 리스폰 포지션을 데이터에 저장 
         if (other.gameObject.CompareTag("RespawnPoint"))
         {
 
@@ -151,7 +259,7 @@ public class CharacterManager : MonoBehaviour
 
         }
 
-        // 획득한 아이템을 데이터에 저장
+        // 획득한 아이템을 데이터에 저장 
         if (other.gameObject.CompareTag("Item"))
         {
             Destroy(other.gameObject);
@@ -176,17 +284,17 @@ public class CharacterManager : MonoBehaviour
     //    StartCoroutine(dieAction);
     //}
 
-    // 디버깅용. 플레이어가 죽은 후 리스폰 장소에서 부활하기까지의 행동 (플레이어의 투명도 조절 후 이동)
+    // 디버깅용. 플레이어가 죽은 후 리스폰 장소에서 부활하기까지의 행동 (플레이어의 투명도 조절 후 이동) 
     IEnumerator DieAction()
     {
         Material mat = this.GetComponentInChildren<SkinnedMeshRenderer>().material;
         Color color = mat.color;
-
-        // 플레이어가 죽었음을 보여줌 (반투명)
+        
+        // 플레이어가 죽었음을 보여줌 (반투명) 
         mat.color = new Color(color.r, color.g, color.b, 0.5f);
         yield return new WaitForSeconds(2);
 
-        // 캐릭터컨트롤러를 끄고 플레이어를 리스폰 위치로 이동시킴
+        // 캐릭터컨트롤러를 끄고 플레이어를 리스폰 위치로 이동시킴 
         ctrl.enabled = false;
         transform.position = DataController.instance_DataController.charData.respawnLocation.transform.position;
 
@@ -194,7 +302,7 @@ public class CharacterManager : MonoBehaviour
         mat.color = new Color(color.r, color.g, color.b, 1f);
 
 
-        // 플레이어가 부활한 후 다시 캐릭터컨트롤러 활성화
+        // 플레이어가 부활한 후 다시 캐릭터컨트롤러 활성화 
         ctrl.enabled = true;
         isDie = false;
         StopCoroutine(DieAction());
