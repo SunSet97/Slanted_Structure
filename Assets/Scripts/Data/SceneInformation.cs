@@ -72,10 +72,10 @@ public class SceneInformation : MonoBehaviour
         if (!joyStick) joyStick = Joystick.FindObjectOfType<Joystick>();
 
         //캐릭터 매니저 찾아서 정보 저장
-        CharacterManager[] char_mngs = CharacterManager.FindObjectsOfType<CharacterManager>();
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < char_mngs.Length; j++)
-                if (char_info[i].name == char_mngs[j].name)
-                    char_info[i].char_mng = char_mngs[j];
+        //CharacterManager[] char_mngs = CharacterManager.FindObjectsOfType<CharacterManager>();
+        //for (int i = 0; i < 3; i++)
+        //    for (int j = 0; j < char_mngs.Length; j++)
+        //        if (char_info[i].name == char_mngs[j].name)
+        //            char_info[i].char_mng = char_mngs[j];
     }
 }

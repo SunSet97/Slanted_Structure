@@ -6,17 +6,21 @@ using UnityEngine.UI;
 public class NPCInteractor : MonoBehaviour
 {
     public GameObject player;
-    public GameObject cameraManager;
+    //public GameObject cameraManager;
     public DialogueController dialogueController;
     public float interactableDistance = 2;
-    
 
-    private Transform[] NPCArray;
+    public Transform[] NPCArray;
 
-    void Start()
+    private void Awake()
     {
-        NPCArray = GetComponentsInChildren<Transform>();
+        FindPlayer();
         
+    }
+
+    private void Start()
+    {
+        FindNPC();
     }
 
     void Update()
@@ -41,10 +45,7 @@ public class NPCInteractor : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 int cameraIndex = 0;
-
-                // 현재 활성화 되어있는 카메라를 찾음 
-                //for (int i = 0; i < 4; i ++)
-                //{
+                
 
                 Camera curCamera = null;
 
@@ -64,7 +65,8 @@ public class NPCInteractor : MonoBehaviour
                     if (hit.collider.gameObject.name == closestNPC.gameObject.name && dialogueController.isPossibleCnvs == true)
                     {
                         DataController.instance_DataController.LoadData(closestNPC.gameObject.name, DataController.instance_DataController.charData.story + "_" 
-                            + DataController.instance_DataController.charData.story_branch + "_" + DataController.instance_DataController.charData.dialogue_index + ".json");
+                            + DataController.instance_DataController.charData.storyBranch + "_" + DataController.instance_DataController.charData.storyBranch_scnd + "_" 
+                            + DataController.instance_DataController.charData.dialogue_index + ".json");
 
                         dialogueController.StartConversation();
 
@@ -82,7 +84,7 @@ public class NPCInteractor : MonoBehaviour
     private bool isInteractable(Transform NPC)
     {
         // 상호작용 거리 내에 있는지 확인
-        float dist = Vector3.Distance(player.transform.position, NPC.transform.position);
+        float dist = Vector3.Distance(player.transform.position, NPC.position);
         return dist < interactableDistance;
     }
 
@@ -96,17 +98,42 @@ public class NPCInteractor : MonoBehaviour
 
         foreach(Transform NPC in NPCArray)
         {
-            if (NPC.name == "NPCManager")
-                continue;
-
-            float dist = Vector3.Distance(player.transform.position, NPC.transform.position);
-            if (dist < minDist)
+            //if (NPC.name == "NPCManager")
+            //    continue;
+            if (NPC != null)
             {
-                minDist = dist;
-                closestNPC = NPC;
+                float dist = Vector3.Distance(player.transform.position, NPC.position);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    closestNPC = NPC;
+                }
             }
         }
 
         return closestNPC;
+    }
+
+    private void FindPlayer()
+    {
+        player = GameObject.Find(DataController.instance_DataController.charData.curPlayer).gameObject;
+
+        player.tag = "Player";
+        player.GetComponent<CharacterManager>().isSelected = true;
+        player.GetComponent<CharacterManager>().enabled = true;
+    }
+
+    private void FindNPC()
+    {
+        int npcCnt = transform.childCount;
+        NPCArray = new Transform[npcCnt];
+        for (int i = 0; i < npcCnt; i++)
+        {
+            if (transform.GetChild(i).CompareTag("NPC"))
+            {
+                NPCArray[i] = transform.GetChild(i);
+                
+            }
+        }
     }
 }

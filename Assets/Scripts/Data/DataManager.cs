@@ -46,7 +46,7 @@ public class DataManager : MonoBehaviour
     {
         if (player == null)
         {
-            player = GameObject.Find("Player");
+            player = GameObject.FindGameObjectWithTag("Player");
         }
 
         if (canvasCtrl == null)

@@ -77,7 +77,7 @@ public class DataController : MonoBehaviour
                 _charData = new CharData();
             }
         }
-        else
+        else // 대화파일 불러오기
         {
             string filePath = Application.dataPath + "/Resources/DialogueScripts/" + dataType + "/" + DataFileName;
 
@@ -92,6 +92,7 @@ public class DataController : MonoBehaviour
             {
                 Debug.Log("기본 대사 파일");
                 filePath = Application.dataPath + "/Resources/DialogueScripts/" + dataType + "/Default.json";
+                print(filePath);
                 string FromJsonData = File.ReadAllText(filePath);
                 _dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
             }

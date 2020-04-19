@@ -20,8 +20,8 @@ public class CanvasControl : MonoBehaviour
         if (DataController.instance_DataController != null && selfEstmText != null)
         {
             selfEstmText.text = "자존감: " + DataController.instance_DataController.charData.selfEstm;
-            intimacyText_speat.text = "스핏 친밀도: " + DataController.instance_DataController.charData.intimacy_speat;
-            intimacyText_oun.text = "오운 친밀도: " + DataController.instance_DataController.charData.intimacy_oun;
+            intimacyText_speat.text = "스핏 친밀도: " + DataController.instance_DataController.charData.intimacy_spOun;
+            intimacyText_oun.text = "오운 친밀도: " + DataController.instance_DataController.charData.intimacy_ounRau;
         }
 
     }
@@ -66,8 +66,8 @@ public class CanvasControl : MonoBehaviour
     public void UpdateStats(){
 
         selfEstmText.text = "자존감: " + DataController.instance_DataController.charData.selfEstm;
-        intimacyText_speat.text = "스핏 친밀도: " + DataController.instance_DataController.charData.intimacy_speat;
-        intimacyText_oun.text = "오운 친밀도: " + DataController.instance_DataController.charData.intimacy_oun;
+        intimacyText_speat.text = "스핏 친밀도: " + DataController.instance_DataController.charData.intimacy_spOun;
+        intimacyText_oun.text = "오운 친밀도: " + DataController.instance_DataController.charData.intimacy_ounRau;
 
     }
 }

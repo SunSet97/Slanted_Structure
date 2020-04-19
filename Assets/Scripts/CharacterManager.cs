@@ -30,6 +30,8 @@ public class CharacterManager : MonoBehaviour
 
     void Start()
     {
+        //if (isSelected)
+        //    this.tag
         ctrl = this.GetComponent<CharacterController>();
         dieAction = DieAction();
 
@@ -39,11 +41,13 @@ public class CharacterManager : MonoBehaviour
             // 디버깅용
             DataController.instance_DataController.charData.pencilCnt = 4;
             DataController.instance_DataController.charData.selfEstm = 500;
-            DataController.instance_DataController.charData.intimacy_speat = 200;
-            DataController.instance_DataController.charData.intimacy_oun = 150;
+            DataController.instance_DataController.charData.intimacy_spRau = 200;
+            DataController.instance_DataController.charData.intimacy_spOun = 150;
+            DataController.instance_DataController.charData.intimacy_ounRau = 150;
             DataController.instance_DataController.charData.story = 1;
-            DataController.instance_DataController.charData.story_branch = 2;
-            DataController.instance_DataController.charData.dialogue_index = 3;
+            DataController.instance_DataController.charData.storyBranch = 2;
+            DataController.instance_DataController.charData.storyBranch_scnd = 3;
+            DataController.instance_DataController.charData.dialogue_index = 4;
 
             ctrl.enabled = false;
             transform.position = DataController.instance_DataController.charData.endPosition;

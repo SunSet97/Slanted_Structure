@@ -15,12 +15,13 @@ public class Camera_Moving : MonoBehaviour
     public Vector3 Camera_Position;
     public Vector3 Player_Position;
     public Quaternion Camera_Rotate;
+    private NPCInteractor npcInteractor;
 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        npcInteractor = GameObject.Find("NPCManager").GetComponent<NPCInteractor>(); 
     }
 
     // Update is called once per frame
@@ -29,7 +30,8 @@ public class Camera_Moving : MonoBehaviour
         if (!Player)
         {
             //씬정보, Player 오브젝트 찾기
-            Player = SceneInformation.instance_SceneInformation.char_info[1].char_mng.transform;
+            //Player = SceneInformation.instance_SceneInformation.char_info[1].char_mng.transform;
+            Player = npcInteractor.player.transform; 
         }
         else
         {

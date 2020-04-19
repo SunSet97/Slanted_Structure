@@ -16,9 +16,11 @@ public class Waypoint : MonoBehaviour
     private bool isInPoint = false; //check된 포인트와 닿아있는지
     private bool isInit = false; //check된 포인트에 처음 접한것 판단
     private bool isRight = true; //이동방향 설정(횡스크롤이므로 좌,우만 존재)
+    private NPCInteractor npcInteractor;
     
     void Start()
     {
+        npcInteractor = GameObject.Find("NPCManager").GetComponent<NPCInteractor>();
         waypointArray = GetComponentsInChildren<Transform>();
         DisablePointMeshrenderer();
     }
@@ -28,12 +30,14 @@ public class Waypoint : MonoBehaviour
         //조이스틱 설정
         if (!joyStick) joyStick = SceneInformation.instance_SceneInformation.joyStick;
         //움직일 캐릭터 설정
-        for (int i = 0; i < 3; i++)
-            if (SceneInformation.instance_SceneInformation.char_info[i].char_mng.isSelected)
-                character = SceneInformation.instance_SceneInformation.char_info[i].char_mng.transform;
-
-        if (checkedWaypoint == null)
-            GetNearestWaypoint();
+        //for (int i = 0; i < 3; i++)
+        //    if (SceneInformation.instance_SceneInformation.char_info[i].char_mng.isSelected)
+        //    {
+                //character = SceneInformation.instance_SceneInformation.char_info[i].char_mng.transform;
+                character = npcInteractor.player.transform;
+            //}
+       if (checkedWaypoint == null)
+           GetNearestWaypoint();
 
         GetCheckedWaypoint();
 

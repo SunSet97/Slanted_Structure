@@ -49,7 +49,7 @@ public class SceneController : MonoBehaviour
     {
         if (DataManager.instance_DataManager.isExistdata[fileNum])
         {
-            DataController.instance_DataController.LoadData("Dialogue" , "SaveData" + fileNum);
+            DataController.instance_DataController.LoadData("Save" , "SaveData" + fileNum);
             
             SceneManager.LoadScene(DataController.instance_DataController.charData.currentScene);
             print("SaveData" + fileNum + ".json");
