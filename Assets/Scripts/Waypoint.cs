@@ -28,7 +28,7 @@ public class Waypoint : MonoBehaviour
     void Update()
     {
         //조이스틱 설정
-        if (!joyStick) joyStick = SceneInformation.instance_SceneInformation.joyStick;
+        if (!joyStick) joyStick = DataController.instance_DataController.joyStick;
         //움직일 캐릭터 설정
         //for (int i = 0; i < 3; i++)
         //    if (SceneInformation.instance_SceneInformation.char_info[i].char_mng.isSelected)
