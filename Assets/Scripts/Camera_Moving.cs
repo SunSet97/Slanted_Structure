@@ -57,16 +57,17 @@ public class Camera_Moving : MonoBehaviour
         float position_storage;
 
         //카메라 각도 값 정보 Information_Scene오브젝트에서 받아오기
-        float rot_x = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().Rot_x;
-        float rot_y = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().Rot_y;
-        float rot_z = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().Rot_z;
+        //float rot_x = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().Rot_x;
+        //float rot_y = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().Rot_y;
+        //float rot_z = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().Rot_z;
+        Vector3 rot = DataController.instance_DataController.Rot;
 
         //카메라 경계값정보 Information_Scene오브젝트에서 받아오기
-        float min_x = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().min_x;
-        float max_x = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().max_x;
-        float min_y = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().min_y;
-        float max_y = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().max_y;
-        float Z = GameObject.Find("SceneInformation").GetComponent<SceneInformation>().Z_Value;
+        float min_x = DataController.instance_DataController.min_x;
+        float max_x = DataController.instance_DataController.max_x;
+        float min_y = DataController.instance_DataController.min_y;
+        float max_y = DataController.instance_DataController.max_y;
+        float Z = DataController.instance_DataController.Z_Value;
 
         //카메라 위치 제한 설정
         position.x = Mathf.Clamp(position.x,min_x,max_x);
@@ -74,7 +75,7 @@ public class Camera_Moving : MonoBehaviour
         Camera.main.transform.position = position;
 
         //입력 된 카메라 각도 설정
-        Camera_rotate.eulerAngles = new Vector3(rot_x, rot_y, rot_z);
+        Camera_rotate.eulerAngles = new Vector3(rot.x, rot.y, rot.z);
         Camera.main.transform.rotation = Camera_rotate;
         //카메라의 Z값 고정을 위한 If문
         if (position.z != Z)

@@ -7,7 +7,7 @@ public class NPCInteractor : MonoBehaviour
 {
     public GameObject player;
     //public GameObject cameraManager;
-    public DialogueController dialogueController;
+    CanvasControl canvasCtrl;
     public float interactableDistance = 2;
 
     public Transform[] NPCArray;
@@ -20,6 +20,7 @@ public class NPCInteractor : MonoBehaviour
 
     private void Start()
     {
+        canvasCtrl = GameObject.Find("Canvas").GetComponent<CanvasControl>();
         FindNPC();
     }
 
@@ -62,16 +63,16 @@ public class NPCInteractor : MonoBehaviour
                 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                 {
-                    if (hit.collider.gameObject.name == closestNPC.gameObject.name && dialogueController.isPossibleCnvs == true)
+                    if (hit.collider.gameObject.name == closestNPC.gameObject.name && canvasCtrl.isPossibleCnvs == true)
                     {
                         DataController.instance_DataController.LoadData(closestNPC.gameObject.name, DataController.instance_DataController.charData.story + "_" 
                             + DataController.instance_DataController.charData.storyBranch + "_" + DataController.instance_DataController.charData.storyBranch_scnd + "_" 
                             + DataController.instance_DataController.charData.dialogue_index + ".json");
 
-                        dialogueController.StartConversation();
+                        canvasCtrl.StartConversation();
 
                         // 대화가 끝나기 전까지 다시 대화 불가능하도록 설정
-                        dialogueController.isPossibleCnvs = false;
+                        canvasCtrl.isPossibleCnvs = false;
                     }
                         
                 }

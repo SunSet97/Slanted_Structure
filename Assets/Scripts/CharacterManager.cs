@@ -58,14 +58,14 @@ public class CharacterManager : MonoBehaviour
     void Update()
     {
         //조이스틱 설정
-        if (!joyStick) joyStick = SceneInformation.instance_SceneInformation.joyStick;
+        if (!joyStick) joyStick = DataController.instance_DataController.joyStick;
         //ScreenInformation.instance_SceneInformation.playMethod="Cut";
     }
 
     private void FixedUpdate()
     {
         //조이스틱 설정이 끝난 이후 이동 가능
-        if (joyStick) CharacterMovement(SceneInformation.instance_SceneInformation.playMethod);
+        if (joyStick) CharacterMovement(DataController.instance_DataController.playMethod);
     }
 
     private void CharacterMovement(string playMethod)
