@@ -31,9 +31,13 @@ public class CharData
     public int intimacy_spRau = 0; // 스핏-라우 친밀도
     public int intimacy_ounRau = 0; // 오운-라우 친밀도
 
-    public Vector3 endPosition = new Vector3(-7.69f, -5.7f, 0f); // 게임 종료 시 캐릭터 위치
+    // 게임 종료 시 캐릭터 위치
+    public Vector3 currentCharPosition;
+    public Vector3 rauPosition;
+    public Vector3 speatPosition;
+    public Vector3 ounPosition;
 
     // 씬 이름 지정한건 디버깅 용!!! 
-    public string currentScene = "DialogueSystem"; // 씬 바뀔 때마다 바꿔줌
+    public string currentScene = "Ingame"; // 씬 바뀔 때마다 바꿔줌
 
 }

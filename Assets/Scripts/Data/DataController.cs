@@ -5,54 +5,35 @@ using System.IO;
 using System;
 using UnityEngine.SceneManagement;
 
-//캐릭터 정보 구조체
-public struct CharacterInfo
-{
-    public string name; //이름
-    public CharacterManager char_mng; //캐릭터 매니져
-
-    public CharacterInfo(string name, CharacterManager char_mng)
-    {
-        this.name = name;
-        this.char_mng = char_mng;
-    }
-}
-
 public class DataController : MonoBehaviour
 {
 
     public bool[] isExistdata = new bool[3];
-    CanvasControl canvasCtrl;
-    GameObject player;
+    private CanvasControl canvasCtrl;
+
+    [Header("조이스틱")]
+    public Joystick joyStick;
+
+    [Header("캐릭터")]
+    public CharacterManager currentChar;
+    public CharacterManager rau;
+    public CharacterManager oun;
+    public CharacterManager speat;
 
     [Header("카메라 경계값")]
-    //public Camera cam;
+    public Camera cam;
     public float min_x = -1f;
     public float max_x = 5f;
     public float min_y = -2.0f;
     public float max_y = 1.3f;
-    public float Z_Value = -10; //카메라 Z값 고정하기 위한 상수값
+    public float camDis = 10; //캐릭터와 카메라와의 거리
+    public Vector3 rot;
 
-    [Header("카메라 각도")]
-    //public float Rot_x;
-    //public float Rot_y;
-    //public float Rot_z;
-    public Vector3 Rot;
-
-    [Header("플레이 방식")]
-    public string playMethod = "Plt"; //2D 플랫포머(2D Platformer)=Plt, 쿼터뷰(Quarter view)=Qrt, 라인트레이서(Line tracer)=Line
-
-    [Header("조이스틱")]
-    public Joystick joyStick; //조이스틱
-
-    [Header("캐릭터")]
-    public CharacterInfo[] char_info = new CharacterInfo[]
-    {
-        new CharacterInfo("Rau",null),
-        new CharacterInfo("Speat",null),
-        new CharacterInfo("Oun",null)
-    };
-
+    [Header("맵")]
+    public GameObject[] maps;
+    public GameObject currentMap;
+    public string mapCode;
+    public string playMethod; //2D 플랫포머(2D Platformer)=Plt, 쿼터뷰(Quarter view)=Qrt, 라인트레이서(Line tracer)=Line
 
     //인스턴스화
     private static DataController instance = null;
@@ -63,7 +44,7 @@ public class DataController : MonoBehaviour
             return instance;
         }
     }
-
+     
     private void Awake()
     {
         if (instance)
@@ -78,22 +59,77 @@ public class DataController : MonoBehaviour
     void Start()
     {
         ExistsData();
-
     }
 
     void Update()
     {
         //조이스틱 찾기
         if (!joyStick) joyStick = Joystick.FindObjectOfType<Joystick>();
-
-        //캐릭터 매니저 찾아서 정보 저장
-        //CharacterManager[] char_mngs = CharacterManager.FindObjectsOfType<CharacterManager>();
-        //for (int i = 0; i < 3; i++)
-        //    for (int j = 0; j < char_mngs.Length; j++)
-        //        if (char_info[i].name == char_mngs[j].name)
-        //            char_info[i].char_mng = char_mngs[j];
+        //카메라 찾기
+        if (!cam) cam = Camera.main;
+        //캐릭터 찾기
+        FindCharacter();
+        //맵 찾기
+        FindMap();
+        
     }
 
+    string temp;
+    public bool isMapChanged = false;
+    //맵 코드에 맞는 맵을 찾아서 정보 저장
+    void FindMap()
+    {
+        if (SceneManager.GetActiveScene().name == "Ingame")
+            maps = GameObject.FindGameObjectsWithTag("Map");
+        if (maps.Length > 0 && CanvasControl.instance_CanvasControl)
+        {
+            temp = CanvasControl.instance_CanvasControl.mapcode.textComponent.text; //디버깅용
+
+            for (int i = 0; i < maps.Length; i++)
+            {
+                if (maps[i].name == temp) mapCode = temp;
+
+                if (maps[i].name == mapCode)
+                {
+                    if (isMapChanged == false && currentMap != maps[i] && currentChar)
+                    {
+                        isMapChanged = true;
+                        currentChar.transform.position = maps[i].transform.position;
+                    }
+                    else if (isMapChanged) isMapChanged = false;
+
+                    currentMap = maps[i];
+                    maps[i].GetComponent<MapData>().map.SetActive(true);
+                }
+                else
+                {
+                    maps[i].GetComponent<MapData>().map.SetActive(false);
+                }
+            }
+            playMethod = currentMap.GetComponent<MapData>().playMethod; //플레이 방식 설정
+        }
+    }
+
+    //캐릭터 매니저 찾아서 정보 저장
+    void FindCharacter()
+    {
+        if (CanvasControl.instance_CanvasControl) canvasCtrl = CanvasControl.instance_CanvasControl;
+        if (!speat && GameObject.Find("Speat")) speat = GameObject.Find("Speat").GetComponent<CharacterManager>();
+        if (!oun && GameObject.Find("Oun")) oun = GameObject.Find("Oun").GetComponent<CharacterManager>();
+        if (!rau && GameObject.Find("Rau")) rau = GameObject.Find("Rau").GetComponent<CharacterManager>();
+
+        if (canvasCtrl && speat && oun && rau)
+        {
+            speat.isSelected = canvasCtrl.selectedCharacter[0].isOn;
+            oun.isSelected = canvasCtrl.selectedCharacter[1].isOn;
+            rau.isSelected = canvasCtrl.selectedCharacter[2].isOn;
+
+            if (speat.isSelected) currentChar = speat;
+            if (oun.isSelected) currentChar = oun;
+            if (rau.isSelected) currentChar = rau;
+            
+        }
+    }
 
     public CharData _charData;
     public CharData charData
@@ -172,37 +208,6 @@ public class DataController : MonoBehaviour
         string filePath = Application.persistentDataPath + "/" + fileName;
         File.WriteAllText(filePath, ToJsonData);
         Debug.Log("저장");
-    }
-
-    // 데이터 저장 버튼을 누르면 불리는 함수
-    public void SelectData(int fileNum)
-    {
-        
-        player = GameObject.FindGameObjectWithTag("Player");
-        
-
-        if (canvasCtrl == null)
-        {
-            canvasCtrl = GameObject.Find("Canvas").GetComponent<CanvasControl>();
-        }
-
-        if (instance_DataController.charData.pencilCnt > 0)
-        {
-            // 기존 데이터 없을 경우 버튼 텍스트 업데이트
-            if (isExistdata[fileNum] == false)
-            {
-                isExistdata[fileNum] = true;
-                canvasCtrl.saveText[fileNum].text = "FULL DATA";
-            }
-
-            // 데이터 저장 시 연필 개수, 캐릭터 위치, 현재 씬 등 업데이트 (점점 추가할 예정)
-            instance_DataController.charData.pencilCnt -= 1;
-            instance_DataController.charData.endPosition = player.transform.position;
-            instance_DataController.charData.currentScene = SceneManager.GetActiveScene().name;
-
-            instance_DataController.SaveCharData("SaveData" + fileNum);
-
-        }
     }
 
     // 세개의 슬롯에 데이터 파일이 존재하는 지 확인하는 함수

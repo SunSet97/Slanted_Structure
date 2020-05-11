@@ -35,6 +35,25 @@ public class CanvasControl : MonoBehaviour
 
     private bool isExistFile;
 
+    [Header("디버깅용")]
+    public InputField mapcode; //맵코드
+    public Toggle[] selectedCharacter; //선택된 캐릭터
+
+    //인스턴스화
+    private static CanvasControl instance = null;
+    public static CanvasControl instance_CanvasControl
+    {
+        get
+        {
+            return instance;
+        }
+    }
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void Start()
     {
         if (DataController.instance_DataController != null && selfEstmText != null)
@@ -105,6 +124,36 @@ public class CanvasControl : MonoBehaviour
                     saveText[i].text = "NO DATA";
                 }
             }
+        }
+    }
+
+    // 데이터 저장 버튼을 누르면 불리는 함수
+    public void SelectData(int fileNum)
+    {
+        //if (canvasCtrl == null)
+        //{
+        //    canvasCtrl = CanvasControl.instance_CanvasControl;
+        //}
+
+
+        if (DataController.instance_DataController.charData.pencilCnt > 0)
+        {
+            // 기존 데이터 없을 경우 버튼 텍스트 업데이트
+            if (DataController.instance_DataController.isExistdata[fileNum] == false)
+            {
+                DataController.instance_DataController.isExistdata[fileNum] = true;
+                saveText[fileNum].text = "FULL DATA";
+            }
+            // 데이터 저장 시 연필 개수, 캐릭터 위치, 현재 씬 등 업데이트 (점점 추가할 예정)
+            DataController.instance_DataController.charData.pencilCnt -= 1;
+            DataController.instance_DataController.charData.currentCharPosition = DataController.instance_DataController.currentChar.transform.position;
+            DataController.instance_DataController.charData.speatPosition = DataController.instance_DataController.rau.transform.position;
+            DataController.instance_DataController.charData.speatPosition = DataController.instance_DataController.speat.transform.position;
+            DataController.instance_DataController.charData.ounPosition = DataController.instance_DataController.oun.transform.position;
+            DataController.instance_DataController.charData.currentScene = SceneManager.GetActiveScene().name;
+
+            DataController.instance_DataController.SaveCharData("SaveData" + fileNum);
+
         }
     }
 
