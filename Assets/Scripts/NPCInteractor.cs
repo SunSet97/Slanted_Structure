@@ -5,28 +5,25 @@ using UnityEngine.UI;
 
 public class NPCInteractor : MonoBehaviour
 {
-    public GameObject player;
-    //public GameObject cameraManager;
-    CanvasControl canvasCtrl;
+    //캐릭터 오브젝트 받는 변수
+    public Transform character;
+    
+    private CanvasControl canvasCtrl;
     public float interactableDistance = 2;
 
     public Transform[] NPCArray;
 
-    private void Awake()
-    {
-        FindPlayer();
-        
-    }
-
     private void Start()
     {
-        canvasCtrl = GameObject.Find("Canvas").GetComponent<CanvasControl>();
+        canvasCtrl = CanvasControl.instance_CanvasControl;
         FindNPC();
+        
     }
 
     void Update()
     {
-        FindInteractableNPC(interactableDistance);
+        if(DataController.instance_DataController.currentChar) character = DataController.instance_DataController.currentChar.transform;
+        if(character) FindInteractableNPC(interactableDistance);
     }
 
     private void FindInteractableNPC(float interactableDist)
@@ -85,7 +82,7 @@ public class NPCInteractor : MonoBehaviour
     private bool isInteractable(Transform NPC)
     {
         // 상호작용 거리 내에 있는지 확인
-        float dist = Vector3.Distance(player.transform.position, NPC.position);
+        float dist = Vector3.Distance(character.transform.position, NPC.position);
         return dist < interactableDistance;
     }
 
@@ -101,9 +98,9 @@ public class NPCInteractor : MonoBehaviour
         {
             //if (NPC.name == "NPCManager")
             //    continue;
-            if (NPC != null)
+            if (NPC != null && NPC != character)
             {
-                float dist = Vector3.Distance(player.transform.position, NPC.position);
+                float dist = Vector3.Distance(character.transform.position, NPC.position);
                 if (dist < minDist)
                 {
                     minDist = dist;
@@ -115,26 +112,42 @@ public class NPCInteractor : MonoBehaviour
         return closestNPC;
     }
 
-    private void FindPlayer()
-    {
-        player = GameObject.Find(DataController.instance_DataController.charData.curPlayer).gameObject;
-
-        player.tag = "Player";
-        player.GetComponent<CharacterManager>().isSelected = true;
-        player.GetComponent<CharacterManager>().enabled = true;
-    }
-
     private void FindNPC()
     {
-        int npcCnt = transform.childCount;
+        //int npcCnt = transform.childCount;
+        //NPCArray = new Transform[npcCnt];
+        //for (int i = 0; i < npcCnt; i++)
+        //{
+        //    if (transform.GetChild(i).CompareTag("NPC"))
+        //    {
+        //        NPCArray[i] = transform.GetChild(i);
+
+        //    }
+        //}
+        int npcCnt = transform.childCount + 3;
         NPCArray = new Transform[npcCnt];
-        for (int i = 0; i < npcCnt; i++)
+        int index = 0; 
+        for (index = 0; index < npcCnt; index++)
         {
-            if (transform.GetChild(i).CompareTag("NPC"))
-            {
-                NPCArray[i] = transform.GetChild(i);
-                
-            }
+            NPCArray[index] = transform.GetChild(index);   
         }
+
+        // 나중에 주석 풀어야 함 
+        //if (DataController.instance_DataController.rau.isSelected == false && DataController.instance_DataController.rau.isExisted == true)
+        //{
+        //    index++;
+        //    NPCArray[index] = DataController.instance_DataController.rau.gameObject.transform;
+        //}
+        //if (DataController.instance_DataController.speat.isSelected == false && DataController.instance_DataController.speat.isExisted == true)
+        //{
+        //    index++;
+        //    NPCArray[index] = DataController.instance_DataController.rau.gameObject.transform;
+        //}
+        //if (DataController.instance_DataController.oun.isSelected == false && DataController.instance_DataController.oun.isExisted == true)
+        //{
+        //    index++;
+        //    NPCArray[index] = DataController.instance_DataController.rau.gameObject.transform;
+        //}
     }
+    
 }

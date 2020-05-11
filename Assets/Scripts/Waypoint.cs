@@ -30,19 +30,17 @@ public class Waypoint : MonoBehaviour
         //조이스틱 설정
         if (!joyStick) joyStick = DataController.instance_DataController.joyStick;
         //움직일 캐릭터 설정
-        //for (int i = 0; i < 3; i++)
-        //    if (SceneInformation.instance_SceneInformation.char_info[i].char_mng.isSelected)
-        //    {
-                //character = SceneInformation.instance_SceneInformation.char_info[i].char_mng.transform;
-                character = npcInteractor.player.transform;
-            //}
-       if (checkedWaypoint == null)
-           GetNearestWaypoint();
+        if(DataController.instance_DataController.currentChar) character = DataController.instance_DataController.currentChar.transform;
+        if (character)
+        {
+            if (checkedWaypoint == null)
+                GetNearestWaypoint();
 
-        GetCheckedWaypoint();
+            GetCheckedWaypoint();
 
-        if (checkedWaypoint != null)
-            SetMoveDirection();
+            if (checkedWaypoint != null)
+                SetMoveDirection();
+        }
     }
     
     //모든 waypoint의 meshrenderer를 끄는 함수(scene 구성시에는 보이는게 편하고 ingame에서는 안보이는게 편하므로)
@@ -187,36 +185,4 @@ public class Waypoint : MonoBehaviour
         else
             isInit = false; //닿아있음 벗어나면 처음 접할 수 있는 상태이므로 false로 만들어줌
     }
-
-
-    private void OnDrawGizmos()
-    {
-       
-        //waypoint gizmo 표시
-        if (waypointArray.Length >= 0)
-        {
-            foreach (Transform waypoint in waypointArray)
-            {
-                //매니저는 스킵
-                if (waypoint.name == "WaypointManager") continue;
-
-                //체크포인트는 녹색
-                if (waypoint == checkedWaypoint)
-                {
-                    Gizmos.color = new Color(0, 1, 0, 0.8f);
-                    Gizmos.DrawSphere(checkedWaypoint.position, 0.7f);
-                    if (wayIndex != waypointArray.Length - 1) Gizmos.DrawLine(checkedWaypoint.position, waypointArray[wayIndex + 1].position);
-                    if (wayIndex != 1) Gizmos.DrawLine(checkedWaypoint.position, waypointArray[wayIndex - 1].position);
-                }
-                //나머지 빨간색
-                else
-                {
-                    Gizmos.color = new Color(1, 0, 0, 0.8f);
-                    Gizmos.DrawSphere(waypoint.position, 0.7f);
-                }
-            }
-        }
-    }
-
-
 }

@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
-    private Joystick joyStick; //조이스틱
+    public  Joystick joyStick; //조이스틱
     private CharacterController ctrl; //캐릭터컨트롤러
     public Vector3 moveHorDir = Vector3.zero, moveVerDir = Vector3.zero; //수평,수직 이동 방향 벡터
     private IEnumerator dieAction;
 
     [Header("캐릭터 정보")]
-    public string name; //이름
     public string gender; //성별
     public bool isSelected; //선택여부
-    public bool isExisted; //Scene 존재여부(데이터 로드시 사용)
+    public bool isExisted; //맵 존재여부(데이터 로드시 사용)
 
     [Header("시점")]
     public Camera cam;
@@ -50,7 +49,7 @@ public class CharacterManager : MonoBehaviour
             DataController.instance_DataController.charData.dialogue_index = 4;
 
             ctrl.enabled = false;
-            transform.position = DataController.instance_DataController.charData.endPosition;
+            //transform.position = DataController.instance_DataController.charData.endPosition;
             ctrl.enabled = true;
         }
     }
@@ -58,14 +57,18 @@ public class CharacterManager : MonoBehaviour
     void Update()
     {
         //조이스틱 설정
-        if (!joyStick) joyStick = DataController.instance_DataController.joyStick;
-        //ScreenInformation.instance_SceneInformation.playMethod="Cut";
+        if (!joyStick && DataController.instance_DataController.joyStick) joyStick = DataController.instance_DataController.joyStick;
+
+        //카메라 설정
+        if (!cam && DataController.instance_DataController.cam) cam = DataController.instance_DataController.cam;
+
+        
     }
 
     private void FixedUpdate()
     {
         //조이스틱 설정이 끝난 이후 이동 가능
-        if (joyStick) CharacterMovement(DataController.instance_DataController.playMethod);
+        if (joyStick && cam) CharacterMovement(DataController.instance_DataController.playMethod);
     }
 
     private void CharacterMovement(string playMethod)
@@ -74,7 +77,6 @@ public class CharacterManager : MonoBehaviour
         float moveSpeed = Mathf.Sqrt(moveHorDir.x * moveHorDir.x + moveHorDir.z * moveHorDir.z); //현재의 수평 이동 속도 계산
         Vector3 unitVector = Vector3.zero; //이동 방향 기준 단위 벡터
         float normalizing = 0; //조이스틱 입력 강도 정규화
-
         //2D 플랫포머
         if (playMethod == "Plt")
         {
@@ -82,6 +84,7 @@ public class CharacterManager : MonoBehaviour
                 unitVector = moveHorDir.normalized; //현재 움직이는 방향이 마지막으로 입력된 정방향
             else
                 unitVector = camRotation * (Vector3.right * joyStick.Horizontal).normalized; //현재 입력되는 방향이 정방향(x축)
+            
             normalizing = Mathf.Abs(joyStick.Horizontal); //수평 성분이 입력의 세기
         }
         //라인트레이서
@@ -112,7 +115,7 @@ public class CharacterManager : MonoBehaviour
         }
 
         //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
-        if (joyStick.Vertical > 0.5f && ctrl.isGrounded && playMethod != "Qrt")
+        if (isSelected && joyStick.Vertical > 0.5f && ctrl.isGrounded && playMethod != "Qrt")
             isJump = true;  //점프 가능 상태로 변경
 
         //캐릭터 선택중일때 점프 가능
@@ -142,6 +145,7 @@ public class CharacterManager : MonoBehaviour
         if (!ctrl.isGrounded || isDie)
             moveVerDir.y += Physics.gravity.y * gravityScale * Time.deltaTime;
 
+        if (DataController.instance_DataController.isMapChanged == false)
             ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 최종 이동 시킴
     }
 
