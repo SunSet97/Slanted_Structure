@@ -16,11 +16,9 @@ public class Waypoint : MonoBehaviour
     private bool isInPoint = false; //check된 포인트와 닿아있는지
     private bool isInit = false; //check된 포인트에 처음 접한것 판단
     private bool isRight = true; //이동방향 설정(횡스크롤이므로 좌,우만 존재)
-    private NPCInteractor npcInteractor;
     
     void Start()
     {
-        npcInteractor = GameObject.Find("NPCManager").GetComponent<NPCInteractor>();
         waypointArray = GetComponentsInChildren<Transform>();
         DisablePointMeshrenderer();
     }
@@ -28,19 +26,19 @@ public class Waypoint : MonoBehaviour
     void Update()
     {
         //조이스틱 설정
-        if (!joyStick) joyStick = DataController.instance_DataController.joyStick;
+        if (!joyStick) joyStick = SceneInformation.instance_SceneInformation.joyStick;
         //움직일 캐릭터 설정
-        if(DataController.instance_DataController.currentChar) character = DataController.instance_DataController.currentChar.transform;
-        if (character)
-        {
-            if (checkedWaypoint == null)
-                GetNearestWaypoint();
+        for (int i = 0; i < 3; i++)
+            if (SceneInformation.instance_SceneInformation.char_info[i].char_mng.isSelected)
+                character = SceneInformation.instance_SceneInformation.char_info[i].char_mng.transform;
 
-            GetCheckedWaypoint();
+        if (checkedWaypoint == null)
+            GetNearestWaypoint();
 
-            if (checkedWaypoint != null)
-                SetMoveDirection();
-        }
+        GetCheckedWaypoint();
+
+        if (checkedWaypoint != null)
+            SetMoveDirection();
     }
     
     //모든 waypoint의 meshrenderer를 끄는 함수(scene 구성시에는 보이는게 편하고 ingame에서는 안보이는게 편하므로)
@@ -185,4 +183,36 @@ public class Waypoint : MonoBehaviour
         else
             isInit = false; //닿아있음 벗어나면 처음 접할 수 있는 상태이므로 false로 만들어줌
     }
+
+
+    private void OnDrawGizmos()
+    {
+       
+        //waypoint gizmo 표시
+        if (waypointArray.Length >= 0)
+        {
+            foreach (Transform waypoint in waypointArray)
+            {
+                //매니저는 스킵
+                if (waypoint.name == "WaypointManager") continue;
+
+                //체크포인트는 녹색
+                if (waypoint == checkedWaypoint)
+                {
+                    Gizmos.color = new Color(0, 1, 0, 0.8f);
+                    Gizmos.DrawSphere(checkedWaypoint.position, 0.7f);
+                    if (wayIndex != waypointArray.Length - 1) Gizmos.DrawLine(checkedWaypoint.position, waypointArray[wayIndex + 1].position);
+                    if (wayIndex != 1) Gizmos.DrawLine(checkedWaypoint.position, waypointArray[wayIndex - 1].position);
+                }
+                //나머지 빨간색
+                else
+                {
+                    Gizmos.color = new Color(1, 0, 0, 0.8f);
+                    Gizmos.DrawSphere(waypoint.position, 0.7f);
+                }
+            }
+        }
+    }
+
+
 }
