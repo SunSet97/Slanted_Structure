@@ -50,7 +50,7 @@ public class Camera_Moving : MonoBehaviour
         float max_x = DataController.instance_DataController.max_x;
         float min_y = DataController.instance_DataController.min_y;
         float max_y = DataController.instance_DataController.max_y;
-        float Z = DataController.instance_DataController.camDis;
+        float Z = DataController.instance_DataController.camDis + character.transform.position.z;
 
         //카메라 위치 제한 설정
         //position.x = Mathf.Clamp(position.x,min_x,max_x);

@@ -117,7 +117,7 @@ public class CharacterManager : MonoBehaviour
         //Player_Anim.instance_Animation.Move_Anim(moveSpeed, moveHorDir.x);//이동속도값을 Player_Anim스크립트로 보냄
         //Player_Anim.instance_Animation.Direction = unitVector;//뱡향벡터값을 Player_Anim스크립트로 보냄
         //좌우 이동시 최대 이동속도를 제한하여 일정 속도를 넘지 않도록함
-        * /
+        */
     
         if (moveSpeed <= maxMoveSpeed)
         {
