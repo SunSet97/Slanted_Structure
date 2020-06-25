@@ -22,15 +22,19 @@ public class DataController : MonoBehaviour
 
     [Header("카메라 경계값")]
     public Camera cam;
-    public float min_x = -1f;
-    public float max_x = 5f;
-    public float min_y = -2.0f;
-    public float max_y = 1.3f;
-    public float camDis = 10; //캐릭터와 카메라와의 거리
+    public float min_x;
+    public float max_x;
+    public float min_y;
+    public float max_y;
+    public float camDis_z; // 캐릭터와 카메라와의 거리(z축)
+    public float camDis_x; // 캐릭터와 카메라와의 거리(x축) 
     public Vector3 rot;
 
     [Header("맵")]
     public GameObject[] maps;
+    public Transform[] progressColliders;
+    public Transform currentProgress;
+    public Transform commandSprite;
     public GameObject currentMap;
     public string mapCode;
     public string playMethod; //2D 플랫포머(2D Platformer)=Plt, 쿼터뷰(Quarter view)=Qrt, 라인트레이서(Line tracer)=Line
@@ -59,6 +63,7 @@ public class DataController : MonoBehaviour
     void Start()
     {
         ExistsData();
+        LoadData("TutorialCommandData", "RauTutorial");
     }
 
     void Update()
@@ -96,18 +101,58 @@ public class DataController : MonoBehaviour
                         isMapChanged = true;
                         currentChar.transform.position = maps[i].transform.position;
                     }
-                    else if (isMapChanged) isMapChanged = false;
+                    else if (isMapChanged)
+                    {
+                        isMapChanged = false;
+                    }
 
                     currentMap = maps[i];
                     maps[i].GetComponent<MapData>().map.SetActive(true);
+
+                    FindProgressCollider();
+
+                    // 나중에 주석 풀 코드
+                    // 추후에 튜토리얼 맵 이름 확정되면 사용될 함수 (튜토리얼 지시문 데이터 불러오기)
+                    //if (mapCode == "라우 튜토리얼 맵코드" || mapCode == "스핏튜토리얼 맵코드")
+                    //    FindTutorialCommand();
+
+                    // 디버깅용으로 일단 무조건 라우 튜토리얼 데이터 불러주기 (Start에서)
                 }
                 else
                 {
                     maps[i].GetComponent<MapData>().map.SetActive(false);
                 }
             }
+            //언제불리는지ㅗ확인
             playMethod = currentMap.GetComponent<MapData>().playMethod; //플레이 방식 설정
         }
+    }
+
+    // 게임 진행에 필요한 콜라이더와 이미지를 획득
+    void FindProgressCollider()
+    {
+        if (currentMap.GetComponent<MapData>().map.transform.Find("ProgressCollider") != null)
+        {
+            currentProgress = currentMap.GetComponent<MapData>().map.transform.Find("ProgressCollider");
+            int curProgressCnt = currentProgress.childCount;
+            progressColliders = new Transform[curProgressCnt];
+
+            // 현재 비활성화 된 콜라이더까지 모두 찾음 
+            progressColliders = currentProgress.GetComponentsInChildren<Transform>(true);
+
+            // 지시문과 함께 나오는 이미지를 획득
+            if (currentMap.GetComponent<MapData>().map.transform.Find("CommandSprites") != null)
+                commandSprite = currentMap.GetComponent<MapData>().map.transform.Find("CommandSprites");
+        }
+    }
+
+    void FindTutorialCommand()
+    {
+        if (currentChar.name == "Rau")
+            LoadData("TutorialCommandData", "RauTutorial");
+        else
+            LoadData("TutorialCommandData", "SpeatTutorial");
+
     }
 
     //캐릭터 매니저 찾아서 정보 저장
@@ -127,7 +172,6 @@ public class DataController : MonoBehaviour
             if (speat.isSelected) currentChar = speat;
             if (oun.isSelected) currentChar = oun;
             if (rau.isSelected) currentChar = rau;
-            
         }
     }
 
@@ -146,6 +190,15 @@ public class DataController : MonoBehaviour
         get
         {
             return _dialogueData;
+        }
+    }
+
+    public TutorialCommandData _tutorialCmdData;
+    public TutorialCommandData tutorialCmdData
+    { 
+        get
+        {
+            return _tutorialCmdData;
         }
     }
 
@@ -178,22 +231,40 @@ public class DataController : MonoBehaviour
                 _charData = new CharData();
             }
         }
+        else if (dataType == "TutorialCommandData") // 튜토리얼 지시문 불러오기 
+        {
+            string filePath = Application.dataPath + "/Resources/DialogueScripts/ProgressCollider/" + DataFileName + "/" + dataType + ".json";
+            if (File.Exists(filePath))
+            {
+                Debug.Log("로드 성공");
+                string FromJsonData = File.ReadAllText(filePath);
+                _tutorialCmdData = JsonUtility.FromJson<TutorialCommandData>(FromJsonData);
+
+            }
+            else
+            {
+                print(Application.persistentDataPath);
+                Debug.Log("파일 없음");
+            }
+        }
         else // 대화파일 불러오기
         {
             string filePath = Application.dataPath + "/Resources/DialogueScripts/" + dataType + "/" + DataFileName;
-
+            print(filePath);
             if (File.Exists(filePath))
             {
                 Debug.Log("로드 성공");
                 string FromJsonData = File.ReadAllText(filePath);
                 _dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
-                instance.charData.dialogue_index++;
+
+                if (dataType != "ScriptCollider")
+                    instance.charData.dialogue_index++;
             }
             else
             {
                 Debug.Log("기본 대사 파일");
                 filePath = Application.dataPath + "/Resources/DialogueScripts/" + dataType + "/Default.json";
-                print(filePath);
+                
                 string FromJsonData = File.ReadAllText(filePath);
                 _dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
             }

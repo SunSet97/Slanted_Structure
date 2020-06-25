@@ -13,6 +13,7 @@ public class MapData : MonoBehaviour
     void Start()
     {
         map = GetComponentsInChildren<Transform>()[1].gameObject;
+        
         mapCode = this.gameObject.name;
     }
 }
