@@ -19,7 +19,6 @@ public class CanvasControl : MonoBehaviour
     public Text selfEstmText;
 
     [Header("대화 관련")]
-
     public GameObject DialoguePanel;
     public bool isPossibleCnvs = true;
     public GameObject[] choiceBtn = new GameObject[4];
@@ -34,6 +33,13 @@ public class CanvasControl : MonoBehaviour
     private int choiceLen = 0; // 선택지 갯수
 
     private bool isExistFile;
+
+    [Header("이야기 진행")]
+    public int progressIndex = 1; // 이야기 진행을 돕는 콜라이더(ProgressCollider)의 인덱스 (맵 전환 시 1으로)
+    public int commandIndex = 0; // 튜토리얼 지시문의 인덱스 (맵 전환 시 0으로)
+    public bool isGoNextStep = false; // 다음 단계로 넘어갈 것인지 확인
+    public Text commandText;
+    public GameObject commandPanel;
 
     [Header("디버깅용")]
     public InputField mapcode; //맵코드
@@ -56,6 +62,7 @@ public class CanvasControl : MonoBehaviour
 
     private void Start()
     {
+
         if (DataController.instance_DataController != null && selfEstmText != null)
         {
             selfEstmText.text = "자존감: " + DataController.instance_DataController.charData.selfEstm;
@@ -99,9 +106,24 @@ public class CanvasControl : MonoBehaviour
 
     }
 
+    string objName;
+
+    // 열고 닫을 패널이 어느 오브젝트 안에 있는 지 확인하는 함수
+    public void GetObjName(int num)
+    {
+        // Minigame안의 패널인지, Mainstory안의 패널인지 구분하기 위해 사용 
+        // 0: Mainstory 1:Minigame 2: StartScene에 있는 패널
+
+        if (num == 0) objName = "Mainstory";
+        else if (num == 1) objName = "Minigame";
+        else objName = "Canvas";
+    }
+
     // 패널 열 때 사용 
     public void OpenPanel(string panelName)
     {
+
+        // 아래의 패널들은 패널을 열 때마다 정보를 업데이트 해야하므로 따로 관리
         if (panelName == "SavePanel" || panelName == "SelectData")
         {
             savePanel.SetActive(true);
@@ -125,6 +147,13 @@ public class CanvasControl : MonoBehaviour
                 }
             }
         }
+        //else
+        //{
+        //    if (objName == "Mainstory" || objName == "Minigame")
+        //        transform.Find(objName).Find(panelName).gameObject.SetActive(true);
+        //    else
+        //        transform.Find(panelName).gameObject.SetActive(true);
+        //}
     }
 
     // 데이터 저장 버튼을 누르면 불리는 함수
@@ -157,12 +186,15 @@ public class CanvasControl : MonoBehaviour
         }
     }
 
+
     public void ClosePanel(string panelName)
     {
-        if (panelName == "SavePanel")
-        {
-            savePanel.SetActive(false);
-        }
+        // 인게임씬의 캔버스일 때와 스타트씬의 캔버스일 때를 분리
+        if (objName == "Mainstory" || objName == "Minigame")
+            transform.Find(objName).Find(panelName).gameObject.SetActive(false);
+        else
+            transform.Find(panelName).gameObject.SetActive(false);
+
 
     }
 
@@ -173,6 +205,120 @@ public class CanvasControl : MonoBehaviour
         intimacyText_speat.text = "스핏 친밀도: " + DataController.instance_DataController.charData.intimacy_spOun;
         intimacyText_oun.text = "오운 친밀도: " + DataController.instance_DataController.charData.intimacy_ounRau;
 
+    }
+
+    bool isExistCmdSpr; // 지시문과 같이 나올 이미지 존재 여부
+    GameObject curCmdSpr; // 지시문과 같이 나올 이미지의 parent
+    public SpriteRenderer[] sprRenderers; // curCmdSpr의 렌더러
+    Coroutine fadeIn;
+    public void TutorialCmdCtrl()
+    {
+        // 지시문과 함께 나올 이미지가 있을 때, 그 오브젝트를 배열로 받음 
+        if (DataController.instance_DataController.commandSprite.Find(commandIndex.ToString()) != null)
+        {
+            isExistCmdSpr = true;
+            curCmdSpr = DataController.instance_DataController.commandSprite.Find(commandIndex.ToString()).gameObject;
+            sprRenderers = new SpriteRenderer[curCmdSpr.transform.childCount];
+            sprRenderers = curCmdSpr.GetComponentsInChildren<SpriteRenderer>();
+        }
+        else
+            isExistCmdSpr = false;
+
+        // 페이드 인 (지시문 패널 보이게)
+        commandPanel.SetActive(true);
+
+        finishFadeIn = false;
+        fadeIn = StartCoroutine(FadeIn());
+
+        if (DataController.instance_DataController.currentChar.name == "Rau")
+        {
+            commandText.text = DataController.instance_DataController.tutorialCmdData.RauTutorial[commandIndex];
+        }
+        else
+        {
+            commandText.text = DataController.instance_DataController.tutorialCmdData.SpeatTutorial[commandIndex];
+        }
+        commandIndex++;
+    }
+
+    Coroutine fadeOut;
+    // 게임 진행에 필요한 콜라이더를 활성화 시킨다. 
+    public void GoNextStep()
+    {
+        
+        if (isGoNextStep)
+        {
+            // 지시문이 열려있으면 페이드 아웃
+            if (commandPanel.activeSelf == true)
+            {
+                // 페이드아웃 호출 
+                fadeOut = StartCoroutine(FadeOut());
+                print("왜왜왜오왜ㅐ");
+
+            }
+
+            if (progressIndex < DataController.instance_DataController.progressColliders.Length)
+            {
+                DataController.instance_DataController.progressColliders[progressIndex].gameObject.SetActive(true);
+            }
+            isGoNextStep = false; 
+        }
+    }
+
+    CanvasGroup canvasGroup;
+    float speed = 0.7f;
+    public bool finishFadeIn = false;
+
+    IEnumerator FadeIn()
+    {
+        canvasGroup = commandPanel.GetComponent<CanvasGroup>();
+
+        while (canvasGroup.alpha <= 1)
+        {
+            if (isExistCmdSpr)
+            {
+                foreach(SpriteRenderer render in sprRenderers)
+                {
+                    Color color = render.color;
+                    color.a += Time.deltaTime * speed;
+                    render.color = color;
+                }
+            }
+            canvasGroup.alpha += Time.deltaTime * speed;
+
+            if (canvasGroup.alpha >= 1)
+            {
+                finishFadeIn = true;
+                StopCoroutine(fadeIn);
+            }
+            yield return null;
+        }
+    }
+
+    IEnumerator FadeOut()
+    {
+        canvasGroup = commandPanel.GetComponent<CanvasGroup>();
+
+        while (canvasGroup.alpha >= 0f)
+        {
+            if (isExistCmdSpr)
+            {
+                foreach (SpriteRenderer render in sprRenderers)
+                {
+                    Color color = render.color;
+                    color.a -= Time.deltaTime * speed;
+                    render.color = color;
+                }
+            }
+
+            canvasGroup.alpha -= Time.deltaTime * speed;
+            if (canvasGroup.alpha <= 0f)
+            {
+                commandPanel.SetActive(false);
+                StopCoroutine(fadeOut);
+            }
+            yield return null;
+        }
     }
 
     // 대화 관련 함수
@@ -192,17 +338,28 @@ public class CanvasControl : MonoBehaviour
         if (dialogueCnt >= dialogueLen)
         {
             DialoguePanel.SetActive(false);
-            print(DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length);
 
             // 부를 선택지 정보가 있는가 없는 가 
-            if (DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length > 0)
+            if (DataController.instance_DataController.dialogueData.choice.Length > cnvsCnt /* && DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length > 0*/)
             {
-                OpenChoicePanel();
+                if (DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length > 0)
+                    OpenChoicePanel();
+                else
+                {
+                    // 대화가 끝났으니 다시 대화 가능하도록 
+                    isPossibleCnvs = true;
+                    cnvsCnt = 0; 
+                    // 다음 스텝으로 넘어가기 위한 함수 호출
+                    if (isGoNextStep == true) GoNextStep();
+                }
             }
             else
             {
                 // 대화가 끝났으니 다시 대화 가능하도록 
                 isPossibleCnvs = true;
+                cnvsCnt = 0;
+                // 다음 스텝으로 넘어가기 위한 함수 호출
+                if (isGoNextStep == true) GoNextStep();
             }
         }
         else

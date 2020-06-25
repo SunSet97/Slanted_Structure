@@ -6,7 +6,7 @@ using System;
 [Serializable]
 public class CharData
 {
-    public GameObject respawnLocation;
+    public Vector3 respawnLocation;
     
     public string curPlayer = "Rau"; // 플레이 캐릭터 이름 -> 초기값(기본값)은 라우 
 
