@@ -72,7 +72,7 @@ public class InteractObjectControl : MonoBehaviour
     bool isSliderMax = false;
     void MoveSlider()
     {
-        print ("아아아아너ㅏㅇ리하ㅜ니");
+
         slider.value += Time.deltaTime * fillSpeed;
 
         if (slider.value >= 1)
