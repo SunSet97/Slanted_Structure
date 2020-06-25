@@ -666,6 +666,7 @@ GameObject:
   - component: {fileID: 7329128183763482359}
   - component: {fileID: 809601755608390541}
   - component: {fileID: 8644807188786252740}
+  - component: {fileID: 8856016371312200295}
   - component: {fileID: 8644807188786252745}
   m_Layer: 0
   m_Name: Oun
@@ -727,6 +728,23 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.55, z: 0}
+--- !u!114 &8856016371312200295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6047510321307862244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e018d223a6b44a94a9b39530721d823c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Speed: 0
+  Direction: 0
+  state: 0
+  Jump: 0
+  Dead: 0
 --- !u!114 &8644807188786252745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -734,19 +752,20 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6047510321307862244}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a9c4a0858fe02bf489eed97d0f37c22b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  joyStick: {fileID: 0}
   moveHorDir: {x: 0, y: 0, z: 0}
   moveVerDir: {x: 0, y: 0, z: 0}
   gender: Male
   isSelected: 0
   isExisted: 0
   cam: {fileID: 0}
-  maxMoveSpeed: 2.2
-  moveAcceleration: 7
+  maxMoveSpeed: 2
+  moveAcceleration: 12
   airResistance: 1.2
   frictionalForce: 4
   isJump: 0
