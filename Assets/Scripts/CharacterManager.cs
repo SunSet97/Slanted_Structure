@@ -175,7 +175,6 @@ public class CharacterManager : MonoBehaviour
             }
             else if (other.gameObject.CompareTag("CommandCollider"))// 지시문
             {
-                print("ㅠㅠㅠㅠㅠㅠ");
                 canvasCtrl.progressIndex++;
                 canvasCtrl.GoNextStep(); // 일단 다음 콜라이더를 불러줌 
                 canvasCtrl.TutorialCmdCtrl();
@@ -310,10 +309,8 @@ public class CharacterManager : MonoBehaviour
     // 라우 튜토리얼 풀 숲 헤쳐나갈 때 사용 
     void SwipeGrass()
     {
-        print("스왚");
         if (curTurn != leftTurn && Input.GetMouseButtonDown(0))
         {
-            print("클");
             curTurn = leftTurn;
             startPos = Input.mousePosition;
 
@@ -331,16 +328,13 @@ public class CharacterManager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            print("릭0");
             endPos = Input.mousePosition;
             swipePos = endPos - startPos;
 
             if ((leftTurn == true && swipePos.x < 0) || (leftTurn == false && swipePos.x > 0))
             {
-                print("릭1");
                 if (Mathf.Abs(swipePos.x) >= swipeDis)
                 {
-                    print("릭2");
                     swipeCnt++; 
                     
                     //Vector3 newPos = new Vector3(transform.position.x + moveDIs, transform.position.y, transform.position.z);

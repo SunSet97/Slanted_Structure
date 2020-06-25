@@ -253,7 +253,6 @@ public class CanvasControl : MonoBehaviour
             {
                 // 페이드아웃 호출 
                 fadeOut = StartCoroutine(FadeOut());
-                print("왜왜왜오왜ㅐ");
 
             }
 
