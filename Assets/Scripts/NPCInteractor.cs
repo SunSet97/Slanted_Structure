@@ -62,14 +62,14 @@ public class NPCInteractor : MonoBehaviour
                 {
                     if (hit.collider.gameObject.name == closestNPC.gameObject.name && canvasCtrl.isPossibleCnvs == true)
                     {
+                        // 대화가 끝나기 전까지 다시 대화 불가능하도록 설정
+                        canvasCtrl.isPossibleCnvs = false;
+
                         DataController.instance_DataController.LoadData(closestNPC.gameObject.name, DataController.instance_DataController.charData.story + "_" 
                             + DataController.instance_DataController.charData.storyBranch + "_" + DataController.instance_DataController.charData.storyBranch_scnd + "_" 
                             + DataController.instance_DataController.charData.dialogue_index + ".json");
 
                         canvasCtrl.StartConversation();
-
-                        // 대화가 끝나기 전까지 다시 대화 불가능하도록 설정
-                        canvasCtrl.isPossibleCnvs = false;
                     }
                         
                 }

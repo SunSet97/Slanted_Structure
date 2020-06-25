@@ -12,7 +12,7 @@ public class Camera_Moving : MonoBehaviour
     private Vector3 charPos;
     private Vector3 camPos;
     private Quaternion camRot;
-    
+
 
     // Update is called once per frame
     void Update()
@@ -20,12 +20,12 @@ public class Camera_Moving : MonoBehaviour
         if (DataController.instance_DataController.currentChar) character = DataController.instance_DataController.currentChar.gameObject.transform;
 
         if (character)
-        { 
+        {
             camRot = Camera.main.transform.rotation;
             //플레이어 위치 변수에 플레이어 위치 값 넣음.
-            charPos = character./*GetComponent<Transform>()*/transform.position;
+            charPos = character.transform.position;
             //메인 카메라의 위치를 플레이어 위치와 동일시함.
-            Camera.main.transform.position = charPos;
+            Camera.main.transform.position = new Vector3(charPos.x + DataController.instance_DataController.camDis_x, charPos.y+2f,charPos.z + DataController.instance_DataController.camDis_z);
             //지금 카메라의 위치를 카메라 위치변수에 넣음
             camPos = Camera.main.transform.position;
             //카메라의 이동과 제한을 위한 함수에 매개변수로 카메라 위치변수 넣음.
@@ -50,7 +50,7 @@ public class Camera_Moving : MonoBehaviour
         float max_x = DataController.instance_DataController.max_x;
         float min_y = DataController.instance_DataController.min_y;
         float max_y = DataController.instance_DataController.max_y;
-        float Z = DataController.instance_DataController.camDis + character.transform.position.z;
+        float Z = DataController.instance_DataController.camDis_z;
 
         //카메라 위치 제한 설정
         //position.x = Mathf.Clamp(position.x,min_x,max_x);
@@ -60,15 +60,15 @@ public class Camera_Moving : MonoBehaviour
         //입력 된 카메라 각도 설정
         Camera_rotate.eulerAngles = new Vector3(rot.x, rot.y, rot.z);
         Camera.main.transform.rotation = Camera_rotate;
-        //카메라의 Z값 고정을 위한 If문
-        if (position.z != Z)
-        {
-            position_storage = Z;
-            position.z = position_storage;
-            Camera.main.transform.position = position;
-        }
+
+        ////카메라의 Z값 고정을 위한 If문
+        ////if (position.z != Z)
+        //if (charPos.z - position.z != Z)
+        //{
+        //    position_storage = charPos.z - Z;
+        //    position.z = position_storage;
+        //    Camera.main.transform.position = position;
+        //}
     }
 
 }
-
- 

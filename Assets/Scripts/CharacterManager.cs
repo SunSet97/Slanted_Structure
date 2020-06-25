@@ -7,10 +7,13 @@ public class CharacterManager : MonoBehaviour
 {
     public  Joystick joyStick; //조이스틱
     private CharacterController ctrl; //캐릭터컨트롤러
+    private CanvasControl canvasCtrl;
     public Vector3 moveHorDir = Vector3.zero, moveVerDir = Vector3.zero; //수평,수직 이동 방향 벡터
     private IEnumerator dieAction;
+    private bool swipeGrass; // 풀 숲 헤쳐나갈 때 사용
+
     private Animation anim;
-    
+
     [Header("캐릭터 정보")]
     public string gender; //성별
     public bool isSelected; //선택여부
@@ -35,11 +38,14 @@ public class CharacterManager : MonoBehaviour
         //if (isSelected)
         //    this.tag
         ctrl = this.GetComponent<CharacterController>();
+        canvasCtrl = CanvasControl.instance_CanvasControl;
         dieAction = DieAction();
-        anim = gameObject.GetComponent< Animation > ();   
+        swipeGrass = false;
+        anim = gameObject.GetComponent< Animation > ();
 
         // 세이브데이터를 불러왔을 경우 저장된 위치로 캐릭터 위치를 초기화
         if (DataController.instance_DataController != null)
+
         {
             // 디버깅용
             DataController.instance_DataController.charData.pencilCnt = 4;
@@ -52,9 +58,7 @@ public class CharacterManager : MonoBehaviour
             DataController.instance_DataController.charData.storyBranch_scnd = 3;
             DataController.instance_DataController.charData.dialogue_index = 4;
 
-            ctrl.enabled = false;
-            //transform.position = DataController.instance_DataController.charData.endPosition;
-            ctrl.enabled = true;
+
         }
     }
 
@@ -67,13 +71,15 @@ public class CharacterManager : MonoBehaviour
         //카메라 설정
         if (!cam && DataController.instance_DataController.cam) cam = DataController.instance_DataController.cam;
 
+        // 라우 튜토리얼 풀 숲 지나갈 때
+        if (swipeGrass && ctrl.enabled == false && canvasCtrl.finishFadeIn) SwipeGrass();
         //Player_Anim.instance_Animation.Dead =isDie;//isJump값을 Player_Anim스크립트로 보냄
     }
 
     private void FixedUpdate()
     {
         //조이스틱 설정이 끝난 이후 이동 가능
-        if (joyStick && cam) CharacterMovement(DataController.instance_DataController.playMethod);
+        if (joyStick && cam && ctrl.enabled) CharacterMovement(DataController.instance_DataController.playMethod);
     }
 
     private void CharacterMovement(string playMethod)
@@ -82,7 +88,7 @@ public class CharacterManager : MonoBehaviour
         float moveSpeed = Mathf.Sqrt(moveHorDir.x * moveHorDir.x + moveHorDir.z * moveHorDir.z); //현재의 수평 이동 속도 계산
         Vector3 unitVector = Vector3.zero; //이동 방향 기준 단위 벡터
         float normalizing = 0; //조이스틱 입력 강도 정규화
-        
+
         //2D 플랫포머
         if (playMethod == "Plt")
         {
@@ -90,7 +96,7 @@ public class CharacterManager : MonoBehaviour
                 unitVector = moveHorDir.normalized; //현재 움직이는 방향이 마지막으로 입력된 정방향
             else
                 unitVector = camRotation * (Vector3.right * joyStick.Horizontal).normalized; //현재 입력되는 방향이 정방향(x축)
-            
+
             normalizing = Mathf.Abs(joyStick.Horizontal); //수평 성분이 입력의 세기
         }
         //라인트레이서
@@ -118,13 +124,13 @@ public class CharacterManager : MonoBehaviour
         //Player_Anim.instance_Animation.Direction = unitVector;//뱡향벡터값을 Player_Anim스크립트로 보냄
         //좌우 이동시 최대 이동속도를 제한하여 일정 속도를 넘지 않도록함
         */
-    
+
         if (moveSpeed <= maxMoveSpeed)
         {
             if (!isSelected || isDie) normalizing = 0; //선택중이지 않으면 이동 불가
             if (!ctrl.isGrounded) normalizing *= 0.2f; //공중에서는 약하게 움직임 가능
             moveHorDir += unitVector * normalizing * moveAcceleration * Time.deltaTime; //조이스틱의 방향과 세기에 따라 해당 이동 방향으로 가속도 작용
-            
+
 
         }
 
@@ -164,32 +170,209 @@ public class CharacterManager : MonoBehaviour
             ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 최종 이동 시킴
     }
 
+
     private void OnTriggerEnter(Collider other)
     {
-        // 리스폰 포지션을 데이터에 저장
-        if (other.gameObject.CompareTag("RespawnPoint"))
+        // 게임진행에 관련된 콜라이더일 경우
+        if (other.gameObject.transform.parent.name == "ProgressCollider")
         {
+            canvasCtrl.isGoNextStep = true;
 
-            DataController.instance_DataController.charData.respawnLocation = other.gameObject;
+            if (other.gameObject.CompareTag("ScriptCollider")) // 캐릭터 독백
+            {
+                // 맵이름 정해지면 맵이름 따라 갈 예정
+                if (DataController.instance_DataController.currentChar.name == "Rau")
+                    DataController.instance_DataController.LoadData(other.gameObject.transform.parent.name + "/RauTutorial/", other.gameObject.name + ".json");
+                else
+                    DataController.instance_DataController.LoadData(other.gameObject.transform.parent.name + "/SpeatTutorial/", other.gameObject.name + ".json");
+                canvasCtrl.progressIndex++;
+                canvasCtrl.isPossibleCnvs = false;
+                canvasCtrl.StartConversation();
+                //canvasCtrl.GoNextStep(true); // 다음 콜라이더를 부를 수 있도록
 
+            }
+            else if (other.gameObject.CompareTag("CommandCollider"))// 지시문
+            {
+                canvasCtrl.progressIndex++;
+                canvasCtrl.GoNextStep(); // 일단 다음 콜라이더를 불러줌
+                canvasCtrl.TutorialCmdCtrl();
+            }
+            else if (other.gameObject.CompareTag("Complete"))// 미션 완료 콜라이더
+            {
+                canvasCtrl.progressIndex++;
+                canvasCtrl.GoNextStep();
+
+            }
+            else if (other.gameObject.CompareTag("ChangePlayMethod")) //플레이 모드 바꿈
+            {
+                canvasCtrl.progressIndex++;
+                canvasCtrl.GoNextStep();
+
+                DataController.instance_DataController.currentMap.GetComponent<MapData>().playMethod = other.gameObject.name;
+
+                // 플레이 모드 변경에 맞춘 시점 변경 (바뀔 가능성 있음)
+                CameraTransform camInfo;
+                camInfo = other.gameObject.GetComponent<CameraTransform>();
+                if (camInfo.isChange)
+                {
+                    // 플랫폼 모드로 바꿀 때 캐릭터의 z축 지정
+                    if (other.gameObject.name == "Plt")
+                    {
+                        ctrl.enabled = false;
+                        DataController.instance_DataController.currentChar.transform.position = new Vector3(transform.position.x, transform.position.y, camInfo.charZ);
+                        ctrl.enabled = true;
+                    }
+
+                    DataController.instance_DataController.camDis_x = camInfo.dis_X;
+                    DataController.instance_DataController.camDis_z = camInfo.dis_Z;
+                    DataController.instance_DataController.rot = camInfo.rotation;
+                }
+            }
+            else if (other.gameObject.CompareTag("ChangeAngle")) // 카메라 앵글 바꿈
+            {
+                canvasCtrl.progressIndex++;
+                canvasCtrl.GoNextStep();
+
+                // 바뀔 카메라 앵글을 담은 스크립트 받아오기
+                CameraTransform camInfo;
+                camInfo = other.gameObject.GetComponent<CameraTransform>();
+
+                DataController.instance_DataController.camDis_x = camInfo.dis_X;
+                DataController.instance_DataController.camDis_z = camInfo.dis_Z;
+                DataController.instance_DataController.rot = camInfo.rotation;
+            }
+            else if (other.gameObject.CompareTag("ChangeInput")) // 사용하는 입력 설정을 바꿀 때
+            {
+                canvasCtrl.progressIndex++;
+
+                if (canvasCtrl.progressIndex < DataController.instance_DataController.progressColliders.Length)
+                {
+                    DataController.instance_DataController.progressColliders[canvasCtrl.progressIndex].gameObject.SetActive(true);
+                }
+
+                canvasCtrl.isGoNextStep = false;
+
+                if (other.gameObject.name == "SwipeGrass")
+                {
+                    ctrl.enabled = false;
+                    swipeGrass = true;
+                }
+            }
+            else if (other.gameObject.CompareTag("ActiveInteraction"))
+            {
+                canvasCtrl.progressIndex++;
+
+                InteractionList list = other.gameObject.GetComponent<InteractionList>();
+                int listLen = list.activeList.Length;
+
+                if (other.gameObject.name == "ActiveInteraction")
+                {
+                    canvasCtrl.isGoNextStep = false;
+                    for (int i= 0; i < listLen; i++)
+                    {
+                        list.activeList[i].GetComponent<InteractObjectControl>().isInteractable = true;
+                    }
+                }
+                else if (other.gameObject.name == "DisableInteraction")// 인터랙션 비활성화
+                {
+                    for (int i = 0; i < listLen; i++)
+                    {
+                        list.activeList[i].GetComponent<InteractObjectControl>().isInteractable = false;
+                        canvasCtrl.GoNextStep();
+                    }
+                }
+                else if (other.gameObject.name == "MiniGame")
+                {
+                    list.activeList[0].SetActive(true);
+                    list.activeList[0].GetComponent<InteractObjectControl>().playMiniGame = true;
+                }
+
+            }
+            other.gameObject.SetActive(false);
+        }
+        else
+        {
+            // 리스폰 포지션을 데이터에 저장
+            if (other.gameObject.CompareTag("RespawnPoint"))
+            {
+
+                DataController.instance_DataController.charData.respawnLocation = other.gameObject.transform.position;
+
+            }
+            else if (other.gameObject.CompareTag("Item")) // 획득한 아이템을 데이터에 저장
+            {
+                Destroy(other.gameObject);
+                DataController.instance_DataController.charData.item.Add(other.gameObject.name);
+            }
+            else if (other.gameObject.CompareTag("Monster")) // 몬스터와 닿으면 사망
+            {
+
+                isDie = true;
+
+                //CharDie();
+                StartCoroutine(DieAction());
+                //Destroy(other.gameObject);
+            }
         }
 
-        // 획득한 아이템을 데이터에 저장
-        if (other.gameObject.CompareTag("Item"))
+    }
+
+    float swipeDis = Screen.width / 3;
+    float moveDIs = 3.5f;
+    Vector3 startPos, endPos, swipePos;
+    int swipeCnt = 0;
+    bool leftTurn = true;
+    bool curTurn = false;
+
+    // 라우 튜토리얼 풀 숲 헤쳐나갈 때 사용
+    void SwipeGrass()
+    {
+        if (curTurn != leftTurn && Input.GetMouseButtonDown(0))
         {
-            Destroy(other.gameObject);
-            DataController.instance_DataController.charData.item.Add(other.gameObject.name);
+            curTurn = leftTurn;
+            startPos = Input.mousePosition;
+
+            if (swipeCnt % 2 == 0)
+            {
+                Color color = canvasCtrl.sprRenderers[1].color;
+                canvasCtrl.sprRenderers[1].color = new Color(color.r, color.g, color.b, 0.3f);
+            }
+            else
+            {
+                Color color = canvasCtrl.sprRenderers[0].color;
+                canvasCtrl.sprRenderers[0].color = new Color(color.r, color.g, color.b, 0.3f);
+            }
         }
 
-        // 몬스터와 닿으면 사망
-        if (other.gameObject.CompareTag("Monster"))
+        if (Input.GetMouseButtonUp(0))
         {
+            endPos = Input.mousePosition;
+            swipePos = endPos - startPos;
 
-            isDie = true;
+            if ((leftTurn == true && swipePos.x < 0) || (leftTurn == false && swipePos.x > 0))
+            {
+                if (Mathf.Abs(swipePos.x) >= swipeDis)
+                {
+                    swipeCnt++;
 
-            //CharDie();
-            StartCoroutine(DieAction());
-            //Destroy(other.gameObject);
+                    //Vector3 newPos = new Vector3(transform.position.x + moveDIs, transform.position.y, transform.position.z);
+                    transform.position = new Vector3(transform.position.x + moveDIs, transform.position.y, transform.position.z); /* Vector3.MoveTowards(transform.position, newPos, maxMoveSpeed * Time.deltaTime);*/
+
+                    Color color = canvasCtrl.sprRenderers[0].color;
+
+                    canvasCtrl.sprRenderers[swipeCnt % 2].color = new Color(color.r, color.g, color.b, 1.0f);
+
+                    leftTurn = curTurn ? false : true;
+
+                    if (swipeCnt == 10)
+                    {
+                        swipeGrass = false;
+                        ctrl.enabled = true;
+                    }
+                }
+
+            }
+
         }
     }
 
@@ -211,7 +394,7 @@ public class CharacterManager : MonoBehaviour
 
         // 캐릭터컨트롤러를 끄고 플레이어를 리스폰 위치로 이동시킴
         ctrl.enabled = false;
-        transform.position = DataController.instance_DataController.charData.respawnLocation.transform.position;
+        transform.position = DataController.instance_DataController.charData.respawnLocation;
 
         // 투명도를 원상태로 복귀
         mat.color = new Color(color.r, color.g, color.b, 1f);
