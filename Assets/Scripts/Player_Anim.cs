@@ -5,11 +5,6 @@ using UnityEngine;
 
 public class Player_Anim : MonoBehaviour
 {
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> programming/psa
     public float Speed;
     public float Direction;
     public State state;
@@ -26,11 +21,7 @@ public class Player_Anim : MonoBehaviour
         Dead
 
     }
-<<<<<<< HEAD
-   
-=======
 
->>>>>>> programming/psa
     //속도 CharacterManager에서 매개변수 보내기
     // Start is called before the first frame update
     void Awake()
@@ -46,19 +37,12 @@ public class Player_Anim : MonoBehaviour
     {
         if (state !=State.Dead)
         {
-<<<<<<< HEAD
+
             
             Move_Anim(GameObject.FindWithTag("NPC").GetComponent<CharacterManager>().Speed, Direction);
             Set_Anim();
 
-                
-=======
 
-            Move_Anim(GameObject.FindWithTag("NPC").GetComponent<CharacterManager>().Speed, Direction);
-            Set_Anim();
-
-
->>>>>>> programming/psa
         }
 
     }
@@ -82,26 +66,18 @@ public class Player_Anim : MonoBehaviour
             if (state == State.Idle)
             {
             }
-<<<<<<< HEAD
+
             
             if (Jump == true)
             {
                 anim.SetTrigger("Jump"); //점프  
-=======
 
-            if (Jump == true)
-            {
-                anim.SetTrigger("Jump"); //점프
->>>>>>> programming/psa
                 Jump = false;
             }
           /*  if (state == State.Seat)
             {
-<<<<<<< HEAD
                 anim.Play("Seat"); //앉기 
-=======
-                anim.Play("Seat"); //앉기
->>>>>>> programming/psa
+
                 //anim.Play("Seat_Idle");//앉기Idle 유지
             }
           */
@@ -110,11 +86,7 @@ public class Player_Anim : MonoBehaviour
         }
         else
             anim.SetTrigger("Dead");
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> programming/psa
     }
 }
 /*
