@@ -12,7 +12,7 @@ public class Camera_Moving : MonoBehaviour
     private Vector3 charPos;
     private Vector3 camPos;
     private Quaternion camRot;
-    
+
 
     // Update is called once per frame
     void Update()
@@ -20,7 +20,7 @@ public class Camera_Moving : MonoBehaviour
         if (DataController.instance_DataController.currentChar) character = DataController.instance_DataController.currentChar.gameObject.transform;
 
         if (character)
-        { 
+        {
             camRot = Camera.main.transform.rotation;
             //플레이어 위치 변수에 플레이어 위치 값 넣음.
             charPos = character.transform.position;
@@ -72,5 +72,3 @@ public class Camera_Moving : MonoBehaviour
     }
 
 }
-
- 
