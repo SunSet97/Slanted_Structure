@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
@@ -10,6 +12,8 @@ public class CharacterManager : MonoBehaviour
     private IEnumerator dieAction;
     private bool swipeGrass; // 풀 숲 헤쳐나갈 때 사용
 
+    private Animation anim;
+
     [Header("캐릭터 정보")]
     public string gender; //성별
     public bool isSelected; //선택여부
@@ -19,13 +23,14 @@ public class CharacterManager : MonoBehaviour
     public Camera cam;
 
     [Header("디버깅용")]
-    public float maxMoveSpeed = 4f; //최대 이동속도
-    public float moveAcceleration = 8f; //이동가속도
-    public float airResistance = 3f; //공기저항
-    public float frictionalForce = 5f; //지상 마찰력
+    public float Speed = 0;
+    public float maxMoveSpeed = 2f; //최대 이동속도
+    public float moveAcceleration = 14f; //이동가속도
+    public float airResistance = 1.2f; //공기저항
+    public float frictionalForce = 4f; //지상 마찰력
     public bool isJump; // 캐릭터가 점프 여부
-    public float jumpForce = 6f; //점프력
-    public float gravityScale = 1f; //중력 배수
+    public float jumpForce = 5f; //점프력
+    public float gravityScale = 1.1f; //중력 배수
     public bool isDie = false;
 
     void Start()
@@ -36,10 +41,11 @@ public class CharacterManager : MonoBehaviour
         canvasCtrl = CanvasControl.instance_CanvasControl;
         dieAction = DieAction();
         swipeGrass = false;
+        anim = gameObject.GetComponent< Animation > ();
 
         // 세이브데이터를 불러왔을 경우 저장된 위치로 캐릭터 위치를 초기화
         if (DataController.instance_DataController != null)
-        
+
         {
             // 디버깅용
             DataController.instance_DataController.charData.pencilCnt = 4;
@@ -52,12 +58,13 @@ public class CharacterManager : MonoBehaviour
             DataController.instance_DataController.charData.storyBranch_scnd = 3;
             DataController.instance_DataController.charData.dialogue_index = 4;
 
-            
+
         }
     }
 
     void Update()
     {
+
         //조이스틱 설정
         if (!joyStick && DataController.instance_DataController.joyStick) joyStick = DataController.instance_DataController.joyStick;
 
@@ -65,7 +72,8 @@ public class CharacterManager : MonoBehaviour
         if (!cam && DataController.instance_DataController.cam) cam = DataController.instance_DataController.cam;
 
         // 라우 튜토리얼 풀 숲 지나갈 때
-        if (swipeGrass && ctrl.enabled == false && canvasCtrl.finishFadeIn) SwipeGrass(); 
+        if (swipeGrass && ctrl.enabled == false && canvasCtrl.finishFadeIn) SwipeGrass();
+        //Player_Anim.instance_Animation.Dead =isDie;//isJump값을 Player_Anim스크립트로 보냄
     }
 
     private void FixedUpdate()
@@ -80,6 +88,7 @@ public class CharacterManager : MonoBehaviour
         float moveSpeed = Mathf.Sqrt(moveHorDir.x * moveHorDir.x + moveHorDir.z * moveHorDir.z); //현재의 수평 이동 속도 계산
         Vector3 unitVector = Vector3.zero; //이동 방향 기준 단위 벡터
         float normalizing = 0; //조이스틱 입력 강도 정규화
+
         //2D 플랫포머
         if (playMethod == "Plt")
         {
@@ -87,7 +96,7 @@ public class CharacterManager : MonoBehaviour
                 unitVector = moveHorDir.normalized; //현재 움직이는 방향이 마지막으로 입력된 정방향
             else
                 unitVector = camRotation * (Vector3.right * joyStick.Horizontal).normalized; //현재 입력되는 방향이 정방향(x축)
-            
+
             normalizing = Mathf.Abs(joyStick.Horizontal); //수평 성분이 입력의 세기
         }
         //라인트레이서
@@ -108,13 +117,21 @@ public class CharacterManager : MonoBehaviour
                 unitVector = camRotation * new Vector3(joyStick.Horizontal, 0, joyStick.Vertical).normalized; //현재 입력되는 방향이 정방향(xz평면)
             normalizing = new Vector3(joyStick.Horizontal, 0, joyStick.Vertical).sqrMagnitude; //수평 수직의 벡터 크기가 입력의 세기
         }
-
+        /*
+         /Speed = Mathf.Sqrt(moveHorDir.x * moveHorDir.x + moveHorDir.z * moveHorDir.z);
+        // Gameobject.GetComponent<Player_Anim>().Direction = ;//쿼터뷰에서 방향 바꿀때 나오는 벡터값을 어떻게 보낼지 모르겠음..
+        //Player_Anim.instance_Animation.Move_Anim(moveSpeed, moveHorDir.x);//이동속도값을 Player_Anim스크립트로 보냄
+        //Player_Anim.instance_Animation.Direction = unitVector;//뱡향벡터값을 Player_Anim스크립트로 보냄
         //좌우 이동시 최대 이동속도를 제한하여 일정 속도를 넘지 않도록함
+        */
+
         if (moveSpeed <= maxMoveSpeed)
         {
             if (!isSelected || isDie) normalizing = 0; //선택중이지 않으면 이동 불가
             if (!ctrl.isGrounded) normalizing *= 0.2f; //공중에서는 약하게 움직임 가능
             moveHorDir += unitVector * normalizing * moveAcceleration * Time.deltaTime; //조이스틱의 방향과 세기에 따라 해당 이동 방향으로 가속도 작용
+
+
         }
 
         //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
@@ -125,6 +142,7 @@ public class CharacterManager : MonoBehaviour
         if ((isSelected && !isDie) && isJump)
         {
             moveVerDir.y = jumpForce; //점프력 만큼 힘을 가함
+
             isJump = false; //점프 불가능 상태로 변경하여 연속적인 점프 제한
         }
 
@@ -151,7 +169,7 @@ public class CharacterManager : MonoBehaviour
         if (DataController.instance_DataController.isMapChanged == false)
             ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 최종 이동 시킴
     }
-    
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -160,7 +178,7 @@ public class CharacterManager : MonoBehaviour
         {
             canvasCtrl.isGoNextStep = true;
 
-            if (other.gameObject.CompareTag("ScriptCollider")) // 캐릭터 독백 
+            if (other.gameObject.CompareTag("ScriptCollider")) // 캐릭터 독백
             {
                 // 맵이름 정해지면 맵이름 따라 갈 예정
                 if (DataController.instance_DataController.currentChar.name == "Rau")
@@ -170,23 +188,23 @@ public class CharacterManager : MonoBehaviour
                 canvasCtrl.progressIndex++;
                 canvasCtrl.isPossibleCnvs = false;
                 canvasCtrl.StartConversation();
-                //canvasCtrl.GoNextStep(true); // 다음 콜라이더를 부를 수 있도록 
+                //canvasCtrl.GoNextStep(true); // 다음 콜라이더를 부를 수 있도록
 
             }
             else if (other.gameObject.CompareTag("CommandCollider"))// 지시문
             {
                 print("ㅠㅠㅠㅠㅠㅠ");
                 canvasCtrl.progressIndex++;
-                canvasCtrl.GoNextStep(); // 일단 다음 콜라이더를 불러줌 
+                canvasCtrl.GoNextStep(); // 일단 다음 콜라이더를 불러줌
                 canvasCtrl.TutorialCmdCtrl();
-            } 
-            else if (other.gameObject.CompareTag("Complete"))// 미션 완료 콜라이더 
+            }
+            else if (other.gameObject.CompareTag("Complete"))// 미션 완료 콜라이더
             {
                 canvasCtrl.progressIndex++;
                 canvasCtrl.GoNextStep();
 
             }
-            else if (other.gameObject.CompareTag("ChangePlayMethod")) //플레이 모드 바꿈 
+            else if (other.gameObject.CompareTag("ChangePlayMethod")) //플레이 모드 바꿈
             {
                 canvasCtrl.progressIndex++;
                 canvasCtrl.GoNextStep();
@@ -198,7 +216,7 @@ public class CharacterManager : MonoBehaviour
                 camInfo = other.gameObject.GetComponent<CameraTransform>();
                 if (camInfo.isChange)
                 {
-                    // 플랫폼 모드로 바꿀 때 캐릭터의 z축 지정 
+                    // 플랫폼 모드로 바꿀 때 캐릭터의 z축 지정
                     if (other.gameObject.name == "Plt")
                     {
                         ctrl.enabled = false;
@@ -209,14 +227,14 @@ public class CharacterManager : MonoBehaviour
                     DataController.instance_DataController.camDis_x = camInfo.dis_X;
                     DataController.instance_DataController.camDis_z = camInfo.dis_Z;
                     DataController.instance_DataController.rot = camInfo.rotation;
-                } 
+                }
             }
             else if (other.gameObject.CompareTag("ChangeAngle")) // 카메라 앵글 바꿈
             {
                 canvasCtrl.progressIndex++;
                 canvasCtrl.GoNextStep();
 
-                // 바뀔 카메라 앵글을 담은 스크립트 받아오기 
+                // 바뀔 카메라 앵글을 담은 스크립트 받아오기
                 CameraTransform camInfo;
                 camInfo = other.gameObject.GetComponent<CameraTransform>();
 
@@ -239,7 +257,7 @@ public class CharacterManager : MonoBehaviour
                 {
                     ctrl.enabled = false;
                     swipeGrass = true;
-                } 
+                }
             }
             else if (other.gameObject.CompareTag("ActiveInteraction"))
             {
@@ -256,7 +274,7 @@ public class CharacterManager : MonoBehaviour
                         list.activeList[i].GetComponent<InteractObjectControl>().isInteractable = true;
                     }
                 }
-                else if (other.gameObject.name == "DisableInteraction")// 인터랙션 비활성화 
+                else if (other.gameObject.name == "DisableInteraction")// 인터랙션 비활성화
                 {
                     for (int i = 0; i < listLen; i++)
                     {
@@ -297,7 +315,7 @@ public class CharacterManager : MonoBehaviour
                 //Destroy(other.gameObject);
             }
         }
-        
+
     }
 
     float swipeDis = Screen.width / 3;
@@ -307,7 +325,7 @@ public class CharacterManager : MonoBehaviour
     bool leftTurn = true;
     bool curTurn = false;
 
-    // 라우 튜토리얼 풀 숲 헤쳐나갈 때 사용 
+    // 라우 튜토리얼 풀 숲 헤쳐나갈 때 사용
     void SwipeGrass()
     {
         print("스왚");
@@ -341,8 +359,8 @@ public class CharacterManager : MonoBehaviour
                 if (Mathf.Abs(swipePos.x) >= swipeDis)
                 {
                     print("릭2");
-                    swipeCnt++; 
-                    
+                    swipeCnt++;
+
                     //Vector3 newPos = new Vector3(transform.position.x + moveDIs, transform.position.y, transform.position.z);
                     transform.position = new Vector3(transform.position.x + moveDIs, transform.position.y, transform.position.z); /* Vector3.MoveTowards(transform.position, newPos, maxMoveSpeed * Time.deltaTime);*/
 
@@ -358,7 +376,7 @@ public class CharacterManager : MonoBehaviour
                         ctrl.enabled = true;
                     }
                 }
-                
+
             }
 
         }
