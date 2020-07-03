@@ -27,6 +27,7 @@ public class DataController : MonoBehaviour
     public float min_y;
     public float max_y;
     public float camDis_z; // 캐릭터와 카메라와의 거리(z축)
+    public float camDis_y; // 캐릭터와 카메라와의 거리(z축)
     public float camDis_x; // 캐릭터와 카메라와의 거리(x축) 
     public Vector3 rot;
 
