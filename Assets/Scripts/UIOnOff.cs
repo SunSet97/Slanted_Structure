@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinigameUI : MonoBehaviour
+public class UIOnOff : MonoBehaviour
 {
     public GameObject map;
     public GameObject ui;
