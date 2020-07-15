@@ -40,6 +40,10 @@ public class DataController : MonoBehaviour
     public string mapCode;
     public string playMethod; //2D 플랫포머(2D Platformer)=Plt, 쿼터뷰(Quarter view)=Qrt, 라인트레이서(Line tracer)=Line
 
+    // 카메라 projecton orthographic에서 perspective로 전환될 때 필요
+    float originOrthoSize;
+    float originCamDis_y;
+
     //인스턴스화
     private static DataController instance = null;
     public static DataController instance_DataController
@@ -77,7 +81,23 @@ public class DataController : MonoBehaviour
         FindCharacter();
         //맵 찾기
         FindMap();
-        
+
+        // 카메라 projction을 orthographic으로 전환. 그리고 camDis_y = 1로 변경 (스핏 오피스텔)
+        if (mapCode.Equals("010101") && cam.orthographic.Equals(false))
+        {
+            cam.orthographic = true;
+            originOrthoSize = cam.orthographicSize;
+            cam.orthographicSize = 4;
+            originCamDis_y = camDis_y;
+            camDis_y = 1;
+        }
+        else if (!mapCode.Equals("010101") && cam.orthographic.Equals(true))
+        {
+            camDis_y = originCamDis_y;
+            cam.orthographicSize = originOrthoSize;
+            cam.orthographic = false;
+        }
+       
     }
 
     string temp;

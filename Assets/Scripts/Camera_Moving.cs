@@ -33,8 +33,7 @@ public class Camera_Moving : MonoBehaviour
             //Player_transform.position = Player_Position;
         }
 
-
-
+       
     }
 
     void Follow_Player(Vector3 position,Quaternion Camera_rotate)
