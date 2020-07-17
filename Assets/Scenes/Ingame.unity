@@ -4221,6 +4221,7 @@ GameObject:
   - component: {fileID: 281788506}
   - component: {fileID: 281788505}
   - component: {fileID: 281788504}
+  - component: {fileID: 281788508}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4306,6 +4307,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &281788508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 281788503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24a17161476608b4e8eda2330b5562ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &288418223
 GameObject:
   m_ObjectHideFlags: 0
@@ -18470,6 +18483,10 @@ MonoBehaviour:
   dis_X: -3
   charZ: 1500
   rotation: {x: 0, y: 0, z: 0}
+  character: {fileID: 0}
+  _relavitePosition: {x: 0, y: 0, z: 0}
+  _rotate: {x: 0, y: 0, z: 0}
+  isLookAt: 0
 --- !u!65 &1034769900
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20502,7 +20519,7 @@ GameObject:
   - component: {fileID: 1257669170}
   - component: {fileID: 1257669169}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: River
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20516,8 +20533,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1257669167}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 36.1, y: -0.48, z: 0}
-  m_LocalScale: {x: 1.40974, y: 1, z: 1}
+  m_LocalPosition: {x: 36.1, y: -0.5, z: 0}
+  m_LocalScale: {x: 1.40974, y: 1, z: 1.6}
   m_Children: []
   m_Father: {fileID: 357234011}
   m_RootOrder: 3
@@ -20553,7 +20570,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6ef12de75e6712c479237889db328c47, type: 2}
+  - {fileID: 2100000, guid: a4a09b1c9741d894cbb5f59a46516a37, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -22015,8 +22032,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 604023752}
   fillArea: {fileID: 578370002}
-  startRange: 0.4
-  endRange: 0.6
+  startRange: 0.3
+  endRange: 0.7
   increaseValue: 0.05
 --- !u!114 &1359596971
 MonoBehaviour:
@@ -24019,7 +24036,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
   miniGame: {fileID: 1359596970}
+  interactionType: 0
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1552327554 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6728153551152698569, guid: 061864f0fea4c4e40a8e4dbb782ec386,
@@ -27072,13 +27115,14 @@ GameObject:
   - component: {fileID: 1889714367}
   - component: {fileID: 1889714368}
   - component: {fileID: 1889714369}
+  - component: {fileID: 1889714370}
   m_Layer: 0
   m_Name: ChangeAngle
   m_TagString: ChangeAngle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1889714367
 Transform:
   m_ObjectHideFlags: 0
@@ -27123,6 +27167,50 @@ MonoBehaviour:
   dis_X: -4
   charZ: 0
   rotation: {x: 0, y: 90, z: 0}
+  character: {fileID: 0}
+  _relavitePosition: {x: 10, y: 10, z: 0}
+  _rotate: {x: 0, y: 0, z: 0}
+  isLookAt: 0
+--- !u!114 &1889714370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889714366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1889714369}
+        m_MethodName: changeCam
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1901412549
 GameObject:
   m_ObjectHideFlags: 0
