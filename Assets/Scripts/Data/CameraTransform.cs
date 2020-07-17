@@ -2,12 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct cameraSetting
-{
-    public Vector3 position;
-    public Vector3 rotate;
-}
-
 public class CameraTransform : MonoBehaviour
 {
     public bool isChange;
@@ -16,20 +10,27 @@ public class CameraTransform : MonoBehaviour
     public float charZ;
     public Vector3 rotation;
 
+    public GameObject character;
+    public Vector3 _relavitePosition;
+    public Vector3 _rotate;
+    public bool isLookAt;
+
+    private string camStr;
+    
+    public CameraTransform()
+    {
+        var camSettings = new CameraSetting();
+        camSettings._relativePosition = _relavitePosition;
+        camSettings.rotate = _rotate;
+        camSettings.target = character;
+        camSettings.isLookAt = isLookAt;
+
+        camStr = CameraController.Instance.addCamSetting(camSettings);
+    }
+    
     //TestCode
     public void changeCam()
     {
-        DataController.instance_DataController.camDis_x = 10;
-        DataController.instance_DataController.camDis_y = 10;
-        DataController.instance_DataController.camDis_z = 0;
-    }
-    
-    public cameraSetting getSettings()
-    {
-        var returnValue = new cameraSetting();
-        returnValue.position = new Vector3(0,0,0);
-        returnValue.rotate = rotation;
-
-        return returnValue;
+        CameraController.Instance.changeCameraSetting(camStr);
     }
 }

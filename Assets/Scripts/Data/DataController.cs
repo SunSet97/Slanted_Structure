@@ -100,6 +100,14 @@ public class DataController : MonoBehaviour
        
     }
 
+    public void changeCameraSetting(CameraSetting settings)
+    {
+        camDis_x = settings._relativePosition.x;
+        camDis_y = settings._relativePosition.y;
+        camDis_z = settings._relativePosition.z;
+        rot = settings.rotate;
+    }
+
     string temp;
     public bool isMapChanged = false;
     //맵 코드에 맞는 맵을 찾아서 정보 저장
