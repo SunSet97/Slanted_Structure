@@ -43,11 +43,25 @@ public class InteractionObjectControl : MonoBehaviour
     private CanvasControl _canvasInstance;
     private Camera _cam;
     private Collider _col;
+
+    public class sampleInteractionClass : InteractionClass
+    {
+        public override void interact()
+        {
+            callBack();
+        }
+    }
     
     private void Start()
     {
         if (miniGame != null)
             miniGame.callBack = offMiniGame;
+
+        if (interactionClass == null)
+        {
+            var sic = this.gameObject.AddComponent<sampleInteractionClass>();
+            interactionClass = sic;
+        }
 
         if (interactionClass != null)
             interactionClass.callBack = () =>
@@ -119,16 +133,13 @@ public class InteractionObjectControl : MonoBehaviour
         onInteraction();
         interactionClass.interact();
     }
-    
-    private void OnCollisionEnter(Collision other)
+
+    private void OnTriggerEnter(Collider other)
     {
         if (interactionType != InteractionType.Enter)
             return;
 
-        if (other.gameObject == DataController.instance_DataController.currentChar.gameObject)
-        {
-            callEvent();
-        }
+        callEvent();
     }
 
     private void onMiniGame()

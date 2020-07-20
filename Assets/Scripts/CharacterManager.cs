@@ -65,8 +65,6 @@ public class CharacterManager : MonoBehaviour
             DataController.instance_DataController.charData.storyBranch = 2;
             DataController.instance_DataController.charData.storyBranch_scnd = 3;
             DataController.instance_DataController.charData.dialogue_index = 4;
-
-
         }
     }
 
