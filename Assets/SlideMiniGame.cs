@@ -14,7 +14,7 @@ public class SlideMiniGame : MiniGameClass
 
     private bool isReady = false;
     private int slideCount;
-    public GameObject actor;
+    private GameObject actor;
     private Image[] imageChild;
     private List<Transform> tsChild;
     private Color alphaColor = new Color(0,0,0,1);
@@ -121,6 +121,9 @@ public class SlideMiniGame : MiniGameClass
 
     public void onSlider()
     {
+        var go = getNearGrass(false);
+        var value = go.transform.localPosition.z > 0 ? 1 : 0;
+        changeSlider(value * 180);
         StartCoroutine(fadeCoroutine(sliderFadeValue, () =>
         {
             isReady = true;
@@ -137,7 +140,7 @@ public class SlideMiniGame : MiniGameClass
         }));
     }
 
-    public GameObject getNearGrass()
+    public GameObject getNearGrass(bool remoteIt = true)
     {
         float distance = float.MaxValue;
         int index = int.MaxValue;
@@ -153,7 +156,9 @@ public class SlideMiniGame : MiniGameClass
         }
 
         var returnValue = tsChild[index].gameObject;
-        tsChild.RemoveAt(index);
+        
+        if(remoteIt)
+            tsChild.RemoveAt(index);
         
         return returnValue;
     }
