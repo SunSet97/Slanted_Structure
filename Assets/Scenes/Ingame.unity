@@ -5855,6 +5855,11 @@ PrefabInstance:
       propertyPath: isControlled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1875157998270138253, guid: 5df8bb1897e02e84c8ba18d407a6a716,
+        type: 3}
+      propertyPath: splitTest
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4472200380613560480, guid: 5df8bb1897e02e84c8ba18d407a6a716,
         type: 3}
       propertyPath: m_Name
@@ -18491,6 +18496,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1014824904}
+  - component: {fileID: 1014824905}
   m_Layer: 0
   m_Name: ProgressCollider
   m_TagString: Untagged
@@ -18531,6 +18537,18 @@ Transform:
   m_Father: {fileID: 1053276416}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1014824905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014824903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e488617593382a469cbd29355ad3af9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1027848144
 GameObject:
   m_ObjectHideFlags: 0
@@ -27527,7 +27545,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1889714367
 Transform:
   m_ObjectHideFlags: 0
@@ -27579,15 +27597,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1889714366}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isInteractable: 1
   interactionClass: {fileID: 0}
-  hasMiniGame: 1
-  miniGame: {fileID: 1878323318}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
   interactionType: 1
   onMiniGameEvent:
     m_PersistentCalls:
@@ -27604,17 +27622,28 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
   EventCallBeforeInteraction:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: changeAngle
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1889714369}
+          m_ObjectArgumentAssemblyTypeName: CameraTransform, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   EventCallAfterInteraction:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 138526259}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -28170,7 +28199,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1948786479
 Transform:
   m_ObjectHideFlags: 0

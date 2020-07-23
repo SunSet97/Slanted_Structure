@@ -34,6 +34,7 @@ public class CharacterManager : MonoBehaviour
     public float jumpForce = 5f;            // 점프력
     public float gravityScale = 1.1f;       // 중력 배수
     public bool isDie = false;              // 죽음 여부
+    public bool splitTest = false;                  // 코드 분리 임시 변수
 
 
     public Quaternion camRotation; // 메인 카메라 기준으로 joystick input 변경(라인트레이서 제외)
@@ -82,8 +83,10 @@ public class CharacterManager : MonoBehaviour
     #region ToDo(Delete)
     private void FixedUpdate()
     {
+        if (!splitTest)
+            return;
         // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을 때
-        //if (joyStick && cam && ctrl.enabled && isControlled) CharacterMovement(DataController.instance_DataController.playMethod);
+        if (joyStick && cam && ctrl.enabled && isControlled) CharacterMovement(DataController.instance_DataController.playMethod);
     }
 
     // 캐릭터 움직임 코드
@@ -174,9 +177,12 @@ public class CharacterManager : MonoBehaviour
     }
     #endregion
 
-    /*
+    
     private void OnTriggerEnter(Collider other)
     {
+        if (!splitTest)
+            return;
+        
         // 게임진행에 관련된 콜라이더일 경우
         if (other.gameObject.transform.parent.name == "ProgressCollider")
         {
@@ -319,7 +325,7 @@ public class CharacterManager : MonoBehaviour
             }
         }
 
-    }*/
+    }
 
     float swipeDis = Screen.width / 3;
     float moveDIs = 3.5f;
