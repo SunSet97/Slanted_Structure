@@ -6,7 +6,7 @@ using UnityEngine;
 public class CharacterManager : MonoBehaviour
 {
     public  Joystick joyStick;                                              // 조이스틱
-    private CharacterController ctrl;                                       // 캐릭터컨트롤러
+    public CharacterController ctrl;                                       // 캐릭터컨트롤러
     private CanvasControl canvasCtrl;
     public Vector3 moveHorDir = Vector3.zero, moveVerDir = Vector3.zero;    // 수평, 수직 이동 방향 벡터
     private IEnumerator dieAction;
@@ -53,7 +53,6 @@ public class CharacterManager : MonoBehaviour
 
         // 세이브데이터를 불러왔을 경우 저장된 위치로 캐릭터 위치를 초기화
         if (DataController.instance_DataController != null)
-
         {
             // 디버깅용
             DataController.instance_DataController.charData.pencilCnt = 4;
@@ -80,10 +79,11 @@ public class CharacterManager : MonoBehaviour
         //Player_Anim.instance_Animation.Dead =isDie;//isJump값을 Player_Anim스크립트로 보냄
     }
 
+    #region ToDo(Delete)
     private void FixedUpdate()
     {
         // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을 때
-        if (joyStick && cam && ctrl.enabled && isControlled) CharacterMovement(DataController.instance_DataController.playMethod);
+        //if (joyStick && cam && ctrl.enabled && isControlled) CharacterMovement(DataController.instance_DataController.playMethod);
     }
 
     // 캐릭터 움직임 코드
@@ -172,7 +172,7 @@ public class CharacterManager : MonoBehaviour
         if (DataController.instance_DataController.isMapChanged == false)
             ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 최종 이동 시킴
     }
-
+    #endregion
 
     private void OnTriggerEnter(Collider other)
     {

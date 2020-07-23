@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class DataController : MonoBehaviour
 {
-
     public bool[] isExistdata = new bool[3];
     private CanvasControl canvasCtrl;
 
