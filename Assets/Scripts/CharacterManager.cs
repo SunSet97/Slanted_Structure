@@ -83,7 +83,7 @@ public class CharacterManager : MonoBehaviour
     #region ToDo(Delete)
     private void FixedUpdate()
     {
-        if (!splitTest)
+        if (splitTest)
             return;
         // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을 때
         if (joyStick && cam && ctrl.enabled && isControlled) CharacterMovement(DataController.instance_DataController.playMethod);
@@ -180,7 +180,7 @@ public class CharacterManager : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (!splitTest)
+        if (splitTest)
             return;
         
         // 게임진행에 관련된 콜라이더일 경우
