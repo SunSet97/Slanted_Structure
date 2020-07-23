@@ -174,6 +174,7 @@ public class CharacterManager : MonoBehaviour
     }
     #endregion
 
+    /*
     private void OnTriggerEnter(Collider other)
     {
         // 게임진행에 관련된 콜라이더일 경우
@@ -318,7 +319,7 @@ public class CharacterManager : MonoBehaviour
             }
         }
 
-    }
+    }*/
 
     float swipeDis = Screen.width / 3;
     float moveDIs = 3.5f;
