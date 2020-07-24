@@ -36,7 +36,6 @@ public class CharacterManager : MonoBehaviour
     public bool isDie = false;              // 죽음 여부
     public bool splitTest = false;                  // 코드 분리 임시 변수
 
-
     public Quaternion camRotation; // 메인 카메라 기준으로 joystick input 변경(라인트레이서 제외)
     public float moveSpeed;        // 현재의 수평 이동 속도 계산
     public Vector3 unitVector;     //이동 방향 기준 단위 벡터
@@ -418,10 +417,10 @@ public class CharacterManager : MonoBehaviour
 
     public void CanWallPass(int layerNum)
     {
-        Physics.IgnoreLayerCollision(0, layerNum, true);
+        this.gameObject.layer = layerNum;
     }
     public void CannotWallPass(int layerNum)
     {
-        Physics.IgnoreLayerCollision(0, layerNum, false);
+        this.gameObject.layer = 0;
     }
 }

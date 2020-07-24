@@ -112,14 +112,15 @@ public class DataController : MonoBehaviour
 
             for (int i = 0; i < maps.Length; i++)
             {
-                if (maps[i].name == temp) mapCode = temp;
+                MapData mapData = maps[i].GetComponent<MapData>();
+                if (mapData.mapCode == temp) mapCode = temp;
 
-                if (maps[i].name == mapCode)
+                if (mapData.mapCode == mapCode)
                 {
                     if (isMapChanged == false && currentMap != maps[i] && currentChar)
                     {
                         isMapChanged = true;
-                        currentChar.transform.position = maps[i].transform.position;
+                        currentChar.transform.position = mapData.startPos.position;
                     }
                     else if (isMapChanged)
                     {
@@ -127,7 +128,7 @@ public class DataController : MonoBehaviour
                     }
 
                     currentMap = maps[i];
-                    maps[i].GetComponent<MapData>().map.SetActive(true);
+                    mapData.map.SetActive(true);
 
                     FindProgressCollider();
 
@@ -140,10 +141,10 @@ public class DataController : MonoBehaviour
                 }
                 else
                 {
-                    maps[i].GetComponent<MapData>().map.SetActive(false);
+                    mapData.map.SetActive(false);
                 }
             }
-            //언제불리는지ㅗ확인
+            //언제불리는지 확인
             playMethod = currentMap.GetComponent<MapData>().playMethod; //플레이 방식 설정
         }
     }
