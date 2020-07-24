@@ -66,5 +66,4 @@ public class Camera_Moving : MonoBehaviour
         //    Camera.main.transform.position = position;
         //}
     }
-
 }
