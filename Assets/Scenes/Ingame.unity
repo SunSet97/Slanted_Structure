@@ -3693,6 +3693,7 @@ GameObject:
   - component: {fileID: 255034469}
   - component: {fileID: 255034471}
   - component: {fileID: 255034470}
+  - component: {fileID: 255034472}
   m_Layer: 0
   m_Name: DisableInteraction
   m_TagString: ActiveInteraction
@@ -3744,6 +3745,57 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &255034472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255034468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &259385997
 GameObject:
   m_ObjectHideFlags: 0
@@ -6187,6 +6239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 409938221}
   - component: {fileID: 409938222}
+  - component: {fileID: 409938223}
   m_Layer: 0
   m_Name: 3
   m_TagString: CommandCollider
@@ -6221,6 +6274,57 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &409938223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 409938220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &410107061
 GameObject:
   m_ObjectHideFlags: 0
@@ -12564,6 +12668,7 @@ GameObject:
   m_Component:
   - component: {fileID: 567562249}
   - component: {fileID: 567562250}
+  - component: {fileID: 567562251}
   m_Layer: 0
   m_Name: 1
   m_TagString: CommandCollider
@@ -12598,6 +12703,68 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &567562251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567562248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: tutorialCmd
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &573848512
 GameObject:
   m_ObjectHideFlags: 0
@@ -12736,6 +12903,7 @@ GameObject:
   m_Component:
   - component: {fileID: 581599893}
   - component: {fileID: 581599894}
+  - component: {fileID: 581599895}
   m_Layer: 0
   m_Name: Complete0
   m_TagString: Complete
@@ -12770,6 +12938,57 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &581599895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581599892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &582811259
 GameObject:
   m_ObjectHideFlags: 0
@@ -15497,6 +15716,7 @@ GameObject:
   m_Component:
   - component: {fileID: 811040461}
   - component: {fileID: 811040462}
+  - component: {fileID: 811040463}
   m_Layer: 0
   m_Name: ColliderPoint (4)
   m_TagString: ScriptCollider
@@ -15531,6 +15751,68 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &811040463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811040460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: script
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 811040460}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &815091047
 GameObject:
   m_ObjectHideFlags: 0
@@ -17022,6 +17304,7 @@ GameObject:
   m_Component:
   - component: {fileID: 910297469}
   - component: {fileID: 910297470}
+  - component: {fileID: 910297471}
   m_Layer: 0
   m_Name: SwipeGrass
   m_TagString: ChangeInput
@@ -17056,6 +17339,79 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &910297471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910297468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 1
+  miniGame: {fileID: 1878323318}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 138526259}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 138526259}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &911458244
 GameObject:
   m_ObjectHideFlags: 0
@@ -17763,6 +18119,7 @@ GameObject:
   - component: {fileID: 967840038}
   - component: {fileID: 967840040}
   - component: {fileID: 967840039}
+  - component: {fileID: 967840041}
   m_Layer: 0
   m_Name: ActiveInteraction
   m_TagString: ActiveInteraction
@@ -17814,6 +18171,57 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &967840041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967840037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &968537391
 GameObject:
   m_ObjectHideFlags: 0
@@ -18652,6 +19060,7 @@ GameObject:
   - component: {fileID: 1034769898}
   - component: {fileID: 1034769900}
   - component: {fileID: 1034769899}
+  - component: {fileID: 1034769901}
   m_Layer: 0
   m_Name: ChangeAngle
   m_TagString: ChangeAngle
@@ -18703,6 +19112,68 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.147939, z: 6.532365}
   m_Center: {x: 0, y: 0.07396967, z: 0.007043181}
+--- !u!114 &1034769901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034769897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: changeAngle
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1034769899}
+          m_ObjectArgumentAssemblyTypeName: CameraTransform, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1037270936
 GameObject:
   m_ObjectHideFlags: 0
@@ -19232,6 +19703,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1089129334}
   - component: {fileID: 1089129335}
+  - component: {fileID: 1089129336}
   m_Layer: 0
   m_Name: Complete2
   m_TagString: Complete
@@ -19266,6 +19738,57 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.43025, y: 1.147939, z: 6.532365}
   m_Center: {x: 0.715125, y: 0.07396965, z: 0.007043181}
+--- !u!114 &1089129336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089129333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1114775734
 GameObject:
   m_ObjectHideFlags: 0
@@ -19276,6 +19799,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1114775735}
   - component: {fileID: 1114775736}
+  - component: {fileID: 1114775737}
   m_Layer: 0
   m_Name: Complete
   m_TagString: Complete
@@ -19310,6 +19834,57 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1114775737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114775734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1115636852
 GameObject:
   m_ObjectHideFlags: 0
@@ -20760,6 +21335,7 @@ GameObject:
   - component: {fileID: 1257080768}
   - component: {fileID: 1257080770}
   - component: {fileID: 1257080769}
+  - component: {fileID: 1257080771}
   m_Layer: 0
   m_Name: MiniGame
   m_TagString: ActiveInteraction
@@ -20808,6 +21384,57 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1257080771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257080767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1257669167
 GameObject:
   m_ObjectHideFlags: 0
@@ -22411,6 +23038,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1366831624}
   - component: {fileID: 1366831625}
+  - component: {fileID: 1366831626}
   m_Layer: 0
   m_Name: ColliderPoint (3)
   m_TagString: ScriptCollider
@@ -22445,6 +23073,68 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1366831626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366831623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: script
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1366831623}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1368173142
 GameObject:
   m_ObjectHideFlags: 0
@@ -24520,6 +25210,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1557708508}
   - component: {fileID: 1557708509}
+  - component: {fileID: 1557708510}
   m_Layer: 0
   m_Name: ColliderPoint (2)
   m_TagString: ScriptCollider
@@ -24554,6 +25245,68 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.147939, z: 6.532365}
   m_Center: {x: 0, y: 0.07396967, z: 0.007043181}
+--- !u!114 &1557708510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557708507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: script
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1557708507}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1563509131
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26649,6 +27402,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1757065262}
   - component: {fileID: 1757065263}
+  - component: {fileID: 1757065264}
   m_Layer: 0
   m_Name: 0
   m_TagString: CommandCollider
@@ -26683,6 +27437,68 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1757065264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757065261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: tutorialCmd
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1760146324
 GameObject:
   m_ObjectHideFlags: 0
@@ -26930,6 +27746,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1812255764}
   - component: {fileID: 1812255765}
+  - component: {fileID: 1812255766}
   m_Layer: 0
   m_Name: Complete3
   m_TagString: Complete
@@ -26964,6 +27781,57 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.43025, y: 1.147939, z: 6.532365}
   m_Center: {x: 0.715125, y: 0.07396965, z: 0.007043181}
+--- !u!114 &1812255766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812255763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1814090756
 GameObject:
   m_ObjectHideFlags: 0
@@ -27545,7 +28413,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1889714367
 Transform:
   m_ObjectHideFlags: 0
@@ -27612,10 +28480,13 @@ MonoBehaviour:
       m_Calls: []
   offMiniGameEvent:
     m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 138526259}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -27624,15 +28495,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  EventCallBeforeInteraction:
-    m_PersistentCalls:
-      m_Calls:
       - m_Target: {fileID: 1014824905}
-        m_MethodName: changeAngle
-        m_Mode: 2
+        m_MethodName: colliderNext
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 1889714369}
-          m_ObjectArgumentAssemblyTypeName: CameraTransform, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -27642,11 +28510,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1014824905}
-        m_MethodName: colliderNext
-        m_Mode: 1
+        m_MethodName: changeAngle
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1889714369}
+          m_ObjectArgumentAssemblyTypeName: CameraTransform, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -28193,13 +29061,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1948786479}
   - component: {fileID: 1948786480}
+  - component: {fileID: 1948786481}
   m_Layer: 0
   m_Name: ColliderPoint (1)
   m_TagString: ScriptCollider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1948786479
 Transform:
   m_ObjectHideFlags: 0
@@ -28227,6 +29096,79 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1948786481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948786478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setTypeRauTutorial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: script
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1948786478}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1950285578
 GameObject:
   m_ObjectHideFlags: 0
@@ -29493,6 +30435,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2086950969}
   - component: {fileID: 2086950970}
+  - component: {fileID: 2086950971}
   m_Layer: 0
   m_Name: Complete1
   m_TagString: Complete
@@ -29527,6 +30470,57 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2284771, y: 0.9999998, z: 1}
   m_Center: {x: 0.27485618, y: 0, z: 0}
+--- !u!114 &2086950971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2086950968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2088291091
 GameObject:
   m_ObjectHideFlags: 0
@@ -30092,6 +31086,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2140681987}
   - component: {fileID: 2140681988}
+  - component: {fileID: 2140681989}
   m_Layer: 0
   m_Name: 2
   m_TagString: CommandCollider
@@ -30126,6 +31121,68 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2140681989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2140681986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ccb562a11f8fd48aa3791d1a55291e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInteractable: 1
+  interactionClass: {fileID: 0}
+  hasMiniGame: 0
+  miniGame: {fileID: 0}
+  interactionType: 1
+  onMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  offMiniGameEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCallBeforeInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: setFalseCurrentCollider
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: colliderNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  EventCallAfterInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1014824905}
+        m_MethodName: tutorialCmd
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2145747282
 GameObject:
   m_ObjectHideFlags: 0

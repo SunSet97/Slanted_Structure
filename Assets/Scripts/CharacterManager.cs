@@ -176,7 +176,6 @@ public class CharacterManager : MonoBehaviour
             ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 최종 이동 시킴
     }
     #endregion
-
     
     private void OnTriggerEnter(Collider other)
     {
@@ -211,7 +210,6 @@ public class CharacterManager : MonoBehaviour
             {
                 canvasCtrl.progressIndex++;
                 canvasCtrl.GoNextStep();
-
             }
             else if (other.gameObject.CompareTag("ChangePlayMethod")) //플레이 모드 바꿈
             {
