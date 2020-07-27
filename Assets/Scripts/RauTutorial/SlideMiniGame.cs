@@ -31,14 +31,19 @@ public class SlideMiniGame : MiniGameClass
         if (checkValue())
         {
             var go = getNearGrass();
+            var currentC = DataController.instance_DataController.currentChar;
 
             StartCoroutine(slideObject(go, 0.1f, Vector3.forward * (go.transform.localPosition.z > 0 ? 1 : -1)));
+            StartCoroutine(TimeTikCoroutine(0.5f,() =>
+            {
+                currentC.ctrl.Move(Vector3.right * Time.deltaTime * 4);
+            }));
             
             slider.interactable = false;
             offSlider();
         }
     }
-
+    
     public override void on()
     {
         this.gameObject.SetActive(true);
@@ -66,6 +71,22 @@ public class SlideMiniGame : MiniGameClass
     public void initSlider()
     {
         slider.value = 0.001f;
+    }
+
+    IEnumerator TimeTikCoroutine(float durationTime ,Action _action)
+    {
+        WaitForSeconds seconds = new WaitForSeconds(Time.deltaTime);
+        float value = 0;
+
+        while (true)
+        {
+            _action();
+            value += Time.deltaTime;
+            yield return seconds;
+
+            if (value >= durationTime)
+                break;
+        }
     }
 
     IEnumerator fadeCoroutine(float degreeValue, Action _action)
