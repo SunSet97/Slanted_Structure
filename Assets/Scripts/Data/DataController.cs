@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class DataController : MonoBehaviour
 {
-
     public bool[] isExistdata = new bool[3];
     private CanvasControl canvasCtrl;
 
@@ -27,6 +26,7 @@ public class DataController : MonoBehaviour
     public float min_y;
     public float max_y;
     public float camDis_z; // 캐릭터와 카메라와의 거리(z축)
+    public float camDis_y; // 캐릭터와 카메라와의 거리(z축)
     public float camDis_x; // 캐릭터와 카메라와의 거리(x축) 
     public Vector3 rot;
 
@@ -38,6 +38,10 @@ public class DataController : MonoBehaviour
     public GameObject currentMap;
     public string mapCode;
     public string playMethod; //2D 플랫포머(2D Platformer)=Plt, 쿼터뷰(Quarter view)=Qrt, 라인트레이서(Line tracer)=Line
+
+    // 카메라 projecton orthographic에서 perspective로 전환될 때 필요
+    float originOrthoSize;
+    float originCamDis_y;
 
     //인스턴스화
     private static DataController instance = null;
@@ -76,9 +80,25 @@ public class DataController : MonoBehaviour
         FindCharacter();
         //맵 찾기
         FindMap();
-        
-    }
 
+        // 카메라 projction을 orthographic으로 전환. 그리고 camDis_y = 1로 변경 (스핏 오피스텔)
+        if (mapCode.Equals("010101") && cam.orthographic.Equals(false))
+        {
+            cam.orthographic = true;
+            originOrthoSize = cam.orthographicSize;
+            cam.orthographicSize = 4;
+            originCamDis_y = camDis_y;
+            camDis_y = 1;
+        }
+        else if (!mapCode.Equals("010101") && cam.orthographic.Equals(true))
+        {
+            camDis_y = originCamDis_y;
+            cam.orthographicSize = originOrthoSize;
+            cam.orthographic = false;
+        }
+       
+    }
+    
     string temp;
     public bool isMapChanged = false;
     //맵 코드에 맞는 맵을 찾아서 정보 저장
@@ -92,14 +112,15 @@ public class DataController : MonoBehaviour
 
             for (int i = 0; i < maps.Length; i++)
             {
-                if (maps[i].name == temp) mapCode = temp;
+                MapData mapData = maps[i].GetComponent<MapData>();
+                if (mapData.mapCode == temp) mapCode = temp;
 
-                if (maps[i].name == mapCode)
+                if (mapData.mapCode == mapCode)
                 {
                     if (isMapChanged == false && currentMap != maps[i] && currentChar)
                     {
                         isMapChanged = true;
-                        currentChar.transform.position = maps[i].transform.position;
+                        currentChar.transform.position = mapData.startPos.position;
                     }
                     else if (isMapChanged)
                     {
@@ -107,7 +128,7 @@ public class DataController : MonoBehaviour
                     }
 
                     currentMap = maps[i];
-                    maps[i].GetComponent<MapData>().map.SetActive(true);
+                    mapData.map.SetActive(true);
 
                     FindProgressCollider();
 
@@ -120,10 +141,10 @@ public class DataController : MonoBehaviour
                 }
                 else
                 {
-                    maps[i].GetComponent<MapData>().map.SetActive(false);
+                    mapData.map.SetActive(false);
                 }
             }
-            //언제불리는지ㅗ확인
+            //언제불리는지 확인
             playMethod = currentMap.GetComponent<MapData>().playMethod; //플레이 방식 설정
         }
     }
