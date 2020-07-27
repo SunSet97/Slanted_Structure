@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Camera_Moving : MonoBehaviour
 {
-
     //캐릭터 오브젝트 받는 변수
     public Transform character;
 
@@ -12,12 +11,12 @@ public class Camera_Moving : MonoBehaviour
     private Vector3 charPos;
     private Vector3 camPos;
     private Quaternion camRot;
-
-
+    
     // Update is called once per frame
     void Update()
     {
-        if (DataController.instance_DataController.currentChar) character = DataController.instance_DataController.currentChar.gameObject.transform;
+        if (DataController.instance_DataController.currentChar)
+            character = DataController.instance_DataController.currentChar.gameObject.transform;
 
         if (character)
         {
@@ -25,16 +24,13 @@ public class Camera_Moving : MonoBehaviour
             //플레이어 위치 변수에 플레이어 위치 값 넣음.
             charPos = character.transform.position;
             //메인 카메라의 위치를 플레이어 위치와 동일시함.
-            Camera.main.transform.position = new Vector3(charPos.x + DataController.instance_DataController.camDis_x, charPos.y+2f,charPos.z + DataController.instance_DataController.camDis_z);
+            Camera.main.transform.position = new Vector3(charPos.x + DataController.instance_DataController.camDis_x, charPos.y + DataController.instance_DataController.camDis_y, charPos.z + DataController.instance_DataController.camDis_z);
             //지금 카메라의 위치를 카메라 위치변수에 넣음
             camPos = Camera.main.transform.position;
             //카메라의 이동과 제한을 위한 함수에 매개변수로 카메라 위치변수 넣음.
             Follow_Player(camPos, camRot);
             //Player_transform.position = Player_Position;
         }
-
-
-
     }
 
     void Follow_Player(Vector3 position,Quaternion Camera_rotate)
@@ -70,5 +66,4 @@ public class Camera_Moving : MonoBehaviour
         //    Camera.main.transform.position = position;
         //}
     }
-
 }
