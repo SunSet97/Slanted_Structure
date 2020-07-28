@@ -41,6 +41,8 @@ public class CharacterManager : MonoBehaviour
     public Vector3 unitVector;     //이동 방향 기준 단위 벡터
     public float normalizing;      //조이스틱 입력 강도 정규화
 
+    public bool button_on=true;//현재 캐릭터매니저 컨트롤러를 껏다 키기 위한 bool값.
+    
     void Start()
     {
         //if (isSelected)
@@ -388,6 +390,19 @@ public class CharacterManager : MonoBehaviour
     //{
     //    StartCoroutine(dieAction);
     //}
+
+    public Change_Position()//캐릭터 매니저 컨트롤러 온오프하기위한 함수
+    {
+        if (button_on == false)
+        {
+            ctrl.enabled = false;
+        }
+   
+        if (button_on == true) 
+        {
+            ctrl.enabled = true;
+        }
+    }
 
     // 디버깅용. 플레이어가 죽은 후 리스폰 장소에서 부활하기까지의 행동 (플레이어의 투명도 조절 후 이동)
     IEnumerator DieAction()
