@@ -245,7 +245,6 @@ public class CanvasControl : MonoBehaviour
     // 게임 진행에 필요한 콜라이더를 활성화 시킨다. 
     public void GoNextStep()
     {
-        
         if (isGoNextStep)
         {
             // 지시문이 열려있으면 페이드 아웃
@@ -261,6 +260,14 @@ public class CanvasControl : MonoBehaviour
                 DataController.instance_DataController.progressColliders[progressIndex].gameObject.SetActive(true);
             }
             isGoNextStep = false; 
+        }
+    }
+
+    public void setFalse()
+    {
+        if (progressIndex < DataController.instance_DataController.progressColliders.Length)
+        {
+            DataController.instance_DataController.progressColliders[progressIndex].gameObject.SetActive(false);
         }
     }
 

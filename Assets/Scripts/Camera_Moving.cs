@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Camera_Moving : MonoBehaviour
 {
-
     //캐릭터 오브젝트 받는 변수
     public Transform character;
 
@@ -12,12 +11,12 @@ public class Camera_Moving : MonoBehaviour
     private Vector3 charPos;
     private Vector3 camPos;
     private Quaternion camRot;
-
-
+    
     // Update is called once per frame
     void Update()
     {
-        if (DataController.instance_DataController.currentChar) character = DataController.instance_DataController.currentChar.gameObject.transform;
+        if (DataController.instance_DataController.currentChar)
+            character = DataController.instance_DataController.currentChar.gameObject.transform;
 
         if (character)
         {
@@ -32,9 +31,6 @@ public class Camera_Moving : MonoBehaviour
             Follow_Player(camPos, camRot);
             //Player_transform.position = Player_Position;
         }
-
-
-
     }
 
     void Follow_Player(Vector3 position,Quaternion Camera_rotate)
@@ -70,5 +66,4 @@ public class Camera_Moving : MonoBehaviour
         //    Camera.main.transform.position = position;
         //}
     }
-
 }
