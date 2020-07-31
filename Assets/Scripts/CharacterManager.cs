@@ -391,7 +391,7 @@ public class CharacterManager : MonoBehaviour
     //    StartCoroutine(dieAction);
     //}
 
-    public Change_Position()//캐릭터 매니저 컨트롤러 온오프하기위한 함수
+    public void Change_Position()//캐릭터 매니저 컨트롤러 온오프하기위한 함수
     {
         if (button_on == false)
         {
