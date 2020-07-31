@@ -6,7 +6,7 @@ using UnityEngine;
 public class CharacterManager : MonoBehaviour
 {
     public  Joystick joyStick;                                              // 조이스틱
-    public CharacterController ctrl;                                       // 캐릭터컨트롤러
+    private CharacterController ctrl;                                       // 캐릭터컨트롤러
     private CanvasControl canvasCtrl;
     public Vector3 moveHorDir = Vector3.zero, moveVerDir = Vector3.zero;    // 수평, 수직 이동 방향 벡터
     private IEnumerator dieAction;
@@ -34,15 +34,13 @@ public class CharacterManager : MonoBehaviour
     public float jumpForce = 5f;            // 점프력
     public float gravityScale = 1.1f;       // 중력 배수
     public bool isDie = false;              // 죽음 여부
-    public bool splitTest = false;                  // 코드 분리 임시 변수
+
 
     public Quaternion camRotation; // 메인 카메라 기준으로 joystick input 변경(라인트레이서 제외)
     public float moveSpeed;        // 현재의 수평 이동 속도 계산
     public Vector3 unitVector;     //이동 방향 기준 단위 벡터
     public float normalizing;      //조이스틱 입력 강도 정규화
 
-    public bool button_on=true;//현재 캐릭터매니저 컨트롤러를 껏다 키기 위한 bool값.
-    
     void Start()
     {
         //if (isSelected)
@@ -55,6 +53,7 @@ public class CharacterManager : MonoBehaviour
 
         // 세이브데이터를 불러왔을 경우 저장된 위치로 캐릭터 위치를 초기화
         if (DataController.instance_DataController != null)
+
         {
             // 디버깅용
             DataController.instance_DataController.charData.pencilCnt = 4;
@@ -66,6 +65,8 @@ public class CharacterManager : MonoBehaviour
             DataController.instance_DataController.charData.storyBranch = 2;
             DataController.instance_DataController.charData.storyBranch_scnd = 3;
             DataController.instance_DataController.charData.dialogue_index = 4;
+
+
         }
     }
 
@@ -81,11 +82,8 @@ public class CharacterManager : MonoBehaviour
         //Player_Anim.instance_Animation.Dead =isDie;//isJump값을 Player_Anim스크립트로 보냄
     }
 
-    #region ToDo(Delete)
     private void FixedUpdate()
     {
-        if (splitTest)
-            return;
         // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을 때
         if (joyStick && cam && ctrl.enabled && isControlled) CharacterMovement(DataController.instance_DataController.playMethod);
     }
@@ -176,13 +174,10 @@ public class CharacterManager : MonoBehaviour
         if (DataController.instance_DataController.isMapChanged == false)
             ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 최종 이동 시킴
     }
-    #endregion
-    
+
+
     private void OnTriggerEnter(Collider other)
     {
-        if (splitTest)
-            return;
-        
         // 게임진행에 관련된 콜라이더일 경우
         if (other.gameObject.transform.parent.name == "ProgressCollider")
         {
@@ -211,6 +206,7 @@ public class CharacterManager : MonoBehaviour
             {
                 canvasCtrl.progressIndex++;
                 canvasCtrl.GoNextStep();
+
             }
             else if (other.gameObject.CompareTag("ChangePlayMethod")) //플레이 모드 바꿈
             {
@@ -391,19 +387,6 @@ public class CharacterManager : MonoBehaviour
     //    StartCoroutine(dieAction);
     //}
 
-    public Change_Position()//캐릭터 매니저 컨트롤러 온오프하기위한 함수
-    {
-        if (button_on == false)
-        {
-            ctrl.enabled = false;
-        }
-   
-        if (button_on == true) 
-        {
-            ctrl.enabled = true;
-        }
-    }
-
     // 디버깅용. 플레이어가 죽은 후 리스폰 장소에서 부활하기까지의 행동 (플레이어의 투명도 조절 후 이동)
     IEnumerator DieAction()
     {
@@ -430,10 +413,10 @@ public class CharacterManager : MonoBehaviour
 
     public void CanWallPass(int layerNum)
     {
-        this.gameObject.layer = layerNum;
+        Physics.IgnoreLayerCollision(0, layerNum, true);
     }
     public void CannotWallPass(int layerNum)
     {
-        this.gameObject.layer = 0;
+        Physics.IgnoreLayerCollision(0, layerNum, false);
     }
 }

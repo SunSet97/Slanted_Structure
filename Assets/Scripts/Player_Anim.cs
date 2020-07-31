@@ -19,6 +19,7 @@ public class Player_Anim : MonoBehaviour
         Seat,
         Jump,
         Dead
+
     }
 
     //속도 CharacterManager에서 매개변수 보내기
@@ -36,8 +37,12 @@ public class Player_Anim : MonoBehaviour
     {
         if (state !=State.Dead)
         {
+
+            
             Move_Anim(GameObject.FindWithTag("NPC").GetComponent<CharacterManager>().Speed, Direction);
             Set_Anim();
+
+
         }
 
     }
@@ -61,6 +66,7 @@ public class Player_Anim : MonoBehaviour
             if (state == State.Idle)
             {
             }
+
             
             if (Jump == true)
             {
@@ -75,6 +81,8 @@ public class Player_Anim : MonoBehaviour
                 //anim.Play("Seat_Idle");//앉기Idle 유지
             }
           */
+
+
         }
         else
             anim.SetTrigger("Dead");

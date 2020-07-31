@@ -15,7 +15,6 @@ public class CharData
     public int storyBranch = 1;
     public int storyBranch_scnd = 1;
     public int dialogue_index = 1;
-   
 
     // 얻은 아이템들
     public List<string> item = new List<string>();
