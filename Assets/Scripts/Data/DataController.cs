@@ -120,7 +120,10 @@ public class DataController : MonoBehaviour
                     if (isMapChanged == false && currentMap != maps[i] && currentChar)
                     {
                         isMapChanged = true;
-                        currentChar.transform.position = mapData.startPos.position;
+
+                        if (mapData.isSpeatExist) speat.transform.position = mapData.speatStartPos.position;
+                        if (mapData.isOunExist) oun.transform.position = mapData.ounStartPos.position;
+                        if (mapData.isRauExist) rau.transform.position = mapData.rauStartPos.position;
                     }
                     else if (isMapChanged)
                     {
@@ -145,7 +148,7 @@ public class DataController : MonoBehaviour
                 }
             }
             //언제불리는지 확인
-            playMethod = currentMap.GetComponent<MapData>().playMethod; //플레이 방식 설정
+            //playMethod = currentMap.GetComponent<MapData>().playMethod; //플레이 방식 설정
         }
     }
 
@@ -186,10 +189,6 @@ public class DataController : MonoBehaviour
 
         if (canvasCtrl && speat && oun && rau)
         {
-            speat.isSelected = canvasCtrl.selectedCharacter[0].isOn;
-            oun.isSelected = canvasCtrl.selectedCharacter[1].isOn;
-            rau.isSelected = canvasCtrl.selectedCharacter[2].isOn;
-
             if (speat.isSelected) currentChar = speat;
             if (oun.isSelected) currentChar = oun;
             if (rau.isSelected) currentChar = rau;
