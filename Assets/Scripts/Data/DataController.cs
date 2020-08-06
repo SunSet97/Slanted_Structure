@@ -52,7 +52,7 @@ public class DataController : MonoBehaviour
             return instance;
         }
     }
-     
+
     private void Awake()
     {
         if (instance)
@@ -96,9 +96,9 @@ public class DataController : MonoBehaviour
             cam.orthographicSize = originOrthoSize;
             cam.orthographic = false;
         }
-       
+
     }
-    
+
     string temp;
     public bool isMapChanged = false;
     //맵 코드에 맞는 맵을 찾아서 정보 저장
@@ -120,7 +120,10 @@ public class DataController : MonoBehaviour
                     if (isMapChanged == false && currentMap != maps[i] && currentChar)
                     {
                         isMapChanged = true;
-                        currentChar.transform.position = mapData.startPos.position;
+
+                        if (mapData.positionSets.Exists(item => item.who == MapData.Character.Speat)) speat.transform.position = mapData.positionSets.Find(item => item.who == MapData.Character.Speat).startPosition.position;
+                        if (mapData.positionSets.Exists(item => item.who == MapData.Character.Oun)) oun.transform.position = mapData.positionSets.Find(item => item.who == MapData.Character.Oun).startPosition.position;
+                        if (mapData.positionSets.Exists(item => item.who == MapData.Character.Rau)) rau.transform.position = mapData.positionSets.Find(item => item.who == MapData.Character.Rau).startPosition.position;
                     }
                     else if (isMapChanged)
                     {
@@ -128,7 +131,6 @@ public class DataController : MonoBehaviour
                     }
 
                     currentMap = maps[i];
-                    mapData.map.SetActive(true);
 
                     FindProgressCollider();
 
@@ -139,13 +141,9 @@ public class DataController : MonoBehaviour
 
                     // 디버깅용으로 일단 무조건 라우 튜토리얼 데이터 불러주기 (Start에서)
                 }
-                else
-                {
-                    mapData.map.SetActive(false);
-                }
             }
             //언제불리는지 확인
-            playMethod = currentMap.GetComponent<MapData>().playMethod; //플레이 방식 설정
+            //playMethod = currentMap.GetComponent<MapData>().playMethod; //플레이 방식 설정
         }
     }
 
@@ -186,10 +184,6 @@ public class DataController : MonoBehaviour
 
         if (canvasCtrl && speat && oun && rau)
         {
-            speat.isSelected = canvasCtrl.selectedCharacter[0].isOn;
-            oun.isSelected = canvasCtrl.selectedCharacter[1].isOn;
-            rau.isSelected = canvasCtrl.selectedCharacter[2].isOn;
-
             if (speat.isSelected) currentChar = speat;
             if (oun.isSelected) currentChar = oun;
             if (rau.isSelected) currentChar = rau;
@@ -216,7 +210,7 @@ public class DataController : MonoBehaviour
 
     public TutorialCommandData _tutorialCmdData;
     public TutorialCommandData tutorialCmdData
-    { 
+    {
         get
         {
             return _tutorialCmdData;
@@ -285,7 +279,7 @@ public class DataController : MonoBehaviour
             {
                 Debug.Log("기본 대사 파일");
                 filePath = Application.dataPath + "/Resources/DialogueScripts/" + dataType + "/Default.json";
-                
+
                 string FromJsonData = File.ReadAllText(filePath);
                 _dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
             }

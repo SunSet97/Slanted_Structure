@@ -43,7 +43,6 @@ public class CanvasControl : MonoBehaviour
 
     [Header("디버깅용")]
     public InputField mapcode; //맵코드
-    public Toggle[] selectedCharacter; //선택된 캐릭터
 
     //인스턴스화
     private static CanvasControl instance = null;
