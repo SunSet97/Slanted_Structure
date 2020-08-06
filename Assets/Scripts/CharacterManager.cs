@@ -391,17 +391,17 @@ public class CharacterManager : MonoBehaviour
     //    StartCoroutine(dieAction);
     //}
 
-    public void Change_Position()//캐릭터 매니저 컨트롤러 온오프하기위한 함수
+    public void Change_Position(bool button_on)
     {
-        if (button_on == false)
+        if (!button_on)
         {
             ctrl.enabled = false;
         }
-   
-        if (button_on == true) 
+        if (button_on)
         {
             ctrl.enabled = true;
         }
+
     }
 
     // 디버깅용. 플레이어가 죽은 후 리스폰 장소에서 부활하기까지의 행동 (플레이어의 투명도 조절 후 이동)

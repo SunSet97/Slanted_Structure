@@ -124,6 +124,10 @@ public class DataController : MonoBehaviour
                         if (mapData.positionSets.Exists(item => item.who == MapData.Character.Speat)) speat.transform.position = mapData.positionSets.Find(item => item.who == MapData.Character.Speat).startPosition.position;
                         if (mapData.positionSets.Exists(item => item.who == MapData.Character.Oun)) oun.transform.position = mapData.positionSets.Find(item => item.who == MapData.Character.Oun).startPosition.position;
                         if (mapData.positionSets.Exists(item => item.who == MapData.Character.Rau)) rau.transform.position = mapData.positionSets.Find(item => item.who == MapData.Character.Rau).startPosition.position;
+                        speat.isSelected = mapData.positionSets.Exists(item => item.who == MapData.Character.Speat);
+                        oun.isSelected = mapData.positionSets.Exists(item => item.who == MapData.Character.Oun);
+                        rau.isSelected = mapData.positionSets.Exists(item => item.who == MapData.Character.Rau);
+
                     }
                     else if (isMapChanged)
                     {

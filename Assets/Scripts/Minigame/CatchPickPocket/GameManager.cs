@@ -35,16 +35,16 @@ public class GameManager : MonoBehaviour
 
     [Header("Timer")]
     public float timer;
-    public Text textTimer;
-    public Text textItem;
+    //public Text textTimer;
+    //public Text textItem;
 
     [Header("판정")]
     public float completeDistance;
     bool gameover;
 
-    [Header("UI")]
+    /*[Header("UI")]
     public GameObject failPanel;
-    public GameObject completePanel;
+    public GameObject completePanel;*/
 
     void Start() {
         conflict = false;
@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
     {
         // 타이머
         timer -= Time.deltaTime;
-        textTimer.text = "남은 시간: " + Mathf.Round(timer);
+        //textTimer.text = "남은 시간: " + Mathf.Round(timer);
         //textItem.text = "아이템 개수: " + rau.itemCount; // 아이템 일단 보류.
 
         // 라우 z방향으로 움직임. 충돌있으면 3초간 멈춤.
@@ -80,13 +80,13 @@ public class GameManager : MonoBehaviour
         // 소매치기 잡기 실패.
         if (Mathf.Round(timer) == 0)
         {
-            failPanel.SetActive(true);
+            //failPanel.SetActive(true);
             Time.timeScale = 0;
         }
         
         //소매치기 잡기 성공.
         if ((int)PP.transform.position.z - (int)rau.transform.position.z == completeDistance) {
-            completePanel.SetActive(true);
+            //completePanel.SetActive(true);
             Time.timeScale = 0;
         }
 
