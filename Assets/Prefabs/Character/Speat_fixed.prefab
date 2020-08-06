@@ -239,7 +239,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: a5036427e3d8cef459bb0d1778beb243, type: 3}
+  - {fileID: 2100000, guid: 59336346b769ffb42ab932113cc7d7af, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -323,7 +323,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 2ab8feaa827fc044faa7220e588e6fae, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -345,9 +345,12 @@ MonoBehaviour:
   moveHorDir: {x: 0, y: 0, z: 0}
   moveVerDir: {x: 0, y: 0, z: 0}
   gender: 
+  isControlled: 0
   isSelected: 0
   isExisted: 0
+  isAbility: 0
   cam: {fileID: 0}
+  Speed: 0
   maxMoveSpeed: 2
   moveAcceleration: 14
   airResistance: 1.2
@@ -356,6 +359,10 @@ MonoBehaviour:
   jumpForce: 5
   gravityScale: 1.1
   isDie: 0
+  camRotation: {x: 0, y: 0, z: 0, w: 0}
+  moveSpeed: 0
+  unitVector: {x: 0, y: 0, z: 0}
+  normalizing: 0
 --- !u!143 &7840894217689648213
 CharacterController:
   m_ObjectHideFlags: 0
