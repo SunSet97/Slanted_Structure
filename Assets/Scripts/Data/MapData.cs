@@ -15,6 +15,12 @@ public class MapData : MonoBehaviour
         Rau
     }
 
+    public enum JoystickInputMethod
+    {
+        oneDir,
+        allDir
+    }
+
     [TextArea]
     [SerializeField]
     private string scriptDesription = "맵 자동 생성 및 맵 정보 포함 스크립트이며\n인스펙터 창에서 각각의 이름에 마우스를 갖다대면 설명을 볼 수 있습니다.\n(Edit mode에서도 바로 사용 가능)";
@@ -24,6 +30,8 @@ public class MapData : MonoBehaviour
     [Header("#Map Setting")]
     [Tooltip("맵의 코드이며 변경시 오브젝트의 이름도 같이 변경 됩니다.(코드는 반드시 6자리)")]
     public string mapCode = "000000"; // auto setting
+    [Tooltip("이 맵의 조이스틱 입력 방식입니다.")]
+    public JoystickInputMethod method; // 맵의 조이스틱 입력 방식
     [Tooltip("맵의 이름은 사용자가 원하는 대로 변경하면 되며 맵 구성 어셋들은 이 오브젝트의 자식으로 설정해주면 됩니다.")]
     public GameObject map; // auto setting
     [Tooltip("이 맵의 전용 UI를 넣어주시면 됩니다.")]
@@ -52,6 +60,28 @@ public class MapData : MonoBehaviour
             positionSetting.name = "Position Setting";
         }
         DestroyImmediate(temp); //임시 오브젝트 제거
+    }
+
+    // 조이스틱 입력 설정
+    void JoystickInputSetting(bool isOn)
+    {
+        if (DataController.instance_DataController.joyStick != null && isOn && mapCode != "000000")
+        {
+            Vector2 inputDir=Vector2.zero;
+            // 입력 방식에 따라 입력 값 분리
+            if (method == JoystickInputMethod.oneDir)
+            {
+                inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, 0); // 한 방향 입력은 수평값만 받음
+                DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
+            }
+            else if (method == JoystickInputMethod.allDir)
+            {
+                inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
+                
+            }
+            DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
+            DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
+        }
     }
     #endregion
 
@@ -175,12 +205,15 @@ public class MapData : MonoBehaviour
         // 게임 플레이시 맵 정보들은 현재 맵코드에 따라 On Off
         if (EditorApplication.isPlaying && map != null)
         {
+            JoystickInputSetting(map.activeSelf); // 조이스틱 설정
+
             if (mapCode != "000000") map.SetActive(DataController.instance_DataController.mapCode == mapCode);
             if (ui != null) ui.SetActive(map.activeSelf);
             positionSetting.SetActive(map.activeSelf);
+
             isMapClear = positionSets.Exists(item => item.clearBox.GetComponent<CheckMapClear>().isClear); // 클리어 판정인게 하나라도 있으면 맵 클리어 처리
-            if (isMapClear) DataController.instance_DataController.mapCode = string.Format("{0:00}{1:00}{2:00}", episode, story, sequence);
-            if (!map.activeSelf) foreach (CharacterPositionSet Item in positionSets) Item.clearBox.GetComponent<CheckMapClear>().isClear = false;
+            if (isMapClear) DataController.instance_DataController.mapCode = string.Format("{0:00}{1:00}{2:00}", episode, story, sequence); // 다음맵으로 넘어가도록 맵 코드 변경
+            if (!map.activeSelf) foreach (CharacterPositionSet Item in positionSets) Item.clearBox.GetComponent<CheckMapClear>().isClear = false; // 트리거 초기화
         }
     }
 

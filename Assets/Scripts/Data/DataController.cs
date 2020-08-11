@@ -12,6 +12,10 @@ public class DataController : MonoBehaviour
 
     [Header("조이스틱")]
     public Joystick joyStick;
+    public Vector2 inputDirection = Vector2.zero; // 조이스틱 입력 방향
+    public float inputDegree = 0f; // 조이스틱 입력 크기
+    public bool inputJump = false; // 조이스틱 입력 점프 판정
+    public bool inputDash = false; // 조이스틱 입력 대쉬 판정
 
     [Header("캐릭터")]
     public CharacterManager currentChar;

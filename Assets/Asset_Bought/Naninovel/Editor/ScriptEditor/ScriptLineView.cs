@@ -181,20 +181,15 @@ namespace Naninovel
             Content.style.minHeight = contentHeight;
             Content.style.flexWrap = Wrap.Wrap;
             ColorUtility.TryParseHtmlString("#948a69", out var borderColor);
-            Content.style.borderBottomColor = borderColor;
-            Content.style.borderLeftColor = borderColor;
-            Content.style.borderRightColor = borderColor;
-            Content.style.borderTopColor = borderColor;
+
+            Content.style.borderColor = borderColor;
         }
 
         protected virtual void ApplyNotFocusedStyle ()
         {
             Content.style.height = contentHeight;
             Content.style.flexWrap = Wrap.NoWrap;
-            Content.style.borderBottomColor = StyleKeyword.Undefined;
-            Content.style.borderLeftColor = StyleKeyword.Undefined;
-            Content.style.borderRightColor = StyleKeyword.Undefined;
-            Content.style.borderTopColor = StyleKeyword.Undefined;
+            Content.style.borderColor = StyleKeyword.Undefined;
         }
 
         protected virtual void ApplyHoveredStyle () { }

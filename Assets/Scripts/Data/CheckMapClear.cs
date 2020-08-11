@@ -12,9 +12,12 @@ public class CheckMapClear : MonoBehaviour
     private void Update()
     {
         // 트리거 체크할 캐릭터 확인
-        if (mask == 0) who = DataController.instance_DataController.speat;
-        if (mask == 1) who = DataController.instance_DataController.oun;
-        if (mask == 2) who = DataController.instance_DataController.rau;
+        if (DataController.instance_DataController)
+        {
+            if (mask == 0) who = DataController.instance_DataController.speat;
+            if (mask == 1) who = DataController.instance_DataController.oun;
+            if (mask == 2) who = DataController.instance_DataController.rau;
+        }
     }
 
     // 캐릭터 확인 후 트리거 활성화
