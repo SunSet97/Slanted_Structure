@@ -117,7 +117,7 @@ public class CharacterMoveControl : MonoBehaviour
 
     public void finalMove()
     {
-        if (DataController.instance_DataController.isMapChanged == false)
+        //if (DataController.instance_DataController.isMapChanged == false)
             _cm.ctrl.Move((_cm.moveHorDir + _cm.moveVerDir) * Time.deltaTime);
     }
 

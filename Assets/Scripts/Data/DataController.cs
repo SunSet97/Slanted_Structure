@@ -31,11 +31,11 @@ public class DataController : MonoBehaviour
     public Vector3 rot;
 
     [Header("맵")]
-    public GameObject[] maps;
+    public List<MapData> maps;
     public Transform[] progressColliders;
     public Transform currentProgress;
     public Transform commandSprite;
-    public GameObject currentMap;
+    public MapData currentMap;
     public string mapCode;
     public string playMethod; //2D 플랫포머(2D Platformer)=Plt, 쿼터뷰(Quarter view)=Qrt, 라인트레이서(Line tracer)=Line
 
@@ -98,37 +98,41 @@ public class DataController : MonoBehaviour
         }
 
     }
-
-    string temp;
-    public bool isMapChanged = false;
+    
     //맵 코드에 맞는 맵을 찾아서 정보 저장
     void FindMap()
     {
+        // 인게임 씬에서 맵 데이터 리스트 찾기 및 정렬
         if (SceneManager.GetActiveScene().name == "Ingame")
-            maps = GameObject.FindGameObjectsWithTag("Map");
-        if (maps.Length > 0 && CanvasControl.instance_CanvasControl)
         {
-            temp = CanvasControl.instance_CanvasControl.mapcode.textComponent.text; //디버깅용
-
-            for (int i = 0; i < maps.Length; i++)
+            if (GameObject.FindObjectsOfType<MapData>().Length != maps.Count)
             {
-                MapData mapData = maps[i].GetComponent<MapData>();
-                if (mapData.mapCode == temp) mapCode = temp;
-
-                if (mapData.mapCode == mapCode)
+                // 맵 데이터 찾기
+                for (int i = 0; i < GameObject.FindObjectsOfType<MapData>().Length; i++)
+                    maps.Add(GameObject.FindObjectsOfType<MapData>()[i]);
+                // 맵 데이터를 다 찾으면 맵 코드 순서로 정렬
+                if (GameObject.FindObjectsOfType<MapData>().Length == maps.Count)
+                    maps.Sort(delegate (MapData A, MapData B) { if (int.Parse(A.mapCode) > int.Parse(B.mapCode)) return 1; else return -1; });
+            }
+        }
+        // 맵을 찾은 경우에만 실행
+        if (maps.Count > 0)
+        {
+            // 첫번째 맵인 000000을 제외하고 반복
+            for (int i = 1; i < maps.Count; i++)
+            {
+                if (maps[i].mapCode == mapCode)
                 {
-                    if (isMapChanged == false && currentMap != maps[i] && currentChar)
-                    {
-                        isMapChanged = true;
+                    // 해당되는 캐릭터 이동
+                    if (maps[i].positionSets.Exists(item => item.who == MapData.Character.Speat)) speat.transform.position = maps[i].positionSets.Find(item => item.who == MapData.Character.Speat).startPosition.position;
+                    if (maps[i].positionSets.Exists(item => item.who == MapData.Character.Oun)) oun.transform.position = maps[i].positionSets.Find(item => item.who == MapData.Character.Oun).startPosition.position;
+                    if (maps[i].positionSets.Exists(item => item.who == MapData.Character.Rau)) rau.transform.position = maps[i].positionSets.Find(item => item.who == MapData.Character.Rau).startPosition.position;
+                    // 해당되는 캐릭터 선택
+                    speat.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Speat);
+                    oun.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Oun);
+                    rau.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Rau);
 
-                        if (mapData.positionSets.Exists(item => item.who == MapData.Character.Speat)) speat.transform.position = mapData.positionSets.Find(item => item.who == MapData.Character.Speat).startPosition.position;
-                        if (mapData.positionSets.Exists(item => item.who == MapData.Character.Oun)) oun.transform.position = mapData.positionSets.Find(item => item.who == MapData.Character.Oun).startPosition.position;
-                        if (mapData.positionSets.Exists(item => item.who == MapData.Character.Rau)) rau.transform.position = mapData.positionSets.Find(item => item.who == MapData.Character.Rau).startPosition.position;
-                    }
-                    else if (isMapChanged)
-                    {
-                        isMapChanged = false;
-                    }
+                    cam.transform.position = new Vector3(currentChar.transform.position.x + camDis_x, currentChar.transform.position.y + camDis_y, currentChar.transform.position.z + camDis_z);
 
                     currentMap = maps[i];
 
@@ -150,9 +154,9 @@ public class DataController : MonoBehaviour
     // 게임 진행에 필요한 콜라이더와 이미지를 획득
     void FindProgressCollider()
     {
-        if (currentMap.GetComponent<MapData>().map.transform.Find("ProgressCollider") != null)
+        if (currentMap.map.transform.Find("ProgressCollider") != null)
         {
-            currentProgress = currentMap.GetComponent<MapData>().map.transform.Find("ProgressCollider");
+            currentProgress = currentMap.map.transform.Find("ProgressCollider");
             int curProgressCnt = currentProgress.childCount;
             progressColliders = new Transform[curProgressCnt];
 
@@ -160,8 +164,8 @@ public class DataController : MonoBehaviour
             progressColliders = currentProgress.GetComponentsInChildren<Transform>(true);
 
             // 지시문과 함께 나오는 이미지를 획득
-            if (currentMap.GetComponent<MapData>().map.transform.Find("CommandSprites") != null)
-                commandSprite = currentMap.GetComponent<MapData>().map.transform.Find("CommandSprites");
+            if (currentMap.map.transform.Find("CommandSprites") != null)
+                commandSprite = currentMap.map.transform.Find("CommandSprites");
         }
     }
 
