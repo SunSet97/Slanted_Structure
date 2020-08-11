@@ -33,6 +33,14 @@ public class SpeatAbility : MonoBehaviour
     private float force;            // 벽을 통과하는 힘
     private bool isUp = false, isDown = false;
 
+    GameObject tempDoor; // 클릭 한 문 임시로 저장
+    bool isFrontDoor = false; // 스핏이 문 앞에 있는지 여부
+    bool isInRoom = false; // 스핏이 방 안이면 true
+    public bool isHiding = false; // true면 숨고 있는 중
+    float touchRange = 0.5f; // 터치(클릭) 허용 범위
+    Ray touchDown;
+    Ray touchUp;
+
     [Header("-Speat")]
     public CharacterManager speat;
 
@@ -50,6 +58,31 @@ public class SpeatAbility : MonoBehaviour
 
             ChangeIsAbility();  // 능력 사용 여부 판단
             Dash();             // 조건 만족시 대쉬
+
+            // *숨기 능력 *     여기서 문 or 출구 클릭 입력 받음.
+            if (Input.GetMouseButtonDown(0)) touchDown = Camera.main.ScreenPointToRay(Input.mousePosition);
+            else if (Input.GetMouseButtonUp(0))
+            {
+                touchUp = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (touchDown.origin.x - touchRange <= touchUp.origin.x && touchUp.origin.x <= touchDown.origin.x + touchRange
+                    && touchDown.origin.y - touchRange <= touchUp.origin.y && touchUp.origin.y <= touchDown.origin.y + touchRange)
+                {
+                    RaycastHit hit;
+                    Physics.Raycast(touchUp, out hit);
+                    GameObject touchedObj = hit.transform.gameObject;
+
+                    if (hit.collider != null && touchedObj.layer.Equals(11)) // 클릭한 오브젝트가 문 일때
+                    {
+                        CheckDoor(touchUp, touchedObj);
+
+                    }
+                    else if (hit.collider != null && touchedObj.name.Equals("goal"))
+                    {
+                        CheckGoal(touchedObj);
+                    }
+
+                }
+            }
         }
     }
 
@@ -107,6 +140,7 @@ public class SpeatAbility : MonoBehaviour
                 duration = setDuration; cooltime = setCooltime; // 시간 초기화
                 abilityImage.fillAmount = 1;                    // UI 초기화
             }
+                        
         }
     }
 
@@ -249,5 +283,82 @@ public class SpeatAbility : MonoBehaviour
                 isUp = true;
             }
         }
+    }
+
+    private void CheckGoal(GameObject goal)
+    {
+        Vector3 goalPos = goal.transform.position;
+        Vector3 speatPos = speat.transform.position;
+        float clearRange = 2.0f; // 출구로부터 어느 범위 내에 있어야지 clear
+
+        if (goalPos.y - clearRange <= speatPos.y && speatPos.y <= goalPos.y + clearRange
+            && goalPos.x - clearRange <= speatPos.x && speatPos.x <= goalPos.x + clearRange)
+        {
+            Debug.Log("!!스핏 튜토리얼 - 클리어!!");
+            // 다음 맵으로 넘어가기 ~~
+        }
+
+    }
+
+    private void CheckDoor(Ray ray, GameObject door)
+    {
+        Vector3 target;
+        Vector3 doorPos = door.transform.position;
+        Vector3 speatPos = speat.transform.position;
+        float distacne = 2.0f;
+        float frontDoorRange = 0.5f;
+
+        Debug.Log("Touch the Door");
+
+        if (!isInRoom && doorPos.x - frontDoorRange <= speatPos.x && speatPos.x <= doorPos.x + frontDoorRange) isFrontDoor = true;
+        else isFrontDoor = false;
+
+        if (!tempDoor)
+        {
+            tempDoor = door;
+            // 문으로 들어가는 방향으로 target설정
+            if (isFrontDoor && !isHiding && !isInRoom)
+            {
+                target = new Vector3(speatPos.x, speatPos.y, speatPos.z + distacne);
+                Debug.Log("들어간다..");
+                StartCoroutine(Hiding(target));
+            }
+
+        }
+        else if (tempDoor && tempDoor == door)
+        {
+            tempDoor = null;
+            // 문에서 나오는 방향으로 target설정
+            if (!isFrontDoor && !isHiding && isInRoom)
+            {
+                target = new Vector3(speatPos.x, speatPos.y, speatPos.z - distacne);
+                Debug.Log("나온다..");
+                StartCoroutine(Hiding(target));
+            }
+
+        }
+
+    }
+
+    IEnumerator Hiding(Vector3 target)
+    {
+
+        isHiding = true;
+
+        if (isFrontDoor) isFrontDoor = false; // 능력써서 방 안으로 들어올 때
+        else isFrontDoor = true; // 능력써서 방 밖으로 나올 때
+
+        if (isInRoom) isInRoom = false; // 능력써서 방 밖으로 나올 때
+        else isInRoom = true; // 능력써서 방안으로 들어올 때
+
+        speat.Change_Position(false);
+        while (!speat.transform.position.Equals(target))
+        {
+            speat.transform.position = Vector3.MoveTowards(speat.transform.position, target, 0.03f); // 마지막 파라미터는 숨을 때 속도!
+            yield return new WaitForSeconds(0f);
+        }
+        speat.Change_Position(true);
+        isHiding = false;
+
     }
 }

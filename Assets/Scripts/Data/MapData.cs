@@ -28,6 +28,12 @@ public class MapData : MonoBehaviour
     public GameObject map; // auto setting
     [Tooltip("이 맵의 전용 UI를 넣어주시면 됩니다.")]
     public GameObject ui; // 맵 전용 UI
+    [Tooltip("클리어시 넘어갈 다음 맵의 에피소드 추가 변수입니다.")]
+    public int episode = 1; // 맵의 에피소드 추가 변수
+    [Tooltip("클리어시 넘어갈 다음 맵의 스토리 추가 변수입니다.")]
+    public int story = 1; // 맵의 스토리 추가 변수
+    [Tooltip("클리어시 넘어갈 다음 맵의 분기 추가 변수입니다.")]
+    public int sequence = 1; // 맵의 분기 추가 변수
     [Tooltip("이 맵의 클리어 여부입니다.")]
     public bool isMapClear; // 맵 종료 여부
 
@@ -167,12 +173,14 @@ public class MapData : MonoBehaviour
         if (mapCode.Length == 6) this.transform.position = new Vector3(int.Parse(mapCode) / 10000 * 500, (int.Parse(mapCode) / 100 - int.Parse(mapCode) / 10000 * 100) * 500, (int.Parse(mapCode) - int.Parse(mapCode) / 100 * 100) * 500);
 
         // 게임 플레이시 맵 정보들은 현재 맵코드에 따라 On Off
-        if (EditorApplication.isPlaying && DataController.instance_DataController.mapCode == mapCode)
+        if (EditorApplication.isPlaying && map != null)
         {
-            if (map != null) map.SetActive(DataController.instance_DataController.mapCode == mapCode);
-            positionSetting.SetActive(map.activeSelf);
+            if (mapCode != "000000") map.SetActive(DataController.instance_DataController.mapCode == mapCode);
             if (ui != null) ui.SetActive(map.activeSelf);
+            positionSetting.SetActive(map.activeSelf);
             isMapClear = positionSets.Exists(item => item.clearBox.GetComponent<CheckMapClear>().isClear); // 클리어 판정인게 하나라도 있으면 맵 클리어 처리
+            if (isMapClear) DataController.instance_DataController.mapCode = string.Format("{0:00}{1:00}{2:00}", episode, story, sequence);
+            if (!map.activeSelf) foreach (CharacterPositionSet Item in positionSets) Item.clearBox.GetComponent<CheckMapClear>().isClear = false;
         }
     }
 

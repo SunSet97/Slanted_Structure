@@ -43,6 +43,8 @@ public class CanvasControl : MonoBehaviour
 
     [Header("디버깅용")]
     public InputField mapcode; //맵코드
+    public Toggle[] selectedCharacter; //선택된 캐릭터
+    public GameObject selectedGuest;
 
     //인스턴스화
     private static CanvasControl instance = null;
@@ -426,6 +428,12 @@ public class CanvasControl : MonoBehaviour
             OpenScene(DataController.instance_DataController.dialogueData.nextScene[cnvsCnt].sceneName[i]);
         }
 
+        if (selectedGuest != null)
+        {
+            if (i == 0) Destroy(selectedGuest);
+            else Debug.Log("게임 오버");
+
+        }
 
         // 선택에 따른 스토리 업데이트
         if (DataController.instance_DataController.dialogueData.storyParam[cnvsCnt].storyNum[i] != 0)

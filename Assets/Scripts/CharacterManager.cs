@@ -173,7 +173,7 @@ public class CharacterManager : MonoBehaviour
         if (!ctrl.isGrounded || isDie)
             moveVerDir.y += Physics.gravity.y * gravityScale * Time.deltaTime;
 
-        if (DataController.instance_DataController.isMapChanged == false)
+        //if (DataController.instance_DataController.isMapChanged == false)
             ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 최종 이동 시킴
     }
     #endregion
@@ -217,7 +217,7 @@ public class CharacterManager : MonoBehaviour
                 canvasCtrl.progressIndex++;
                 canvasCtrl.GoNextStep();
 
-                DataController.instance_DataController.currentMap.GetComponent<MapData>().playMethod = other.gameObject.name;
+                DataController.instance_DataController.currentMap.playMethod = other.gameObject.name;
 
                 // 플레이 모드 변경에 맞춘 시점 변경 (바뀔 가능성 있음)
                 CameraTransform camInfo;
@@ -391,17 +391,17 @@ public class CharacterManager : MonoBehaviour
     //    StartCoroutine(dieAction);
     //}
 
-    public void Change_Position()//캐릭터 매니저 컨트롤러 온오프하기위한 함수
+    public void Change_Position(bool button_on)
     {
-        if (button_on == false)
+        if (!button_on)
         {
             ctrl.enabled = false;
         }
-   
-        if (button_on == true) 
+        if (button_on)
         {
             ctrl.enabled = true;
         }
+
     }
 
     // 디버깅용. 플레이어가 죽은 후 리스폰 장소에서 부활하기까지의 행동 (플레이어의 투명도 조절 후 이동)
