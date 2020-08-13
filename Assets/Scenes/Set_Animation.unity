@@ -5096,11 +5096,7 @@ MonoBehaviour:
   appearTime: 3
   bicycleSettingComplete: 0
   timer: 30
-  textTimer: {fileID: 156632534}
-  textItem: {fileID: 28151908}
   completeDistance: 0
-  failPanel: {fileID: 588298922}
-  completePanel: {fileID: 1992119083}
 --- !u!4 &517052652
 Transform:
   m_ObjectHideFlags: 0
@@ -6071,6 +6067,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isExistdata: 000000
   joyStick: {fileID: 0}
+  inputDirection: {x: 0, y: 0}
+  inputDegree: 0
+  inputJump: 0
+  inputDash: 0
   currentChar: {fileID: 0}
   rau: {fileID: 0}
   oun: {fileID: 0}
@@ -6091,7 +6091,6 @@ MonoBehaviour:
   currentMap: {fileID: 0}
   mapCode: 000000
   playMethod: Plt
-  isMapChanged: 0
   _charData:
     respawnLocation: {x: 0, y: 0, z: 0}
     curPlayer: Rau
@@ -6971,8 +6970,12 @@ MonoBehaviour:
     \uC124\uBA85\uC744 \uBCFC \uC218 \uC788\uC2B5\uB2C8\uB2E4.\n(Edit mode\uC5D0\uC11C\uB3C4
     \uBC14\uB85C \uC0AC\uC6A9 \uAC00\uB2A5)"
   mapCode: 
+  method: 0
   map: {fileID: 0}
   ui: {fileID: 0}
+  episode: 1
+  story: 1
+  sequence: 1
   isMapClear: 0
   positionSetting: {fileID: 0}
   positionSets: []
@@ -7983,8 +7986,12 @@ MonoBehaviour:
     \uC124\uBA85\uC744 \uBCFC \uC218 \uC788\uC2B5\uB2C8\uB2E4.\n(Edit mode\uC5D0\uC11C\uB3C4
     \uBC14\uB85C \uC0AC\uC6A9 \uAC00\uB2A5)"
   mapCode: 
+  method: 0
   map: {fileID: 0}
   ui: {fileID: 0}
+  episode: 1
+  story: 1
+  sequence: 1
   isMapClear: 0
   positionSetting: {fileID: 0}
   positionSets: []
@@ -15246,6 +15253,8 @@ MonoBehaviour:
   commandText: {fileID: 0}
   commandPanel: {fileID: 0}
   mapcode: {fileID: 185883359}
+  selectedCharacter: []
+  selectedGuest: {fileID: 0}
   sprRenderers: []
   finishFadeIn: 0
 --- !u!114 &1247499169
@@ -16145,8 +16154,12 @@ MonoBehaviour:
     \uC124\uBA85\uC744 \uBCFC \uC218 \uC788\uC2B5\uB2C8\uB2E4.\n(Edit mode\uC5D0\uC11C\uB3C4
     \uBC14\uB85C \uC0AC\uC6A9 \uAC00\uB2A5)"
   mapCode: 
+  method: 0
   map: {fileID: 0}
   ui: {fileID: 0}
+  episode: 1
+  story: 1
+  sequence: 1
   isMapClear: 0
   positionSetting: {fileID: 0}
   positionSets: []
@@ -16207,8 +16220,12 @@ MonoBehaviour:
     \uC124\uBA85\uC744 \uBCFC \uC218 \uC788\uC2B5\uB2C8\uB2E4.\n(Edit mode\uC5D0\uC11C\uB3C4
     \uBC14\uB85C \uC0AC\uC6A9 \uAC00\uB2A5)"
   mapCode: 
+  method: 0
   map: {fileID: 850519984}
   ui: {fileID: 0}
+  episode: 1
+  story: 1
+  sequence: 1
   isMapClear: 0
   positionSetting: {fileID: 128622202}
   positionSets: []
@@ -16267,8 +16284,12 @@ MonoBehaviour:
     \uC124\uBA85\uC744 \uBCFC \uC218 \uC788\uC2B5\uB2C8\uB2E4.\n(Edit mode\uC5D0\uC11C\uB3C4
     \uBC14\uB85C \uC0AC\uC6A9 \uAC00\uB2A5)"
   mapCode: 
+  method: 0
   map: {fileID: 0}
   ui: {fileID: 0}
+  episode: 1
+  story: 1
+  sequence: 1
   isMapClear: 0
   positionSetting: {fileID: 0}
   positionSets: []
@@ -20362,8 +20383,12 @@ MonoBehaviour:
     \uC124\uBA85\uC744 \uBCFC \uC218 \uC788\uC2B5\uB2C8\uB2E4.\n(Edit mode\uC5D0\uC11C\uB3C4
     \uBC14\uB85C \uC0AC\uC6A9 \uAC00\uB2A5)"
   mapCode: 
+  method: 0
   map: {fileID: 0}
   ui: {fileID: 0}
+  episode: 1
+  story: 1
+  sequence: 1
   isMapClear: 0
   positionSetting: {fileID: 0}
   positionSets: []
@@ -21222,6 +21247,95 @@ Transform:
   m_Father: {fileID: 895786531}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2076373371
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -6057140222963153312, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 761d44b4e9a5e8f4391e6fb7d90d6b1c, type: 2}
+    - target: {fileID: -4216859302048453862, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 41.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.050106328
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.050106328
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.050106328
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 7c92513d949cc9c47953f5cc390c67e5,
+        type: 3}
+      propertyPath: m_Name
+      value: Speat_fbx_01
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7c92513d949cc9c47953f5cc390c67e5, type: 3}
 --- !u!1 &2080734696
 GameObject:
   m_ObjectHideFlags: 0
