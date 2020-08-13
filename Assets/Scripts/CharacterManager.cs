@@ -42,7 +42,11 @@ public class CharacterManager : MonoBehaviour
     public float normalizing;      //조이스틱 입력 강도 정규화
 
     public bool button_on=true;//현재 캐릭터매니저 컨트롤러를 껏다 키기 위한 bool값.
-    
+    public GameObject hitObj; // 충돌한 오브젝트 받기
+    //public ControllerColliderHit hitObj; // 충돌한 오브젝트 받기
+    public bool isCollisionObstacle = false; // 충돌한 오브젝트가 장애물인지 여부.
+    public bool isContactPigeon = false; // 충돌한 오브젝트가 비둘기인지 여부.
+
     void Start()
     {
         //if (isSelected)
@@ -324,6 +328,18 @@ public class CharacterManager : MonoBehaviour
             }
         }
 
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.gameObject.CompareTag("Obstacle"))
+        {
+            isCollisionObstacle = true;
+            hitObj = hit.gameObject;
+        }
+        /* if (hit.gameObject.name == "Pigeon_collection" || hit.gameObject.transform.parent.gameObject.name == "Pigeon_collection") {
+             isContactPigeon = true;
+         }*/
     }
 
     float swipeDis = Screen.width / 3;
