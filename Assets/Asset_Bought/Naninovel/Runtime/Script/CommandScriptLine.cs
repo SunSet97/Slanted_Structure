@@ -21,7 +21,7 @@ namespace Naninovel
         /// </summary>
         public Command Command => command;
 
-        [SerializeReference] private Command command = default;
+        [SerializeField] private Command command = default;
 
         /// <inheritdoc/>
         public CommandScriptLine (string scriptName, int lineIndex, string lineText, List<ScriptParseError> errors = null)
