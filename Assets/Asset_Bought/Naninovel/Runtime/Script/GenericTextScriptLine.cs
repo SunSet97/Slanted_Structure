@@ -32,7 +32,7 @@ namespace Naninovel
         /// </summary>
         public ReadOnlyCollection<Command> InlinedCommands => inlinedCommands.AsReadOnly();
 
-        [SerializeReference] private List<Command> inlinedCommands = default;
+        [SerializeField] private List<Command> inlinedCommands = default;
 
         // In case print command is overridden and inherited from the built-in one it'll be used instead.
         private static readonly Type overriddenPrintCommandType = Command.CommandTypes.Values

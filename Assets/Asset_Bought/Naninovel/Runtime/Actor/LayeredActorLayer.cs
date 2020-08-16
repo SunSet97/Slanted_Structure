@@ -25,7 +25,7 @@ namespace Naninovel
         {
             this.SpriteRenderer = spriteRenderer;
             if (Application.isPlaying)
-                spriteRenderer.forceRenderingOff = true;
+                spriteRenderer.enabled = true;
             Mesh = BuildSpriteMesh(spriteRenderer);
             Name = spriteRenderer.gameObject.name;
 
