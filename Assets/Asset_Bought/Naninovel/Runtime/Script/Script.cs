@@ -24,7 +24,7 @@ namespace Naninovel
         /// </summary>
         public ReadOnlyCollection<ScriptLine> Lines => lines.AsReadOnly();
 
-        [SerializeReference] private List<ScriptLine> lines = default;
+        [SerializeField] private List<ScriptLine> lines = default;
 
         /// <summary>
         /// Creates new instance by parsing the provided serialized script text.
