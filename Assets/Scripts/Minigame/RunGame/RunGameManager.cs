@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class RunGameManager : MonoBehaviour
 {
+    public float x;
     [Header("타이머 설정")]
     public float timer;
 
@@ -17,12 +18,16 @@ public class RunGameManager : MonoBehaviour
     //public GameObject speat;
 
     GameObject[] prefabList;
-    GameObject one, two, three, end;
+    public GameObject one, two, three, end;
     int patternType; // 패턴 종류
     int patternSubType; // 각 패턴마다 존재하는 프리팹 숫자
     int patternTypeNum = 3; // 패턴 몇개? 3개
     int patternSubTypeNum = 4; // 각 패턴마다 존재하는 총 프리팹 몇개? 4개
-    public GameObject startPosition; // = new Vector3(500, 500, 2000); // 임의로 설정
+    public GameObject startPosition0;
+    public GameObject startPosition1; // = new Vector3(500, 500, 2000); // 임의로 설정
+    public GameObject startPosition2; // = new Vector3(500, 500, 2000); // 임의로 설정
+    public GameObject startPosition3; // = new Vector3(500, 500, 2000); // 임의로 설정
+    public float alpha;
     Vector3 rePosition = Vector3.zero;
     //Vector3 startPosition1 = new Vector3(480, 500, 2000); // 임의로 설정
     //Vector3 startPosition2 = new Vector3(460, 500, 2000); // 임의로 설정
@@ -36,16 +41,17 @@ public class RunGameManager : MonoBehaviour
     void Start() {
 
         startTHeGame = true;
-        /*start = Instantiate(Resources.Load<GameObject>("Run_Pattern/Start"));
-        start.transform.SetParent(parent.transform);*/
 
         LoadPattern(); // start, end를 제외한 나머지 패턴 프리팹 로딩.
         SetPrefab(); // prefabList 배열에서 랜덤하게 3개 선택.
-
         end = Instantiate(Resources.Load<GameObject>("Run_Pattern/End"));
-        end.transform.SetParent(parent.transform);
+        end.transform.SetParent(parent.transform, false);
         end.SetActive(false);
 
+        startPosition0.SetActive(false);
+        startPosition1.SetActive(false);
+        startPosition2.SetActive(false);
+        startPosition3.SetActive(false);
     }
 
     // Update is called once per frame
@@ -55,28 +61,27 @@ public class RunGameManager : MonoBehaviour
         timer -= Time.deltaTime;
         timerText.text = "런게임 타이머: " + Mathf.Round(timer);
 
+
         // 프리팹 이동 관련
-        //start.transform.Translate(new Vector3(speatSpeed * Time.deltaTime, 0, 0));
         one.transform.Translate(new Vector3(speatSpeed * Time.deltaTime, 0, 0));
         two.transform.Translate(new Vector3(speatSpeed * Time.deltaTime, 0, 0));
         three.transform.Translate(new Vector3(speatSpeed * Time.deltaTime, 0, 0));
         end.transform.Translate(new Vector3(speatSpeed * Time.deltaTime, 0, 0));
+
 
     }
 
     // 게임 시작할 때 사용되며, 새로운 패턴 종류 지정하고 prefabList에 담는다.
     void LoadPattern()
     {
-        //start.transform.SetParent(parent.transform); // Start에 있어도 무관할 듯?
 
         patternType = Random.Range(0, patternTypeNum); // 세가지 패턴 중 랜덤으로 선택.
-
         prefabList = Resources.LoadAll<GameObject>("Run_Pattern/Pattern" + patternType);
 
         for (int i = 0; i < prefabList.Length; i++)
         {
             prefabList[i] = Instantiate(prefabList[i]);
-            prefabList[i].transform.SetParent(parent.transform);
+            prefabList[i].transform.SetParent(parent.transform, false);
             prefabList[i].SetActive(false);
         }
 
@@ -90,17 +95,17 @@ public class RunGameManager : MonoBehaviour
        
         // 게임 처음 시작할 때 one은 Start 객체를 가리키도록!
         one = Instantiate(Resources.Load<GameObject>("Run_Pattern/Start"));
-        one.transform.SetParent(parent.transform);
+        one.transform.SetParent(parent.transform, false);
         one.SetActive(true);
-        one.transform.position = startPosition.transform.position;
+        one.transform.position = startPosition1.transform.position;// + new Vector3(x,0,0);
 
         two = prefabList[randomArr[0]];
         two.SetActive(true);
-        two.transform.position = startPosition.transform.position + new Vector3(-10,0,0);
+        two.transform.position = startPosition2.transform.position;
 
         three = prefabList[randomArr[1]];
         three.SetActive(true);
-        three.transform.position = startPosition.transform.position + new Vector3(-20, 0, 0);
+        three.transform.position = startPosition3.transform.position;
 
     }
 
@@ -121,8 +126,7 @@ public class RunGameManager : MonoBehaviour
                     one.SetActive(false);
                     one = prefabList[patternSubType];
                     one.SetActive(true);
-                    one.transform.position = rePosition;
-                    print("옹");
+                    one.transform.position = startPosition0.transform.position;
                 }
                 // 충돌된 오브젝트가 two일 때
                 else if (obj == two)
@@ -130,7 +134,7 @@ public class RunGameManager : MonoBehaviour
                     two.SetActive(false);
                     two = prefabList[patternSubType];
                     two.SetActive(true);
-                    two.transform.position = rePosition;
+                    two.transform.position = startPosition0.transform.position;
 
                 }
                 // 충돌된 오브젝트가 three일 때
@@ -139,7 +143,7 @@ public class RunGameManager : MonoBehaviour
                     three.SetActive(false);
                     three = prefabList[patternSubType];
                     three.SetActive(true);
-                    three.transform.position = rePosition;
+                    three.transform.position = startPosition0.transform.position;
 
                 }
                
