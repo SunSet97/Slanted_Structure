@@ -94,6 +94,7 @@
     <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs" />
     <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\VariableJoystick.cs" />
     <Compile Include="Assets\Scripts\Anim_Controller.cs" />
+    <Compile Include="Assets\Scripts\Animation_Controller.cs" />
     <Compile Include="Assets\Scripts\Camera_Moving.cs" />
     <Compile Include="Assets\Scripts\CanvasControl.cs" />
     <Compile Include="Assets\Scripts\CharacterManager.cs" />
@@ -111,17 +112,8 @@
     <Compile Include="Assets\Scripts\Minigame\CatchPickPocket\Pigeon.cs" />
     <Compile Include="Assets\Scripts\Minigame\CoinToss\Coin.cs" />
     <Compile Include="Assets\Scripts\Minigame\CoinToss\TossCoin.cs" />
+    <Compile Include="Assets\Scripts\Minigame\RunGame\RunGameManager.cs" />
     <Compile Include="Assets\Scripts\NPCInteractor.cs" />
-    <Compile Include="Assets\Scripts\phw_catchgame\script_phw\Bicycle_phw.cs" />
-    <Compile Include="Assets\Scripts\phw_catchgame\script_phw\Camera_phw.cs" />
-    <Compile Include="Assets\Scripts\phw_catchgame\script_phw\DetectAroundPigeon_phw.cs" />
-    <Compile Include="Assets\Scripts\phw_catchgame\script_phw\GameManager_phw.cs" />
-    <Compile Include="Assets\Scripts\phw_catchgame\script_phw\ItemSetting_phw.cs" />
-    <Compile Include="Assets\Scripts\phw_catchgame\script_phw\Particle_phw.cs" />
-    <Compile Include="Assets\Scripts\phw_catchgame\script_phw\PickPocket_phw.cs" />
-    <Compile Include="Assets\Scripts\phw_catchgame\script_phw\Pigeon_phw.cs" />
-    <Compile Include="Assets\Scripts\phw_catchgame\script_phw\Rau_phw.cs" />
-    <Compile Include="Assets\Scripts\phw_catchgame\script_phw\ReStartScene_phw.cs" />
     <Compile Include="Assets\Scripts\Practice.cs" />
     <Compile Include="Assets\Scripts\RauTutorial\CharacterMoveControl.cs" />
     <Compile Include="Assets\Scripts\RauTutorial\InteractionList.cs" />
@@ -401,10 +393,10 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.17f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
     </Reference>
     <Reference Include="NCalc">
-      <HintPath>C:/Users/gongwonSA/Desktop/DIR_00/DIR_00/Assets/Asset_Bought/Naninovel/ThirdParty/NCalc/NCalc.dll</HintPath>
+      <HintPath>C:/Users/Kwon kyoung min/Desktop/Slanted_Structure/Assets/Asset_Bought/Naninovel/ThirdParty/NCalc/NCalc.dll</HintPath>
     </Reference>
     <Reference Include="NLayer">
-      <HintPath>C:/Users/gongwonSA/Desktop/DIR_00/DIR_00/Assets/Asset_Bought/Naninovel/ThirdParty/NLayer/NLayer.dll</HintPath>
+      <HintPath>C:/Users/Kwon kyoung min/Desktop/Slanted_Structure/Assets/Asset_Bought/Naninovel/ThirdParty/NLayer/NLayer.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>C:/Users/gongwonSA/Desktop/DIR_00/DIR_00/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Editor.dll</HintPath>
@@ -772,25 +764,25 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="UniRx.Async.csproj">
-      <Project>{6C4323CC-140C-9609-A1FB-427D813681B1}</Project>
+      <Project>{F9BA2400-54F3-29A2-4FC8-B9F08235E489}</Project>
       <Name>UniRx.Async</Name>
     </ProjectReference>
     <ProjectReference Include="UniRx.Async.Editor.csproj">
-      <Project>{A0842EB2-2FB1-400E-0E82-DD9EFB56239D}</Project>
+      <Project>{7A27E533-25F6-91A0-F1C4-439FDEEC5297}</Project>
       <Name>UniRx.Async.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Elringus.Naninovel.Runtime.csproj">
-      <Project>{2CB225E1-597D-D258-7BE3-791B7BFD8281}</Project>
+      <Project>{41D65959-A463-CE05-07EB-4C1107BB61C4}</Project>
       <Name>Elringus.Naninovel.Runtime</Name>
     </ProjectReference>
     <ProjectReference Include="Elringus.Naninovel.Editor.csproj">
-      <Project>{84E4B71E-BDC1-6622-4BFC-40230F01E1E0}</Project>
+      <Project>{2028C6D8-4B3F-DE14-3B01-13DC35A42902}</Project>
       <Name>Elringus.Naninovel.Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
