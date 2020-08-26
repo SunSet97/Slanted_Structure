@@ -12,6 +12,10 @@ public class DataController : MonoBehaviour
 
     [Header("조이스틱")]
     public Joystick joyStick;
+    public Vector2 inputDirection = Vector2.zero; // 조이스틱 입력 방향
+    public float inputDegree = 0f; // 조이스틱 입력 크기
+    public bool inputJump = false; // 조이스틱 입력 점프 판정
+    public bool inputDash = false; // 조이스틱 입력 대쉬 판정
 
     [Header("캐릭터")]
     public CharacterManager currentChar;
@@ -37,6 +41,7 @@ public class DataController : MonoBehaviour
     public Transform commandSprite;
     public MapData currentMap;
     public string mapCode;
+    public string storyCode; // 스토리 코드 (성아)
     public string playMethod; //2D 플랫포머(2D Platformer)=Plt, 쿼터뷰(Quarter view)=Qrt, 라인트레이서(Line tracer)=Line
 
     // 카메라 projecton orthographic에서 perspective로 전환될 때 필요
@@ -98,7 +103,8 @@ public class DataController : MonoBehaviour
         }
 
     }
-    
+
+    public bool isMapChanged = false;
     //맵 코드에 맞는 맵을 찾아서 정보 저장
     void FindMap()
     {
@@ -121,23 +127,33 @@ public class DataController : MonoBehaviour
             // 첫번째 맵인 000000을 제외하고 반복
             for (int i = 1; i < maps.Count; i++)
             {
-                if (maps[i].mapCode == mapCode)
+                if (maps[i].mapCode == mapCode && isMapChanged)
                 {
+                    // 이동 가능한 상태로 변경
+                    speat.isControlled = false;
+                    oun.isControlled = false;
+                    rau.isControlled = false;
+
                     // 해당되는 캐릭터 이동
-                    if (maps[i].positionSets.Exists(item => item.who == MapData.Character.Speat)) speat.transform.position = maps[i].positionSets.Find(item => item.who == MapData.Character.Speat).startPosition.position;
-                    if (maps[i].positionSets.Exists(item => item.who == MapData.Character.Oun)) oun.transform.position = maps[i].positionSets.Find(item => item.who == MapData.Character.Oun).startPosition.position;
-                    if (maps[i].positionSets.Exists(item => item.who == MapData.Character.Rau)) rau.transform.position = maps[i].positionSets.Find(item => item.who == MapData.Character.Rau).startPosition.position;
+                    MapData.CharacterPositionSet temp = maps[i].positionSets.Find(item => item.posSet.gameObject.activeSelf == true);
+                    if (temp.who == MapData.Character.Speat) speat.transform.position = temp.startPosition.position;
+                    if (temp.who == MapData.Character.Oun) oun.transform.position = temp.startPosition.position;
+                    if (temp.who == MapData.Character.Rau) rau.transform.position = temp.startPosition.position;
+
                     // 해당되는 캐릭터 선택
                     speat.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Speat);
                     oun.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Oun);
                     rau.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Rau);
-
+                    
                     cam.transform.position = new Vector3(currentChar.transform.position.x + camDis_x, currentChar.transform.position.y + camDis_y, currentChar.transform.position.z + camDis_z);
 
                     currentMap = maps[i];
 
                     FindProgressCollider();
 
+                    isMapChanged = false;
+
+                    Invoke("SetControlled", 0.2f); // 일정 시간 딜레이 후 적용해야 위치 변경이 제대로 적용됨
                     // 나중에 주석 풀 코드
                     // 추후에 튜토리얼 맵 이름 확정되면 사용될 함수 (튜토리얼 지시문 데이터 불러오기)
                     //if (mapCode == "라우 튜토리얼 맵코드" || mapCode == "스핏튜토리얼 맵코드")
@@ -148,6 +164,17 @@ public class DataController : MonoBehaviour
             }
             //언제불리는지 확인
             //playMethod = currentMap.GetComponent<MapData>().playMethod; //플레이 방식 설정
+        }
+    }
+
+    void SetControlled()
+    {
+        if (!isMapChanged)
+        {
+            // 조작 가능한 상태로 변경 (중력 적용)
+            speat.isControlled = speat.isSelected;
+            oun.isControlled = oun.isSelected;
+            rau.isControlled = rau.isSelected;
         }
     }
 
