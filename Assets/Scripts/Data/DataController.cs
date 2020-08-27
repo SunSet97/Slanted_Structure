@@ -95,12 +95,12 @@ public class DataController : MonoBehaviour
             originCamDis_y = camDis_y;
             camDis_y = 1;
         }
-        else if (!mapCode.Equals("010101") && cam.orthographic.Equals(true))
+        /*else if (!mapCode.Equals("010101") && cam.orthographic.Equals(true))
         {
             camDis_y = originCamDis_y;
             cam.orthographicSize = originOrthoSize;
             cam.orthographic = false;
-        }
+        }*/
 
     }
 

@@ -41,8 +41,6 @@ public class CharacterManager : MonoBehaviour
     public Vector3 unitVector;     //이동 방향 기준 단위 벡터
     public float normalizing;      //조이스틱 입력 강도 정규화
 
-    public bool button_on=true;//현재 캐릭터매니저 컨트롤러를 껏다 키기 위한 bool값.
-    
     void Start()
     {
         //if (isSelected)
@@ -73,7 +71,7 @@ public class CharacterManager : MonoBehaviour
     {
         // 조이스틱 설정
         if (!joyStick && DataController.instance_DataController.joyStick) joyStick = DataController.instance_DataController.joyStick;
-        // 카메라 설정
+        // 카메라 설정g,f
         if (!cam && DataController.instance_DataController.cam) cam = DataController.instance_DataController.cam;
 
         // 라우 튜토리얼 풀 숲 지나갈 때
