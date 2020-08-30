@@ -470,7 +470,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1319217235336548772}
   - component: {fileID: 8990538181834865886}
-  - component: {fileID: 8325045911152913946}
   - component: {fileID: 1880190103}
   - component: {fileID: 1880190104}
   m_Layer: 0
@@ -515,23 +514,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8325045911152913946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2600147976292148151}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e018d223a6b44a94a9b39530721d823c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Speed: 0
-  Direction: 0
-  state: 0
-  Jump: 0
-  Dead: 0
 --- !u!143 &1880190103
 CharacterController:
   m_ObjectHideFlags: 0
@@ -563,6 +545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   joyStick: {fileID: 0}
+  ctrl: {fileID: 0}
   moveHorDir: {x: -0.020440362, y: 0, z: -0.0002589998}
   moveVerDir: {x: 0, y: -4.0049567, z: 0}
   gender: Female
@@ -580,10 +563,12 @@ MonoBehaviour:
   jumpForce: 3.8
   gravityScale: 0.6
   isDie: 0
+  splitTest: 0
   camRotation: {x: 0, y: 0, z: 0, w: 0}
   moveSpeed: 0
   unitVector: {x: 0, y: 0, z: 0}
   normalizing: 0
+  button_on: 1
 --- !u!1 &2755836610371469361
 GameObject:
   m_ObjectHideFlags: 0

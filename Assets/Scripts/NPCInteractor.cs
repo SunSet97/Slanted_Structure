@@ -36,7 +36,7 @@ public class NPCInteractor : MonoBehaviour
         {
             
             // 상호작용 가능 표시
-            closestNPC.Rotate(new Vector3(0, 0, 200 * Time.deltaTime));
+            //closestNPC.Rotate(new Vector3(0, 0, 200 * Time.deltaTime));
 
 
             // 상호작용 가능 할 때에만 npc와의 대화가 가능함 
