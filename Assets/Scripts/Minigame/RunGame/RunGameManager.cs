@@ -9,7 +9,7 @@ public class RunGameManager : MonoBehaviour
     public CharacterManager speat;
     
     [Header("적")]
-    public GameManager chaser;
+    public MiniGameManager chaser;
 
     [Header("점프")]
     public float jumpPower;
