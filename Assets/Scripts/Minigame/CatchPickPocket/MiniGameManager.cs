@@ -60,11 +60,13 @@ public class MiniGameManager : MonoBehaviour
 
     void Update()
     {
-        if (DataController.instance_DataController.mapCode == "010001" && !start)
+        //if (DataController.instance_DataController.mapCode == "010001" && !start)
+        if (!start)
         {
             StartCoroutine(Wait(3.0f)); // 3초 후 시작.
         }
-        else if (DataController.instance_DataController.mapCode == "010001" && start && begin)
+        //else if (DataController.instance_DataController.mapCode == "010001" && start && begin)
+        else if (start && begin)
         {
             // 미니게임메이저 이동
             transform.position = rau.transform.position + new Vector3(0,0.5f,0);
