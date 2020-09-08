@@ -78,7 +78,6 @@ public class MapData : MonoBehaviour
             else if (method == JoystickInputMethod.AllDirection)
             {
                 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
-
             }
             DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
             DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산

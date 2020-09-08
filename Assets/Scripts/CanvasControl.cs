@@ -72,7 +72,7 @@ public class CanvasControl : MonoBehaviour
         }
 
     }
-
+    
     // 씬 로드 시 사용 
     // 새 게임 시작할 때의 씬이름 나중에 넣을 것!! 
     public void OpenScene(string sceneName)

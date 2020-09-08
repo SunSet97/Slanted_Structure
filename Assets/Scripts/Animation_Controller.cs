@@ -5,21 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class Animation_Controller : MonoBehaviour
 {
-    public Animator anim;//할당 애니메이터
-    // Start is called before the first frame update
+    public Animator anim; //할당 애니메이터
+    
     void Start()
     {
-        anim = GetComponent<Animator>();//애니메이터 접근
+        anim = GetComponent<Animator>(); //애니메이터 접근
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         //Move_Setting();//이동
         Action_Setting();//액션
     }
 
-   /* void Move_Setting() //이동 관련
+    /*void Move_Setting() //이동 관련
     {   
         //좌우 이동
         if (DataController.instance_DataController.currentMap.playMethod== "OneDirection")
@@ -55,6 +55,7 @@ public class Animation_Controller : MonoBehaviour
             anim.SetTrigger("Jump");
             DataController.instance_DataController.inputJump = false;//트리거 이후 false로 바꾸기
         }
+
         if (DataController.instance_DataController.inputDash == true)//대시
         {
             anim.SetTrigger("Dash");
