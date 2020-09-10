@@ -4,77 +4,173 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class RunGameManager : MonoBehaviour
-{
-    public float x;
+{    
+    [Header("스핏")]
+    public CharacterManager speat;
+    float originMoveVerDirY; // 스핏이 땅에 닿았을 때 최초의 speat.moveVerDir.y값 담기
+    bool a = false; //스핏이 땅에 닿았을 때 최초의 speat.moveVerDir.y값을 얻기 위해 사용되는 bool 변수
+    
+    [Header("적")]
+    public MiniGameManager chaser;
+
+    [Header("점프")]
+    bool clickJump = false;
+
+    [Header("클리어박스")]
+    public CheckMapClear clearBox;
+
+    [Header("스핏~적 처음 거리(m)")]
+    public float distance;
+
+    [Header("스피드")]
+    public float speatSpeed;
+    public float chaserSpeed;
+    public float speedWithSmallObstacle = 3.0f; // 작은 장애물과 부딪혔을 때 distance에서 줄어야 하는 값.(== 작은 장애물과 부딪혔을 때 스핏의 속도 감속 크기)
+    public float speedWithBigObstacle = 5.0f; // 큰 장애물과 부딪혔을 때 distance에서 줄어야 하는 값. (== 큰 장애물과 부딪혔을 때 스핏의 속도 감속 크기)
+    float settedSpeatSpeed;
+
     [Header("타이머 설정")]
     public float timer;
 
-    [Header("UI관련 - 타이머 표시하는것만 있음")]
+    [Header("UI")]
     public Text timerText;
+    public Text distanceText;
+    public Text reStartText;
 
     [Header("프리팹 관련 넣을 부모 오브젝트")]
     public GameObject parent; // 프리팹들을 담을 오브젝트
 
-    //public GameObject speat;
+    Vector3 chaserPosition; // 적. 스핏 쫓는 애.
+    GameObject[] prefabList; // 여기에 
+    GameObject one, two, three, end;
+    GameObject recentReferVar; // 가장 최근에 충돌해서 업데이트된 참조변수 이름
 
-    GameObject[] prefabList;
-    public GameObject one, two, three, end;
     int patternType; // 패턴 종류
     int patternSubType; // 각 패턴마다 존재하는 프리팹 숫자
     int patternTypeNum = 3; // 패턴 몇개? 3개
-    int patternSubTypeNum = 4; // 각 패턴마다 존재하는 총 프리팹 몇개? 4개
-    public GameObject startPosition0;
-    public GameObject startPosition1; // = new Vector3(500, 500, 2000); // 임의로 설정
-    public GameObject startPosition2; // = new Vector3(500, 500, 2000); // 임의로 설정
-    public GameObject startPosition3; // = new Vector3(500, 500, 2000); // 임의로 설정
-    public float alpha;
-    Vector3 rePosition = Vector3.zero;
-    //Vector3 startPosition1 = new Vector3(480, 500, 2000); // 임의로 설정
-    //Vector3 startPosition2 = new Vector3(460, 500, 2000); // 임의로 설정
-    //Vector3 startPosition3 = new Vector3(440, 500, 2000); // 임의로 설정
-    //float goalDistance;
-    float speatSpeed = 1.0f;
-    float chaserSpeed = 0.7f;
+    int patternSubTypeNum = 6; // 각 패턴마다 존재하는 총 프리팹 몇개? 6개
 
-    bool startTHeGame = false;
+    public GameObject startPosition0; // 콜라이더랑 충돌 후 다시 배치되는 위치
+    public GameObject startPosition1; // one의 처음 위치
+    public GameObject startPosition2; // two의 처음위치
+    public GameObject startPosition3; // three의 처음위치
+
+    bool isStopMapPrefab = false; // true면 성공. true된 즉시 end 프리팹 보이게!
+    bool clickSkill = false;
+    bool inConflict = false; // false면 충돌 안하고 있는 상태. true면 충돌하고 있는 상태.
+    bool isGameOver = false;
+
+    Coroutine slowEffectCoroutine;
+    RunGameManager runGameManagerInstance;
+    BoxCollider boxColliderInstance;
+    public Renderer speatRenderer;
 
     void Start() {
 
-        startTHeGame = true;
+        if (transform.name == "RunGameManager") // 장애물 충돌 이외 모든 것을 RunGameManger에서 관리
+        {
+            //renderer.material.color = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b, 0.5f);
+            //renderer.material.color = new Color(256, 256, 256, 0.5f);
 
-        LoadPattern(); // start, end를 제외한 나머지 패턴 프리팹 로딩.
-        SetPrefab(); // prefabList 배열에서 랜덤하게 3개 선택.
-        end = Instantiate(Resources.Load<GameObject>("Run_Pattern/End"));
-        end.transform.SetParent(parent.transform, false);
-        end.SetActive(false);
+            // 런게임 진행하는 동안 조이스틱 안쓰이니깐 안보이게 하기
+            DataController.instance_DataController.joyStick.gameObject.SetActive(false);
 
-        startPosition0.SetActive(false);
-        startPosition1.SetActive(false);
-        startPosition2.SetActive(false);
-        startPosition3.SetActive(false);
-    }
+            // DataController 카메라 설정값 변경
+            DataController.instance_DataController.camDis_x = 4f;
+            DataController.instance_DataController.camDis_y = 3.5f;
+
+            // 카메라 뷰 설정
+            DataController.instance_DataController.cam.orthographicSize = 4;
+            DataController.instance_DataController.cam.orthographic = true;
+
+            LoadPattern(); // start, end를 제외한 나머지 패턴 프리팹 로딩.
+            SetPrefab(); // prefabList 배열에서 랜덤하게 3개 선택.
+            end = Instantiate(Resources.Load<GameObject>("Run_Pattern/End"));
+            end.transform.SetParent(parent.transform, false);
+            end.SetActive(false);
+
+            startPosition0.SetActive(false);
+            startPosition1.SetActive(false);
+            startPosition2.SetActive(false);
+            startPosition3.SetActive(false);
+
+            //chaserPosition = speat.transform.position + new Vector3(distance, 0, 0); // 적이 스핏과 distance(x좌표 기준)만큼 덜어져있다.
+        }
+        else if (transform.name == "ObstacleCollider") // ObastacleCollider는 오직 장애물 충돌만 관여하도록!!
+        {
+            runGameManagerInstance = transform.parent.GetComponent<RunGameManager>();
+            boxColliderInstance = transform.GetComponent<BoxCollider>();
+            settedSpeatSpeed = runGameManagerInstance.speatSpeed;
+        }
+
+    } 
 
     // Update is called once per frame
     void Update()
-    {   
-        // 타이머
-        timer -= Time.deltaTime;
-        timerText.text = "런게임 타이머: " + Mathf.Round(timer);
+    {
+        if (transform.name == "RunGameManager")
+        {
+            // 타이머
+            timer -= Time.deltaTime;
+            timerText.text = "런게임 타이머: " + Mathf.Round(timer);
 
+            // 거리
+            distanceText.text = "런게임 거리: " + Mathf.Round(distance) + "m";
 
-        // 프리팹 이동 관련
-        one.transform.Translate(new Vector3(speatSpeed * Time.deltaTime, 0, 0));
-        two.transform.Translate(new Vector3(speatSpeed * Time.deltaTime, 0, 0));
-        three.transform.Translate(new Vector3(speatSpeed * Time.deltaTime, 0, 0));
-        end.transform.Translate(new Vector3(speatSpeed * Time.deltaTime, 0, 0));
+            // 점프
+            if (!a && speat.ctrl.isGrounded)
+            {
+                a = true;
+                originMoveVerDirY = speat.moveVerDir.y;
+            }
+         
+            if (clickJump)
+            {
+                clickJump = false;
+                speat.isJump = true;
+                speat.moveVerDir.y = originMoveVerDirY;
+                speat.jumpForce = 20; // 내가 임의로 설정!
+                speat.gravityScale = 3.0f;// 디폴트는 1.1f이었음.
+            }
 
+            // 프리팹 이동 관련
+            if (!isStopMapPrefab)
+            {
+                one.transform.Translate(new Vector3(speatSpeed * Time.deltaTime, 0, 0));
+                two.transform.Translate(new Vector3(speatSpeed * Time.deltaTime, 0, 0));
+                three.transform.Translate(new Vector3(speatSpeed * Time.deltaTime, 0, 0));
+            }
+
+            // 성공
+            if (Mathf.Round(timer) == 0 && !isGameOver)
+            {
+                print("성공");
+                isStopMapPrefab = true; // 성공했으니 End 프리팹으로 ㄱㄱㄹ해야되는대 아직 안함!ㅎ
+                SetEndPrefab();
+            }
+
+            // 실패
+            if (Mathf.Round(distance) <= 0 && !isGameOver)
+            {
+                isGameOver = true;
+                isStopMapPrefab = true; // 프리팹 이동 멈추게 하기.
+                print("적에게 잡힘. 게임오버.");
+                //restartCoroutine = StartCoroutine(ReStartGame(3));
+                StartCoroutine(ReStartGame());
+
+            }
+
+        }
+        else if (transform.name == "ObstacleCollider")
+        {
+            transform.position = speat.transform.position + new Vector3(0,0.5f,0);
+        }
 
     }
 
     // 게임 시작할 때 사용되며, 새로운 패턴 종류 지정하고 prefabList에 담는다.
     void LoadPattern()
     {
-
         patternType = Random.Range(0, patternTypeNum); // 세가지 패턴 중 랜덤으로 선택.
         prefabList = Resources.LoadAll<GameObject>("Run_Pattern/Pattern" + patternType);
 
@@ -97,7 +193,7 @@ public class RunGameManager : MonoBehaviour
         one = Instantiate(Resources.Load<GameObject>("Run_Pattern/Start"));
         one.transform.SetParent(parent.transform, false);
         one.SetActive(true);
-        one.transform.position = startPosition1.transform.position;// + new Vector3(x,0,0);
+        one.transform.position = startPosition1.transform.position;
 
         two = prefabList[randomArr[0]];
         two.SetActive(true);
@@ -127,15 +223,16 @@ public class RunGameManager : MonoBehaviour
                     one = prefabList[patternSubType];
                     one.SetActive(true);
                     one.transform.position = startPosition0.transform.position;
+                    recentReferVar = one;
                 }
                 // 충돌된 오브젝트가 two일 때
                 else if (obj == two)
                 {
                     two.SetActive(false);
                     two = prefabList[patternSubType];
-                    two.SetActive(true);
+                    two.SetActive(true); 
                     two.transform.position = startPosition0.transform.position;
-
+                    recentReferVar = two;
                 }
                 // 충돌된 오브젝트가 three일 때
                 else if (obj == three)
@@ -144,7 +241,7 @@ public class RunGameManager : MonoBehaviour
                     three = prefabList[patternSubType];
                     three.SetActive(true);
                     three.transform.position = startPosition0.transform.position;
-
+                    recentReferVar = three;
                 }
                
                 break;
@@ -155,6 +252,122 @@ public class RunGameManager : MonoBehaviour
 
     }
 
+    private void SetEndPrefab() {
+        
+        // 맨홀쪽으로 이동해야하니깐, 조이스틱 다시 사용할 수 있게 하기.
+        DataController.instance_DataController.joyStick.gameObject.SetActive(true);
+
+        /* 웨이포인트 완료하면 그때 쓰기!! 
+        end.transform.position = recentReferVar.transform.position + new Vector3(23.0f, 0, -8.0f);
+        end.SetActive(true);
+        clearBox.transform.position = end.transform.position + new Vector3(2.0f,0,-13.0f);
+        */
+
+    }
+
+    // 점프버튼 누르면 실행되는 함수
+    public void JumpBtn() {
+        if (transform.name == "RunGameManager") { // RunGamManager 오브젝트에서만 실행되도록
+            if (speat.ctrl.isGrounded)
+            {
+                clickJump = true;
+            }
+        }
+
+    }
+
+    // 스킬버튼 누르면 실행되는 함수
+    public void SkillBtn() {
+        if (transform.name == "ObstacleCollider") // ObstacleCollider 오브젝트에서만 실행되도록
+        {
+            StartCoroutine(Skill(1.0f));
+        }
+    }
+
+    private void OnTriggerEnter(Collider other) // *!공부! 이거 반응하려면 rigidbody 컴포넌트 추가해야돼
+    {
+        // 프리팹 변경할 때 쓰임
+        if (transform.name == "RunGameManager")
+        {
+            SetPrefab(other.gameObject.transform.parent.parent.gameObject);
+        }
+
+        // 장애물 충돌 여부 확인할 때 쓰임.
+        if (transform.name == "ObstacleCollider" && other.CompareTag("Obstacle") && !inConflict)
+        {
+            inConflict = true;
+            if (other.transform.parent.name == "Small")
+            {
+                runGameManagerInstance.distance -= speedWithSmallObstacle;
+                StartCoroutine(SlowDownSpeed(1.0f, settedSpeatSpeed - speedWithSmallObstacle)); // 1.0f초동안 스핏의 속도는 5.0m/s로
+                //print("★conflict with Small && speatSpeed is: " + runGameManagerInstance.speatSpeed);
+
+            }
+            else if (other.transform.parent.name == "Big")
+            {
+                runGameManagerInstance.distance -= speedWithBigObstacle;
+                StartCoroutine(SlowDownSpeed(1.0f, settedSpeatSpeed - speedWithBigObstacle)); // 1.0f초동안 스핏의 속도는 7.0m/s로
+                //print("♥conflict with Big && speatSpeed is: " + runGameManagerInstance.speatSpeed);
+
+            }
+        }
+    }
+
+    IEnumerator SlowDownSpeed(float waitTime, float reducedSpeed) { // waitTime동안 reduceSpeed로 스핏 속도 줆.
+        // ☆ slowEffectCoroutine = StartCoroutine(SlowEffect());
+        //speatRenderer.material.color = new Color(speatRenderer.material.color.r, speatRenderer.material.color.g, speatRenderer.material.color.b, 0.1f);
+        //speatRenderer.material.color = new Color(0, 0, 0, 0.1f);
+        runGameManagerInstance.speatSpeed = reducedSpeed;
+        yield return new WaitForSeconds(waitTime);
+        // ☆ StopCoroutine(slowEffectCoroutine);
+        runGameManagerInstance.speatSpeed = settedSpeatSpeed;
+        inConflict = false;
+    }
+
+    IEnumerator Skill(float waitTime) { // waitTime동안 skill사용(콜라이더 없앴다가 나타나게)
+        boxColliderInstance.enabled = false;
+        yield return new WaitForSeconds(waitTime);
+        boxColliderInstance.enabled = true;
+    }
+
+    IEnumerator ReStartGame()
+    {
+        reStartText.gameObject.SetActive(true);
+
+        reStartText.text = "3";
+        yield return new WaitForSeconds(1);
+
+        reStartText.text = "2";
+        yield return new WaitForSeconds(1);
+
+        reStartText.text = "1";
+        yield return new WaitForSeconds(1);
+
+        reStartText.text = "Start!";
+        yield return new WaitForSeconds(1);
+
+        reStartText.gameObject.SetActive(false);
+
+        timer = 60.0f; // 다시 타이머 60초로 설정.
+        distance = 25; // 다시 distacne를 25로 설정.
+        one.SetActive(false);
+        two.SetActive(false);
+        three.SetActive(false);
+        SetPrefab(); // 다시 프리팹 설정
+        isStopMapPrefab = false; // 다시 프리팹 움직이게 ㄱㄱ
+        isGameOver = false;
+
+    }
+
+    IEnumerator SlowEffect() { // waitTime동안 투명<->반투명 왔다리 갔다리
+        while (true) {
+            speatRenderer.material.color = new Color(speatRenderer.material.color.r, speatRenderer.material.color.g, speatRenderer.material.color.b, 0.1f);
+            yield return new WaitForSeconds(0.1f);
+            speatRenderer.material.color = new Color(speatRenderer.material.color.r, speatRenderer.material.color.g, speatRenderer.material.color.b, 1.0f);
+        }
+    }
+
+    // 기타 함수들.
     // 중복없는 난수 배열 받는 함수.
     private int[] GetRandomInt(int length, int min, int max)
     {
@@ -180,11 +393,7 @@ public class RunGameManager : MonoBehaviour
         }
 
         return randomArr;
-    }
 
-    private void OnTriggerEnter(Collider other) // *!공부! 이거 반응하려면 rigidbody 컴포넌트 추가해야돼
-    {
-        SetPrefab(other.gameObject.transform.parent.parent.gameObject);
     }
 
 }
