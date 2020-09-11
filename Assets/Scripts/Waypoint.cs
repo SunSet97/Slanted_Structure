@@ -6,7 +6,7 @@ public class Waypoint : MonoBehaviour
 {
     private Joystick joyStick; //조이스틱
     private Transform character; //선택된 캐릭터
-    private Transform[] waypointArray; //waypoint 배열
+    public Transform[] waypointArray; //waypoint 배열
 
     public float checkingDistance = 0.3f; //check 가능한 거리
     public Vector3 moveTo = Vector3.zero; //waypoint간 이동 방향 벡터

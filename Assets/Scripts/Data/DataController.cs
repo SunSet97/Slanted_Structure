@@ -41,13 +41,13 @@ public class DataController : MonoBehaviour
     public Transform commandSprite;
     public MapData currentMap;
     public string mapCode;
-    public string storyCode; // 스토리 코드 (성아)
     public string playMethod; //2D 플랫포머(2D Platformer)=Plt, 쿼터뷰(Quarter view)=Qrt, 라인트레이서(Line tracer)=Line
 
     // 카메라 projecton orthographic에서 perspective로 전환될 때 필요
     float originOrthoSize;
     float originCamDis_y;
 
+    #region 싱글톤
     //인스턴스화
     private static DataController instance = null;
     public static DataController instance_DataController
@@ -68,6 +68,7 @@ public class DataController : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(this.gameObject);
     }
+    #endregion
 
     void Start()
     {
@@ -87,7 +88,7 @@ public class DataController : MonoBehaviour
         FindMap();
 
         // 카메라 projction을 orthographic으로 전환. 그리고 camDis_y = 1로 변경 (스핏 오피스텔)
-        if (mapCode.Equals("010101") && cam.orthographic.Equals(false))
+        if (mapCode.Equals("002010") && cam.orthographic.Equals(false))
         {
             cam.orthographic = true;
             originOrthoSize = cam.orthographicSize;
@@ -104,7 +105,7 @@ public class DataController : MonoBehaviour
 
     }
 
-    public bool isMapChanged = false;
+    public bool isMapChanged = false; // 맵 변경 여부
     //맵 코드에 맞는 맵을 찾아서 정보 저장
     void FindMap()
     {
@@ -131,8 +132,11 @@ public class DataController : MonoBehaviour
                 {
                     // 이동 가능한 상태로 변경
                     speat.isControlled = false;
+                    speat.GetComponent<Animator>().applyRootMotion=false;
                     oun.isControlled = false;
+                    oun.GetComponent<Animator>().applyRootMotion = false;
                     rau.isControlled = false;
+                    rau.GetComponent<Animator>().applyRootMotion = false;
 
                     // 해당되는 캐릭터 이동
                     MapData.CharacterPositionSet temp = maps[i].positionSets.Find(item => item.posSet.gameObject.activeSelf == true);
@@ -153,7 +157,7 @@ public class DataController : MonoBehaviour
 
                     isMapChanged = false;
 
-                    Invoke("SetControlled", 0.2f); // 일정 시간 딜레이 후 적용해야 위치 변경이 제대로 적용됨
+                    Invoke("SetControlled", 0.5f); // 일정 시간 딜레이 후 적용해야 위치 변경이 제대로 적용됨
                     // 나중에 주석 풀 코드
                     // 추후에 튜토리얼 맵 이름 확정되면 사용될 함수 (튜토리얼 지시문 데이터 불러오기)
                     //if (mapCode == "라우 튜토리얼 맵코드" || mapCode == "스핏튜토리얼 맵코드")
@@ -169,13 +173,13 @@ public class DataController : MonoBehaviour
 
     void SetControlled()
     {
-        if (!isMapChanged)
-        {
-            // 조작 가능한 상태로 변경 (중력 적용)
-            speat.isControlled = speat.isSelected;
-            oun.isControlled = oun.isSelected;
-            rau.isControlled = rau.isSelected;
-        }
+        // 조작 가능한 상태로 변경 (중력 적용)
+        speat.isControlled = speat.isSelected;
+        speat.GetComponent<Animator>().applyRootMotion = true;
+        oun.isControlled = oun.isSelected;
+        oun.GetComponent<Animator>().applyRootMotion = true;
+        rau.isControlled = rau.isSelected;
+        rau.GetComponent<Animator>().applyRootMotion = true;
     }
 
     // 게임 진행에 필요한 콜라이더와 이미지를 획득
@@ -319,6 +323,7 @@ public class DataController : MonoBehaviour
 
     }
 
+    // 캐릭터 데이터 저장
     public void SaveCharData(string fileName)
     {
         string ToJsonData = JsonUtility.ToJson(charData);
