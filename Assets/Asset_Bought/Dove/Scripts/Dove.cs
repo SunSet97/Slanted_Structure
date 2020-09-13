@@ -6,7 +6,7 @@ public class Dove : MonoBehaviour
 {
     private Animator dove;
     public GameObject MainCamera;
-
+    public MiniGameManager miniGameManager;
 
 	void Start ()
     {
@@ -41,7 +41,7 @@ public class Dove : MonoBehaviour
             dove.SetBool("walk", true);
             dove.SetBool("idle", false);
         }
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || miniGameManager.flyTrigger)
         {
             dove.SetBool("takeoff", true);
             dove.SetBool("idle", false);

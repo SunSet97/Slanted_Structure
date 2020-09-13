@@ -8,7 +8,7 @@ public class Particle : MonoBehaviour
     public CharacterManager rau;
     public Vector3 offset;
     bool check;
-    public GameManager miniGameManager;
+    public MiniGameManager miniGameManager;
 
     void Start()
     {
