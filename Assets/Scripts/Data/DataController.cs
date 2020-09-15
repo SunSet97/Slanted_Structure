@@ -104,6 +104,14 @@ public class DataController : MonoBehaviour
         }*/
 
     }
+    public void Cinematic()//시네마틱 씬 로드
+    {
+        SceneManager.LoadScene("Cinematic");
+    }
+    public void IngameScene()//인게임 씬 로드
+    {
+        SceneManager.LoadScene("IngameScene");
+    }
 
     public bool isMapChanged = false; // 맵 변경 여부
     //맵 코드에 맞는 맵을 찾아서 정보 저장

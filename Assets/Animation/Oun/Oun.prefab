@@ -563,6 +563,8 @@ GameObject:
   - component: {fileID: 8262837916386365579}
   - component: {fileID: 2169784356024022780}
   - component: {fileID: 8306860977858711906}
+  - component: {fileID: 3388902659389314609}
+  - component: {fileID: 2790930249050833311}
   m_Layer: 0
   m_Name: Oun
   m_TagString: Untagged
@@ -617,7 +619,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93f708f251cd1844c80898b6db03c2a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  emotion_present: 0
+  Char_talking: {fileID: 0}
   anim: {fileID: 8262837916386365579}
+  material_face: []
 --- !u!143 &8306860977858711906
 CharacterController:
   m_ObjectHideFlags: 0
@@ -636,6 +641,54 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &3388902659389314609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3060799953339469794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d118c85c31802a4cb953ad3cb507dc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2790930249050833311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3060799953339469794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9c4a0858fe02bf489eed97d0f37c22b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joyStick: {fileID: 0}
+  ctrl: {fileID: 0}
+  Anim_Controller: {fileID: 0}
+  moveHorDir: {x: 0, y: 0, z: 0}
+  moveVerDir: {x: 0, y: 0, z: 0}
+  isControlled: 0
+  isSelected: 0
+  isExisted: 1
+  isAbility: 0
+  cam: {fileID: 0}
+  Speed: 0
+  maxMoveSpeed: 3
+  moveAcceleration: 14
+  airResistance: 1.2
+  frictionalForce: 4
+  isJump: 0
+  jumpForce: 3.8
+  gravityScale: 0.6
+  isDie: 0
+  splitTest: 0
+  camRotation: {x: 0, y: 0, z: 0, w: 0}
+  moveSpeed: 0
+  unitVector: {x: 0, y: 0, z: 0}
+  normalizing: 0
 --- !u!1 &3212682038295569169
 GameObject:
   m_ObjectHideFlags: 0

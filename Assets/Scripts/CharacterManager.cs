@@ -8,9 +8,9 @@ public class CharacterManager : MonoBehaviour
     public Joystick joyStick; // 조이스틱
     public CharacterController ctrl; // 캐릭터컨트롤러
     private Animator anim; // 애니메이션
+    public Animation_Controller Anim_Controller;//애니메이션 컨트롤러
 
     private CanvasControl canvasCtrl;
-
     public Vector3 moveHorDir = Vector3.zero, moveVerDir = Vector3.zero;    // 수평, 수직 이동 방향 벡터
 
     private IEnumerator dieAction;
