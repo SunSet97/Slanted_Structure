@@ -17,7 +17,7 @@ public class NPCInteractor : MonoBehaviour
     {
         canvasCtrl = CanvasControl.instance_CanvasControl;
         FindNPC();
-        
+    
     }
 
     void Update()

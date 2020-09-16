@@ -8,9 +8,9 @@ public class CharacterManager : MonoBehaviour
     public Joystick joyStick; // 조이스틱
     public CharacterController ctrl; // 캐릭터컨트롤러
     private Animator anim; // 애니메이션
+    public Animation_Controller Anim_Controller;//애니메이션 컨트롤러
 
     private CanvasControl canvasCtrl;
-
     public Vector3 moveHorDir = Vector3.zero, moveVerDir = Vector3.zero;    // 수평, 수직 이동 방향 벡터
 
     private IEnumerator dieAction;
@@ -114,17 +114,17 @@ public class CharacterManager : MonoBehaviour
         else anim.SetBool("180Turn", false);
         anim.SetFloat("Direction", joyRot); //X방향
         anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed
-
+        
         //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
-        if (isSelected && joyStick.Vertical > 0.5f && ctrl.isGrounded && playMethod != "Qrt")
-            isJump = true;  //점프 가능 상태로 변경
+        if (isSelected && DataController.instance_DataController.inputJump && ctrl.isGrounded && playMethod != "Qrt")
+            anim.SetBool("Jump", true);  //점프 가능 상태로 변경
 
         //캐릭터 선택중일때 점프 가능
-        if ((isSelected && !isDie) && DataController.instance_DataController.inputJump && isJump)
+        if ((isSelected && !isDie) && DataController.instance_DataController.inputJump && anim.GetBool("Jump"))
         {
             moveVerDir.y += jumpForce; //점프력 만큼 힘을 가함
 
-            isJump = false; //점프 불가능 상태로 변경하여 연속적인 점프 제한
+            anim.SetBool("Jump", false); //점프 불가능 상태로 변경하여 연속적인 점프 제한
         }
 
         //땅에서 떨어져 있을 경우 기본적으로 중력이 적용되고 중력은 가속도이므로 +=를 써서 계속해서 더해줌

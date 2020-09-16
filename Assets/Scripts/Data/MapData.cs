@@ -21,9 +21,9 @@ public class MapData : MonoBehaviour
         AllDirection
     }
 
-    [TextArea]
+    [TextArea(7,int.MaxValue)]
     [SerializeField]
-    private string scriptDesription = "맵 자동 생성 및 맵 정보 포함 스크립트이며\n인스펙터 창에서 각각의 이름에 마우스를 갖다대면 설명을 볼 수 있습니다.\n(Edit mode에서도 바로 사용 가능)";
+    private string scriptDesription = "맵 자동 생성 및 맵 정보 포함 스크립트이며\n인스펙터 창에서 각각의 이름에 마우스를 갖다대면 설명을 볼 수 있습니다.\n(Edit mode에서도 바로 사용 가능)";    
     #endregion
 
     #region 맵 설정
@@ -34,12 +34,8 @@ public class MapData : MonoBehaviour
     public JoystickInputMethod method; // 맵의 조이스틱 입력 방식
     [Tooltip("이 맵의 클리어 여부입니다.")]
     public bool isMapClear; // 맵 종료 여부
-    [Tooltip("클리어시 넘어갈 다음 맵의 에피소드 추가 변수입니다.")]
-    public int episode = 1; // 맵의 에피소드 추가 변수
-    [Tooltip("클리어시 넘어갈 다음 맵의 스토리 추가 변수입니다.")]
-    public int story = 1; // 맵의 스토리 추가 변수
-    [Tooltip("클리어시 넘어갈 다음 맵의 분기 추가 변수입니다.")]
-    public int sequence = 1; // 맵의 분기 추가 변수
+    [Tooltip("클리어시 넘어갈 다음 맵의 맵 코드입니다.")]
+    public string nextMapcode = "000000"; // 클리어시 넘어갈 다음 맵의 코드
     [Space(15)]
     [Tooltip("맵의 이름은 사용자가 원하는 대로 변경하면 되며 맵 구성 어셋들은 이 오브젝트의 자식으로 설정해주면 됩니다.")]
     public GameObject map; // auto setting
@@ -66,7 +62,7 @@ public class MapData : MonoBehaviour
     // 조이스틱 입력 설정
     void JoystickInputSetting(bool isOn)
     {
-        if (DataController.instance_DataController.joyStick != null && isOn && mapCode != "000000")
+        if (DataController.instance_DataController.joyStick != null && isOn)
         {
             Vector2 inputDir = Vector2.zero;
             // 입력 방식에 따라 입력 값 분리
@@ -95,10 +91,10 @@ public class MapData : MonoBehaviour
         if (mapCode.Length == 6)
         {
             int tempEpisode, tempStory, tempSeqence = 0;
-            tempEpisode = int.Parse(mapCode) / 10000 * 500;
-            tempStory = (int.Parse(mapCode) / 100 - int.Parse(mapCode) / 10000 * 100) * 500;
-            tempSeqence = (int.Parse(mapCode) - int.Parse(mapCode) / 100 * 100) * 500;
-            this.transform.position = new Vector3(tempEpisode, tempStory, tempSeqence);
+            tempEpisode = int.Parse(mapCode) / 10000;
+            tempStory = int.Parse(mapCode) / 100 - tempEpisode * 100;
+            tempSeqence = int.Parse(mapCode) - int.Parse(mapCode) / 100 * 100;
+            this.transform.position = new Vector3(tempEpisode, tempStory, tempSeqence) * 500;
         }
     }
 
@@ -114,20 +110,21 @@ public class MapData : MonoBehaviour
             // 스토리 코드에 맞는 것만 활성화
             foreach (CharacterPositionSet Item in positionSets)
             {
-                if (Item.storyCode == DataController.instance_DataController.storyCode)
+                if (Item.index == posIndex)
                     Item.posSet.gameObject.SetActive(true);
                 else
                     Item.posSet.gameObject.SetActive(false);
             }
 
-            JoystickInputSetting(map.activeSelf); // 조이스틱 설정 적용
+            JoystickInputSetting(DataController.instance_DataController.mapCode == mapCode); // 조이스틱 설정 적용
 
             isMapClear = positionSets.Exists(item => item.clearBox.GetComponent<CheckMapClear>().isClear); // 클리어 판정인게 하나라도 있으면 맵 클리어 처리
             // 다음맵으로 넘어가도록 맵 코드 변경
             if (isMapClear)
             {
+                posIndex++; // 맵 방문 횟수 증가
                 DataController.instance_DataController.isMapChanged = true; // 맵 클리어 감지
-                DataController.instance_DataController.mapCode = string.Format("{0:00}{1:00}{2:00}", episode, story, sequence); // 맵 코드 변경
+                DataController.instance_DataController.mapCode = string.Format("{0:000000}", nextMapcode); // 맵 코드 변경
                 foreach (CharacterPositionSet Item in positionSets) Item.clearBox.GetComponent<CheckMapClear>().isClear = false; // 맵 클리어 트리거 초기화
             }
         }
@@ -150,7 +147,7 @@ public class MapData : MonoBehaviour
     [Serializable]
     public class CharacterPositionSet
     {
-        public string storyCode;        // 스토리 코드
+        public int index;               // 시작위치 순서
         public Character who;           // 누군지
         public Transform startPosition; // 시작 위치
         public Transform clearBox;      // 클리어 박스
@@ -159,11 +156,12 @@ public class MapData : MonoBehaviour
 
     [Tooltip("각각의 캐릭터의 시작위치와 목표위치를 설정하세요.")]
     public List<CharacterPositionSet> positionSets; // auto setting
+    private int posIndex = 0; // 시작위치 순서
 
-    // 스토리 코드에 따라 위치 설정들 보기 편하고 일관성 있게 리스트 정렬
+    // 인덱스에 따라 위치 설정들 보기 편하고 일관성 있게 리스트 정렬
     void SortPositionSets()
     {
-        positionSets.Sort(delegate (CharacterPositionSet A, CharacterPositionSet B) { if (int.Parse(A.storyCode) > int.Parse(B.storyCode)) return 1; else return -1; });
+        positionSets.Sort(delegate (CharacterPositionSet A, CharacterPositionSet B) { if (A.index > B.index) return 1; else return -1; });
     }
 
     // 캐릭터 위치 설정 생성
@@ -178,7 +176,8 @@ public class MapData : MonoBehaviour
         Transform instant = new GameObject().transform;
         // 포지션 세팅 오브젝트 설정
         temp.posSet = Instantiate(instant, positionSetting.transform.position, Quaternion.identity, positionSetting.transform) as Transform;
-        temp.storyCode = "000000";
+        // 인덱스 설정
+        temp.index = positionSets.Count;
         // 캐릭터 설정
         temp.who = createWho;
         // 시작 위치 설정
@@ -224,7 +223,7 @@ public class MapData : MonoBehaviour
     void PositionSettingUpdate()
     {
         // 스토리 코드에 따라 이름 변경
-        foreach (CharacterPositionSet Item in positionSets) Item.posSet.name = Item.storyCode;
+        foreach (CharacterPositionSet Item in positionSets) Item.posSet.name = Item.index.ToString() + " Position";
         // 누구냐에 따라
         foreach (CharacterPositionSet Item in positionSets)
         {
@@ -243,15 +242,6 @@ public class MapData : MonoBehaviour
     public Vector3 camRot;  // 캐릭터와 카메라와의 거리 
     public string playMethod; // 아직 지우면 안됨 
 
-    [Space(40)]
-    [ContextMenuItem("All Off", "AllOffDebug")]
-    [ContextMenuItem("All On", "AllOnDebug")]
-    [ContextMenuItem("On&Off/Position Setting", "PosOnOffDebug")]
-    [ContextMenuItem("On&Off/UI", "UIOnOffDebug")]
-    [ContextMenuItem("On&Off/Map", "MapOnOffDebug")]
-    [Tooltip("Edit mode에서 편리한 기능을 사용할 수 있습니다.")]
-    [SerializeField] private string ForDebuging = "인스펙터의 이름을 우클릭해주세요"; // 디버깅 세팅
-
     void Start()
     {
         cam = Camera.main;
@@ -268,6 +258,15 @@ public class MapData : MonoBehaviour
     }
 
     #region 디버깅용
+    [Space(40)]
+    [ContextMenuItem("All Off", "AllOffDebug")]
+    [ContextMenuItem("All On", "AllOnDebug")]
+    [ContextMenuItem("On&Off/Position Setting", "PosOnOffDebug")]
+    [ContextMenuItem("On&Off/UI", "UIOnOffDebug")]
+    [ContextMenuItem("On&Off/Map", "MapOnOffDebug")]
+    [Tooltip("Edit mode에서 편리한 기능을 사용할 수 있습니다.")]
+    [SerializeField] private string ForDebuging = "인스펙터의 이름을 우클릭해주세요"; // 디버깅 세팅
+
     void MapOnOffDebug() { if (map != null) map.SetActive(!map.activeSelf); } // 맵을 키고 끔
     void UIOnOffDebug() { if (ui != null) ui.SetActive(!ui.activeSelf); } // 맵 전용 UI가 있을 경우 UI 키고 끔
     private bool isOnGizmo = true; void PosOnOffDebug() { isOnGizmo = !isOnGizmo; } // 위치 설정 기즈모를 키고 끔
