@@ -11,6 +11,7 @@ public class CharacterManager : MonoBehaviour
     public Animation_Controller Anim_Controller;//애니메이션 컨트롤러
 
     private CanvasControl canvasCtrl;
+
     public Vector3 moveHorDir = Vector3.zero, moveVerDir = Vector3.zero;    // 수평, 수직 이동 방향 벡터
 
     private IEnumerator dieAction;
@@ -88,8 +89,28 @@ public class CharacterManager : MonoBehaviour
         if (swipeGrass && ctrl.enabled == false && canvasCtrl.finishFadeIn) SwipeGrass();
     }
 
-    #region ToDo(Delete)
-    
+    // 캐릭터를 스크립트로 직접 이동할 수 있게 함 (캐릭터를 손으로 집는다고 생각)
+    public void PickUpCharacter()
+    {
+        isControlled = false;
+        anim.applyRootMotion = false;
+    }
+
+    // 캐릭터를 스크립트로 직접 이동할 수 있게 함 (캐릭터를 손으로 집는다고 생각)
+    public void PutDownCharacter()
+    {
+        isControlled = isSelected;
+        anim.applyRootMotion = true;
+    }
+
+    // 일정 시간 후 캐릭터를 조이스틱으로 움직이게 함
+    public void UseJoystickCharacter()
+    {
+        Invoke("PutDownCharacter", 0.5f);
+    }
+
+    #region ToDo
+
     private void FixedUpdate()
     {
         if (splitTest)
@@ -114,7 +135,7 @@ public class CharacterManager : MonoBehaviour
         else anim.SetBool("180Turn", false);
         anim.SetFloat("Direction", joyRot); //X방향
         anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed
-        
+
         //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
         if (isSelected && DataController.instance_DataController.inputJump && ctrl.isGrounded && playMethod != "Qrt")
             anim.SetBool("Jump", true);  //점프 가능 상태로 변경
@@ -141,7 +162,7 @@ public class CharacterManager : MonoBehaviour
     {
         if (splitTest)
             return;
-        
+
         // 게임진행에 관련된 콜라이더일 경우
         if (other.gameObject.transform.parent.name == "ProgressCollider")
         {
@@ -236,7 +257,7 @@ public class CharacterManager : MonoBehaviour
                 if (other.gameObject.name == "ActiveInteraction")
                 {
                     canvasCtrl.isGoNextStep = false;
-                    for (int i= 0; i < listLen; i++)
+                    for (int i = 0; i < listLen; i++)
                     {
                         list.activeList[i].GetComponent<InteractObjectControl>().isInteractable = true;
                     }

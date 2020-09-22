@@ -18,12 +18,13 @@ public class MapData : MonoBehaviour
     public enum JoystickInputMethod
     {
         OneDirection,
-        AllDirection
+        AllDirection,
+        Other
     }
 
-    [TextArea(7,int.MaxValue)]
+    [TextArea(7, int.MaxValue)]
     [SerializeField]
-    private string scriptDesription = "맵 자동 생성 및 맵 정보 포함 스크립트이며\n인스펙터 창에서 각각의 이름에 마우스를 갖다대면 설명을 볼 수 있습니다.\n(Edit mode에서도 바로 사용 가능)";    
+    private string scriptDesription = "맵 자동 생성 및 맵 정보 포함 스크립트이며\n인스펙터 창에서 각각의 이름에 마우스를 갖다대면 설명을 볼 수 있습니다.\n(Edit mode에서도 바로 사용 가능)";
     #endregion
 
     #region 맵 설정
@@ -75,7 +76,7 @@ public class MapData : MonoBehaviour
             {
                 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
             }
-            DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
+            if (method != JoystickInputMethod.Other) DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
             DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
         }
     }
@@ -156,7 +157,7 @@ public class MapData : MonoBehaviour
 
     [Tooltip("각각의 캐릭터의 시작위치와 목표위치를 설정하세요.")]
     public List<CharacterPositionSet> positionSets; // auto setting
-    private int posIndex = 0; // 시작위치 순서
+    public int posIndex = 0; // 시작위치 순서
 
     // 인덱스에 따라 위치 설정들 보기 편하고 일관성 있게 리스트 정렬
     void SortPositionSets()
@@ -247,7 +248,7 @@ public class MapData : MonoBehaviour
         cam = Camera.main;
         CreateDefaultSetting();
     }
-    
+
     void Update()
     {
         // Edit / Play mode에서 업데이트

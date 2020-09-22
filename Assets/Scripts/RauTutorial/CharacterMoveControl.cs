@@ -13,7 +13,7 @@ public enum PlayMethod
 public class CharacterMoveControl : MonoBehaviour
 {
     private CharacterManager _cm;
-    
+
     void Start()
     {
         _cm = GetComponent<CharacterManager>();
@@ -21,7 +21,7 @@ public class CharacterMoveControl : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(_cm.isControlled)
+        if (_cm.isControlled)
             Movement(PlayMethod.Plt);
     }
 
@@ -33,7 +33,7 @@ public class CharacterMoveControl : MonoBehaviour
         _cm.moveSpeed = Mathf.Sqrt(_cm.moveHorDir.x * _cm.moveHorDir.x + _cm.moveHorDir.z * _cm.moveHorDir.z);
         _cm.unitVector = Vector3.zero;                                                          //이동 방향 기준 단위 벡터
         _cm.normalizing = 0;
-        
+
         calculJoystick(pMethod);
         checkSpeed();
         checkJump(pMethod);
@@ -53,16 +53,16 @@ public class CharacterMoveControl : MonoBehaviour
                     _cm.unitVector = _cm.camRotation * (Vector3.right * _cm.joyStick.Horizontal).normalized;
                 _cm.normalizing = Mathf.Abs(_cm.joyStick.Horizontal);
                 break;
-            case PlayMethod.Line:
+            /*case PlayMethod.Line:
                 if (_cm.joyStick.Horizontal == 0 && _cm.joyStick.Vertical == 0)
                     _cm.unitVector = _cm.moveHorDir.normalized; // 현재 움직이는 방향이 마지막으로 입력된 정방향
                 else
                     _cm.unitVector = (FindObjectOfType<Waypoint>().moveTo * _cm.joyStick.Horizontal).normalized;
                 _cm.normalizing = Mathf.Abs(_cm.joyStick.Horizontal);
-                break;
+                break;*/
             case PlayMethod.Qrt:
                 var _xz = new Vector3(_cm.joyStick.Horizontal, 0, _cm.joyStick.Vertical);
-                
+
                 if (_cm.joyStick.Horizontal == 0 && _cm.joyStick.Vertical == 0)
                     _cm.unitVector = _cm.moveHorDir.normalized; // 현재 움직이는 방향이 마지막으로 입력된 정방향
                 else
@@ -76,7 +76,7 @@ public class CharacterMoveControl : MonoBehaviour
     {
         if (_cm.moveSpeed <= _cm.maxMoveSpeed)
         {
-            if(!_cm.isSelected || _cm.isDie) _cm.normalizing = 0.0f;
+            if (!_cm.isSelected || _cm.isDie) _cm.normalizing = 0.0f;
             if (!_cm.ctrl.isGrounded) _cm.normalizing *= 0.2f;
             _cm.moveHorDir += _cm.unitVector * _cm.normalizing * _cm.moveAcceleration * Time.deltaTime;
         }
@@ -95,7 +95,7 @@ public class CharacterMoveControl : MonoBehaviour
             _cm.isJump = false;
         }
     }
-    
+
     public void calculResistance()
     {
         float resistanceValue = getResistanceValue();
@@ -108,7 +108,7 @@ public class CharacterMoveControl : MonoBehaviour
                 _cm.moveHorDir += _cm.unitVector * resistanceValue * Time.deltaTime;
         }
     }
-    
+
     public void calculGravity()
     {
         if (!_cm.ctrl.isGrounded || _cm.isDie)
@@ -118,13 +118,13 @@ public class CharacterMoveControl : MonoBehaviour
     public void finalMove()
     {
         //if (DataController.instance_DataController.isMapChanged == false)
-            _cm.ctrl.Move((_cm.moveHorDir + _cm.moveVerDir) * Time.deltaTime);
+        _cm.ctrl.Move((_cm.moveHorDir + _cm.moveVerDir) * Time.deltaTime);
     }
 
     public float getResistanceValue()
     {
         return _cm.ctrl.isGrounded ? _cm.frictionalForce : _cm.airResistance;
     }
-    
+
     #endregion
 }

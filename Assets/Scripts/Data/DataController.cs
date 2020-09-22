@@ -104,10 +104,12 @@ public class DataController : MonoBehaviour
         }*/
 
     }
+
     public void Cinematic()//시네마틱 씬 로드
     {
         SceneManager.LoadScene("Cinematic");
     }
+
     public void IngameScene()//인게임 씬 로드
     {
         SceneManager.LoadScene("IngameScene");
@@ -139,24 +141,24 @@ public class DataController : MonoBehaviour
                 if (maps[i].mapCode == mapCode && isMapChanged)
                 {
                     // 이동 가능한 상태로 변경
-                    speat.isControlled = false;
-                    speat.GetComponent<Animator>().applyRootMotion=false;
-                    oun.isControlled = false;
-                    oun.GetComponent<Animator>().applyRootMotion = false;
-                    rau.isControlled = false;
-                    rau.GetComponent<Animator>().applyRootMotion = false;
+                    speat.PickUpCharacter();
+                    oun.PickUpCharacter();
+                    rau.PickUpCharacter();
 
-                    // 해당되는 캐릭터 이동
-                    MapData.CharacterPositionSet temp = maps[i].positionSets.Find(item => item.posSet.gameObject.activeSelf == true);
-                    if (temp.who == MapData.Character.Speat) speat.transform.position = temp.startPosition.position;
-                    if (temp.who == MapData.Character.Oun) oun.transform.position = temp.startPosition.position;
-                    if (temp.who == MapData.Character.Rau) rau.transform.position = temp.startPosition.position;
+                    // 해당되는 모든 캐릭터 이동
+                    for (int k = 0; k < maps[i].positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true).Count; k++)
+                    {
+                        MapData.CharacterPositionSet temp = maps[i].positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true)[k];
+                        if (temp.who == MapData.Character.Speat) speat.transform.position = temp.startPosition.position;
+                        if (temp.who == MapData.Character.Oun) oun.transform.position = temp.startPosition.position;
+                        if (temp.who == MapData.Character.Rau) rau.transform.position = temp.startPosition.position;
+                    }
 
                     // 해당되는 캐릭터 선택
                     speat.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Speat);
                     oun.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Oun);
                     rau.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Rau);
-                    
+
                     cam.transform.position = new Vector3(currentChar.transform.position.x + camDis_x, currentChar.transform.position.y + camDis_y, currentChar.transform.position.z + camDis_z);
 
                     currentMap = maps[i];
@@ -165,7 +167,10 @@ public class DataController : MonoBehaviour
 
                     isMapChanged = false;
 
-                    Invoke("SetControlled", 0.5f); // 일정 시간 딜레이 후 적용해야 위치 변경이 제대로 적용됨
+                    // 조작 가능한 상태로 변경 (중력 적용)
+                    speat.UseJoystickCharacter();
+                    oun.UseJoystickCharacter();
+                    rau.UseJoystickCharacter();
                     // 나중에 주석 풀 코드
                     // 추후에 튜토리얼 맵 이름 확정되면 사용될 함수 (튜토리얼 지시문 데이터 불러오기)
                     //if (mapCode == "라우 튜토리얼 맵코드" || mapCode == "스핏튜토리얼 맵코드")
@@ -177,17 +182,6 @@ public class DataController : MonoBehaviour
             //언제불리는지 확인
             //playMethod = currentMap.GetComponent<MapData>().playMethod; //플레이 방식 설정
         }
-    }
-
-    void SetControlled()
-    {
-        // 조작 가능한 상태로 변경 (중력 적용)
-        speat.isControlled = speat.isSelected;
-        speat.GetComponent<Animator>().applyRootMotion = true;
-        oun.isControlled = oun.isSelected;
-        oun.GetComponent<Animator>().applyRootMotion = true;
-        rau.isControlled = rau.isSelected;
-        rau.GetComponent<Animator>().applyRootMotion = true;
     }
 
     // 게임 진행에 필요한 콜라이더와 이미지를 획득
