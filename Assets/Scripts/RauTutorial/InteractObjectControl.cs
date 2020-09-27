@@ -52,7 +52,10 @@ public class InteractObjectControl : MonoBehaviour
                 {
 
                     if (hit.collider.gameObject.name == "DustTree")
+                    {
                         canvasCtrl.isGoNextStep = true;
+
+                    }
                     // 대화가 끝나기 전까지 다시 대화 불가능하도록 설정
                     canvasCtrl.isPossibleCnvs = false;
 

@@ -246,6 +246,7 @@ public class CanvasControl : MonoBehaviour
     // 게임 진행에 필요한 콜라이더를 활성화 시킨다. 
     public void GoNextStep()
     {
+        print("스텝 확인");
         if (isGoNextStep)
         {
             // 지시문이 열려있으면 페이드 아웃
@@ -264,13 +265,15 @@ public class CanvasControl : MonoBehaviour
         }
     }
 
-    public void setFalse()
-    {
-        if (progressIndex < DataController.instance_DataController.progressColliders.Length)
-        {
-            DataController.instance_DataController.progressColliders[progressIndex].gameObject.SetActive(false);
-        }
-    }
+    //public void setFalse()
+    //{
+    //    print("확인ㅂㅂㅂㅂ");
+    //    if (progressIndex < DataController.instance_DataController.progressColliders.Length)
+    //    {
+    //        print("확인");
+    //        DataController.instance_DataController.progressColliders[progressIndex].gameObject.SetActive(false);
+    //    }
+    //}
 
     CanvasGroup canvasGroup;
     float speed = 0.7f;
