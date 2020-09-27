@@ -56,7 +56,6 @@ public class CharacterManager : MonoBehaviour
         anim = this.GetComponent<Animator>();
 
         canvasCtrl = CanvasControl.instance_CanvasControl;
-        dieAction = DieAction();
         swipeGrass = false;
 
         // 세이브데이터를 불러왔을 경우 저장된 위치로 캐릭터 위치를 초기화
@@ -85,8 +84,8 @@ public class CharacterManager : MonoBehaviour
         // 카메라 설정
         if (!cam && DataController.instance_DataController.cam) cam = DataController.instance_DataController.cam;
 
-        // 라우 튜토리얼 풀 숲 지나갈 때
-        if (swipeGrass && ctrl.enabled == false && canvasCtrl.finishFadeIn) SwipeGrass();
+        //// 라우 튜토리얼 풀 숲 지나갈 때
+        //if (swipeGrass && ctrl.enabled == false && canvasCtrl.finishFadeIn) SwipeGrass();
     }
 
     // 캐릭터를 스크립트로 직접 이동할 수 있게 함 (캐릭터를 손으로 집는다고 생각)
