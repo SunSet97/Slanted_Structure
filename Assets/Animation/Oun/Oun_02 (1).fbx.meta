@@ -1,19 +1,9 @@
 fileFormatVersion: 2
-guid: 1b02fcf26f67a344ab0557779ab346aa
+guid: db5e04952944141459261be65352f2c1
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert1
-    second: {fileID: 2100000, guid: c90f7173854cd264b8dc42dfbb1bc87d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: lambert3
-    second: {fileID: 2100000, guid: 993b8cc06a06d874498a2ddb0526589d, type: 2}
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
@@ -44,7 +34,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.01
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -211,14 +201,6 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: Oun_L_Ankle_jnt
-      humanName: LeftFoot
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
     - boneName: Oun_Spine_jnt
       humanName: Chest
       limit:
@@ -227,65 +209,73 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
+    - boneName: Oun_L_Ankle_jnt
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
     skeleton:
-    - name: Oun(Clone)
+    - name: Oun_02 (1)(Clone)
       parentName: 
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 0.01, y: 0.01, z: 0.01}
     - name: Oun
-      parentName: Oun(Clone)
+      parentName: Oun_02 (1)(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_rig
-      parentName: Oun(Clone)
+      parentName: Oun_02 (1)(Clone)
       position: {x: -0, y: 0, z: -0.026017044}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_L_ikHandle
       parentName: Oun_rig
-      position: {x: -0.14893952, y: -0.000055591598, z: -0.0024832392}
+      position: {x: -0.14893952, y: -0.000055591598, z: -0.002483239}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_R_ikHandle
       parentName: Oun_rig
-      position: {x: 0.14894016, y: -0.000056389214, z: -0.0024832678}
+      position: {x: 0.14894016, y: -0.000056389217, z: -0.0024832678}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_Root_jnt
       parentName: Oun_rig
-      position: {x: -0, y: 0.2857555, z: -0.053773012}
+      position: {x: -0, y: 0.28575546, z: -0.053773012}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_L_Leg_jnt
       parentName: Oun_Root_jnt
-      position: {x: -0.10585663, y: -0.09164248, z: 0.054116707}
+      position: {x: -0.10585663, y: -0.09164248, z: 0.054116704}
       rotation: {x: 0.4089317, y: 0.5703763, z: 0.4684995, w: 0.5366135}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_L_Knee_jnt
       parentName: Oun_L_Leg_jnt
-      position: {x: -0.16667053, y: 0.000000063774614, z: -0.03295865}
-      rotation: {x: 0.9396315, y: 0.33471462, z: 0.00903876, w: -0.0705479}
+      position: {x: -0.16667053, y: 0.00000006377462, z: -0.03295865}
+      rotation: {x: 0.93963146, y: 0.33471474, z: 0.009038803, w: -0.07054789}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_L_Ankle_jnt
       parentName: Oun_L_Knee_jnt
-      position: {x: -0.11205783, y: -0.00000009047731, z: 0.010124719}
+      position: {x: -0.11205783, y: -0.0000000904773, z: 0.010124719}
       rotation: {x: 0.18483944, y: 0.6825206, z: -0.18483944, w: 0.6825207}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_LowerSpine_jnt
       parentName: Oun_Root_jnt
-      position: {x: -0, y: 0.05737683, z: -0.098055065}
+      position: {x: -0, y: 0.057376835, z: -0.098055065}
       rotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_Spine_jnt
       parentName: Oun_LowerSpine_jnt
-      position: {x: 0.16881691, y: 6.475288e-17, z: 0.02835993}
+      position: {x: 0.16881691, y: 6.475288e-17, z: 0.028359931}
       rotation: {x: 0, y: 0, z: 1, w: -0.00013716459}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_Head_jnt
       parentName: Oun_Spine_jnt
-      position: {x: -0.33400002, y: 0.00102717, z: -0.05080239}
+      position: {x: -0.334, y: 0.00102717, z: -0.050802387}
       rotation: {x: 0.99999976, y: -0.00073707005, z: -4.5132522e-20, w: 6.123233e-17}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_Parent_jnt
@@ -295,27 +285,27 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_L_Shoulder_jnt
       parentName: Oun_Spine_jnt
-      position: {x: 0.06268092, y: -0.469, z: 0.04294989}
+      position: {x: 0.06268092, y: -0.46899998, z: 0.04294989}
       rotation: {x: 0, y: 0, z: 0.7070098, w: 0.70720375}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_L_Arm1_jnt
       parentName: Oun_L_Shoulder_jnt
-      position: {x: -0.042147003, y: 0.000063, z: 3.0198067e-16}
-      rotation: {x: 3.4608838e-35, y: -1.4073612e-18, z: -0.011491976, w: 0.99993396}
+      position: {x: -0.042147, y: 0.000063, z: 3.0198064e-16}
+      rotation: {x: 4.0627768e-35, y: -1.4073612e-18, z: -0.011491976, w: 0.99993396}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_L_Arm2_jnt
       parentName: Oun_L_Arm1_jnt
-      position: {x: -0.051634517, y: -0.0010929756, z: -3.0198067e-16}
+      position: {x: -0.051634513, y: -0.0010929755, z: -3.0198064e-16}
       rotation: {x: 0, y: 0, z: 0.0045311246, w: 0.99998975}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_L_Arm3_jnt
       parentName: Oun_L_Arm2_jnt
-      position: {x: -0.05358462, y: -0.00083107105, z: 3.0198067e-16}
+      position: {x: -0.05358462, y: -0.00083107105, z: 3.0198064e-16}
       rotation: {x: 0.000000014898551, y: 2.7891572e-10, z: 0.018717717, w: 0.9998248}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_L_Arm4_jnt
       parentName: Oun_L_Arm3_jnt
-      position: {x: -0.052481074, y: 0.0012093364, z: -3.6041337e-11}
+      position: {x: -0.052481074, y: 0.0012093363, z: -3.604134e-11}
       rotation: {x: -1.0313648e-12, y: -7.2645695e-11, z: -0.014195761, w: 0.99989927}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_L_Arm5_jnt
@@ -325,7 +315,7 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_L_Arm6_jnt
       parentName: Oun_L_Arm5_jnt
-      position: {x: -0.049059, y: 0.000024, z: -3.669278e-11}
+      position: {x: -0.049059, y: 0.000023999999, z: -3.669278e-11}
       rotation: {x: 0.000000047111715, y: -0.0000000014071233, z: -0.009802508, w: 0.99995196}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_L_Wrist1_jnt
@@ -350,17 +340,17 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_R_Shoulder_jnt
       parentName: Oun_Spine_jnt
-      position: {x: 0.06298533, y: 0.469, z: 0.042950194}
+      position: {x: 0.06298533, y: 0.46899998, z: 0.042950194}
       rotation: {x: 0.70720375, y: 0.7070098, z: -4.3291864e-17, w: -4.3303742e-17}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_R_Arm1_jnt
       parentName: Oun_R_Shoulder_jnt
-      position: {x: 0.042147003, y: -0.000063, z: -2.664535e-16}
+      position: {x: 0.042147, y: -0.000063, z: -2.6645354e-16}
       rotation: {x: 3.3615715e-33, y: -1.4073612e-18, z: -0.011491976, w: 0.99993396}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_R_Arm2_jnt
       parentName: Oun_R_Arm1_jnt
-      position: {x: 0.051634517, y: 0.0010929756, z: 2.842171e-16}
+      position: {x: 0.051634513, y: 0.0010929755, z: 2.842171e-16}
       rotation: {x: 9.796687e-21, y: -8.524243e-19, z: 0.0045311246, w: 0.99998975}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_R_Arm3_jnt
@@ -370,7 +360,7 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_R_Arm4_jnt
       parentName: Oun_R_Arm3_jnt
-      position: {x: 0.052481074, y: -0.0012093364, z: 4.0295108e-11}
+      position: {x: 0.052481074, y: -0.0012093363, z: 4.0295108e-11}
       rotation: {x: -1.1530874e-12, y: -8.122036e-11, z: -0.014195761, w: 0.99989927}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_R_Arm5_jnt
@@ -380,7 +370,7 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_R_Arm6_jnt
       parentName: Oun_R_Arm5_jnt
-      position: {x: 0.049059, y: -0.000024, z: 4.0794496e-11}
+      position: {x: 0.049059, y: -0.000023999999, z: 4.0794493e-11}
       rotation: {x: 0.000000046517766, y: -0.0000000014192391, z: -0.009802508, w: 0.99995196}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_Wrist1_jnt
@@ -400,23 +390,23 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_R_Hand2_jnt
       parentName: R_Hand1_jnt
-      position: {x: 0.046741523, y: -0.0031879242, z: 0.0000000048795354}
+      position: {x: 0.046741523, y: -0.0031879242, z: 0.000000004879536}
       rotation: {x: 0.0000007651832, y: -0.000000075695276, z: -0.032965023, w: 0.9994565}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_R_Leg_jnt
       parentName: Oun_Root_jnt
-      position: {x: 0.10585663, y: -0.09164248, z: 0.054116707}
-      rotation: {x: 0.53831714, y: -0.46964332, z: 0.56887746, w: -0.4074657}
+      position: {x: 0.10585663, y: -0.09164248, z: 0.054116704}
+      rotation: {x: 0.53831714, y: -0.46964335, z: 0.56887746, w: -0.40746573}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_R_Knee_jnt
       parentName: Oun_R_Leg_jnt
-      position: {x: 0.16667053, y: -0.000000063774614, z: 0.03295865}
-      rotation: {x: 0.9395869, y: 0.33476076, z: 0.009355961, w: -0.07088151}
+      position: {x: 0.16667053, y: -0.00000006377462, z: 0.03295865}
+      rotation: {x: 0.9395869, y: 0.33476081, z: 0.009355932, w: -0.07088149}
       scale: {x: 1, y: 1, z: 1}
     - name: Oun_R_Ankle_jnt
       parentName: Oun_R_Knee_jnt
       position: {x: 0.11205783, y: 0.00000009026394, z: -0.010124719}
-      rotation: {x: 0.3295746, y: 0.5812018, z: -0.4249054, w: 0.6107704}
+      rotation: {x: 0.32957458, y: 0.5812018, z: -0.42490545, w: 0.61077046}
       scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
@@ -425,7 +415,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 0.01
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
