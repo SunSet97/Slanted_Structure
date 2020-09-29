@@ -563,8 +563,8 @@ GameObject:
   - component: {fileID: 8262837916386365579}
   - component: {fileID: 2169784356024022780}
   - component: {fileID: 8306860977858711906}
-  - component: {fileID: 3388902659389314609}
   - component: {fileID: 2790930249050833311}
+  - component: {fileID: 4097179366436242511}
   m_Layer: 0
   m_Name: Oun
   m_TagString: Untagged
@@ -581,7 +581,7 @@ Transform:
   m_GameObject: {fileID: 3060799953339469794}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 39.4, y: 0, z: 130.7}
-  m_LocalScale: {x: 29.057894, y: 29.057894, z: 29.057894}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 6917388932485526465}
   - {fileID: 8809560474114643361}
@@ -598,8 +598,8 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3060799953339469794}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 1b02fcf26f67a344ab0557779ab346aa, type: 3}
-  m_Controller: {fileID: 9100000, guid: d0335792fb4b52c49a6879fbd64e77ed, type: 2}
+  m_Avatar: {fileID: 9000000, guid: db5e04952944141459261be65352f2c1, type: 3}
+  m_Controller: {fileID: 9100000, guid: 9baa562f7ec27fe4cb5ab8747db11c97, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -635,25 +635,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
+  m_Height: 1.9
   m_Radius: 0.6
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &3388902659389314609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3060799953339469794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d118c85c31802a4cb953ad3cb507dc6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Center: {x: 0, y: 1.1, z: 0}
 --- !u!114 &2790930249050833311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -682,7 +670,7 @@ MonoBehaviour:
   airResistance: 1.2
   frictionalForce: 4
   isJump: 0
-  jumpForce: 3.8
+  jumpForce: 5
   gravityScale: 0.6
   isDie: 0
   splitTest: 0
@@ -690,6 +678,18 @@ MonoBehaviour:
   moveSpeed: 0
   unitVector: {x: 0, y: 0, z: 0}
   normalizing: 0
+--- !u!114 &4097179366436242511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3060799953339469794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d118c85c31802a4cb953ad3cb507dc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3212682038295569169
 GameObject:
   m_ObjectHideFlags: 0

@@ -320,8 +320,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1414552746255533957}
   - component: {fileID: 9019447796197616383}
+  - component: {fileID: 1599497456132845146}
   - component: {fileID: 6258654333580405914}
   - component: {fileID: -9195799792523974044}
+  - component: {fileID: 6933130415955262610}
   m_Layer: 0
   m_Name: Rau
   m_TagString: Untagged
@@ -338,7 +340,7 @@ Transform:
   m_GameObject: {fileID: 2736739290599634326}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 294.9, y: 0, z: 130.7}
-  m_LocalScale: {x: 29.057894, y: 29.057894, z: 29.057894}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 48689280106220438}
   - {fileID: 1756043294353993049}
@@ -355,7 +357,7 @@ Animator:
   m_GameObject: {fileID: 2736739290599634326}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 9625f0921b4e4c54dad0000199a59315, type: 3}
-  m_Controller: {fileID: 9100000, guid: 908544544830a9c4fa84b4182cb1edb3, type: 2}
+  m_Controller: {fileID: 9100000, guid: 815fde08a6e08e447984e7479044aa5a, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -364,6 +366,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1599497456132845146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2736739290599634326}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f708f251cd1844c80898b6db03c2a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emotion_present: 0
+  Char_talking: {fileID: 0}
+  anim: {fileID: 9019447796197616383}
+  material_face: []
 --- !u!143 &6258654333580405914
 CharacterController:
   m_ObjectHideFlags: 0
@@ -375,13 +393,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
+  m_Height: 1.9
   m_Radius: 0.6
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 1.1, z: 0}
 --- !u!114 &-9195799792523974044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,6 +414,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joyStick: {fileID: 0}
   ctrl: {fileID: 0}
+  Anim_Controller: {fileID: 0}
   moveHorDir: {x: 0, y: 0, z: 0}
   moveVerDir: {x: 0, y: 0, z: 0}
   isControlled: 0
@@ -409,14 +428,26 @@ MonoBehaviour:
   airResistance: 1.2
   frictionalForce: 4
   isJump: 0
-  jumpForce: 3.8
+  jumpForce: 5
   gravityScale: 0.6
   isDie: 0
-  splitTest: 1
+  splitTest: 0
   camRotation: {x: 0, y: 0, z: 0, w: 0}
   moveSpeed: 0
   unitVector: {x: 0, y: 0, z: 0}
   normalizing: 0
+--- !u!114 &6933130415955262610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2736739290599634326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d118c85c31802a4cb953ad3cb507dc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3147595187304469851
 GameObject:
   m_ObjectHideFlags: 0

@@ -124,8 +124,8 @@ public class CharacterManager : MonoBehaviour
     {
         // 메인 카메라 기준으로 캐릭터가 바라보는 방향 계산
         camRotation = Quaternion.Euler(0, cam.transform.rotation.eulerAngles.y, 0);
-        Vector3 transformedDir = camRotation * DataController.instance_DataController.speat.transform.forward;
-        characterDir = new Vector2(DataController.instance_DataController.speat.transform.forward.x, DataController.instance_DataController.speat.transform.forward.z);
+        Vector3 transformedDir = camRotation * transform.forward;
+        characterDir = new Vector2(transform.forward.x, transform.forward.z);
         // 조이스틱이 가리키는 방향
         joystickDir = new Vector2(DataController.instance_DataController.inputDirection.x, DataController.instance_DataController.inputDirection.y);
 

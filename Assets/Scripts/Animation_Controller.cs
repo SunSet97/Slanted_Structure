@@ -63,21 +63,20 @@ public class Animation_Controller : MonoBehaviour
          *  아직 입력인식이 따로 없음. 
          *  인터렉션 으로 의자 주변에 있을 때, 의자 자체에 트리거가 활성화 되고, 
          *  터치하면 bool값이 변경되는 것으로 세팅할 필요가 있음!
-         */
         if (anim.GetBool("Seat") == false)//or DataController.instance_DataController.Seat==true
             {
                 anim.SetBool("Seat", true);//앉기
             }
         else
             anim.SetBool("Seat", false);//일어나
-        
+         */
 
         //Dead
-              
-         /*얘도 마찬가지로 죽음 상태를 DataController에 bool값 추가하여
-         플레이어의 상태값을 인지하고 Dead가 true이면 사망 상태의 애니메이션이 활성화되고
-         게임 오버 or 리스폰 할 수 있도록 해야할 듯.*/
-         
+
+        /*얘도 마찬가지로 죽음 상태를 DataController에 bool값 추가하여
+        플레이어의 상태값을 인지하고 Dead가 true이면 사망 상태의 애니메이션이 활성화되고
+        게임 오버 or 리스폰 할 수 있도록 해야할 듯.*/
+
         if (anim.GetBool("Dead")== true)// or  DataController.instance_DataController.Dead==true
         {
             anim.SetBool("Dead", true);//사망
