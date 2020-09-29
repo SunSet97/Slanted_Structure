@@ -18,24 +18,22 @@ public class MiniGameManager : MonoBehaviour
     public GameObject pickPocket;
     public float pickPocketSpeed;
 
-    [Header("Kickboard")]
+    [Header("킥보드")]
     public GameObject kickboardParent;
     Vector3 kickboardDir;
     Vector3 kickboardMovVec;
     bool kickboardLocated = false;
     bool kickboardTrigger = false;
     int kickboardNum;
-    float kickboardSpeed = 3.5f;
+    float kickboardSpeed = 5f;
 
     [Header("Dove")]
     Vector3 flyDir = new Vector3(1, 1, 1);
     float flySpeed = 0.5f;
     public bool flyTrigger = false;
     bool conflictDove = false;
-
-    [Header("boxes")]
-    public GameObject boxParent;
-    int boxGroup = 0;
+    public GameObject doveParent;
+    public List<Vector3> dovesPos = new List<Vector3>();
 
     [Header("Timer")]
     public float timer;
@@ -45,20 +43,42 @@ public class MiniGameManager : MonoBehaviour
     [Header("판정")]
     public float successDistance; // 라우~소매치기 거리가 어느정도 되야 성공하는지.
 
+    [Header("아이템")]
+    //public GameObject itemParent; // 아이템 뭉탱이로 만들 경우 사용!
+    //public List<Transform> items = new List<Transform>(); // 아이템 뭉탱이로 만들 경우 사용!
+    public GameObject item1;
+    public GameObject item2;
+
     bool start = false;
     bool begin = false;
     Coroutine initialCor;
     float tempSpeed;
-    public GameObject peopleParent;
-    int peopleGroup = 0; // 어떤 people그룹인지
+    public GameObject obstacleParent;
+    int ObstacleGroup = 0; // 어떤 people그룹인지
     public bool isStopping = false;
     float initialRauSpeed;
 
-    void Start() {
-        //doves = doveParent.GetComponentInChildren<Transform>(); @비둘기 하나하나 사용할 때 쓰기
+    void Start()
+    {
         //textTimer.gameObject.SetActive(false);
         particle.Play();
         initialRauSpeed = rauSpeed;
+
+        // 비둘기 리스트에 넣기
+        for (int i = 0; i < doveParent.transform.childCount; i++)
+        {
+            dovesPos.Add(doveParent.transform.GetChild(i).transform.position);
+
+        }
+
+        /*
+        // 아이템 뭉탱이로 만들어서 사용할 때! 아이템 리스트에 넣기. 
+        for (int i = 0; i < itemParent.transform.childCount; i++)
+        {
+            items.Add(itemParent.transform.GetChild(i).transform);
+
+        }*/
+
     }
 
     void Update()
@@ -74,10 +94,31 @@ public class MiniGameManager : MonoBehaviour
             transform.position = rau.transform.position + new Vector3(0, 0.5f, 0);
 
             // 파티클 이동
-            particle.transform.position = rau.transform.position + new Vector3(0, 1.5f, 10);
+            particle.transform.position = rau.transform.position + new Vector3(0, 1.5f, 2);
 
             // 라우 이동
             rau.ctrl.Move(new Vector3(0, 0, 1) * rauSpeed * Time.deltaTime);
+
+            if (isStopping) // 라우 멈출 때 슬라이딩? 하는거 방지 (완벽 X)
+            {
+                rau.moveHorDir = Vector3.zero;
+                rau.moveVerDir = Vector3.zero;
+                DataController.instance_DataController.inputDirection.x = 0;
+                DataController.instance_DataController.inputDirection.y = 0;
+            }
+
+
+            /*
+            // 아이템 뭉탱이로 만들어서 사용할 때! 아이템 회전 효과
+            for (int i = 0; i < items.Count ; i++)
+            {
+                items[i].Rotate(0, 2 * Time.deltaTime, 0); // 아이템 회전 속도 2 
+            }*/
+
+            // 아이템 회전 효과
+            item1.transform.Rotate(new Vector3(100, 100, 100) * Time.deltaTime);
+            item2.transform.Rotate(new Vector3(-100, -100, -100) * Time.deltaTime);
+
             // 아이템 먹으면 일정시간 가속 이동
             if (accTrigger)
             {
@@ -108,7 +149,7 @@ public class MiniGameManager : MonoBehaviour
             if (Vector3.Distance(rau.transform.position, pickPocket.transform.position) <= successDistance)
             {
                 Debug.Log("성공.");
-            } 
+            }
             else
             {
                 Debug.Log("실패.");
@@ -175,42 +216,44 @@ public class MiniGameManager : MonoBehaviour
         kickboardLocated = true;
     }
 
-    private void setDoves()
+    private void SetDoves()
     {
-        /*float distance = 0.5f; // 비둘기끼리 따닥따닥 안붙어있게 위치시키기위함.
-        for (int i = 1; i < doves.Length; i++) {
-            doves[i].position = rau.transform.position + new Vector3(0, 0, 15.0f); // 라우와 15정도 떨어진 위치에 위치시키기.
-        } @ 비둘기 따로따로 쓸때, 따로따로 배치하고 싶을 때 사용하기*/
-        //doveParent.transform.position = doveParent.transform.position + new Vector3(0, 0, 20); // 라우와 20 떨어진 위치에 위치시키기. (일단, 뭉탱이로)
+        doveParent.SetActive(true);
+
+        for (int i = 0; i < doveParent.transform.childCount; i++)
+        {
+            //doveParent.transform.GetChild(i).transform.position = doveParent.transform.position;
+            dovesPos[i] = dovesPos[i] + new Vector3(0, 0, 30);
+            doveParent.transform.GetChild(i).transform.position = dovesPos[i];
+        }
+
     }
 
-    private void SetPeople()
+    private void SetObstacles()
     {
         // peopleGroup값이 0이면, 이동시켜야할 people그룹이 "peopleParent"의 첫번째 자식 그룹.
         // peopleGroup값이 1이면, 이동시켜야할 people그룹이 "peopleParent"의 두번째 자식 그룹.
-        Transform nextPeopleGroup = peopleParent.transform.GetChild(peopleGroup).gameObject.transform;
-        nextPeopleGroup.position = nextPeopleGroup.position + new Vector3(0, 0, 30); // 20만큼 떨어진 곳에 위치시키기
+        Transform nextPeopleGroup = obstacleParent.transform.GetChild(ObstacleGroup).gameObject.transform;
+        nextPeopleGroup.position = nextPeopleGroup.position + new Vector3(0, 0, 30); // 30만큼 떨어진 곳에 위치시키기
         // 인덱스 변경
-        if (peopleGroup == 0) peopleGroup = 1;
-        else if (peopleGroup == 1) peopleGroup = 0;
+        if (ObstacleGroup == 0)
+        {
+            ObstacleGroup = 1;
+        }
+        else if (ObstacleGroup == 1)
+        {
+            SetDoves();
+            ObstacleGroup = 0;
 
-    }
+        }
 
-    private void SetBox()
-    {
-        // boxGroup값이 0이면, 이동시켜야할 box그룹이 "peopleParent"의 첫번째 자식 그룹.
-        // boxGroup값이 1이면, 이동시켜야할 box그룹이 "peopleParent"의 두번째 자식 그룹.
-        Transform nextBoxGroup = boxParent.transform.GetChild(boxGroup).gameObject.transform;
-        nextBoxGroup.position = nextBoxGroup.position + new Vector3(0, 0, 85); // 85만큼 떨어진 곳에 위치시키기
-        //인덱스 변경
-        if (boxGroup == 0) boxGroup = 1;
-        else if (boxGroup == 1) boxGroup = 0;
     }
 
     IEnumerator Stop(float time, GameObject other) // 충돌 시 멈춤.
     {
         if (isStopping)//isStopping이 참일 때만 활성화.
         {
+
             DataController.instance_DataController.joyStick.gameObject.SetActive(false); // 조이스틱 없애기
             float tempAcceleration = acceleration;
             //float tempSpeed = rauSpeed;
@@ -222,6 +265,7 @@ public class MiniGameManager : MonoBehaviour
             acceleration = tempAcceleration; // 장애물과 충돌하면, 라우 가속도 다시 초기화!
             //rau.isCollisionObstacle = false;
             isStopping = false;//장애물 사라지고 나서 거짓으로 초기화
+            particle.Play(); // 파티클 다시 플레이.
         }
 ;
     }
@@ -229,10 +273,9 @@ public class MiniGameManager : MonoBehaviour
     IEnumerator Fly(float movingTime, float waitingTime) // 비둘기 날아가는거
     {
         flyTrigger = true;
-        yield return new WaitForSeconds(5.0f); // 5초동안 날아감.
+        yield return new WaitForSeconds(3); // 3초동안 날아감.
         flyTrigger = false;
-        yield return new WaitForSeconds(2.0f); // 2초동안 대기했다가 다음 위치로 배치됨.
-        setDoves(); // 다음 위치로 배치됨.
+        doveParent.SetActive(false);
     }
 
     IEnumerator KickboardCycle(float movingTime, float waitingTime)
@@ -271,6 +314,7 @@ public class MiniGameManager : MonoBehaviour
 
         if (other.CompareTag("Obstacle"))
         {
+
             if (other.name == "dove_parent" || other.transform.parent.gameObject.name == "dove_parent")
             {
                 StartCoroutine(Fly(8.0f, 8.0f));
@@ -278,28 +322,24 @@ public class MiniGameManager : MonoBehaviour
             else
             {
                 isStopping = true;
+                particle.Pause(); // 파티클 멈추기
                 StartCoroutine(Stop(3.0f, other.gameObject)); // Obstacle이랑 부딪히면, 3초간 멈춤
             }
 
         }
-        // people 재활용 하기위해 사용됨
-        else if (other.name == "SetPeopleCollider")
+        // obstacles 재활용 하기위해 사용됨
+        else if (other.name == "setObstaclesCollider")
         {
+            print("부딪! 장애물 ");
             other.transform.position = other.transform.position + new Vector3(0, 0, 15); // 15 떨어진 위치로~
-            SetPeople();
-        }
-        else if (other.name == "SetBoxesCollider")
-        {
-            other.transform.position = other.transform.position + new Vector3(0, 0, 40);
-            SetBox();
+            SetObstacles();
         }
         else if (other.name == "item")
         {
-            print("아이템 먹음");
             accTrigger = true;
             StartCoroutine(Accerlerate(5.0f)); // 5초간 가속
         }
-        
+
     }
 
 }

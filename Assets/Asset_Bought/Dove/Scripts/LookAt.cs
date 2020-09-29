@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class LookAt : MonoBehaviour {
     public Transform target;
-	
-	void Update ()
+    public int offsetY; // 추가
+
+    void Update ()
     {
-        transform.LookAt(target);
-	}
+        transform.LookAt(new Vector3(target.position.x, target.position.y + offsetY, target.position.z - 10)); // 추가
+        // transform.LookAt(target); 원래 있던 코드
+    }
 }
