@@ -1,13 +1,13 @@
-﻿Shader "Custom/ToonFresnel"
+﻿Shader "Custom/Toon_Transparent"
 {
     Properties
     {
         _Color("Color",Color)=(1,1,1,1)
-        _BumpMap("NormalMap",2D) = "bump"{}
-        _MainTex("Albedo(RGB)",2D) = "White"{}
-        _RampTex("Ramp",2D) = "White"{}
+        _MainTex1("Albedo(RGB)_Front",2D) = "White"{}
+        _MainTex2("Albedo(RGB)_Behind",2D) = "White"{}
         _CelShadingLevels("Levels",Range(0,1))=0.8
         _BrightDark("Brightness$Darkness",Range(-1,1))=0
+        _lerpTest("Lerp",Range(0,1))=0
     }
     SubShader
     {
@@ -18,24 +18,24 @@
         CGPROGRAM
         // Physically based Standard lighting model, and enable shadows on all light types
         #pragma surface surf Toon
-        sampler2D _MainTex;
-        sampler2D _BumpMap;
-        sampler2D _RampTex;
+        sampler2D _MainTex1;
+        sampler2D _MainTex2;
         float _CelShadingLevels;
         fixed4 _Color;
         float _BrightDark;
+        float _lerpTest;
         
         struct Input
         {
-            float2 uv_MainTex;
-            float2 uv_BumpMap;
-            float3 viewDir;//뷰벡터
+            float2 uv_MainTex1;
+            float2 uv_MainTex2;
         };
         void surf(Input IN, inout SurfaceOutput o)
         {
-            o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_BumpMap));
-            o.Albedo = tex2D(_MainTex, IN.uv_MainTex).rgb*_Color;
-            o.Alpha = tex2D(_MainTex, IN.uv_MainTex).a;
+            fixed4 front = tex2D(_MainTex1, IN.uv_MainTex1);
+            fixed4 behind = tex2D(_MainTex2, IN.uv_MainTex2);
+            o.Albedo = lerp(front.rgb,behind.rgb,1-front.a);
+            o.Alpha =front.a;
         }
         //view벡터는 외각선 전용, Light벡터는 음영전용
         fixed4 LightingToon(SurfaceOutput s, float3 lightDir, float3 viewDir, float3 atten)//빛의 방향과 표면의 법선에 대한 내적 계산
