@@ -29,7 +29,6 @@
         {
             float2 uv_MainTex;
             float2 uv_BumpMap;
-            float3 viewDir;//뷰벡터
         };
         void surf(Input IN, inout SurfaceOutput o)
         {

@@ -4,6 +4,7 @@
     {
         _Color("Color",Color) = (1,1,1,1)
         _MainTex("Albedo(RGB)",2D) = "White"{}
+        _BrightDark("Brightness$Darkness",Range(-1,1)) = 0
         _RampTex("Ramp",2D) = "White"{}
     }
     SubShader
@@ -18,6 +19,7 @@
         sampler2D _MainTex;
         float _CelShadingLevels;
         sampler2D _RampTex;
+        float _BrightDark;
         fixed4 _Color;
 
         struct Input
