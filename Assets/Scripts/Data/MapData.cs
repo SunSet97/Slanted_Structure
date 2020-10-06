@@ -42,6 +42,8 @@ public class MapData : MonoBehaviour
     public GameObject map; // auto setting
     [Tooltip("이 맵의 전용 UI를 넣어주시면 됩니다.")]
     public GameObject ui; // 맵 전용 UI
+    [Tooltip("이 맵의 전용 SkyBox를 넣어주시면 됩니다.")]
+    public Material Skybox; // 맵 전용 UI
 
     // 초기 세팅 설정
     void CreateDefaultSetting()
@@ -96,6 +98,11 @@ public class MapData : MonoBehaviour
             tempStory = int.Parse(mapCode) / 100 - tempEpisode * 100;
             tempSeqence = int.Parse(mapCode) - int.Parse(mapCode) / 100 * 100;
             this.transform.position = new Vector3(tempEpisode, tempStory, tempSeqence) * 500;
+        }
+        //맵의 SkyBox세팅
+        if (Skybox != null) 
+        {
+            RenderSettings.skybox = Skybox;
         }
     }
 
