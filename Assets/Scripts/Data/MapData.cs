@@ -40,6 +40,7 @@ public class MapData : MonoBehaviour
     [Space(15)]
     [Tooltip("맵의 이름은 사용자가 원하는 대로 변경하면 되며 맵 구성 어셋들은 이 오브젝트의 자식으로 설정해주면 됩니다.")]
     public GameObject map; // auto setting
+    public bool SideView;
     [Tooltip("이 맵의 전용 UI를 넣어주시면 됩니다.")]
     public GameObject ui; // 맵 전용 UI
     [Tooltip("이 맵의 전용 SkyBox를 넣어주시면 됩니다.")]
@@ -71,11 +72,13 @@ public class MapData : MonoBehaviour
             // 입력 방식에 따라 입력 값 분리
             if (method == JoystickInputMethod.OneDirection)
             {
+                SideView = true;
                 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, 0); // 한 방향 입력은 수평값만 받음
                 DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
             }
             else if (method == JoystickInputMethod.AllDirection)
             {
+                SideView = false;
                 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
             }
             if (method != JoystickInputMethod.Other) DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정

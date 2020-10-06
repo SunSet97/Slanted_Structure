@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,7 +19,7 @@ public class Animation_Controller : MonoBehaviour
         material_face= Resources.LoadAll<Material>("Face");//배열에 넣기
 
         anim.SetInteger("Emotion", 0);//기본 애니메이션
-        Char_talking.material = material_face[0];//캐릭터의 첫번째에는 옷, 두번째는 표정을 넣어야함
+        Char_talking.materials[1] = material_face[0];//캐릭터의 첫번째에는 옷, 두번째는 표정을 넣어야함
 
     }
         
@@ -32,8 +33,8 @@ public class Animation_Controller : MonoBehaviour
         }
         if (SceneManager.GetActiveScene().name == "Ingame") 
         {
-            anim.SetInteger("Emotion", 0);
-            Char_talking.material = material_face[0];//Default표정
+            //anim.SetInteger("Emotion", 0);
+            Char_talking.materials[1] = material_face[0];//Default표정
         }
     
     }
