@@ -134,7 +134,10 @@ public class CharacterManager : MonoBehaviour
         else anim.SetBool("180Turn", false);
         anim.SetFloat("Direction", joyRot); //X방향
         anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed
-
+        if (DataController.instance_DataController.currentMap.SideView==true)
+            anim.SetBool("2DSide", true);
+        else
+            anim.SetBool("2Dside", false);
         //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
         if (isSelected && DataController.instance_DataController.inputJump && ctrl.isGrounded)
             anim.SetBool("Jump", true);  //점프 가능 상태로 변경
