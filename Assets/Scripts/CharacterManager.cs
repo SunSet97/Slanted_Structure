@@ -116,11 +116,11 @@ public class CharacterManager : MonoBehaviour
             return;
 
         // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을 때
-        if (joyStick && cam && ctrl.enabled && isControlled) CharacterMovement(DataController.instance_DataController.playMethod);
+        if (joyStick && cam && ctrl.enabled && isControlled) CharacterMovement();
     }
 
     // 캐릭터 움직임 코드
-    private void CharacterMovement(string playMethod)
+    private void CharacterMovement()
     {
         // 메인 카메라 기준으로 캐릭터가 바라보는 방향 계산
         camRotation = Quaternion.Euler(0, cam.transform.rotation.eulerAngles.y, 0);
@@ -136,7 +136,7 @@ public class CharacterManager : MonoBehaviour
         anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed
 
         //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
-        if (isSelected && DataController.instance_DataController.inputJump && ctrl.isGrounded && playMethod != "Qrt")
+        if (isSelected && DataController.instance_DataController.inputJump && ctrl.isGrounded)
             anim.SetBool("Jump", true);  //점프 가능 상태로 변경
 
         //캐릭터 선택중일때 점프 가능

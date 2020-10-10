@@ -5,21 +5,23 @@ using UnityEngine.UI;
 
 public class SpeatAbility : MonoBehaviour
 {
+    public float test;
+
     [Header("-UI")]
     public Image abilityImage;  // 능력 시간 UI 이미지
     public Text abilityText;    // 통과한 벽 UI 텍스트
     public Image buttonImage;   // 능력 사용 버튼 UI 이미지
 
     [Header("-Variable")]
-    public float setDuration = 10;  // 능력 지속 시간 설정값
-    private float duration = 10;    // 능력 지속 시간
-    public float setCooltime = 3;   // 능력 사용 대기 시간 설정값
-    private float cooltime = 0;     // 능력 사용 대기 시간
-    public int maxWallNum = 5;      // 최대 벽 통과 갯수
-    private int wallNum = 0;        // 벽 통과 횟수
+    public float setDuration = 10; // 능력 지속 시간 설정값
+    private float duration = 10;   // 능력 지속 시간
+    public float setCooltime = 3;  // 능력 사용 대기 시간 설정값
+    private float cooltime = 0;    // 능력 사용 대기 시간
+    public int maxWallNum = 5;     // 최대 벽 통과 갯수
+    private int wallNum = 0;       // 벽 통과 횟수
     public bool isAbility = false; // 현재 능력 사용 여부
-    public bool isPassing = false; // 벽을 통과중인지 여부
-
+    public bool isPassingHor = false; // 벽을 통과중인지 여부
+    public bool isPassingVer = false; // 벽을 통과중인지 여부
 
     private Vector3 fwdDir, bwdDir; // 전후방 방향 벡터
     private Vector3 upDir, downDir; // 위아래 방향 벡터
@@ -46,15 +48,15 @@ public class SpeatAbility : MonoBehaviour
 
     void Update()
     {
-        // 현재 선택 캐릭터 확인
-        if (DataController.instance_DataController.currentChar == speat)
+        // 스핏 확인
+        if (speat != null)
         {
             fwdDir = speat.transform.forward; bwdDir = -speat.transform.forward;    // 전후방 방향 벡터
             upDir = speat.transform.up; downDir = -speat.transform.up;              // 위아래 방향 벡터
 
-            cenPos = speat.transform.position + speat.transform.up * 0.5f;          // 스핏 중앙 위치
-            fwdPos = cenPos + fwdDir * 0.4f; bwdPos = cenPos + bwdDir * 0.5f;       // 스핏 전후방 위치
-            upPos = cenPos + upDir * 0.5f; downPos = cenPos + downDir * 0.4f;       // 스핏 위아래 위치
+            cenPos = speat.transform.position + speat.transform.up * 0.2f;          // 스핏 중앙 위치
+            fwdPos = cenPos + fwdDir * 0.3f; bwdPos = cenPos + bwdDir * 0.3f;       // 스핏 전후방 위치
+            upPos = cenPos + upDir * 0.4f; downPos = cenPos + downDir * 0.1f;       // 스핏 위아래 위치
 
             ChangeIsAbility();  // 능력 사용 여부 판단
             Dash();             // 조건 만족시 대쉬
@@ -84,6 +86,10 @@ public class SpeatAbility : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            speat = DataController.instance_DataController.speat;
+        }
     }
 
     // 능력 사용 여부 판단
@@ -92,6 +98,9 @@ public class SpeatAbility : MonoBehaviour
         // 능력 사용중이 아닐때
         if (!isAbility)
         {
+            isPassingVer = false;
+            isPassingHor = false;
+            speat.gameObject.layer = 0;
             // 사용 대기 시간 계산
             if (cooltime > 0) cooltime -= Time.deltaTime;
             else if (cooltime <= 0) cooltime = 0;
@@ -122,7 +131,7 @@ public class SpeatAbility : MonoBehaviour
     // 능력 사용 버튼
     public void UseAbility()
     {
-        if (DataController.instance_DataController.currentChar == speat)
+        if (speat != null)
         {
             // 능력 사용중이 아닐때
             if (!isAbility && cooltime <= 0)
@@ -147,10 +156,10 @@ public class SpeatAbility : MonoBehaviour
     // 디버깅용 기즈모 및 레이캐스트
     private void OnDrawGizmos()
     {
-        if (DataController.instance_DataController.currentChar == speat)
+        if (speat != null)
         {
             // 전방 벽 전면 탐지
-            int wallLayerMask = 1 << 9;
+            int wallLayerMask = 1 << 11;
             if (Physics.Raycast(fwdPos, fwdDir, out wallFwd, float.MaxValue, wallLayerMask))
             {
                 // 전방 첫번째 벽 전면 임시 저장
@@ -180,15 +189,19 @@ public class SpeatAbility : MonoBehaviour
                 {
                     i = 1;
                     wallBwdTmp = wallBwd;
-                    speat.CannotWallPass(9);
-                    isPassing = false;
-                    wallNum++;
+                    if (!isPassingVer)
+                    {
+                        speat.CannotWallPass(9);
+                        speat.moveHorDir = Vector3.zero;
+                        isPassingHor = false;
+                        wallNum++;
+                    }
                 }
-                Gizmos.color = Color.green; Gizmos.DrawLine(bwdPos, wallBwd.point); Gizmos.DrawWireSphere(wallBwd.point, 0.1f); // 디버깅
+                Gizmos.color = Color.red; Gizmos.DrawLine(bwdPos, wallBwd.point); Gizmos.DrawWireSphere(wallBwd.point, 0.1f); // 디버깅
             }
 
             // 천장 벽 전면 탐지
-            int floorLayerMask = 1 << 10;
+            int floorLayerMask = 1 << 12;
             if (Physics.Raycast(upPos, upDir, out ceilingFace, float.MaxValue, floorLayerMask))
             {
                 // 천장 첫번째 벽 전면 임시 저장
@@ -201,7 +214,7 @@ public class SpeatAbility : MonoBehaviour
                     {
                         isDown = false;
                         speat.CannotWallPass(10);
-                        isPassing = false;
+                        isPassingVer = false;
                         wallNum++;
                     }
                 }
@@ -232,7 +245,8 @@ public class SpeatAbility : MonoBehaviour
                     {
                         isUp = false;
                         speat.CannotWallPass(10);
-                        isPassing = false;
+                        speat.moveVerDir = Vector3.zero;
+                        isPassingVer = false;
                         wallNum++;
                     }
                 }
@@ -254,32 +268,32 @@ public class SpeatAbility : MonoBehaviour
 
     private void Dash()
     {
-        if (!isPassing && isAbility)
+        if (!isPassingHor && !isPassingVer && isAbility)
         {
-            if (speat.joyStick.Horizontal < -0.7f && Vector3.Distance(wallFwd.point, fwdPos) <= 0.2f)
+            if (speat.joyStick.Horizontal < -0.7f && Vector3.Distance(cenPos, wallFwd.point)< 0.5f)
             {
-                speat.moveHorDir = fwdDir * force;
+                speat.moveHorDir = -Vector3.right * 5;
                 speat.CanWallPass(9); //벽을 통과
-                isPassing = true;
+                isPassingHor = true;
             }
-            if (speat.joyStick.Horizontal > 0.7f && Vector3.Distance(wallFwd.point, fwdPos) <= 0.2f)
+            if (speat.joyStick.Horizontal > 0.7f && Vector3.Distance(cenPos, wallFwd.point) < 0.5f)
             {
-                speat.moveHorDir = fwdDir * force;
+                speat.moveHorDir = Vector3.right * 5;
                 speat.CanWallPass(9); //벽을 통과
-                isPassing = true;
+                isPassingHor = true;
             }
             if (speat.joyStick.Vertical < -0.7f)
             {
-                speat.moveVerDir = downDir * force;
+                speat.moveVerDir = -Vector3.up * 5;
                 speat.CanWallPass(10); //벽을 통과
-                isPassing = true;
+                isPassingVer = true;
                 isDown = true;
             }
             if (speat.joyStick.Vertical > 0.7f)
             {
-                speat.moveVerDir = upDir * force;
+                speat.moveVerDir = Vector3.up * 10;
                 speat.CanWallPass(10); //벽을 통과
-                isPassing = true;
+                isPassingVer = true;
                 isUp = true;
             }
         }

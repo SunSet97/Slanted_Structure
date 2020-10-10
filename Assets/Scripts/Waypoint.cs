@@ -169,7 +169,7 @@ public class Waypoint : MonoBehaviour
                 changedDir = inputDir.x < 0 ? new Vector2(fwdDir.x, fwdDir.z).normalized : inputDir.x > 0 ? new Vector2(bwdDir.x, bwdDir.z).normalized : Vector2.zero; // 왼쪽이 전진 방향, 오른쪽이 후진 방향
 
             DataController.instance_DataController.inputDirection = changedDir; // 조정된 입력 방향 설정
-            DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, changedDir); // 조정된 입력 방향으로 크기 계산
+            DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, changedDir) * Mathf.Abs(inputDir.x); // 조정된 입력 방향으로 크기 계산
         }
     }
 
