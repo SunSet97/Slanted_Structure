@@ -64,6 +64,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Asset_Bought\BOXOPHOBIC\Skybox Cubemap Extended\Core\Editor\SkyboxExtendedWindows.cs" />
+    <Compile Include="Assets\Asset_Bought\IV Tools\IV Pivot Editor\Scripts\Editor\PivotUtils.cs" />
+    <Compile Include="Assets\Asset_Bought\IV Tools\IV Pivot Editor\Scripts\Editor\SetPivotWindow.cs" />
+    <Compile Include="Assets\Asset_Bought\Joystick Pack\Scripts\Editor\DynamicJoystickEditor.cs" />
+    <Compile Include="Assets\Asset_Bought\Joystick Pack\Scripts\Editor\FloatingJoystickEditor.cs" />
+    <Compile Include="Assets\Asset_Bought\Joystick Pack\Scripts\Editor\JoystickEditor.cs" />
+    <Compile Include="Assets\Asset_Bought\Joystick Pack\Scripts\Editor\VariableJoystickEditor.cs" />
     <Compile Include="Assets\Asset_Bought\Magic Light Probes\Editor\DependencyChecker.cs" />
     <Compile Include="Assets\Asset_Bought\Magic Light Probes\Editor\GeneralMethods.cs" />
     <Compile Include="Assets\Asset_Bought\Magic Light Probes\Editor\MLPCombinedVolumeEditor.cs" />
@@ -102,10 +108,6 @@
     <Compile Include="Assets\Asset_Bought\PrefabPainter\Scripts\Editor\PrafabPainterGUI.cs" />
     <Compile Include="Assets\Asset_Bought\PrefabPainter\Scripts\Editor\PrefabPainter.cs" />
     <Compile Include="Assets\Asset_Bought\ScreenshotUtility\Editor\ScreenshotUtility.cs" />
-    <Compile Include="Assets\Joystick Pack\Scripts\Editor\DynamicJoystickEditor.cs" />
-    <Compile Include="Assets\Joystick Pack\Scripts\Editor\FloatingJoystickEditor.cs" />
-    <Compile Include="Assets\Joystick Pack\Scripts\Editor\JoystickEditor.cs" />
-    <Compile Include="Assets\Joystick Pack\Scripts\Editor\VariableJoystickEditor.cs" />
     <None Include="Assets\Asset_Bought\Plugins\Easy Save 3\Editor\ES3ClassTypeTemplate.txt" />
     <None Include="Assets\Asset_Bought\Plugins\Easy Save 3\Editor\ES3ScriptableObjectTypeTemplate.txt" />
     <None Include="Assets\Asset_Bought\Plugins\Easy Save 3\Editor\ES3ComponentTypeTemplate.txt" />
@@ -420,6 +422,9 @@
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>C:/Users/User/Documents/GitHub/Slanted_Structure/Library/PackageCache/com.unity.purchasing@2.0.6/Editor/UnityEditor.Purchasing.dll</HintPath>
+    </Reference>
+    <Reference Include="UDP">
+      <HintPath>C:/Users/User/Documents/GitHub/Slanted_Structure/Assets/Asset_Bought/UDP/UDP.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>C:/Users/User/Documents/GitHub/Slanted_Structure/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
@@ -799,6 +804,10 @@
     <ProjectReference Include="Elringus.Naninovel.Editor.csproj">
       <Project>{2028C6D8-4B3F-DE14-3B01-13DC35A42902}</Project>
       <Name>Elringus.Naninovel.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="com.unity.purchasing.udp.Editor.csproj">
+      <Project>{E931E859-EB31-7CD7-620C-35FDD27F362E}</Project>
+      <Name>com.unity.purchasing.udp.Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
