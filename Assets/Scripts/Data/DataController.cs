@@ -16,6 +16,7 @@ public class DataController : MonoBehaviour
     public float inputDegree = 0f; // 조이스틱 입력 크기
     public bool inputJump = false; // 조이스틱 입력 점프 판정
     public bool inputDash = false; // 조이스틱 입력 대쉬 판정
+    public bool inputSeat = false;
 
     [Header("캐릭터")]
     public CharacterManager currentChar;
