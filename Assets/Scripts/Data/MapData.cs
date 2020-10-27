@@ -102,11 +102,6 @@ public class MapData : MonoBehaviour
             tempSeqence = int.Parse(mapCode) - int.Parse(mapCode) / 100 * 100;
             this.transform.position = new Vector3(tempEpisode, tempStory, tempSeqence) * 500;
         }
-        //맵의 SkyBox세팅
-        if (Skybox != null) 
-        {
-            RenderSettings.skybox = Skybox;
-        }
     }
 
     // 게임 플레이 세팅 업데이트
@@ -138,6 +133,9 @@ public class MapData : MonoBehaviour
                 DataController.instance_DataController.mapCode = string.Format("{0:000000}", nextMapcode); // 맵 코드 변경
                 foreach (CharacterPositionSet Item in positionSets) Item.clearBox.GetComponent<CheckMapClear>().isClear = false; // 맵 클리어 트리거 초기화
             }
+
+            //맵의 SkyBox세팅
+            if (DataController.instance_DataController.currentMap == this) RenderSettings.skybox = Skybox;
         }
     }
     #endregion

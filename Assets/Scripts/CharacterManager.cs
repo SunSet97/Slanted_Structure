@@ -108,8 +108,6 @@ public class CharacterManager : MonoBehaviour
         Invoke("PutDownCharacter", 0.5f);
     }
 
-    #region ToDo
-
     private void FixedUpdate()
     {
         if (splitTest)
@@ -157,35 +155,10 @@ public class CharacterManager : MonoBehaviour
         //if (DataController.instance_DataController.isMapChanged == false)
         ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 최종 이동 시킴
     }
-    #endregion
 
     //// 플레이어가 죽으면 불리는 함수
     //void CharDie()
     //{
     //    StartCoroutine(dieAction);
     //}
-
-    #region SpeatAbility
-    public void Change_Position(bool button_on)
-    {
-        if (!button_on)
-        {
-            ctrl.enabled = false;
-        }
-        if (button_on)
-        {
-            ctrl.enabled = true;
-        }
-
-    }
-
-    public void CanWallPass(int layerNum)
-    {
-        this.gameObject.layer = layerNum;
-    }
-    public void CannotWallPass(int layerNum)
-    {
-        this.gameObject.layer = 0;
-    }
-    #endregion
 }
