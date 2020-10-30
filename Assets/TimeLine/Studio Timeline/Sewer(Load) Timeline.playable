@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7927810753256392433
+--- !u!114 &-6883079258050106494
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -22,7 +22,27 @@ MonoBehaviour:
   m_Loop: 0
   m_Version: 1
   m_Rotation: {x: 0, y: 0, z: 0, w: 1}
---- !u!114 &-7100327486323301869
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfda56da833e2384a9677cd3c976a436, type: 3}
+  m_Name: Sewer(Load) Timeline
+  m_EditorClassIdentifier: 
+  m_Version: 0
+  m_Tracks:
+  - {fileID: 195445183538273709}
+  m_FixedDuration: 0
+  m_EditorSettings:
+    m_Framerate: 60
+  m_DurationMode: 0
+  m_MarkerTrack: {fileID: 6796174243106094908}
+--- !u!114 &195445183538273709
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,14 +66,14 @@ MonoBehaviour:
   - m_Version: 1
     m_Start: 0
     m_ClipIn: 0
-    m_Asset: {fileID: -7927810753256392433}
-    m_Duration: 2.25
+    m_Asset: {fileID: -6883079258050106494}
+    m_Duration: 4.016666666666667
     m_TimeScale: 1
-    m_ParentTrack: {fileID: -7100327486323301869}
+    m_ParentTrack: {fileID: 195445183538273709}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: -1
-    m_BlendOutDuration: 0.31666666666666665
+    m_BlendOutDuration: 0.21666666666666679
     m_MixInCurve:
       serializedVersion: 2
       m_Curve:
@@ -113,15 +133,15 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: Walk_Speat
   - m_Version: 1
-    m_Start: 3.6416666666666666
+    m_Start: 5.5
     m_ClipIn: 0
-    m_Asset: {fileID: -1196128153859912603}
-    m_Duration: 2.3583333333333334
+    m_Asset: {fileID: 3745016296214402029}
+    m_Duration: 3.5
     m_TimeScale: 1
-    m_ParentTrack: {fileID: -7100327486323301869}
+    m_ParentTrack: {fileID: 195445183538273709}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
-    m_BlendInDuration: -1
+    m_BlendInDuration: 0.00833333333333286
     m_BlendOutDuration: -1
     m_MixInCurve:
       serializedVersion: 2
@@ -182,16 +202,16 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: Walk_Speat
   - m_Version: 1
-    m_Start: 1.9333333333333333
+    m_Start: 3.8
     m_ClipIn: 0
-    m_Asset: {fileID: 7198855844939384244}
+    m_Asset: {fileID: 3588635830700451565}
     m_Duration: 1.7083333333333333
     m_TimeScale: 1
-    m_ParentTrack: {fileID: -7100327486323301869}
+    m_ParentTrack: {fileID: 195445183538273709}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
-    m_BlendInDuration: 0.31666666666666665
-    m_BlendOutDuration: -1
+    m_BlendInDuration: 0.21666666666666679
+    m_BlendOutDuration: 0.00833333333333286
     m_MixInCurve:
       serializedVersion: 2
       m_Curve:
@@ -270,7 +290,29 @@ MonoBehaviour:
   m_OpenClipOffsetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_Rotation: {x: 0, y: 0, z: 0, w: 1}
   m_ApplyOffsets: 0
---- !u!114 &-1196128153859912603
+--- !u!114 &3588635830700451565
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 030f85c3f73729f4f976f66ffb23b875, type: 3}
+  m_Name: AnimationPlayableAsset
+  m_EditorClassIdentifier: 
+  m_Clip: {fileID: 1827226128182048838, guid: 7cc02571dd55bf44d9bcba911c890ab0, type: 3}
+  m_Position: {x: 0.001185901, y: 0.0062828064, z: 6.607215}
+  m_EulerAngles: {x: 0, y: 0, z: 0}
+  m_UseTrackMatchFields: 1
+  m_MatchTargetFields: 63
+  m_RemoveStartOffset: 1
+  m_ApplyFootIK: 1
+  m_Loop: 0
+  m_Version: 1
+  m_Rotation: {x: 0, y: 0, z: 0, w: 1}
+--- !u!114 &3745016296214402029
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -283,8 +325,8 @@ MonoBehaviour:
   m_Name: AnimationPlayableAsset
   m_EditorClassIdentifier: 
   m_Clip: {fileID: 1827226128182048838, guid: 770197c5140453141bacf585c478d20a, type: 3}
-  m_Position: {x: -0.0441124, y: 0.00091552734, z: 3.9548316}
-  m_EulerAngles: {x: 0, y: 90.00001, z: 0}
+  m_Position: {x: -0.042893827, y: 0.0062675476, z: 6.65006}
+  m_EulerAngles: {x: 0, y: 89.956, z: 0}
   m_UseTrackMatchFields: 1
   m_MatchTargetFields: 63
   m_RemoveStartOffset: 1
@@ -292,26 +334,6 @@ MonoBehaviour:
   m_Loop: 0
   m_Version: 1
   m_Rotation: {x: 0, y: 0, z: 0, w: 1}
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfda56da833e2384a9677cd3c976a436, type: 3}
-  m_Name: Sewer(Load) Timeline
-  m_EditorClassIdentifier: 
-  m_Version: 0
-  m_Tracks:
-  - {fileID: -7100327486323301869}
-  m_FixedDuration: 0
-  m_EditorSettings:
-    m_Framerate: 60
-  m_DurationMode: 0
-  m_MarkerTrack: {fileID: 6796174243106094908}
 --- !u!114 &6796174243106094908
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -335,25 +357,3 @@ MonoBehaviour:
   m_Clips: []
   m_Markers:
     m_Objects: []
---- !u!114 &7198855844939384244
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 030f85c3f73729f4f976f66ffb23b875, type: 3}
-  m_Name: AnimationPlayableAsset
-  m_EditorClassIdentifier: 
-  m_Clip: {fileID: 1827226128182048838, guid: 7cc02571dd55bf44d9bcba911c890ab0, type: 3}
-  m_Position: {x: -0.0000002977786, y: 0.00091552734, z: 3.9119883}
-  m_EulerAngles: {x: 0, y: 0, z: 0}
-  m_UseTrackMatchFields: 1
-  m_MatchTargetFields: 63
-  m_RemoveStartOffset: 1
-  m_ApplyFootIK: 1
-  m_Loop: 0
-  m_Version: 1
-  m_Rotation: {x: 0, y: 0, z: 0, w: 1}
