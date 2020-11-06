@@ -5,24 +5,47 @@ using UnityEngine.UI;
 
 public class PlayGroundManager : MonoBehaviour
 {
+
     public Button innerCircle;
     public Image outterCircle;
     public float speed;
     public Text text; // 판정 텍스트
     Vector3 originotterCircleScale;
     bool isTouchBtn = false;
+    bool isTriggerCircleBtns = false;
 
     void Start()
     {
         originotterCircleScale = outterCircle.transform.localScale;
-        StartCoroutine(WaitTouch());
+
+        // 버튼 안보이게!
+        outterCircle.gameObject.SetActive(false);
+        innerCircle.gameObject.SetActive(false);
+
+        // 뭔 터치 인터렉션 전에 하는 대화
+        DataController.instance_DataController.LoadData("PlayGround", "playground.json");
+        CanvasControl.instance_CanvasControl.StartConversation();
+
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        if (!isTouchBtn)
+
+        // 대화가 끝난 후 StartCoroutine(WaitTouch())가 한번만 실행되도록
+        if (CanvasControl.instance_CanvasControl.dialogueCnt == CanvasControl.instance_CanvasControl.dialogueLen && !isTriggerCircleBtns && CanvasControl.instance_CanvasControl.endConversation)
+        {
+            print("대화 끝!");
+            CanvasControl.instance_CanvasControl.endConversation = false;
+            isTriggerCircleBtns = true;
+            outterCircle.gameObject.SetActive(true);
+            innerCircle.gameObject.SetActive(true);
+            StartCoroutine(WaitTouch());
+        }
+
+        // 대화가 끝나고 버튼 커졌다가 작아졌다가!
+        if (isTriggerCircleBtns && !isTouchBtn)
         {
             outterCircle.transform.localScale -= new Vector3(speed, speed, 0) * Time.deltaTime;
             if (outterCircle.transform.localScale.x < 145)
@@ -30,6 +53,7 @@ public class PlayGroundManager : MonoBehaviour
                 outterCircle.transform.localScale = originotterCircleScale;
             }
         }
+
 
 
     }
@@ -92,4 +116,5 @@ public class PlayGroundManager : MonoBehaviour
     {
         GameJudgment();
     }
+
 }

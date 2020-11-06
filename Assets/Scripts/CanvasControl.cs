@@ -28,9 +28,11 @@ public class CanvasControl : MonoBehaviour
 
     // 대화 관련 변수 
     private int cnvsCnt = 0; // 대화 카운트 변수 
-    private int dialogueCnt = 0; // 대사 카운트 변수
-    private int dialogueLen = 0; // 대사의 갯수
+    public int dialogueCnt = 0; // 대사 카운트 변수
+    public int dialogueLen = 0; // 대사의 갯수
     private int choiceLen = 0; // 선택지 갯수
+
+    public bool endConversation = false; // 대화 끝나면 true.
 
     private bool isExistFile;
 
@@ -348,6 +350,7 @@ public class CanvasControl : MonoBehaviour
         if (dialogueCnt >= dialogueLen)
         {
             DialoguePanel.SetActive(false);
+            endConversation = true;
 
             // 부를 선택지 정보가 있는가 없는 가 
             if (DataController.instance_DataController.dialogueData.choice.Length > cnvsCnt /* && DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length > 0*/)
