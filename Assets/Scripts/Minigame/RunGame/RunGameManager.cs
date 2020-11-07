@@ -76,8 +76,8 @@ public class RunGameManager : MonoBehaviour
             DataController.instance_DataController.joyStick.gameObject.SetActive(false);
 
             // DataController 카메라 설정값 변경
-            DataController.instance_DataController.camDis_x = 4f;
-            DataController.instance_DataController.camDis_y = 3.5f;
+            DataController.instance_DataController.camDis.x = 4f;
+            DataController.instance_DataController.camDis.y = 3.5f;
 
             // 카메라 뷰 설정
             DataController.instance_DataController.cam.orthographicSize = 4;

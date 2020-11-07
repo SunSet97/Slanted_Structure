@@ -41,8 +41,8 @@ public class CollisionEventController : MonoBehaviour
     //Tag: ChangeAngle
     public void changeAngle(CameraTransform ct)
     {
-        DataController.instance_DataController.camDis_x = ct.dis_X;
-        DataController.instance_DataController.camDis_z = ct.dis_Z;
+        DataController.instance_DataController.camDis.x = ct.dis_X;
+        DataController.instance_DataController.camDis.z = ct.dis_Z;
         DataController.instance_DataController.rot = ct.rotation;
     }
 

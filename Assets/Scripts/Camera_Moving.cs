@@ -24,7 +24,7 @@ public class Camera_Moving : MonoBehaviour
             //플레이어 위치 변수에 플레이어 위치 값 넣음.
             charPos = character.transform.position;
             //메인 카메라의 위치를 플레이어 위치와 동일시함.
-            Camera.main.transform.position = new Vector3(charPos.x + DataController.instance_DataController.camDis_x, charPos.y + DataController.instance_DataController.camDis_y, charPos.z + DataController.instance_DataController.camDis_z);
+            Camera.main.transform.position = charPos + DataController.instance_DataController.camDis;
             //지금 카메라의 위치를 카메라 위치변수에 넣음
             camPos = Camera.main.transform.position;
             //카메라의 이동과 제한을 위한 함수에 매개변수로 카메라 위치변수 넣음.
@@ -46,7 +46,7 @@ public class Camera_Moving : MonoBehaviour
         float max_x = DataController.instance_DataController.max_x;
         float min_y = DataController.instance_DataController.min_y;
         float max_y = DataController.instance_DataController.max_y;
-        float Z = DataController.instance_DataController.camDis_z;
+        float Z = DataController.instance_DataController.camDis.z;
 
         //카메라 위치 제한 설정
         //position.x = Mathf.Clamp(position.x,min_x,max_x);

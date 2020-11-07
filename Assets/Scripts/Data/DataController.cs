@@ -30,9 +30,7 @@ public class DataController : MonoBehaviour
     public float max_x;
     public float min_y;
     public float max_y;
-    public float camDis_z; // 캐릭터와 카메라와의 거리(z축)
-    public float camDis_y; // 캐릭터와 카메라와의 거리(z축)
-    public float camDis_x; // 캐릭터와 카메라와의 거리(x축) 
+    public Vector3 camDis;
     public Vector3 rot;
 
     [Header("맵")]
@@ -94,8 +92,8 @@ public class DataController : MonoBehaviour
             cam.orthographic = true;
             originOrthoSize = cam.orthographicSize;
             cam.orthographicSize = 4;
-            originCamDis_y = camDis_y;
-            camDis_y = 1;
+            originCamDis_y = camDis.y;
+            camDis.y = 1;
         }
         /*else if (!mapCode.Equals("010101") && cam.orthographic.Equals(true))
         {
@@ -160,7 +158,7 @@ public class DataController : MonoBehaviour
                     oun.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Oun);
                     rau.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Rau);
 
-                    cam.transform.position = new Vector3(currentChar.transform.position.x + camDis_x, currentChar.transform.position.y + camDis_y, currentChar.transform.position.z + camDis_z);
+                    cam.transform.position = currentChar.transform.position + camDis;
 
                     currentMap = maps[i];
 
