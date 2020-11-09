@@ -21,8 +21,8 @@ public class AlleyInMarketManager : MonoBehaviour
         if(gameObject.name == "AlleyInMarketManager"){
 
             // 카메라 조정
-            DataController.instance_DataController.camDis_x = 5;
-            DataController.instance_DataController.camDis_z = 0;
+            DataController.instance_DataController.camDis.x = 5;
+            DataController.instance_DataController.camDis.z = 0;
             DataController.instance_DataController.rot.y = -90;
 
             // 캐릭터 맵쪽으로 ㄱㄱ
