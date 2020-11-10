@@ -19,7 +19,6 @@ public class CharacterManager : MonoBehaviour
 
 
 
-    public Transform TestRot;
     private Vector2 joystickDir;
     private Vector2 characterDir;
     private float joyRot;
@@ -128,9 +127,7 @@ public class CharacterManager : MonoBehaviour
         // 조이스틱이 가리키는 방향
         joystickDir = new Vector2(DataController.instance_DataController.inputDirection.x, DataController.instance_DataController.inputDirection.y);
 
-        joyRot = Vector2.SignedAngle(joystickDir, TestRot.forward);
-        TestRot.rotation = Quaternion.AngleAxis(joyRot, Vector3.up);
-
+        joyRot = Vector2.SignedAngle(joystickDir, characterDir);
         if (Mathf.Abs(joyRot) > 170 && !anim.GetBool("180Turn")) anim.SetBool("180Turn", true);
         else anim.SetBool("180Turn", false);
         anim.SetFloat("Direction", joyRot); //X방향
