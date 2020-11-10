@@ -157,10 +157,14 @@ public class DataController : MonoBehaviour
                     speat.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Speat);
                     oun.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Oun);
                     rau.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Rau);
-
-                    cam.transform.position = currentChar.transform.position + camDis;
-
                     currentMap = maps[i];
+                    RenderSettings.skybox = currentMap.SkyboxSetting;
+                    DynamicGI.UpdateEnvironment();
+                    camDis = currentMap.camDis;
+                    rot = currentMap.camRot;
+                    if(currentChar!=null)
+                    cam.transform.position = currentChar.transform.position + camDis;
+                    cam.transform.rotation = Quaternion.Euler(rot);
 
                     FindProgressCollider();
 
