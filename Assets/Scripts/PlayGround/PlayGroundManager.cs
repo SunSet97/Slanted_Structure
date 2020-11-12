@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class PlayGroundManager : MonoBehaviour
 {
-
+    public GameObject trash;
+    Rigidbody trash_rigid;
     public Button innerCircle;
     public Image outterCircle;
     public float speed;
@@ -18,6 +19,8 @@ public class PlayGroundManager : MonoBehaviour
     {
         originotterCircleScale = outterCircle.transform.localScale;
 
+        DataController.instance_DataController.isMapChanged = true;
+
         // 버튼 안보이게!
         outterCircle.gameObject.SetActive(false);
         innerCircle.gameObject.SetActive(false);
@@ -26,6 +29,8 @@ public class PlayGroundManager : MonoBehaviour
         DataController.instance_DataController.LoadData("PlayGround", "playground.json");
         CanvasControl.instance_CanvasControl.StartConversation();
 
+        // 쓰레기 리지드바디
+        trash_rigid = trash.GetComponent<Rigidbody>();
     }
 
 
@@ -74,24 +79,33 @@ public class PlayGroundManager : MonoBehaviour
         if (145 <= touchOutterCircleScaleX && touchOutterCircleScaleX <= 160f)
         {
             print("유후! 캔 바로 들어감");
+            ThrowTrash(1);
             isTouchBtn = true;
         }
         else if (160 < touchOutterCircleScaleX && touchOutterCircleScaleX <= 200)
         {
             print("아싸! 캔 한번 튕기고 들어감");
+            ThrowTrash(1);
             isTouchBtn = true;
         }
         else if (200 < touchOutterCircleScaleX && touchOutterCircleScaleX <= 240)
         {
             print("아깝다! 한번 튕기고 안들어감");
+            ThrowTrash(1);
             isTouchBtn = true;
         }
         else if (240 < touchOutterCircleScaleX && touchOutterCircleScaleX <= 300)
         {
             print("앗! 안들어감");
+            ThrowTrash(1);
             isTouchBtn = true;
         }
 
+    }
+
+    void ThrowTrash(int dgree) {
+        trash_rigid.AddForce(new Vector3(1,1,1));
+        print("에?");
     }
 
     /* 만약 이펙트 있으면 이거 사용하고 게임판정에 넣기

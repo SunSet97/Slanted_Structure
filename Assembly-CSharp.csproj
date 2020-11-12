@@ -267,6 +267,7 @@
      <Compile Include="Assets\Asset_Bought\Road\_CommonAssets\Scripts\CameraHeight.cs" />
      <Compile Include="Assets\Asset_Bought\Road\_CommonAssets\Scripts\MouseLook.cs" />
      <Compile Include="Assets\Asset_Bought\UDP\Sample\Scripts\UDPSampleScript.cs" />
+     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
      <Compile Include="Assets\Scripts\Animation_Controller.cs" />
      <Compile Include="Assets\Scripts\Camera_Moving.cs" />
      <Compile Include="Assets\Scripts\CanvasControl.cs" />
@@ -282,6 +283,9 @@
      <Compile Include="Assets\Scripts\Data\TutorialCommandData.cs" />
      <Compile Include="Assets\Scripts\EP2\AlleyInMarketManager.cs" />
      <Compile Include="Assets\Scripts\EP2\HamburgerStoreManager.cs" />
+     <Compile Include="Assets\Scripts\EP2\InteractionObj_stroke.cs" />
+     <Compile Include="Assets\Scripts\EP2\MarketManager.cs" />
+     <Compile Include="Assets\Scripts\EP2\SpeechBubbleDialogue.cs" />
      <Compile Include="Assets\Scripts\Minigame\CatchPickPocket\ItemSetting.cs" />
      <Compile Include="Assets\Scripts\Minigame\CatchPickPocket\MiniGameManager.cs" />
      <Compile Include="Assets\Scripts\Minigame\CatchPickPocket\Particle.cs" />
@@ -336,12 +340,14 @@
      <None Include="Assets\Asset_Bought\PolygonNature\Shaders\SyntyStudios_Trees.shader" />
      <None Include="Assets\Asset_Bought\Magic Light Probes\Docs\README.txt" />
      <None Include="Assets\Asset_Bought\Naninovel\Resources\Naninovel\Shaders\RevealableTMProTextRTL.shader" />
+     <None Include="Assets\QuickOutline\Resources\Shaders\OutlineFill.shader" />
      <None Include="Assets\Asset_Bought\Dove\Shaders\Standard Two Sided Soft Blend.shader" />
      <None Include="Assets\Asset_Bought\Naninovel\Resources\Naninovel\Shaders\DepthOfField.shader" />
      <None Include="Assets\Asset_Bought\PolygonNature\Shaders\VS_indirect.cginc" />
      <None Include="Assets\Asset_Bought\Plugins\Easy Save 3\Change Log\Change Log.txt" />
      <None Include="Assets\Asset_Bought\FallingLeavesVFX\Documentation\FallingLeavesPack_README.txt" />
      <None Include="Assets\Asset_Bought\Naninovel\Resources\Naninovel\Shaders\RevealableTMProText.shader" />
+     <None Include="Assets\QuickOutline\Readme.txt" />
      <None Include="Assets\Asset_Bought\Naninovel\ThirdParty\UniTask\LICENSE.txt" />
      <None Include="Assets\Asset_Bought\Magic Light Probes\Shaders\MLPVolumeBounds.shader" />
      <None Include="Assets\Asset_Bought\Plugins\SkinTools\Readme.txt.txt" />
@@ -372,6 +378,7 @@
      <None Include="Assets\Asset_Bought\ScreenshotUtility\Readme.txt" />
      <None Include="Assets\Asset_Bought\PolygonNature\Shaders\SyntyStudios_LOD.shader" />
      <None Include="Assets\Asset_Bought\Naninovel\ThirdParty\NCalc\LICENSE.txt" />
+     <None Include="Assets\QuickOutline\Resources\Shaders\OutlineMask.shader" />
      <None Include="Assets\Asset_Bought\PolygonPrototype\Shaders\Prototype_Glass_Global.shader" />
      <None Include="Assets\Asset_Bought\PolygonNature\Shaders\SyntyStudios_SkyGradient.shader" />
      <None Include="Assets\Asset_Bought\Magic Light Probes\Passes\Compute Shaders\CalculateDistanceFromGeometry.compute" />
@@ -401,11 +408,17 @@
  <Reference Include="Unity.RenderPipelines.Core.Runtime">
  <HintPath>C:/Users/박희원/Documents/GitHub/Slanted_Structure/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.Recorder.Editor">
+ <HintPath>C:/Users/박희원/Documents/GitHub/Slanted_Structure/Library/ScriptAssemblies/Unity.Recorder.Editor.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.VisualEffectGraph.Runtime">
  <HintPath>C:/Users/박희원/Documents/GitHub/Slanted_Structure/Library/ScriptAssemblies/Unity.VisualEffectGraph.Runtime.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro.Editor">
  <HintPath>C:/Users/박희원/Documents/GitHub/Slanted_Structure/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Recorder">
+ <HintPath>C:/Users/박희원/Documents/GitHub/Slanted_Structure/Library/ScriptAssemblies/Unity.Recorder.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Users/박희원/Documents/GitHub/Slanted_Structure/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
@@ -430,6 +443,9 @@
  </Reference>
  <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
  <HintPath>C:/Users/박희원/Documents/GitHub/Slanted_Structure/Library/ScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Recorder.Base">
+ <HintPath>C:/Users/박희원/Documents/GitHub/Slanted_Structure/Library/ScriptAssemblies/Unity.Recorder.Base.dll</HintPath>
  </Reference>
  <Reference Include="Unity.2D.Sprite.Editor">
  <HintPath>C:/Users/박희원/Documents/GitHub/Slanted_Structure/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
@@ -472,15 +488,6 @@
  </Reference>
  <Reference Include="com.unity.multiplayer-hlapi.Runtime">
  <HintPath>C:/Users/박희원/Documents/GitHub/Slanted_Structure/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Recorder.Editor">
- <HintPath>C:/Users/박희원/Documents/GitHub/Slanted_Structure/Library/ScriptAssemblies/Unity.Recorder.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Recorder">
- <HintPath>C:/Users/박희원/Documents/GitHub/Slanted_Structure/Library/ScriptAssemblies/Unity.Recorder.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Recorder.Base">
- <HintPath>C:/Users/박희원/Documents/GitHub/Slanted_Structure/Library/ScriptAssemblies/Unity.Recorder.Base.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.17f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

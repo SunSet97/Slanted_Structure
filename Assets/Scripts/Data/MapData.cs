@@ -14,7 +14,6 @@ public class MapData : MonoBehaviour
         Oun,
         Rau
     }
-
     public enum JoystickInputMethod
     {
         OneDirection,

@@ -13,6 +13,7 @@ public class MiniGameManager : MonoBehaviour
     bool accTrigger = false;
     public bool conflict = false;
     public ParticleSystem particle;
+    Vector3 forwardDir;
 
     [Header("PickPocket")]
     public GameObject pickPocket;
@@ -45,8 +46,8 @@ public class MiniGameManager : MonoBehaviour
     [Header("판정")]
     public float successDistance; // 라우~소매치기 거리가 어느정도 되야 성공하는지.
 
-    bool start = false;
-    bool begin = false;
+    public bool start = false;
+    public bool begin = false;
     Coroutine initialCor;
     float tempSpeed;
     public GameObject peopleParent;
@@ -57,8 +58,10 @@ public class MiniGameManager : MonoBehaviour
     void Start() {
         //doves = doveParent.GetComponentInChildren<Transform>(); @비둘기 하나하나 사용할 때 쓰기
         //textTimer.gameObject.SetActive(false);
+        DataController.instance_DataController.isMapChanged = true;
         particle.Play();
         initialRauSpeed = rauSpeed;
+        
     }
 
     void Update()
@@ -78,6 +81,17 @@ public class MiniGameManager : MonoBehaviour
 
             // 라우 이동
             rau.ctrl.Move(new Vector3(0, 0, 1) * rauSpeed * Time.deltaTime);
+
+            if (DataController.instance_DataController.inputDirection == new Vector2(0, 0)) // 조이스틱 인풋 없을 때 forwadDir방향 바라보게하기
+            { 
+                rau.gameObject.transform.eulerAngles = forwardDir;
+            }
+
+            // 멈췄을 때 조이스틱 input값 (0,0)으로 만들어서 못움직이게 하기
+            /*if (isStopping) {
+                DataController.instance_DataController.inputDirection = new Vector2(0, 0);
+            }*/
+
             // 아이템 먹으면 일정시간 가속 이동
             if (accTrigger)
             {
@@ -97,7 +111,6 @@ public class MiniGameManager : MonoBehaviour
             timer -= Time.deltaTime; // 타이머
             //textTimer.text = "남은 시간: " + Mathf.Round(timer);
             CheckSuccess(); // 성공인지 아닌지 판정.
-
         }
     }
 
@@ -125,13 +138,13 @@ public class MiniGameManager : MonoBehaviour
 
     private void InitialSetting() // 초기 장애물 배치 세팅
     {
+        begin = true;
         pickPocket.SetActive(true);
         //textTimer.gameObject.SetActive(true); // 타이머 보이게 하기
         SetDataController(); // 데이터 컨트롤러 정보 세팅
         SetPickPocket(); // 소매치기 위치 세팅
         SetKickBoard(); // 킥보드 위치 세팅
         StartCoroutine(KickboardCycle(4.0f, 8.0f)); // 킥보드 2초동안 움직임. 8초에 한번씩 킥보드 위치시킴.
-        begin = true;
     }
 
     private void SetDataController()
@@ -256,6 +269,9 @@ public class MiniGameManager : MonoBehaviour
     IEnumerator Wait(float waitingtime)
     {
         yield return new WaitForSeconds(waitingtime);
+        forwardDir = rau.transform.position - DataController.instance_DataController.cam.transform.position;
+        forwardDir = forwardDir.normalized;
+        rau.gameObject.transform.eulerAngles = forwardDir;
         InitialSetting();
     }
 
@@ -278,6 +294,7 @@ public class MiniGameManager : MonoBehaviour
             else
             {
                 isStopping = true;
+                //rau.anim.SetBool("2DSide", false);
                 StartCoroutine(Stop(3.0f, other.gameObject)); // Obstacle이랑 부딪히면, 3초간 멈춤
             }
 

@@ -412,6 +412,7 @@ public class CanvasControl : MonoBehaviour
                curSelfEstm >= DataController.instance_DataController.dialogueData.selfEstmCrt[cnvsCnt].selfEstm[i]
               )
             {
+                choiceBtn[i].transform.parent.gameObject.SetActive(true);
                 choiceBtn[i].SetActive(true);
                 choice[i].text = DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption[i];
             }
@@ -425,6 +426,7 @@ public class CanvasControl : MonoBehaviour
         {
             // 선택지 버튼 없앰
             choiceBtn[j].SetActive(false);
+            choiceBtn[i].transform.parent.gameObject.SetActive(false); // 선택지 입력한거 아닌 나머지 애들도 없애기
 
         }
 

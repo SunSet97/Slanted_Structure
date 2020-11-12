@@ -149,5 +149,7 @@ public class NPCInteractor : MonoBehaviour
         //    NPCArray[index] = DataController.instance_DataController.rau.gameObject.transform;
         //}
     }
-    
+
+
+
 }

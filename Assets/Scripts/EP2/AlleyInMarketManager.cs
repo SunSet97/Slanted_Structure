@@ -14,11 +14,14 @@ public class AlleyInMarketManager : MonoBehaviour
     public int collisionNum;
     Vector3 offset;
     public Waypoint waypoint;
+    Vector2 lastInput;
 
     // Start is called before the first frame update
     void Start()
     {
         if(gameObject.name == "AlleyInMarketManager"){
+
+            DataController.instance_DataController.isMapChanged = true;
 
             // 카메라 조정
             DataController.instance_DataController.camDis_x = 5;
@@ -38,7 +41,6 @@ public class AlleyInMarketManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (triggerRoateView) {
 
             DataController.instance_DataController.cam.gameObject.transform.RotateAround(character.transform.position, Vector3.up, 45);
@@ -46,10 +48,10 @@ public class AlleyInMarketManager : MonoBehaviour
         }
         
         if (triggerAutoMove) {
-            DataController.instance_DataController.inputDirection.x = 1;
-            DataController.instance_DataController.inputDirection.y = 0;
+            DataController.instance_DataController.inputDirection = lastInput;
             //character.joystickDir = new Vector2(1, 0);
-            character.ctrl.Move((character.moveHorDir + character.moveVerDir) * Time.deltaTime);
+            //character.ctrl.Move((character.moveHorDir + character.moveVerDir) * Time.deltaTime);
+
         }
 
     }
@@ -64,6 +66,7 @@ public class AlleyInMarketManager : MonoBehaviour
         }
         if (gameObject.name == "automaticMove_TriggerCollider" && other.gameObject.name == DataController.instance_DataController.currentChar.name)
         {
+            lastInput = DataController.instance_DataController.inputDirection;
             DataController.instance_DataController.joyStick.gameObject.SetActive(false);
             StartCoroutine(AutoMoveCoroutine());
         }
@@ -84,8 +87,7 @@ public class AlleyInMarketManager : MonoBehaviour
         yield return new WaitUntil(() => waypoint.checkedWaypoint == waypoint.waypoints[waypoint.waypoints.Count - 1]);
         triggerAutoMove = false;
         DataController.instance_DataController.joyStick.gameObject.SetActive(true);
-        DataController.instance_DataController.inputDirection.x = 0;
-        DataController.instance_DataController.inputDirection.y = 0;
+        DataController.instance_DataController.inputDirection = new Vector2(0,0);
 
     }
     
