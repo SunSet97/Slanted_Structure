@@ -149,9 +149,7 @@ public class MiniGameManager : MonoBehaviour
 
     private void SetDataController()
     {   // 카메라 설정
-        DataController.instance_DataController.camDis_x = 0;
-        DataController.instance_DataController.camDis_y = 1.3f;
-        DataController.instance_DataController.camDis_z = -2.5f;
+        DataController.instance_DataController.camDis = new Vector3(0,1.3f,-2.5f);
     }
 
     private void SetPickPocket()

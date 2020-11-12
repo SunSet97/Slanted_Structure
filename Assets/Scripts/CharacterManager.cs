@@ -105,7 +105,7 @@ public class CharacterManager : MonoBehaviour
     // 일정 시간 후 캐릭터를 조이스틱으로 움직이게 함
     public void UseJoystickCharacter()
     {
-        Invoke("PutDownCharacter", 0.5f);
+        Invoke("PutDownCharacter", 0.2f);
     }
 
     private void FixedUpdate()

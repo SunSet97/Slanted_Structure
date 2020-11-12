@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Naninovel;
 
 [ExecuteInEditMode]
 public class MapData : MonoBehaviour
@@ -43,7 +44,7 @@ public class MapData : MonoBehaviour
     [Tooltip("이 맵의 전용 UI를 넣어주시면 됩니다.")]
     public GameObject ui; // 맵 전용 UI
     [Tooltip("이 맵의 전용 SkyBox를 넣어주시면 됩니다.")]
-    public Material Skybox; // 맵 전용 UI
+    public Material SkyboxSetting; // 맵 전용 스카이박스
 
     // 초기 세팅 설정
     void CreateDefaultSetting()
@@ -92,6 +93,7 @@ public class MapData : MonoBehaviour
         if (this.name != mapCode) this.name = mapCode;
         // UI의 이름을 맵 이름으로 변경
         if (ui != null) ui.name = map.name;
+
         // 맵의 위치 지정
         if (mapCode.Length == 6)
         {
@@ -133,8 +135,6 @@ public class MapData : MonoBehaviour
                 foreach (CharacterPositionSet Item in positionSets) Item.clearBox.GetComponent<CheckMapClear>().isClear = false; // 맵 클리어 트리거 초기화
             }
 
-            //맵의 SkyBox세팅
-            if (DataController.instance_DataController.currentMap == this) RenderSettings.skybox = Skybox;
         }
     }
     #endregion
@@ -165,6 +165,12 @@ public class MapData : MonoBehaviour
     [Tooltip("각각의 캐릭터의 시작위치와 목표위치를 설정하세요.")]
     public List<CharacterPositionSet> positionSets; // auto setting
     public int posIndex = 0; // 시작위치 순서
+
+    [Header("Camera Setting")]
+    [SerializeField] private Camera cam; // auto setting
+    public Vector3 camDis;  // 캐릭터와 카메라와의 거리
+    public Vector3 camRot;  // 캐릭터와 카메라와의 거리 
+
 
     // 인덱스에 따라 위치 설정들 보기 편하고 일관성 있게 리스트 정렬
     void SortPositionSets()
@@ -241,14 +247,10 @@ public class MapData : MonoBehaviour
         // 리스트 정렬
         SortPositionSets();
     }
+
+
     #endregion
 
-    // 아직 사용 미정
-    [Header("Camera Setting")]
-    [SerializeField] private Camera cam; // auto setting
-    public Vector3 camDis;  // 캐릭터와 카메라와의 거리
-    public Vector3 camRot;  // 캐릭터와 카메라와의 거리 
-    public string playMethod; // 아직 지우면 안됨 
 
     void Start()
     {
