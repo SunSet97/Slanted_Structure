@@ -70,9 +70,9 @@ public class Phone : MonoBehaviour
     public Text nameText_chatting;
     Text dialogueText_chatting;
 
-    int currentClickedInfo; // 0: 엄마, 1: 아빠, 2: 스핏, 3:오운
+    int currentClickedInfo; // 0: 엄마, 1: 스핏, 2:오운
 
-    int[] chattingBoxIndex = { 0, 0, 0, 0 }; // 00: 엄마와채팅, 엄마 채팅박스1 / 01: 엄마와 채팅, 라우 채팅박스1 / 02: 엄마와채팅, 엄마 채팅박스2 / 03: 엄마와 채팅, 라우 채팅박스2 ....
+    int[] chattingBoxIndex = { 0, 0, 0 }; // 00: 엄마와채팅, 엄마 채팅박스1 / 01: 엄마와 채팅, 라우 채팅박스1 / 02: 엄마와채팅, 엄마 채팅박스2 / 03: 엄마와 채팅, 라우 채팅박스2 ....
 
     // 핸드폰 아이콘 클릭
     bool isClickPhoneIcon = false;
@@ -351,7 +351,7 @@ public class Phone : MonoBehaviour
         {
 
             // 0 -> 1 -> 2 -> 3 -> 다 지우고 다시 0 -> 1 -> 2 -> 3 -> ... 반복
-            if (chattingBoxIndex[currentClickedInfo] == 4)
+            if (chattingBoxIndex[currentClickedInfo] == 3)
             {
                 // 다 setActive(false)
                 for (int i = 0; i < chattingBoxIndex[currentClickedInfo]; i++)
