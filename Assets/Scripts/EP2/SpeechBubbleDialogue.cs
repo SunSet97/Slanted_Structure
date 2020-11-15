@@ -68,7 +68,7 @@ public class SpeechBubbleDialogue : MonoBehaviour
     void Start()
     {
         // 카메라 조절
-        DataController.instance_DataController.camDis_y = 10;
+        DataController.instance_DataController.camDis.y = 10;
         DataController.instance_DataController.rot = new Vector3(45, 0, 0);
 
         // 캐릭터 맵으로 이동시키기
