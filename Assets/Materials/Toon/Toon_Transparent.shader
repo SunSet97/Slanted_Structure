@@ -34,7 +34,7 @@
         {
             fixed4 front = tex2D(_MainTex1, IN.uv_MainTex1);
             fixed4 behind = tex2D(_MainTex2, IN.uv_MainTex2);
-            o.Albedo = lerp(front.rgb,behind.rgb,front.a);
+            o.Albedo = lerp(front.rgb,behind.rgb,1-front.a);
             o.Alpha =front.a;
         }
         //view벡터는 외각선 전용, Light벡터는 음영전용
