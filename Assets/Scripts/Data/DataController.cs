@@ -158,8 +158,20 @@ public class DataController : MonoBehaviour
                     oun.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Oun);
                     rau.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Rau);
                     currentMap = maps[i];
+                    //스카이박스 세팅
                     RenderSettings.skybox = currentMap.SkyboxSetting;
                     DynamicGI.UpdateEnvironment();
+                    //현재 맵에서 카메라 세팅
+
+                    //카메라 orthographic 컨트롤
+                    cam.orthographic = currentMap.isOrthographic;
+                    if (currentMap.isOrthographic)
+                    {
+                        cam.orthographicSize = currentMap.orthographicSize;
+                    }
+
+                    
+                    //카메라 위치와 회전
                     camDis = currentMap.camDis;
                     rot = currentMap.camRot;
                     if(currentChar!=null)

@@ -4,25 +4,32 @@ using UnityEngine;
 
 public class MarketManager : MonoBehaviour
 {
-    public GameObject merchant;
-    CharacterManager character;
-
+    Camera cam;
+    public bool isOrthographic = false;
+    public float orthographicSize;
+    bool completeSetCam = false;
+    // Start is called before the first frame update
     void Start()
     {
-        DataController.instance_DataController.isMapChanged = true;
-
-        CharacterManager[] temp = new CharacterManager[3];
-        temp[0] = DataController.instance_DataController.speat;
-        temp[1] = DataController.instance_DataController.oun;
-        temp[2] = DataController.instance_DataController.rau;
-
-        foreach (CharacterManager cm in temp)
-            if (cm.name == DataController.instance_DataController.currentChar.name) character = cm;
-
+        
+        // 카메라 조절
+        //DataController.instance_DataController.camDis = new Vector3(0, 10, -5);
+        //DataController.instance_DataController.rot = new Vector3(45, 0, 0);
     }
 
     void Update()
     {
+       
         
+
+
+        /*if (!completeSetCam)
+        {
+            DataController.instance_DataController.camDis = new Vector3(0, 10, -5);
+            DataController.instance_DataController.rot = new Vector3(45, 0, 0);
+            completeSetCam = true;
+        }
+        */
     }
+
 }

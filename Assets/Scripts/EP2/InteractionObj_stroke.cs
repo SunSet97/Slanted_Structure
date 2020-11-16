@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 // 인터렉션하는 오브젝트에 컴포넌트로 추가!!
 public class InteractionObj_stroke : MonoBehaviour
 {
@@ -14,14 +15,16 @@ public class InteractionObj_stroke : MonoBehaviour
         grey,
         black,
         white
-        
+
     }
 
-    public OutlineColor color; 
+    public OutlineColor color;
     public bool onOutline = false; // 아웃라인 켜져있는 안켜져 있는지
     public bool isCharacterInRange = false; // obj_interaction 오브젝트 기준으로 일정 범위 내에 캐릭터가 있는지 확인
     public int radius = 5;
-    public GameObject exclamationMark;
+    public Text exclamationMark;
+    [Header("느낌표 사용할 때 체크")]
+    public bool useExclamationMark = false;
     public float y; // 느낌표 위치(y좌표) 조절
     private bool isInteractionObj = false;
     private Outline outline;
@@ -37,21 +40,25 @@ public class InteractionObj_stroke : MonoBehaviour
 
             outline = gameObject.AddComponent<Outline>();
             outline.OutlineMode = Outline.Mode.OutlineAll;
-            outline.OutlineColor = Color.yellow; // 아웃라인 색깔 설정
             outline.OutlineWidth = 8f; // 아웃라인 두께 설정
             outline.enabled = false; // 우선 outline 끄기
 
             cam = DataController.instance_DataController.cam;
 
-            exclamationMark.SetActive(false); // 느낌표 끄기
+            exclamationMark.gameObject.SetActive(false); // 느낌표 끄기
 
-            // 현재 선택된 캐릭터 확인
-            CharacterManager[] temp = new CharacterManager[3];
-            temp[0] = DataController.instance_DataController.speat;
-            temp[1] = DataController.instance_DataController.oun;
-            temp[2] = DataController.instance_DataController.rau;
-            foreach (CharacterManager cm in temp)
-                if (cm.name == DataController.instance_DataController.currentChar.name) character = cm;
+            character = DataController.instance_DataController.currentChar;
+
+
+            // 아웃라인 색깔 설정
+            if (color == OutlineColor.red) outline.OutlineColor = Color.red;
+            else if (color == OutlineColor.magenta) outline.OutlineColor = Color.magenta;
+            else if (color == OutlineColor.yellow) outline.OutlineColor = Color.yellow;
+            else if (color == OutlineColor.green) outline.OutlineColor = Color.green;
+            else if (color == OutlineColor.blue) outline.OutlineColor = Color.blue;
+            else if (color == OutlineColor.grey) outline.OutlineColor = Color.grey;
+            else if (color == OutlineColor.black) outline.OutlineColor = Color.black;
+            else if (color == OutlineColor.white) outline.OutlineColor = Color.white;
 
         }
 
@@ -59,6 +66,11 @@ public class InteractionObj_stroke : MonoBehaviour
 
     void Update()
     {
+        if (!character)
+        {
+            character = DataController.instance_DataController.currentChar;
+        }
+
         if (!isInteractionObj)
         {
             Debug.Log("tag를 obj_interaction으로 설정하세요");
@@ -72,18 +84,24 @@ public class InteractionObj_stroke : MonoBehaviour
                 onOutline = true;
                 outline.enabled = true;
 
-                // 느낌표 보이게
-                exclamationMark.SetActive(true);
+                if (useExclamationMark)
+                {
+                    // 느낌표 보이게
+                    exclamationMark.gameObject.SetActive(true);
+                }
 
             }
-            else if(!isCharacterInRange && onOutline) // 범위 밖
+            else if (!isCharacterInRange && onOutline) // 범위 밖
             {
                 // 아웃라인 끄기
                 onOutline = false;
                 outline.enabled = false;
 
-                // 느낌표 안보이게
-                exclamationMark.SetActive(false);
+                if (useExclamationMark)
+                {
+                    // 느낌표 안보이게
+                    exclamationMark.gameObject.SetActive(false);
+                }
 
             }
 
@@ -107,11 +125,12 @@ public class InteractionObj_stroke : MonoBehaviour
             {
                 isCharacterInRange = false;
             }
-          
+
         }
     }
 
-    void OnDrawGizmos() {
+    void OnDrawGizmos()
+    {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(gameObject.transform.position, radius);
     }

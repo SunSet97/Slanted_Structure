@@ -23,16 +23,16 @@ public class SpeechBubbleDialogue : MonoBehaviour
 
         loop, // 메이플같이 obj_interaction 오브젝트주위에 캐릭터가 있는지 없는지 상관 없이 설정한 시간 간격으로 계속 반복되는 말풍선.
         once, // obj_interaction 오브젝트 주위에 캐릭터가 있으면 뜨는 말풍선. 띄워진 말풍선은 몇 초 뒤에 사라짐.
-        continuous //  obj_interaction 오브젝트 주위에 캐릭터가 있는 상태에서 플레이어가 obj_interaction 오브젝트를 터치하면 말풍선 띄워지고 대화 진행 화살표를 클릭하면 다음 대화 뜸 or 종료
+        story //  obj_interaction 오브젝트 주위에 캐릭터가 있는 상태에서 플레이어가 obj_interaction 오브젝트를 터치하면 말풍선 띄워지고 대화 진행 화살표를 클릭하면 다음 대화 뜸 or 종료
 
     }
 
     [Header("말풍선 대화 타입 선택")]
     public SpeechBubbleDialogueType speechBubbleDialogueType;
 
-    Camera cam;
-    bool isStartSpeechBubble = false;
-    CharacterManager character;
+    public Camera cam;
+    public bool isStartSpeechBubble = false;
+    public CharacterManager character;
     InteractionObj_stroke interactionObj_Stroke;
 
     // 공통
@@ -46,7 +46,9 @@ public class SpeechBubbleDialogue : MonoBehaviour
     [Header("말풍선 대사 입력")]
     public Script[] SpeechBubbleDialogueArr; // inspector창에서 대사 입력하면됨.
 
-    public float y; // 말풍선 위치 조절
+    [Header("말풍선 위치 조절")]
+    public float x;
+    public float y;
 
     // loop
     bool isLoop = true;
@@ -67,10 +69,6 @@ public class SpeechBubbleDialogue : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // 카메라 조절
-        DataController.instance_DataController.camDis.y = 10;
-        DataController.instance_DataController.rot = new Vector3(45, 0, 0);
-
         // 캐릭터 맵으로 이동시키기
         DataController.instance_DataController.isMapChanged = true;
 
@@ -83,58 +81,73 @@ public class SpeechBubbleDialogue : MonoBehaviour
         // 말풍선 안보이게
         speechBubbleObj.SetActive(false);
 
-        // 현재 선택된 캐릭터 확인
-        CharacterManager[] temp = new CharacterManager[3];
-        temp[0] = DataController.instance_DataController.speat;
-        temp[1] = DataController.instance_DataController.oun;
-        temp[2] = DataController.instance_DataController.rau;
-        foreach (CharacterManager cm in temp)
-            if (cm.name == DataController.instance_DataController.currentChar.name) character = cm;
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (character == null)
+        {
+            character = DataController.instance_DataController.currentChar;
+        }
+
+        CheckAroundCharacter(); // obj_interaction 주위 범위내에 character있는지 확인
+        SetSpeechBubblePosition(); // 말풍선 위치시키기
 
         if (speechBubbleDialogueType == SpeechBubbleDialogueType.loop && isLoop)
         {
-            interactionObj_Stroke.exclamationMark.SetActive(false); // 느낌표 끄기
+            if (interactionObj_Stroke) interactionObj_Stroke.exclamationMark.gameObject.SetActive(false); // 느낌표 끄기
             speechBubbleCoroutine = StartCoroutine(StartSpeechBubble());
         }
         else if (speechBubbleDialogueType == SpeechBubbleDialogueType.once) // 주위에 캐릭터 있을때 한번 실행되는!
         {
-            if (!isCharacterInRange) {
+            if (!isCharacterInRange)
+            {
                 cnt = 0;
                 triggerNext = true;
                 isLastDialogue = false;
                 isStartSpeechBubble = false;
             }
-            else if(isCharacterInRange && !isStartSpeechBubble && !isLastDialogue && triggerNext) {
-                interactionObj_Stroke.exclamationMark.SetActive(false); // 느낌표 끄기
+            else if (isCharacterInRange && !isStartSpeechBubble && !isLastDialogue && triggerNext)
+            {
+                if (interactionObj_Stroke) interactionObj_Stroke.exclamationMark.gameObject.SetActive(false); // 느낌표 끄기
                 isStartSpeechBubble = true;
                 speechBubbleCoroutine = StartCoroutine(StartSpeechBubble());
             }
 
         }
-        else if (speechBubbleDialogueType == SpeechBubbleDialogueType.continuous && isCharacterInRange && isStartSpeechBubble && Input.GetMouseButtonDown(0)) 
+        else if (speechBubbleDialogueType == SpeechBubbleDialogueType.story)
         {
-            // 오브젝트 터치 감지
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            if (!isCharacterInRange)
             {
-                if (hit.collider.gameObject == gameObject) {
-                    interactionObj_Stroke.exclamationMark.SetActive(false); // 느낌표 끄기
-                    speechBubbleObj.SetActive(true);
-                    UpdateDialogue();
-                }
-                
+                cnt = 0;
+                isLastDialogue = false;
+                isStartSpeechBubble = false;
             }
-               
-        }
+            else if (isCharacterInRange && !isStartSpeechBubble && Input.GetMouseButtonDown(0))
+            {
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                {
+                    // 오브젝트 터치 감지
+                    if (hit.collider.gameObject == gameObject)
+                    {
+                        print("나 클릭됨!");
+                        isStartSpeechBubble = true;
+                        if (interactionObj_Stroke) interactionObj_Stroke.exclamationMark.gameObject.SetActive(false); // 느낌표 끄기
+                        speechBubbleObj.SetActive(true);
+                        UpdateDialogue();
+                    }
 
-        SetSpeechBubblePosition(); // 말풍선 위치시키기
+                }
+            }
+
+
+
+
+
+        }
 
     }
 
@@ -143,19 +156,22 @@ public class SpeechBubbleDialogue : MonoBehaviour
         speakerNameText.text = SpeechBubbleDialogueArr[cnt].speaker;
         dialogueText.text = SpeechBubbleDialogueArr[cnt].dialogue;
         cnt++;
-        if (cnt >= SpeechBubbleDialogueArr.Length) { // 마지막 대사면 cnt = 0
+        if (cnt >= SpeechBubbleDialogueArr.Length)
+        { // 마지막 대사면 cnt = 0
             isLastDialogue = true;
             cnt = 0;
         }
 
     }
 
-    void SetSpeechBubblePosition() {
+    void SetSpeechBubblePosition()
+    {
         Vector3 myScreenPos = cam.WorldToScreenPoint(transform.position);
-        speechBubbleObj.transform.position = myScreenPos + new Vector3(0,y,0);
+        speechBubbleObj.transform.position = myScreenPos + new Vector3(x, y, 0);
     }
 
-    void CheckAroundCharacter() {
+    void CheckAroundCharacter()
+    {
         RaycastHit[] hits = Physics.SphereCastAll(gameObject.transform.position, radius, Vector3.up, 0f);
         foreach (RaycastHit hit in hits)
         {
@@ -174,14 +190,16 @@ public class SpeechBubbleDialogue : MonoBehaviour
     // next버튼 눌렀을 때 호출
     public void ClickNextBtn()
     {
-        if (speechBubbleDialogueType == SpeechBubbleDialogueType.continuous) {
+        if (speechBubbleDialogueType == SpeechBubbleDialogueType.story)
+        {
             if (isLastDialogue) speechBubbleObj.SetActive(false);
             UpdateDialogue();
         }
 
     }
 
-    IEnumerator StartSpeechBubble() {
+    IEnumerator StartSpeechBubble()
+    {
 
         if (speechBubbleDialogueType == SpeechBubbleDialogueType.loop)
         {
@@ -208,7 +226,8 @@ public class SpeechBubbleDialogue : MonoBehaviour
 
     }
 
-    void OnDrawGizmos() {
+    void OnDrawGizmos()
+    {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(gameObject.transform.position, radius);
     }

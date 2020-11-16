@@ -45,6 +45,9 @@ public class MapData : MonoBehaviour
     public GameObject ui; // 맵 전용 UI
     [Tooltip("이 맵의 전용 SkyBox를 넣어주시면 됩니다.")]
     public Material SkyboxSetting; // 맵 전용 스카이박스
+    [Tooltip("카메라의 orthographic 뷰를 제어할 수 있습니다.")]
+    public bool isOrthographic = false;
+    public float orthographicSize;
 
     // 초기 세팅 설정
     void CreateDefaultSetting()
@@ -254,7 +257,7 @@ public class MapData : MonoBehaviour
 
     void Start()
     {
-        cam = Camera.main;
+        cam = Camera.main; 
         CreateDefaultSetting();
     }
 
