@@ -8,23 +8,24 @@ public class Animation_Controller : MonoBehaviour
 {
     public enum Emotion {Idle,Laugh,Sad,Cry,Angry,Surprise,Panic,Suspicion,Fear,Curious };//감정상태
     public Emotion emotion_present;
-    public Renderer Char_talking;//현재 말하는 캐릭터
+    public SkinnedMeshRenderer Char_talking;//현재 말하는 캐릭터
     public Animator anim; //할당 애니메이터
-    public Material[] material_face;//표정 메터리얼
+    public Texture[] faceExpression;//표정 메터리얼
 
     void Start()
     {
         anim = GetComponent<Animator>(); //애니메이터 접근
-        material_face= Resources.LoadAll<Material>("Face");//배열에 넣기
+        faceExpression = Resources.LoadAll<Texture>("Face");//배열에 넣기
 
         anim.SetInteger("Emotion", 0);//기본 애니메이션
-        Char_talking.material = material_face[0];//캐릭터의 첫번째에는 옷, 두번째는 표정을 넣어야함
+        //Char_talking.materials[0].SetTexture("_MainTex", faceExpression[11]);
+        //Char_talking.materials[1].SetTexture("_MainTex",faceExpression[0]);//캐릭터의 첫번째에는 옷, 두번째는 표정을 넣어야함
 
     }
         
     void Update()
     {
-        //Move_Setting();//이동
+        Emotion_Setting();
         Action_Setting();//액션
         if (SceneManager.GetActiveScene().name == "Cinematic")
         {
@@ -32,14 +33,14 @@ public class Animation_Controller : MonoBehaviour
         }
         if (SceneManager.GetActiveScene().name == "Ingame") 
         {
-            Char_talking.material = material_face[0];//Default표정
+            Char_talking.materials[1].SetTexture("_MainTex", faceExpression[0]);
         }
     
     }
     void Emotion_Setting() //현재 Emotion상태값 넣기
     {
         anim.SetInteger("Emotion",(int)emotion_present);//애니메이션실행
-        Char_talking.material = material_face[(int)emotion_present];//현재 감정으로 메터리얼 변경
+        Char_talking.materials[1].SetTexture("_MainTex", faceExpression[(int)emotion_present]);//현재 감정으로 메터리얼 변경
     }
 
     void Action_Setting() //액션 관련
