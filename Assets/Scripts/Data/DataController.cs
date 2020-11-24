@@ -40,6 +40,7 @@ public class DataController : MonoBehaviour
     public Transform commandSprite;
     public MapData currentMap;
     public string mapCode;
+    public int mapIndex;//맵 방문횟수>>인게임과 시네마틱 연결하는 스크립트 생성 이후, mapIndex에 관해서 맵데이터와 데이터 컨트롤러 연결해야함.
     public string playMethod; //2D 플랫포머(2D Platformer)=Plt, 쿼터뷰(Quarter view)=Qrt, 라인트레이서(Line tracer)=Line
 
     // 카메라 projecton orthographic에서 perspective로 전환될 때 필요

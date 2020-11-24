@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Naninovel;
+using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
 [ExecuteInEditMode]
 public class MapData : MonoBehaviour
@@ -21,6 +23,12 @@ public class MapData : MonoBehaviour
         AllDirection,
         Other
     }
+    public enum EndMap
+    {
+        EndingPoint,
+        FinishDialogue,
+        FinishTimeLine
+    }
 
     [TextArea(7, int.MaxValue)]
     [SerializeField]
@@ -33,6 +41,9 @@ public class MapData : MonoBehaviour
     public string mapCode = "000000"; // auto setting
     [Tooltip("이 맵의 조이스틱 입력 방식입니다.")]
     public JoystickInputMethod method; // 맵의 조이스틱 입력 방식
+    [Tooltip("맵코드 엔딩 방식입니다.")]
+    public EndMap endMap; // 맵 종료 여부
+    public PlayableDirector director;
     [Tooltip("이 맵의 클리어 여부입니다.")]
     public bool isMapClear; // 맵 종료 여부
     [Tooltip("클리어시 넘어갈 다음 맵의 맵 코드입니다.")]
@@ -48,7 +59,7 @@ public class MapData : MonoBehaviour
     [Tooltip("카메라의 orthographic 뷰를 제어할 수 있습니다.")]
     public bool isOrthographic = false;
     public float orthographicSize;
-
+    
     // 초기 세팅 설정
     void CreateDefaultSetting()
     {
@@ -87,6 +98,33 @@ public class MapData : MonoBehaviour
             if (method != JoystickInputMethod.Other) DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
             DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
         }
+    }
+
+    //맵 엔딩 세팅
+
+    bool isStop = false;
+    void TimeLineStop() 
+    {
+        if (isStop == false)
+        {
+            director.stopped += OnPlaybleDirectorStopped;
+            isStop = true;
+        }
+    }
+    void OnPlaybleDirectorStopped(PlayableDirector Director) //타임라인 인식
+    {
+        if (director == Director)//현재 Director가 맵데이터에 연결된 타임라인이라면~!
+        {
+            Invoke("EndingDelay", 1.5f);//타임라인 끝난거 인식한 1.5초 뒤에 함수 호출
+        }
+    }
+    //타임라인이 멈춰있는지에 대해 인식을 받고 이에 대해 1.5초 이후 Map Clear체크 누르기!
+    private void EndingDelay()
+    {
+        //현재 캐릭터와 맞는 포시션 세팅을 찾아서 Clear box활성화
+        //positionSets.Find(item=>(item.who).ToString()==DataController.instance_DataController.currentChar.name).clearBox.GetComponent<CheckMapClear>().isClear = true;
+        //방문 횟수Index에 따라서
+        positionSets.Find(item => item.index == posIndex).clearBox.GetComponent<CheckMapClear>().isClear = true;
     }
 
     // 맵 세팅 업데이트
@@ -268,6 +306,12 @@ public class MapData : MonoBehaviour
         PositionSettingUpdate();
         // Play mode에서만 업데이트
         PlaySettingUpdate(EditorApplication.isPlaying);
+
+        //타임라인 인식
+        if (SceneManager.GetActiveScene().name =="Cinematic") 
+        {
+            TimeLineStop();
+        }
     }
 
     #region 디버깅용
