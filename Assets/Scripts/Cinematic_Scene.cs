@@ -46,7 +46,7 @@ public class Cinematic_Scene : MonoBehaviour
 
         }
 
-        //감정 입력받는 곳
+        //씨네마틱에서 선택된 캐릭터 감정 입력받는 곳
         public void Emotion_input(int emotion, string Main_char)//선택한 캐릭터의 감정
         {
             if (Main_char == "Speat")

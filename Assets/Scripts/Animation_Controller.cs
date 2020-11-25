@@ -7,7 +7,10 @@ using UnityEngine.SceneManagement;
 public class Animation_Controller : MonoBehaviour
 {
     public enum Emotion {Idle,Laugh,Sad,Cry,Angry,Surprise,Panic,Suspicion,Fear,Curious };//감정상태
-    public Emotion emotion_present;
+    [Tooltip("얼굴과 감정애니메이션이 동시에 변합니다.")]
+    public Emotion emotion_present;//동시에 하는 것
+    [Tooltip("얼굴 표정만 바뀝니다.")]
+    public int faceEmotion;//표정만 바꾸는 것.
     public SkinnedMeshRenderer Char_talking;//현재 말하는 캐릭터
     public Animator anim; //할당 애니메이터
     public Texture[] faceExpression;//표정 메터리얼
@@ -16,8 +19,8 @@ public class Animation_Controller : MonoBehaviour
     {
         anim = GetComponent<Animator>(); //애니메이터 접근
         faceExpression = Resources.LoadAll<Texture>("Face");//배열에 넣기
-
-        anim.SetInteger("Emotion", 0);//기본 애니메이션
+        Char_talking.materials[1].SetTexture("_MainTex", faceExpression[faceEmotion]);
+        //anim.SetInteger("Emotion", 0);//기본 애니메이션
         //Char_talking.materials[0].SetTexture("_MainTex", faceExpression[11]);
         //Char_talking.materials[1].SetTexture("_MainTex",faceExpression[0]);//캐릭터의 첫번째에는 옷, 두번째는 표정을 넣어야함
 
@@ -25,22 +28,29 @@ public class Animation_Controller : MonoBehaviour
         
     void Update()
     {
-        Emotion_Setting();
-        Action_Setting();//액션
+
         if (SceneManager.GetActiveScene().name == "Cinematic")
         {
             Emotion_Setting();
         }
         if (SceneManager.GetActiveScene().name == "Ingame") 
         {
+            Action_Setting();//액션
             Char_talking.materials[1].SetTexture("_MainTex", faceExpression[0]);
         }
     
     }
     void Emotion_Setting() //현재 Emotion상태값 넣기
     {
-        anim.SetInteger("Emotion",(int)emotion_present);//애니메이션실행
-        Char_talking.materials[1].SetTexture("_MainTex", faceExpression[(int)emotion_present]);//현재 감정으로 메터리얼 변경
+        if ((int)emotion_present == 0)//Emotion 상태가 아무것도 없을 때 ex)점프, 달리기. 앉아있음 
+        {
+            Char_talking.materials[1].SetTexture("_MainTex", faceExpression[faceEmotion]);//표정만 바뀌는 것
+        }
+        else//Emotion에 따라서 얼굴과 애니메이션이 동시에 움직임
+        {
+            anim.SetInteger("Emotion", (int)emotion_present);//애니메이션실행
+            Char_talking.materials[1].SetTexture("_MainTex", faceExpression[(int)emotion_present]);//현재 감정으로 메터리얼 변경
+        }
     }
 
     void Action_Setting() //액션 관련
