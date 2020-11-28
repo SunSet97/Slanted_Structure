@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Naninovel;
+using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
 [ExecuteInEditMode]
 public class MapData : MonoBehaviour
@@ -14,12 +17,17 @@ public class MapData : MonoBehaviour
         Oun,
         Rau
     }
-
     public enum JoystickInputMethod
     {
         OneDirection,
         AllDirection,
         Other
+    }
+    public enum EndMap
+    {
+        EndingPoint,
+        FinishDialogue,
+        FinishTimeLine
     }
 
     [TextArea(7, int.MaxValue)]
@@ -33,6 +41,9 @@ public class MapData : MonoBehaviour
     public string mapCode = "000000"; // auto setting
     [Tooltip("이 맵의 조이스틱 입력 방식입니다.")]
     public JoystickInputMethod method; // 맵의 조이스틱 입력 방식
+    [Tooltip("맵코드 엔딩 방식입니다.")]
+    public EndMap endMap; // 맵 종료 여부
+    public PlayableDirector director;
     [Tooltip("이 맵의 클리어 여부입니다.")]
     public bool isMapClear; // 맵 종료 여부
     [Tooltip("클리어시 넘어갈 다음 맵의 맵 코드입니다.")]
@@ -44,8 +55,11 @@ public class MapData : MonoBehaviour
     [Tooltip("이 맵의 전용 UI를 넣어주시면 됩니다.")]
     public GameObject ui; // 맵 전용 UI
     [Tooltip("이 맵의 전용 SkyBox를 넣어주시면 됩니다.")]
-    public Material Skybox; // 맵 전용 UI
-
+    public Material SkyboxSetting; // 맵 전용 스카이박스
+    [Tooltip("카메라의 orthographic 뷰를 제어할 수 있습니다.")]
+    public bool isOrthographic = false;
+    public float orthographicSize;
+    
     // 초기 세팅 설정
     void CreateDefaultSetting()
     {
@@ -86,6 +100,33 @@ public class MapData : MonoBehaviour
         }
     }
 
+    //맵 엔딩 세팅
+
+    bool isStop = false;
+    void TimeLineStop() 
+    {
+        if (isStop == false)
+        {
+            director.stopped += OnPlaybleDirectorStopped;
+            isStop = true;
+        }
+    }
+    void OnPlaybleDirectorStopped(PlayableDirector Director) //타임라인 인식
+    {
+        if (director == Director)//현재 Director가 맵데이터에 연결된 타임라인이라면~!
+        {
+            Invoke("EndingDelay", 1.5f);//타임라인 끝난거 인식한 1.5초 뒤에 함수 호출
+        }
+    }
+    //타임라인이 멈춰있는지에 대해 인식을 받고 이에 대해 1.5초 이후 Map Clear체크 누르기!
+    private void EndingDelay()
+    {
+        //현재 캐릭터와 맞는 포시션 세팅을 찾아서 Clear box활성화
+        //positionSets.Find(item=>(item.who).ToString()==DataController.instance_DataController.currentChar.name).clearBox.GetComponent<CheckMapClear>().isClear = true;
+        //방문 횟수Index에 따라서
+        positionSets.Find(item => item.index == posIndex).clearBox.GetComponent<CheckMapClear>().isClear = true;
+    }
+
     // 맵 세팅 업데이트
     void MapSettingUpdate()
     {
@@ -93,6 +134,7 @@ public class MapData : MonoBehaviour
         if (this.name != mapCode) this.name = mapCode;
         // UI의 이름을 맵 이름으로 변경
         if (ui != null) ui.name = map.name;
+
         // 맵의 위치 지정
         if (mapCode.Length == 6)
         {
@@ -134,8 +176,6 @@ public class MapData : MonoBehaviour
                 foreach (CharacterPositionSet Item in positionSets) Item.clearBox.GetComponent<CheckMapClear>().isClear = false; // 맵 클리어 트리거 초기화
             }
 
-            //맵의 SkyBox세팅
-            if (DataController.instance_DataController.currentMap == this) RenderSettings.skybox = Skybox;
         }
     }
     #endregion
@@ -166,6 +206,12 @@ public class MapData : MonoBehaviour
     [Tooltip("각각의 캐릭터의 시작위치와 목표위치를 설정하세요.")]
     public List<CharacterPositionSet> positionSets; // auto setting
     public int posIndex = 0; // 시작위치 순서
+
+    [Header("Camera Setting")]
+    [SerializeField] private Camera cam; // auto setting
+    public Vector3 camDis;  // 캐릭터와 카메라와의 거리
+    public Vector3 camRot;  // 캐릭터와 카메라와의 거리 
+
 
     // 인덱스에 따라 위치 설정들 보기 편하고 일관성 있게 리스트 정렬
     void SortPositionSets()
@@ -242,18 +288,14 @@ public class MapData : MonoBehaviour
         // 리스트 정렬
         SortPositionSets();
     }
+
+
     #endregion
 
-    // 아직 사용 미정
-    [Header("Camera Setting")]
-    [SerializeField] private Camera cam; // auto setting
-    public Vector3 camDis;  // 캐릭터와 카메라와의 거리
-    public Vector3 camRot;  // 캐릭터와 카메라와의 거리 
-    public string playMethod; // 아직 지우면 안됨 
 
     void Start()
     {
-        cam = Camera.main;
+        cam = Camera.main; 
         CreateDefaultSetting();
     }
 
@@ -264,6 +306,12 @@ public class MapData : MonoBehaviour
         PositionSettingUpdate();
         // Play mode에서만 업데이트
         PlaySettingUpdate(EditorApplication.isPlaying);
+
+        //타임라인 인식
+        if (SceneManager.GetActiveScene().name =="Cinematic") 
+        {
+            TimeLineStop();
+        }
     }
 
     #region 디버깅용

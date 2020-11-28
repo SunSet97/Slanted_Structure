@@ -15,9 +15,9 @@ public class NPC_Anim_Controller : MonoBehaviour
 
     public enum NPC_p : int{ Citizen=3, Student=4, Special=2, Enemy=2};
     public NPC_p enum_Pattern;
-    int num_Pattern;
-    public int num_Random;
+    int num_Pattern;//애니메이션 패턴개수
 
+    public int num_Random;//애니메이션 랜덤개수
     public Animator anim; //할당 애니메이터
     private int _Pattern;
     private int _Random=0;

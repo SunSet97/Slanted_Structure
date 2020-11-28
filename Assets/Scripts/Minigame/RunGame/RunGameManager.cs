@@ -4,17 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class RunGameManager : MonoBehaviour
-{    
+{
     [Header("스핏")]
     public CharacterManager speat;
     float originMoveVerDirY; // 스핏이 땅에 닿았을 때 최초의 speat.moveVerDir.y값 담기
     bool a = false; //스핏이 땅에 닿았을 때 최초의 speat.moveVerDir.y값을 얻기 위해 사용되는 bool 변수
+    Animator anim; // 애니메이터
+    Vector3 groundPos;
 
     [Header("적")]
     public MiniGameManager chaser;
 
     [Header("점프")]
     bool clickJump = false;
+    bool isJump = false;
 
     [Header("클리어박스")]
     public CheckMapClear clearBox;
@@ -25,8 +28,8 @@ public class RunGameManager : MonoBehaviour
     [Header("스피드")]
     public float speatSpeed;
     public float chaserSpeed;
-    public float speedWithSmallObstacle; // 작은 장애물과 부딪혔을 때 스핏의 속도 감속 크기 => 즉, -3m/s가되어 스핏의 속도는 7m/s
-    public float speedWithBigObstacle; // 큰 장애물과 부딪혔을 때 스핏의 속도 감속 크기 => 즉, -5m/s가되어 스핏의 속도는 5m/s
+    public float speedWithSmallObstacle = 3.0f; // 작은 장애물과 부딪혔을 때 distance에서 줄어야 하는 값.(== 작은 장애물과 부딪혔을 때 스핏의 속도 감속 크기)
+    public float speedWithBigObstacle = 5.0f; // 큰 장애물과 부딪혔을 때 distance에서 줄어야 하는 값. (== 큰 장애물과 부딪혔을 때 스핏의 속도 감속 크기)
     float settedSpeatSpeed;
 
     [Header("타이머 설정")]
@@ -39,6 +42,16 @@ public class RunGameManager : MonoBehaviour
 
     [Header("프리팹 관련 넣을 부모 오브젝트")]
     public GameObject parent; // 프리팹들을 담을 오브젝트
+
+    [Header("Renderer")]
+    public Renderer speatRenderer;
+    Color originColor;
+    bool flickerTrigger = false;
+    float flickerDegree; // 깜빡임 정도.
+
+    [Header("Waypoints")]
+    public Waypoint waypoints;
+
 
     Vector3 chaserPosition; // 적. 스핏 쫓는 애.
     GameObject[] prefabList; // 여기에 
@@ -63,17 +76,20 @@ public class RunGameManager : MonoBehaviour
     Coroutine slowEffectCoroutine;
     RunGameManager runGameManagerInstance;
     BoxCollider boxColliderInstance;
-    public Renderer speatRenderer;
 
-    void Start() {
+    void Start()
+    {
 
         if (transform.name == "RunGameManager") // 장애물 충돌 이외 모든 것을 RunGameManger에서 관리
         {
-            //renderer.material.color = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b, 0.5f);
-            //renderer.material.color = new Color(256, 256, 256, 0.5f);
+            // 카메라무빙없애기
+            DataController.instance_DataController.cam.GetComponent<Camera_Moving>().enabled = false;
+
+            // 애니메이터
+            anim = speat.GetComponent<Animator>();
 
             // 런게임 진행하는 동안 조이스틱 안쓰이니깐 안보이게 하기
-            DataController.instance_DataController.joyStick.gameObject.SetActive(false);
+            //DataController.instance_DataController.joyStick.gameObject.SetActive(false);
 
             // DataController 카메라 설정값 변경
             DataController.instance_DataController.camDis.x = 4f;
@@ -94,7 +110,11 @@ public class RunGameManager : MonoBehaviour
             startPosition2.SetActive(false);
             startPosition3.SetActive(false);
 
-            //chaserPosition = speat.transform.position + new Vector3(distance, 0, 0); // 적이 스핏과 distance(x좌표 기준)만큼 덜어져있다.
+            // 스핏의 컬러를 originColor에 담는다.
+            print("speatRenderer.material.color: " + transform.name + "의 " + speatRenderer.material.color);
+            originColor = speatRenderer.material.color;
+
+            //chaserPosition = speat.transform.position + new Vector3(distance, 0, 0); // 적이 스핏과 distance(x좌표 기준)만큼 떨어져있다.
         }
         else if (transform.name == "ObstacleCollider") // ObastacleCollider는 오직 장애물 충돌만 관여하도록!!
         {
@@ -103,13 +123,20 @@ public class RunGameManager : MonoBehaviour
             settedSpeatSpeed = runGameManagerInstance.speatSpeed;
         }
 
-    } 
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (transform.name == "RunGameManager")
         {
+            // 깜빡거림
+            if (flickerTrigger)
+            {
+                flickerDegree = Mathf.Abs(Mathf.Sin(Time.time * 10));
+                speatRenderer.material.color = originColor * flickerDegree;
+            }
+
             // 타이머
             timer -= Time.deltaTime;
             timerText.text = "런게임 타이머: " + Mathf.Round(timer);
@@ -117,20 +144,34 @@ public class RunGameManager : MonoBehaviour
             // 거리
             distanceText.text = "런게임 거리: " + Mathf.Round(distance) + "m";
 
-            // 점프
+            // 점프할 때 사용할 originMoveVerDirY 값 설정 
             if (!a && speat.ctrl.isGrounded)
             {
                 a = true;
+                groundPos = speat.transform.position;
                 originMoveVerDirY = speat.moveVerDir.y;
             }
 
-            if (clickJump)
+            // 점프
+            if (DataController.instance_DataController.inputJump && anim.GetBool("Jump"))
+            {
+                anim.SetBool("Jump", false); //점프 불가능 상태로 변경하여 연속적인 점프 제한
+                speat.moveVerDir.y = originMoveVerDirY;
+                speat.jumpForce = 15; // 내가 임의로 설정!
+                speat.gravityScale = 3.0f;// 디폴트는 1.1f이었음.
+
+            }
+
+            if (clickJump && speat.transform.position.y >= groundPos.y + 0.5f) // 스핏의 y좌표값이 0.5값보다 같거나 위에 있을 때 '점프중'으로 간주.
             {
                 clickJump = false;
-                speat.isJump = true;
-                speat.moveVerDir.y = originMoveVerDirY;
-                speat.jumpForce = 20; // 내가 임의로 설정!
-                speat.gravityScale = 3.0f;// 디폴트는 1.1f이었음.
+                isJump = true;
+            }
+
+            if (isJump && speat.ctrl.isGrounded) // 점프했다가 내려온거!
+            {
+                isJump = false;
+                DataController.instance_DataController.inputJump = false;
             }
 
             // 프리팹 이동 관련
@@ -164,6 +205,7 @@ public class RunGameManager : MonoBehaviour
         else if (transform.name == "ObstacleCollider")
         {
             transform.position = speat.transform.position + new Vector3(0, 0.5f, 0);
+
         }
 
     }
@@ -188,7 +230,7 @@ public class RunGameManager : MonoBehaviour
     {
         // 중복없이 난수 생성. one은 start랑 동일(초반세팅이깐). randomArr[1]은 two의 patternSubType. randomArr[2]은 three의 patternSubType.
         int[] randomArr = GetRandomInt(2, 0, patternSubTypeNum);
-       
+
         // 게임 처음 시작할 때 one은 Start 객체를 가리키도록!
         one = Instantiate(Resources.Load<GameObject>("Run_Pattern/Start"));
         one.transform.SetParent(parent.transform, false);
@@ -230,7 +272,7 @@ public class RunGameManager : MonoBehaviour
                 {
                     two.SetActive(false);
                     two = prefabList[patternSubType];
-                    two.SetActive(true); 
+                    two.SetActive(true);
                     two.transform.position = startPosition0.transform.position;
                     recentReferVar = two;
                 }
@@ -243,7 +285,7 @@ public class RunGameManager : MonoBehaviour
                     three.transform.position = startPosition0.transform.position;
                     recentReferVar = three;
                 }
-               
+
                 break;
 
             }
@@ -252,33 +294,48 @@ public class RunGameManager : MonoBehaviour
 
     }
 
-    private void SetEndPrefab() {
+    private void SetEndPrefab()
+    {
 
         // 맨홀쪽으로 이동해야하니깐, 조이스틱 다시 사용할 수 있게 하기.
         DataController.instance_DataController.joyStick.gameObject.SetActive(true);
 
-        /* 웨이포인트 완료하면 그때 쓰기!! 
+        // 웨이포인트 사용
+        waypoints.transform.GetChild(0).transform.position = speat.transform.position; // 첫번째 waypoint(1)을 스핏 위치와 일치 시키기
+        waypoints.transform.GetChild(1).transform.position = waypoints.transform.GetChild(0).transform.position + new Vector3(10, 0 , 0); // waypoint(1)보다 x축으로 10떨어진 곳에 waypoint(2)를 위치시킨다.
+        waypoints.transform.GetChild(2).transform.position = waypoints.transform.GetChild(1).transform.position + new Vector3(0, 0, 10); // waypoint(2)보다 x축으로 10떨어진 곳에 waypoint(3)를 위치시킨다.
+
         end.transform.position = recentReferVar.transform.position + new Vector3(23.0f, 0, -8.0f);
         end.SetActive(true);
-        clearBox.transform.position = end.transform.position + new Vector3(2.0f,0,-13.0f);
-        */
+        clearBox.transform.position = end.transform.position + new Vector3(2.0f, 0, -13.0f);
+
+
 
     }
 
-    // 점프버튼 누르면 실행되는 함수
-    public void JumpBtn() {
+    private void flicker()
+    {
+        flickerTrigger = true;
+    }
 
-        if (transform.name == "RunGameManager") { // RunGamManager 오브젝트에서만 실행되도록
+    // 점프버튼 누르면 실행되는 함수
+    public void JumpBtn()
+    {
+        if (transform.name == "RunGameManager")
+        { // RunGamManager 오브젝트에서만 실행되도록
             if (speat.ctrl.isGrounded)
             {
                 clickJump = true;
+                DataController.instance_DataController.inputJump = true;
+                anim.SetBool("Jump", true);
             }
         }
 
     }
 
     // 스킬버튼 누르면 실행되는 함수
-    public void SkillBtn() {
+    public void SkillBtn()
+    {
         if (transform.name == "ObstacleCollider") // ObstacleCollider 오브젝트에서만 실행되도록
         {
             StartCoroutine(Skill(1.0f));
@@ -296,9 +353,11 @@ public class RunGameManager : MonoBehaviour
         // 장애물 충돌 여부 확인할 때 쓰임.
         if (transform.name == "ObstacleCollider" && other.CompareTag("Obstacle") && !inConflict)
         {
+            StartCoroutine(Flicker(1.0f));
             inConflict = true;
             if (other.transform.parent.name == "Small")
             {
+                print("스몰 충돌!");
                 runGameManagerInstance.distance -= speedWithSmallObstacle;
                 StartCoroutine(SlowDownSpeed(1.0f, settedSpeatSpeed - speedWithSmallObstacle)); // 1.0f초동안 스핏의 속도는 5.0m/s로
                 //print("★conflict with Small && speatSpeed is: " + runGameManagerInstance.speatSpeed);
@@ -306,6 +365,7 @@ public class RunGameManager : MonoBehaviour
             }
             else if (other.transform.parent.name == "Big")
             {
+                print("빅 충돌!");
                 runGameManagerInstance.distance -= speedWithBigObstacle;
                 StartCoroutine(SlowDownSpeed(1.0f, settedSpeatSpeed - speedWithBigObstacle)); // 1.0f초동안 스핏의 속도는 7.0m/s로
                 //print("♥conflict with Big && speatSpeed is: " + runGameManagerInstance.speatSpeed);
@@ -314,10 +374,9 @@ public class RunGameManager : MonoBehaviour
         }
     }
 
-    IEnumerator SlowDownSpeed(float waitTime, float reducedSpeed) { // waitTime동안 reduceSpeed로 스핏 속도 줆.
-        // ☆ slowEffectCoroutine = StartCoroutine(SlowEffect());
-        //speatRenderer.material.color = new Color(speatRenderer.material.color.r, speatRenderer.material.color.g, speatRenderer.material.color.b, 0.1f);
-        //speatRenderer.material.color = new Color(0, 0, 0, 0.1f);
+    IEnumerator SlowDownSpeed(float waitTime, float reducedSpeed)
+    { // waitTime동안 reduceSpeed로 스핏 속도 줆.
+
         runGameManagerInstance.speatSpeed = reducedSpeed;
         yield return new WaitForSeconds(waitTime);
         // ☆ StopCoroutine(slowEffectCoroutine);
@@ -325,7 +384,8 @@ public class RunGameManager : MonoBehaviour
         inConflict = false;
     }
 
-    IEnumerator Skill(float waitTime) { // waitTime동안 skill사용(콜라이더 없앴다가 나타나게)
+    IEnumerator Skill(float waitTime)
+    { // waitTime동안 skill사용(콜라이더 없앴다가 나타나게)
         boxColliderInstance.enabled = false;
         yield return new WaitForSeconds(waitTime);
         boxColliderInstance.enabled = true;
@@ -344,9 +404,6 @@ public class RunGameManager : MonoBehaviour
         reStartText.text = "1";
         yield return new WaitForSeconds(1);
 
-        // 다시 프리팹 설정
-        SetPrefab(); // 다시 프리팹 설정
-
         reStartText.text = "Start!";
         yield return new WaitForSeconds(1);
 
@@ -357,19 +414,19 @@ public class RunGameManager : MonoBehaviour
         one.SetActive(false);
         two.SetActive(false);
         three.SetActive(false);
+        SetPrefab(); // 다시 프리팹 설정
         isStopMapPrefab = false; // 다시 프리팹 움직이게 ㄱㄱ
         isGameOver = false;
 
     }
 
-    IEnumerator SlowEffect()
+    IEnumerator Flicker(float waitingTime) // 깜빡깜빡 거리는거
     { // waitTime동안 투명<->반투명 왔다리 갔다리
-        while (true)
-        {
-            speatRenderer.material.color = new Color(speatRenderer.material.color.r, speatRenderer.material.color.g, speatRenderer.material.color.b, 0.1f);
-            yield return new WaitForSeconds(0.1f);
-            speatRenderer.material.color = new Color(speatRenderer.material.color.r, speatRenderer.material.color.g, speatRenderer.material.color.b, 1.0f);
-        }
+        runGameManagerInstance.flickerTrigger = true;
+        yield return new WaitForSeconds(waitingTime);
+        runGameManagerInstance.speatRenderer.material.color = runGameManagerInstance.originColor; // 다시 본래 Material로!
+        runGameManagerInstance.flickerTrigger = false;
+
     }
 
     // 기타 함수들.

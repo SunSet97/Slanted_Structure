@@ -1,4 +1,4 @@
-﻿Shader "Custom/ToonFresnel"
+﻿Shader "Custom/ToonMetal"
 {
     Properties
     {

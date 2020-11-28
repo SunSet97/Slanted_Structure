@@ -63,7 +63,9 @@ public class SpeatAbility : MonoBehaviour
             ChangeIsAbility();  // 능력 사용 여부 판단
             Dash();             // 조건 만족시 대쉬
 
-            // *숨기 능력 *     여기서 문 or 출구 클릭 입력 받음.
+            // *숨기 능력 *     여기서 문 or 출구 클릭 입력 받음.     
+            CheckAroundInterActionObj();
+            /*
             if (Input.GetMouseButtonDown(0)) touchDown = Camera.main.ScreenPointToRay(Input.mousePosition);
             else if (Input.GetMouseButtonUp(0))
             {
@@ -72,11 +74,13 @@ public class SpeatAbility : MonoBehaviour
                     && touchDown.origin.y - touchRange <= touchUp.origin.y && touchUp.origin.y <= touchDown.origin.y + touchRange)
                 {
                     RaycastHit hit;
-                    Physics.Raycast(touchUp, out hit);
-                    GameObject touchedObj = hit.transform.gameObject;
-
-                    if (hit.collider != null && touchedObj.layer.Equals(11)) // 클릭한 오브젝트가 문 일때
+                    Physics.Raycast(touchUp, out hit, Mathf.Infinity);
+                    GameObject touchedObj = hit.collider.gameObject;
+                    // 하..
+                    print(hit.collider.name);
+                    if (hit.collider != null && touchedObj.name.Equals("door")) // 클릭한 오브젝트가 문 일때
                     {
+                        print(touchedObj.gameObject.name + "터치!!");
                         CheckDoor(touchUp, touchedObj);
 
                     }
@@ -87,6 +91,8 @@ public class SpeatAbility : MonoBehaviour
 
                 }
             }
+            */
+
         }
         else
         {
@@ -266,6 +272,11 @@ public class SpeatAbility : MonoBehaviour
                     if (floorFace.transform != floorInverse.transform) floorCnt++; // 같은 벽을 가리킬때까지 탐색
                 }
             }
+
+            // 스핏 주위에 있는 obj_interaction감지 범위 보여줌
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(speat.transform.position, 5);
+
         }
     }
 
@@ -376,4 +387,58 @@ public class SpeatAbility : MonoBehaviour
         isHiding = false;
 
     }
+
+    // 주위에 obj_interaction 태그를 단 오브젝트가 있는지 확인
+    void CheckAroundInterActionObj()
+    {
+        // Physics.SphereCastAll(origin, 구 반지름, 레이방향, maxDistance);
+        RaycastHit[] hits = Physics.SphereCastAll(speat.transform.position, 5, Vector3.up, 0f);
+        foreach (RaycastHit hit in hits)
+        {
+
+            if (hit.collider.gameObject.CompareTag("obj_interaction"))
+            {
+                //print("주위에 obj_interaction있음! 걔의 parent!! " + hit.collider.gameObject.transform.parent.parent.name);
+                CheckClickInterActionObj(hit.collider.gameObject); // obj_interaction 클릭 확인
+            }
+
+        }
+    }
+
+    // 캐릭터 주위에 obj_interaction 클릭 확인.
+    void CheckClickInterActionObj(GameObject obj_interaction) // 캐릭터 주위에 있는(==원 안에 들어오는) obj_interaction을 파라메터로 받음. 얘를 클릭한 얘를 같은지 비교할거임.
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Camera cam = null;
+
+            if (Camera.main.CompareTag("MainCamera"))
+            {
+                cam = Camera.main.GetComponent<Camera>();
+            }
+
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit[] hits = Physics.RaycastAll(speat.transform.position, Input.mousePosition, Mathf.Infinity);
+
+            foreach (RaycastHit hit in hits){
+                print("!!!!!!!hits: " + hit.collider.name + "parent: " + hit.collider.gameObject.transform.parent.name);
+                if (obj_interaction.Equals(hit.collider.gameObject) || hit.collider.gameObject.name == "door") {
+                    print("@@@@@@@@hit: " + hit.transform.parent.parent.name);
+                    PlayInteraction(hit.collider.name);
+                }
+
+            }
+
+
+           
+        }
+    }
+
+    void PlayInteraction(string name)
+    {
+        print(name + "이 클릭되었으니, 인터랙션 하여라");
+    }
+
+   
 }
