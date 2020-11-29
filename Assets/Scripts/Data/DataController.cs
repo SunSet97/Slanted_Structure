@@ -87,6 +87,22 @@ public class DataController : MonoBehaviour
         //맵 찾기
         FindMap();
 
+        // 카메라 projction을 orthographic으로 전환. 그리고 camDis_y = 1로 변경 (스핏 오피스텔)
+        if (mapCode.Equals("002010") && cam.orthographic.Equals(false))
+        {
+            cam.orthographic = true;
+            originOrthoSize = cam.orthographicSize;
+            cam.orthographicSize = 4;
+            originCamDis_y = camDis.y;
+            camDis.y = 1;
+        }
+        /*else if (!mapCode.Equals("010101") && cam.orthographic.Equals(true))
+        {
+            camDis_y = originCamDis_y;
+            cam.orthographicSize = originOrthoSize;
+            cam.orthographic = false;
+        }*/
+
     }
 
     public void Cinematic()//시네마틱 씬 로드
@@ -103,8 +119,8 @@ public class DataController : MonoBehaviour
     //맵 코드에 맞는 맵을 찾아서 정보 저장
     void FindMap()
     {
-        // 인게임/시네마틱 씬에서 맵 데이터 리스트 찾기 및 정렬
-        if (SceneManager.GetActiveScene().name == "Ingame"|| SceneManager.GetActiveScene().name == "Cinematic")
+        // 인게임 씬에서 맵 데이터 리스트 찾기 및 정렬
+        if (SceneManager.GetActiveScene().name == "Ingame")
         {
             if (GameObject.FindObjectsOfType<MapData>().Length != maps.Count)
             {

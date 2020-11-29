@@ -18,37 +18,19 @@ public class InteractionObj_stroke : MonoBehaviour
 
     }
 
-    public enum TouchOrNot // 인터렉션 오브젝트 터치했는지 안했는지 감지 기능 필요
-    {
-        yes,
-        no
-    }
-
-    [Header("아웃라인 색 설정")]
     public OutlineColor color;
-
-    [Header("인터렉션 오브젝트 터치 유무 감지 기능 사용할건지 말건지")]
-    public TouchOrNot touchOrNot;
     public bool onOutline = false; // 아웃라인 켜져있는 안켜져 있는지
     public bool isCharacterInRange = false; // obj_interaction 오브젝트 기준으로 일정 범위 내에 캐릭터가 있는지 확인
     public int radius = 5;
-    public GameObject exclamationMark;
-
+    public Text exclamationMark;
     [Header("느낌표 사용할 때 체크")]
     public bool useExclamationMark = false;
-    public float x; // 느낌표 위치(x좌표) 조절
     public float y; // 느낌표 위치(y좌표) 조절
     private bool isInteractionObj = false;
-    public Outline outline;
+    private Outline outline;
     private CharacterManager character;
     Camera cam;
 
-    [Header("터치 여부 확인")]
-    public bool isTouched = false;
-    public RaycastHit hit;
-
-    [Header("터치될 오브젝트. 만약 스크립트 적용된 오브젝트가 터치될 오브젝트라면 그냥 None인상태로 두기!")]
-    public GameObject touchTargetObject;
 
     void Start()
     {
@@ -67,10 +49,6 @@ public class InteractionObj_stroke : MonoBehaviour
 
             character = DataController.instance_DataController.currentChar;
 
-            if (!touchTargetObject)
-            {
-                touchTargetObject = gameObject;
-            }
 
             // 아웃라인 색깔 설정
             if (color == OutlineColor.red) outline.OutlineColor = Color.red;
@@ -127,33 +105,10 @@ public class InteractionObj_stroke : MonoBehaviour
 
             }
 
-            // 플레이어의 인터렉션 오브젝트 터치 감지
-            if (touchOrNot == TouchOrNot.yes)
-            {
-
-                if (Input.GetMouseButtonDown(0))
-                {
-                    Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-                    {
-                        // 오브젝트 터치 감지
-                        if (hit.collider.gameObject.Equals(touchTargetObject))
-                        {
-                            isTouched = true;
-                        }
-
-                    }
-                }
-                else
-                {
-                    isTouched = false;
-                }
-            }
-
         }
 
         Vector3 myScreenPos = cam.WorldToScreenPoint(transform.position);
-        exclamationMark.transform.position = myScreenPos + new Vector3(x, y, 0);
+        exclamationMark.transform.position = myScreenPos + new Vector3(0, y, 0);
 
     }
 
