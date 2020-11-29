@@ -18,6 +18,10 @@ public class CheckMapClear : MonoBehaviour
             if (mask == 1) who = DataController.instance_DataController.oun;
             if (mask == 2) who = DataController.instance_DataController.rau;
         }
+        if (this.gameObject.GetComponent<InteractionObj_stroke>().isTouched == true) //이 오브젝트의 터치를 인식했으면 클리어 여부 체크
+        {
+           isClear = true;
+        }
     }
 
     // 캐릭터 확인 후 트리거 활성화
