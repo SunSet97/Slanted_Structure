@@ -63,7 +63,7 @@ public class InteractionObj_stroke : MonoBehaviour
 
             cam = DataController.instance_DataController.cam;
 
-            exclamationMark.gameObject.SetActive(false); // 느낌표 끄기
+            if(exclamationMark.gameObject!=null)exclamationMark.gameObject.SetActive(false); // 느낌표 끄기
 
             character = DataController.instance_DataController.currentChar;
 
@@ -160,17 +160,20 @@ public class InteractionObj_stroke : MonoBehaviour
     void CheckAroundCharacter()
     {
         RaycastHit[] hits = Physics.SphereCastAll(gameObject.transform.position, radius, Vector3.up, 0f);
-        foreach (RaycastHit hit in hits)
+        if (hits.Length > 0)
         {
-            if (hit.collider.gameObject == character.gameObject)
+            foreach (RaycastHit hit in hits)
             {
-                isCharacterInRange = true;
-            }
-            else
-            {
-                isCharacterInRange = false;
-            }
+                if (hit.collider.gameObject != null)
+                {
+                    if (hit.collider.gameObject == character.gameObject) isCharacterInRange = true;
 
+                }
+                else
+                {
+                    isCharacterInRange = false;
+                }
+            }
         }
     }
 

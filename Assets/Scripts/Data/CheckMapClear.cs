@@ -5,22 +5,17 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class CheckMapClear : MonoBehaviour
 {
-    public int mask; // 캐릭터 마스크
     public bool isClear; // 클리어 여부
     [SerializeField] private CharacterManager who;  // 트리거 신호를 줄 캐릭터
 
     private void Update()
     {
-        // 트리거 체크할 캐릭터 확인
-        if (DataController.instance_DataController)
+        if (this.gameObject.GetComponent<InteractionObj_stroke>() != null)
         {
-            if (mask == 0) who = DataController.instance_DataController.speat;
-            if (mask == 1) who = DataController.instance_DataController.oun;
-            if (mask == 2) who = DataController.instance_DataController.rau;
-        }
-        if (this.gameObject.GetComponent<InteractionObj_stroke>().isTouched == true) //이 오브젝트의 터치를 인식했으면 클리어 여부 체크
-        {
-           isClear = true;
+            if (this.gameObject.GetComponent<InteractionObj_stroke>().isTouched == true) //이 오브젝트의 터치를 인식했으면 클리어 여부 체크
+            {
+                isClear = true;
+            }
         }
     }
 

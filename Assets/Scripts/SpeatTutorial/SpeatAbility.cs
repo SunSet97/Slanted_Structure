@@ -132,9 +132,6 @@ public class SpeatAbility : MonoBehaviour
 
             buttonImage.color = Color.clear; // 터치 이미지 투명
         }
-
-        // 캐릭터의 능력 사용 여부 변화
-        speat.isAbility = isAbility;
     }
 
     // 능력 사용 버튼
