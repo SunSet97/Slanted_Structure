@@ -6,14 +6,16 @@ using UnityEngine;
 public class CheckMapClear : MonoBehaviour
 {
     public bool isClear; // 클리어 여부
+    public string nextSelectMapcode = "000000";//어디 스토리로 갈 건지.
     [SerializeField] private CharacterManager who;  // 트리거 신호를 줄 캐릭터
 
     private void Update()
     {
         if (this.gameObject.GetComponent<InteractionObj_stroke>() != null)
         {
-            if (this.gameObject.GetComponent<InteractionObj_stroke>().isTouched == true) //이 오브젝트의 터치를 인식했으면 클리어 여부 체크
+            if (this.gameObject.GetComponent<InteractionObj_stroke>().isTouched == true&& nextSelectMapcode != "000000") //이 오브젝트의 터치를 인식했으면 클리어 여부 체크
             {
+                DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
                 isClear = true;
             }
         }

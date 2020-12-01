@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CharacterManager : MonoBehaviour
 {
@@ -9,15 +7,21 @@ public class CharacterManager : MonoBehaviour
     [Header("#Default inspector setting(auto)")]
     public Joystick joyStick; // 조이스틱
     public CharacterController ctrl; // 캐릭터컨트롤러
-    private Animator anim; // 애니메이션
-    public Animation_Controller Anim_Controller; // 애니메이션 컨트롤러
+
+    public Animator anim; // 애니메이션
+    private SkinnedMeshRenderer skinnedMesh; // 캐릭터 머테리얼
+    private Texture[] faceExpression;//표정 메터리얼
+
     private Camera cam; // 카메라
 
     void Start()
     {
         ctrl = this.GetComponent<CharacterController>();
         anim = this.GetComponent<Animator>();
-        Anim_Controller = this.GetComponent<Animation_Controller>();
+        // 표정 머테리얼 초기화
+        faceExpression = Resources.LoadAll<Texture>("Face");
+        skinnedMesh = this.GetComponentInChildren<SkinnedMeshRenderer>();
+        skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int)emotion]);
     }
 
     void Update()
@@ -28,6 +32,8 @@ public class CharacterManager : MonoBehaviour
         // 카메라 설정
         if (!cam && DataController.instance_DataController.cam) cam = DataController.instance_DataController.cam;
 
+        // 에니메이션 설정
+        AnimationSetting();
     }
     #endregion
 
@@ -56,6 +62,59 @@ public class CharacterManager : MonoBehaviour
     }
     #endregion
 
+    #region 캐릭터 애니메이션 설정
+    // 감정상태
+    public enum Emotion { Idle, Laugh, Sad, Cry, Angry, Surprise, Panic, Suspicion, Fear, Curious };
+    public Emotion emotion = Emotion.Idle;      // 캐릭터 감정
+
+    // 에니메이션 설정
+    void AnimationSetting()
+    {
+        EmotionAnimationSetting();
+        ActionAnimationSetting();
+    }
+
+    // 현재 Emotion상태값 넣기
+    void EmotionAnimationSetting()
+    {
+        if (SceneManager.GetActiveScene().name == "Cinematic")
+        {
+            anim.SetInteger("Emotion", (int)emotion); // 애니메이션실행
+        }
+        skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int)emotion]); // 현재 감정으로 메터리얼 변경
+
+
+    }
+
+    // 액션 관련
+    void ActionAnimationSetting()
+    {
+        if (SceneManager.GetActiveScene().name == "Ingame")
+        {
+            // 대시
+            if (DataController.instance_DataController.inputDash == true)
+            {
+                anim.SetTrigger("Dash");
+                DataController.instance_DataController.inputDash = false;
+            }
+
+            // 앉기
+            /*  인터렉션 으로 의자 주변에 있을 때, 의자 자체에 트리거가 활성화 되고, /희원이랑 이야기해야될 부분
+            *  터치하면 bool값이 변경되는 것으로 세팅할 필요가 있음!*/
+            if (DataController.instance_DataController.inputSeat == true)
+                anim.SetBool("Seat", true);
+            else
+                anim.SetBool("Seat", false);
+
+            // 사망
+            /*죽음 상태를 DataController에 bool값 추가하여
+            플레이어의 상태값을 인지하고 Dead가 true이면 사망 상태의 애니메이션이 활성화되고
+            게임 오버 or 리스폰 할 수 있도록 해야할 듯.*/
+            // anim.SetBool("Dead", true);
+        }
+    }
+    #endregion
+
     #region 캐릭터 이동 설정
     [Header("#Character move setting")]
     public Vector3 moveHorDir = Vector3.zero, moveVerDir = Vector3.zero;    // 수평, 수직 이동 방향 벡터
@@ -68,7 +127,7 @@ public class CharacterManager : MonoBehaviour
     public float jumpForce = 5f;            // 점프력
     public float gravityScale = 0.6f;       // 중력 배수
     public float airResistance = 1.2f;      // 공기 저항
-    
+
     private void FixedUpdate()
     {
         // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을 때
@@ -82,14 +141,19 @@ public class CharacterManager : MonoBehaviour
             joystickDir = new Vector2(DataController.instance_DataController.inputDirection.x, DataController.instance_DataController.inputDirection.y);
 
             joyRot = Vector2.SignedAngle(joystickDir, characterDir);
-            if (Mathf.Abs(joyRot) > 170 && !anim.GetBool("180Turn")) anim.SetBool("180Turn", true);
-            else anim.SetBool("180Turn", false);
+            if (Mathf.Abs(joyRot) > 170 && !anim.GetBool("180Turn"))
+                anim.SetBool("180Turn", true);
+            else
+                anim.SetBool("180Turn", false);
+
             anim.SetFloat("Direction", joyRot); //X방향
             anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed
+
             if (DataController.instance_DataController.currentMap.SideView == true)
                 anim.SetBool("2DSide", true);
             else
                 anim.SetBool("2Dside", false);
+
             //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
             if (isSelected && DataController.instance_DataController.inputJump && ctrl.isGrounded)
                 anim.SetBool("Jump", true);  //점프 가능 상태로 변경

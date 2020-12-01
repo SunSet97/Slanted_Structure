@@ -244,7 +244,6 @@ public class MapData : MonoBehaviour
         temp.clearBox.gameObject.AddComponent<BoxCollider>();
         temp.clearBox.GetComponent<BoxCollider>().isTrigger = true;
         temp.clearBox.gameObject.AddComponent<CheckMapClear>();
-        temp.clearBox.GetComponent<CheckMapClear>().mask = (int)createWho;
         // 임시 오브젝트 제거
         DestroyImmediate(instant.gameObject);
         // 리스트에 설정 추가
