@@ -18,11 +18,23 @@ public class InteractionObj_stroke : MonoBehaviour
 
     }
 
+    public enum typeOfInteraction 
+    {
+        portal,
+        animation,
+        dialogue,
+        camerasetting
+    
+    }
+
     public enum TouchOrNot // 인터렉션 오브젝트 터치했는지 안했는지 감지 기능 필요
     {
         yes,
         no
     }
+
+    [Header("인터렉션 방식")]
+    public typeOfInteraction type;
 
     [Header("아웃라인 색 설정")]
     public OutlineColor color;
@@ -85,7 +97,32 @@ public class InteractionObj_stroke : MonoBehaviour
         }
 
     }
+    void interactionResponse() 
+    {
+        //3가지 1)애니메이션 2)대사 3)카메라 변환(확대라든지) 4)맵포탈
+        if (type==typeOfInteraction.animation && this.gameObject.GetComponent<Animator>()!=null)//애니메이터가 존재한다면 
+        {
+            //세팅된 애니메이터 시작
+            this.gameObject.GetComponent<Animator>().Play("Start",0);
 
+        }
+        else if (type == typeOfInteraction.dialogue) 
+        {
+            //대사활성화
+        }
+        else if (type == typeOfInteraction.camerasetting)
+        {
+            //카메라 변환 활성화
+        }
+        else if (type == typeOfInteraction.portal&& this.gameObject.GetComponent<CheckMapClear>() != null)
+        {
+            isTouched = true;
+        }
+        
+
+
+
+    }
     void Update()
     {
         if (!character)
@@ -139,7 +176,7 @@ public class InteractionObj_stroke : MonoBehaviour
                         // 오브젝트 터치 감지
                         if (hit.collider.gameObject.Equals(touchTargetObject))
                         {
-                            isTouched = true;
+                            interactionResponse();//인터렉션반응 나타남.
                         }
 
                     }

@@ -32,7 +32,20 @@ public class NPC_Anim_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        NPC_Animation(_Pattern, _Random);
+        if (enum_Pattern != NPC_p.Special || num_Pattern != 0)//스패셜이 아니거나 패턴이 0이 아닐 때
+        {
+            NPC_Animation(_Pattern, _Random);
+        }
+        else 
+        {
+            //npcSpecial();
+        }
+    }
+    public void npcSpecial() 
+    {
+        //anim.Setbool("Talking",Talking);
+        //anim.Setbool("Story_Interaction",Story_Interaction);
+
     }
 
     public void NPC_Animation(int Pattern_, int Random_) 
@@ -44,8 +57,12 @@ public class NPC_Anim_Controller : MonoBehaviour
     void Pattern_Setting() 
     {
         _Pattern = Random.Range(0, num_Pattern);
-        Random_Setting();
-        Invoke("Pattern_Setting", 2);
+        if (num_Random != 0)//랜덤 수가 0이 아닐 때만.
+        {
+            Random_Setting();
+            Invoke("Pattern_Setting", 2);
+        }
+        
     }
 
     void Random_Setting() 
