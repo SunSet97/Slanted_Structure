@@ -26,16 +26,16 @@ public class RauTutorialManager : MonoBehaviour
     public bool[] isCheckPoint;
     public GameObject[] grass;
     private CameraSetting view_side = new CameraSetting() { camDis = new Vector3(0, 1.5f, -5f), camRot = Vector3.zero };
-    private CameraSetting view_forward = new CameraSetting() { camDis = new Vector3(-1.5f, 1.5f, 0), camRot = new Vector3(10, 90, 0) };
+    private CameraSetting view_forward = new CameraSetting() { camDis = new Vector3(-1f, 1.5f, 0), camRot = new Vector3(10, 90, 0) };
     private CameraSetting view_river = new CameraSetting() { camDis = new Vector3(3f, 3f, -10f), camRot = new Vector3(10, 0, 0) };
     private CameraSetting view_quarter = new CameraSetting() { camDis = new Vector3(-6f, 5f, 0f), camRot = new Vector3(20, 90, 0) };
 
     void Update()
     {
-        if (isCheckPoint[5]) { if (isCheckPoint[6]) ui[6].SetActive(true); ui[3].SetActive(false); Forest(); }
+        if (isCheckPoint[5]) { ui[3].SetActive(false); Forest(); }
         else if (isCheckPoint[3]) { ui[2].SetActive(false); River(); }
-        else if (isCheckPoint[2]) { ui[2].SetActive(true); ui[1].SetActive(false); GrassSwipe(); }
-        else if (isCheckPoint[0])  ForestIntro();
+        else if (isCheckPoint[2]) { ui[2].SetActive(true); ui[1].SetActive(false); ui[0].SetActive(false); GrassSwipe(); }
+        else if (isCheckPoint[0]) ForestIntro();
         
     }
 
@@ -129,7 +129,7 @@ public class RauTutorialManager : MonoBehaviour
         isMoveForward = true;
         for (int i=0; i < 20; i++)
         {
-            DataController.instance_DataController.currentChar.transform.position += (new Vector3(grass.x, grass.y, character.z) - character) / 20f;
+            DataController.instance_DataController.currentChar.transform.position += (new Vector3(grass.x, character.y, character.z) - character) / 20f;
             yield return new WaitForSeconds(0.0001f);
         }
         isMoveForward = false;
@@ -137,6 +137,9 @@ public class RauTutorialManager : MonoBehaviour
 
 
     bool isRiver = false;
+    public bool isFallInRiver = false;
+    bool isKickWood = false;
+    bool isWoodBridge = false;
     public GameObject[] riverTrees;
     // 물가
     void River()
@@ -151,29 +154,43 @@ public class RauTutorialManager : MonoBehaviour
         }
 
         if (isCheckPoint[3] && !isCheckPoint[4])
-            ChangeJoystickSetting(0, 0); // 2D side view 이동
-
-        // 인터렉트할 물건 찾기
-        // 나무 발로 차서 넘어뜨리기
-        if (isCheckPoint[4] && kickIndex < 3)
         {
             ui[3].SetActive(true);
+            ChangeJoystickSetting(0, 0); // 2D side view 이동
+        }
+
+        // 인터렉트할 물건 찾기
+        if (isFallInRiver && !isKickWood)
+        {
+            riverTrees[0].GetComponent<Interact_ObjectWithRau>().enabled = true;
+            if (riverTrees[0].GetComponent<Interact_ObjectWithRau>().isTouched)
+            {
+                riverTrees[0].GetComponent<Interact_ObjectWithRau>().offset = Vector3.zero;
+                isKickWood = true;
+            }
+        }
+
+        // 나무 발로 차서 넘어뜨리기
+        if (isKickWood && !isWoodBridge && kickIndex < 3)
+        {
+            ui[4].SetActive(true);
             DataController.instance_DataController.camDis = view_river.camDis; DataController.instance_DataController.rot = view_river.camRot;
             ChangeJoystickSetting(2, 0); // 이동 해제
             DataController.instance_DataController.currentChar.PickUpCharacter();
             DataController.instance_DataController.inputDegree = 0;
             DataController.instance_DataController.inputDirection = Vector2.zero;
         }
-        else if (isCheckPoint[4] && kickIndex >= 3)
+        else if (isKickWood && !isWoodBridge && kickIndex >= 3)
         {
-            ui[3].SetActive(false);
+            ui[4].SetActive(false);
+            // 카메라 방향 side
+            DataController.instance_DataController.camDis = view_river.camDis; DataController.instance_DataController.rot = view_river.camRot;
+            ChangeJoystickSetting(0, 0); // 2D side view 이동
             DataController.instance_DataController.currentChar.UseJoystickCharacter();
             riverTrees[0].SetActive(false);
             riverTrees[1].SetActive(true);
             riverTrees[2].SetActive(true);
-            // 카메라 방향 side
-            DataController.instance_DataController.camDis = view_river.camDis; DataController.instance_DataController.rot = view_river.camRot;
-            ChangeJoystickSetting(0, 0); // 2D side view 이동
+            isWoodBridge = true;
         }
     }
 
@@ -187,6 +204,12 @@ public class RauTutorialManager : MonoBehaviour
         }
     }
 
+    public GameObject forestTree;
+    bool isWoodDrop=false;
+    bool isSwipeWood = false;
+    int woodSwipeIndex = 0;
+    bool isMoveUp = false;
+    public Transform[] movePoint;
     // 나무 숲
     void Forest()
     {
@@ -194,11 +217,61 @@ public class RauTutorialManager : MonoBehaviour
         DataController.instance_DataController.camDis = view_quarter.camDis; DataController.instance_DataController.rot = view_quarter.camRot;
         // 둘러보기, 전방향 이동 튜토리얼
         ChangeJoystickSetting(1, 0); // 전방향 이동
-        
+        ui[5].SetActive(true);
+
         // 특정 지점에서 나무 쓰러짐
+        if (isCheckPoint[6]&& !isWoodDrop)
+        {
+            isWoodDrop = true;
+            forestTree.GetComponent<Animation>().Play();
+        }
         // 스와이프로 나무 넘어가기
-        //ChangeJoystickSetting(2, 2); // 이동 해제, 위아래 스와이프만 가능하도록 변경
+        else if(isCheckPoint[6]&&isWoodDrop&& !isSwipeWood)
+        {
+            ui[6].SetActive(true);
+            // 카메라 방향 앞, 쿼터뷰
+            DataController.instance_DataController.camDis = view_forward.camDis; DataController.instance_DataController.rot = view_forward.camRot;
+            ChangeJoystickSetting(2, 2); // 이동 해제, 위아래 스와이프만 가능하도록 변경
+            TouchSlide();
+            DataController.instance_DataController.currentChar.PickUpCharacter();
+            if (swipeDir == Swipe.Down && woodSwipeIndex <= 3 && !isMoveUp)
+            {
+                StartCoroutine(MoveUp(DataController.instance_DataController.currentChar.transform.position, movePoint[woodSwipeIndex].position));
+                woodSwipeIndex++;
+            }
+            if (woodSwipeIndex > 3)
+            {
+                ui[6].SetActive(false);
+                isSwipeWood = true;
+            }
+        }
+        else if (isCheckPoint[6] && isSwipeWood)
+        {
+            // 카메라 방향 앞, 쿼터뷰
+            DataController.instance_DataController.camDis = view_quarter.camDis; DataController.instance_DataController.rot = view_quarter.camRot;
+            // 둘러보기, 전방향 이동 튜토리얼
+            ChangeJoystickSetting(1, 0); // 전방향 이동
+            DataController.instance_DataController.currentChar.UseJoystickCharacter();
+        }
 
         // 시네마틱 씬 전환
+    }
+    
+    IEnumerator MoveUp(Vector3 character, Vector3 point)
+    {
+        isMoveUp = true;
+        for (int i = 0; i < 20; i++)
+        {
+            DataController.instance_DataController.currentChar.transform.position += (point-character) / 20f;
+            yield return new WaitForSeconds(0.0001f);
+        }
+        isMoveUp = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue - Color.black * 0.5f;
+        for (int i = 0; i < movePoint.Length - 1; i++) { Gizmos.DrawLine(movePoint[i].position, movePoint[i + 1].position); Gizmos.DrawSphere(movePoint[i].position, 0.2f); }
+        Gizmos.DrawSphere(movePoint[movePoint.Length - 1].position, 0.2f);
     }
 }

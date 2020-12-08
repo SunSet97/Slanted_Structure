@@ -13,6 +13,7 @@ public class Event_DieByWater : MonoBehaviour
             other.GetComponent<CharacterManager>().PickUpCharacter();
             other.transform.position = respawnPoint.position; // 리스폰 포인트로 이동
             other.GetComponent<CharacterManager>().UseJoystickCharacter();
+            this.GetComponentInParent<RauTutorialManager>().isFallInRiver = true;
         }
     }
 

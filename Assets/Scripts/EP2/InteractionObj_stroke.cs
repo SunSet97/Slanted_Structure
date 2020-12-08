@@ -23,7 +23,8 @@ public class InteractionObj_stroke : MonoBehaviour
         portal,
         animation,
         dialogue,
-        camerasetting
+        camerasetting,
+        interact
     
     }
 
@@ -53,7 +54,7 @@ public class InteractionObj_stroke : MonoBehaviour
     private bool isInteractionObj = false;
     public Outline outline;
     private CharacterManager character;
-    Camera cam;
+    public Camera cam;
 
     [Header("터치 여부 확인")]
     public bool isTouched = false;
@@ -64,37 +65,7 @@ public class InteractionObj_stroke : MonoBehaviour
 
     void Start()
     {
-        if (gameObject.tag == "obj_interaction")
-        {
-            isInteractionObj = true;
-
-            outline = gameObject.AddComponent<Outline>();
-            outline.OutlineMode = Outline.Mode.OutlineAll;
-            outline.OutlineWidth = 8f; // 아웃라인 두께 설정
-            outline.enabled = false; // 우선 outline 끄기
-
-            cam = DataController.instance_DataController.cam;
-
-            if(exclamationMark.gameObject!=null)exclamationMark.gameObject.SetActive(false); // 느낌표 끄기
-
-            character = DataController.instance_DataController.currentChar;
-
-            if (!touchTargetObject)
-            {
-                touchTargetObject = gameObject;
-            }
-
-            // 아웃라인 색깔 설정
-            if (color == OutlineColor.red) outline.OutlineColor = Color.red;
-            else if (color == OutlineColor.magenta) outline.OutlineColor = Color.magenta;
-            else if (color == OutlineColor.yellow) outline.OutlineColor = Color.yellow;
-            else if (color == OutlineColor.green) outline.OutlineColor = Color.green;
-            else if (color == OutlineColor.blue) outline.OutlineColor = Color.blue;
-            else if (color == OutlineColor.grey) outline.OutlineColor = Color.grey;
-            else if (color == OutlineColor.black) outline.OutlineColor = Color.black;
-            else if (color == OutlineColor.white) outline.OutlineColor = Color.white;
-
-        }
+        
 
     }
     void interactionResponse() 
@@ -118,6 +89,11 @@ public class InteractionObj_stroke : MonoBehaviour
         {
             isTouched = true;
         }
+        else
+        {
+            isTouched = true;
+            Debug.Log("터치터치");
+        }
         
 
 
@@ -132,7 +108,38 @@ public class InteractionObj_stroke : MonoBehaviour
 
         if (!isInteractionObj)
         {
-            Debug.Log("tag를 obj_interaction으로 설정하세요");
+            gameObject.tag = "obj_interaction";
+            if (gameObject.tag == "obj_interaction")
+            {
+                isInteractionObj = true;
+
+                outline = gameObject.AddComponent<Outline>();
+                outline.OutlineMode = Outline.Mode.OutlineAll;
+                outline.OutlineWidth = 8f; // 아웃라인 두께 설정
+                outline.enabled = false; // 우선 outline 끄기
+
+                cam = DataController.instance_DataController.cam;
+
+                if (exclamationMark.gameObject != null) exclamationMark.gameObject.SetActive(false); // 느낌표 끄기
+
+                character = DataController.instance_DataController.currentChar;
+
+                if (!touchTargetObject)
+                {
+                    touchTargetObject = gameObject;
+                }
+
+                // 아웃라인 색깔 설정
+                if (color == OutlineColor.red) outline.OutlineColor = Color.red;
+                else if (color == OutlineColor.magenta) outline.OutlineColor = Color.magenta;
+                else if (color == OutlineColor.yellow) outline.OutlineColor = Color.yellow;
+                else if (color == OutlineColor.green) outline.OutlineColor = Color.green;
+                else if (color == OutlineColor.blue) outline.OutlineColor = Color.blue;
+                else if (color == OutlineColor.grey) outline.OutlineColor = Color.grey;
+                else if (color == OutlineColor.black) outline.OutlineColor = Color.black;
+                else if (color == OutlineColor.white) outline.OutlineColor = Color.white;
+
+            }
         }
         else
         {
@@ -188,10 +195,10 @@ public class InteractionObj_stroke : MonoBehaviour
             }
 
         }
-
+        /*
         Vector3 myScreenPos = cam.WorldToScreenPoint(transform.position);
         exclamationMark.transform.position = myScreenPos + new Vector3(x, y, 0);
-
+        */
     }
 
     void CheckAroundCharacter()
