@@ -60,6 +60,7 @@ public class NPCInteractor : MonoBehaviour
                 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                 {
+
                     if (hit.collider.gameObject.name == closestNPC.gameObject.name && canvasCtrl.isPossibleCnvs == true)
                     {
                         // 대화가 끝나기 전까지 다시 대화 불가능하도록 설정
@@ -71,7 +72,11 @@ public class NPCInteractor : MonoBehaviour
 
                         canvasCtrl.StartConversation();
                     }
-                        
+                    else
+                    {
+                        canvasCtrl.UpdateWord();
+                    }
+
                 }
             } 
 
