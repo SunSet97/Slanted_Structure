@@ -13,6 +13,8 @@ public class NPCInteractor : MonoBehaviour
 
     public Transform[] NPCArray;
 
+    public List<Interact_ObjectWithRau> NPCInteractComponentList = new List<Interact_ObjectWithRau>();
+
     private void Start()
     {
         canvasCtrl = CanvasControl.instance_CanvasControl;
@@ -34,10 +36,66 @@ public class NPCInteractor : MonoBehaviour
 
         if (isInteractable(closestNPC))
         {
-            
-            // 상호작용 가능 표시
-            //closestNPC.Rotate(new Vector3(0, 0, 200 * Time.deltaTime));
 
+            
+            if (Input.GetMouseButtonDown(0))
+            {
+                if(!canvasCtrl.isPossibleCnvs) canvasCtrl.UpdateWord();
+
+                Ray ray = DataController.instance_DataController.cam.ScreenPointToRay(Input.mousePosition);
+                Debug.DrawRay(ray.origin, ray.direction * 20f, Color.red, 5f);
+                RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity);
+                foreach (RaycastHit hit in hits)
+                {
+                    if (hit.collider.gameObject != null)
+                    {
+                        if (hit.collider.gameObject.name == closestNPC.gameObject.name && canvasCtrl.isPossibleCnvs == true)
+                        {
+                            // 대화가 끝나기 전까지 다시 대화 불가능하도록 설정
+                            canvasCtrl.isPossibleCnvs = false;
+                            canvasCtrl.dialogueCnt = 0;
+                            DataController.instance_DataController.LoadData(closestNPC.gameObject.name, DataController.instance_DataController.charData.story + "_"
+                                + DataController.instance_DataController.charData.storyBranch + "_" + DataController.instance_DataController.charData.storyBranch_scnd + "_"
+                                + DataController.instance_DataController.charData.dialogue_index + ".json");
+
+                            canvasCtrl.StartConversation();
+                        }
+                    }
+                }
+
+            }
+
+
+
+            /* 안될때 있음..ㅠ
+            for (int i = 0; i < NPCInteractComponentList.Count; i++)
+            {
+                if (NPCInteractComponentList[i].isTouched) // 터치
+                {
+                    if(canvasCtrl.isPossibleCnvs == true)
+                    {
+                        // 대화가 끝나기 전까지 다시 대화 불가능하도록 설정
+                        canvasCtrl.isPossibleCnvs = false;
+
+                        DataController.instance_DataController.LoadData(closestNPC.gameObject.name, DataController.instance_DataController.charData.story + "_"
+                            + DataController.instance_DataController.charData.storyBranch + "_" + DataController.instance_DataController.charData.storyBranch_scnd + "_"
+                            + DataController.instance_DataController.charData.dialogue_index + ".json");
+
+                        canvasCtrl.StartConversation();
+                    }
+                   
+                }   
+            }
+
+            if (!canvasCtrl.isPossibleCnvs && Input.GetMouseButtonDown(0))
+            {
+                canvasCtrl.UpdateWord();
+            }
+            */
+            
+
+
+            /* 원래 터치 받는 코드!!
 
             // 상호작용 가능 할 때에만 npc와의 대화가 가능함 
             if (Input.GetMouseButtonDown(0))
@@ -72,13 +130,11 @@ public class NPCInteractor : MonoBehaviour
 
                         canvasCtrl.StartConversation();
                     }
-                    else
-                    {
-                        canvasCtrl.UpdateWord();
-                    }
+                    
 
                 }
             } 
+            */
 
         }
 
@@ -119,6 +175,8 @@ public class NPCInteractor : MonoBehaviour
 
     private void FindNPC()
     {
+
+
         //int npcCnt = transform.childCount;
         //NPCArray = new Transform[npcCnt];
         //for (int i = 0; i < npcCnt; i++)
@@ -129,13 +187,15 @@ public class NPCInteractor : MonoBehaviour
 
         //    }
         //}
-        int npcCnt = transform.childCount + 3;
+        int npcCnt = transform.childCount;
         NPCArray = new Transform[npcCnt];
         int index = 0; 
         for (index = 0; index < npcCnt; index++)
         {
             NPCArray[index] = transform.GetChild(index);   
         }
+
+        AddInteractionComponent();
 
         // 나중에 주석 풀어야 함 
         //if (DataController.instance_DataController.rau.isSelected == false && DataController.instance_DataController.rau.isExisted == true)
@@ -155,6 +215,23 @@ public class NPCInteractor : MonoBehaviour
         //}
     }
 
+
+    void AddInteractionComponent() {
+
+        for (int i = 0; i < NPCArray.Length; i ++)
+        {
+            if (NPCArray[i].gameObject.GetComponent<Interact_ObjectWithRau>() == null)
+            {
+                NPCArray[i].gameObject.AddComponent<Interact_ObjectWithRau>();
+            }
+        }
+
+        for (int i = 0; i < NPCArray.Length; i++)
+        {
+            NPCInteractComponentList.Add(NPCArray[i].gameObject.GetComponent<Interact_ObjectWithRau>());
+        }
+
+    }
 
 
 }
