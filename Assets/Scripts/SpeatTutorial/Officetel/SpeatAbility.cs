@@ -114,10 +114,9 @@ public class SpeatAbility : MonoBehaviour
             if (cooltime > 0) cooltime -= Time.deltaTime;
             else if (cooltime <= 0) cooltime = 0;
             abilityImage.fillAmount = cooltime / setCooltime; // 쿨타임 시간에 맞춰 UI 변화
+            buttonImage.fillAmount = 0;
 
             abilityText.text = null;// 벽 통과 횟수 숨김
-
-            buttonImage.color = Color.black; // 터치 이미지 불투명
         }
         // 능력 사용중일 때
         if (isAbility)
@@ -125,12 +124,11 @@ public class SpeatAbility : MonoBehaviour
             // 지속 시간 계산
             if (duration > 0) duration -= Time.deltaTime;
             else if (duration <= 0) { isAbility = false; duration = 0; } // 지속 시간 초과시 능력 자동 종료 및 0 고정
-            abilityImage.fillAmount = (setDuration - duration) / setDuration; // 지속 시간에 맞춰 UI 변화
+            buttonImage.fillAmount = duration / setDuration; // 지속 시간에 맞춰 UI 변화
+            abilityImage.fillAmount = 0;
 
             if (wallNum < maxWallNum) abilityText.text = wallNum.ToString(); // 벽 통과 횟수 변화
             else { isAbility = false; abilityText.text = null; } // 벽 통과 횟수 초과시 능력 자동 종료 및 숨김
-
-            buttonImage.color = Color.clear; // 터치 이미지 투명
         }
     }
 
@@ -145,7 +143,8 @@ public class SpeatAbility : MonoBehaviour
                 isAbility = true;
                 wallNum = 0; abilityText.text = "0";            // 벽 통과 횟수 초기화
                 duration = setDuration; cooltime = setCooltime; // 시간 초기화
-                abilityImage.fillAmount = 0;                    // UI 초기화
+                abilityImage.fillAmount = 1;                    // UI 초기화
+                buttonImage.fillAmount = 0;                    // UI 초기화
             }
             // 능력 사용중일 때
             else if (isAbility)
@@ -153,7 +152,8 @@ public class SpeatAbility : MonoBehaviour
                 isAbility = false;
                 wallNum = 0; abilityText.text = null;           // 벽 통과 횟수 초기화 및 숨김
                 duration = setDuration; cooltime = setCooltime; // 시간 초기화
-                abilityImage.fillAmount = 1;                    // UI 초기화
+                abilityImage.fillAmount = 0;                    // UI 초기화
+                buttonImage.fillAmount = 1;                    // UI 초기화
             }                        
         }
     }
