@@ -19,6 +19,7 @@ public class PimpGuestMoving : MonoBehaviour
     int nextDirection;
     float rotation;
     public string who; // 적 유형
+    public Animator animator;
 
     // 대화
     private CanvasControl canvasCtrl;
@@ -35,7 +36,7 @@ public class PimpGuestMoving : MonoBehaviour
     void Start()
     {
         canvasCtrl = CanvasControl.instance_CanvasControl;
-
+        animator = GetComponent<Animator>();
         npc = GetComponent<CharacterController>();
         rotation = gameObject.transform.rotation.y;
         Invoke("Think", 0);
@@ -46,7 +47,7 @@ public class PimpGuestMoving : MonoBehaviour
         if (!npc.isGrounded && !isGround) npc.Move(transform.up * -1); // 중력
 
         npc.Move((Vector3.right * nextDirection * speed) * Time.deltaTime); // 적들 이동.
-
+        animator.SetFloat("Speed",speed);
         if (talking) nextDirection = 0; // 스핏하고 대화중일때 멈추게
 
         CheckSameFloorWithSpeat(); // 스핏과 같은 층에 있는지 확인.
@@ -59,6 +60,7 @@ public class PimpGuestMoving : MonoBehaviour
             if (!speedUp) // SpeedUpFunc() 한번 수행될 수 있게.
             {
                 speedUp = true;
+                animator.SetBool("speedUp", speedUp);
                 StartCoroutine(SpeedUpFunc());
             }
 
@@ -144,5 +146,6 @@ public class PimpGuestMoving : MonoBehaviour
         }
         speed = tempSpeed;
         speedUp = false;
+        animator.SetBool("speedUp", speedUp);
     }
 }

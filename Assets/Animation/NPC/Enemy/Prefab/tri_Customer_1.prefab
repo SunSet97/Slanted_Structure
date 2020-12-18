@@ -628,6 +628,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1815203436222208892}
   - component: {fileID: 8627461103254992390}
+  - component: {fileID: -7058240026184670835}
+  - component: {fileID: 1144412386579386171}
   m_Layer: 0
   m_Name: tri_Customer_1
   m_TagString: Untagged
@@ -661,7 +663,7 @@ Animator:
   m_GameObject: {fileID: 3417031658858162543}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: da03b7221d1b25244a9cba2c36151bcd, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6713a4aa1b5667847aff99151dddec22, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -670,6 +672,47 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-7058240026184670835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3417031658858162543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e50a90a1969bf4d40b51a335e0ad78f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speat: {fileID: 0}
+  speatAbility: {fileID: 0}
+  changeDirectionCycle: 2
+  speedUPTime: 0
+  speed: 1
+  accVal: 0
+  who: 
+  animator: {fileID: 8627461103254992390}
+  onSameFloorAndScreen: 0
+  cam: {fileID: 0}
+  speedUp: 0
+--- !u!143 &1144412386579386171
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3417031658858162543}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 1.1
+  m_Radius: 1.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!1 &3613652875726888504
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,9 +9,10 @@ using UnityEngine.SceneManagement;
 public class CanvasControl : MonoBehaviour
 {
     [Header("저장 패널")]
-    public Text[] saveText = new Text[3];
+    public Text[] saveText = new Text[6];
     public GameObject savePanel;
-
+    public enum handleType {save,call,delete };
+    handleType handletype;
     // 추후 변경 
     [Header("친밀도/자존감")]
     public Text intimacyText_speat;
@@ -79,6 +80,7 @@ public class CanvasControl : MonoBehaviour
     // 새 게임 시작할 때의 씬이름 나중에 넣을 것!! 
     public void OpenScene(string sceneName)
     {
+        DataController.instance_DataController.isMapChanged = true;//오픈씬 하면서 isMapChanged값을 활성화 하여 다음 맵으로 넘어가도록 만듦.
         SceneManager.LoadScene(sceneName);
 
         // 새 게임 시작할 경우 새 데이터 파일 생성하도록
@@ -89,10 +91,10 @@ public class CanvasControl : MonoBehaviour
         //    DataController.Instance.LoadCharData("NewData.json");
         //}
 
-        DataController.instance_DataController.LoadData("Save", "NewData.json");
+        //DataController.instance_DataController.LoadData("Save", "NewData.json");
 
         // 씬 이동 시 현재 씬 이름 데이터 파일에 저장
-        DataController.instance_DataController.charData.currentScene = sceneName;
+        //DataController.instance_DataController.charData.currentScene = sceneName;
     }
 
     //세이브 된 게임 데이터 파일을 여는 함수
@@ -122,41 +124,73 @@ public class CanvasControl : MonoBehaviour
         else objName = "Canvas";
     }
 
-    // 패널 열 때 사용 
-    public void OpenPanel(string panelName)
+    public void openPanel(GameObject panel) 
     {
+        //다이어리에서 저장하기/불러오기/삭제하기 활성화에 따라 enum handletype상태가 정해짐.
+        //그리고 handletype에 따라 selectData()함수가 하는 일이 달라짐
 
-        // 아래의 패널들은 패널을 열 때마다 정보를 업데이트 해야하므로 따로 관리
-        if (panelName == "SavePanel" || panelName == "SelectData")
+        if (panel.name =="DiaryButton"||SceneManager.GetActiveScene().name == "StartScene") 
         {
-            savePanel.SetActive(true);
-            // 세이브 데이터 패널이 열릴 때마다 각 세이브 파일이 존재하는 지 확인 
-            DataController.instance_DataController.ExistsData();
-
-            for (int i = 0; i < 3; i++)
-            {
-
-                if (DataController.instance_DataController.isExistdata[i])
-                {
-                    // 해당 칸에 데이턱 존재하면 버튼 텍스트 업데이트
-                    saveText[i].text = "FULL DATA";
-
-                }
-                else
-                {
-
-                    // 데이터 없을 때
-                    saveText[i].text = "NO DATA";
-                }
-            }
+            handletype=handleType.call;
         }
-        //else
-        //{
-        //    if (objName == "Mainstory" || objName == "Minigame")
-        //        transform.Find(objName).Find(panelName).gameObject.SetActive(true);
-        //    else
-        //        transform.Find(panelName).gameObject.SetActive(true);
-        //}
+        if (panel.name == "DiaryButton" || SceneManager.GetActiveScene().name == "Ingame")
+        {
+            handletype = handleType.save;
+        }
+
+        panel.SetActive(true);
+    }
+    /*   public void OpenPanel(string panelName)
+   {
+
+       // 아래의 패널들은 패널을 열 때마다 정보를 업데이트 해야하므로 따로 관리
+       if (panelName == "SavePanel" || panelName == "SelectData")
+       {
+           savePanel.SetActive(true);
+           // 세이브 데이터 패널이 열릴 때마다 각 세이브 파일이 존재하는 지 확인 
+           DataController.instance_DataController.ExistsData();
+
+           for (int i = 0; i < 3; i++)
+           {
+
+               if (DataController.instance_DataController.isExistdata[i])
+               {
+                   // 해당 칸에 데이턱 존재하면 버튼 텍스트 업데이트
+                   saveText[i].text = "FULL DATA";
+
+               }
+               else
+               {
+
+                   // 데이터 없을 때
+                   saveText[i].text = "NO DATA";
+               }
+           }
+       }
+       //else
+       //{
+       //    if (objName == "Mainstory" || objName == "Minigame")
+       //        transform.Find(objName).Find(panelName).gameObject.SetActive(true);
+       //    else
+       //        transform.Find(panelName).gameObject.SetActive(true);
+       //}
+   }
+   */
+    public void closePanel(GameObject panel)
+    {
+        if (panel.name == "Save"&& SceneManager.GetActiveScene().name == "Ingame")//start씬에서는 저장하기 활성화X
+        {
+            handletype = handleType.save;
+        }
+        else if (panel.name == "Remove")
+        {
+            handletype = handleType.delete;
+        }
+        else if (panel.name == "Call")
+        {
+            handletype = handleType.call;
+        }
+        panel.SetActive(false);
     }
 
     // 데이터 저장 버튼을 누르면 불리는 함수
@@ -167,14 +201,15 @@ public class CanvasControl : MonoBehaviour
         //    canvasCtrl = CanvasControl.instance_CanvasControl;
         //}
 
-
-        if (DataController.instance_DataController.charData.pencilCnt > 0)
+        //저장
+        if (SceneManager.GetActiveScene().name == "Ingame"|| handletype ==handleType.save || DataController.instance_DataController.charData.pencilCnt > 0)
         {
             // 기존 데이터 없을 경우 버튼 텍스트 업데이트
             if (DataController.instance_DataController.isExistdata[fileNum] == false)
             {
                 DataController.instance_DataController.isExistdata[fileNum] = true;
-                saveText[fileNum].text = "FULL DATA";
+                saveText[fileNum].text = (string)DataController.instance_DataController.currentMap.map.name+ (string)DataController.instance_DataController.currentChar.name;
+                //저장된 스토리의 맵과 선택된 캐릭터의 이름을 띄움. 나중에는 에피소드와 스토리 맵, 선택된 캐릭터 띄우기
             }
             // 데이터 저장 시 연필 개수, 캐릭터 위치, 현재 씬 등 업데이트 (점점 추가할 예정)
             DataController.instance_DataController.charData.pencilCnt -= 1;
@@ -187,6 +222,16 @@ public class CanvasControl : MonoBehaviour
             DataController.instance_DataController.SaveCharData("SaveData" + fileNum);
 
         }
+        //불러오기
+        if (handletype == handleType.call || DataController.instance_DataController.isExistdata[fileNum])
+        {
+            SaveFileOpen(fileNum);
+        }
+        //삭제하기
+        if (handletype == handleType.delete || DataController.instance_DataController.isExistdata[fileNum])
+        {
+            //삭제하는 거
+        }
     }
 
 
@@ -197,7 +242,6 @@ public class CanvasControl : MonoBehaviour
             transform.Find(objName).Find(panelName).gameObject.SetActive(false);
         else
             transform.Find(panelName).gameObject.SetActive(false);
-
 
     }
 

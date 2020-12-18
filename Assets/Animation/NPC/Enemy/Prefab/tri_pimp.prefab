@@ -655,9 +655,11 @@ GameObject:
   - component: {fileID: 7250696294778900447}
   - component: {fileID: 726669558082773669}
   - component: {fileID: 1248768996985579149}
+  - component: {fileID: 6129108795487263992}
+  - component: {fileID: -8316177427361009250}
   m_Layer: 0
   m_Name: tri_pimp
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -670,7 +672,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5964168907888491980}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.56, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.57, y: 0.57, z: 0.57}
   m_Children:
   - {fileID: 1828963271337633347}
@@ -712,6 +714,47 @@ MonoBehaviour:
   enum_Pattern: 2
   num_Random: 0
   anim: {fileID: 726669558082773669}
+--- !u!143 &6129108795487263992
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5964168907888491980}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 2
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &-8316177427361009250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5964168907888491980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e50a90a1969bf4d40b51a335e0ad78f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speat: {fileID: 0}
+  speatAbility: {fileID: 0}
+  changeDirectionCycle: 2
+  speedUPTime: 0
+  speed: 1
+  accVal: 0
+  who: 
+  animator: {fileID: 726669558082773669}
+  onSameFloorAndScreen: 0
+  cam: {fileID: 0}
+  speedUp: 0
 --- !u!1 &6056889761946954703
 GameObject:
   m_ObjectHideFlags: 0

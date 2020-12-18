@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Camera_Moving : MonoBehaviour
 {
@@ -15,22 +16,26 @@ public class Camera_Moving : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (DataController.instance_DataController.currentChar)
-            character = DataController.instance_DataController.currentChar.gameObject.transform;
-
-        if (character)
+        if (SceneManager.GetActiveScene().name == "Ingame" || SceneManager.GetActiveScene().name == "Cinematic")
         {
-            camRot = Camera.main.transform.rotation;
-            //플레이어 위치 변수에 플레이어 위치 값 넣음.
-            charPos = character.transform.position;
-            //메인 카메라의 위치를 플레이어 위치와 동일시함.
-            Camera.main.transform.position = charPos + DataController.instance_DataController.camDis;
-            //지금 카메라의 위치를 카메라 위치변수에 넣음
-            camPos = Camera.main.transform.position;
-            //카메라의 이동과 제한을 위한 함수에 매개변수로 카메라 위치변수 넣음.
-            Follow_Player(camPos, camRot);
-            //Player_transform.position = Player_Position;
+            if (DataController.instance_DataController.currentChar)
+                character = DataController.instance_DataController.currentChar.gameObject.transform;
+
+            if (character)
+            {
+                camRot = Camera.main.transform.rotation;
+                //플레이어 위치 변수에 플레이어 위치 값 넣음.
+                charPos = character.transform.position;
+                //메인 카메라의 위치를 플레이어 위치와 동일시함.
+                Camera.main.transform.position = charPos + DataController.instance_DataController.camDis;
+                //지금 카메라의 위치를 카메라 위치변수에 넣음
+                camPos = Camera.main.transform.position;
+                //카메라의 이동과 제한을 위한 함수에 매개변수로 카메라 위치변수 넣음.
+                Follow_Player(camPos, camRot);
+                //Player_transform.position = Player_Position;
+            }
         }
+       
     }
 
     void Follow_Player(Vector3 position,Quaternion Camera_rotate)
