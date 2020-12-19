@@ -54,7 +54,7 @@ public class RunGameManager : MonoBehaviour
 
 
     Vector3 chaserPosition; // 적. 스핏 쫓는 애.
-    GameObject[] prefabList; // 여기에 
+    public GameObject[] prefabList; // 여기에 
     GameObject one, two, three, end;
     GameObject recentReferVar; // 가장 최근에 충돌해서 업데이트된 참조변수 이름
 
@@ -83,7 +83,12 @@ public class RunGameManager : MonoBehaviour
         if (transform.name == "RunGameManager") // 장애물 충돌 이외 모든 것을 RunGameManger에서 관리
         {
             // 카메라무빙없애기
-            DataController.instance_DataController.cam.GetComponent<Camera_Moving>().enabled = false;
+            //DataController.instance_DataController.cam.GetComponent<Camera_Moving>().enabled = false;
+
+            DataController.instance_DataController.isMapChanged = true;
+
+            // 캐릭터
+            speat = DataController.instance_DataController.currentChar;
 
             // 애니메이터
             anim = speat.GetComponent<Animator>();
@@ -130,6 +135,16 @@ public class RunGameManager : MonoBehaviour
     {
         if (transform.name == "RunGameManager")
         {
+            if (!speat)
+            {
+                if (DataController.instance_DataController.cam.GetComponent<Camera_Moving>().enabled)
+                {
+                    DataController.instance_DataController.cam.GetComponent<Camera_Moving>().enabled = false;
+                }
+            }
+            
+
+
             // 깜빡거림
             if (flickerTrigger)
             {

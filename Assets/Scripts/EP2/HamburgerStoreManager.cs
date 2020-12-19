@@ -41,36 +41,46 @@ public class HamburgerStoreManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // 캐릭터 맵으로 이동시키기
-        DataController.instance_DataController.isMapChanged = true;
 
-        // 스토리 정보 수정
-        DataController.instance_DataController.charData.story = 1;
-        DataController.instance_DataController.charData.storyBranch = 2;
-        DataController.instance_DataController.charData.storyBranch_scnd = 3;
-        DataController.instance_DataController.charData.dialogue_index = 4;
-
-        // 스핏 포인트 리스트에 넣기
-        speatPointParent.SetActive(false);
-        for (int i = 0; i < speatPointParent.transform.childCount; i++)
+        // ★ 시네마틱으로 변경되면 if (DataController.instance_DataController.mapCode == "201110" || DataController.instance_DataController.mapCode == "202110") 으로 변경
+        if (DataController.instance_DataController.mapCode == "201110" || DataController.instance_DataController.mapCode == "202210"
+            || DataController.instance_DataController.mapCode == "203110" || DataController.instance_DataController.mapCode == "205110")
         {
-            speatPoints.Add(speatPointParent.transform.GetChild(i).gameObject.transform);
+
+            // 캐릭터 맵으로 이동시키기
+            DataController.instance_DataController.isMapChanged = true;
+
+            // 스토리 정보 수정
+            DataController.instance_DataController.charData.story = 1;
+            DataController.instance_DataController.charData.storyBranch = 2;
+            DataController.instance_DataController.charData.storyBranch_scnd = 3;
+            DataController.instance_DataController.charData.dialogue_index = 4;
+
+            // 스핏 포인트 리스트에 넣기
+            speatPointParent.SetActive(false);
+            for (int i = 0; i < speatPointParent.transform.childCount; i++)
+            {
+                speatPoints.Add(speatPointParent.transform.GetChild(i).gameObject.transform);
+            }
+
+            if (!canvasControl) canvasControl = CanvasControl.instance_CanvasControl;
+
+            if (DataController.instance_DataController.mapCode == "201110")
+            {
+                day_info = 1; // day1
+            }
+            else if (DataController.instance_DataController.mapCode == "202210")
+            {
+                day_info = 2; // day2
+            }
+            else if (DataController.instance_DataController.mapCode == "203110")
+            {
+                day_info = 3; // day3
+            }
+
         }
 
-        if (!canvasControl) canvasControl = CanvasControl.instance_CanvasControl;
 
-        if (DataController.instance_DataController.mapCode == "201110")
-        {
-            day_info = 1; // day1
-        }
-        else if (DataController.instance_DataController.mapCode == "202210")
-        {
-            day_info = 2; // day2
-        }
-        else if (DataController.instance_DataController.mapCode == "203110")
-        {
-            day_info = 3; // day3
-        }
 
 
     }
@@ -78,57 +88,61 @@ public class HamburgerStoreManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // 캐릭터 맵으로 옮긴 후 카메라 무빙 끄기
-        if (DataController.instance_DataController.cam.GetComponent<Camera_Moving>().enabled == true)
-        {
-            DataController.instance_DataController.cam.GetComponent<Camera_Moving>().enabled = false;
-            DataController.instance_DataController.isMapChanged = true;
-        }
-
-        if (!speatCharacterManager)
-        {
-            speatCharacterManager = speatPrefab.GetComponent<CharacterManager>();
-            speatCharacterManager.isControlled = false; // 뿌앙
-        }
-
-        if (!clearBox)
-        {
-            clearBox = DataController.instance_DataController.currentMap.positionSets[0].clearBox;
-        }
-
-        if (!character)
-        {
-            character = DataController.instance_DataController.currentChar;
-        }
-
-        if (!speatAnimator)
-        {
-            speatAnimator = speatPrefab.GetComponent<Animator>();
-        }
-
-        string storyNum = DataController.instance_DataController.charData.story.ToString() + "_" + DataController.instance_DataController.charData.storyBranch + "_" + DataController.instance_DataController.charData.storyBranch_scnd.ToString() + "_" + DataController.instance_DataController.charData.dialogue_index.ToString();
-        //print(storyNum);
-
-        // day1.
-        if (day_info == 1)
+        if (DataController.instance_DataController.currentMap.mapCode == "201110" || DataController.instance_DataController.currentMap.mapCode== "202110"
+            || DataController.instance_DataController.mapCode == "203110" || DataController.instance_DataController.mapCode == "205110")
         {
 
-            // 라우 독백끝나면 실행
-            if (storyNum == "1_2_3_6" && canvasControl.dialogueCnt >= canvasControl.dialogueLen && canvasControl.isPossibleCnvs && !isStartConversation_SpeatRau)
+            // 캐릭터 맵으로 옮긴 후 카메라 무빙 끄기
+            if (DataController.instance_DataController.cam.GetComponent<Camera_Moving>().enabled == true)
             {
-                SpeatInteraction(1); // 스핏의 첫번째 인터랙션 플레이 - 스핏이 라우에게 다가가서 말걸기
+                DataController.instance_DataController.cam.GetComponent<Camera_Moving>().enabled = false;
+                DataController.instance_DataController.isMapChanged = true;
             }
 
-            // 스핏과 라우 대화가 끝나면 실행
-            if (storyNum == "1_2_3_7" && canvasControl.dialogueCnt >= canvasControl.dialogueLen && canvasControl.isPossibleCnvs)
+            if (!speatCharacterManager)
             {
-                SpeatInteraction(2); // 스핏의 두번째 인터랙션 플레이 - 스핏이 라우 끌고 가기
+                speatCharacterManager = speatPrefab.GetComponent<CharacterManager>();
+                speatCharacterManager.isControlled = false; // 뿌앙
             }
 
+            if (!clearBox)
+            {
+                clearBox = DataController.instance_DataController.currentMap.positionSets[0].clearBox;
+            }
+
+            if (!character)
+            {
+                character = DataController.instance_DataController.currentChar;
+            }
+
+            if (!speatAnimator)
+            {
+                speatAnimator = speatPrefab.GetComponent<Animator>();
+            }
+
+            string storyNum = DataController.instance_DataController.charData.story.ToString() + "_" + DataController.instance_DataController.charData.storyBranch + "_" + DataController.instance_DataController.charData.storyBranch_scnd.ToString() + "_" + DataController.instance_DataController.charData.dialogue_index.ToString();
+            //print(storyNum);
+
+            // day1.
+            if (day_info == 1)
+            {
+
+                // 라우 독백끝나면 실행
+                if (storyNum == "1_2_3_6" && canvasControl.dialogueCnt >= canvasControl.dialogueLen && canvasControl.isPossibleCnvs && !isStartConversation_SpeatRau)
+                {
+                    SpeatInteraction(1); // 스핏의 첫번째 인터랙션 플레이 - 스핏이 라우에게 다가가서 말걸기
+                }
+
+                // 스핏과 라우 대화가 끝나면 실행
+                if (storyNum == "1_2_3_7" && canvasControl.dialogueCnt >= canvasControl.dialogueLen && canvasControl.isPossibleCnvs)
+                {
+                    SpeatInteraction(2); // 스핏의 두번째 인터랙션 플레이 - 스핏이 라우 끌고 가기
+                }
+
+
+            }
 
         }
-
-
 
     }
 
@@ -141,9 +155,6 @@ public class HamburgerStoreManager : MonoBehaviour
         {
             // 플레이어가 라우 못 움직이게 하기
             DataController.instance_DataController.joyStick.gameObject.SetActive(false);
-
-            // 이거 고민하기!! MoveNPCAuto(ref speatCharacterManager, ref speatPoints,ref  nextPassPointIndex, ref target, ref speatMoveDir, 0.5f, ref isFinishMoving_speat, ref isMoving_speat);
-
 
             // target 설정 - 스핏이 움직이지 않을 때 타겟 설정
             if (!isSpeatMoving)
@@ -260,25 +271,6 @@ public class HamburgerStoreManager : MonoBehaviour
         }
         else if (isMoving)
         {
-            /*
-            if (points[nextPassPointIndex].position.x - 0.5f <= cm.transform.position.x && cm.transform.position.x <= points[nextPassPointIndex].position.x + 0.5f &&
-            points[nextPassPointIndex].position.z - 0.5f <= cm.transform.position.z && cm.transform.position.z <= points[nextPassPointIndex].position.z + 0.5f)
-            {
-                print("포인트에 도착!");
-                if (nextPassPointIndex != points.Count) // 마지막 포인트에 도달
-                {
-                    isMoving = false;
-                }
-                else // 아직 이동할 포인트 남음.
-                {
-                    // 이동 끝내기
-                    isFinishMoving_absolutely = true;
-                    //nextPassPointIndex++;
-
-                }
-
-            }
-            */
             if (cm.transform.position == target)
             {
                 print("포인트에 도착!");
@@ -295,10 +287,7 @@ public class HamburgerStoreManager : MonoBehaviour
                 }
             }
 
-
         }
-
-
     }
 
     void SetNPCCharacterManager_Dir(CharacterManager cm, Animator aim, Vector3 point, float speed)
@@ -310,9 +299,7 @@ public class HamburgerStoreManager : MonoBehaviour
         dir = Vector3.Normalize(dir); // 유닛벡터
         cm.moveHorDir = new Vector3(dir.x * speed, 0, dir.z * speed);
 
-
     }
-
 
 }
 

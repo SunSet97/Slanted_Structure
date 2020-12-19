@@ -12,7 +12,7 @@ public class Interact_ObjectWithRau : MonoBehaviour
     public Vector3 offset = Vector3.zero;
     public float radius = 3;
     public Outline.Mode mode = Outline.Mode.OutlineAll;
-    private Outline outline;
+    public Outline outline;
     [Header("#Mark setting")]
     public GameObject mark;
     public Vector2 markOffset = Vector2.zero;
@@ -53,11 +53,13 @@ public class Interact_ObjectWithRau : MonoBehaviour
         bool temp = false;
         foreach (RaycastHit hit in hits)
         {
+            print("내이름 " + transform.name + " hit.collider.name: " + hit.collider.name + "  /  name: " + DataController.instance_DataController.currentChar.name);
             if (hit.collider.gameObject != null && DataController.instance_DataController.currentChar != null)
                 temp = hit.collider.name == DataController.instance_DataController.currentChar.name ? true : false;
             else
                 temp = false;
         }
+        print("inRange: " + temp);
         return temp;
     }
 

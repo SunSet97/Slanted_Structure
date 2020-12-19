@@ -40,7 +40,7 @@ public class Waypoint : MonoBehaviour
         // Edit / Play mode에서 업데이트
         EditSettingUpdate();
         // Play mode에서만 업데이트
-        PlaySettingUpdate(EditorApplication.isPlaying);
+        PlaySettingUpdate(Application.isPlaying);
 
     }
 
@@ -57,20 +57,18 @@ public class Waypoint : MonoBehaviour
         }
     }
 
-
     // waypoint를 따라 움직일 캐릭터 설정
-    void SelectCharacter(bool isOn)
+    void SelectCharacter()
     {
-        if (isOn)
+        if (DataController.instance_DataController != null ? DataController.instance_DataController.currentChar != null : false)
         {
-            CharacterManager[] temp = new CharacterManager[3];
-            temp[0] = DataController.instance_DataController.speat;
-            temp[1] = DataController.instance_DataController.oun;
-            temp[2] = DataController.instance_DataController.rau;
+            CharacterManager[] arr = FindObjectsOfType<CharacterManager>();
+            List<CharacterManager> lists = new List<CharacterManager> { };
+            foreach (CharacterManager item in arr) lists.Add(item);
 
             // 현재 선택된 맵을 플레이하고 있는 캐릭터를 찾아서 선택
-            foreach (CharacterManager cm in temp)
-                if (cm.name == mapdata.positionSets.Find(item => item.index == mapdata.posIndex).who.ToString()) character = cm.transform;
+            foreach (CharacterManager item in lists)
+                if (mapdata.positionSets.Exists(positionSet => positionSet.who.ToString() == item.name)) character = item.transform;
         }
     }
 
@@ -78,7 +76,7 @@ public class Waypoint : MonoBehaviour
     {
         if (!mapdata) mapdata = GetComponentInParent<MapData>();
         UpdateWaypoints();
-        SelectCharacter(DataController.instance_DataController != null);
+        SelectCharacter();
     }
     #endregion
 
@@ -161,6 +159,9 @@ public class Waypoint : MonoBehaviour
                     }
                 }
             }
+
+            Quaternion camRotation = Quaternion.Euler(0, -Camera.main.transform.rotation.eulerAngles.y, 0);
+            fwdDir = camRotation * fwdDir; bwdDir = camRotation * bwdDir;
 
             // 미리 설정해둔 입력 방향에 따라 실제 조이스틱 입력 방향으로 전방향, 후방향 벡터를 수정된 조이스틱 입력 방향으로 설정
             if (moveDirection == MoveDirection.Right)
