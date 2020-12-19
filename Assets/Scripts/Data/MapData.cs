@@ -78,28 +78,29 @@ public class MapData : MonoBehaviour
     }
 
     // 조이스틱 입력 설정
+    Vector2 inputDir = Vector2.zero;
     void JoystickInputSetting(bool isOn)
     {
         if (DataController.instance_DataController.joyStick != null && isOn)
         {
-            Vector2 inputDir = Vector2.zero;
             // 입력 방식에 따라 입력 값 분리
             if (method == JoystickInputMethod.OneDirection)
             {
                 SideView = true;
                 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, 0); // 한 방향 입력은 수평값만 받음
+                DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
                 DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
             }
             else if (method == JoystickInputMethod.AllDirection)
             {
                 SideView = false;
                 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
+                DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
             }
             if (method != JoystickInputMethod.Other) DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
-            DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
         }
     }
-
+    
     //맵 엔딩 세팅
 
     bool isStop = false;
@@ -276,6 +277,14 @@ public class MapData : MonoBehaviour
     // 포지션 세팅 업데이트
     void PositionSettingUpdate()
     {
+        if (DataController.instance_DataController != null ? DataController.instance_DataController.currentChar != null : false)
+        {
+            CharacterManager[] arr = FindObjectsOfType<CharacterManager>();
+            List<CharacterManager> lists = new List<CharacterManager> { };
+            foreach (CharacterManager item in arr) lists.Add(item);
+            foreach (CharacterPositionSet positionSet in positionSets) positionSet.clearBox.GetComponent<CheckMapClear>().who = lists.Find(item => item.name == positionSet.who.ToString());
+        }
+
         // 스토리 코드에 따라 이름 변경
         foreach (CharacterPositionSet Item in positionSets) Item.posSet.name = Item.index.ToString() + " Position";
         // 누구냐에 따라
@@ -304,7 +313,7 @@ public class MapData : MonoBehaviour
         MapSettingUpdate();
         PositionSettingUpdate();
         // Play mode에서만 업데이트
-        PlaySettingUpdate(EditorApplication.isPlaying);
+        PlaySettingUpdate(Application.isPlaying);
 
         //타임라인 인식
         if (SceneManager.GetActiveScene().name =="Cinematic") 

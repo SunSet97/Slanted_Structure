@@ -7,7 +7,7 @@ public class CheckMapClear : MonoBehaviour
 {
     public bool isClear; // 클리어 여부
     public string nextSelectMapcode = "000000";//어디 스토리로 갈 건지.
-    [SerializeField] private CharacterManager who;  // 트리거 신호를 줄 캐릭터
+    public CharacterManager who;  // 트리거 신호를 줄 캐릭터
 
     private void Update()
     {

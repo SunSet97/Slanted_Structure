@@ -56,7 +56,7 @@ public class Waypoint : MonoBehaviour
             checkedWaypoint = waypoints[0];
         }
     }
-
+    
     // waypoint를 따라 움직일 캐릭터 설정
     void SelectCharacter()
     {
