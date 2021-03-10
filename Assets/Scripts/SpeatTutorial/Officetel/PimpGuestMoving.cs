@@ -37,17 +37,38 @@ public class PimpGuestMoving : MonoBehaviour
         canvasCtrl = CanvasControl.instance_CanvasControl;
 
         npc = GetComponent<CharacterController>();
+        //npc.GetComponent<Collider>().isTrigger = true;
+
+        speat = DataController.instance_DataController.currentChar;
+
+        cam = DataController.instance_DataController.cam;
+
         rotation = gameObject.transform.rotation.y;
         Invoke("Think", 0);
+
     }
 
     void Update()
     {
-        if (!npc.isGrounded && !isGround) npc.Move(transform.up * -1); // 중력
+        if (!npc.isGrounded && !isGround) npc.Move(transform.up * -1 ); // 중력
+        if (!speat) speat = DataController.instance_DataController.currentChar;
 
         npc.Move((Vector3.right * nextDirection * speed) * Time.deltaTime); // 적들 이동.
 
+        transform.position = new Vector3(transform.position.x, transform.position.y, speat.transform.position.z); // z값은 스핏과 동일하게
+
         if (talking) nextDirection = 0; // 스핏하고 대화중일때 멈추게
+
+        if (talking)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (!canvasCtrl.isPossibleCnvs)
+                {
+                    CanvasControl.instance_CanvasControl.UpdateWord();
+                }
+            }
+        }
 
         CheckSameFloorWithSpeat(); // 스핏과 같은 층에 있는지 확인.
 
@@ -69,6 +90,7 @@ public class PimpGuestMoving : MonoBehaviour
 
     void Think() // 방향 설정.
     {
+
         if (!talking) nextDirection = (int)Random.Range(-1, 2);
         else nextDirection = 0;
 
@@ -87,28 +109,47 @@ public class PimpGuestMoving : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        //if (who.Equals("Pimp") && hit.gameObject.name.Equals("Speat")) acceleration += accVal; 보류
-
         // 대화시작
         if (transform.parent.name == "Guest")
         {
-
             if (hit.gameObject.name.Equals("Speat") && canvasCtrl.isPossibleCnvs)
             {
+                print("스핏과 만남");
                 talking = true;
-                canvasCtrl.isPossibleCnvs = false;
                 canvasCtrl.selectedGuest = gameObject;
 
+                canvasCtrl.isPossibleCnvs = false;
                 DataController.instance_DataController.LoadData(transform.parent.name, gameObject.name + ".json");
-
-                canvasCtrl.StartConversation();
+                CanvasControl.instance_CanvasControl.StartConversation();
 
             }
+
         }
+
 
         if (transform.name == "Pimp")
         {
             if (hit.gameObject.name.Equals("Speat")) Debug.Log("게임오버");
+        }
+
+
+        if (hit.gameObject.CompareTag("NPC"))
+        {
+            nextDirection *= -1;
+
+            if (nextDirection == 1)
+            {
+                transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+            }
+            else if (nextDirection == -1)
+            {
+                transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
+            }
+
+        }
+        else if (hit.gameObject.name == "Speat")
+        {
+            nextDirection = 0;
         }
 
     }
@@ -133,7 +174,7 @@ public class PimpGuestMoving : MonoBehaviour
 
     IEnumerator SpeedUpFunc()
     {
-        Debug.Log("능력 쓰는거 걸림");
+        //Debug.Log("능력 쓰는거 걸림");
         int i = speedUPTime;
         tempSpeed = speed;
         speed += accVal;

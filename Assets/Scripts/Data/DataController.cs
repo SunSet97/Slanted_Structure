@@ -46,6 +46,7 @@ public class DataController : MonoBehaviour
     // 카메라 projecton orthographic에서 perspective로 전환될 때 필요
     float originOrthoSize;
     float originCamDis_y;
+    
 
     #region 싱글톤
     //인스턴스화
@@ -143,6 +144,19 @@ public class DataController : MonoBehaviour
                     oun.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Oun);
                     rau.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Rau);
                     currentMap = maps[i];
+
+                    //카메라 위치와 회전
+                    camDis = currentMap.camDis;
+                    rot = currentMap.camRot;
+                    if (currentChar != null)
+                        cam.transform.position = currentChar.transform.position + camDis;
+                    cam.transform.rotation = Quaternion.Euler(rot);
+
+                    // CameraMoving 컨트롤
+                    bool checkCameraMoving = cam.GetComponent<Camera_Moving>().enabled;
+                    if (currentMap.isCameraMoving && !checkCameraMoving) StartCoroutine(SetCameraMovingState(currentMap.isCameraMoving));
+                    else if (!currentMap.isCameraMoving && checkCameraMoving) StartCoroutine(SetCameraMovingState(currentMap.isCameraMoving));
+
                     //스카이박스 세팅
                     RenderSettings.skybox = currentMap.SkyboxSetting;
                     DynamicGI.UpdateEnvironment();
@@ -154,23 +168,19 @@ public class DataController : MonoBehaviour
                     {
                         cam.orthographicSize = currentMap.orthographicSize;
                     }
-
                     
-                    //카메라 위치와 회전
-                    camDis = currentMap.camDis;
-                    rot = currentMap.camRot;
-                    if(currentChar!=null)
-                    cam.transform.position = currentChar.transform.position + camDis;
-                    cam.transform.rotation = Quaternion.Euler(rot);
-
+                    
                     FindProgressCollider();
 
                     isMapChanged = false;
+
 
                     // 조작 가능한 상태로 변경 (중력 적용)
                     speat.UseJoystickCharacter();
                     oun.UseJoystickCharacter();
                     rau.UseJoystickCharacter();
+
+
                     // 나중에 주석 풀 코드
                     // 추후에 튜토리얼 맵 이름 확정되면 사용될 함수 (튜토리얼 지시문 데이터 불러오기)
                     //if (mapCode == "라우 튜토리얼 맵코드" || mapCode == "스핏튜토리얼 맵코드")
@@ -350,6 +360,18 @@ public class DataController : MonoBehaviour
                 isExistdata[i] = false;
             }
         }
+    }
+
+    IEnumerator SetCameraMovingState(bool isCameraMoving) {
+        
+        yield return new WaitUntil(() => currentChar != null && currentMap != null &&
+        Mathf.Round(cam.transform.position.x) == Mathf.Round(currentChar.transform.position.x + currentMap.camDis.x) &&
+        Mathf.Round(cam.transform.position.y) == Mathf.Round(currentChar.transform.position.y + currentMap.camDis.y) &&
+        Mathf.Round(cam.transform.position.z) == Mathf.Round(currentChar.transform.position.z + currentMap.camDis.z));
+       
+        if (isCameraMoving) cam.GetComponent<Camera_Moving>().enabled = true;
+        else if(!isCameraMoving) cam.GetComponent<Camera_Moving>().enabled = false;
+
     }
 
 }

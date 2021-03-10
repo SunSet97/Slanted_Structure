@@ -16,7 +16,7 @@ public class Interact_ObjectWithRau : MonoBehaviour
     [Header("#Mark setting")]
     public GameObject mark;
     public Vector2 markOffset = Vector2.zero;
-
+    public bool isIn = false;
     void Update()
     {
         if (DataController.instance_DataController != null)
@@ -34,7 +34,12 @@ public class Interact_ObjectWithRau : MonoBehaviour
             // Outline 있을 시
             else if(this.gameObject.activeSelf)
             {
-                outline.enabled = CheckAroundCharacter(); // Outline 활성화
+                //print("@@@@@@@@@@@@@@@");
+                isIn = CheckAroundCharacter();
+                //print("근처?: " + isIn);
+                //outline.enabled = CheckAroundCharacter(); // Outline 활성화
+                outline.enabled = isIn;
+                //print("아웃라인 활성화됨?: " + outline.enabled);
                 if (mark != null)
                 {
                     mark.gameObject.SetActive(CheckAroundCharacter()); // 마크 활성화
@@ -53,13 +58,14 @@ public class Interact_ObjectWithRau : MonoBehaviour
         bool temp = false;
         foreach (RaycastHit hit in hits)
         {
-            print("내이름 " + transform.name + " hit.collider.name: " + hit.collider.name + "  /  name: " + DataController.instance_DataController.currentChar.name);
             if (hit.collider.gameObject != null && DataController.instance_DataController.currentChar != null)
                 temp = hit.collider.name == DataController.instance_DataController.currentChar.name ? true : false;
             else
                 temp = false;
+            //print("hit.collider.name :  " + hit.collider.name + " /DataController.instance_DataController.currentChar.name: " + DataController.instance_DataController.currentChar.name + "/ temp: " + temp);
         }
-        print("inRange: " + temp);
+        //if (temp) print("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+
         return temp;
     }
 

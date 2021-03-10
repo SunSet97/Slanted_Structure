@@ -59,7 +59,9 @@ public class MapData : MonoBehaviour
     [Tooltip("카메라의 orthographic 뷰를 제어할 수 있습니다.")]
     public bool isOrthographic = false;
     public float orthographicSize;
-    
+    [Tooltip("CameraMoving 사용 설정")]
+    public bool isCameraMoving = true;
+
     // 초기 세팅 설정
     void CreateDefaultSetting()
     {
@@ -320,6 +322,7 @@ public class MapData : MonoBehaviour
         {
             TimeLineStop();
         }
+
     }
 
     #region 디버깅용

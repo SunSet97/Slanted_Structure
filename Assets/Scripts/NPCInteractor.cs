@@ -14,7 +14,6 @@ public class NPCInteractor : MonoBehaviour
     public Transform[] NPCArray;
 
     public List<Interact_ObjectWithRau> NPCInteractComponentList = new List<Interact_ObjectWithRau>();
-
     private void Start()
     {
         canvasCtrl = CanvasControl.instance_CanvasControl;
@@ -40,7 +39,11 @@ public class NPCInteractor : MonoBehaviour
             
             if (Input.GetMouseButtonDown(0))
             {
-                if(!canvasCtrl.isPossibleCnvs) canvasCtrl.UpdateWord();
+                if (!canvasCtrl.isPossibleCnvs)
+                {
+                    canvasCtrl.UpdateWord();
+
+                }
 
                 Ray ray = DataController.instance_DataController.cam.ScreenPointToRay(Input.mousePosition);
                 Debug.DrawRay(ray.origin, ray.direction * 20f, Color.red, 5f);
@@ -64,6 +67,7 @@ public class NPCInteractor : MonoBehaviour
                 }
 
             }
+
 
 
 

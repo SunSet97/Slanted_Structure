@@ -338,6 +338,7 @@ public class CanvasControl : MonoBehaviour
     // npc를 터치하면 불리는 함수
     public void StartConversation()
     {
+        print("startConversation()~~~~");
         dialogueLen = DataController.instance_DataController.dialogueData.dialogue[cnvsCnt].dialogueScript.Length;
         dialogueCnt = 0;
         DialoguePanel.SetActive(true);
@@ -346,6 +347,7 @@ public class CanvasControl : MonoBehaviour
 
     public void UpdateWord()
     {
+
         // 대화가 끝나면 선택지 부를 지 여부결정 
         if (dialogueCnt >= dialogueLen)
         {
@@ -353,7 +355,7 @@ public class CanvasControl : MonoBehaviour
             endConversation = true;
 
             // 부를 선택지 정보가 있는가 없는 가 
-            if (DataController.instance_DataController.dialogueData.choice.Length > cnvsCnt /* && DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length > 0*/)
+            if (DataController.instance_DataController.dialogueData.choice.Length > cnvsCnt /*& DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length > 0*/)
             {
                 if (DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length > 0)
                     OpenChoicePanel();
