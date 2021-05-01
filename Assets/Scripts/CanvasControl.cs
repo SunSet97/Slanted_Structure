@@ -198,7 +198,6 @@ public class CanvasControl : MonoBehaviour
         else
             transform.Find(panelName).gameObject.SetActive(false);
 
-
     }
 
     // 자존감 및 친밀도 text 업데이트

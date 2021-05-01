@@ -13,10 +13,12 @@ public class Interact_ObjectWithRau : MonoBehaviour
     public float radius = 3;
     public Outline.Mode mode = Outline.Mode.OutlineAll;
     public Outline outline;
+    public bool isInteracting = false; // 외부 스크립트에서 조절하기
     [Header("#Mark setting")]
     public GameObject mark;
     public Vector2 markOffset = Vector2.zero;
     public bool isIn = false;
+
     void Update()
     {
         if (DataController.instance_DataController != null)
@@ -34,19 +36,22 @@ public class Interact_ObjectWithRau : MonoBehaviour
             // Outline 있을 시
             else if(this.gameObject.activeSelf)
             {
-                //print("@@@@@@@@@@@@@@@");
                 isIn = CheckAroundCharacter();
-                //print("근처?: " + isIn);
-                //outline.enabled = CheckAroundCharacter(); // Outline 활성화
-                outline.enabled = isIn;
-                //print("아웃라인 활성화됨?: " + outline.enabled);
-                if (mark != null)
+                //if (mark != null &&!isInteracting)
+                if (!isInteracting)
                 {
-                    mark.gameObject.SetActive(CheckAroundCharacter()); // 마크 활성화
-                    mark.transform.position = (Vector3)markOffset + DataController.instance_DataController.cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
+                    outline.enabled = isIn; // Outline 활성화
+                    if (mark != null) {
+                        mark.gameObject.SetActive(isIn); // 마크 활성화
+                        mark.transform.position = (Vector3)markOffset + DataController.instance_DataController.cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
+                    }
+                } else if (isIn && isInteracting)
+                {
+                    outline.enabled = false; // 범위 내에 있으면서 인터랙션중일 때 Outline 비활성화
+                    if(mark) mark.gameObject.SetActive(false); // 범위 내에 있으면서 인터랙션중일 때 마크 비활성화
                 }
 
-                GetObjectTouch();
+                if(CanvasControl.instance_CanvasControl.isPossibleCnvs && isIn) GetObjectTouch();
             }
         }
     }
@@ -62,28 +67,41 @@ public class Interact_ObjectWithRau : MonoBehaviour
                 temp = hit.collider.name == DataController.instance_DataController.currentChar.name ? true : false;
             else
                 temp = false;
-            //print("hit.collider.name :  " + hit.collider.name + " /DataController.instance_DataController.currentChar.name: " + DataController.instance_DataController.currentChar.name + "/ temp: " + temp);
         }
-        //if (temp) print("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 
         return temp;
     }
 
     // 오브젝트 터치 판정
-    private void GetObjectTouch()
+    // 여기서 받는 hit을 NPCInterator로 보내기
+    public void GetObjectTouch()
     {
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = DataController.instance_DataController.cam.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 20f, Color.red, 5f);
-            RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity);
+            int layerMask = 1 << 13; // 13번 레이어마스크가 ClickOobject임.
+            RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
             foreach (RaycastHit hit in hits)
             {
-                if (hit.collider.gameObject != null)
+                if (hit.collider.gameObject != null && hit.collider.gameObject == this.gameObject && (hit.collider.CompareTag("NPC")||hit.collider.CompareTag("obj_interaction"))) {
                     isTouched = hit.collider.name == this.gameObject.name ? true : false;
+                    if (isTouched && outline.enabled) {
+                        isInteracting = true;
+                        outline.enabled = false; // 아웃라인 끄기
+                        StartCoroutine(ChangeToFalse(5));
+                        if (!mark) mark.gameObject.SetActive(false); // 마크 끄기
+                    }
+                    if (isTouched && hit.collider.transform.parent.name == "NPCManager" && CanvasControl.instance_CanvasControl.isPossibleCnvs)
+                    {
+                        NPCInteractor.instance_NPCInteractor.FindInteractableNPC(hit, radius);
+                    }
+                    break;
+                }
                 else
                     isTouched = false;
             }
+            //isTouched = false;
         }
     }
 
@@ -92,5 +110,11 @@ public class Interact_ObjectWithRau : MonoBehaviour
         Gizmos.color = outlineColor - Color.black * 0.7f;
         Gizmos.DrawWireSphere(gameObject.transform.position + offset, radius);
         Gizmos.DrawSphere(gameObject.transform.position + offset, radius);
+    }
+
+    IEnumerator ChangeToFalse(float time) {
+        if (!isInteracting) isInteracting = true;
+        yield return new WaitForSeconds(time); // 다음 프레임까지 대기 후 false로 바꾸기
+        isInteracting = false;
     }
 }

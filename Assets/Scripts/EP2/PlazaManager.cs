@@ -3,22 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-class doveAnim {
-
-    public InteractionObj_stroke doveInteractionObj_Stroke;
-    public List<Animator> animatorList = new List<Animator>();
-
-}
-
 public class PlazaManager : MonoBehaviour
 {
+
     [Header("인터랙션하는 벤치들 부모 넣어주기~")] // 부모> 1 2 3 4 5 ...
     public GameObject interactionBenchParent;
     List<Interact_ObjectWithRau> interactionBenchList = new List<Interact_ObjectWithRau>();
 
-    [Header("인터랙션하는 비둘기들 부모 넣어주기~")] // 부모> (그룹1>1 2 3 4 ...) (그룹2>1 2 3 4 ...) ...
-    public GameObject interactionDoveParent;
-    List<doveAnim> doveAnimators = new List<doveAnim>();
+    [Header("비둘기 그룹 각각 넣기")]
+    public Interact_ObjectWithRau[] doves;
+    [SerializeField]
 
     [Header("말풍선 대화하는 학생들 부모 넣어주기~")] // 부모> (그룹1>1 2 3 4 ...) (그룹2>1 2 3 4 ...) ...
     public GameObject interactionStudentParent;
@@ -36,7 +30,6 @@ public class PlazaManager : MonoBehaviour
     public int policeDir = 0;
     bool isWalkingAroundFountain = true;
     bool isTalking = false;
-
 
 
     // Start is called before the first frame update
@@ -77,30 +70,14 @@ public class PlazaManager : MonoBehaviour
             }
         }
 
-        // 비둘기 인터랙션 컴포넌트 및 애니메이터 리스트 넣기
-        for (int i = 0; i < interactionDoveParent.transform.childCount; i++) {
-            GameObject childGroup = interactionDoveParent.transform.GetChild(i).gameObject;
-            doveAnimators.Add(new doveAnim());
-            doveAnimators[i].doveInteractionObj_Stroke = childGroup.GetComponent<InteractionObj_stroke>();
-            doveAnimators[i].doveInteractionObj_Stroke.touchTargetObject = doveAnimators[i].doveInteractionObj_Stroke.exclamationMark; // 터치할 대상을 먹이 말풍선으로 바꾸기!
-            for (int j = 0; j < childGroup.transform.childCount; j++) {
-                doveAnimators[i].animatorList.Add(childGroup.transform.GetChild(j).GetComponent<Animator>());
-            }
-        }
-
-
-        /*if (police)
-        {
-            policeCtrl = police.GetComponent<CharacterController>();
-            Invoke("PoliceManWalkingArounFoundtaion", 0);
-        }
-        */
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        CheckDoveClick(); // 비둘기 클릭하는 것 감지 및 애니메이션 처리
+
         // 벤치 인터랙션 관련
         for (int i = 0; i < interactionBenchList.Count; i++)
         {
@@ -124,67 +101,34 @@ public class PlazaManager : MonoBehaviour
 
         }
 
-        //policeCtrl.Move(Vector3.right * policeDir * 2 * Time.deltaTime);
-
     }
 
-    // 비둘기 머리위 씨앗 말풍선 클릭할때 호출됨.
-    public void ClickDoves() {
-        print("클릭");
-        GameObject clickedSeed = EventSystem.current.currentSelectedGameObject; // 클릭된거가 seedballoon1 2 3 ...임.
-        GameObject tempParent = clickedSeed.transform.parent.gameObject;
-        int tempIndex = 0; // 일단, 초기값은 0으로 설정
-
-        // 클릭된 seedballoon의 인덱스 확인
-        for (int i = 0; i < tempParent.transform.childCount; i++) {
-            if (tempParent.transform.GetChild(i).gameObject == clickedSeed) {
-                tempIndex = i;
+    void CheckDoveClick() {
+        int idx = -1;
+        foreach (Interact_ObjectWithRau doveGroup in doves) {
+            idx++;
+            if (doveGroup.isTouched) {
+                doveGroup.isInteracting = true;
+                doveGroup.mark.SetActive(false);// 씨앗 말풍선 끄기
+                doveGroup.outline.enabled = false; // 아웃라인 끄기
+                for (int i = 0; i < doveGroup.transform.childCount; i++) {
+                    print("doveGroup.transform.childCount: "+ doveGroup.transform.childCount);
+                    Animator doveChildAnim = doveGroup.transform.GetChild(i).GetComponent<Animator>();
+                    StartCoroutine(PlayEatAnimation(3, doveGroup, doveChildAnim));
+                }
+                break;
             }
         }
-
-        // 위에서 얻은 인덱스로 아웃라인 끄고. 씨앗 말풍선 안보이게하고. 애니메이션 가동!
-        doveAnimators[tempIndex].doveInteractionObj_Stroke.outline.enabled = false;
-        doveAnimators[tempIndex].doveInteractionObj_Stroke.exclamationMark.SetActive(false);
-        List <Animator> tempAnimatorList = doveAnimators[tempIndex].animatorList;
-        for (int i = 0; i < tempAnimatorList.Count; i++) {
-            StartCoroutine(PlayEatAnimation(3, tempAnimatorList[i]));
-        }
-
     }
 
-    void PoliceManWalkingArounFoundtaion( )
+    IEnumerator PlayEatAnimation(float playTime, Interact_ObjectWithRau doveGroup, Animator doveChildAnim)
     {
-        policeDir = (int)Random.Range(-1,2);
-
-        if (isTalking)
-        {
-            policeDir = 0;
-        }
-        else
-        {
-            if (policeDir == 1) police.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-            if (policeDir == -1) police.transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
-            if (policeDir == 0) police.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-        }
-
-        Invoke("PoliceManWalkingArounFoundtaion", 3);
-
-    }
-
-
-
-    IEnumerator PlayEatAnimation(float playTime, Animator anim)
-    {
-        // ★ 라우가 먹이 주는 애니메이션 여기다 넣기!!
-
-        anim.SetBool("idle", false);
-        anim.SetBool("eat", true);
-
+        doveChildAnim.SetBool("idle", false);
+        doveChildAnim.SetBool("eat", true);
         yield return new WaitForSeconds(playTime);
-
-        anim.SetBool("eat", false);
-        anim.SetBool("idle", true);
-
+        doveChildAnim.SetBool("eat", false);
+        doveChildAnim.SetBool("idle", true);
+        doveGroup.isInteracting = false;
     }
 
 }

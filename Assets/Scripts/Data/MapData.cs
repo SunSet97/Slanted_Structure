@@ -60,7 +60,9 @@ public class MapData : MonoBehaviour
     public bool isOrthographic = false;
     public float orthographicSize;
     [Tooltip("CameraMoving 사용 설정")]
-    public bool isCameraMoving = true;
+    public bool isCameraMoving = true; // 카메라 무빙 사용 여부
+    [Tooltip("CameraMoving 경계 설정")]
+    public BoxCollider cameraBound; // 카메라 무빙 경계 설정.
 
     // 초기 세팅 설정
     void CreateDefaultSetting()

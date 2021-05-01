@@ -364,6 +364,7 @@ public class DataController : MonoBehaviour
 
     IEnumerator SetCameraMovingState(bool isCameraMoving) {
         
+        // 맵 바뀌기 전에 카메라 무빙 안되는 거 막기 위함.
         yield return new WaitUntil(() => currentChar != null && currentMap != null &&
         Mathf.Round(cam.transform.position.x) == Mathf.Round(currentChar.transform.position.x + currentMap.camDis.x) &&
         Mathf.Round(cam.transform.position.y) == Mathf.Round(currentChar.transform.position.y + currentMap.camDis.y) &&

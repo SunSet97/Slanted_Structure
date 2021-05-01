@@ -13,7 +13,7 @@ public class Event_IntoTheAzit : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name == "Speat")
+        if (other.name == DataController.instance_DataController.currentChar.name)
         {
             other.GetComponent<CharacterManager>().PickUpCharacter();
             if (!isCoroot)
@@ -32,7 +32,7 @@ public class Event_IntoTheAzit : MonoBehaviour
         Vector3 tick = (endPoint.position - startPoint.position) / 100f;
         for (int i = 0; i < 100; i++)
         {
-            other.GetComponent<Animator>().SetTrigger("Dash");
+            other.GetComponent<Animator>().SetFloat("Speed", 1f);
             other.transform.position += tick;
             yield return new WaitForSeconds(0.05f / moveSpeed);
         }

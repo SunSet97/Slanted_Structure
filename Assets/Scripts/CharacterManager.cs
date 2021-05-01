@@ -120,7 +120,7 @@ public class CharacterManager : MonoBehaviour
     public Vector3 moveHorDir = Vector3.zero, moveVerDir = Vector3.zero;    // 수평, 수직 이동 방향 벡터
     private Vector2 joystickDir;
     private Vector2 characterDir;
-    private float joyRot;
+    public float joyRot;
     public Quaternion camRotation; // 메인 카메라 기준으로 joystick input 변경(라인트레이서 제외)
 
     public bool isJump;                     // 캐릭터의 점프 여부
@@ -150,7 +150,7 @@ public class CharacterManager : MonoBehaviour
             */
 
             anim.SetFloat("Direction", joyRot); //X방향
-            anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed
+            anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed     ####################################################애니메이션할 때 참고..
 
             if (DataController.instance_DataController.currentMap.SideView == true)
                 anim.SetBool("2DSide", true);

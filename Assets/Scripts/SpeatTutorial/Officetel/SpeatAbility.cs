@@ -37,8 +37,8 @@ public class SpeatAbility : MonoBehaviour
     private float force;            // 벽을 통과하는 힘
     private bool isUp = false, isDown = false;
 
-    GameObject tempDoor; // 클릭 한 문 임시로 저장
-    bool isFrontDoor = false; // 스핏이 문 앞에 있는지 여부
+    public Interact_ObjectWithRau[] doors;
+    int clickedDoorIndex;
     bool isInRoom = false; // 스핏이 방 안이면 true
     public bool isHiding = false; // true면 숨고 있는 중
     float touchRange = 0.5f; // 터치(클릭) 허용 범위
@@ -53,6 +53,7 @@ public class SpeatAbility : MonoBehaviour
         // 스핏 확인
         if (speat != null)
         {
+            HideBehindDoor(); // 문 뒤로 숨기
             fwdDir = speat.transform.forward; bwdDir = -speat.transform.forward;    // 전후방 방향 벡터
             upDir = speat.transform.up; downDir = -speat.transform.up;              // 위아래 방향 벡터
 
@@ -63,8 +64,12 @@ public class SpeatAbility : MonoBehaviour
             ChangeIsAbility();  // 능력 사용 여부 판단
             Dash();             // 조건 만족시 대쉬
 
-            // *숨기 능력 *     여기서 문 or 출구 클릭 입력 받음.     
-            CheckAroundInterActionObj();
+            for (int i = 0; i < doors.Length; i++) {
+                bool tmp = doors[i].isTouched;
+                if (tmp) print("i: " + i + "  /  doors[i].isTouched: " + doors[i].isTouched);
+            }
+
+
             /*
             if (Input.GetMouseButtonDown(0)) touchDown = Camera.main.ScreenPointToRay(Input.mousePosition);
             else if (Input.GetMouseButtonUp(0))
@@ -273,7 +278,6 @@ public class SpeatAbility : MonoBehaviour
             // 스핏 주위에 있는 obj_interaction감지 범위 보여줌
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(speat.transform.position, 5);
-
         }
     }
 
@@ -323,63 +327,66 @@ public class SpeatAbility : MonoBehaviour
 
     }
 
-    private void CheckDoor(Ray ray, GameObject door)
-    {
-        Vector3 target;
-        Vector3 doorPos = door.transform.position;
-        Vector3 speatPos = speat.transform.position;
-        float distacne = 2.0f;
-        float frontDoorRange = 0.5f;
+    private void HideBehindDoor() {
 
-        Debug.Log("Touch the Door");
+        if (Input.GetMouseButtonDown(0)) {
 
-        if (!isInRoom && doorPos.x - frontDoorRange <= speatPos.x && speatPos.x <= doorPos.x + frontDoorRange) isFrontDoor = true;
-        else isFrontDoor = false;
+            // 스핏이 방으로 완전히 들어간 상태일때 클릭
+            if (!isHiding && isInRoom) foreach (Interact_ObjectWithRau door in doors) door.GetObjectTouch();
 
-        if (!tempDoor)
-        {
-            tempDoor = door;
-            // 문으로 들어가는 방향으로 target설정
-            if (isFrontDoor && !isHiding && !isInRoom)
+            Vector3 target; // 들어가는 방향
+            float distance = 0; // 얼만큼 들어가는지
+            int idx = -1;
+
+            foreach (Interact_ObjectWithRau door in doors)
             {
-                target = new Vector3(speatPos.x, speatPos.y, speatPos.z + distacne);
-                Debug.Log("들어간다..");
-                StartCoroutine(Hiding(target));
+                //print("door.isTouched: " + door.isTouched);
+                idx++; // door 인덱스
+                //print("idx증가해서 " + idx + "이다!!");
+                if (door.isTouched && (!isHiding && !isInRoom))
+                {
+                    print("들어간다~");
+                    speat.transform.rotation = Quaternion.Euler(0,0,0);
+                    clickedDoorIndex = idx;
+                    print("idx = " + idx + "  /  clickedDoorIndex: " + clickedDoorIndex);
+                    distance = 2.0f;
+                    target = new Vector3(speat.transform.position.x, speat.transform.position.y, speat.transform.position.z + distance);
+                    StartCoroutine(Hiding(target));
+                    break;
+                }
+                else if (door.isTouched && (!isHiding && isInRoom) && idx == clickedDoorIndex)
+                {
+                    print("나온다~");
+                    print("idx = " + idx + "  /  clickedDoorIndex: " + clickedDoorIndex);
+                    clickedDoorIndex = -2;
+                    speat.transform.rotation = Quaternion.Euler(0, 180, 0);
+                    distance = -2.0f;
+                    target = new Vector3(speat.transform.position.x, speat.transform.position.y, speat.transform.position.z + distance);
+                    StartCoroutine(Hiding(target));
+                    break;
+                } 
             }
-
-        }
-        else if (tempDoor && tempDoor == door)
-        {
-            tempDoor = null;
-            // 문에서 나오는 방향으로 target설정
-            if (!isFrontDoor && !isHiding && isInRoom)
-            {
-                target = new Vector3(speatPos.x, speatPos.y, speatPos.z - distacne);
-                Debug.Log("나온다..");
-                StartCoroutine(Hiding(target));
-            }
-
         }
 
     }
+
 
     IEnumerator Hiding(Vector3 target)
     {
 
         isHiding = true;
 
-        if (isFrontDoor) isFrontDoor = false; // 능력써서 방 안으로 들어올 때
-        else isFrontDoor = true; // 능력써서 방 밖으로 나올 때
-
         if (isInRoom) isInRoom = false; // 능력써서 방 밖으로 나올 때
         else isInRoom = true; // 능력써서 방안으로 들어올 때
 
         speat.ctrl.enabled = false;
-        while (!speat.transform.position.Equals(target))
+
+        while (speat.transform.position != target)
         {
-            speat.transform.position = Vector3.MoveTowards(speat.transform.position, target, 0.03f); // 마지막 파라미터는 숨을 때 속도!
+            speat.transform.position = Vector3.MoveTowards(speat.transform.position, target, 0.1f); // 마지막 파라미터는 숨을 때 속도!
             yield return new WaitForSeconds(0f);
         }
+
         speat.ctrl.enabled = true;
         isHiding = false;
 
@@ -419,9 +426,8 @@ public class SpeatAbility : MonoBehaviour
             RaycastHit[] hits = Physics.RaycastAll(speat.transform.position, Input.mousePosition, Mathf.Infinity);
 
             foreach (RaycastHit hit in hits){
-                print("!!!!!!!hits: " + hit.collider.name + "parent: " + hit.collider.gameObject.transform.parent.name);
+                //print("!!!!!!!hits: " + hit.collider.name + "parent: " + hit.collider.gameObject.transform.parent.name);
                 if (obj_interaction.Equals(hit.collider.gameObject) || hit.collider.gameObject.name == "door") {
-                    print("@@@@@@@@hit: " + hit.transform.parent.parent.name);
                     PlayInteraction(hit.collider.name);
                 }
 
@@ -437,5 +443,8 @@ public class SpeatAbility : MonoBehaviour
         print(name + "이 클릭되었으니, 인터랙션 하여라");
     }
 
+    void OnTriggerEnter(Collider other) {
+
+    }
    
 }

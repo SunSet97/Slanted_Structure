@@ -11,7 +11,14 @@ public class Camera_Moving : MonoBehaviour
     private Vector3 charPos;
     private Vector3 camPos;
     private Quaternion camRot;
-    
+
+    // 카메라 무빙 경계
+    private BoxCollider bound;
+    private Vector3 minBound;
+    private Vector3 maxBound;
+    private float halfWidth;
+    private float halfHeight;
+    int i = 0;
     // Update is called once per frame
     void Update()
     {
@@ -30,6 +37,7 @@ public class Camera_Moving : MonoBehaviour
             //카메라의 이동과 제한을 위한 함수에 매개변수로 카메라 위치변수 넣음.
             Follow_Player(camPos, camRot);
             //Player_transform.position = Player_Position;
+
         }
     }
 
@@ -51,7 +59,24 @@ public class Camera_Moving : MonoBehaviour
         //카메라 위치 제한 설정
         //position.x = Mathf.Clamp(position.x,min_x,max_x);
         //position.y= Mathf.Clamp(position.y, min_y, max_y);
-        Camera.main.transform.position = position;
+
+        if (DataController.instance_DataController.currentMap.cameraBound) // 카메라 경계 설정 시
+        {
+            bound = DataController.instance_DataController.currentMap.cameraBound;
+            minBound = bound.bounds.min;
+            maxBound = bound.bounds.max;
+            halfHeight = GetComponent<Camera>().orthographicSize;
+            halfWidth = halfHeight * Screen.width / Screen.height;
+            float clampedX = Mathf.Clamp(transform.position.x, minBound.x + halfWidth, maxBound.x - halfWidth);
+            float clampedY = Mathf.Clamp(transform.position.y, minBound.y + halfHeight, maxBound.y - halfHeight); ;
+            //float clampedZ;
+            transform.position = new Vector3(clampedX, clampedY, transform.position.z);
+
+        }
+        else
+        {
+            Camera.main.transform.position = position;
+        }
 
         //입력 된 카메라 각도 설정
         Camera_rotate.eulerAngles = new Vector3(rot.x, rot.y, rot.z);
@@ -66,4 +91,5 @@ public class Camera_Moving : MonoBehaviour
         //    Camera.main.transform.position = position;
         //}
     }
+
 }

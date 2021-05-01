@@ -10,14 +10,17 @@ public class PimpGuestMoving : MonoBehaviour
     public float changeDirectionCycle;
     public int speedUPTime;
     bool isGround = false; // 스핏이 능력 쓸 때 적들도 같이 아래로 내려오는 것을 막기 위함.
-
+    bool isTriggerRotation = false;
 
     // 적들
     CharacterController npc;
     public float speed;
+    public float rotationSpeed = 4.5f;
     public float accVal; // 가속 값
-    int nextDirection;
+    public int nextDirection;
     float rotation;
+    int rotVal = 0;
+    bool isRotating = false;
     public string who; // 적 유형
 
     // 대화
@@ -31,12 +34,17 @@ public class PimpGuestMoving : MonoBehaviour
     public Camera cam;
     float tempSpeed;
     public bool speedUp = false;
+    float cntAngle = 0f;
+
+    // 애니메이터
+    Animator animator;
 
     void Start()
     {
         canvasCtrl = CanvasControl.instance_CanvasControl;
 
         npc = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
         //npc.GetComponent<Collider>().isTrigger = true;
 
         speat = DataController.instance_DataController.currentChar;
@@ -50,12 +58,13 @@ public class PimpGuestMoving : MonoBehaviour
 
     void Update()
     {
-        if (!npc.isGrounded && !isGround) npc.Move(transform.up * -1 ); // 중력
+
+        if (!npc.isGrounded) npc.Move(transform.up * -1 ); // 중력
         if (!speat) speat = DataController.instance_DataController.currentChar;
 
         npc.Move((Vector3.right * nextDirection * speed) * Time.deltaTime); // 적들 이동.
 
-        transform.position = new Vector3(transform.position.x, transform.position.y, speat.transform.position.z); // z값은 스핏과 동일하게
+        //transform.position = new Vector3(transform.position.x, transform.position.y, speat.transform.position.z); // z값은 스핏과 동일하게
 
         if (talking) nextDirection = 0; // 스핏하고 대화중일때 멈추게
 
@@ -85,6 +94,9 @@ public class PimpGuestMoving : MonoBehaviour
 
         }
 
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0,rotVal, 0)), rotationSpeed*Time.deltaTime);
+  
+
     }
 
 
@@ -96,16 +108,24 @@ public class PimpGuestMoving : MonoBehaviour
 
         if (nextDirection == 1)
         {
-            transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+            animator.SetFloat("Speed", 1.0f);
+            rotVal = 90;
         }
         else if (nextDirection == -1)
         {
-            transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
+            animator.SetFloat("Speed", 1.0f);
+            rotVal = -90;
+        }
+        else if (nextDirection == 0)
+        {
+            animator.SetFloat("Speed", 0.0f);
+            rotVal = 180;
         }
 
         Invoke("Think", changeDirectionCycle);
 
     }
+
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {

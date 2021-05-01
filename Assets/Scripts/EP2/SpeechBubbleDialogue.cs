@@ -88,7 +88,7 @@ public class SpeechBubbleDialogue : MonoBehaviour
         cam = DataController.instance_DataController.cam;
 
         // 오브젝트 주위 선
-        interactionObj_Stroke = gameObject.GetComponent<InteractionObj_stroke>();
+        if(!gameObject.GetComponent<InteractionObj_stroke>())interactionObj_Stroke = gameObject.GetComponent<InteractionObj_stroke>();
 
         // 말풍선 안보이게
         speechBubbleObj.SetActive(false);
@@ -265,6 +265,7 @@ public class SpeechBubbleDialogue : MonoBehaviour
         {
             triggerNext = false;
             speechBubbleObj.SetActive(true);
+            print("말풍선 is setActive? " + speechBubbleObj.activeSelf);
             UpdateDialogue();
             if (randomSecond == RandomSecond.useSettedSecond)
             {

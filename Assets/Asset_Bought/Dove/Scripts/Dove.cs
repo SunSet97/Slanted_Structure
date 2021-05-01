@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Dove : MonoBehaviour
 {
-    private Animator dove;
+    public Animator dove;
     public GameObject MainCamera;
 
 	void Start ()

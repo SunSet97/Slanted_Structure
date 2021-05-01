@@ -14,6 +14,22 @@ public class NPCInteractor : MonoBehaviour
     public Transform[] NPCArray;
 
     public List<Interact_ObjectWithRau> NPCInteractComponentList = new List<Interact_ObjectWithRau>();
+
+    // 인스턴스화
+    private static NPCInteractor instance = null;
+    public static NPCInteractor instance_NPCInteractor
+    {
+        get
+        {
+            return instance;
+        }
+    }
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void Start()
     {
         canvasCtrl = CanvasControl.instance_CanvasControl;
@@ -24,19 +40,44 @@ public class NPCInteractor : MonoBehaviour
     void Update()
     {
         if(DataController.instance_DataController.currentChar) character = DataController.instance_DataController.currentChar.transform;
-        if(character) FindInteractableNPC(interactableDistance);
+        //if(character) FindInteractableNPC(interactableDistance);
+
+        // 추가
+        if (Input.GetMouseButtonDown(0) && !canvasCtrl.isPossibleCnvs) {
+            canvasCtrl.UpdateWord();
+        }
+
     }
 
-    private void FindInteractableNPC(float interactableDist)
+    //private void FindInteractableNPC(float interactableDist)
+    public void FindInteractableNPC(RaycastHit hit, float distance)
     {
+        hit.collider.gameObject.GetComponent<Interact_ObjectWithRau>().isTouched = false;
         // 가장 가까운 NPC를 찾는다
         Transform closestNPC = getClosestNPC();
-        
-
-        if (isInteractable(closestNPC))
+        if (isInteractable(closestNPC, distance))
         {
+            // ++ interact_objectwithrau에서 79줄 hit을 여기 함수의 파라미터로 넘기기
+            // ++ getcloset 파라미터로 distance로 
+            // ++ 이 스크립트 객체화 시키기 transform.parent....
+            // ++ 이중으로 레이캐스트 ㄴㄴ
+            if (!canvasCtrl.isPossibleCnvs)
+            {
+                canvasCtrl.UpdateWord();
+            }
+            if (hit.collider.gameObject.name == closestNPC.gameObject.name && canvasCtrl.isPossibleCnvs == true)
+            {
+                // 대화가 끝나기 전까지 다시 대화 불가능하도록 설정
+                canvasCtrl.isPossibleCnvs = false;
+                canvasCtrl.dialogueCnt = 0;
+                DataController.instance_DataController.LoadData(closestNPC.gameObject.name, DataController.instance_DataController.charData.story + "_"
+                    + DataController.instance_DataController.charData.storyBranch + "_" + DataController.instance_DataController.charData.storyBranch_scnd + "_"
+                    + DataController.instance_DataController.charData.dialogue_index + ".json");
 
-            
+                canvasCtrl.StartConversation();
+            }
+
+            /* 수정 전
             if (Input.GetMouseButtonDown(0))
             {
                 if (!canvasCtrl.isPossibleCnvs)
@@ -67,6 +108,8 @@ public class NPCInteractor : MonoBehaviour
                 }
 
             }
+            */
+
 
 
 
@@ -96,8 +139,6 @@ public class NPCInteractor : MonoBehaviour
                 canvasCtrl.UpdateWord();
             }
             */
-            
-
 
             /* 원래 터치 받는 코드!!
 
@@ -144,10 +185,11 @@ public class NPCInteractor : MonoBehaviour
 
     }
 
-    private bool isInteractable(Transform NPC)
+    private bool isInteractable(Transform NPC, float distance)
     {
         // 상호작용 거리 내에 있는지 확인
         float dist = Vector3.Distance(character.transform.position, NPC.position);
+        interactableDistance = distance;
         return dist < interactableDistance;
     }
 
