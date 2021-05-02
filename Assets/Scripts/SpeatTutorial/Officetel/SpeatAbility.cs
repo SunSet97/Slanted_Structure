@@ -63,41 +63,6 @@ public class SpeatAbility : MonoBehaviour
 
             ChangeIsAbility();  // 능력 사용 여부 판단
             Dash();             // 조건 만족시 대쉬
-
-            for (int i = 0; i < doors.Length; i++) {
-                bool tmp = doors[i].isTouched;
-                if (tmp) print("i: " + i + "  /  doors[i].isTouched: " + doors[i].isTouched);
-            }
-
-
-            /*
-            if (Input.GetMouseButtonDown(0)) touchDown = Camera.main.ScreenPointToRay(Input.mousePosition);
-            else if (Input.GetMouseButtonUp(0))
-            {
-                touchUp = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (touchDown.origin.x - touchRange <= touchUp.origin.x && touchUp.origin.x <= touchDown.origin.x + touchRange
-                    && touchDown.origin.y - touchRange <= touchUp.origin.y && touchUp.origin.y <= touchDown.origin.y + touchRange)
-                {
-                    RaycastHit hit;
-                    Physics.Raycast(touchUp, out hit, Mathf.Infinity);
-                    GameObject touchedObj = hit.collider.gameObject;
-                    // 하..
-                    print(hit.collider.name);
-                    if (hit.collider != null && touchedObj.name.Equals("door")) // 클릭한 오브젝트가 문 일때
-                    {
-                        print(touchedObj.gameObject.name + "터치!!");
-                        CheckDoor(touchUp, touchedObj);
-
-                    }
-                    else if (hit.collider != null && touchedObj.name.Equals("goal"))
-                    {
-                        CheckGoal(touchedObj);
-                    }
-
-                }
-            }
-            */
-
         }
         else
         {
@@ -340,15 +305,11 @@ public class SpeatAbility : MonoBehaviour
 
             foreach (Interact_ObjectWithRau door in doors)
             {
-                //print("door.isTouched: " + door.isTouched);
                 idx++; // door 인덱스
-                //print("idx증가해서 " + idx + "이다!!");
                 if (door.isTouched && (!isHiding && !isInRoom))
                 {
-                    print("들어간다~");
                     speat.transform.rotation = Quaternion.Euler(0,0,0);
                     clickedDoorIndex = idx;
-                    print("idx = " + idx + "  /  clickedDoorIndex: " + clickedDoorIndex);
                     distance = 2.0f;
                     target = new Vector3(speat.transform.position.x, speat.transform.position.y, speat.transform.position.z + distance);
                     StartCoroutine(Hiding(target));
@@ -356,8 +317,6 @@ public class SpeatAbility : MonoBehaviour
                 }
                 else if (door.isTouched && (!isHiding && isInRoom) && idx == clickedDoorIndex)
                 {
-                    print("나온다~");
-                    print("idx = " + idx + "  /  clickedDoorIndex: " + clickedDoorIndex);
                     clickedDoorIndex = -2;
                     speat.transform.rotation = Quaternion.Euler(0, 180, 0);
                     distance = -2.0f;
@@ -392,59 +351,4 @@ public class SpeatAbility : MonoBehaviour
 
     }
 
-    // 주위에 obj_interaction 태그를 단 오브젝트가 있는지 확인
-    void CheckAroundInterActionObj()
-    {
-        // Physics.SphereCastAll(origin, 구 반지름, 레이방향, maxDistance);
-        RaycastHit[] hits = Physics.SphereCastAll(speat.transform.position, 5, Vector3.up, 0f);
-        foreach (RaycastHit hit in hits)
-        {
-
-            if (hit.collider.gameObject.CompareTag("obj_interaction"))
-            {
-                //print("주위에 obj_interaction있음! 걔의 parent!! " + hit.collider.gameObject.transform.parent.parent.name);
-                CheckClickInterActionObj(hit.collider.gameObject); // obj_interaction 클릭 확인
-            }
-
-        }
-    }
-
-    // 캐릭터 주위에 obj_interaction 클릭 확인.
-    void CheckClickInterActionObj(GameObject obj_interaction) // 캐릭터 주위에 있는(==원 안에 들어오는) obj_interaction을 파라메터로 받음. 얘를 클릭한 얘를 같은지 비교할거임.
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Camera cam = null;
-
-            if (Camera.main.CompareTag("MainCamera"))
-            {
-                cam = Camera.main.GetComponent<Camera>();
-            }
-
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-
-            RaycastHit[] hits = Physics.RaycastAll(speat.transform.position, Input.mousePosition, Mathf.Infinity);
-
-            foreach (RaycastHit hit in hits){
-                //print("!!!!!!!hits: " + hit.collider.name + "parent: " + hit.collider.gameObject.transform.parent.name);
-                if (obj_interaction.Equals(hit.collider.gameObject) || hit.collider.gameObject.name == "door") {
-                    PlayInteraction(hit.collider.name);
-                }
-
-            }
-
-
-           
-        }
-    }
-
-    void PlayInteraction(string name)
-    {
-        print(name + "이 클릭되었으니, 인터랙션 하여라");
-    }
-
-    void OnTriggerEnter(Collider other) {
-
-    }
-   
 }

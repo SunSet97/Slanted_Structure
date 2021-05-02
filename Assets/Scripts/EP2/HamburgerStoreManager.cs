@@ -188,9 +188,7 @@ public class HamburgerStoreManager : MonoBehaviour
             {
                 StopRauMoving();
             }
-
         }
-
     }
     #endregion
 

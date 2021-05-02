@@ -59,12 +59,12 @@ public class PimpGuestMoving : MonoBehaviour
     void Update()
     {
 
-        if (!npc.isGrounded) npc.Move(transform.up * -1 ); // 중력
+        if (!npc.isGrounded) npc.Move(transform.up * -1); // 중력
         if (!speat) speat = DataController.instance_DataController.currentChar;
 
         npc.Move((Vector3.right * nextDirection * speed) * Time.deltaTime); // 적들 이동.
 
-        //transform.position = new Vector3(transform.position.x, transform.position.y, speat.transform.position.z); // z값은 스핏과 동일하게
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0, rotVal, 0)), rotationSpeed * Time.deltaTime); // 적들 이동 방향에 따른 회전
 
         if (talking) nextDirection = 0; // 스핏하고 대화중일때 멈추게
 
@@ -93,9 +93,8 @@ public class PimpGuestMoving : MonoBehaviour
             }
 
         }
+        if (gameObject.name == "Pimp_1") print("rotVal: " + rotVal);
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0,rotVal, 0)), rotationSpeed*Time.deltaTime);
-  
 
     }
 
@@ -106,24 +105,23 @@ public class PimpGuestMoving : MonoBehaviour
         if (!talking) nextDirection = (int)Random.Range(-1, 2);
         else nextDirection = 0;
 
-        if (nextDirection == 1)
+        if (nextDirection == 1) // 오른쪽으로 움직임
         {
             animator.SetFloat("Speed", 1.0f);
             rotVal = 90;
         }
-        else if (nextDirection == -1)
+        else if (nextDirection == -1) // 왼쪽으로 움직임
         {
             animator.SetFloat("Speed", 1.0f);
             rotVal = -90;
         }
-        else if (nextDirection == 0)
+        else if (nextDirection == 0) // 정면 바라보고 정지
         {
             animator.SetFloat("Speed", 0.0f);
             rotVal = 180;
         }
 
         Invoke("Think", changeDirectionCycle);
-
     }
 
 
@@ -149,7 +147,10 @@ public class PimpGuestMoving : MonoBehaviour
 
         if (transform.name == "Pimp")
         {
-            if (hit.gameObject.name.Equals("Speat")) Debug.Log("게임오버");
+            if (hit.gameObject.name.Equals("Speat")) {
+                print("포주와 마주침. 게임 종료");
+                DataController.instance_DataController.isMapChanged = true;
+            }
         }
 
 

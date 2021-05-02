@@ -172,6 +172,11 @@ public class SpeechBubbleDialogue : MonoBehaviour
 
         }
 
+        if (speechBubbleDialogueType == SpeechBubbleDialogueType.loop && !CanvasControl.instance_CanvasControl.isPossibleCnvs) //!CanvasControl.instance_CanvasControl.isPossibleCnvs한 이유는 npc대화와 말풍선이 겹치치 않게 하기 위함
+        {  
+            speechBubbleObj.SetActive(false);
+        }
+
     }
 
     void UpdateDialogue()
@@ -243,13 +248,13 @@ public class SpeechBubbleDialogue : MonoBehaviour
             speechBubbleObj.SetActive(true);
             UpdateDialogue();
 
-            if (randomSecond == RandomSecond.useSettedSecond)
+            if (randomSecond == RandomSecond.useSettedSecond) // 말풍선 띄우거나 말풍선 없애는 시간 설정 가능.
             {
                 yield return new WaitForSeconds(visibleSecond); // visibleSecond동안 말풍선 띄우기   
                 speechBubbleObj.SetActive(false);
                 yield return new WaitForSeconds(invisibleSecond); // invisibleSecond동안 말풍선 없애기
             }
-            else if (randomSecond == RandomSecond.useRandomSecond)
+            else if (randomSecond == RandomSecond.useRandomSecond) // 말풍선 띄우거나 말풍선 없애는 시간 랜덤으로 설정.
             {
                 visibleSecond = Random.Range(0, randomRange);
                 invisibleSecond = Random.Range(0, randomRange);
