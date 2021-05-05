@@ -6,6 +6,7 @@ using System;
 [Serializable]
 public class DialogueData
 {
+    /*
     //모든 맵의 대화가 들어가는 딕셔너리
     public Dictionary<int, List<UISU[]>> asd = new Dictionary<int, List<UISU[]>>();
 
@@ -24,7 +25,7 @@ public class DialogueData
         //for(int i = 0; i < asd[000000][0].Length; i++)
         //asd[000000][0][i]
     }
-
+    */
     // 대사를 담은 배열
     public Dialogue[] dialogue;
 
