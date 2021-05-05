@@ -6,6 +6,25 @@ using System;
 [Serializable]
 public class DialogueData
 {
+    //모든 맵의 대화가 들어가는 딕셔너리
+    public Dictionary<int, List<UISU[]>> asd = new Dictionary<int, List<UISU[]>>();
+
+    //맵안에 들어가는 모든 대화
+    List<UISU[]> asdasd = new List<UISU[]>();
+    void asdas2d()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            //i로 맵데이터마다 읽기
+            //한 대화
+            UISU[] uisu;
+            uisu = JsontoString.LoadJsonFromClassName<UISU>("000000");
+            asdasd.Add(uisu);
+        }
+        for(int i = 0; i < asd[000000][0].Length; i++)
+        asd[000000][0][i]
+    }
+
     // 대사를 담은 배열
     public Dialogue[] dialogue;
 
@@ -16,7 +35,7 @@ public class DialogueData
     public IsSceneChange[] isSceneChange;
 
     // 이동할 씬 이름 저장 배열(string)
-    // 이동할 맵으로 바뀔 가능성 있음 (추가가능성 있음) 
+    // 이동할 맵으로 바뀔 가능성 있음 (추가가능성 있음)
     public NextScene[] nextScene;
 
     // 특정 선택지를 선택했을 때의 대화 진행 여부
@@ -55,6 +74,11 @@ public class DialogueData
 [Serializable]
 public class Dialogue {
     public string[] dialogueScript;
+}
+
+public class UISU {
+    string name;
+    int value;
 }
 
 [Serializable]

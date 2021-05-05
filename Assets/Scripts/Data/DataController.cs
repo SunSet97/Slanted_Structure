@@ -318,7 +318,13 @@ public class DataController : MonoBehaviour
                 Debug.Log("로드 성공");
                 string FromJsonData = File.ReadAllText(filePath);
                 _dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
-
+                //_dialogueData.dialogue.add dialogue
+                //dialougle.addDictionary<>맵데이터에 배열로 저장
+                ///for(대화 개수만큼)
+                ///ArrayList.add FromJson
+                ///}
+                //Dictionary.add<맵코드, ArrayList>
+                //dialogue.add<>
                 if (dataType != "ScriptCollider")
                     instance.charData.dialogue_index++;
             }

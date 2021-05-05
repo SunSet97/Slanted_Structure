@@ -338,6 +338,8 @@ public class CanvasControl : MonoBehaviour
     public void StartConversation()
     {
         print("startConversation()~~~~");
+        //대화 번호를 바깥에서 어떻게 알지
+        //dialogueLen = DataController.instance_DataController.dialogueData.asd[000000][대화 번호].Length;
         dialogueLen = DataController.instance_DataController.dialogueData.dialogue[cnvsCnt].dialogueScript.Length;
         dialogueCnt = 0;
         DialoguePanel.SetActive(true);
