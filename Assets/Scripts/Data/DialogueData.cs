@@ -21,8 +21,8 @@ public class DialogueData
             uisu = JsontoString.LoadJsonFromClassName<UISU>("000000");
             asdasd.Add(uisu);
         }
-        for(int i = 0; i < asd[000000][0].Length; i++)
-        asd[000000][0][i]
+        //for(int i = 0; i < asd[000000][0].Length; i++)
+        //asd[000000][0][i]
     }
 
     // 대사를 담은 배열
