@@ -34,7 +34,9 @@ public class DataController : MonoBehaviour
     public Vector3 rot;
 
     [Header("맵")]
-    public List<MapData> maps;
+    //public List<MapData> maps;
+    public MapData[] storymaps;
+    public Transform mapGenerate;
     public Transform[] progressColliders;
     public Transform currentProgress;
     public Transform commandSprite;
@@ -97,15 +99,29 @@ public class DataController : MonoBehaviour
 
     public void IngameScene()//인게임 씬 로드
     {
-        SceneManager.LoadScene("IngameScene");
+        SceneManager.LoadScene("Ingame_set");
     }
 
     public bool isMapChanged = false; // 맵 변경 여부
     //맵 코드에 맞는 맵을 찾아서 정보 저장
     void FindMap()
     {
+        for (int i = 0; i < 5; i++) 
+        {
+            storymaps = (MapData[])Resources.LoadAll("Storymaps/ep" + i,typeof(GameObject));//Mapdata형식의 배열 storymaps에 Resources 넣어버림
+          // maps.Add(Resources.Load("Storymaps/ep" + i, typeof(GameObject)) as MapData);
+        }
+        if (storymaps != null)
+        {
+            for (int i = 0; i< storymaps.Length-1; i++) 
+            {
+                Array.Sort(storymaps,delegate (MapData A, MapData B) { if (int.Parse(A.mapCode) > int.Parse(B.mapCode)) return 1; else return -1; });//혹시 몰라서 맵프리팹들 코드 순으로 정렬하기.
+            }
+        }
+        
+        /*
         // 인게임/시네마틱 씬에서 맵 데이터 리스트 찾기 및 정렬
-        if (SceneManager.GetActiveScene().name == "Ingame"|| SceneManager.GetActiveScene().name == "Cinematic")
+        if (SceneManager.GetActiveScene().name == "Ingame_set"|| SceneManager.GetActiveScene().name == "Cinematic")
         {
             if (GameObject.FindObjectsOfType<MapData>().Length != maps.Count)
             {
@@ -116,14 +132,15 @@ public class DataController : MonoBehaviour
                 if (GameObject.FindObjectsOfType<MapData>().Length == maps.Count)
                     maps.Sort(delegate (MapData A, MapData B) { if (int.Parse(A.mapCode) > int.Parse(B.mapCode)) return 1; else return -1; });
             }
-        }
+        }*/
+
         // 맵을 찾은 경우에만 실행
-        if (maps.Count > 0)
+        if (storymaps.Length > 0)
         {
             // 첫번째 맵인 000000을 제외하고 반복
-            for (int i = 1; i < maps.Count; i++)
+            for (int i = 1; i < storymaps.Length; i++)
             {
-                if (maps[i].mapCode == mapCode && isMapChanged)
+                if (storymaps[i].mapCode == mapCode && isMapChanged)
                 {
                     // 이동 가능한 상태로 변경
                     speat.PickUpCharacter();
@@ -131,19 +148,19 @@ public class DataController : MonoBehaviour
                     rau.PickUpCharacter();
 
                     // 해당되는 모든 캐릭터 이동
-                    for (int k = 0; k < maps[i].positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true).Count; k++)
+                    for (int k = 0; k < storymaps[i].positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true).Count; k++)
                     {
-                        MapData.CharacterPositionSet temp = maps[i].positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true)[k];
+                        MapData.CharacterPositionSet temp = storymaps[i].positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true)[k];
                         if (temp.who == MapData.Character.Speat) speat.transform.position = temp.startPosition.position;
                         if (temp.who == MapData.Character.Oun) oun.transform.position = temp.startPosition.position;
                         if (temp.who == MapData.Character.Rau) rau.transform.position = temp.startPosition.position;
                     }
 
                     // 해당되는 캐릭터 선택
-                    speat.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Speat);
-                    oun.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Oun);
-                    rau.isSelected = maps[i].positionSets.Exists(item => item.who == MapData.Character.Rau);
-                    currentMap = maps[i];
+                    speat.isSelected = storymaps[i].positionSets.Exists(item => item.who == MapData.Character.Speat);
+                    oun.isSelected = storymaps[i].positionSets.Exists(item => item.who == MapData.Character.Oun);
+                    rau.isSelected = storymaps[i].positionSets.Exists(item => item.who == MapData.Character.Rau);
+                    currentMap = storymaps[i];
 
                     //카메라 위치와 회전
                     camDis = currentMap.camDis;

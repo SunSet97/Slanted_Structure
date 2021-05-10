@@ -140,7 +140,7 @@ public class MapData : MonoBehaviour
         // UI의 이름을 맵 이름으로 변경
         if (ui != null) ui.name = map.name;
 
-        // 맵의 위치 지정
+        /* 맵의 위치 지정
         if (mapCode.Length == 6)
         {
             int tempEpisode, tempStory, tempSeqence = 0;
@@ -148,7 +148,7 @@ public class MapData : MonoBehaviour
             tempStory = int.Parse(mapCode) / 100 - tempEpisode * 100;
             tempSeqence = int.Parse(mapCode) - int.Parse(mapCode) / 100 * 100;
             this.transform.position = new Vector3(tempEpisode, tempStory, tempSeqence) * 500;
-        }
+        }*/
     }
 
     // 게임 플레이 세팅 업데이트
@@ -157,7 +157,13 @@ public class MapData : MonoBehaviour
         // 게임 플레이시 맵 정보들은 현재 맵코드에 따라 변경
         if (isPlaying && map != null)
         {
-            if (mapCode != "000000") map.SetActive(DataController.instance_DataController.mapCode == mapCode); // 맵 On Off
+            if (mapCode != "000000") {
+                //처음 시작할 때
+                int findIndex = Array.IndexOf(DataController.instance_DataController.storymaps, DataController.instance_DataController.currentMap.mapCode);
+                Instantiate(DataController.instance_DataController.storymaps[findIndex],DataController.instance_DataController.mapGenerate);//해당 현재 맵코드를 생성함.
+                map.SetActive(DataController.instance_DataController.mapCode == mapCode); // 맵 On Off
+            }
+            
             if (ui != null) ui.SetActive(map.activeSelf); // UI On Off
             positionSetting.SetActive(map.activeSelf); // 포지션 세팅 On Off
             // 스토리 코드에 맞는 것만 활성화
@@ -178,6 +184,10 @@ public class MapData : MonoBehaviour
                 posIndex++; // 맵 방문 횟수 증가
                 DataController.instance_DataController.isMapChanged = true; // 맵 클리어 감지
                 DataController.instance_DataController.mapCode = string.Format("{0:000000}", nextMapcode); // 맵 코드 변경
+                Destroy(DataController.instance_DataController.currentMap.gameObject);//현재 맵코드 오브젝트 삭제
+                //다음 맵으로 넘어갈 때 nextcode로
+                int findNextIndex = Array.IndexOf(DataController.instance_DataController.storymaps, DataController.instance_DataController.currentMap.nextMapcode);
+                Instantiate(DataController.instance_DataController.storymaps[findNextIndex], DataController.instance_DataController.mapGenerate);
                 foreach (CharacterPositionSet Item in positionSets) Item.clearBox.GetComponent<CheckMapClear>().isClear = false; // 맵 클리어 트리거 초기화
             }
 
