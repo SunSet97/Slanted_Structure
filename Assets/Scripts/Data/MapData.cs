@@ -34,7 +34,6 @@ public class MapData : MonoBehaviour
     [SerializeField]
     private string scriptDesription = "맵 자동 생성 및 맵 정보 포함 스크립트이며\n인스펙터 창에서 각각의 이름에 마우스를 갖다대면 설명을 볼 수 있습니다.\n(Edit mode에서도 바로 사용 가능)";
     #endregion
-
     #region 맵 설정
     [Header("#Map Setting")]
     [Tooltip("맵의 코드이며 변경시 오브젝트의 이름도 같이 변경 됩니다.(코드는 반드시 6자리)")]
@@ -157,12 +156,23 @@ public class MapData : MonoBehaviour
         // 게임 플레이시 맵 정보들은 현재 맵코드에 따라 변경
         if (isPlaying && map != null)
         {
-            if (mapCode != "000000") {
-                //처음 시작할 때
-                int findIndex = Array.IndexOf(DataController.instance_DataController.storymaps, DataController.instance_DataController.currentMap.mapCode);
-                Instantiate(DataController.instance_DataController.storymaps[findIndex],DataController.instance_DataController.mapGenerate);//해당 현재 맵코드를 생성함.
-                map.SetActive(DataController.instance_DataController.mapCode == mapCode); // 맵 On Off
-            }
+            //if (!mapCode.Equals("000000")&& !debugging) {
+            //    //처음 시작할 때
+            //    foreach(MapData temp in DataController.instance_DataController.storymaps)
+            //    {
+            //        if (temp.name.Equals(DataController.instance_DataController.currentMap.nextMapcode))
+            //        {
+            //            Instantiate(temp, DataController.instance_DataController.mapGenerate);
+            //            Debug.Log("1");
+            //            Debug.Log(debugging);
+            //            break;
+            //        }
+            //    }
+            //    //int findIndex = ArrayUtility.IndexOf(DataController.instance_DataController.storymaps, DataController.instance_DataController.currentMap.mapCode);
+            //    //Debug.Log(findIndex);
+            //    //Instantiate(DataController.instance_DataController.storymaps[findIndex],DataController.instance_DataController.mapGenerate);//해당 현재 맵코드를 생성함.
+            //    map.SetActive(DataController.instance_DataController.mapCode == mapCode); // 맵 On Off
+            //}
             
             if (ui != null) ui.SetActive(map.activeSelf); // UI On Off
             positionSetting.SetActive(map.activeSelf); // 포지션 세팅 On Off
@@ -184,11 +194,24 @@ public class MapData : MonoBehaviour
                 posIndex++; // 맵 방문 횟수 증가
                 DataController.instance_DataController.isMapChanged = true; // 맵 클리어 감지
                 DataController.instance_DataController.mapCode = string.Format("{0:000000}", nextMapcode); // 맵 코드 변경
+
                 Destroy(DataController.instance_DataController.currentMap.gameObject);//현재 맵코드 오브젝트 삭제
                 //다음 맵으로 넘어갈 때 nextcode로
-                int findNextIndex = Array.IndexOf(DataController.instance_DataController.storymaps, DataController.instance_DataController.currentMap.nextMapcode);
-                Instantiate(DataController.instance_DataController.storymaps[findNextIndex], DataController.instance_DataController.mapGenerate);
+                //int findNextIndex = Array.IndexOf(DataController.instance_DataController.storymaps, DataController.instance_DataController.currentMap.nextMapcode);
+                //Instantiate(DataController.instance_DataController.storymaps[findNextIndex], DataController.instance_DataController.mapGenerate);
+                foreach (MapData temp in DataController.instance_DataController.storymaps)
+                {
+                    if (temp.name.Equals(DataController.instance_DataController.currentMap.nextMapcode))
+                    {
+                        //MapData temp1 = Instantiate(temp, DataController.instance_DataController.mapGenerate);
+                        //temp1.positionSets = DataController.instance_DataController.currentMap.positionSets;
+
+                        DataController.instance_DataController.currentMap = Instantiate(temp, DataController.instance_DataController.mapGenerate);
+                        break;
+                    }
+                }
                 foreach (CharacterPositionSet Item in positionSets) Item.clearBox.GetComponent<CheckMapClear>().isClear = false; // 맵 클리어 트리거 초기화
+                isMapClear = false;
             }
 
         }
@@ -319,6 +342,23 @@ public class MapData : MonoBehaviour
     {
         cam = Camera.main; 
         CreateDefaultSetting();
+
+        if (!mapCode.Equals("000000") && DataController.instance_DataController.currentMap == null)
+        {
+            //처음 시작할 때
+            foreach (MapData temp in DataController.instance_DataController.storymaps)
+            {
+                if (temp.name.Equals(DataController.instance_DataController.currentMap.nextMapcode))
+                {
+                    Instantiate(temp, DataController.instance_DataController.mapGenerate);
+                    break;
+                }
+            }
+            //int findIndex = ArrayUtility.IndexOf(DataController.instance_DataController.storymaps, DataController.instance_DataController.currentMap.mapCode);
+            //Debug.Log(findIndex);
+            //Instantiate(DataController.instance_DataController.storymaps[findIndex],DataController.instance_DataController.mapGenerate);//해당 현재 맵코드를 생성함.
+            map.SetActive(DataController.instance_DataController.mapCode == mapCode); // 맵 On Off
+        }
     }
 
     void Update()
