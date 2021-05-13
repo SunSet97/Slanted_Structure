@@ -79,7 +79,15 @@ public class DataController : MonoBehaviour
         ExistsData();
         LoadData("TutorialCommandData", "RauTutorial");
         //맵 찾기
-        FindMap();
+        //FindMap();
+
+        for (int i = 0; i < 5; i++)
+        {
+            MapData[] temp = Resources.LoadAll<MapData>("StoryMap/ep" + i);
+            storymaps = storymaps.Concat(temp).ToArray();
+            //Mapdata형식의 배열 storymaps에 Resources 넣어버림
+            Debug.Log(storymaps.Length);
+        }
     }
 
     void Update()
@@ -90,7 +98,7 @@ public class DataController : MonoBehaviour
         if (!cam) cam = Camera.main;
         //캐릭터 찾기
         FindCharacter();
-        
+        FindMap();
 
     }
 
@@ -108,105 +116,85 @@ public class DataController : MonoBehaviour
     //맵 코드에 맞는 맵을 찾아서 정보 저장
     void FindMap()
     {
-        for (int i = 0; i < 5; i++) 
-        {
-            MapData[] temp= Resources.LoadAll<MapData>("StoryMap/ep" + i);
-            storymaps = storymaps.Concat(temp).ToArray();
-           //Mapdata형식의 배열 storymaps에 Resources 넣어버림
-            Debug.Log(storymaps.Length);
-        }   
-        
-        /*
-        // 인게임/시네마틱 씬에서 맵 데이터 리스트 찾기 및 정렬
-        if (SceneManager.GetActiveScene().name == "Ingame_set"|| SceneManager.GetActiveScene().name == "Cinematic")
-        {
-            if (GameObject.FindObjectsOfType<MapData>().Length != maps.Count)
-            {
-                // 맵 데이터 찾기
-                for (int i = 0; i < GameObject.FindObjectsOfType<MapData>().Length; i++)
-                    maps.Add(GameObject.FindObjectsOfType<MapData>()[i]);
-                // 맵 데이터를 다 찾으면 맵 코드 순서로 정렬
-                if (GameObject.FindObjectsOfType<MapData>().Length == maps.Count)
-                    maps.Sort(delegate (MapData A, MapData B) { if (int.Parse(A.mapCode) > int.Parse(B.mapCode)) return 1; else return -1; });
-            }
-        }*/
 
-        // 맵을 찾은 경우에만 실행
-        if (storymaps.Length > 0)
+        // 첫번째 맵인 000000을 제외하고 반복
+        for (int i = 0; i < storymaps.Length; i++)
         {
-            // 첫번째 맵인 000000을 제외하고 반복
-            for (int i = 0; i < storymaps.Length; i++)
+            //currentMap
+            if (isMapChanged)
             {
-                if (storymaps[i].mapCode == mapCode && isMapChanged)
+                // 이동 가능한 상태로 변경
+                speat.PickUpCharacter();
+                oun.PickUpCharacter();
+                rau.PickUpCharacter();
+
+                // 해당되는 모든 캐릭터 이동
+                for (int k = 0; k < currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true).Count; k++)
                 {
-                    // 이동 가능한 상태로 변경
-                    speat.PickUpCharacter();
-                    oun.PickUpCharacter();
-                    rau.PickUpCharacter();
-
-                    // 해당되는 모든 캐릭터 이동
-                    for (int k = 0; k < storymaps[i].positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true).Count; k++)
-                    {
-                        MapData.CharacterPositionSet temp = storymaps[i].positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true)[k];
-                        if (temp.who == MapData.Character.Speat) speat.transform.position = temp.startPosition.position;
-                        if (temp.who == MapData.Character.Oun) oun.transform.position = temp.startPosition.position;
-                        if (temp.who == MapData.Character.Rau) rau.transform.position = temp.startPosition.position;
-                    }
-
-                    // 해당되는 캐릭터 선택
-                    speat.isSelected = storymaps[i].positionSets.Exists(item => item.who == MapData.Character.Speat);
-                    oun.isSelected = storymaps[i].positionSets.Exists(item => item.who == MapData.Character.Oun);
-                    rau.isSelected = storymaps[i].positionSets.Exists(item => item.who == MapData.Character.Rau);
-                    currentMap = storymaps[i];
-
-                    //카메라 위치와 회전
-                    camDis = currentMap.camDis;
-                    rot = currentMap.camRot;
-                    if (currentChar != null)
-                        cam.transform.position = currentChar.transform.position + camDis;
-                    cam.transform.rotation = Quaternion.Euler(rot);
-
-                    // CameraMoving 컨트롤
-                    bool checkCameraMoving = cam.GetComponent<Camera_Moving>().enabled;
-                    if (currentMap.isCameraMoving && !checkCameraMoving) StartCoroutine(SetCameraMovingState(currentMap.isCameraMoving));
-                    else if (!currentMap.isCameraMoving && checkCameraMoving) StartCoroutine(SetCameraMovingState(currentMap.isCameraMoving));
-
-                    //스카이박스 세팅
-                    RenderSettings.skybox = currentMap.SkyboxSetting;
-                    DynamicGI.UpdateEnvironment();
-                    //현재 맵에서 카메라 세팅
-
-                    //카메라 orthographic 컨트롤
-                    cam.orthographic = currentMap.isOrthographic;
-                    if (currentMap.isOrthographic)
-                    {
-                        cam.orthographicSize = currentMap.orthographicSize;
-                    }
-                    
-                    
-                    FindProgressCollider();
-
-                    isMapChanged = false;
-
-
-                    // 조작 가능한 상태로 변경 (중력 적용)
-                    speat.UseJoystickCharacter();
-                    oun.UseJoystickCharacter();
-                    rau.UseJoystickCharacter();
-
-
-                    // 나중에 주석 풀 코드
-                    // 추후에 튜토리얼 맵 이름 확정되면 사용될 함수 (튜토리얼 지시문 데이터 불러오기)
-                    //if (mapCode == "라우 튜토리얼 맵코드" || mapCode == "스핏튜토리얼 맵코드")
-                    //    FindTutorialCommand();
-
-                    // 디버깅용으로 일단 무조건 라우 튜토리얼 데이터 불러주기 (Start에서)
+                    MapData.CharacterPositionSet temp = storymaps[i].positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true)[k];
+                    if (temp.who == MapData.Character.Speat) speat.transform.position = temp.startPosition.position;
+                    if (temp.who == MapData.Character.Oun) oun.transform.position = temp.startPosition.position;
+                    if (temp.who == MapData.Character.Rau) rau.transform.position = temp.startPosition.position;
                 }
+
+                // 해당되는 캐릭터 선택
+                speat.isSelected = storymaps[i].positionSets.Exists(item => item.who == MapData.Character.Speat);
+                oun.isSelected = storymaps[i].positionSets.Exists(item => item.who == MapData.Character.Oun);
+                rau.isSelected = storymaps[i].positionSets.Exists(item => item.who == MapData.Character.Rau);
+                currentMap = storymaps[i];
+
+                //카메라 위치와 회전
+                camDis = currentMap.camDis;
+                rot = currentMap.camRot;
+                if (currentChar != null)
+                {
+                    Debug.Log(camDis);
+                    //Debug.Log();
+                    cam.transform.position = currentChar.transform.position + camDis;
+                }
+                cam.transform.rotation = Quaternion.Euler(rot);
+
+                // CameraMoving 컨트롤
+                bool checkCameraMoving = cam.GetComponent<Camera_Moving>().enabled;
+                if (currentMap.isCameraMoving && !checkCameraMoving) StartCoroutine(SetCameraMovingState(currentMap.isCameraMoving));
+                else if (!currentMap.isCameraMoving && checkCameraMoving) StartCoroutine(SetCameraMovingState(currentMap.isCameraMoving));
+
+                //스카이박스 세팅
+                RenderSettings.skybox = currentMap.SkyboxSetting;
+                DynamicGI.UpdateEnvironment();
+                //현재 맵에서 카메라 세팅
+
+                //카메라 orthographic 컨트롤
+                cam.orthographic = currentMap.isOrthographic;
+                if (currentMap.isOrthographic)
+                {
+                    cam.orthographicSize = currentMap.orthographicSize;
+                }
+
+
+                FindProgressCollider();
+
+                isMapChanged = false;
+
+
+                // 조작 가능한 상태로 변경 (중력 적용)
+                speat.UseJoystickCharacter();
+                oun.UseJoystickCharacter();
+                rau.UseJoystickCharacter();
+
+
+                // 나중에 주석 풀 코드
+                // 추후에 튜토리얼 맵 이름 확정되면 사용될 함수 (튜토리얼 지시문 데이터 불러오기)
+                //if (mapCode == "라우 튜토리얼 맵코드" || mapCode == "스핏튜토리얼 맵코드")
+                //    FindTutorialCommand();
+
+                // 디버깅용으로 일단 무조건 라우 튜토리얼 데이터 불러주기 (Start에서)
             }
-            //언제불리는지 확인
-            //playMethod = currentMap.GetComponent<MapData>().playMethod; //플레이 방식 설정
         }
+        //언제불리는지 확인
+        //playMethod = currentMap.GetComponent<MapData>().playMethod; //플레이 방식 설정
     }
+    
 
     // 게임 진행에 필요한 콜라이더와 이미지를 획득
     void FindProgressCollider()

@@ -75,7 +75,9 @@ public class Camera_Moving : MonoBehaviour
         }
         else
         {
-            Camera.main.transform.position = position;
+            Debug.Log(position);
+            Debug.Log(DataController.instance_DataController.camDis);
+            Camera.main.transform.position = position + DataController.instance_DataController.camDis;
         }
 
         //입력 된 카메라 각도 설정

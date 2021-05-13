@@ -343,22 +343,36 @@ public class MapData : MonoBehaviour
         cam = Camera.main; 
         CreateDefaultSetting();
 
-        if (!mapCode.Equals("000000") && DataController.instance_DataController.currentMap == null)
+
+        if(!DataController.instance_DataController.mapCode.Equals(mapCode))
         {
-            //처음 시작할 때
             foreach (MapData temp in DataController.instance_DataController.storymaps)
             {
-                if (temp.name.Equals(DataController.instance_DataController.currentMap.nextMapcode))
+                if (temp.name.Equals(DataController.instance_DataController.mapCode))
                 {
-                    Instantiate(temp, DataController.instance_DataController.mapGenerate);
+                    DataController.instance_DataController.currentMap = Instantiate(temp, DataController.instance_DataController.mapGenerate);
                     break;
                 }
             }
-            //int findIndex = ArrayUtility.IndexOf(DataController.instance_DataController.storymaps, DataController.instance_DataController.currentMap.mapCode);
-            //Debug.Log(findIndex);
-            //Instantiate(DataController.instance_DataController.storymaps[findIndex],DataController.instance_DataController.mapGenerate);//해당 현재 맵코드를 생성함.
-            map.SetActive(DataController.instance_DataController.mapCode == mapCode); // 맵 On Off
         }
+
+
+        //if (!mapCode.Equals("000000") && DataController.instance_DataController.currentMap == null)
+        //{
+        //    //처음 시작할 때
+        //    //foreach (MapData temp in DataController.instance_DataController.storymaps)
+        //    //{
+        //    //    if (temp.name.Equals(DataController.instance_DataController.currentMap.nextMapcode))
+        //    //    {
+        //    //        Instantiate(temp, DataController.instance_DataController.mapGenerate);
+        //    //        break;
+        //    //    }
+        //    //}
+        //    //int findIndex = ArrayUtility.IndexOf(DataController.instance_DataController.storymaps, DataController.instance_DataController.currentMap.mapCode);
+        //    //Debug.Log(findIndex);
+        //    //Instantiate(DataController.instance_DataController.storymaps[findIndex],DataController.instance_DataController.mapGenerate);//해당 현재 맵코드를 생성함.
+        //    //map.SetActive(DataController.instance_DataController.mapCode == mapCode); // 맵 On Off
+        //}
     }
 
     void Update()
