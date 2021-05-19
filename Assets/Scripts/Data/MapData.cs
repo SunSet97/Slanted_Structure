@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using Naninovel;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
@@ -342,39 +341,30 @@ public class MapData : MonoBehaviour
     {
         cam = Camera.main; 
         CreateDefaultSetting();
+        Invoke("Init", 1f);
+    }
 
-
-        if(!DataController.instance_DataController.mapCode.Equals(mapCode))
+    void Init()
+    {
+        Debug.Log(mapCode);
+        if (!DataController.instance_DataController.mapCode.Equals(mapCode))
         {
             foreach (MapData temp in DataController.instance_DataController.storymaps)
             {
                 if (temp.name.Equals(DataController.instance_DataController.mapCode))
                 {
                     DataController.instance_DataController.currentMap = Instantiate(temp, DataController.instance_DataController.mapGenerate);
+                    gameObject.SetActive(false);
+                    DataController.instance_DataController.isMapChanged = true;
                     break;
                 }
             }
         }
-
-
-        //if (!mapCode.Equals("000000") && DataController.instance_DataController.currentMap == null)
-        //{
-        //    //처음 시작할 때
-        //    //foreach (MapData temp in DataController.instance_DataController.storymaps)
-        //    //{
-        //    //    if (temp.name.Equals(DataController.instance_DataController.currentMap.nextMapcode))
-        //    //    {
-        //    //        Instantiate(temp, DataController.instance_DataController.mapGenerate);
-        //    //        break;
-        //    //    }
-        //    //}
-        //    //int findIndex = ArrayUtility.IndexOf(DataController.instance_DataController.storymaps, DataController.instance_DataController.currentMap.mapCode);
-        //    //Debug.Log(findIndex);
-        //    //Instantiate(DataController.instance_DataController.storymaps[findIndex],DataController.instance_DataController.mapGenerate);//해당 현재 맵코드를 생성함.
-        //    //map.SetActive(DataController.instance_DataController.mapCode == mapCode); // 맵 On Off
-        //}
+        else
+        {
+            //DataController.instance_DataController.currentMap = this; 
+        }
     }
-
     void Update()
     {
         // Edit / Play mode에서 업데이트
