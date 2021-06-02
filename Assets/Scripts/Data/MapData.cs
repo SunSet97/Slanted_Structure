@@ -342,7 +342,7 @@ public class MapData : MonoBehaviour
         {
             cam = Camera.main;
             CreateDefaultSetting();
-            Invoke("Init", 1f);
+            Invoke("Init", 0.1f);
         }
     }
     void Init()
@@ -364,6 +364,10 @@ public class MapData : MonoBehaviour
         else
         {
             DataController.instance_DataController.currentMap = this;
+            if (mapCode.Equals("001010"))
+            {
+                gameObject.transform.GetChild(2).SetParent(CanvasControl.instance_CanvasControl.transform);
+            }
         }
     }
     void Update()

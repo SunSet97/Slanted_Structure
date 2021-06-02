@@ -52,9 +52,9 @@ public class RauTutorialManager : MonoBehaviour
     // 조이스틱 이미지 껐다 끄기
     void OnOffJoystick(bool isOn)
     {
-        foreach (Image image in DataController.instance_DataController.joyStick.GetComponentsInChildren<Image>())
+        foreach (Image image in DataController.instance_DataController.joyStick.GetComponentsInChildren(typeof(Image), true))
         {
-            if (isOn && image.name != "Transparent Dynamic Joystick") image.color = Color.white - Color.black * 0.3f;
+            if (isOn && !image.name.Equals("Transparent Dynamic Joystick")) image.color = Color.white - Color.black * 0.3f;
             else image.color = Color.clear;
         }
     }
@@ -144,6 +144,7 @@ public class RauTutorialManager : MonoBehaviour
     // 물가
     void River()
     {
+        //강으로 넘어갈 때 한번만 실행
         if (!isRiver)
         {
             DataController.instance_DataController.currentChar.UseJoystickCharacter();
