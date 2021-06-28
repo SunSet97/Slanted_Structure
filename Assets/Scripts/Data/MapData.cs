@@ -336,17 +336,17 @@ public class MapData : MonoBehaviour
 
     #endregion
 
+
     void Start()
     {
-        if (Application.isPlaying)
-        {
-            cam = Camera.main;
-            CreateDefaultSetting();
-            Invoke("Init", 1f);
-        }
+        cam = Camera.main; 
+        CreateDefaultSetting();
+        Invoke("Init", 1f);
     }
+
     void Init()
     {
+        Debug.Log(mapCode);
         if (!DataController.instance_DataController.mapCode.Equals(mapCode))
         {
             foreach (MapData temp in DataController.instance_DataController.storymaps)
@@ -354,8 +354,7 @@ public class MapData : MonoBehaviour
                 if (temp.name.Equals(DataController.instance_DataController.mapCode))
                 {
                     DataController.instance_DataController.currentMap = Instantiate(temp, DataController.instance_DataController.mapGenerate);
-                    //gameObject.SetActive(false);
-                    Destroy(gameObject);
+                    gameObject.SetActive(false);
                     DataController.instance_DataController.isMapChanged = true;
                     break;
                 }
@@ -363,7 +362,7 @@ public class MapData : MonoBehaviour
         }
         else
         {
-            DataController.instance_DataController.currentMap = this;
+            //DataController.instance_DataController.currentMap = this; 
         }
     }
     void Update()
