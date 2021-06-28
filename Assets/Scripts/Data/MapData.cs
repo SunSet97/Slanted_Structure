@@ -345,6 +345,7 @@ public class MapData : MonoBehaviour
             Invoke("Init", 0.1f);
         }
     }
+
     void Init()
     {
         if (!DataController.instance_DataController.mapCode.Equals(mapCode))
@@ -366,7 +367,26 @@ public class MapData : MonoBehaviour
             DataController.instance_DataController.currentMap = this;
             if (mapCode.Equals("001010"))
             {
-                gameObject.transform.GetChild(2).SetParent(CanvasControl.instance_CanvasControl.transform);
+                transform.GetChild(2).SetParent(CanvasControl.instance_CanvasControl.transform.Find("Tutorial"));
+            }
+            else if (mapCode.Equals("002010"))
+            {
+                transform.GetChild(2).GetChild(0).gameObject.SetActive(true);
+                transform.GetChild(2).SetParent(CanvasControl.instance_CanvasControl.transform.Find("Tutorial"));
+            }
+            else if (mapCode.Equals("002020"))
+            {
+                if (CanvasControl.instance_CanvasControl.transform.Find("Tutorial").Find("Speat Tutorial Officetel"))
+                {
+                    Destroy(CanvasControl.instance_CanvasControl.transform.Find("Tutorial").Find("Speat Tutorial Officetel").gameObject);
+                }
+                transform.GetChild(2).GetChild(1).gameObject.SetActive(true);
+                transform.GetChild(2).SetParent(CanvasControl.instance_CanvasControl.transform.Find("Tutorial"));
+            }
+            else if (mapCode.Equals("002030"))
+            {
+                if(CanvasControl.instance_CanvasControl.transform.Find("Tutorial").Find("Speat Tutorial backstreet"))
+                Destroy(CanvasControl.instance_CanvasControl.transform.Find("Tutorial").Find("Speat Tutorial backstreet").gameObject);
             }
         }
     }

@@ -21,6 +21,11 @@ public class CheckMapClear : MonoBehaviour
         }
     }
 
+    public void clearForDebug()
+    {
+        isClear = true;
+    }
+
     // 캐릭터 확인 후 트리거 활성화
     private void OnTriggerEnter(Collider other)
     {

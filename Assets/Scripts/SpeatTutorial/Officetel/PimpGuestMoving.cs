@@ -186,11 +186,12 @@ public class PimpGuestMoving : MonoBehaviour
 
     private void CheckSameFloorWithSpeat()
     {
-
-        if (speat.transform.position.y - sameFloorRange <= gameObject.transform.position.y
-            && gameObject.transform.position.y <= speat.transform.position.y + sameFloorRange) onSameFloor = true;
-        else onSameFloor = false;
-
+        if (speat != null)
+        {
+            if (speat.transform.position.y - sameFloorRange <= gameObject.transform.position.y
+                && gameObject.transform.position.y <= speat.transform.position.y + sameFloorRange) onSameFloor = true;
+            else onSameFloor = false;
+        }
     }
 
     IEnumerator SpeedUpFunc()
