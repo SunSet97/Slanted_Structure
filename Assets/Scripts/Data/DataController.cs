@@ -4,7 +4,6 @@ using UnityEngine;
 using System.IO;
 using System;
 using UnityEngine.SceneManagement;
-using System.Linq;
 
 public class DataController : MonoBehaviour
 {
@@ -35,7 +34,7 @@ public class DataController : MonoBehaviour
     public Vector3 rot;
 
     [Header("맵")]
-    //public List<MapData> storymaps;
+    //public List<MapData> maps;
     public MapData[] storymaps;
     public Transform mapGenerate;
     public Transform[] progressColliders;
@@ -78,8 +77,6 @@ public class DataController : MonoBehaviour
     {
         ExistsData();
         LoadData("TutorialCommandData", "RauTutorial");
-        //맵 찾기
-        FindMap();
     }
 
     void Update()
@@ -90,7 +87,8 @@ public class DataController : MonoBehaviour
         if (!cam) cam = Camera.main;
         //캐릭터 찾기
         FindCharacter();
-        
+        //맵 찾기
+        FindMap();
 
     }
 
@@ -110,11 +108,16 @@ public class DataController : MonoBehaviour
     {
         for (int i = 0; i < 5; i++) 
         {
-            MapData[] temp= Resources.LoadAll<MapData>("StoryMap/ep" + i);
-            storymaps = storymaps.Concat(temp).ToArray();
-           //Mapdata형식의 배열 storymaps에 Resources 넣어버림
-            Debug.Log(storymaps.Length);
-        }   
+            storymaps = (MapData[])Resources.LoadAll("Storymaps/ep" + i,typeof(GameObject));//Mapdata형식의 배열 storymaps에 Resources 넣어버림
+          // maps.Add(Resources.Load("Storymaps/ep" + i, typeof(GameObject)) as MapData);
+        }
+        if (storymaps != null)
+        {
+            for (int i = 0; i< storymaps.Length-1; i++) 
+            {
+                Array.Sort(storymaps,delegate (MapData A, MapData B) { if (int.Parse(A.mapCode) > int.Parse(B.mapCode)) return 1; else return -1; });//혹시 몰라서 맵프리팹들 코드 순으로 정렬하기.
+            }
+        }
         
         /*
         // 인게임/시네마틱 씬에서 맵 데이터 리스트 찾기 및 정렬
@@ -135,7 +138,7 @@ public class DataController : MonoBehaviour
         if (storymaps.Length > 0)
         {
             // 첫번째 맵인 000000을 제외하고 반복
-            for (int i = 0; i < storymaps.Length; i++)
+            for (int i = 1; i < storymaps.Length; i++)
             {
                 if (storymaps[i].mapCode == mapCode && isMapChanged)
                 {
