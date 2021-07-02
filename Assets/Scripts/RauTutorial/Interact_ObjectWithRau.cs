@@ -94,7 +94,8 @@ public class Interact_ObjectWithRau : MonoBehaviour
                         isInteracting = true;
                         outline.enabled = false; // 아웃라인 끄기
                         StartCoroutine(ChangeIsInteractingToFalse(5));
-                        if(mark != null) if (!mark) mark.gameObject.SetActive(false); // 마크 끄기
+                        if (mark != null)
+                            if (mark) mark.gameObject.SetActive(false); // 마크 끄기
                     }
                     if (isTouched && hit.collider.transform.parent.name == "NPCManager" && CanvasControl.instance_CanvasControl.isPossibleCnvs)
                     {

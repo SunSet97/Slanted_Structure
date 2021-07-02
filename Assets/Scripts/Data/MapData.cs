@@ -371,6 +371,10 @@ public class MapData : MonoBehaviour
             }
             else if (mapCode.Equals("002010"))
             {
+                if (CanvasControl.instance_CanvasControl.transform.Find("Tutorial").Find("Rau Tutorial"))
+                {
+                    Destroy(CanvasControl.instance_CanvasControl.transform.Find("Tutorial").Find("Rau Tutorial").gameObject);
+                }
                 transform.GetChild(2).GetChild(0).gameObject.SetActive(true);
                 transform.GetChild(2).SetParent(CanvasControl.instance_CanvasControl.transform.Find("Tutorial"));
             }

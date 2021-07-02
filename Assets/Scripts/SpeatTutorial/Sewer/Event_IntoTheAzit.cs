@@ -13,7 +13,7 @@ public class Event_IntoTheAzit : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name == DataController.instance_DataController.currentChar.name)
+        if (other.name.Equals(DataController.instance_DataController.currentChar.name))
         {
             other.GetComponent<CharacterManager>().PickUpCharacter();
             if (!isCoroot)

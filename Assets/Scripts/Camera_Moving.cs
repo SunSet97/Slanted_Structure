@@ -75,8 +75,6 @@ public class Camera_Moving : MonoBehaviour
         }
         else
         {
-            Debug.Log(position);
-            Debug.Log(DataController.instance_DataController.camDis);
             Camera.main.transform.position = position + DataController.instance_DataController.camDis;
         }
 
