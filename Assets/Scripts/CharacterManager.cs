@@ -13,7 +13,9 @@ public class CharacterManager : MonoBehaviour
     private Texture[] faceExpression;//표정 메터리얼
 
     private Camera cam; // 카메라
-
+    [Tooltip("캐릭터 Pos을 넣으시오.")]
+    public Transform waitTransform;
+    
     void Start()
     {
         ctrl = this.GetComponent<CharacterController>();
@@ -59,6 +61,12 @@ public class CharacterManager : MonoBehaviour
     public void UseJoystickCharacter()
     {
         Invoke("PutDownCharacter", 0.2f);
+    }
+    // 캐릭터 위치 초기화 (대기실로 이동)
+    public void WaitInRoom()
+    {
+        transform.position = waitTransform.position;
+        transform.rotation = waitTransform.rotation;
     }
     #endregion
 
