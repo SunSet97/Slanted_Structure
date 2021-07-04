@@ -118,17 +118,17 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
                     {
                         //int index = speatDistance > 66 ? 0 : speatDistance > 33 ? 1 : 2;
                         int index = clearCount < 5 ? 0 : clearCount < 10 ? 1 : 2;
+                        //int index = 0;
                         clearCount++;
 
                         trailer[i].GetChild(0).gameObject.SetActive(false);
-                        trailer[i].GetChild(0).SetParent(patternFolder[index]);
+                        trailer[i].GetChild(0).SetParent(patternFolder[index], false);
 
                         if (speatSlider.value < speatSlider.maxValue * 0.8f)
                         {
-                            GameObject pattern = null;
                             if (index > 0)
                                 index -= Random.Range(0, 2);
-                            pattern = GetPattern(index, "Pattern" + (index + 1) + "_" + Random.Range(1, patternIndex[index] + 1));
+                            GameObject pattern = GetPattern(index, "Pattern" + (index + 1) + "_" + Random.Range(1, patternIndex[index] + 1));
                             Vector3 temp = pattern.transform.position;
                             pattern.SetActive(true);
                             pattern.transform.SetParent(trailer[i]);
