@@ -184,7 +184,7 @@ public class MapData : MonoBehaviour
                     Item.posSet.gameObject.SetActive(false);
             }
 
-            JoystickInputSetting(DataController.instance_DataController.mapCode.Equals(mapCode)); // 조이스틱 설정 적용
+            JoystickInputSetting(DataController.instance_DataController.mapCode == mapCode); // 조이스틱 설정 적용
 
             isMapClear = positionSets.Exists(item => item.clearBox.GetComponent<CheckMapClear>().isClear); // 클리어 판정인게 하나라도 있으면 맵 클리어 처리
             // 다음맵으로 넘어가도록 맵 코드 변경
@@ -267,16 +267,16 @@ public class MapData : MonoBehaviour
         CharacterPositionSet temp = new CharacterPositionSet();
         Transform instant = new GameObject().transform;
         // 포지션 세팅 오브젝트 설정
-        temp.posSet = Instantiate(instant, positionSetting.transform.position, Quaternion.identity, positionSetting.transform);
+        temp.posSet = Instantiate(instant, positionSetting.transform.position, Quaternion.identity, positionSetting.transform) as Transform;
         // 인덱스 설정
         temp.index = positionSets.Count;
         // 캐릭터 설정
         temp.who = createWho;
         // 시작 위치 설정
-        temp.startPosition = Instantiate(instant, positionSetting.transform.position, Quaternion.identity, temp.posSet);
+        temp.startPosition = Instantiate(instant, positionSetting.transform.position, Quaternion.identity, temp.posSet) as Transform;
         temp.startPosition.name = createWho.ToString() + " Start Position";
         // 클리어 박스 설정
-        temp.clearBox = Instantiate(instant, positionSetting.transform.position, Quaternion.identity, temp.posSet);
+        temp.clearBox = Instantiate(instant, positionSetting.transform.position, Quaternion.identity, temp.posSet) as Transform;
         temp.clearBox.name = createWho.ToString() + " Clear Box";
         temp.clearBox.gameObject.AddComponent<BoxCollider>();
         temp.clearBox.GetComponent<BoxCollider>().isTrigger = true;

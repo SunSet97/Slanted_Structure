@@ -45,7 +45,6 @@ public class DataController : MonoBehaviour
     public string mapCode;
     public int mapIndex;//맵 방문횟수>>인게임과 시네마틱 연결하는 스크립트 생성 이후, mapIndex에 관해서 맵데이터와 데이터 컨트롤러 연결해야함.
     public string playMethod; //2D 플랫포머(2D Platformer)=Plt, 쿼터뷰(Quarter view)=Qrt, 라인트레이서(Line tracer)=Line
-    public bool isMapChanged = false;
 
     // 카메라 projecton orthographic에서 perspective로 전환될 때 필요
     float originOrthoSize;
@@ -109,9 +108,11 @@ public class DataController : MonoBehaviour
     {
         SceneManager.LoadScene("Ingame_set");
     }
+    public bool isMapChanged = false;
     //맵이 바뀔 때 초기화
     void InitialMap()
     {
+        //Debug.Log(isMapChanged);
         if (isMapChanged)
         {
             speat.PickUpCharacter();
@@ -124,8 +125,9 @@ public class DataController : MonoBehaviour
             oun.isSelected = false;
             rau.isSelected = false;
 
+            int index = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true).Count;
             List<MapData.CharacterPositionSet> temp = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true);
-            for (int k = 0; k < temp.Count; k++)
+            for (int k = 0; k < index; k++)
             {
                 if (temp[k].who == MapData.Character.Speat)
                 {
@@ -206,7 +208,7 @@ public class DataController : MonoBehaviour
 
     void FindTutorialCommand()
     {
-        if (currentChar.name.Equals("Rau"))
+        if (currentChar.name == "Rau")
             LoadData("TutorialCommandData", "RauTutorial");
         else
             LoadData("TutorialCommandData", "SpeatTutorial");

@@ -11,9 +11,9 @@ public class CheckMapClear : MonoBehaviour
 
     private void Update()
     {
-        if (gameObject.TryGetComponent(out InteractionObj_stroke temp))
+        if (this.gameObject.GetComponent<InteractionObj_stroke>() != null)
         {
-            if (temp.isTouched == true && !nextSelectMapcode.Equals("000000")) //이 오브젝트의 터치를 인식했으면 클리어 여부 체크
+            if (this.gameObject.GetComponent<InteractionObj_stroke>().isTouched == true&& nextSelectMapcode != "000000") //이 오브젝트의 터치를 인식했으면 클리어 여부 체크
             {
                 DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
                 isClear = true;
