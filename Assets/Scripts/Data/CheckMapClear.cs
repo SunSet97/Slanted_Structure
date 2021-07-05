@@ -30,18 +30,30 @@ public class CheckMapClear : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (who)
-            if (other.GetComponent<CharacterManager>() == who) isClear = true;
+            if (other.GetComponent<CharacterManager>() == who)
+            {
+                if (!nextSelectMapcode.Equals("000000")) DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
+                isClear = true;
+            }
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (who)
-            if (other.GetComponent<CharacterManager>() == who) isClear = true;
+            if (other.GetComponent<CharacterManager>() == who)
+            {
+                isClear = true;
+                if (!nextSelectMapcode.Equals("000000")) DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
+            }
     }
     
     private void OnTriggerExit(Collider other)
     {
         if (who)
-            if (other.GetComponent<CharacterManager>() == who) isClear = false;
+            if (other.GetComponent<CharacterManager>() == who)
+            {
+                if (!nextSelectMapcode.Equals("000000")) DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
+                isClear = false;
+            }
     }
 }
