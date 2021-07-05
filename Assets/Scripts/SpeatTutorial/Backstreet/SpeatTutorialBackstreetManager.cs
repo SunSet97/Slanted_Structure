@@ -116,7 +116,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
                     // 제거 및 생성
                     if (trailer[0].position.x - trailer[i].position.x >= 18f * 2)
                     {
-                        //int index = speatDistance > 66 ? 0 : speatDistance > 33 ? 1 : 2;
+                        //int index = speatDistance > 66 ? 0 : speatDistance > 33 ? 1 : 2;>>나중에 적당한 카운터 수 찾게 되면 이걸로 바꾸기
                         int index = clearCount < 5 ? 0 : clearCount < 10 ? 1 : 2;
                         //int index = 0;
                         clearCount++;
