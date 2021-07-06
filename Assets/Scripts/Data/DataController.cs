@@ -132,15 +132,18 @@ public class DataController : MonoBehaviour
                 if (temp[k].who == MapData.Character.Speat)
                 {
                     speat.transform.position = temp[k].startPosition.position;
+                    speat.transform.localRotation = temp[k].startPosition.localRotation;
                     speat.isSelected = true;
                 }
                 if (temp[k].who == MapData.Character.Oun)
                 {
                     oun.transform.position = temp[k].startPosition.position;
+                    oun.transform.localRotation = temp[k].startPosition.localRotation;
                     oun.isSelected = true;
                 }
                 if (temp[k].who == MapData.Character.Rau)
                 {
+                    rau.transform.localRotation = temp[k].startPosition.localRotation;
                     rau.transform.position = temp[k].startPosition.position;
                     rau.isSelected = true;
                 }
