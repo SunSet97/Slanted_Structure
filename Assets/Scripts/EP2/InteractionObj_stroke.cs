@@ -89,7 +89,7 @@ public class InteractionObj_stroke : MonoBehaviour
         {
             isTouched = true;
         }
-        else
+        else if (type == typeOfInteraction.interact && this.gameObject.GetComponent<CheckMapClear>() != null)
         {
             isTouched = true;
             Debug.Log("터치터치");

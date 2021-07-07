@@ -149,21 +149,27 @@ public class CharacterManager : MonoBehaviour
             joystickDir = new Vector2(DataController.instance_DataController.inputDirection.x, DataController.instance_DataController.inputDirection.y);
 
             joyRot = Vector2.SignedAngle(joystickDir, characterDir);
-            if (Mathf.Abs(joyRot) > 0) { this.transform.Rotate(Vector3.up, joyRot); } // 임시 회전
-            /* 180도 회전
-            if (Mathf.Abs(joyRot) > 170 && !anim.GetBool("180Turn"))
-                anim.SetBool("180Turn", true);
-            else
-                anim.SetBool("180Turn", false);
-            */
 
-            anim.SetFloat("Direction", joyRot); //X방향
             anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed     ####################################################애니메이션할 때 참고..
-
+            //사이드뷰 일 때
             if (DataController.instance_DataController.currentMap.SideView == true)
+            {
+                Debug.Log("SideView");
                 anim.SetBool("2DSide", true);
+                if (Mathf.Abs(joyRot) > 170) 
+                {
+                    this.transform.Rotate(Vector3.up, 180);
+                }
+            }
+            //쿼터뷰일 때
             else
+            {
                 anim.SetBool("2DSide", false);
+                if (Mathf.Abs(joyRot) > 0) { this.transform.Rotate(Vector3.up, joyRot); } // 임시 회전
+                anim.SetFloat("Direction", joyRot); //X방향
+            }
+           
+                
 
             //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
             if (isSelected && DataController.instance_DataController.inputJump && ctrl.isGrounded)
