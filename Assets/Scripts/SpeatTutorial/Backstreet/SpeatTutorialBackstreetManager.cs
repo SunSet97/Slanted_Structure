@@ -15,8 +15,9 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
     public Transform startPosition;
     public GameObject pimp;
     public Transform[] trailer;
-    private List<GameObject[]> patterns = new List<GameObject[]>();
-    public Transform patternFolder;
+    public Transform[] patternFolder;
+    private List<List<GameObject>> patterns;
+    private int[] patternIndex; //각 패턴의 개수
 
     [Header("#Buttons")]
     public Button jumpBtn;
@@ -24,6 +25,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
 
     [Header("#Running")]
     public bool isRunning = false;
+    private int clearCount;   //넘어간 패턴의 개수
 
     float percentage;
     private float speatDistance;
@@ -35,20 +37,22 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
     }
     IEnumerator initPatterns()
     {
+        patterns = new List<List<GameObject>>();
+        patternIndex = new int[3];
         WaitForSeconds waitForSeconds = new WaitForSeconds(1);
         for (int i = 0; i < 3; i++)
         {
-            //GameObject[] gameObjects = Resources.LoadAll<GameObject>("Run_Pattern/Pattern" + i);
-            //foreach(GameObject temp in gameObjects)
-            //    patterns[i].Add(temp);
-
-            patterns.Add(Resources.LoadAll<GameObject>("Run_Pattern/Pattern" + i));
-
-            //for (int k = 0; k < patterns[i].Length; k++)
-            //{
-            //    patterns[i][k] = Instantiate(patterns[i][k], patternFolder);
-            //    patterns[i][k].SetActive(false);
-            //}
+            List<GameObject> list = new List<GameObject>();
+            GameObject[] gameObjects = Resources.LoadAll<GameObject>("Run_Pattern/Pattern" + i);
+            patternIndex[i] = gameObjects.Length;
+            foreach (GameObject temp in gameObjects)
+            {
+                temp.SetActive(false);
+                list.Add(Instantiate(temp));
+                list[list.Count - 1].transform.SetParent(patternFolder[i]);
+                list[list.Count - 1].name = temp.name;
+            }
+            patterns.Add(list);
             yield return waitForSeconds;
         }
     }
@@ -112,27 +116,29 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
                     // 제거 및 생성
                     if (trailer[0].position.x - trailer[i].position.x >= 18f * 2)
                     {
-                        Destroy(trailer[i].GetChild(0).gameObject); // 현재 장애물 패턴 제거
-                        //trailer[i].GetChild(0).gameObject.SetActive(false);
-                        //trailer[i].GetChild(0).SetParent(patternFolder);
+                        //int index = speatDistance > 66 ? 0 : speatDistance > 33 ? 1 : 2;>>나중에 적당한 카운터 수 찾게 되면 이걸로 바꾸기
+                        int index = clearCount < 5 ? 0 : clearCount < 10 ? 1 : 2;
+                        //int index = 0;
+                        clearCount++;
+
+                        trailer[i].GetChild(0).gameObject.SetActive(false);
+                        trailer[i].GetChild(0).SetParent(patternFolder[index], false);
+
                         if (speatSlider.value < speatSlider.maxValue * 0.8f)
                         {
-                            int index = speatDistance > 66 ? 0 : speatDistance > 33 ? 1 : 2;
-                            Instantiate(patterns[index][Random.Range(0, patterns[index].Length)], trailer[i]).SetActive(true); // 장애물 패턴 랜덤 생성
-
-                            //GameObject pattern = patterns[index][Random.Range(0, patterns[index].Length)];
-
-
-                            //GameObject pattern = GetPattern(index, patterns[index][Random.Range(0, patterns[index].Length)].name);
-                            //pattern.transform.SetParent(trailer[i]);
-                            //pattern.SetActive(true);
+                            if (index > 0)
+                                index -= Random.Range(0, 2);
+                            GameObject pattern = GetPattern(index, "Pattern" + (index + 1) + "_" + Random.Range(1, patternIndex[index] + 1));
+                            Vector3 temp = pattern.transform.position;
+                            pattern.SetActive(true);
+                            pattern.transform.SetParent(trailer[i]);
+                            pattern.transform.localPosition = temp;
                         }
-                        else Instantiate(patterns[0][5], trailer[i]).SetActive(true); // 장애물 없는 길 생성
-                        //else
-                        //{
-                        //    patterns[0][5].SetActive(true);
-                        //    patterns[0][5].transform.SetParent(trailer[i]); // 장애물 없는 길 생성
-                        //}
+                        else
+                        {
+                            patterns[0][5].SetActive(true);
+                            patterns[0][5].transform.SetParent(trailer[i]); // 장애물 없는 길 생성
+                        }
                     }
                 }
             }
@@ -151,16 +157,17 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
         pimpSlider.value = 0;
         isRunning = false;
     }
-    //private GameObject GetPattern(int index, string tag)
-    //{
-    //    GameObject pattern = patterns[index].Find(x => (x.name.Equals(tag) && !x.activeSelf));
-    //    if(!pattern)
-    //    {
-    //        pattern = Instantiate(patterns[index].Find(x => x.name.Equals(tag)));
-    //        patterns[index].Add(pattern);
-    //    }
-    //    return pattern;
-    //}
+    private GameObject GetPattern(int index, string tag)
+    {
+        GameObject pattern = patterns[index].Find(x => (x.name.Equals(tag) && !x.activeSelf));
+        if (!pattern)
+        {
+            pattern = Instantiate(patterns[index].Find(x => x.name.Equals(tag)));
+            pattern.name = tag;
+            patterns[index].Add(pattern);
+        }
+        return pattern;
+    }
     #endregion
 
     #region 액션 버튼
