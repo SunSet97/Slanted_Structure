@@ -91,8 +91,18 @@ public class InteractionObj_stroke : MonoBehaviour
         }
         else
         {
-            isTouched = true;
-            Debug.Log("터치터치");
+            //애니메이션 재생 후 다음 맵으로 넘어가는 등의 인터렉션이 있을 때.
+            if (this.gameObject.GetComponent<Animator>() != null) 
+            {
+                this.gameObject.GetComponent<Animator>().SetBool("Interation", true);
+                if (this.gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Finish"))
+                {
+                    isTouched = true;
+                    Debug.Log("터치터치");
+                }
+            }
+
+           
         }
         
 
