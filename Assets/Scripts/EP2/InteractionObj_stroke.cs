@@ -24,7 +24,8 @@ public class InteractionObj_stroke : MonoBehaviour
         animation,
         dialogue,
         camerasetting,
-        interact
+        interact,
+        continuous
     
     }
 
@@ -62,12 +63,7 @@ public class InteractionObj_stroke : MonoBehaviour
 
     [Header("터치될 오브젝트. 만약 스크립트 적용된 오브젝트가 터치될 오브젝트라면 그냥 None인상태로 두기!")]
     public GameObject touchTargetObject;
-
-    void Start()
-    {
-        
-
-    }
+    
     void interactionResponse() 
     {
         //3가지 1)애니메이션 2)대사 3)카메라 변환(확대라든지) 4)맵포탈
@@ -88,6 +84,22 @@ public class InteractionObj_stroke : MonoBehaviour
         else if (type == typeOfInteraction.portal&& this.gameObject.GetComponent<CheckMapClear>() != null)
         {
             isTouched = true;
+        }
+        //1회성 interaction인 경우 굳이 excel로 할 필요 없이 바로 실행 dialogue도 마찬가지 단순한 잡담이면 typeOfInteraction.dialogue에서 처리
+        else if (type == typeOfInteraction.continuous)
+        {
+            //연속 대화
+            //isTouched = false;
+
+            //if(interaction[].type == dialogue)
+            //대화 활성화 및 끝날때까지 isTouched = false;
+            //interaction[].value로 json파일 불러오기
+            //behavior task에서는 dialogue이름만 있고 그거가지고 불러오기
+
+            //if(interaction[].type == animation)
+            //애니메이션 끝날때까지 istouched = false;
+
+            //interaction[]의 index++
         }
         else
         {
@@ -119,7 +131,7 @@ public class InteractionObj_stroke : MonoBehaviour
         if (!isInteractionObj)
         {
             gameObject.tag = "obj_interaction";
-            if (gameObject.tag == "obj_interaction")
+            if (gameObject.tag.Equals("obj_interaction"))
             {
                 isInteractionObj = true;
 
