@@ -13,9 +13,7 @@ public class CharacterManager : MonoBehaviour
     private Texture[] faceExpression;//표정 메터리얼
 
     private Camera cam; // 카메라
-    [Tooltip("캐릭터 Pos을 넣으시오.")]
-    public Transform waitTransform;
-    
+
     void Start()
     {
         ctrl = this.GetComponent<CharacterController>();
@@ -61,12 +59,6 @@ public class CharacterManager : MonoBehaviour
     public void UseJoystickCharacter()
     {
         Invoke("PutDownCharacter", 0.2f);
-    }
-    // 캐릭터 위치 초기화 (대기실로 이동)
-    public void WaitInRoom()
-    {
-        transform.position = waitTransform.position;
-        transform.rotation = waitTransform.rotation;
     }
     #endregion
 
@@ -149,27 +141,21 @@ public class CharacterManager : MonoBehaviour
             joystickDir = new Vector2(DataController.instance_DataController.inputDirection.x, DataController.instance_DataController.inputDirection.y);
 
             joyRot = Vector2.SignedAngle(joystickDir, characterDir);
-
-            anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed     ####################################################애니메이션할 때 참고..
-            //사이드뷰 일 때
-            if (DataController.instance_DataController.currentMap.SideView == true)
-            {
-                Debug.Log("SideView");
-                anim.SetBool("2DSide", true);
-                if (Mathf.Abs(joyRot) > 170) 
-                {
-                    this.transform.Rotate(Vector3.up, 180);
-                }
-            }
-            //쿼터뷰일 때
+            if (Mathf.Abs(joyRot) > 0) { this.transform.Rotate(Vector3.up, joyRot); } // 임시 회전
+            /* 180도 회전
+            if (Mathf.Abs(joyRot) > 170 && !anim.GetBool("180Turn"))
+                anim.SetBool("180Turn", true);
             else
-            {
+                anim.SetBool("180Turn", false);
+            */
+
+            anim.SetFloat("Direction", joyRot); //X방향
+            anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed     ####################################################애니메이션할 때 참고..
+
+            if (DataController.instance_DataController.currentMap.SideView == true)
+                anim.SetBool("2DSide", true);
+            else
                 anim.SetBool("2DSide", false);
-                if (Mathf.Abs(joyRot) > 0) { this.transform.Rotate(Vector3.up, joyRot); } // 임시 회전
-                anim.SetFloat("Direction", joyRot); //X방향
-            }
-           
-                
 
             //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
             if (isSelected && DataController.instance_DataController.inputJump && ctrl.isGrounded)

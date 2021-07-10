@@ -27,7 +27,7 @@ public class CanvasControl : MonoBehaviour
     public Text speakerWord;
 
     // 대화 관련 변수 
-    private int cnvsCnt = 0; // 대화 카운트 변수
+    private int cnvsCnt = 0; // 대화 카운트 변수 
     public int dialogueCnt = 0; // 대사 카운트 변수
     public int dialogueLen = 0; // 대사의 갯수
     private int choiceLen = 0; // 선택지 갯수
@@ -47,7 +47,6 @@ public class CanvasControl : MonoBehaviour
     public InputField mapcode; //맵코드
     public Toggle[] selectedCharacter; //선택된 캐릭터
     public GameObject selectedGuest;
-    public UISU[] dialogues;    //현재 진행중인 대화
 
     //인스턴스화
     private static CanvasControl instance = null;
@@ -233,7 +232,7 @@ public class CanvasControl : MonoBehaviour
         finishFadeIn = false;
         fadeIn = StartCoroutine(FadeIn());
 
-        if (DataController.instance_DataController.currentChar.name.Equals("Rau"))
+        if (DataController.instance_DataController.currentChar.name == "Rau")
         {
             commandText.text = DataController.instance_DataController.tutorialCmdData.RauTutorial[commandIndex];
         }
@@ -339,11 +338,9 @@ public class CanvasControl : MonoBehaviour
     public void StartConversation()
     {
         print("startConversation()~~~~");
-        //npc.DialogueData.Show()
-        //NPC마다 대화의 번호를 어떻게 넣어줄지
-        Dialogue_Map temp = DataController.instance_DataController.dialogueData.dialogueDic[DataController.instance_DataController.currentMap.mapCode];
-        dialogueLen = temp.dialogue[temp.count].Length;
-        //dialogueLen = DataController.instance_DataController.dialogueData.dialogue[cnvsCnt].dialogueScript.Length;
+        //대화 번호를 바깥에서 어떻게 알지
+        //dialogueLen = DataController.instance_DataController.dialogueData.asd[000000][대화 번호].Length;
+        dialogueLen = DataController.instance_DataController.dialogueData.dialogue[cnvsCnt].dialogueScript.Length;
         dialogueCnt = 0;
         DialoguePanel.SetActive(true);
         UpdateWord();
@@ -351,7 +348,6 @@ public class CanvasControl : MonoBehaviour
 
     public void UpdateWord()
     {
-        //if(dialogueCnt > DataController.instance_DataController.dialogueData.dialogueDic["MapCode"][0].Length)
 
         // 대화가 끝나면 선택지 부를 지 여부결정 
         if (dialogueCnt >= dialogueLen)
@@ -368,7 +364,7 @@ public class CanvasControl : MonoBehaviour
                 {
                     // 대화가 끝났으니 다시 대화 가능하도록 
                     isPossibleCnvs = true;
-                    cnvsCnt = 0;
+                    cnvsCnt = 0; 
                     // 다음 스텝으로 넘어가기 위한 함수 호출
                     if (isGoNextStep == true) GoNextStep();
                 }
@@ -385,15 +381,11 @@ public class CanvasControl : MonoBehaviour
         else
         {
             // 대화가 진행되는 중 텍스트 업데이트
-            //speakerName.text = DataController.instance_DataController.dialogueData.dialogue[cnvsCnt].dialogueScript[dialogueCnt]; // 이야기하는 캐릭터 이름
-            //speakerWord.text = DataController.instance_DataController.dialogueData.dialogue[cnvsCnt].dialogueScript[dialogueCnt + 1]; // 캐릭터의 대사
-            Dialogue_Map temp = DataController.instance_DataController.dialogueData.dialogueDic[DataController.instance_DataController.currentMap.mapCode];
-
-            speakerName.text = temp.dialogue[temp.count][dialogueCnt].name;
-            speakerWord.text = temp.dialogue[temp.count][dialogueCnt].dialogue;
-            //dialogueCnt += 2;
-            dialogueCnt += 1;
+            speakerName.text = DataController.instance_DataController.dialogueData.dialogue[cnvsCnt].dialogueScript[dialogueCnt]; // 이야기하는 캐릭터 이름
+            speakerWord.text = DataController.instance_DataController.dialogueData.dialogue[cnvsCnt].dialogueScript[dialogueCnt + 1]; // 캐릭터의 대사
+            dialogueCnt += 2;
         }
+
     }
 
     // 선택지가 있을 때 선택지 패널 염 

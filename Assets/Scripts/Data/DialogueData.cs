@@ -6,13 +6,11 @@ using System;
 [Serializable]
 public class DialogueData
 {
-    
     //모든 맵의 대화가 들어가는 딕셔너리
-    public Dictionary<string, Dialogue_Map> dialogueDic = new Dictionary<string, Dialogue_Map>();
+    public Dictionary<int, List<UISU[]>> asd = new Dictionary<int, List<UISU[]>>();
 
     //맵안에 들어가는 모든 대화
-    List<UISU[]> temp = new List<UISU[]>();
-    Dialogue_Map dialogue_Map = new Dialogue_Map();
+    List<UISU[]> asdasd = new List<UISU[]>();
     void asdas2d()
     {
         for (int i = 0; i < 10; i++)
@@ -20,14 +18,11 @@ public class DialogueData
             //i로 맵데이터마다 읽기
             //한 대화
             UISU[] uisu;
-            uisu = JsontoString.LoadJsonFromClassName<UISU>("MapCode");
-            temp.Add(uisu);
+            uisu = JsontoString.LoadJsonFromClassName<UISU>("000000");
+            asdasd.Add(uisu);
         }
-        dialogue_Map.dialogue = temp;
-
-        dialogueDic.Add("MapCode", dialogue_Map);
-        for (int i = 0; i < dialogueDic["MapCode"].dialogue[0].Length; i++)
-            dialogueDic["MapCode"].dialogue[0][dialogueDic["MapCode"].count].name = "asd";
+        //for(int i = 0; i < asd[000000][0].Length; i++)
+        //asd[000000][0][i]
     }
 
     // 대사를 담은 배열
@@ -81,15 +76,9 @@ public class Dialogue {
     public string[] dialogueScript;
 }
 
-public class Dialogue_Map
-{
-    public List<UISU[]> dialogue;
-    public int count = 0;
-}
-
 public class UISU {
-    public string name;
-    public string dialogue;
+    string name;
+    int value;
 }
 
 [Serializable]

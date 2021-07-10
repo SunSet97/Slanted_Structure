@@ -13,7 +13,7 @@ public class CheckMapClear : MonoBehaviour
     {
         if (this.gameObject.GetComponent<InteractionObj_stroke>() != null)
         {
-            if (this.gameObject.GetComponent<InteractionObj_stroke>().isTouched == true && nextSelectMapcode != "000000") //이 오브젝트의 터치를 인식했으면 클리어 여부 체크
+            if (this.gameObject.GetComponent<InteractionObj_stroke>().isTouched == true&& nextSelectMapcode != "000000") //이 오브젝트의 터치를 인식했으면 클리어 여부 체크
             {
                 DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
                 isClear = true;
@@ -30,30 +30,18 @@ public class CheckMapClear : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (who)
-            if (other.GetComponent<CharacterManager>() == who)
-            {
-                if (!nextSelectMapcode.Equals("000000")) DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
-                isClear = true;
-            }
+            if (other.GetComponent<CharacterManager>() == who) isClear = true;
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (who)
-            if (other.GetComponent<CharacterManager>() == who)
-            {
-                isClear = true;
-                if (!nextSelectMapcode.Equals("000000")) DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
-            }
+            if (other.GetComponent<CharacterManager>() == who) isClear = true;
     }
     
     private void OnTriggerExit(Collider other)
     {
         if (who)
-            if (other.GetComponent<CharacterManager>() == who)
-            {
-                if (!nextSelectMapcode.Equals("000000")) DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
-                isClear = false;
-            }
+            if (other.GetComponent<CharacterManager>() == who) isClear = false;
     }
 }
