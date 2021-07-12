@@ -120,27 +120,45 @@ public class DataController : MonoBehaviour
             speat.PickUpCharacter();
             oun.PickUpCharacter();
             rau.PickUpCharacter();
-            for (int k = 0; k < currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true).Count; k++)
-            {
-                MapData.CharacterPositionSet temp = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true)[k];
-                if (temp.who == MapData.Character.Speat) speat.transform.position = temp.startPosition.position;
-                if (temp.who == MapData.Character.Oun) oun.transform.position = temp.startPosition.position;
-                if (temp.who == MapData.Character.Rau) rau.transform.position = temp.startPosition.position;
-            }
 
 
             // 해당되는 캐릭터 선택
-            speat.isSelected = currentMap.positionSets.Exists(item => item.who == MapData.Character.Speat);
-            oun.isSelected = currentMap.positionSets.Exists(item => item.who == MapData.Character.Oun);
-            rau.isSelected = currentMap.positionSets.Exists(item => item.who == MapData.Character.Rau);
+            speat.isSelected = false;
+            oun.isSelected = false;
+            rau.isSelected = false;
+
+            int index = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true).Count;
+            List<MapData.CharacterPositionSet> temp = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true);
+            for (int k = 0; k < index; k++)
+            {
+                if (temp[k].who == MapData.Character.Speat)
+                {
+                    speat.transform.position = temp[k].startPosition.position;
+                    speat.transform.localRotation = temp[k].startPosition.localRotation;
+                    speat.isSelected = true;
+                }
+                if (temp[k].who == MapData.Character.Oun)
+                {
+                    oun.transform.position = temp[k].startPosition.position;
+                    oun.transform.localRotation = temp[k].startPosition.localRotation;
+                    oun.isSelected = true;
+                }
+                if (temp[k].who == MapData.Character.Rau)
+                {
+                    rau.transform.localRotation = temp[k].startPosition.localRotation;
+                    rau.transform.position = temp[k].startPosition.position;
+                    rau.isSelected = true;
+                }
+            }
+
+            //현재 캐릭터 위치 대기실로 이동
+            if (currentChar && !currentChar.isSelected) currentChar.WaitInRoom();
 
             //카메라 위치와 회전
             camDis = currentMap.camDis;
             rot = currentMap.camRot;
             if (currentChar != null)
             {
-                Debug.Log(camDis);
-                //Debug.Log();
                 cam.transform.position = currentChar.transform.position + camDis;
             }
             cam.transform.rotation = Quaternion.Euler(rot);

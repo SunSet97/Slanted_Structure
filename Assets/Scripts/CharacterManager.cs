@@ -13,6 +13,8 @@ public class CharacterManager : MonoBehaviour
     private Texture[] faceExpression;//표정 메터리얼
 
     private Camera cam; // 카메라
+    [Tooltip("캐릭터 Pos을 넣으시오.")]
+    public Transform waitTransform;
 
     void Start()
     {
@@ -54,7 +56,11 @@ public class CharacterManager : MonoBehaviour
         isControlled = isSelected;
         anim.applyRootMotion = true;
     }
-
+    public void WaitInRoom()
+    {
+        transform.position = waitTransform.position;
+        transform.rotation = waitTransform.rotation;
+    }
     // 일정 시간 후 캐릭터를 조이스틱으로 움직이게 함
     public void UseJoystickCharacter()
     {
@@ -141,21 +147,26 @@ public class CharacterManager : MonoBehaviour
             joystickDir = new Vector2(DataController.instance_DataController.inputDirection.x, DataController.instance_DataController.inputDirection.y);
 
             joyRot = Vector2.SignedAngle(joystickDir, characterDir);
-            if (Mathf.Abs(joyRot) > 0) { this.transform.Rotate(Vector3.up, joyRot); } // 임시 회전
-            /* 180도 회전
-            if (Mathf.Abs(joyRot) > 170 && !anim.GetBool("180Turn"))
-                anim.SetBool("180Turn", true);
-            else
-                anim.SetBool("180Turn", false);
-            */
-
-            anim.SetFloat("Direction", joyRot); //X방향
-            anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed     ####################################################애니메이션할 때 참고..
-
+            //사이드뷰 일 때
             if (DataController.instance_DataController.currentMap.SideView == true)
+            {
+                Debug.Log("SideView");
                 anim.SetBool("2DSide", true);
+                if (Mathf.Abs(joyRot) > 170)
+                {
+                    this.transform.Rotate(Vector3.up, 180);
+                }
+                anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed 
+            }
+            //쿼터뷰일 때    
             else
+            {
                 anim.SetBool("2DSide", false);
+                if (Mathf.Abs(joyRot) > 0) { this.transform.Rotate(Vector3.up, joyRot); } // 임시 회전
+                anim.SetFloat("Direction", joyRot); //X방향
+                anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed 
+            }
+
 
             //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
             if (isSelected && DataController.instance_DataController.inputJump && ctrl.isGrounded)

@@ -101,7 +101,7 @@ public class InteractionObj_stroke : MonoBehaviour
 
             //interaction[]의 index++
         }
-        else
+        else if(type == typeOfInteraction.interact && this.gameObject.GetComponent<CheckMapClear>() != null)
         {
             //애니메이션 재생 후 다음 맵으로 넘어가는 등의 인터렉션이 있을 때.
             if (this.gameObject.GetComponent<Animator>() != null) 
