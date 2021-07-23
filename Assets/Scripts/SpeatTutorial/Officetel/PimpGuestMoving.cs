@@ -138,7 +138,8 @@ public class PimpGuestMoving : MonoBehaviour
 
                 canvasCtrl.isPossibleCnvs = false;
                 DataController.instance_DataController.LoadData(transform.parent.name, gameObject.name + ".json");
-                CanvasControl.instance_CanvasControl.StartConversation();
+                //수정
+                //CanvasControl.instance_CanvasControl.StartConversation();
 
             }
 

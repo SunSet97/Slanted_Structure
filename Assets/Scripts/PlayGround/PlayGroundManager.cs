@@ -27,7 +27,8 @@ public class PlayGroundManager : MonoBehaviour
 
         // 뭔 터치 인터렉션 전에 하는 대화
         DataController.instance_DataController.LoadData("PlayGround", "playground.json");
-        CanvasControl.instance_CanvasControl.StartConversation();
+        //수정
+        //CanvasControl.instance_CanvasControl.StartConversation();
 
         // 쓰레기 리지드바디
         trash_rigid = trash.GetComponent<Rigidbody>();

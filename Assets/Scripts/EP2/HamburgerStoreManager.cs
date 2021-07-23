@@ -164,7 +164,8 @@ public class HamburgerStoreManager : MonoBehaviour
 
                 canvasControl.isPossibleCnvs = false;
                 DataController.instance_DataController.LoadData(speatPrefab.name, "speat-rau.json");
-                CanvasControl.instance_CanvasControl.StartConversation();
+                //수정
+                //CanvasControl.instance_CanvasControl.StartConversation();
                 print("대화시작!");
 
             }

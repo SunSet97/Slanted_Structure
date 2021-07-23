@@ -17,6 +17,7 @@ public class JsontoString : MonoBehaviour
         NONE, KIMBAB, CHICKEN
     }
 
+
     //Enum도 json으로 가능
     //json 정보에 표정, 캐릭터명(or Enum) 추가
     [System.Serializable]
@@ -27,55 +28,55 @@ public class JsontoString : MonoBehaviour
         public string kind;
         public string contents;
     }
-    
+
+
     //json 데이터 배열로 받기 위해 (문장만 이해함)
     public class Wrapper<T>
     {
         public T[] wrapper;
     }
     
+
+    public static T[] FromJsonArray<T>(string json)
+    {
+        T[] t = default;
+        t = JsonUtility.FromJson<Wrapper<T>>("{\"wrapper\":" + json + "}").wrapper;
+        return t;
+    }
+
     // 추후 폴더 경로, 안드로이드 경로 변경 요망
     // 맨 앞에 'Json'이라고 쓰인 타입만 받아들여 json을 불러온다.
     public static T[] LoadJsonFromClassName<T>(string mapCode)
     {
         T[] t = default;
         string type = typeof(T).Name;
-        Debug.Log(type);
-
         //Json이 있어 4글자 이상인 경우, 앞에 Json이 붙어있을 경우
-        if (type.Length > 4 && type.Substring(0, 4).Equals("Json") == true)
+        try
         {
-            try
+            //안드로이드는 나중에 공부 후
+            if (Application.platform == RuntimePlatform.Android)
             {
-                //안드로이드는 나중에 공부 후
-                if (Application.platform == RuntimePlatform.Android)
-                {
-                    //string jsonPath = Path.Combine(GetDatafolderpath(), type.substring(4));
-                    //www reader = new www(jsonpath);
-                    //while (!reader.isdone) { }
-                    //string jsonstring = encoding.default.getstring(reader.bytes);
-                    //t = jsonutility.fromjson<wrapper<t>>("{\"wrapper\":" + jsonstring + "}").wrapper;
-                }
-                else
-                {
-                    //ex) JsonMessage클래스 -> 폴더경로/000000/NPC/Default/type명  -  class type명과 폴더명 동일하게
-                    //string jsonPath = string.Format("{0}/{1}/NPC/Default/{2}.json", GetDataFolderPath(), "000000", type.Substring(4));
-                    //string jsonPath = string.Format("{0}/{1}/NPC/{2}/{3}.json", GetDataFolderPath(), DataController.instance_DataController.mapCode, type.Substring(4));
-                    string jsonPath = string.Format("{0}/{1}/NPC/{2}/{3}.json", GetDataFolderPath(), "000000", "Default", type.Substring(4));
-                    //NPC 여부 스토리여부
-                    string jsonString = File.ReadAllText(jsonPath);
-                    Debug.Log(jsonString);
-                    t = JsonUtility.FromJson<Wrapper<T>>("{\"wrapper\":" + jsonString + "}").wrapper;
-                }
+                //string jsonPath = Path.Combine(GetDatafolderpath(), type.substring(4));
+                //www reader = new www(jsonpath);
+                //while (!reader.isdone) { }
+                //string jsonstring = encoding.default.getstring(reader.bytes);
+                //t = jsonutility.fromjson<wrapper<t>>("{\"wrapper\":" + jsonstring + "}").wrapper;
             }
-            catch
+            else
             {
-                Debug.LogError("존재하지 않는 json 파일명 : " + type);
+                //ex) JsonMessage클래스 -> 폴더경로/000000/NPC/Default/type명  -  class type명과 폴더명 동일하게
+                //string jsonPath = string.Format("{0}/{1}/NPC/Default/{2}.json", GetDataFolderPath(), "000000", type.Substring(4));
+                //string jsonPath = string.Format("{0}/{1}/NPC/{2}/{3}.json", GetDataFolderPath(), DataController.instance_DataController.mapCode, type.Substring(4));
+                string jsonPath = string.Format("{0}/{1}/NPC/{2}/{3}.json", GetDataFolderPath(), "000000", "Default", type.Substring(4));
+                //NPC 여부 스토리여부
+                string jsonString = File.ReadAllText(jsonPath);
+                Debug.Log(jsonString);
+                t = JsonUtility.FromJson<Wrapper<T>>("{\"wrapper\":" + jsonString + "}").wrapper;
             }
         }
-        else
+        catch
         {
-            Debug.LogWarning("json을 받을 수 없는 타입입니다. : " + type);
+            Debug.LogError("존재하지 않는 json 파일명 : " + type);
         }
 
         return t;

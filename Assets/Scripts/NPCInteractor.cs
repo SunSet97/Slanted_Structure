@@ -73,8 +73,9 @@ public class NPCInteractor : MonoBehaviour
                 DataController.instance_DataController.LoadData(closestNPC.gameObject.name, DataController.instance_DataController.charData.story + "_"
                     + DataController.instance_DataController.charData.storyBranch + "_" + DataController.instance_DataController.charData.storyBranch_scnd + "_"
                     + DataController.instance_DataController.charData.dialogue_index + ".json");
-
-                canvasCtrl.StartConversation();
+                
+                //수정
+                //canvasCtrl.StartConversation();
             }
 
             /* 수정 전

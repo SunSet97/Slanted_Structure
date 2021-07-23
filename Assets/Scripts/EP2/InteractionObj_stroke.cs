@@ -38,6 +38,9 @@ public class InteractionObj_stroke : MonoBehaviour
     [Header("인터렉션 방식")]
     public typeOfInteraction type;
 
+    [Header("Continuous인 경우에만 값을 넣으시오")]
+    public TextAsset jsonFile;
+
     [Header("아웃라인 색 설정")]
     public OutlineColor color;
 
@@ -63,7 +66,19 @@ public class InteractionObj_stroke : MonoBehaviour
 
     [Header("터치될 오브젝트. 만약 스크립트 적용된 오브젝트가 터치될 오브젝트라면 그냥 None인상태로 두기!")]
     public GameObject touchTargetObject;
-    
+
+
+    void Start()
+    {
+        Debug.Log(Application.dataPath);
+        if (jsonFile)
+        {
+            if (type == typeOfInteraction.continuous)
+                DataController.instance_DataController.dialogueData.tasks = JsontoString.FromJsonArray<Task>(jsonFile.text);
+            else if (type == typeOfInteraction.dialogue)
+                DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<RealDialogue>(jsonFile.text);
+        }
+    }
     void interactionResponse() 
     {
         //3가지 1)애니메이션 2)대사 3)카메라 변환(확대라든지) 4)맵포탈
@@ -75,6 +90,10 @@ public class InteractionObj_stroke : MonoBehaviour
         }
         else if (type == typeOfInteraction.dialogue) 
         {
+            if (jsonFile)
+            {
+                CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
+            }
             //대사활성화
         }
         else if (type == typeOfInteraction.camerasetting)
@@ -88,6 +107,95 @@ public class InteractionObj_stroke : MonoBehaviour
         //1회성 interaction인 경우 굳이 excel로 할 필요 없이 바로 실행 dialogue도 마찬가지 단순한 잡담이면 typeOfInteraction.dialogue에서 처리
         else if (type == typeOfInteraction.continuous)
         {
+            int index = DataController.instance_DataController.dialogueData.taskCount;
+            Debug.Log(index);
+            //int index = 0;
+            //while (DataController.instance_DataController.dialogueData.tasks[index].order == DataController.instance_DataController.dialogueData.taskCount && DataController.instance_DataController.dialogueData.tasks.Length > index)
+            //{
+            //    index++;
+            //}
+
+            switch (DataController.instance_DataController.dialogueData.tasks[index].type)
+            {
+                case TYPE.DIALOGUE:
+                    string path = Application.dataPath + "/Dialogues/101010/MainStory/Story/" + DataController.instance_DataController.dialogueData.tasks[index].nextFile + ".json";
+                    string jsonString = System.IO.File.ReadAllText(path);
+                    CanvasControl.instance_CanvasControl.StartConversation(jsonString);
+                    //대사 활성화
+                    break;
+                case TYPE.ANIMATION:
+                    //세팅된 애니메이션 실행
+                    this.gameObject.GetComponent<Animator>().Play("Start", 0);
+                    break;
+                //case TYPE.TEMPEND:
+                //    {
+                //        //Temp Task에서 다시 돌아올때
+                //        DataController.instance_DataController.dialogueData.tasks = JsontoString.FromJsonArray<Task>(jsonFile.text);
+                //        //orderCount = tempOrderCount;
+                //        //기타 세팅 등등
+                //        break;
+                //    }
+                //case TYPE.TEMP:
+                //    {
+                //        //버튼 생성
+                //        //버튼 연결
+                //        Button button1 = GetComponent<Button>();
+                //        button1.transform.GetChild(0).GetComponent<Text>().text = DataController.instance_DataController.dialogueData.tasks[orderCount + 1].name;
+                //        button1.onClick.AddListener(() =>
+                //        {
+                //            //기존의 세팅 삭제 (dialogue나 캔버스 같은 거도 바꿔줘야될 가능성 높음)
+                //            orderCount = 0;
+                //            //tempOrderCount = orderCount;
+                //            DataController.instance_DataController.dialogueData.tasks = JsontoString.FromJsonArray<Task>(DataController.instance_DataController.dialogueData.tasks[orderCount + 1].nextFile);
+                //            //실행하는 함수?
+                //            interactionResponse();
+                //        });
+                //        Button button2 = GetComponent<Button>();
+                //        button2.transform.GetChild(0).GetComponent<Text>().text = DataController.instance_DataController.dialogueData.tasks[orderCount + 2].name;
+                //        button2.onClick.AddListener(() =>
+                //        {
+                //            //기존의 세팅 삭제 (dialogue나 캔버스 같은 거도 바꿔줘야될 가능성 높음)
+                //            orderCount = 0;
+                //            //tempOrderCount = orderCount;
+                //            DataController.instance_DataController.dialogueData.tasks = JsontoString.FromJsonArray<Task>(DataController.instance_DataController.dialogueData.tasks[orderCount + 2].nextFile);
+                //            //실행하는 함수?
+                //            interactionResponse();
+                //        });
+                //        break;
+                //    }
+                //case TYPE.NEW:
+                //    {
+                //        //버튼 생성
+                //        //버튼 연결
+                //        Button button1 = GetComponent<Button>();
+                //        button1.transform.GetChild(0).GetComponent<Text>().text = DataController.instance_DataController.dialogueData.tasks[orderCount + 1].name;
+                //        button1.onClick.AddListener(() =>
+                //        {
+                //            //기존의 세팅 삭제 (dialogue나 캔버스 같은 거도 바꿔줘야될 가능성 높음)
+                //            orderCount = 0;
+                //            DataController.instance_DataController.dialogueData.tasks = JsontoString.FromJsonArray<Task>(DataController.instance_DataController.dialogueData.tasks[orderCount + 1].nextFile);
+                //            //실행하는 함수?
+                //            interactionResponse();
+                //        });
+                //        Button button2 = GetComponent<Button>();
+                //        button2.transform.GetChild(0).GetComponent<Text>().text = DataController.instance_DataController.dialogueData.tasks[orderCount + 2].name;
+                //        button2.onClick.AddListener(() =>
+                //        {
+                //            //기존의 세팅 삭제 (dialogue나 캔버스 같은 거도 바꿔줘야될 가능성 높음)
+                //            orderCount = 0;
+                //            DataController.instance_DataController.dialogueData.tasks = JsontoString.FromJsonArray<Task>(DataController.instance_DataController.dialogueData.tasks[orderCount + 2].nextFile);
+                //            //실행하는 함수?
+                //            interactionResponse();
+                //        });
+                //        break;
+                //    }
+                default:
+                    break;
+            }
+
+
+            //초기화 1회 불러오기
+
             //연속 대화
             //isTouched = false;
 
@@ -116,10 +224,6 @@ public class InteractionObj_stroke : MonoBehaviour
 
            
         }
-        
-
-
-
     }
     void Update()
     {

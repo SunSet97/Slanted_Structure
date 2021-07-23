@@ -6,24 +6,12 @@ using System;
 [Serializable]
 public class DialogueData
 {
-    //모든 맵의 대화가 들어가는 딕셔너리
-    public Dictionary<int, List<UISU[]>> asd = new Dictionary<int, List<UISU[]>>();
 
-    //맵안에 들어가는 모든 대화
-    List<UISU[]> asdasd = new List<UISU[]>();
-    void asdas2d()
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            //i로 맵데이터마다 읽기
-            //한 대화
-            UISU[] uisu;
-            uisu = JsontoString.LoadJsonFromClassName<UISU>("000000");
-            asdasd.Add(uisu);
-        }
-        //for(int i = 0; i < asd[000000][0].Length; i++)
-        //asd[000000][0][i]
-    }
+    public Task[] tasks;
+
+    public RealDialogue[] dialogues;
+
+    public int taskCount = 0;
 
     // 대사를 담은 배열
     public Dialogue[] dialogue;
@@ -75,10 +63,30 @@ public class DialogueData
 public class Dialogue {
     public string[] dialogueScript;
 }
+public enum TYPE
+{
+    ANIMATION, DIALOGUE, TEMP, NEW, END, THEEND, TEMPEND
+}
+[Serializable]
+public enum EXPRESSION
+{
+    IDLE, LAUGH, SAD, CRY, ANGRY, SURPISE, PANIC, SUSPICION, FEAR, CURIOUS
+}
 
-public class UISU {
-    string name;
-    int value;
+[System.Serializable]
+public class Task
+{
+    public string name;
+    public TYPE type;
+    public string nextFile;
+    public int order;
+}
+
+[Serializable]
+public class RealDialogue {
+    public string name;
+    public EXPRESSION experssion;
+    public string contents;
 }
 
 [Serializable]

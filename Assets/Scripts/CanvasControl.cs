@@ -335,12 +335,13 @@ public class CanvasControl : MonoBehaviour
     // 대화 관련 함수
 
     // npc를 터치하면 불리는 함수
-    public void StartConversation()
+    public void StartConversation(string jsonFile)
     {
         print("startConversation()~~~~");
-        //대화 번호를 바깥에서 어떻게 알지
-        //dialogueLen = DataController.instance_DataController.dialogueData.asd[000000][대화 번호].Length;
-        dialogueLen = DataController.instance_DataController.dialogueData.dialogue[cnvsCnt].dialogueScript.Length;
+        //dialogueLen = DataController.instance_DataController.dialogueData.dialogue[cnvsCnt].dialogueScript.Length;
+        DataController.instance_DataController.joyStick.gameObject.SetActive(false);
+        DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<RealDialogue>(jsonFile);
+        dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
         dialogueCnt = 0;
         DialoguePanel.SetActive(true);
         UpdateWord();
@@ -348,42 +349,49 @@ public class CanvasControl : MonoBehaviour
 
     public void UpdateWord()
     {
-
+        Debug.Log("업데이터");
         // 대화가 끝나면 선택지 부를 지 여부결정 
         if (dialogueCnt >= dialogueLen)
         {
+            DataController.instance_DataController.joyStick.gameObject.SetActive(true);
             DialoguePanel.SetActive(false);
             endConversation = true;
 
-            // 부를 선택지 정보가 있는가 없는 가 
-            if (DataController.instance_DataController.dialogueData.choice.Length > cnvsCnt /*& DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length > 0*/)
-            {
-                if (DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length > 0)
-                    OpenChoicePanel();
-                else
-                {
-                    // 대화가 끝났으니 다시 대화 가능하도록 
-                    isPossibleCnvs = true;
-                    cnvsCnt = 0; 
-                    // 다음 스텝으로 넘어가기 위한 함수 호출
-                    if (isGoNextStep == true) GoNextStep();
-                }
-            }
-            else
-            {
-                // 대화가 끝났으니 다시 대화 가능하도록 
-                isPossibleCnvs = true;
-                cnvsCnt = 0;
-                // 다음 스텝으로 넘어가기 위한 함수 호출
-                if (isGoNextStep == true) GoNextStep();
-            }
+            isPossibleCnvs = true;
+            cnvsCnt = 0;
+            if (isGoNextStep == true) GoNextStep();
+
+            //// 부를 선택지 정보가 있는가 없는 가 
+            //if (DataController.instance_DataController.dialogueData.choice.Length > cnvsCnt /*& DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length > 0*/)
+            //{
+            //    if (DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length > 0)
+            //        OpenChoicePanel();
+            //    else
+            //    {
+            //        // 대화가 끝났으니 다시 대화 가능하도록 
+            //        isPossibleCnvs = true;
+            //        cnvsCnt = 0;
+            //        // 다음 스텝으로 넘어가기 위한 함수 호출
+            //        if (isGoNextStep == true) GoNextStep();
+            //    }
+            //}
+            //else
+            //{
+            //    // 대화가 끝났으니 다시 대화 가능하도록 
+            //    isPossibleCnvs = true;
+            //    cnvsCnt = 0;
+            //    // 다음 스텝으로 넘어가기 위한 함수 호출
+            //    if (isGoNextStep == true) GoNextStep();
+            //}
+
         }
         else
         {
             // 대화가 진행되는 중 텍스트 업데이트
-            speakerName.text = DataController.instance_DataController.dialogueData.dialogue[cnvsCnt].dialogueScript[dialogueCnt]; // 이야기하는 캐릭터 이름
-            speakerWord.text = DataController.instance_DataController.dialogueData.dialogue[cnvsCnt].dialogueScript[dialogueCnt + 1]; // 캐릭터의 대사
-            dialogueCnt += 2;
+            speakerName.text = DataController.instance_DataController.dialogueData.dialogues[dialogueCnt].name; // 이야기하는 캐릭터 이름
+            speakerWord.text = DataController.instance_DataController.dialogueData.dialogues[dialogueCnt].contents; // 캐릭터의 대사
+            //애니메이션 추가
+            dialogueCnt++;
         }
 
     }
@@ -472,7 +480,8 @@ public class CanvasControl : MonoBehaviour
         if (DataController.instance_DataController.dialogueData.isContinue[cnvsCnt].dialogueContinue[i])
         {
             cnvsCnt = DataController.instance_DataController.dialogueData.nextDialogueParam[cnvsCnt].dialogueNum[i];
-            StartConversation();
+            //StartConversation(DataController.instance_DataController.dialogueData.tasks[cnvsCnt].nextFile);
+            //수정
         }
         else
         {
