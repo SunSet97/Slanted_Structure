@@ -6,15 +6,23 @@ using System;
 [Serializable]
 public class DialogueData
 {
+    public Dialogue[] dialogues;
+}
+
+[Serializable]
+public class TaskData
+{
 
     public Task[] tasks;
 
-    public RealDialogue[] dialogues;
+    //현재 인덱스
+    public int taskIndex = 0;
 
-    public int taskCount = 0;
+    //현재 순서 - 가독성을 위해
+    public int taskOrder = 1;
 
-    // 대사를 담은 배열
-    public Dialogue[] dialogue;
+    public bool isContinue = true;
+
 
     // 선택지를 담은 배열
     public Choice[] choice;
@@ -27,7 +35,7 @@ public class DialogueData
     public NextScene[] nextScene;
 
     // 특정 선택지를 선택했을 때의 대화 진행 여부
-    public IsContinue[] isContinue;
+    //public IsContinue[] isContinue;
 
     // 스토리 큰 단위 매개변수, 1부터시작
     public StoryParam[] storyParam;
@@ -57,15 +65,9 @@ public class DialogueData
     public NextDialogueParam[] nextDialogueParam; 
 }
 
-// 직렬화 클래스들 
-
-[Serializable]
-public class Dialogue {
-    public string[] dialogueScript;
-}
 public enum TYPE
 {
-    ANIMATION, DIALOGUE, TEMP, NEW, END, THEEND, TEMPEND
+    ANIMATION, DIALOGUE, TEMP, NEW, TASKEND, THEEND, NONE
 }
 [Serializable]
 public enum EXPRESSION
@@ -73,6 +75,7 @@ public enum EXPRESSION
     IDLE, LAUGH, SAD, CRY, ANGRY, SURPISE, PANIC, SUSPICION, FEAR, CURIOUS
 }
 
+// 직렬화 클래스들 
 [System.Serializable]
 public class Task
 {
@@ -80,10 +83,12 @@ public class Task
     public TYPE type;
     public string nextFile;
     public int order;
+    public string condition;
+    public string increaseVar;
 }
 
 [Serializable]
-public class RealDialogue {
+public class Dialogue {
     public string name;
     public EXPRESSION experssion;
     public string contents;

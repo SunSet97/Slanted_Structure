@@ -245,14 +245,9 @@ public class DataController : MonoBehaviour
         }
     }
 
-    public DialogueData _dialogueData;
-    public DialogueData dialogueData
-    {
-        get
-        {
-            return _dialogueData;
-        }
-    }
+    public TaskData taskData;
+
+    public DialogueData dialogueData;
 
     public TutorialCommandData _tutorialCmdData;
     public TutorialCommandData tutorialCmdData
@@ -316,7 +311,7 @@ public class DataController : MonoBehaviour
             {
                 Debug.Log("로드 성공");
                 string FromJsonData = File.ReadAllText(filePath);
-                _dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
+                //_dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
                 //_dialogueData.dialogue.add dialogue
                 //dialougle.addDictionary<>맵데이터에 배열로 저장
                 ///for(대화 개수만큼)
@@ -334,7 +329,7 @@ public class DataController : MonoBehaviour
                 filePath = Application.dataPath + "/Resources/DialogueScripts/" + dataType + "/Default.json";
 
                 string FromJsonData = File.ReadAllText(filePath);
-                _dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
+                //_dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
             }
         }
 

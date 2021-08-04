@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
-using System.IO;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.Events;
 public class CanvasControl : MonoBehaviour
 {
     [Header("저장 패널")]
@@ -21,16 +19,15 @@ public class CanvasControl : MonoBehaviour
     [Header("대화 관련")]
     public GameObject DialoguePanel;
     public bool isPossibleCnvs = true;
-    public GameObject[] choiceBtn = new GameObject[4];
-    public Text[] choice = new Text[4];
+    public GameObject[] choiceBtn;
+    public Text[] choice;
     public Text speakerName;
     public Text speakerWord;
 
     // 대화 관련 변수 
-    private int cnvsCnt = 0; // 대화 카운트 변수 
     public int dialogueCnt = 0; // 대사 카운트 변수
-    public int dialogueLen = 0; // 대사의 갯수
-    private int choiceLen = 0; // 선택지 갯수
+    public int dialogueLen = 0; // 대사의 갯
+    UnityAction<int> pressBtnMethod;
 
     public bool endConversation = false; // 대화 끝나면 true.
 
@@ -47,7 +44,6 @@ public class CanvasControl : MonoBehaviour
     public InputField mapcode; //맵코드
     public Toggle[] selectedCharacter; //선택된 캐릭터
     public GameObject selectedGuest;
-
     //인스턴스화
     private static CanvasControl instance = null;
     public static CanvasControl instance_CanvasControl
@@ -334,13 +330,13 @@ public class CanvasControl : MonoBehaviour
 
     // 대화 관련 함수
 
-    // npc를 터치하면 불리는 함수
-    public void StartConversation(string jsonFile)
+    // 일반 dialogue
+    
+    public void StartConversation(string jsonString)
     {
-        print("startConversation()~~~~");
-        //dialogueLen = DataController.instance_DataController.dialogueData.dialogue[cnvsCnt].dialogueScript.Length;
+        DataController.instance_DataController.taskData.isContinue = false;
         DataController.instance_DataController.joyStick.gameObject.SetActive(false);
-        DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<RealDialogue>(jsonFile);
+        DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
         dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
         dialogueCnt = 0;
         DialoguePanel.SetActive(true);
@@ -349,7 +345,6 @@ public class CanvasControl : MonoBehaviour
 
     public void UpdateWord()
     {
-        Debug.Log("업데이터");
         // 대화가 끝나면 선택지 부를 지 여부결정 
         if (dialogueCnt >= dialogueLen)
         {
@@ -358,9 +353,10 @@ public class CanvasControl : MonoBehaviour
             endConversation = true;
 
             isPossibleCnvs = true;
-            cnvsCnt = 0;
-            if (isGoNextStep == true) GoNextStep();
-
+            dialogueCnt = 0;
+            DataController.instance_DataController.dialogueData.dialogues = null;
+            DataController.instance_DataController.taskData.isContinue = true;
+            DataController.instance_DataController.taskData.taskIndex++;
             //// 부를 선택지 정보가 있는가 없는 가 
             //if (DataController.instance_DataController.dialogueData.choice.Length > cnvsCnt /*& DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length > 0*/)
             //{
@@ -397,11 +393,13 @@ public class CanvasControl : MonoBehaviour
     }
 
     // 선택지가 있을 때 선택지 패널 염 
-    void OpenChoicePanel()
+    public void OpenChoicePanel()
     {
-        choiceLen = DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length;
+        DataController.instance_DataController.joyStick.gameObject.SetActive(false);
+        TaskData currentTaskData = DataController.instance_DataController.taskData;
+        int index = currentTaskData.taskIndex;
+        int choiceLen = int.Parse(currentTaskData.tasks[index].nextFile);
 
-        int curIntimacy_spOun = DataController.instance_DataController.charData.intimacy_spOun;
         int curIntimacy_spRau = DataController.instance_DataController.charData.intimacy_spRau;
         int curIntimacy_ounRau = DataController.instance_DataController.charData.intimacy_ounRau;
 
@@ -410,86 +408,97 @@ public class CanvasControl : MonoBehaviour
         //{
         int curSelfEstm = DataController.instance_DataController.charData.selfEstm;
 
-
+        choiceBtn[0].transform.parent.gameObject.SetActive(true);
         // 선택지 개수와 조건에 맞게 선택지가 나올 수 있도록 함.
         for (int i = 0; i < choiceLen; i++)
         {
             // 친밀도와 자존감이 기준보다 낮으면 일부 선택지가 나오지 않을 수 있음 
-
-            if (
-               curIntimacy_spRau >= DataController.instance_DataController.dialogueData.intimacyCrt[cnvsCnt].spRau[i] &&
-               curIntimacy_spOun >= DataController.instance_DataController.dialogueData.intimacyCrt[cnvsCnt].spOun[i] &&
-               curIntimacy_ounRau >= DataController.instance_DataController.dialogueData.intimacyCrt[cnvsCnt].ounRau[i] &&
-               curSelfEstm >= DataController.instance_DataController.dialogueData.selfEstmCrt[cnvsCnt].selfEstm[i]
-              )
+            //int[] condition = Array.ConvertAll(currentTaskData.tasks[index + i].condition.Split(','), (item) => int.Parse(item));
+            //if (
+            //   curSelfEstm >= condition[0] &&
+            //   curIntimacy_ounRau >= condition[1] &&
+            //   curIntimacy_spRau >= condition[2]
+            //  )
             {
-                choiceBtn[i].transform.parent.gameObject.SetActive(true);
                 choiceBtn[i].SetActive(true);
-                choice[i].text = DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption[i];
+                choice[i].text = currentTaskData.tasks[index + i + 1].name;
             }
         }
     }
+    
+
+    public void SetChoiceAction(UnityAction<int> pressBtn)
+    {
+        pressBtnMethod = pressBtn;
+    }
 
     // 선택지를 눌렀을 때 불리는 함수 
-    public void PressChoice(int i)
+    public void PressChoice(int index)
     {
-        for (int j = 0; j < choiceLen; j++)
-        {
-            // 선택지 버튼 없앰
-            choiceBtn[j].SetActive(false);
-            choiceBtn[i].transform.parent.gameObject.SetActive(false); // 선택지 입력한거 아닌 나머지 애들도 없애기
-
-        }
-
-        // 씬 바꿀 일 있을 때 씬 변경하는 함수 부름
-        if (DataController.instance_DataController.dialogueData.isSceneChange[cnvsCnt].sceneChange[i])
-        {
-            OpenScene(DataController.instance_DataController.dialogueData.nextScene[cnvsCnt].sceneName[i]);
-        }
-
-        if (selectedGuest != null)
-        {
-            if (i == 0) Destroy(selectedGuest);
-            else Debug.Log("게임 오버");
-
-        }
-
-        // 선택에 따른 스토리 업데이트
-        if (DataController.instance_DataController.dialogueData.storyParam[cnvsCnt].storyNum[i] != 0)
-            DataController.instance_DataController.charData.story = DataController.instance_DataController.dialogueData.storyParam[cnvsCnt].storyNum[i];
-
-        // 선택에 따른 스토리 분기 업데이트
-        if (DataController.instance_DataController.dialogueData.branchParam[cnvsCnt].branchNum[i] != 0)
-            DataController.instance_DataController.charData.storyBranch = DataController.instance_DataController.dialogueData.branchParam[cnvsCnt].branchNum[i];
-
-        if (DataController.instance_DataController.dialogueData.scndBranchParam[cnvsCnt].scndBranchNum[i] != 0)
-            DataController.instance_DataController.charData.storyBranch_scnd = DataController.instance_DataController.dialogueData.scndBranchParam[cnvsCnt].scndBranchNum[i];
+        TaskData currentTaskData = DataController.instance_DataController.taskData;
+        // 선택지 삭제
+        DataController.instance_DataController.joyStick.gameObject.SetActive(true);
+        for (int i = 0; i < choiceBtn[0].transform.parent.childCount; i++)
+            choiceBtn[i].SetActive(false);
+        choiceBtn[0].transform.parent.gameObject.SetActive(false);
+        pressBtnMethod(index);
 
 
-        // 선택에 따른 친밀도, 자존감 업데이트
-        DataController.instance_DataController.charData.intimacy_spRau += DataController.instance_DataController.dialogueData.intimacyParam[cnvsCnt].spRau[i];
-        DataController.instance_DataController.charData.intimacy_spOun += DataController.instance_DataController.dialogueData.intimacyParam[cnvsCnt].spOun[i];
-        DataController.instance_DataController.charData.intimacy_ounRau += DataController.instance_DataController.dialogueData.intimacyParam[cnvsCnt].ounRau[i];
+        //taskIndex를 쓸 일이 있을 경우 여기서 사용  아니면 pressBtnMethod에서 taskIndex 더해주기
+        currentTaskData.taskIndex += int.Parse(currentTaskData.tasks[currentTaskData.taskIndex].nextFile) + 1;
+        
+        
+        
 
-        DataController.instance_DataController.charData.selfEstm += DataController.instance_DataController.dialogueData.selfEstmParam[cnvsCnt].selfEstm[i];
+        //    // 씬 바꿀 일 있을 때 씬 변경하는 함수 부름
+        //    if (DataController.instance_DataController.dialogueData.isSceneChange[cnvsCnt].sceneChange[i])
+        //    {
+        //        OpenScene(DataController.instance_DataController.dialogueData.nextScene[cnvsCnt].sceneName[i]);
+        //    }
 
-        // 자존감, 친밀도 텍스트 업데이트
-        UpdateStats();
+        //    if (selectedGuest != null)
+        //    {
+        //        if (i == 0) Destroy(selectedGuest);
+        //        else Debug.Log("게임 오버");
 
-        // 대화가 계속 되는 지 
-        if (DataController.instance_DataController.dialogueData.isContinue[cnvsCnt].dialogueContinue[i])
-        {
-            cnvsCnt = DataController.instance_DataController.dialogueData.nextDialogueParam[cnvsCnt].dialogueNum[i];
-            //StartConversation(DataController.instance_DataController.dialogueData.tasks[cnvsCnt].nextFile);
-            //수정
-        }
-        else
-        {
-            // 이어지는 대화가 없을 때 
-            // 다시 대화 가능하도록 (처음부터 대화 하는 것을 말함) 
-            cnvsCnt = 0;
-            isPossibleCnvs = true;
-        }
+        //    }
+
+        //    // 선택에 따른 스토리 업데이트
+        //    if (DataController.instance_DataController.dialogueData.storyParam[cnvsCnt].storyNum[i] != 0)
+        //        DataController.instance_DataController.charData.story = DataController.instance_DataController.dialogueData.storyParam[cnvsCnt].storyNum[i];
+
+        //    // 선택에 따른 스토리 분기 업데이트
+        //    if (DataController.instance_DataController.dialogueData.branchParam[cnvsCnt].branchNum[i] != 0)
+        //        DataController.instance_DataController.charData.storyBranch = DataController.instance_DataController.dialogueData.branchParam[cnvsCnt].branchNum[i];
+
+        //    if (DataController.instance_DataController.dialogueData.scndBranchParam[cnvsCnt].scndBranchNum[i] != 0)
+        //        DataController.instance_DataController.charData.storyBranch_scnd = DataController.instance_DataController.dialogueData.scndBranchParam[cnvsCnt].scndBranchNum[i];
+
+
+        //    // 선택에 따른 친밀도, 자존감 업데이트
+        //    DataController.instance_DataController.charData.intimacy_spRau += DataController.instance_DataController.dialogueData.intimacyParam[cnvsCnt].spRau[i];
+        //    DataController.instance_DataController.charData.intimacy_spOun += DataController.instance_DataController.dialogueData.intimacyParam[cnvsCnt].spOun[i];
+        //    DataController.instance_DataController.charData.intimacy_ounRau += DataController.instance_DataController.dialogueData.intimacyParam[cnvsCnt].ounRau[i];
+
+        //    DataController.instance_DataController.charData.selfEstm += DataController.instance_DataController.dialogueData.selfEstmParam[cnvsCnt].selfEstm[i];
+
+        //    // 자존감, 친밀도 텍스트 업데이트
+        //    UpdateStats();
+
+        //    // 대화가 계속 되는 지 
+        //    if (DataController.instance_DataController.dialogueData.isContinue[cnvsCnt].dialogueContinue[i])
+        //    {
+        //        cnvsCnt = DataController.instance_DataController.dialogueData.nextDialogueParam[cnvsCnt].dialogueNum[i];
+        //        //StartConversation(DataController.instance_DataController.dialogueData.tasks[cnvsCnt].nextFile);
+        //        //수정
+        //    }
+        //    else
+        //    {
+        //        // 이어지는 대화가 없을 때 
+        //        // 다시 대화 가능하도록 (처음부터 대화 하는 것을 말함) 
+        //        cnvsCnt = 0;
+        //        isPossibleCnvs = true;
+        //    }
 
     }
 }
