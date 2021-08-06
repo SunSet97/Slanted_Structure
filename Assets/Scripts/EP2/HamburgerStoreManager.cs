@@ -96,7 +96,7 @@ public class HamburgerStoreManager : MonoBehaviour
         //speatPrefab.transform.position = speatPointParent.transform.GetChild(0).transform.position;
 
         // 캐릭터 맵으로 이동시키기
-        DataController.instance_DataController.isMapChanged = true;
+        //DataController.instance_DataController.isMapChanged = true;
 
         // 스토리 정보 수정
         DataController.instance_DataController.charData.story = 1;

@@ -82,7 +82,7 @@ public class SpeechBubbleDialogue : MonoBehaviour
     void Start()
     {
         // 캐릭터 맵으로 이동시키기
-        DataController.instance_DataController.isMapChanged = true;
+        //DataController.instance_DataController.isMapChanged = true;
 
         // 카메라
         cam = DataController.instance_DataController.cam;

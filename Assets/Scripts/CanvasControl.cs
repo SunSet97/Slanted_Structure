@@ -357,29 +357,6 @@ public class CanvasControl : MonoBehaviour
             DataController.instance_DataController.dialogueData.dialogues = null;
             DataController.instance_DataController.taskData.isContinue = true;
             DataController.instance_DataController.taskData.taskIndex++;
-            //// 부를 선택지 정보가 있는가 없는 가 
-            //if (DataController.instance_DataController.dialogueData.choice.Length > cnvsCnt /*& DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length > 0*/)
-            //{
-            //    if (DataController.instance_DataController.dialogueData.choice[cnvsCnt].choiceOption.Length > 0)
-            //        OpenChoicePanel();
-            //    else
-            //    {
-            //        // 대화가 끝났으니 다시 대화 가능하도록 
-            //        isPossibleCnvs = true;
-            //        cnvsCnt = 0;
-            //        // 다음 스텝으로 넘어가기 위한 함수 호출
-            //        if (isGoNextStep == true) GoNextStep();
-            //    }
-            //}
-            //else
-            //{
-            //    // 대화가 끝났으니 다시 대화 가능하도록 
-            //    isPossibleCnvs = true;
-            //    cnvsCnt = 0;
-            //    // 다음 스텝으로 넘어가기 위한 함수 호출
-            //    if (isGoNextStep == true) GoNextStep();
-            //}
-
         }
         else
         {
@@ -413,7 +390,7 @@ public class CanvasControl : MonoBehaviour
         for (int i = 0; i < choiceLen; i++)
         {
             // 친밀도와 자존감이 기준보다 낮으면 일부 선택지가 나오지 않을 수 있음 
-            //int[] condition = Array.ConvertAll(currentTaskData.tasks[index + i].condition.Split(','), (item) => int.Parse(item));
+            int[] condition = Array.ConvertAll(currentTaskData.tasks[index + i].condition.Split(','), (item) => int.Parse(item));
             //if (
             //   curSelfEstm >= condition[0] &&
             //   curIntimacy_ounRau >= condition[1] &&

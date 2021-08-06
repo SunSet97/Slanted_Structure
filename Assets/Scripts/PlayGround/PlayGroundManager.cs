@@ -19,7 +19,7 @@ public class PlayGroundManager : MonoBehaviour
     {
         originotterCircleScale = outterCircle.transform.localScale;
 
-        DataController.instance_DataController.isMapChanged = true;
+        //DataController.instance_DataController.isMapChanged = true;
 
         // 버튼 안보이게!
         outterCircle.gameObject.SetActive(false);

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.UI;
 // 인터렉션하는 오브젝트에 컴포넌트로 추가!!
 public class InteractionObj_stroke : MonoBehaviour
@@ -98,7 +99,7 @@ public class InteractionObj_stroke : MonoBehaviour
         int[] changeVal = Array.ConvertAll(currentTaskData.tasks[currentTaskData.taskIndex + index].increaseVar.Split(','), (item) => int.Parse(item));
 
 
-        if (currentTaskData.tasks[currentTaskData.taskIndex + index].type == TYPE.DIALOGUE)
+        if (currentTaskData.tasks[currentTaskData.taskIndex + index].type.Equals(TYPE.DIALOGUE))
         {
             //대화만 실행
         }
@@ -144,15 +145,15 @@ public class InteractionObj_stroke : MonoBehaviour
             if (jsonTask == null) { Debug.LogError("jsontask파일 없음 오류오류"); }
             StartCoroutine(TaskCorutine());
         }
-        else if (type == typeOfInteraction.interact && this.gameObject.GetComponent<CheckMapClear>() != null)
+        else if (type == typeOfInteraction.interact && TryGetComponent(out CheckMapClear checkMapClear))
         {
             //애니메이션 재생 후 다음 맵으로 넘어가는 등의 인터렉션이 있을 때.
-            if (this.gameObject.GetComponent<Animator>() != null)
+            if (TryGetComponent(out Animator animator))
             {
-                this.gameObject.GetComponent<Animator>().SetBool("Interation", true);
-                if (this.gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Finish"))
+                animator.SetBool("Interation", true);
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Finish"))
                 {
-                    isTouched = true;
+                    checkMapClear.Clear();
                     Debug.Log("터치터치");
                 }
             }
@@ -333,13 +334,18 @@ public class InteractionObj_stroke : MonoBehaviour
                     CanvasControl.instance_CanvasControl.SetChoiceAction(SetBtnPress);
                     CanvasControl.instance_CanvasControl.OpenChoicePanel();
                     break;
-                case TYPE.TASKEND:
+                case TYPE.TEMPEND:
                     //Temp Task 끝날 때
                     Debug.Log("tempEnd");
                     DataController.instance_DataController.taskData = null;
                     jsonTask.Pop();
                     jsonTask.Peek().taskIndex++;
                     jsonTask.Peek().isContinue = true;
+                    yield break;
+                case TYPE.TASKEND:
+                    jsonTask.Peek().isContinue = true;
+                    jsonTask.Peek().taskIndex = 0;
+                    jsonTask.Peek().taskOrder = 1;
                     yield break;
                 case TYPE.NEW:
                     {

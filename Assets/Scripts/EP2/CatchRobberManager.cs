@@ -124,7 +124,7 @@ public class CatchRobberManager : MonoBehaviour
         // 현재 캐릭터
         character = DataController.instance_DataController.currentChar;
         // 맵 이동
-        DataController.instance_DataController.isMapChanged = true;
+        //DataController.instance_DataController.isMapChanged = true;
         // 가속도 설정
         acceleration = acceleration_setValue;
         // 조이스틱 입력없을 때 라우가 바라보는 방향 설정

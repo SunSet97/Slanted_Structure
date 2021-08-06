@@ -150,7 +150,6 @@ public class CharacterManager : MonoBehaviour
             //사이드뷰 일 때
             if (DataController.instance_DataController.currentMap.SideView == true)
             {
-                Debug.Log("SideView");
                 anim.SetBool("2DSide", true);
                 if (Mathf.Abs(joyRot) > 170)
                 {

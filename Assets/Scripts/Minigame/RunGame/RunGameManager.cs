@@ -85,7 +85,7 @@ public class RunGameManager : MonoBehaviour
             // 카메라무빙없애기
             //DataController.instance_DataController.cam.GetComponent<Camera_Moving>().enabled = false;
 
-            DataController.instance_DataController.isMapChanged = true;
+            //DataController.instance_DataController.isMapChanged = true;
 
             // 캐릭터
             speat = DataController.instance_DataController.currentChar;

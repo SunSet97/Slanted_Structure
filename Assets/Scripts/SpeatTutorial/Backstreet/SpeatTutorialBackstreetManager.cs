@@ -79,7 +79,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
         endText.text = string.Format("{0:0}m", speatDistance); distanceText.text = string.Format("{0:0}m", pimpDistance);
 
         // 게임 끝
-        if (speatSlider.value >= speatSlider.maxValue) GetComponentInParent<MapData>().positionSets[0].clearBox.GetComponent<CheckMapClear>().isClear = true;
+        if (speatSlider.value >= speatSlider.maxValue) GetComponentInParent<MapData>().positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
         else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1) InitRungame();
     }
 

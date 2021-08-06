@@ -86,7 +86,6 @@ public class DataController : MonoBehaviour
             MapData[] temp = Resources.LoadAll<MapData>("StoryMap/ep" + i);
             storymaps = storymaps.Concat(temp).ToArray();
             //Mapdata형식의 배열 storymaps에 Resources 넣어버림
-            Debug.Log(storymaps.Length);
         }
     }
 
@@ -98,7 +97,6 @@ public class DataController : MonoBehaviour
         if (!cam) cam = Camera.main;
         //캐릭터 찾기
         FindCharacter();
-        InitialMap();
     }
 
     public void Cinematic()//시네마틱 씬 로드
@@ -110,89 +108,107 @@ public class DataController : MonoBehaviour
     {
         SceneManager.LoadScene("Ingame_set");
     }
-    public bool isMapChanged = false;
+
     //맵이 바뀔 때 초기화
-    void InitialMap()
+    public void ChangeToNextMap()
     {
-        //Debug.Log(isMapChanged);
-        if (isMapChanged)
+        mapCode = string.Format("{0:000000}", currentMap.nextMapcode); // 맵 코드 변경
+
+        Destroy(currentMap.gameObject);//현재 맵코드 오브젝트 삭제
+
+        foreach (MapData findMap in storymaps)
         {
-            speat.PickUpCharacter();
-            oun.PickUpCharacter();
-            rau.PickUpCharacter();
-
-
-            // 해당되는 캐릭터 선택
-            speat.isSelected = false;
-            oun.isSelected = false;
-            rau.isSelected = false;
-
-            int index = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true).Count;
-            List<MapData.CharacterPositionSet> temp = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true);
-            for (int k = 0; k < index; k++)
+            if (findMap.name.Equals(currentMap.nextMapcode))
             {
-                if (temp[k].who == MapData.Character.Speat)
-                {
-                    speat.transform.position = temp[k].startPosition.position;
-                    speat.transform.localRotation = temp[k].startPosition.localRotation;
-                    speat.isSelected = true;
-                }
-                if (temp[k].who == MapData.Character.Oun)
-                {
-                    oun.transform.position = temp[k].startPosition.position;
-                    oun.transform.localRotation = temp[k].startPosition.localRotation;
-                    oun.isSelected = true;
-                }
-                if (temp[k].who == MapData.Character.Rau)
-                {
-                    rau.transform.localRotation = temp[k].startPosition.localRotation;
-                    rau.transform.position = temp[k].startPosition.position;
-                    rau.isSelected = true;
-                }
+                currentMap = Instantiate(findMap, mapGenerate);
+                break;
             }
-
-            //현재 캐릭터 위치 대기실로 이동
-            if (currentChar && !currentChar.isSelected) currentChar.WaitInRoom();
-
-            //카메라 위치와 회전
-            camDis = currentMap.camDis;
-            rot = currentMap.camRot;
-            if (currentChar != null)
-            {
-                cam.transform.position = currentChar.transform.position + camDis;
-            }
-            cam.transform.rotation = Quaternion.Euler(rot);
-
-
-
-
-            // CameraMoving 컨트롤
-            bool checkCameraMoving = cam.GetComponent<Camera_Moving>().enabled;
-            if (currentMap.isCameraMoving && !checkCameraMoving) StartCoroutine(SetCameraMovingState(currentMap.isCameraMoving));
-            else if (!currentMap.isCameraMoving && checkCameraMoving) StartCoroutine(SetCameraMovingState(currentMap.isCameraMoving));
-
-            //스카이박스 세팅
-            RenderSettings.skybox = currentMap.SkyboxSetting;
-            DynamicGI.UpdateEnvironment();
-            //현재 맵에서 카메라 세팅
-
-            //카메라 orthographic 컨트롤
-            cam.orthographic = currentMap.isOrthographic;
-            if (currentMap.isOrthographic)
-            {
-                cam.orthographicSize = currentMap.orthographicSize;
-            }
-
-
-            FindProgressCollider();
-
-            // 조작 가능한 상태로 변경 (중력 적용)
-            speat.UseJoystickCharacter();
-            oun.UseJoystickCharacter();
-            rau.UseJoystickCharacter();
-            isMapChanged = false;
         }
+        currentMap.PlaySettingUpdate();
+        SetByChangedMap();
     }
+
+    private void SetByChangedMap()
+    {
+
+        speat.PickUpCharacter();
+        oun.PickUpCharacter();
+        rau.PickUpCharacter();
+
+
+        // 해당되는 캐릭터 선택
+        speat.isSelected = false;
+        oun.isSelected = false;
+        rau.isSelected = false;
+
+        int index = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true).Count;
+        List<MapData.CharacterPositionSet> temp = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true);
+        for (int k = 0; k < index; k++)
+        {
+            temp[k].startPosition.localRotation = Quaternion.Euler(temp[k].startPosition.localRotation.x, temp[k].startPosition.localRotation.y + 90f, temp[k].startPosition.localRotation.z);
+            if (temp[k].who == MapData.Character.Speat)
+            {
+                speat.transform.position = temp[k].startPosition.position;
+                speat.transform.localRotation = temp[k].startPosition.localRotation;
+                speat.isSelected = true;
+            }
+            if (temp[k].who == MapData.Character.Oun)
+            {
+                oun.transform.position = temp[k].startPosition.position;
+                oun.transform.localRotation = temp[k].startPosition.localRotation;
+                oun.isSelected = true;
+            }
+            if (temp[k].who == MapData.Character.Rau)
+            {
+                rau.transform.localRotation = temp[k].startPosition.localRotation;
+                rau.transform.position = temp[k].startPosition.position;
+                rau.isSelected = true;
+            }
+        }
+
+        FindCharacter();
+
+        //현재 캐릭터 위치 대기실로 이동
+        if (currentChar && !currentChar.isSelected) currentChar.WaitInRoom();
+
+        //카메라 위치와 회전
+        camDis = currentMap.camDis;
+        rot = currentMap.camRot;
+        if (currentChar != null)
+        {
+            cam.transform.position = currentChar.transform.position + camDis;
+        }
+        cam.transform.rotation = Quaternion.Euler(rot);
+
+
+
+
+        // CameraMoving 컨트롤
+        bool checkCameraMoving = cam.GetComponent<Camera_Moving>().enabled;
+        if (currentMap.isCameraMoving && !checkCameraMoving) StartCoroutine(SetCameraMovingState(currentMap.isCameraMoving));
+        else if (!currentMap.isCameraMoving && checkCameraMoving) StartCoroutine(SetCameraMovingState(currentMap.isCameraMoving));
+
+        //스카이박스 세팅
+        RenderSettings.skybox = currentMap.SkyboxSetting;
+        DynamicGI.UpdateEnvironment();
+        //현재 맵에서 카메라 세팅
+
+        //카메라 orthographic 컨트롤
+        cam.orthographic = currentMap.isOrthographic;
+        if (currentMap.isOrthographic)
+        {
+            cam.orthographicSize = currentMap.orthographicSize;
+        }
+
+
+        FindProgressCollider();
+
+        // 조작 가능한 상태로 변경 (중력 적용)
+        speat.UseJoystickCharacter();
+        oun.UseJoystickCharacter();
+        rau.UseJoystickCharacter();
+    }
+
     // 게임 진행에 필요한 콜라이더와 이미지를 획득
     void FindProgressCollider()
     {

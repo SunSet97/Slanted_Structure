@@ -1,29 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+
+
+
+[CustomEditor(typeof(CheckMapClear))]
+class DebugmapClear : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        CheckMapClear gun = (CheckMapClear)target;
+        if (GUILayout.Button("맵 클리어"))
+            gun.Clear();
+    }
+}
+
 
 [ExecuteInEditMode]
 public class CheckMapClear : MonoBehaviour
 {
-    public bool isClear; // 클리어 여부
     public string nextSelectMapcode = "000000";//어디 스토리로 갈 건지.
     public CharacterManager who;  // 트리거 신호를 줄 캐릭터
 
-    private void Update()
+    public void Clear()
     {
-        if (gameObject.GetComponent<InteractionObj_stroke>() != null)
-        {
-            if (gameObject.GetComponent<InteractionObj_stroke>().isTouched == true && !nextSelectMapcode.Equals("000000")) //이 오브젝트의 터치를 인식했으면 클리어 여부 체크
-            {
-                DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
-                isClear = true;
-            }
-        }
-    }
-
-    public void clearForDebug()
-    {
-        isClear = true;
+        if (!nextSelectMapcode.Equals("000000"))
+            DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
+        DataController.instance_DataController.ChangeToNextMap();
     }
 
     // 캐릭터 확인 후 트리거 활성화
@@ -32,8 +37,7 @@ public class CheckMapClear : MonoBehaviour
         if (who)
             if (other.GetComponent<CharacterManager>() == who)
             {
-                if (!nextSelectMapcode.Equals("000000")) DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
-                isClear = true;
+                Clear();
             }
     }
 
@@ -41,8 +45,7 @@ public class CheckMapClear : MonoBehaviour
     {
         if (other.GetComponent<CharacterManager>() == who)
         {
-            isClear = true;
-            if (!nextSelectMapcode.Equals("000000")) DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
+            Clear();
         }
     }
 
@@ -50,8 +53,7 @@ public class CheckMapClear : MonoBehaviour
     {
         if (other.GetComponent<CharacterManager>() == who)
         {
-            isClear = true;
-            if (!nextSelectMapcode.Equals("000000")) DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
+            Clear();
         }
     }
 }

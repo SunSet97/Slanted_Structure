@@ -58,7 +58,7 @@ public class MiniGameManager : MonoBehaviour
     void Start() {
         //doves = doveParent.GetComponentInChildren<Transform>(); @비둘기 하나하나 사용할 때 쓰기
         //textTimer.gameObject.SetActive(false);
-        DataController.instance_DataController.isMapChanged = true;
+        //DataController.instance_DataController.isMapChanged = true;
         particle.Play();
         initialRauSpeed = rauSpeed;
         
