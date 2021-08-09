@@ -313,6 +313,7 @@ public class SpeatAbility : MonoBehaviour
                     distance = 2.0f;
                     target = new Vector3(speat.transform.position.x, speat.transform.position.y, speat.transform.position.z + distance);
                     StartCoroutine(Hiding(target));
+                    //speat.
                     break;
                 }
                 else if (door.isTouched && (!isHiding && isInRoom) && idx == clickedDoorIndex)
@@ -343,7 +344,7 @@ public class SpeatAbility : MonoBehaviour
         while (speat.transform.position != target)
         {
             speat.transform.position = Vector3.MoveTowards(speat.transform.position, target, 0.1f); // 마지막 파라미터는 숨을 때 속도!
-            yield return new WaitForSeconds(0f);
+            yield return null;
         }
 
         speat.ctrl.enabled = true;

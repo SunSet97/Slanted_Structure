@@ -332,19 +332,36 @@ public class CanvasControl : MonoBehaviour
 
     // 일반 dialogue
     
+    public void StartConversation()
+    {
+        if (DataController.instance_DataController.taskData != null)
+            DataController.instance_DataController.taskData.isContinue = false;
+
+        DataController.instance_DataController.joyStick.gameObject.SetActive(false);
+        dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
+        dialogueCnt = 0;
+        isPossibleCnvs = false;
+        DialoguePanel.SetActive(true);
+        UpdateWord();
+    }
+
     public void StartConversation(string jsonString)
     {
-        DataController.instance_DataController.taskData.isContinue = false;
+        if(DataController.instance_DataController.taskData != null)
+            DataController.instance_DataController.taskData.isContinue = false;
+
         DataController.instance_DataController.joyStick.gameObject.SetActive(false);
         DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
         dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
         dialogueCnt = 0;
+        isPossibleCnvs = false;
         DialoguePanel.SetActive(true);
         UpdateWord();
     }
 
     public void UpdateWord()
     {
+        Debug.Log("대화 업데이트");
         // 대화가 끝나면 선택지 부를 지 여부결정 
         if (dialogueCnt >= dialogueLen)
         {
@@ -355,8 +372,11 @@ public class CanvasControl : MonoBehaviour
             isPossibleCnvs = true;
             dialogueCnt = 0;
             DataController.instance_DataController.dialogueData.dialogues = null;
-            DataController.instance_DataController.taskData.isContinue = true;
-            DataController.instance_DataController.taskData.taskIndex++;
+            if (DataController.instance_DataController.taskData != null)
+            {
+                DataController.instance_DataController.taskData.isContinue = true;
+                DataController.instance_DataController.taskData.taskIndex++;
+            }
         }
         else
         {
@@ -390,7 +410,8 @@ public class CanvasControl : MonoBehaviour
         for (int i = 0; i < choiceLen; i++)
         {
             // 친밀도와 자존감이 기준보다 낮으면 일부 선택지가 나오지 않을 수 있음 
-            int[] condition = Array.ConvertAll(currentTaskData.tasks[index + i].condition.Split(','), (item) => int.Parse(item));
+            Debug.Log(currentTaskData.tasks[index + i + 1].condition);
+            int[] condition = Array.ConvertAll(currentTaskData.tasks[index + i + 1].condition.Split(','), (item) => int.Parse(item));
             //if (
             //   curSelfEstm >= condition[0] &&
             //   curIntimacy_ounRau >= condition[1] &&

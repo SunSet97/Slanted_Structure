@@ -43,9 +43,9 @@ public class NPCInteractor : MonoBehaviour
         //if(character) FindInteractableNPC(interactableDistance);
 
         // 추가
-        if (Input.GetMouseButtonDown(0) && !canvasCtrl.isPossibleCnvs) {
-            canvasCtrl.UpdateWord();
-        }
+        //if (Input.GetMouseButtonDown(0) && !canvasCtrl.isPossibleCnvs) {
+        //    canvasCtrl.UpdateWord();
+        //}
 
     }
 

@@ -35,7 +35,13 @@ public class JsontoString : MonoBehaviour
     {
         public T[] wrapper;
     }
-    
+
+    public static T[] FromJsonPath<T>(string path)
+    {
+        T[] t = default;
+        t = JsonUtility.FromJson<Wrapper<T>>("{\"wrapper\":" + File.ReadAllText(path)+ "}").wrapper;
+        return t;
+    }
 
     public static T[] FromJsonArray<T>(string json)
     {

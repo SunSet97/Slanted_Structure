@@ -124,10 +124,11 @@ public class CharacterManager : MonoBehaviour
     #region 캐릭터 이동 설정
     [Header("#Character move setting")]
     public Vector3 moveHorDir = Vector3.zero, moveVerDir = Vector3.zero;    // 수평, 수직 이동 방향 벡터
-    private Vector2 joystickDir;
-    private Vector2 characterDir;
+    private Vector2 joystickDir = new Vector2();
+    private Vector2 characterDir = new Vector2();
     public float joyRot;
     public Quaternion camRotation; // 메인 카메라 기준으로 joystick input 변경(라인트레이서 제외)
+    private Vector3 characterRot = new Vector3();
 
     public bool isJump;                     // 캐릭터의 점프 여부
     public float jumpForce = 5f;            // 점프력
@@ -142,18 +143,26 @@ public class CharacterManager : MonoBehaviour
             // 메인 카메라 기준으로 캐릭터가 바라보는 방향 계산
             camRotation = Quaternion.Euler(0, -cam.transform.rotation.eulerAngles.y, 0);
             Vector3 transformedDir = camRotation * transform.forward;
-            characterDir = new Vector2(transformedDir.x, transformedDir.z);
+            characterDir.Set(transformedDir.x, transformedDir.z);
             // 조이스틱이 가리키는 방향
-            joystickDir = new Vector2(DataController.instance_DataController.inputDirection.x, DataController.instance_DataController.inputDirection.y);
+            joystickDir.Set(DataController.instance_DataController.inputDirection.x, DataController.instance_DataController.inputDirection.y);
+
 
             joyRot = Vector2.SignedAngle(joystickDir, characterDir);
+            characterRot.Set(0, Mathf.Rad2Deg * (Mathf.Atan2(cam.transform.forward.z, cam.transform.forward.x)), 0);
+
             //사이드뷰 일 때
             if (DataController.instance_DataController.currentMap.SideView == true)
             {
                 anim.SetBool("2DSide", true);
-                if (Mathf.Abs(joyRot) > 170)
+                if (joystickDir.x < 0)
                 {
-                    this.transform.Rotate(Vector3.up, 180);
+                    characterRot.y += 180;
+                    transform.rotation = Quaternion.Euler(characterRot);
+                }
+                else if(joystickDir.x > 0)
+                {
+                    transform.rotation = Quaternion.Euler(characterRot);
                 }
                 anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed 
             }

@@ -5,6 +5,7 @@ using System.IO;
 using System;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using System.Text;
 
 public class DataController : MonoBehaviour
 {
@@ -305,11 +306,12 @@ public class DataController : MonoBehaviour
         }
         else if (dataType == "TutorialCommandData") // 튜토리얼 지시문 불러오기 
         {
-            string filePath = Application.dataPath + "/Resources/DialogueScripts/ProgressCollider/" + DataFileName + "/" + dataType + ".json";
-            if (File.Exists(filePath))
+            StringBuilder filePath = new StringBuilder();
+            filePath.AppendFormat("{0}/Resources/DialogueScripts/ProgressCollider/{1}/{2}.json", Application.dataPath, DataFileName, dataType);
+            if (File.Exists(filePath.ToString()))
             {
                 Debug.Log("로드 성공");
-                string FromJsonData = File.ReadAllText(filePath);
+                string FromJsonData = File.ReadAllText(filePath.ToString());
                 _tutorialCmdData = JsonUtility.FromJson<TutorialCommandData>(FromJsonData);
 
             }
@@ -321,30 +323,25 @@ public class DataController : MonoBehaviour
         }
         else // 대화파일 불러오기
         {
-            string filePath = Application.dataPath + "/Resources/DialogueScripts/" + dataType + "/" + DataFileName;
+            StringBuilder filePath = new StringBuilder();
+            filePath.AppendFormat("{0}/Resources/DialogueScripts/{1}/{2}", Application.dataPath, dataType, DataFileName);
+            //string filePath = Application.dataPath + "/Resources/DialogueScripts/" + dataType + "/" + DataFileName;
             print(filePath);
-            if (File.Exists(filePath))
+            if (File.Exists(filePath.ToString()))
             {
                 Debug.Log("로드 성공");
-                string FromJsonData = File.ReadAllText(filePath);
-                //_dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
-                //_dialogueData.dialogue.add dialogue
-                //dialougle.addDictionary<>맵데이터에 배열로 저장
-                ///for(대화 개수만큼)
-                ///ArrayList.add FromJson
-                ///}
-                //Dictionary.add<맵코드, ArrayList>
-                //dialogue.add<>
-                //_dialogueData.
+                Debug.Log(filePath.ToString());
+                dialogueData.dialogues = JsontoString.FromJsonPath<Dialogue>(filePath.ToString());
                 if (dataType != "ScriptCollider")
                     instance.charData.dialogue_index++;
             }
             else
             {
                 Debug.Log("기본 대사 파일");
-                filePath = Application.dataPath + "/Resources/DialogueScripts/" + dataType + "/Default.json";
-
-                string FromJsonData = File.ReadAllText(filePath);
+                filePath.Clear();
+                filePath.AppendFormat("{0}/Resources/DialogueScripts/{1}/Default.json", Application.dataPath, dataType);
+                string FromJsonData = File.ReadAllText(filePath.ToString());
+                Debug.Log(FromJsonData);
                 //_dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
             }
         }

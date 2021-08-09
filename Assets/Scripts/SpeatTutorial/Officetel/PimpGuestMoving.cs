@@ -70,13 +70,13 @@ public class PimpGuestMoving : MonoBehaviour
 
         if (talking)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (!canvasCtrl.isPossibleCnvs)
-                {
-                    CanvasControl.instance_CanvasControl.UpdateWord();
-                }
-            }
+            //if (Input.GetMouseButtonDown(0))
+            //{
+            //    if (!canvasCtrl.isPossibleCnvs)
+            //    {
+            //        CanvasControl.instance_CanvasControl.UpdateWord();
+            //    }
+            //}
         }
 
         CheckSameFloorWithSpeat(); // 스핏과 같은 층에 있는지 확인.
@@ -136,10 +136,10 @@ public class PimpGuestMoving : MonoBehaviour
                 talking = true;
                 canvasCtrl.selectedGuest = gameObject;
 
-                canvasCtrl.isPossibleCnvs = false;
+
                 DataController.instance_DataController.LoadData(transform.parent.name, gameObject.name + ".json");
                 //수정
-                //CanvasControl.instance_CanvasControl.StartConversation();
+                CanvasControl.instance_CanvasControl.StartConversation();
 
             }
 
@@ -151,6 +151,7 @@ public class PimpGuestMoving : MonoBehaviour
             if (hit.gameObject.name.Equals("Speat")) {
                 print("포주와 마주침. 게임 종료");
                 //DataController.instance_DataController.isMapChanged = true;
+
             }
         }
 

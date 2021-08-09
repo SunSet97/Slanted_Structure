@@ -86,9 +86,14 @@ public class InteractionObj_stroke : MonoBehaviour
             {
                 jsonTask = new Stack<TaskData>();
                 PushTask(jsonFile.text);
+                Debug.Log(jsonFile.text);
             }
             else if (type == typeOfInteraction.dialogue)
                 DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonFile.text);
+        }
+        else
+        {
+            Debug.Log("Json파일 없음");
         }
     }
     
@@ -142,7 +147,7 @@ public class InteractionObj_stroke : MonoBehaviour
         //1회성 interaction인 경우 굳이 excel로 할 필요 없이 바로 실행 dialogue도 마찬가지 단순한 잡담이면 typeOfInteraction.dialogue에서 처리
         else if (type == typeOfInteraction.continuous)
         {
-            if (jsonTask == null) { Debug.LogError("jsontask파일 없음 오류오류"); }
+            if (jsonTask.Count == 0) { Debug.LogError("jsontask파일 없음 오류오류"); }
             StartCoroutine(TaskCorutine());
         }
         else if (type == typeOfInteraction.interact && TryGetComponent(out CheckMapClear checkMapClear))
@@ -315,6 +320,7 @@ public class InteractionObj_stroke : MonoBehaviour
                     Debug.Log("dialogue");
                     currentTaskData.isContinue = false;
                     string path = currentTaskData.tasks[taskIndex].nextFile;
+                    Debug.Log(path);
                     string jsonString = (Resources.Load(path) as TextAsset).text;
                     Debug.Log(path);
                     //string path = Application.dataPath + "/Dialogues/101010/MainStory/Story/" + DataController.instance_DataController.dialogueData.tasks[index].nextFile + ".json";

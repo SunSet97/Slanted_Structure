@@ -298,29 +298,6 @@ public class MapData : MonoBehaviour
         // 현재 맵코드와 DataController 동일한 경우
         else
         {
-            if (mapCode.Equals("002010"))
-            {
-                if (CanvasControl.instance_CanvasControl.transform.Find("Tutorial").Find("Rau Tutorial"))
-                {
-                    Destroy(CanvasControl.instance_CanvasControl.transform.Find("Tutorial").Find("Rau Tutorial").gameObject);
-                }
-                transform.GetChild(2).GetChild(0).gameObject.SetActive(true);
-                transform.GetChild(2).SetParent(CanvasControl.instance_CanvasControl.transform.Find("Tutorial"));
-            }
-            else if (mapCode.Equals("002020"))
-            {
-                if (CanvasControl.instance_CanvasControl.transform.Find("Tutorial").Find("Speat Tutorial Officetel"))
-                {
-                    Destroy(CanvasControl.instance_CanvasControl.transform.Find("Tutorial").Find("Speat Tutorial Officetel").gameObject);
-                }
-                transform.GetChild(2).GetChild(1).gameObject.SetActive(true);
-                transform.GetChild(2).SetParent(CanvasControl.instance_CanvasControl.transform.Find("Tutorial"));
-            }
-            else if (mapCode.Equals("002030"))
-            {
-                if (CanvasControl.instance_CanvasControl.transform.Find("Tutorial").Find("Speat Tutorial backstreet"))
-                    Destroy(CanvasControl.instance_CanvasControl.transform.Find("Tutorial").Find("Speat Tutorial backstreet").gameObject);
-            }
         }
     }
     void Update()

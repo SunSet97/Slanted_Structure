@@ -52,5 +52,6 @@ public class Task
 public class Dialogue {
     public string name;
     public EXPRESSION experssion;
+    public string kind;
     public string contents;
 }
