@@ -150,7 +150,8 @@ public class PimpGuestMoving : MonoBehaviour
         {
             if (hit.gameObject.name.Equals("Speat")) {
                 print("포주와 마주침. 게임 종료");
-                //DataController.instance_DataController.isMapChanged = true;
+
+                DataController.instance_DataController.ResetCurrentMap();
 
             }
         }

@@ -110,11 +110,29 @@ public class DataController : MonoBehaviour
         SceneManager.LoadScene("Ingame_set");
     }
 
+    public void ResetCurrentMap()
+    {
+        Destroy(currentMap.ui);
+        Destroy(currentMap.gameObject);//현재 맵코드 오브젝트 삭제
+
+        foreach (MapData findMap in storymaps)
+        {
+            if (findMap.name.Equals(currentMap.mapCode))
+            {
+                currentMap = Instantiate(findMap, mapGenerate);
+                break;
+            }
+        }
+        currentMap.PlaySettingUpdate();
+        SetByChangedMap();
+    }
+
     //맵이 바뀔 때 초기화
     public void ChangeToNextMap()
     {
         mapCode = string.Format("{0:000000}", currentMap.nextMapcode); // 맵 코드 변경
 
+        Destroy(currentMap.ui);
         Destroy(currentMap.gameObject);//현재 맵코드 오브젝트 삭제
 
         foreach (MapData findMap in storymaps)
