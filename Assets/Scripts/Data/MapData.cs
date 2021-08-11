@@ -292,12 +292,7 @@ public class MapData : MonoBehaviour
         // 현재 맵코드와 동일하지 않을 경우 - DataController의 MapCode로 이동
         if (!DataController.instance_DataController.mapCode.Equals(mapCode))
         {
-            DataController.instance_DataController.currentMap.nextMapcode = DataController.instance_DataController.mapCode;
-            DataController.instance_DataController.ChangeToNextMap();
-        }
-        // 현재 맵코드와 DataController 동일한 경우
-        else
-        {
+            DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
         }
     }
     void Update()

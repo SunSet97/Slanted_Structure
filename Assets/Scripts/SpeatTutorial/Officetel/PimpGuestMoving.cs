@@ -5,39 +5,32 @@ using UnityEngine;
 public class PimpGuestMoving : MonoBehaviour
 {
     // 스핏
+    [Header("스핏")]
     public CharacterManager speat; // 스핏
     public SpeatAbility speatAbility; // 스핏ability
     public float changeDirectionCycle;
     public int speedUPTime;
-    bool isGround = false; // 스핏이 능력 쓸 때 적들도 같이 아래로 내려오는 것을 막기 위함.
-    bool isTriggerRotation = false;
 
     // 적들
-    CharacterController npc;
+    [Header("적")]
     public float speed;
-    public float rotationSpeed = 4.5f;
+    public float rotationSpeed;
     public float accVal; // 가속 값
     public int nextDirection;
-    float rotation;
     int rotVal = 0;
-    bool isRotating = false;
-    public string who; // 적 유형
+    float sameFloorRange = 0.5f;// y값 얼마차이까지 스핏하고 같은 층에 있다고 판단할 것인지 범위.
+    CharacterController npc;
+    Camera cam;
+    Animator animator;
+
+    private readonly int speedHash = Animator.StringToHash("Speed");
+
+    [Header("속도 증가 여부")]
+    public bool speedUp = false;
 
     // 대화
     private CanvasControl canvasCtrl;
-    bool talking = false;
-
-    // 스핏하고 같은 층에 있는지 여부
-    bool onSameFloor = false;
-    public bool onSameFloorAndScreen = false;
-    float sameFloorRange = 0.5f;// y값 얼마차이까지 스핏하고 같은 층에 있다고 판단할 것인지 범위.
-    public Camera cam;
-    float tempSpeed;
-    public bool speedUp = false;
-    float cntAngle = 0f;
-
-    // 애니메이터
-    Animator animator;
+    public bool talking = false;
 
     void Start()
     {
@@ -47,11 +40,10 @@ public class PimpGuestMoving : MonoBehaviour
         animator = GetComponent<Animator>();
         //npc.GetComponent<Collider>().isTrigger = true;
 
-        speat = DataController.instance_DataController.currentChar;
+        speat = DataController.instance_DataController.speat;
 
         cam = DataController.instance_DataController.cam;
-
-        rotation = gameObject.transform.rotation.y;
+        
         Invoke("Think", 0);
 
     }
@@ -60,40 +52,25 @@ public class PimpGuestMoving : MonoBehaviour
     {
 
         if (!npc.isGrounded) npc.Move(transform.up * -1); // 중력
-        if (!speat) speat = DataController.instance_DataController.currentChar;
+
 
         npc.Move((Vector3.right * nextDirection * speed) * Time.deltaTime); // 적들 이동.
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0, rotVal, 0)), rotationSpeed * Time.deltaTime); // 적들 이동 방향에 따른 회전
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, rotVal, 0), rotationSpeed * Time.deltaTime); // 적들 이동 방향에 따른 회전
 
         if (talking) nextDirection = 0; // 스핏하고 대화중일때 멈추게
 
-        if (talking)
+
+        if (!speedUp) // SpeedUpFunc() 한번 수행될 수 있게.
         {
-            //if (Input.GetMouseButtonDown(0))
-            //{
-            //    if (!canvasCtrl.isPossibleCnvs)
-            //    {
-            //        CanvasControl.instance_CanvasControl.UpdateWord();
-            //    }
-            //}
-        }
-
-        CheckSameFloorWithSpeat(); // 스핏과 같은 층에 있는지 확인.
-
-        if (onSameFloor && CheckCamera()) onSameFloorAndScreen = true; // 스핏과 같은 층에 있으면서 카메라에 걸리는지 확인.
-        else onSameFloorAndScreen = false;
-
-        if (onSameFloorAndScreen && (speatAbility.isAbility || speatAbility.isHiding))
-        {
-            if (!speedUp) // SpeedUpFunc() 한번 수행될 수 있게.
+            if (CheckSameFloorWithSpeat() && CheckCamera() && (speatAbility.isAbility || speatAbility.isHiding))
             {
                 speedUp = true;
                 StartCoroutine(SpeedUpFunc());
-            }
 
+            }
         }
-        if (gameObject.name == "Pimp_1") print("rotVal: " + rotVal);
+        if (gameObject.name.Equals("Pimp_1")) print("rotVal: " + rotVal);
 
 
     }
@@ -107,17 +84,17 @@ public class PimpGuestMoving : MonoBehaviour
 
         if (nextDirection == 1) // 오른쪽으로 움직임
         {
-            animator.SetFloat("Speed", 1.0f);
+            animator.SetFloat(speedHash, 1.0f);
             rotVal = 90;
         }
         else if (nextDirection == -1) // 왼쪽으로 움직임
         {
-            animator.SetFloat("Speed", 1.0f);
+            animator.SetFloat(speedHash, 1.0f);
             rotVal = -90;
         }
         else if (nextDirection == 0) // 정면 바라보고 정지
         {
-            animator.SetFloat("Speed", 0.0f);
+            animator.SetFloat(speedHash, 0.0f);
             rotVal = 180;
         }
 
@@ -128,7 +105,7 @@ public class PimpGuestMoving : MonoBehaviour
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         // 대화시작
-        if (transform.parent.name == "Guest")
+        if (transform.parent.name.Equals("Guest"))
         {
             if (hit.gameObject.name.Equals("Speat") && canvasCtrl.isPossibleCnvs)
             {
@@ -136,6 +113,8 @@ public class PimpGuestMoving : MonoBehaviour
                 talking = true;
                 canvasCtrl.selectedGuest = gameObject;
 
+                //모든 캐릭터 이동 중지
+                //모든 캐릭터 talking 켜주면 될 거 같은데
 
                 DataController.instance_DataController.LoadData(transform.parent.name, gameObject.name + ".json");
                 //수정
@@ -144,14 +123,13 @@ public class PimpGuestMoving : MonoBehaviour
             }
 
         }
-
-
-        if (transform.name == "Pimp")
+        else if (transform.name.Equals("Pimp"))
         {
-            if (hit.gameObject.name.Equals("Speat")) {
+            if (hit.gameObject.name.Equals("Speat"))
+            {
                 print("포주와 마주침. 게임 종료");
 
-                DataController.instance_DataController.ResetCurrentMap();
+                DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
 
             }
         }
@@ -178,30 +156,28 @@ public class PimpGuestMoving : MonoBehaviour
 
     }
 
-
+    // pimp나 guest가 카메라에 걸리는지 확인하는 함수
     private bool CheckCamera()
-    { // pimp나 guest가 카메라에 걸리는지 확인하는 함수.
+    {
         Vector3 screenPoint = cam.WorldToViewportPoint(gameObject.transform.position);
         bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
 
         return onScreen;
     }
 
-    private void CheckSameFloorWithSpeat()
+    // pimp나 guest가 같은 층에 있는 지 bool값 반환
+    private bool CheckSameFloorWithSpeat()
     {
-        if (speat != null)
-        {
-            if (speat.transform.position.y - sameFloorRange <= gameObject.transform.position.y
-                && gameObject.transform.position.y <= speat.transform.position.y + sameFloorRange) onSameFloor = true;
-            else onSameFloor = false;
-        }
+        if (speat.transform.position.y - sameFloorRange <= gameObject.transform.position.y
+            && gameObject.transform.position.y <= speat.transform.position.y + sameFloorRange) return true;
+        else return false;
     }
 
     IEnumerator SpeedUpFunc()
     {
         //Debug.Log("능력 쓰는거 걸림");
         int i = speedUPTime;
-        tempSpeed = speed;
+        float tempSpeed = speed;
         speed += accVal;
         while (i >= 0)
         {

@@ -28,7 +28,8 @@ public class CheckMapClear : MonoBehaviour
     {
         if (!nextSelectMapcode.Equals("000000"))
             DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
-        DataController.instance_DataController.ChangeToNextMap();
+
+        DataController.instance_DataController.ChangeMap(DataController.instance_DataController.currentMap.nextMapcode);
     }
 
     // 캐릭터 확인 후 트리거 활성화

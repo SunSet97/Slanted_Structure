@@ -333,7 +333,7 @@ public class SpeatAbility : MonoBehaviour
 
     IEnumerator Hiding(Vector3 target)
     {
-
+        WaitForSeconds waitForSeconds = new WaitForSeconds(0f);
         isHiding = true;
 
         if (isInRoom) isInRoom = false; // 능력써서 방 밖으로 나올 때
@@ -344,7 +344,7 @@ public class SpeatAbility : MonoBehaviour
         while (speat.transform.position != target)
         {
             speat.transform.position = Vector3.MoveTowards(speat.transform.position, target, 0.1f); // 마지막 파라미터는 숨을 때 속도!
-            yield return null;
+            yield return waitForSeconds;
         }
 
         speat.ctrl.enabled = true;

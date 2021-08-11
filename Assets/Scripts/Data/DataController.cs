@@ -36,7 +36,6 @@ public class DataController : MonoBehaviour
     public Vector3 rot;
 
     [Header("맵")]
-    //public List<MapData> storymaps;
     public MapData[] storymaps;
     public Transform mapGenerate;
     public Transform[] progressColliders;
@@ -79,14 +78,19 @@ public class DataController : MonoBehaviour
     {
         ExistsData();
         LoadData("TutorialCommandData", "RauTutorial");
-        //맵 찾기
-        //FindMap();
 
+        //초기화
+        if (CanvasControl.instance_CanvasControl) canvasCtrl = CanvasControl.instance_CanvasControl;
+        if (!speat && GameObject.Find("Speat")) speat = GameObject.Find("Speat").GetComponent<CharacterManager>();
+        if (!oun && GameObject.Find("Oun")) oun = GameObject.Find("Oun").GetComponent<CharacterManager>();
+        if (!rau && GameObject.Find("Rau")) rau = GameObject.Find("Rau").GetComponent<CharacterManager>();
+
+
+        //맵 찾아서 저장
         for (int i = 0; i < 5; i++)
         {
             MapData[] temp = Resources.LoadAll<MapData>("StoryMap/ep" + i);
             storymaps = storymaps.Concat(temp).ToArray();
-            //Mapdata형식의 배열 storymaps에 Resources 넣어버림
         }
     }
 
@@ -96,8 +100,6 @@ public class DataController : MonoBehaviour
         if (!joyStick) joyStick = Joystick.FindObjectOfType<Joystick>();
         //카메라 찾기
         if (!cam) cam = Camera.main;
-        //캐릭터 찾기
-        FindCharacter();
     }
 
     public void Cinematic()//시네마틱 씬 로드
@@ -110,34 +112,19 @@ public class DataController : MonoBehaviour
         SceneManager.LoadScene("Ingame_set");
     }
 
-    public void ResetCurrentMap()
-    {
-        Destroy(currentMap.ui);
-        Destroy(currentMap.gameObject);//현재 맵코드 오브젝트 삭제
 
-        foreach (MapData findMap in storymaps)
-        {
-            if (findMap.name.Equals(currentMap.mapCode))
-            {
-                currentMap = Instantiate(findMap, mapGenerate);
-                break;
-            }
-        }
-        currentMap.PlaySettingUpdate();
-        SetByChangedMap();
-    }
 
     //맵이 바뀔 때 초기화
-    public void ChangeToNextMap()
+    public void ChangeMap(string mapCodeBeMove)
     {
-        mapCode = string.Format("{0:000000}", currentMap.nextMapcode); // 맵 코드 변경
+        mapCode = string.Format("{0:000000}", mapCodeBeMove); // 맵 코드 변경
 
         Destroy(currentMap.ui);
         Destroy(currentMap.gameObject);//현재 맵코드 오브젝트 삭제
 
         foreach (MapData findMap in storymaps)
         {
-            if (findMap.name.Equals(currentMap.nextMapcode))
+            if (findMap.name.Equals(mapCode))
             {
                 currentMap = Instantiate(findMap, mapGenerate);
                 break;
@@ -160,24 +147,23 @@ public class DataController : MonoBehaviour
         oun.isSelected = false;
         rau.isSelected = false;
 
-        int index = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true).Count;
         List<MapData.CharacterPositionSet> temp = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true);
-        for (int k = 0; k < index; k++)
+        for (int k = 0; k < temp.Count; k++)
         {
             temp[k].startPosition.localRotation = Quaternion.Euler(temp[k].startPosition.localRotation.x, temp[k].startPosition.localRotation.y + 90f, temp[k].startPosition.localRotation.z);
-            if (temp[k].who == MapData.Character.Speat)
+            if (temp[k].who.Equals(MapData.Character.Speat))
             {
                 speat.transform.position = temp[k].startPosition.position;
                 speat.transform.localRotation = temp[k].startPosition.localRotation;
                 speat.isSelected = true;
             }
-            if (temp[k].who == MapData.Character.Oun)
+            else if (temp[k].who.Equals(MapData.Character.Oun))
             {
                 oun.transform.position = temp[k].startPosition.position;
                 oun.transform.localRotation = temp[k].startPosition.localRotation;
                 oun.isSelected = true;
             }
-            if (temp[k].who == MapData.Character.Rau)
+            else if (temp[k].who.Equals(MapData.Character.Rau))
             {
                 rau.transform.localRotation = temp[k].startPosition.localRotation;
                 rau.transform.position = temp[k].startPosition.position;
@@ -185,10 +171,10 @@ public class DataController : MonoBehaviour
             }
         }
 
-        FindCharacter();
-
         //현재 캐릭터 위치 대기실로 이동
         if (currentChar && !currentChar.isSelected) currentChar.WaitInRoom();
+
+        FindCurrentCharacter(); //다음 맵의 currentChar로 변경
 
         //카메라 위치와 회전
         camDis = currentMap.camDis;
@@ -255,14 +241,9 @@ public class DataController : MonoBehaviour
 
     }
 
-    //캐릭터 매니저 찾아서 정보 저장
-    void FindCharacter()
+    //현재 캐릭터 찾아서 저장
+    void FindCurrentCharacter()
     {
-        if (CanvasControl.instance_CanvasControl) canvasCtrl = CanvasControl.instance_CanvasControl;
-        if (!speat && GameObject.Find("Speat")) speat = GameObject.Find("Speat").GetComponent<CharacterManager>();
-        if (!oun && GameObject.Find("Oun")) oun = GameObject.Find("Oun").GetComponent<CharacterManager>();
-        if (!rau && GameObject.Find("Rau")) rau = GameObject.Find("Rau").GetComponent<CharacterManager>();
-
         if (canvasCtrl && speat && oun && rau)
         {
             if (speat.isSelected) currentChar = speat;
