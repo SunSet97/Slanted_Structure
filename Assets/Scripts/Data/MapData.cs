@@ -47,7 +47,6 @@ public class MapData : MonoBehaviour
     [Space(15)]
     [Tooltip("맵의 이름은 사용자가 원하는 대로 변경하면 되며 맵 구성 어셋들은 이 오브젝트의 자식으로 설정해주면 됩니다.")]
     public GameObject map; // auto setting
-    public bool SideView;
     [Tooltip("이 맵의 전용 UI를 넣어주시면 됩니다.")]
     public GameObject ui; // 맵 전용 UI
     [Tooltip("이 맵의 전용 SkyBox를 넣어주시면 됩니다.")]
@@ -77,29 +76,6 @@ public class MapData : MonoBehaviour
         DestroyImmediate(temp); //임시 오브젝트 제거
     }
 
-    // 조이스틱 입력 설정
-    Vector2 inputDir = Vector2.zero;
-    void JoystickInputSetting(bool isPlaying)
-    {
-        if (isPlaying && DataController.instance_DataController.joyStick != null)
-        {
-            // 입력 방식에 따라 입력 값 분리
-            if (method.Equals(JoystickInputMethod.OneDirection))
-            {
-                SideView = true;
-                inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, 0); // 한 방향 입력은 수평값만 받음
-                DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
-                DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
-            }
-            else if (method.Equals(JoystickInputMethod.AllDirection))
-            {
-                SideView = false;
-                inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
-                DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
-            }
-            if (!method.Equals(JoystickInputMethod.Other)) DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
-        }
-    }
     
     //맵 엔딩 세팅
 
@@ -302,7 +278,6 @@ public class MapData : MonoBehaviour
         PositionSettingUpdate();
         // Play mode에서만 업데이트
         //PlaySettingUpdate(Application.isPlaying);
-        JoystickInputSetting(Application.isPlaying); // 조이스틱 설정 적용
 
         //타임라인 인식
         if (SceneManager.GetActiveScene().name =="Cinematic") 

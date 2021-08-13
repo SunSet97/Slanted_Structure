@@ -53,6 +53,101 @@ public class SpeatAbility : MonoBehaviour
         // 스핏 확인
         if (speat != null)
         {
+            if(isAbility){
+                // 전방 벽 전면 탐지
+                int wallLayerMask = 1 << 11;
+                if (Physics.Raycast(fwdPos, fwdDir, out wallFwdFace, float.MaxValue, wallLayerMask))
+                {
+                    // 전방 첫번째 벽 전면 임시 저장
+                    if (wallFwdTmp.transform == null) { wallFwdTmp = wallFwdFace; }
+                    // 벽이 바뀌면 변수 초기화 후 재탐색
+                    else if (wallFwdTmp.transform != wallFwdFace.transform) { fwdCnt = 1; wallFwdTmp = wallFwdFace; }
+
+                    // 전방 벽 후면 탐지
+                    if (Physics.Raycast(wallFwdFace.point + fwdDir * 5 + bwdDir * fwdCnt, bwdDir, out wallFwdInverse, float.MaxValue, wallLayerMask))
+                    {
+                        if (wallFwdFace.transform != wallFwdInverse.transform) fwdCnt++; // 같은 벽을 가리킬때까지 탐색
+                    }
+                }
+                // 후방 벽 탐지
+                if (Physics.Raycast(bwdPos, bwdDir, out wallBwdFace, float.MaxValue, wallLayerMask))
+                {
+                    // 후방 첫번째 벽 임시 저장
+                    if (wallBwdTmp.transform == null) { wallBwdTmp = wallBwdFace; }
+                    // 벽이 바뀌면 벽을 통과한 걸로 간주
+                    else if (wallBwdTmp.transform != wallBwdFace.transform)
+                    {
+                        bwdCnt = 1;
+                        wallBwdTmp = wallBwdFace;
+                        if (isPassingHor)
+                        {
+                            speat.gameObject.layer = 0;
+                            speat.moveHorDir = Vector3.zero;
+                            isPassingHor = false;
+                            wallNum++;
+                        }
+                    }
+
+                    // 후방 벽 후면 탐지
+                    if (Physics.Raycast(wallBwdFace.point + fwdDir * 5 + bwdDir * bwdCnt, fwdDir, out wallBwdInverse, float.MaxValue, wallLayerMask))
+                    {
+                        if (wallBwdFace.transform != wallBwdInverse.transform) bwdCnt++; // 같은 벽을 가리킬때까지 탐색
+                    }
+                }
+
+                // 천장 벽 전면 탐지
+                int floorLayerMask = 1 << 12;
+                if (Physics.Raycast(upPos, upDir, out ceilingFace, float.MaxValue, floorLayerMask))
+                {
+                    // 천장 첫번째 벽 전면 임시 저장
+                    if (ceilingTmp.transform == null) { ceilingTmp = ceilingFace; }
+                    // 벽이 바뀌면 벽을 통과한 걸로 간주
+                    else if (ceilingTmp.transform != ceilingFace.transform)
+                    {
+                        ceilingCnt = 1;
+                        ceilingTmp = ceilingFace;
+                        if (isPassingVerDown)
+                        {
+                            speat.gameObject.layer = 0;
+                            speat.moveVerDir = Vector3.zero;
+                            isPassingVerDown = false;
+                            wallNum++;
+                        }
+                    }
+
+                    // 천장 벽 후면 탐지
+                    if (Physics.Raycast(ceilingFace.point + upDir * 5 + downDir * ceilingCnt, downDir, out ceilingInverse, float.MaxValue, floorLayerMask))
+                    {
+                        if (ceilingFace.transform != ceilingInverse.transform) ceilingCnt++; // 같은 벽을 가리킬때까지 탐색
+                    }
+                }
+
+                // 바닥 벽 전면 탐지
+                if (Physics.Raycast(downPos, downDir, out floorFace, float.MaxValue, floorLayerMask))
+                {
+                    // 바닥 첫번째 벽 전면 임시 저장
+                    if (floorTmp.transform == null) { floorTmp = floorFace; }
+                    // 벽이 바뀌면 벽을 통과한 걸로 간주
+                    else if (floorTmp.transform != floorFace.transform)
+                    {
+                        floorCnt = 1;
+                        floorTmp = floorFace;
+                        if (isPassingVerUp)
+                        {
+                            speat.gameObject.layer = 0;
+                            speat.moveVerDir = Vector3.zero;
+                            isPassingVerUp = false;
+                            wallNum++;
+                        }
+                    }
+
+                    // 바닥 벽 후면 탐지
+                    if (Physics.Raycast(floorFace.point + downDir * 5 + upDir * floorCnt, upDir, out floorInverse, float.MaxValue, floorLayerMask))
+                    {
+                        if (floorFace.transform != floorInverse.transform) floorCnt++; // 같은 벽을 가리킬때까지 탐색
+                    }
+                }
+            }
             HideBehindDoor(); // 문 뒤로 숨기
             fwdDir = speat.transform.forward; bwdDir = -speat.transform.forward;    // 전후방 방향 벡터
             upDir = speat.transform.up; downDir = -speat.transform.up;              // 위아래 방향 벡터
@@ -152,34 +247,19 @@ public class SpeatAbility : MonoBehaviour
                 if (Physics.Raycast(wallFwdFace.point + fwdDir * 5 + bwdDir * fwdCnt, bwdDir, out wallFwdInverse, float.MaxValue, wallLayerMask))
                 {
                     Gizmos.color = Color.blue; Gizmos.DrawWireSphere(wallFwdInverse.point, 0.1f); // 디버깅
-                    if (wallFwdFace.transform != wallFwdInverse.transform) fwdCnt++; // 같은 벽을 가리킬때까지 탐색
                 }
             }
             // 후방 벽 탐지
             if (Physics.Raycast(bwdPos, bwdDir, out wallBwdFace, float.MaxValue, wallLayerMask))
             {
                 // 후방 첫번째 벽 임시 저장
-                if (wallBwdTmp.transform == null) { wallBwdTmp = wallBwdFace; }
-                // 벽이 바뀌면 벽을 통과한 걸로 간주
-                else if (wallBwdTmp.transform != wallBwdFace.transform)
-                {
-                    bwdCnt = 1;
-                    wallBwdTmp = wallBwdFace;
-                    if (isPassingHor)
-                    {
-                        speat.gameObject.layer = 0;
-                        speat.moveHorDir = Vector3.zero;
-                        isPassingHor = false;
-                        wallNum++;
-                    }
-                }
+                if (wallBwdTmp.transform == null) { wallBwdTmp = wallBwdFace; } 
                 Gizmos.color = Color.red; Gizmos.DrawLine(bwdPos, wallBwdFace.point); Gizmos.DrawWireSphere(wallBwdFace.point, 0.1f); // 디버깅
 
                 // 후방 벽 후면 탐지
                 if (Physics.Raycast(wallBwdFace.point + fwdDir * 5 + bwdDir * bwdCnt, fwdDir, out wallBwdInverse, float.MaxValue, wallLayerMask))
                 {
                     Gizmos.color = Color.blue; Gizmos.DrawWireSphere(wallBwdInverse.point, 0.1f); // 디버깅
-                    if (wallBwdFace.transform != wallBwdInverse.transform) bwdCnt++; // 같은 벽을 가리킬때까지 탐색
                 }
             }
 
@@ -189,26 +269,12 @@ public class SpeatAbility : MonoBehaviour
             {
                 // 천장 첫번째 벽 전면 임시 저장
                 if (ceilingTmp.transform == null) { ceilingTmp = ceilingFace; }
-                // 벽이 바뀌면 벽을 통과한 걸로 간주
-                else if (ceilingTmp.transform != ceilingFace.transform)
-                {
-                    ceilingCnt = 1;
-                    ceilingTmp = ceilingFace;
-                    if (isPassingVerDown)
-                    {
-                        speat.gameObject.layer = 0;
-                        speat.moveVerDir = Vector3.zero;
-                        isPassingVerDown = false;
-                        wallNum++;
-                    }
-                }
                 Gizmos.color = Color.red; Gizmos.DrawLine(upPos, ceilingFace.point); Gizmos.DrawWireSphere(ceilingFace.point, 0.1f); // 디버깅
 
                 // 천장 벽 후면 탐지
                 if (Physics.Raycast(ceilingFace.point + upDir * 5 + downDir * ceilingCnt, downDir, out ceilingInverse, float.MaxValue, floorLayerMask))
                 {
                     Gizmos.color = Color.blue; Gizmos.DrawWireSphere(ceilingInverse.point, 0.1f); // 디버깅
-                    if (ceilingFace.transform != ceilingInverse.transform) ceilingCnt++; // 같은 벽을 가리킬때까지 탐색
                 }
             }
 
@@ -217,26 +283,12 @@ public class SpeatAbility : MonoBehaviour
             {
                 // 바닥 첫번째 벽 전면 임시 저장
                 if (floorTmp.transform == null) { floorTmp = floorFace; }
-                // 벽이 바뀌면 벽을 통과한 걸로 간주
-                else if (floorTmp.transform != floorFace.transform)
-                {
-                    floorCnt = 1;
-                    floorTmp = floorFace;
-                    if (isPassingVerUp)
-                    {
-                        speat.gameObject.layer = 0;
-                        speat.moveVerDir = Vector3.zero;
-                        isPassingVerUp = false;
-                        wallNum++;
-                    }
-                }
                 Gizmos.color = Color.red; Gizmos.DrawLine(upPos, floorFace.point); Gizmos.DrawWireSphere(floorFace.point, 0.1f); // 디버깅
 
                 // 바닥 벽 후면 탐지
                 if (Physics.Raycast(floorFace.point + downDir * 5 + upDir * floorCnt, upDir, out floorInverse, float.MaxValue, floorLayerMask))
                 {
                     Gizmos.color = Color.blue; Gizmos.DrawWireSphere(floorInverse.point, 0.1f); // 디버깅
-                    if (floorFace.transform != floorInverse.transform) floorCnt++; // 같은 벽을 가리킬때까지 탐색
                 }
             }
 
@@ -299,7 +351,7 @@ public class SpeatAbility : MonoBehaviour
             // 스핏이 방으로 완전히 들어간 상태일때 클릭
             if (!isHiding && isInRoom) foreach (Interact_ObjectWithRau door in doors) door.GetObjectTouch();
 
-            Vector3 target; // 들어가는 방향
+            Vector3 target = new Vector3(); // 들어가는 방향
             float distance = 0; // 얼만큼 들어가는지
             int idx = -1;
 
@@ -311,7 +363,7 @@ public class SpeatAbility : MonoBehaviour
                     speat.transform.rotation = Quaternion.Euler(0,0,0);
                     clickedDoorIndex = idx;
                     distance = 2.0f;
-                    target = new Vector3(speat.transform.position.x, speat.transform.position.y, speat.transform.position.z + distance);
+                    target.Set(speat.transform.position.x, speat.transform.position.y, speat.transform.position.z + distance);
                     StartCoroutine(Hiding(target));
                     //speat.
                     break;
@@ -321,7 +373,7 @@ public class SpeatAbility : MonoBehaviour
                     clickedDoorIndex = -2;
                     speat.transform.rotation = Quaternion.Euler(0, 180, 0);
                     distance = -2.0f;
-                    target = new Vector3(speat.transform.position.x, speat.transform.position.y, speat.transform.position.z + distance);
+                    target.Set(speat.transform.position.x, speat.transform.position.y, speat.transform.position.z + distance);
                     StartCoroutine(Hiding(target));
                     break;
                 } 

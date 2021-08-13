@@ -138,7 +138,7 @@ public class CharacterManager : MonoBehaviour
     private void FixedUpdate()
     {
         // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을 때
-        if (joyStick && cam && ctrl.enabled && isControlled)
+        if (joyStick && joyStick.gameObject.activeSelf && cam && ctrl.enabled && isControlled)
         {
             // 메인 카메라 기준으로 캐릭터가 바라보는 방향 계산
             camRotation = Quaternion.Euler(0, -cam.transform.rotation.eulerAngles.y, 0);
@@ -151,9 +151,15 @@ public class CharacterManager : MonoBehaviour
             joyRot = Vector2.SignedAngle(joystickDir, characterDir);
             characterRot.Set(0, Mathf.Rad2Deg * (Mathf.Atan2(cam.transform.forward.z, cam.transform.forward.x)), 0);
 
+            Vector2 inputDir = default;
             //사이드뷰 일 때
-            if (DataController.instance_DataController.currentMap.SideView == true)
+            if (DataController.instance_DataController.currentMap.method.Equals(MapData.JoystickInputMethod.OneDirection))
             {
+                inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, 0); // 한 방향 입력은 수평값만 받음
+                DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
+                DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
+
+
                 anim.SetBool("2DSide", true);
                 if (joystickDir.x < 0)
                 {
@@ -167,12 +173,21 @@ public class CharacterManager : MonoBehaviour
                 anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed 
             }
             //쿼터뷰일 때    
-            else
+            else if (DataController.instance_DataController.currentMap.method.Equals(MapData.JoystickInputMethod.AllDirection))
             {
+                inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
+                DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
+
                 anim.SetBool("2DSide", false);
-                if (Mathf.Abs(joyRot) > 0) { this.transform.Rotate(Vector3.up, joyRot); } // 임시 회전
+                if (Mathf.Abs(joyRot) > 0) { transform.Rotate(Vector3.up, joyRot); } // 임시 회전
                 anim.SetFloat("Direction", joyRot); //X방향
                 anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed 
+            }
+
+
+            if(!DataController.instance_DataController.currentMap.method.Equals(MapData.JoystickInputMethod.Other))
+            {
+                DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
             }
 
 
@@ -194,6 +209,10 @@ public class CharacterManager : MonoBehaviour
 
             //if (DataController.instance_DataController.isMapChanged == false)
             ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 최종 이동 시킴
+        }
+        else
+        {
+            anim.SetFloat("Speed", 0); //Speed
         }
     }
     #endregion

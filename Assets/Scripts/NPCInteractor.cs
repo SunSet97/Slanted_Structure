@@ -16,19 +16,7 @@ public class NPCInteractor : MonoBehaviour
     public List<Interact_ObjectWithRau> NPCInteractComponentList = new List<Interact_ObjectWithRau>();
 
     // 인스턴스화
-    private static NPCInteractor instance = null;
-    public static NPCInteractor instance_NPCInteractor
-    {
-        get
-        {
-            return instance;
-        }
-    }
 
-    private void Awake()
-    {
-        instance = this;
-    }
 
     private void Start()
     {
@@ -47,6 +35,11 @@ public class NPCInteractor : MonoBehaviour
         //    canvasCtrl.UpdateWord();
         //}
 
+    }
+
+    public Transform[] GetNPCArray()
+    {
+        return NPCArray;
     }
 
     //private void FindInteractableNPC(float interactableDist)

@@ -99,7 +99,15 @@ public class Interact_ObjectWithRau : MonoBehaviour
                     }
                     if (isTouched && hit.collider.transform.parent.name == "NPCManager" && CanvasControl.instance_CanvasControl.isPossibleCnvs)
                     {
-                        NPCInteractor.instance_NPCInteractor.FindInteractableNPC(hit, radius);
+                        if (hit.collider.transform.parent.TryGetComponent(out NPCInteractor npcInteractor))
+                        {
+                            npcInteractor.FindInteractableNPC(hit, radius);
+                        }
+                        else
+                        {
+                            //NPCInteractor.instance_NPCInteractor.FindInteractableNPC(hit, radius);
+                            Debug.LogError("오류 발생했음");
+                        }
                     }
                     break;
                 }

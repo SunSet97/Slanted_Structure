@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -28,7 +29,7 @@ public class CanvasControl : MonoBehaviour
     public int dialogueCnt = 0; // 대사 카운트 변수
     public int dialogueLen = 0; // 대사의 갯
     UnityAction<int> pressBtnMethod;
-
+    UnityAction endDialogueAction;
     public bool endConversation = false; // 대화 끝나면 true.
 
     private bool isExistFile;
@@ -349,7 +350,8 @@ public class CanvasControl : MonoBehaviour
     {
         if(DataController.instance_DataController.taskData != null)
             DataController.instance_DataController.taskData.isContinue = false;
-
+        DataController.instance_DataController.inputDegree = 0;
+        DataController.instance_DataController.inputDirection = Vector2.zero;
         DataController.instance_DataController.joyStick.gameObject.SetActive(false);
         DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
         dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
@@ -361,7 +363,6 @@ public class CanvasControl : MonoBehaviour
 
     public void UpdateWord()
     {
-        Debug.Log("대화 업데이트");
         // 대화가 끝나면 선택지 부를 지 여부결정 
         if (dialogueCnt >= dialogueLen)
         {
@@ -371,6 +372,9 @@ public class CanvasControl : MonoBehaviour
 
             isPossibleCnvs = true;
             dialogueCnt = 0;
+            
+            endDialogueAction();
+            endDialogueAction = null;
             DataController.instance_DataController.dialogueData.dialogues = null;
             if (DataController.instance_DataController.taskData != null)
             {
@@ -428,6 +432,10 @@ public class CanvasControl : MonoBehaviour
     public void SetChoiceAction(UnityAction<int> pressBtn)
     {
         pressBtnMethod = pressBtn;
+    }
+    public void SetDialougueEndAction(UnityAction unityAction)
+    {
+        endDialogueAction = unityAction;
     }
 
     // 선택지를 눌렀을 때 불리는 함수 
