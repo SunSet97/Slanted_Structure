@@ -31,25 +31,13 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine("initPatterns");
+        initPatterns();
     }
-    IEnumerator initPatterns()
+    private void initPatterns()
     {
-        WaitForSeconds waitForSeconds = new WaitForSeconds(1);
         for (int i = 0; i < 3; i++)
         {
-            //GameObject[] gameObjects = Resources.LoadAll<GameObject>("Run_Pattern/Pattern" + i);
-            //foreach(GameObject temp in gameObjects)
-            //    patterns[i].Add(temp);
-
             patterns.Add(Resources.LoadAll<GameObject>("Run_Pattern/Pattern" + i));
-
-            //for (int k = 0; k < patterns[i].Length; k++)
-            //{
-            //    patterns[i][k] = Instantiate(patterns[i][k], patternFolder);
-            //    patterns[i][k].SetActive(false);
-            //}
-            yield return waitForSeconds;
         }
     }
     void Update()
@@ -59,14 +47,11 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
         pimpDistance = (speatSlider.value - pimpSlider.value) * percentage; // 스핏과 포주의 거리
 
         // 조이스틱 입력 온오프
-        foreach (Image image in DataController.instance_DataController.joyStick.GetComponentsInChildren<Image>())
-            image.color = image.name == "Transparent Dynamic Joystick" ? Color.clear : speatSlider.value < speatSlider.maxValue ? Color.clear : Color.white - Color.black * 0.3f;
+        //foreach (Image image in DataController.instance_DataController.joyStick.GetComponentsInChildren<Image>())
+        //    image.color = image.name == "Transparent Dynamic Joystick" ? Color.clear : speatSlider.value < speatSlider.maxValue ? Color.clear : Color.white - Color.black * 0.3f;
 
         // 런게임 시작
         if (!isRunning) { isRunning = true; StartCoroutine("StartRungame"); }
-
-        // 패턴 자동 설정 - Update마다 하는 건 비효율적, 사용할때마다 체크
-        //patterns = Resources.LoadAll<GameObject>("Run_Pattern/Pattern" + (speatDistance > 66 ? 0 : speatDistance > 33 ? 1 : 2));
 
         // 일정 거리 이후에 포주 출현
         pimp.SetActive(speatSlider.value > speatSlider.maxValue * 0.1f);
@@ -79,7 +64,11 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
         endText.text = string.Format("{0:0}m", speatDistance); distanceText.text = string.Format("{0:0}m", pimpDistance);
 
         // 게임 끝
-        if (speatSlider.value >= speatSlider.maxValue) GetComponentInParent<MapData>().positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
+        if (speatSlider.value >= speatSlider.maxValue)
+        {
+            GetComponentInParent<MapData>().positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
+            DataController.instance_DataController.joyStick.gameObject.SetActive(true);
+        }
         else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1) InitRungame();
     }
 
@@ -92,12 +81,15 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
         CharacterManager speat = DataController.instance_DataController.speat;
         speat.jumpForce = 7;
         speat.transform.rotation = Quaternion.AngleAxis(90, Vector3.up);
+        DataController.instance_DataController.joyStick.gameObject.SetActive(false);
+        DataController.instance_DataController.inputDegree = 1;
         while (speatSlider.value < speatSlider.maxValue)
         {
+            DataController.instance_DataController.inputDegree = 1;
             // 스핏 달리기(장애물에 막히지 않았을 때만)
             if (startPosition.position.x < speat.transform.position.x) { speatSlider.value += 0.04f + speatAccelator; speatAccelator += 0.0004f; }
             else speatAccelator *= 0.0003f;
-            DataController.instance_DataController.inputDegree = 1f;
+
             // 포주 달리기
             if (pimpSlider.handleRect.gameObject.activeSelf) pimpSlider.value += 0.045f + pimpAccelator; pimpAccelator += 0.0002f;
 

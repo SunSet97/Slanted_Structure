@@ -45,6 +45,12 @@ public class Waypoint : MonoBehaviour
     }
 
     #region 에디트, 맵데이터 세팅
+    void EditSettingUpdate()
+    {
+        if (!mapdata) mapdata = GetComponentInParent<MapData>();
+        UpdateWaypoints();
+        SelectCharacter();
+    }
     // waypoint 리스트 업데이트
     void UpdateWaypoints()
     {
@@ -60,27 +66,23 @@ public class Waypoint : MonoBehaviour
     // waypoint를 따라 움직일 캐릭터 설정
     void SelectCharacter()
     {
-        if (DataController.instance_DataController != null ? DataController.instance_DataController.currentChar != null : false)
+        if (!character)
         {
-            CharacterManager[] arr = FindObjectsOfType<CharacterManager>();
-            List<CharacterManager> lists = new List<CharacterManager> { };
-            foreach (CharacterManager item in arr) lists.Add(item);
-
-            // 현재 선택된 맵을 플레이하고 있는 캐릭터를 찾아서 선택
-            foreach (CharacterManager item in lists)
-                if (mapdata.positionSets.Exists(positionSet => positionSet.who.ToString() == item.name)) character = item.transform;
+            character = DataController.instance_DataController.currentChar.transform;
         }
-    }
-
-    void EditSettingUpdate()
-    {
-        if (!mapdata) mapdata = GetComponentInParent<MapData>();
-        UpdateWaypoints();
-        SelectCharacter();
     }
     #endregion
 
     #region 게임 플레이 세팅 업데이트
+    void PlaySettingUpdate(bool isPlaying)
+    {
+        if (isPlaying && mapdata.map != null)
+        {
+            WaypointCheck(waypoints.Count > 0);
+            JoystickInputSetting(DataController.instance_DataController.mapCode == mapdata.mapCode);
+        }
+    }
+
     // 캐릭터가 waypoint를 지나가면 체크
     void WaypointCheck(bool isOn)
     {
@@ -121,7 +123,7 @@ public class Waypoint : MonoBehaviour
                 moveTo = inputDir.x > 0 ? MoveDirection.Right : inputDir.x < 0 ? MoveDirection.Left : moveTo; // 오른쪽이 전진 방향, 왼쪽이 후진 방향
             else if (moveDirection == MoveDirection.Left && isInit)
                 moveTo = inputDir.x < 0 ? MoveDirection.Left : inputDir.x > 0 ? MoveDirection.Right : moveTo; // 왼쪽이 전진 방향, 오른쪽이 후진 방향
-
+            
             // check된 waypoint가 없을 경우
             if (checkedWaypoint == null)
             {
@@ -142,7 +144,8 @@ public class Waypoint : MonoBehaviour
                     else fwdDir = waypoints[waypoints.Count - 1].position - character.transform.position; // 마지막 포인트일 경우 마지막 포인트로 향하도록 전진 방향 설정
 
                     if (idx > 0) bwdDir = waypoints[idx - 1].position - character.transform.position; // 첫번째 포인트가 아닐 경우 후진 방향 설정
-                    else bwdDir = waypoints[idx].position - character.transform.position; // 첫번째 포인트일 경우 첫번째 포인트로 향하도록 후진 방향 설정
+                    //else bwdDir = waypoints[idx].position - character.transform.position; // 첫번째 포인트일 경우 첫번째 포인트로 향하도록 후진 방향 설정
+                    else bwdDir = -fwdDir;
                 }
                 else
                 {
@@ -159,27 +162,20 @@ public class Waypoint : MonoBehaviour
                     }
                 }
             }
-
             Quaternion camRotation = Quaternion.Euler(0, -Camera.main.transform.rotation.eulerAngles.y, 0);
             fwdDir = camRotation * fwdDir; bwdDir = camRotation * bwdDir;
 
+            //Debug.Log(bwdDir);
+            //Debug.Log(fwdDir.normalized);
             // 미리 설정해둔 입력 방향에 따라 실제 조이스틱 입력 방향으로 전방향, 후방향 벡터를 수정된 조이스틱 입력 방향으로 설정
             if (moveDirection == MoveDirection.Right)
                 changedDir = inputDir.x > 0 ? new Vector2(fwdDir.x, fwdDir.z).normalized : inputDir.x < 0 ? new Vector2(bwdDir.x, bwdDir.z).normalized : Vector2.zero; // 오른쪽이 전진 방향, 왼쪽이 후진 방향
             else if (moveDirection == MoveDirection.Left)
                 changedDir = inputDir.x < 0 ? new Vector2(fwdDir.x, fwdDir.z).normalized : inputDir.x > 0 ? new Vector2(bwdDir.x, bwdDir.z).normalized : Vector2.zero; // 왼쪽이 전진 방향, 오른쪽이 후진 방향
 
+            //Debug.Log(bwdDir.normalized);
             DataController.instance_DataController.inputDirection = changedDir; // 조정된 입력 방향 설정
             DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, changedDir) * Mathf.Abs(inputDir.x); // 조정된 입력 방향으로 크기 계산
-        }
-    }
-
-    void PlaySettingUpdate(bool isPlaying)
-    {
-        if (isPlaying && mapdata.map != null)
-        {
-            WaypointCheck(waypoints.Count > 0);
-            JoystickInputSetting(DataController.instance_DataController.mapCode == mapdata.mapCode);
         }
     }
     #endregion

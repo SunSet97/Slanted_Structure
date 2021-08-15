@@ -276,8 +276,6 @@ public class MapData : MonoBehaviour
         // Edit / Play mode에서 업데이트
         MapSettingUpdate();
         PositionSettingUpdate();
-        // Play mode에서만 업데이트
-        //PlaySettingUpdate(Application.isPlaying);
 
         //타임라인 인식
         if (SceneManager.GetActiveScene().name =="Cinematic") 

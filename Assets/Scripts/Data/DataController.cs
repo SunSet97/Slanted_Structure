@@ -112,7 +112,7 @@ public class DataController : MonoBehaviour
         SceneManager.LoadScene("Ingame_set");
     }
 
-
+    #region 맵 이동
 
     //맵이 바뀔 때 초기화
     public void ChangeMap(string mapCodeBeMove)
@@ -185,7 +185,11 @@ public class DataController : MonoBehaviour
         }
         cam.transform.rotation = Quaternion.Euler(rot);
 
-
+        //조이스틱 초기화
+        joyStick.gameObject.SetActive(true);
+        inputDegree = 0;
+        inputDirection = default;
+        inputJump = false;
 
 
         // CameraMoving 컨트롤
@@ -214,6 +218,17 @@ public class DataController : MonoBehaviour
         rau.UseJoystickCharacter();
     }
 
+    //현재 캐릭터 찾아서 저장
+    private void FindCurrentCharacter()
+    {
+        if (canvasCtrl && speat && oun && rau)
+        {
+            if (speat.isSelected) currentChar = speat;
+            if (oun.isSelected) currentChar = oun;
+            if (rau.isSelected) currentChar = rau;
+        }
+    }
+
     // 게임 진행에 필요한 콜라이더와 이미지를 획득
     void FindProgressCollider()
     {
@@ -231,6 +246,7 @@ public class DataController : MonoBehaviour
                 commandSprite = currentMap.map.transform.Find("CommandSprites");
         }
     }
+    #endregion
 
     void FindTutorialCommand()
     {
@@ -239,17 +255,6 @@ public class DataController : MonoBehaviour
         else
             LoadData("TutorialCommandData", "SpeatTutorial");
 
-    }
-
-    //현재 캐릭터 찾아서 저장
-    void FindCurrentCharacter()
-    {
-        if (canvasCtrl && speat && oun && rau)
-        {
-            if (speat.isSelected) currentChar = speat;
-            if (oun.isSelected) currentChar = oun;
-            if (rau.isSelected) currentChar = rau;
-        }
     }
 
     public CharData _charData;

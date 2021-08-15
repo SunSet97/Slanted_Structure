@@ -56,6 +56,7 @@ public class CharacterManager : MonoBehaviour
         isControlled = isSelected;
         anim.applyRootMotion = true;
     }
+    //대기 방으로 이동하는 함수
     public void WaitInRoom()
     {
         transform.position = waitTransform.position;
@@ -123,7 +124,7 @@ public class CharacterManager : MonoBehaviour
 
     #region 캐릭터 이동 설정
     [Header("#Character move setting")]
-    public Vector3 moveHorDir = Vector3.zero, moveVerDir = Vector3.zero;    // 수평, 수직 이동 방향 벡터
+    public Vector3 moveHorDir = default, moveVerDir = default;    // 수평, 수직 이동 방향 벡터
     private Vector2 joystickDir = new Vector2();
     private Vector2 characterDir = new Vector2();
     public float joyRot;
@@ -138,7 +139,7 @@ public class CharacterManager : MonoBehaviour
     private void FixedUpdate()
     {
         // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을 때
-        if (joyStick && joyStick.gameObject.activeSelf && cam && ctrl.enabled && isControlled)
+        if (cam && ctrl.enabled && isControlled)
         {
             // 메인 카메라 기준으로 캐릭터가 바라보는 방향 계산
             camRotation = Quaternion.Euler(0, -cam.transform.rotation.eulerAngles.y, 0);
@@ -147,18 +148,18 @@ public class CharacterManager : MonoBehaviour
             // 조이스틱이 가리키는 방향
             joystickDir.Set(DataController.instance_DataController.inputDirection.x, DataController.instance_DataController.inputDirection.y);
 
-
             joyRot = Vector2.SignedAngle(joystickDir, characterDir);
-            characterRot.Set(0, Mathf.Rad2Deg * (Mathf.Atan2(cam.transform.forward.z, cam.transform.forward.x)), 0);
 
             Vector2 inputDir = default;
             //사이드뷰 일 때
             if (DataController.instance_DataController.currentMap.method.Equals(MapData.JoystickInputMethod.OneDirection))
             {
+                characterRot.Set(0, Mathf.Rad2Deg * (Mathf.Atan2(cam.transform.forward.z, cam.transform.forward.x)), 0);
+
                 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, 0); // 한 방향 입력은 수평값만 받음
                 DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
                 DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
-
+                DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
 
                 anim.SetBool("2DSide", true);
                 if (joystickDir.x < 0)
@@ -170,10 +171,9 @@ public class CharacterManager : MonoBehaviour
                 {
                     transform.rotation = Quaternion.Euler(characterRot);
                 }
-                anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed 
             }
             //쿼터뷰일 때    
-            else if (DataController.instance_DataController.currentMap.method.Equals(MapData.JoystickInputMethod.AllDirection))
+            else
             {
                 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
                 DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
@@ -181,15 +181,9 @@ public class CharacterManager : MonoBehaviour
                 anim.SetBool("2DSide", false);
                 if (Mathf.Abs(joyRot) > 0) { transform.Rotate(Vector3.up, joyRot); } // 임시 회전
                 anim.SetFloat("Direction", joyRot); //X방향
-                anim.SetFloat("Speed", DataController.instance_DataController.inputDegree); //Speed 
-            }
-
-
-            if(!DataController.instance_DataController.currentMap.method.Equals(MapData.JoystickInputMethod.Other))
-            {
                 DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
             }
-
+            anim.SetFloat("Speed", DataController.instance_DataController.inputDegree);
 
             //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
             if (isSelected && DataController.instance_DataController.inputJump && ctrl.isGrounded)
