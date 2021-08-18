@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[ExecuteInEditMode]
+
 public class Waypoint : MonoBehaviour
 {
     // 입력 방향 설정
@@ -49,7 +49,6 @@ public class Waypoint : MonoBehaviour
     {
         if (!mapdata) mapdata = GetComponentInParent<MapData>();
         UpdateWaypoints();
-        SelectCharacter();
     }
     // waypoint 리스트 업데이트
     void UpdateWaypoints()
@@ -62,15 +61,6 @@ public class Waypoint : MonoBehaviour
             checkedWaypoint = waypoints[0];
         }
     }
-    
-    // waypoint를 따라 움직일 캐릭터 설정
-    void SelectCharacter()
-    {
-        if (!character)
-        {
-            character = DataController.instance_DataController.currentChar.transform;
-        }
-    }
     #endregion
 
     #region 게임 플레이 세팅 업데이트
@@ -78,8 +68,17 @@ public class Waypoint : MonoBehaviour
     {
         if (isPlaying && mapdata.map != null)
         {
+            SelectCharacter();
             WaypointCheck(waypoints.Count > 0);
-            JoystickInputSetting(DataController.instance_DataController.mapCode == mapdata.mapCode);
+            JoystickInputSetting();
+        }
+    }
+    // waypoint를 따라 움직일 캐릭터 설정
+    void SelectCharacter()
+    {
+        if (!character)
+        {
+            character = DataController.instance_DataController.currentChar.transform;
         }
     }
 
@@ -110,9 +109,9 @@ public class Waypoint : MonoBehaviour
     }
 
     // 입력 방향 세팅
-    void JoystickInputSetting(bool isOn)
+    void JoystickInputSetting()
     {
-        if (DataController.instance_DataController.joyStick != null && isOn)
+        if (DataController.instance_DataController.joyStick != null)
         {
             Vector2 inputDir = Vector2.zero; // 조이스틱 자체의 입력 방향
             inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, 0); // 한 방향 입력은 수평값만 받음
@@ -174,6 +173,7 @@ public class Waypoint : MonoBehaviour
                 changedDir = inputDir.x < 0 ? new Vector2(fwdDir.x, fwdDir.z).normalized : inputDir.x > 0 ? new Vector2(bwdDir.x, bwdDir.z).normalized : Vector2.zero; // 왼쪽이 전진 방향, 오른쪽이 후진 방향
 
             //Debug.Log(bwdDir.normalized);
+
             DataController.instance_DataController.inputDirection = changedDir; // 조정된 입력 방향 설정
             DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, changedDir) * Mathf.Abs(inputDir.x); // 조정된 입력 방향으로 크기 계산
         }

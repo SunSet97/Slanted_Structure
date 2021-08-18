@@ -11,14 +11,14 @@ class DebugmapClear : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        CheckMapClear gun = (CheckMapClear)target;
-        if (GUILayout.Button("맵 클리어"))
-            gun.Clear();
+        CheckMapClear checkMapClear = (CheckMapClear)target;
+        if (GUILayout.Button("맵 클리어", GUILayout.Height(30), GUILayout.Width(100)))
+            if (Application.isPlaying)
+                checkMapClear.Clear();
     }
 }
 
 
-[ExecuteInEditMode]
 public class CheckMapClear : MonoBehaviour
 {
     public string nextSelectMapcode = "000000";//어디 스토리로 갈 건지.

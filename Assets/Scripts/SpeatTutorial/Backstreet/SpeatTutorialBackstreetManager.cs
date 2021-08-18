@@ -167,11 +167,12 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
     IEnumerator JumpCooldown()
     {
         jumpBtn.GetComponentsInChildren<Image>()[1].fillAmount = 1;
+        WaitForSeconds waitForSeconds = new WaitForSeconds(0.002f);
         while (jumpBtn.GetComponentsInChildren<Image>()[1].fillAmount > 0)
         {
             jumpBtn.GetComponentsInChildren<Image>()[1].fillAmount -= 0.04f;
             if (jumpBtn.GetComponentsInChildren<Image>()[1].fillAmount < 0.9f) DataController.instance_DataController.inputJump = false;
-            yield return new WaitForSeconds(0.002f);
+            yield return waitForSeconds;
         }
     }
     // 능력 사용 버튼
@@ -186,16 +187,18 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
     IEnumerator AbilityCooldown()
     {
         DataController.instance_DataController.currentChar.gameObject.layer = 9;
+        WaitForSeconds waitForSeconds = new WaitForSeconds(0.005f);
         while (abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount < 1)
         {
             abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount += 0.02f;
-            yield return new WaitForSeconds(0.005f);
+            yield return waitForSeconds;
         }
+        waitForSeconds = new WaitForSeconds(0.002f);
         DataController.instance_DataController.currentChar.gameObject.layer = 0;
         while (abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount > 0)
         {
             abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount -= 0.02f;
-            yield return new WaitForSeconds(0.002f);
+            yield return waitForSeconds;
         }
     }
     #endregion

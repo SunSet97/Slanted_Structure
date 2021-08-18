@@ -133,6 +133,7 @@ public class InteractionObj_stroke : MonoBehaviour
         }
         else if (type == typeOfInteraction.dialogue)
         {
+            isTouched = true;
             CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
             //대사활성화
         }
@@ -142,11 +143,12 @@ public class InteractionObj_stroke : MonoBehaviour
         }
         else if (type == typeOfInteraction.portal && this.gameObject.GetComponent<CheckMapClear>() != null)
         {
-            isTouched = true;
+            DataController.instance_DataController.ChangeMap(DataController.instance_DataController.currentMap.nextMapcode);
         }
         //1회성 interaction인 경우 굳이 excel로 할 필요 없이 바로 실행 dialogue도 마찬가지 단순한 잡담이면 typeOfInteraction.dialogue에서 처리
         else if (type == typeOfInteraction.continuous)
         {
+            isTouched = true;
             if (jsonTask.Count == 0) { Debug.LogError("jsontask파일 없음 오류오류"); }
             StartCoroutine(TaskCorutine());
         }
@@ -168,6 +170,10 @@ public class InteractionObj_stroke : MonoBehaviour
     }
     void Update()
     {
+        //터치해서 무언가 하고 있는 경우
+        if (!isTouched)
+            return;
+
         if (!character)
         {
             character = DataController.instance_DataController.currentChar;
@@ -189,7 +195,6 @@ public class InteractionObj_stroke : MonoBehaviour
 
                 if (exclamationMark.gameObject != null) exclamationMark.gameObject.SetActive(false); // 느낌표 끄기
 
-                character = DataController.instance_DataController.currentChar;
 
                 if (!touchTargetObject)
                 {
@@ -247,17 +252,12 @@ public class InteractionObj_stroke : MonoBehaviour
                     Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                     if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                     {
-                        // 오브젝트 터치 감지
                         if (hit.collider.gameObject.Equals(touchTargetObject))
                         {
                             interactionResponse();//인터렉션반응 나타남.
                         }
 
                     }
-                }
-                else
-                {
-                    isTouched = false;
                 }
             }
 
@@ -349,6 +349,7 @@ public class InteractionObj_stroke : MonoBehaviour
                     jsonTask.Peek().isContinue = true;
                     yield break;
                 case TYPE.TASKEND:
+                    isTouched = false;
                     jsonTask.Peek().isContinue = true;
                     jsonTask.Peek().taskIndex = 0;
                     jsonTask.Peek().taskOrder = 1;

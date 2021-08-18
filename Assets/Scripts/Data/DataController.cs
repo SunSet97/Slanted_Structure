@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using System.Text;
 
+
+
 public class DataController : MonoBehaviour
 {
     public bool[] isExistdata = new bool[3];
@@ -119,6 +121,12 @@ public class DataController : MonoBehaviour
     {
         mapCode = string.Format("{0:000000}", mapCodeBeMove); // 맵 코드 변경
 
+
+        //모든 캐릭터 위치 대기실로 이동
+        speat.WaitInRoom();
+        oun.WaitInRoom();
+        rau.WaitInRoom();
+
         Destroy(currentMap.ui);
         Destroy(currentMap.gameObject);//현재 맵코드 오브젝트 삭제
 
@@ -127,10 +135,10 @@ public class DataController : MonoBehaviour
             if (findMap.name.Equals(mapCode))
             {
                 currentMap = Instantiate(findMap, mapGenerate);
+                currentMap.MapChanged();
                 break;
             }
         }
-        currentMap.PlaySettingUpdate();
         SetByChangedMap();
     }
 
@@ -147,43 +155,30 @@ public class DataController : MonoBehaviour
         oun.isSelected = false;
         rau.isSelected = false;
 
+
         List<MapData.CharacterPositionSet> temp = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true);
         for (int k = 0; k < temp.Count; k++)
         {
-            temp[k].startPosition.localRotation = Quaternion.Euler(temp[k].startPosition.localRotation.x, temp[k].startPosition.localRotation.y + 90f, temp[k].startPosition.localRotation.z);
             if (temp[k].who.Equals(MapData.Character.Speat))
             {
-                speat.transform.position = temp[k].startPosition.position;
-                speat.transform.localRotation = temp[k].startPosition.localRotation;
-                speat.isSelected = true;
+                speat.SetCharacter(temp[k].startPosition);
             }
             else if (temp[k].who.Equals(MapData.Character.Oun))
             {
-                oun.transform.position = temp[k].startPosition.position;
-                oun.transform.localRotation = temp[k].startPosition.localRotation;
-                oun.isSelected = true;
+                oun.SetCharacter(temp[k].startPosition);
             }
             else if (temp[k].who.Equals(MapData.Character.Rau))
             {
-                rau.transform.localRotation = temp[k].startPosition.localRotation;
-                rau.transform.position = temp[k].startPosition.position;
-                rau.isSelected = true;
+                rau.SetCharacter(temp[k].startPosition);
             }
         }
 
-        //현재 캐릭터 위치 대기실로 이동
-        if (currentChar && !currentChar.isSelected) currentChar.WaitInRoom();
 
         FindCurrentCharacter(); //다음 맵의 currentChar로 변경
 
         //카메라 위치와 회전
         camDis = currentMap.camDis;
         rot = currentMap.camRot;
-        if (currentChar != null)
-        {
-            cam.transform.position = currentChar.transform.position + camDis;
-        }
-        cam.transform.rotation = Quaternion.Euler(rot);
 
         //조이스틱 초기화
         joyStick.gameObject.SetActive(true);

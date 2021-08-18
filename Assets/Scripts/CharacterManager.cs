@@ -14,12 +14,12 @@ public class CharacterManager : MonoBehaviour
 
     private Camera cam; // 카메라
     [Tooltip("캐릭터 Pos을 넣으시오.")]
-    public Transform waitTransform;
+    [SerializeField] private Transform waitTransform;
 
     void Start()
     {
-        ctrl = this.GetComponent<CharacterController>();
-        anim = this.GetComponent<Animator>();
+        ctrl = GetComponent<CharacterController>();
+        anim = GetComponent<Animator>();
         // 표정 머테리얼 초기화
         faceExpression = Resources.LoadAll<Texture>("Face");
         skinnedMesh = this.GetComponentInChildren<SkinnedMeshRenderer>();
@@ -56,6 +56,14 @@ public class CharacterManager : MonoBehaviour
         isControlled = isSelected;
         anim.applyRootMotion = true;
     }
+    public void SetCharacter(Transform settingTransform)
+    {
+        transform.rotation = settingTransform.rotation;
+        transform.position = settingTransform.position;
+        isSelected = true;
+        characterOriginRot = settingTransform.eulerAngles;
+    }
+
     //대기 방으로 이동하는 함수
     public void WaitInRoom()
     {
@@ -127,19 +135,22 @@ public class CharacterManager : MonoBehaviour
     public Vector3 moveHorDir = default, moveVerDir = default;    // 수평, 수직 이동 방향 벡터
     private Vector2 joystickDir = new Vector2();
     private Vector2 characterDir = new Vector2();
+    private Vector2 inputDir = new Vector2();
     public float joyRot;
     public Quaternion camRotation; // 메인 카메라 기준으로 joystick input 변경(라인트레이서 제외)
-    private Vector3 characterRot = new Vector3();
+    private Vector3 characterOriginRot;
+    private Vector3 characterRot;
 
     public bool isJump;                     // 캐릭터의 점프 여부
     public float jumpForce = 5f;            // 점프력
     public float gravityScale = 0.6f;       // 중력 배수
     public float airResistance = 1.2f;      // 공기 저항
 
+    private readonly int SpeedHash = Animator.StringToHash("Speed");
     private void FixedUpdate()
     {
         // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을 때
-        if (cam && ctrl.enabled && isControlled)
+        if (joyStick && cam && ctrl.enabled && isControlled)
         {
             // 메인 카메라 기준으로 캐릭터가 바라보는 방향 계산
             camRotation = Quaternion.Euler(0, -cam.transform.rotation.eulerAngles.y, 0);
@@ -150,13 +161,12 @@ public class CharacterManager : MonoBehaviour
 
             joyRot = Vector2.SignedAngle(joystickDir, characterDir);
 
-            Vector2 inputDir = default;
             //사이드뷰 일 때
             if (DataController.instance_DataController.currentMap.method.Equals(MapData.JoystickInputMethod.OneDirection))
             {
-                characterRot.Set(0, Mathf.Rad2Deg * (Mathf.Atan2(cam.transform.forward.z, cam.transform.forward.x)), 0);
+                characterRot = characterOriginRot;
 
-                inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, 0); // 한 방향 입력은 수평값만 받음
+                inputDir.Set(DataController.instance_DataController.joyStick.Horizontal, 0); // 한 방향 입력은 수평값만 받음
                 DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
                 DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
                 DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
@@ -173,27 +183,34 @@ public class CharacterManager : MonoBehaviour
                 }
             }
             //쿼터뷰일 때    
-            else
+            else if(DataController.instance_DataController.currentMap.method.Equals(MapData.JoystickInputMethod.AllDirection))
             {
-                inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
+                inputDir.Set(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
                 DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
+                DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
 
                 anim.SetBool("2DSide", false);
                 if (Mathf.Abs(joyRot) > 0) { transform.Rotate(Vector3.up, joyRot); } // 임시 회전
                 anim.SetFloat("Direction", joyRot); //X방향
-                DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
             }
-            anim.SetFloat("Speed", DataController.instance_DataController.inputDegree);
+            else
+            {
+                if (Mathf.Abs(joyRot) > 0) { transform.Rotate(Vector3.up, joyRot); } // 임시 회전
+            }
+            anim.SetFloat(SpeedHash, DataController.instance_DataController.inputDegree);
 
             //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
             if (isSelected && DataController.instance_DataController.inputJump && ctrl.isGrounded)
+            {
+                //jumpForce = 다시 돌아옴;
                 anim.SetBool("Jump", true);  //점프 가능 상태로 변경
+            }
 
             //캐릭터 선택중일때 점프 가능
             if (isSelected && DataController.instance_DataController.inputJump && anim.GetBool("Jump"))
             {
                 moveVerDir.y += jumpForce; //점프력 만큼 힘을 가함
-
+                //jumpForce 일시적으로 0
                 anim.SetBool("Jump", false); //점프 불가능 상태로 변경하여 연속적인 점프 제한
             }
 
@@ -206,7 +223,7 @@ public class CharacterManager : MonoBehaviour
         }
         else
         {
-            anim.SetFloat("Speed", 0); //Speed
+            anim.SetFloat(SpeedHash, 0); //Speed
         }
     }
     #endregion

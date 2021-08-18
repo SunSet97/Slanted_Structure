@@ -65,12 +65,12 @@ public class MapData : MonoBehaviour
         GameObject temp = new GameObject(); // 임시 오브젝트 생성
         if (map == null) // 맵 생성 및 이름 설정
         {
-            map = Instantiate(temp, this.transform.position, Quaternion.identity, this.transform) as GameObject;
+            map = Instantiate(temp, transform.position, Quaternion.identity, transform);
             map.name = "Map Name";
         }
         if (positionSetting == null)// 캐릭터 위치 세팅 오브젝트 생성 및 이름 설정
         {
-            positionSetting = Instantiate(temp, this.transform.position, Quaternion.identity, this.transform) as GameObject;
+            positionSetting = Instantiate(temp, transform.position, Quaternion.identity, transform);
             positionSetting.name = "Position Setting";
         }
         DestroyImmediate(temp); //임시 오브젝트 제거
@@ -103,34 +103,6 @@ public class MapData : MonoBehaviour
         //방문 횟수Index에 따라서
         positionSets.Find(item => item.index == posIndex).clearBox.GetComponent<CheckMapClear>().Clear();
     }
-
-    // 맵 세팅 업데이트
-    void MapSettingUpdate()
-    {
-        // 오브젝트의 이름을 맵 코드로 변경
-        if (this.name != mapCode) this.name = mapCode;
-        // UI의 이름을 맵 이름으로 변경
-        if (ui != null) ui.name = map.name;
-    }
-
-    // 게임 플레이 세팅 업데이트
-    public void PlaySettingUpdate()
-    {
-        // 게임 플레이시 맵 정보들은 현재 맵코드에 따라 변경
-        if (map != null)
-        {
-            if (ui != null) ui.transform.SetParent(CanvasControl.instance_CanvasControl.transform.Find("UI"));
-            positionSetting.SetActive(map.activeSelf); // 포지션 세팅 On Off
-            // 스토리 코드에 맞는 것만 활성화
-            foreach (CharacterPositionSet Item in positionSets)
-            {
-                if (Item.index == posIndex)
-                    Item.posSet.gameObject.SetActive(true);
-                else
-                    Item.posSet.gameObject.SetActive(false);
-            }
-        }
-    }
     #endregion
 
     #region 위치 설정
@@ -154,6 +126,7 @@ public class MapData : MonoBehaviour
         public Transform startPosition; // 시작 위치
         public Transform clearBox;      // 클리어 박스
         public Transform posSet;        // 포지션 세팅 오브젝트
+        public bool isControl;
     }
 
     [Tooltip("각각의 캐릭터의 시작위치와 목표위치를 설정하세요.")]
@@ -166,17 +139,11 @@ public class MapData : MonoBehaviour
     public Vector3 camRot;  // 캐릭터와 카메라와의 거리 
 
 
-    // 인덱스에 따라 위치 설정들 보기 편하고 일관성 있게 리스트 정렬
-    void SortPositionSets()
-    {
-        positionSets.Sort(delegate (CharacterPositionSet A, CharacterPositionSet B) { if (A.index > B.index) return 1; else return -1; });
-    }
-
     // 캐릭터 위치 설정 생성
-    void CreateSpeatPosition() { CreatePositionSetting(Character.Speat); }
-    void CreateOunPosition() { CreatePositionSetting(Character.Oun); }
-    void CreateRauPosition() { CreatePositionSetting(Character.Rau); }
-    void CreateAllPosition() { CreateSpeatPosition(); CreateOunPosition(); CreateRauPosition(); }
+    public void CreateSpeatPosition() { CreatePositionSetting(Character.Speat); }
+    public void CreateOunPosition() { CreatePositionSetting(Character.Oun); }
+    public void CreateRauPosition() { CreatePositionSetting(Character.Rau); }
+    public void CreateAllPosition() { CreateSpeatPosition(); CreateOunPosition(); CreateRauPosition(); }
     void CreatePositionSetting(Character createWho)
     {
         // 임시 설정 및 오브젝트 생성
@@ -201,16 +168,14 @@ public class MapData : MonoBehaviour
         DestroyImmediate(instant.gameObject);
         // 리스트에 설정 추가
         positionSets.Add(temp);
-        // 리스트 정렬
-        SortPositionSets();
     }
 
     // 캐릭터 위치 설정 제거
-    void RemoveSpeatPosition() { RemovePositionSetting(Character.Speat); }
-    void RemoveOunPosition() { RemovePositionSetting(Character.Oun); }
-    void RemoveRauPosition() { RemovePositionSetting(Character.Rau); }
-    void RemoveAllPosition() { RemoveSpeatPosition(); RemoveOunPosition(); RemoveRauPosition(); }
-    void RemovePositionSetting(Character removeWho)
+    public void RemoveSpeatPosition() { RemovePositionSetting(Character.Speat); }
+    public void RemoveOunPosition() { RemovePositionSetting(Character.Oun); }
+    public void RemoveRauPosition() { RemovePositionSetting(Character.Rau); }
+    public void RemoveAllPosition() { RemoveSpeatPosition(); RemoveOunPosition(); RemoveRauPosition(); }
+    private void RemovePositionSetting(Character removeWho)
     {
         // 리스트의 범위안에서 해당 설정 제거
         if (positionSets.Exists(item => item.who == removeWho))
@@ -221,45 +186,56 @@ public class MapData : MonoBehaviour
             DestroyImmediate(temp.posSet.gameObject);
             // 리스트의 설정 제거
             positionSets.Remove(temp);
-            // 리스트 정렬
-            SortPositionSets();
         }
     }
 
     // 포지션 세팅 업데이트
     void PositionSettingUpdate()
     {
-        if (DataController.instance_DataController != null ? DataController.instance_DataController.currentChar != null : false)
-        {
-            CharacterManager[] arr = FindObjectsOfType<CharacterManager>();
-            List<CharacterManager> lists = new List<CharacterManager> { };
-            foreach (CharacterManager item in arr) lists.Add(item);
-            foreach (CharacterPositionSet positionSet in positionSets) positionSet.clearBox.GetComponent<CheckMapClear>().who = lists.Find(item => item.name == positionSet.who.ToString());
-        }
-
         // 스토리 코드에 따라 이름 변경
         foreach (CharacterPositionSet Item in positionSets) Item.posSet.name = Item.index.ToString() + " Position";
         // 누구냐에 따라
         foreach (CharacterPositionSet Item in positionSets)
         {
-            Item.startPosition.name = Item.who.ToString() + " Start Position";
-            Item.clearBox.name = Item.who.ToString() + " Clear Box";
+            if (Item.startPosition) Item.startPosition.name = Item.who.ToString() + " Start Position";
+            if (Item.clearBox) Item.clearBox.name = Item.who.ToString() + " Clear Box";
         }
         // 리스트 정렬
         SortPositionSets();
     }
 
-
+    // 인덱스에 따라 위치 설정들 보기 편하고 일관성 있게 리스트 정렬
+    void SortPositionSets()
+    {
+        positionSets.Sort(delegate (CharacterPositionSet A, CharacterPositionSet B) { if (A.index > B.index) return 1; else return -1; });
+    }
     #endregion
 
     void Start()
     {
         if (Application.isPlaying)
         {
-            cam = Camera.main;
-            CreateDefaultSetting();
             Invoke("Init", 0.1f);
         }
+        else
+        {
+            CreateDefaultSetting();
+        }
+    }
+    void Update()
+    {
+        // Edit mode에서 업데이트
+        if (!Application.isPlaying)
+        {
+            PositionSettingUpdate();
+        }
+
+        //타임라인 인식
+        if (SceneManager.GetActiveScene().name == "Cinematic")
+        {
+            TimeLineStop();
+        }
+
     }
 
     void Init()
@@ -271,17 +247,24 @@ public class MapData : MonoBehaviour
             DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
         }
     }
-    void Update()
-    {
-        // Edit / Play mode에서 업데이트
-        MapSettingUpdate();
-        PositionSettingUpdate();
 
-        //타임라인 인식
-        if (SceneManager.GetActiveScene().name =="Cinematic") 
-        {
-            TimeLineStop();
-        }
+    public void MapChanged()
+    {
+        // 오브젝트의 이름을 맵 코드로 변경
+        if (name != mapCode) name = mapCode;
+
+        // UI의 이름을 맵 이름으로 변경
+        if (ui != null) ui.name = map.name;
+
+        //UI 세팅
+        if (ui != null) ui.transform.SetParent(CanvasControl.instance_CanvasControl.transform.Find("UI"));
+
+        //ClearBox who 설정
+        CharacterManager[] arr = FindObjectsOfType<CharacterManager>();
+        List<CharacterManager> lists = new List<CharacterManager>(arr);
+        foreach (CharacterPositionSet positionSet in positionSets)
+            positionSet.clearBox.GetComponent<CheckMapClear>().who = lists.Find(item => item.name == positionSet.who.ToString());
+
 
     }
 
