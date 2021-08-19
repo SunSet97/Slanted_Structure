@@ -58,10 +58,10 @@ public class CharacterManager : MonoBehaviour
     }
     public void SetCharacter(Transform settingTransform)
     {
-        transform.rotation = settingTransform.rotation;
         transform.position = settingTransform.position;
+        transform.LookAt(transform.position + settingTransform.right);
         isSelected = true;
-        characterOriginRot = settingTransform.eulerAngles;
+        characterOriginRot = transform.eulerAngles;
     }
 
     //대기 방으로 이동하는 함수
@@ -133,13 +133,10 @@ public class CharacterManager : MonoBehaviour
     #region 캐릭터 이동 설정
     [Header("#Character move setting")]
     public Vector3 moveHorDir = default, moveVerDir = default;    // 수평, 수직 이동 방향 벡터
-    private Vector2 joystickDir = new Vector2();
-    private Vector2 characterDir = new Vector2();
-    private Vector2 inputDir = new Vector2();
     public float joyRot;
     public Quaternion camRotation; // 메인 카메라 기준으로 joystick input 변경(라인트레이서 제외)
-    private Vector3 characterOriginRot;
-    private Vector3 characterRot;
+
+    private Vector3 characterOriginRot; // 캐릭터의 기존 방향
 
     public bool isJump;                     // 캐릭터의 점프 여부
     public float jumpForce = 5f;            // 점프력
@@ -147,6 +144,27 @@ public class CharacterManager : MonoBehaviour
     public float airResistance = 1.2f;      // 공기 저항
 
     private readonly int SpeedHash = Animator.StringToHash("Speed");
+
+    private void Move2DSide(float x)
+    {
+        DataController.instance_DataController.inputDegree = Mathf.Abs(DataController.instance_DataController.joyStick.Horizontal); // 조정된 입력 방향으로 크기 계산
+        DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
+        DataController.instance_DataController.inputDirection.Set(DataController.instance_DataController.joyStick.Horizontal, 0); // 조정된 입력 방향 설정
+
+        anim.SetBool("2DSide", true);
+
+        Vector2 characterRot = default;
+        if (x < 0)
+        {
+            characterRot.y = characterOriginRot.y + 180;
+            transform.eulerAngles = characterRot;
+        }
+        else if (x > 0)
+        {
+            characterRot.y = characterOriginRot.y;
+            transform.eulerAngles = characterRot;
+        }
+    }
     private void FixedUpdate()
     {
         // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을 때
@@ -155,37 +173,21 @@ public class CharacterManager : MonoBehaviour
             // 메인 카메라 기준으로 캐릭터가 바라보는 방향 계산
             camRotation = Quaternion.Euler(0, -cam.transform.rotation.eulerAngles.y, 0);
             Vector3 transformedDir = camRotation * transform.forward;
-            characterDir.Set(transformedDir.x, transformedDir.z);
+            Vector2 characterDir = new Vector2(transformedDir.x, transformedDir.z);
+            
             // 조이스틱이 가리키는 방향
-            joystickDir.Set(DataController.instance_DataController.inputDirection.x, DataController.instance_DataController.inputDirection.y);
+            Vector2 joystickDir = new Vector2(DataController.instance_DataController.inputDirection.x, DataController.instance_DataController.inputDirection.y);
 
             joyRot = Vector2.SignedAngle(joystickDir, characterDir);
-
             //사이드뷰 일 때
             if (DataController.instance_DataController.currentMap.method.Equals(MapData.JoystickInputMethod.OneDirection))
             {
-                characterRot = characterOriginRot;
-
-                inputDir.Set(DataController.instance_DataController.joyStick.Horizontal, 0); // 한 방향 입력은 수평값만 받음
-                DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
-                DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
-                DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
-
-                anim.SetBool("2DSide", true);
-                if (joystickDir.x < 0)
-                {
-                    characterRot.y += 180;
-                    transform.rotation = Quaternion.Euler(characterRot);
-                }
-                else if(joystickDir.x > 0)
-                {
-                    transform.rotation = Quaternion.Euler(characterRot);
-                }
+                Move2DSide(joystickDir.x);
             }
             //쿼터뷰일 때    
             else if(DataController.instance_DataController.currentMap.method.Equals(MapData.JoystickInputMethod.AllDirection))
             {
-                inputDir.Set(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
+                Vector2 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
                 DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
                 DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
 

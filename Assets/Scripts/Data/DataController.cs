@@ -159,17 +159,20 @@ public class DataController : MonoBehaviour
         List<MapData.CharacterPositionSet> temp = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true);
         for (int k = 0; k < temp.Count; k++)
         {
-            if (temp[k].who.Equals(MapData.Character.Speat))
+            //if (temp[k].isControl)
             {
-                speat.SetCharacter(temp[k].startPosition);
-            }
-            else if (temp[k].who.Equals(MapData.Character.Oun))
-            {
-                oun.SetCharacter(temp[k].startPosition);
-            }
-            else if (temp[k].who.Equals(MapData.Character.Rau))
-            {
-                rau.SetCharacter(temp[k].startPosition);
+                if (temp[k].who.Equals(MapData.Character.Speat))
+                {
+                    speat.SetCharacter(temp[k].startPosition);
+                }
+                else if (temp[k].who.Equals(MapData.Character.Oun))
+                {
+                    oun.SetCharacter(temp[k].startPosition);
+                }
+                else if (temp[k].who.Equals(MapData.Character.Rau))
+                {
+                    rau.SetCharacter(temp[k].startPosition);
+                }
             }
         }
 
