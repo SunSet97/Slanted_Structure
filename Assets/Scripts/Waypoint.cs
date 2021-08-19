@@ -115,7 +115,6 @@ public class Waypoint : MonoBehaviour
         {
             Vector2 inputDir = Vector2.zero; // 조이스틱 자체의 입력 방향
             inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, 0); // 한 방향 입력은 수평값만 받음
-            DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
 
             // 움직였던 방향
             if (moveDirection == MoveDirection.Right && isInit)
@@ -173,7 +172,8 @@ public class Waypoint : MonoBehaviour
                 changedDir = inputDir.x < 0 ? new Vector2(fwdDir.x, fwdDir.z).normalized : inputDir.x > 0 ? new Vector2(bwdDir.x, bwdDir.z).normalized : Vector2.zero; // 왼쪽이 전진 방향, 오른쪽이 후진 방향
 
             //Debug.Log(bwdDir.normalized);
-
+            
+            DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
             DataController.instance_DataController.inputDirection = changedDir; // 조정된 입력 방향 설정
             DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, changedDir) * Mathf.Abs(inputDir.x); // 조정된 입력 방향으로 크기 계산
         }

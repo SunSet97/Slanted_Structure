@@ -204,7 +204,7 @@ public class CharacterManager : MonoBehaviour
             //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
             if (isSelected && DataController.instance_DataController.inputJump && ctrl.isGrounded)
             {
-                //jumpForce = 다시 돌아옴;
+                moveVerDir.y = 0;
                 anim.SetBool("Jump", true);  //점프 가능 상태로 변경
             }
 
@@ -212,14 +212,14 @@ public class CharacterManager : MonoBehaviour
             if (isSelected && DataController.instance_DataController.inputJump && anim.GetBool("Jump"))
             {
                 moveVerDir.y += jumpForce; //점프력 만큼 힘을 가함
-                //jumpForce 일시적으로 0
                 anim.SetBool("Jump", false); //점프 불가능 상태로 변경하여 연속적인 점프 제한
             }
 
             //땅에서 떨어져 있을 경우 기본적으로 중력이 적용되고 중력은 가속도이므로 +=를 써서 계속해서 더해줌
             if (!ctrl.isGrounded)
+            {
                 moveVerDir.y += Physics.gravity.y * gravityScale * Time.deltaTime;
-
+            }
             //if (DataController.instance_DataController.isMapChanged == false)
             ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 최종 이동 시킴
         }
