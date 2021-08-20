@@ -35,6 +35,8 @@ public class Camera_Moving : MonoBehaviour
             //카메라의 이동과 제한을 위한 함수에 매개변수로 카메라 위치변수 넣음.
             Follow_Player(camPos);
             //Player_transform.position = Player_Position;
+            if(Camera.main.orthographic)
+                Camera.main.orthographicSize = DataController.instance_DataController.orthgraphic_Size;
 
         }
     }

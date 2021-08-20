@@ -171,7 +171,7 @@ public class InteractionObj_stroke : MonoBehaviour
     void Update()
     {
         //터치해서 무언가 하고 있는 경우
-        if (!isTouched)
+        if (isTouched)
             return;
 
         if (!character)

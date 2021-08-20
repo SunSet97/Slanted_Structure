@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class RauTutorialManager : MonoBehaviour
 {
+    [System.Serializable]
     public struct CameraSetting
     {
         public Vector3 camDis;
@@ -25,7 +26,7 @@ public class RauTutorialManager : MonoBehaviour
     public List<Transform> checkPoint;
     public bool[] isCheckPoint;
     public GameObject[] grass;
-    private CameraSetting view_side = new CameraSetting() { camDis = new Vector3(0, 1.5f, -5f), camRot = Vector3.zero };
+    [SerializeField] private CameraSetting view_side = new CameraSetting() { camDis = new Vector3(0, 1.5f, -5f), camRot = Vector3.zero };
     private CameraSetting view_forward = new CameraSetting() { camDis = new Vector3(-1f, 1.5f, 0), camRot = new Vector3(10, 90, 0) };
     private CameraSetting view_river = new CameraSetting() { camDis = new Vector3(3f, 3f, -10f), camRot = new Vector3(10, 0, 0) };
     private CameraSetting view_quarter = new CameraSetting() { camDis = new Vector3(-6f, 5f, 0f), camRot = new Vector3(20, 90, 0) };

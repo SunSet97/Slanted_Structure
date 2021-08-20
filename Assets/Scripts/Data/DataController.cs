@@ -36,6 +36,7 @@ public class DataController : MonoBehaviour
     public float max_y;
     public Vector3 camDis;
     public Vector3 rot;
+    public float orthgraphic_Size;
 
     [Header("맵")]
     public MapData[] storymaps;
@@ -204,6 +205,7 @@ public class DataController : MonoBehaviour
         cam.orthographic = currentMap.isOrthographic;
         if (currentMap.isOrthographic)
         {
+            orthgraphic_Size = currentMap.orthographicSize;
             cam.orthographicSize = currentMap.orthographicSize;
         }
 
