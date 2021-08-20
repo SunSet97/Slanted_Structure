@@ -215,7 +215,7 @@ public class MapData : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            Invoke("Init", 0.1f);
+            Invoke("Init", 0.01f);
         }
         else
         {

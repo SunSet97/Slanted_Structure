@@ -163,16 +163,13 @@ public class Waypoint : MonoBehaviour
             Quaternion camRotation = Quaternion.Euler(0, -Camera.main.transform.rotation.eulerAngles.y, 0);
             fwdDir = camRotation * fwdDir; bwdDir = camRotation * bwdDir;
 
-            //Debug.Log(bwdDir);
-            //Debug.Log(fwdDir.normalized);
+
             // 미리 설정해둔 입력 방향에 따라 실제 조이스틱 입력 방향으로 전방향, 후방향 벡터를 수정된 조이스틱 입력 방향으로 설정
             if (moveDirection == MoveDirection.Right)
                 changedDir = inputDir.x > 0 ? new Vector2(fwdDir.x, fwdDir.z).normalized : inputDir.x < 0 ? new Vector2(bwdDir.x, bwdDir.z).normalized : Vector2.zero; // 오른쪽이 전진 방향, 왼쪽이 후진 방향
             else if (moveDirection == MoveDirection.Left)
                 changedDir = inputDir.x < 0 ? new Vector2(fwdDir.x, fwdDir.z).normalized : inputDir.x > 0 ? new Vector2(bwdDir.x, bwdDir.z).normalized : Vector2.zero; // 왼쪽이 전진 방향, 오른쪽이 후진 방향
-
-            //Debug.Log(bwdDir.normalized);
-            
+                       
             DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
             DataController.instance_DataController.inputDirection = changedDir; // 조정된 입력 방향 설정
             DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, changedDir) * Mathf.Abs(inputDir.x); // 조정된 입력 방향으로 크기 계산

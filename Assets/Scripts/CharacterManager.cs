@@ -165,6 +165,16 @@ public class CharacterManager : MonoBehaviour
             transform.eulerAngles = characterRot;
         }
     }
+    private void QuarterView()
+    {
+        Vector2 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
+        DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
+        DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
+
+        anim.SetBool("2DSide", false);
+        if (Mathf.Abs(joyRot) > 0) { transform.Rotate(Vector3.up, joyRot); } // 임시 회전
+        anim.SetFloat("Direction", joyRot); //X방향
+    }
     private void FixedUpdate()
     {
         // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을 때
@@ -187,13 +197,7 @@ public class CharacterManager : MonoBehaviour
             //쿼터뷰일 때    
             else if(DataController.instance_DataController.currentMap.method.Equals(MapData.JoystickInputMethod.AllDirection))
             {
-                Vector2 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
-                DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
-                DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
-
-                anim.SetBool("2DSide", false);
-                if (Mathf.Abs(joyRot) > 0) { transform.Rotate(Vector3.up, joyRot); } // 임시 회전
-                anim.SetFloat("Direction", joyRot); //X방향
+                QuarterView();
             }
             else
             {
@@ -220,7 +224,6 @@ public class CharacterManager : MonoBehaviour
             {
                 moveVerDir.y += Physics.gravity.y * gravityScale * Time.deltaTime;
             }
-            //if (DataController.instance_DataController.isMapChanged == false)
             ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 최종 이동 시킴
         }
         else
