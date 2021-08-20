@@ -42,19 +42,4 @@ public class CheckMapClear : MonoBehaviour
             }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.GetComponent<CharacterManager>() == who)
-        {
-            Clear();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.GetComponent<CharacterManager>() == who)
-        {
-            Clear();
-        }
-    }
 }
