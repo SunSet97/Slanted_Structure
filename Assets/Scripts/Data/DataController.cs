@@ -35,7 +35,7 @@ public class DataController : MonoBehaviour
     public float min_y;
     public float max_y;
     public Vector3 camDis;
-    public Vector3 rot;
+    public Vector3 camRot;
     public float orthgraphic_Size;
 
     [Header("맵")]
@@ -150,6 +150,9 @@ public class DataController : MonoBehaviour
         oun.PickUpCharacter();
         rau.PickUpCharacter();
 
+        //카메라 위치와 회전
+        camDis = currentMap.camDis;
+        camRot = currentMap.camRot;
 
         // 해당되는 캐릭터 선택
         speat.isSelected = false;
@@ -179,10 +182,6 @@ public class DataController : MonoBehaviour
 
 
         FindCurrentCharacter(); //다음 맵의 currentChar로 변경
-
-        //카메라 위치와 회전
-        camDis = currentMap.camDis;
-        rot = currentMap.camRot;
 
         //조이스틱 초기화
         joyStick.gameObject.SetActive(true);

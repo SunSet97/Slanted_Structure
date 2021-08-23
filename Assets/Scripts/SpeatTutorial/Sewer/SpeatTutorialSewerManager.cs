@@ -48,7 +48,7 @@ public class SpeatTutorialSewerManager : MonoBehaviour
         }
         // 인덱스에 맞는 카메라 세팅값 적용
         DataController.instance_DataController.camDis = Vector3.Lerp(DataController.instance_DataController.camDis, camSettings[index].camDis, 0.05f);
-        DataController.instance_DataController.rot = Vector3.Lerp(DataController.instance_DataController.rot, camSettings[index].camRot, 0.05f);
+        DataController.instance_DataController.camRot = Vector3.Lerp(DataController.instance_DataController.camRot, camSettings[index].camRot, 0.05f);
     }
 
     private void OnDrawGizmos()

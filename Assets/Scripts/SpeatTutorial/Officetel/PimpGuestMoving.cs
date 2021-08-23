@@ -32,6 +32,8 @@ public class PimpGuestMoving : MonoBehaviour
     private CanvasControl canvasCtrl;
     public bool talking = false;
 
+    public TextAsset jsonFile;
+
     void Start()
     {
         canvasCtrl = CanvasControl.instance_CanvasControl;
@@ -113,14 +115,14 @@ public class PimpGuestMoving : MonoBehaviour
             {
                 PimpGuestMoving pimpGuestMoving = transform.parent.parent.GetChild(i).GetChild(j).GetComponent<PimpGuestMoving>();
                 pimpGuestMoving.talking = isTalking;
+                DataController.instance_DataController.currentMap.ui.SetActive(!isTalking);
+                DataController.instance_DataController.currentChar.isControlled = !isTalking;
                 if (isTalking)
                 {
                     pimpGuestMoving.animator.SetFloat(speedHash, 0.0f);
-                    DataController.instance_DataController.currentMap.ui.SetActive(false);
                 }
                 else
                 {
-                    DataController.instance_DataController.currentMap.ui.SetActive(true);
                     pimpGuestMoving.animator.SetFloat(speedHash, nextDirection);
                 }
             }
@@ -138,10 +140,10 @@ public class PimpGuestMoving : MonoBehaviour
                 canvasCtrl.selectedGuest = gameObject;
 
                 SetTalking(true);
-                DataController.instance_DataController.LoadData(transform.parent.name, gameObject.name + ".json");
+                //DataController.instance_DataController.LoadData(transform.parent.name, gameObject.name + ".json");
                 //수정
                 CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { SetTalking(false); });
-                CanvasControl.instance_CanvasControl.StartConversation();
+                if (jsonFile) CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
             }
 
         }

@@ -72,7 +72,7 @@ public class Camera_Moving : MonoBehaviour
         }
 
         //입력 된 카메라 각도 설정
-        Camera.main.transform.rotation = Quaternion.Euler(DataController.instance_DataController.rot);
+        Camera.main.transform.rotation = Quaternion.Euler(DataController.instance_DataController.camRot);
 
         ////카메라의 Z값 고정을 위한 If문
         ////if (position.z != Z)

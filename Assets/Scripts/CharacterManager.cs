@@ -62,6 +62,12 @@ public class CharacterManager : MonoBehaviour
         transform.LookAt(transform.position + settingTransform.right);
         isSelected = true;
         characterOriginRot = transform.eulerAngles;
+
+        camRotation = Quaternion.Euler(0, -DataController.instance_DataController.camRot.y, 0);
+        Vector3 transformedDir = camRotation * transform.forward;
+
+        if(transformedDir.x < 0)
+            characterOriginRot.y += 180f;
     }
 
     //대기 방으로 이동하는 함수
@@ -184,7 +190,6 @@ public class CharacterManager : MonoBehaviour
             camRotation = Quaternion.Euler(0, -cam.transform.rotation.eulerAngles.y, 0);
             Vector3 transformedDir = camRotation * transform.forward;
             Vector2 characterDir = new Vector2(transformedDir.x, transformedDir.z);
-            
             // 조이스틱이 가리키는 방향
             Vector2 joystickDir = new Vector2(DataController.instance_DataController.inputDirection.x, DataController.instance_DataController.inputDirection.y);
 
