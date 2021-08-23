@@ -372,9 +372,11 @@ public class CanvasControl : MonoBehaviour
 
             isPossibleCnvs = true;
             dialogueCnt = 0;
-            
-            endDialogueAction();
-            endDialogueAction = null;
+            if (endDialogueAction != null)
+            {
+                endDialogueAction();
+                endDialogueAction = null;
+            }
             DataController.instance_DataController.dialogueData.dialogues = null;
             if (DataController.instance_DataController.taskData != null)
             {

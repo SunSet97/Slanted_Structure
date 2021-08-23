@@ -13,7 +13,7 @@ public class NPCInteractor : MonoBehaviour
 
     public Transform[] NPCArray;
 
-    public List<Interact_ObjectWithRau> NPCInteractComponentList = new List<Interact_ObjectWithRau>();
+    public List<InteractionObj_stroke> NPCInteractComponentList = new List<InteractionObj_stroke>();
 
     // 인스턴스화
 
@@ -260,15 +260,15 @@ public class NPCInteractor : MonoBehaviour
 
         for (int i = 0; i < NPCArray.Length; i ++)
         {
-            if (NPCArray[i].gameObject.GetComponent<Interact_ObjectWithRau>() == null)
+            if (NPCArray[i].gameObject.GetComponent<InteractionObj_stroke>() == null)
             {
-                NPCArray[i].gameObject.AddComponent<Interact_ObjectWithRau>();
+                NPCArray[i].gameObject.AddComponent<InteractionObj_stroke>();
             }
         }
 
         for (int i = 0; i < NPCArray.Length; i++)
         {
-            NPCInteractComponentList.Add(NPCArray[i].gameObject.GetComponent<Interact_ObjectWithRau>());
+            NPCInteractComponentList.Add(NPCArray[i].gameObject.GetComponent<InteractionObj_stroke>());
         }
 
     }

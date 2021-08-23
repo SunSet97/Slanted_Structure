@@ -159,6 +159,9 @@ public class DataController : MonoBehaviour
         oun.isSelected = false;
         rau.isSelected = false;
 
+        speat.anim.SetFloat("Speed", 0f);
+        oun.anim.SetFloat("Speed", 0f);
+        rau.anim.SetFloat("Speed", 0f);
 
         List<MapData.CharacterPositionSet> temp = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true);
         for (int k = 0; k < temp.Count; k++)

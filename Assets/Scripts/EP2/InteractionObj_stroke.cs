@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEditor;
 using UnityEngine.UI;
 // 인터렉션하는 오브젝트에 컴포넌트로 추가!!
@@ -41,6 +42,8 @@ public class InteractionObj_stroke : MonoBehaviour
     [Header("Continuous 혹은 Dialogue인 경우에만 값을 넣으시오")]
     public TextAsset jsonFile;
     public Stack<TaskData> jsonTask;
+
+    private UnityAction endDialogueAction;
 
     [Header("아웃라인 색 설정")]
     public OutlineColor color;
@@ -97,6 +100,10 @@ public class InteractionObj_stroke : MonoBehaviour
         }
     }
     
+    public void SetDialogueEndEvent(UnityAction unityAction)
+    {
+        endDialogueAction = unityAction;
+    }
     void SetBtnPress(int index) {
         TaskData currentTaskData = jsonTask.Peek();
         //호감도, 자존감 값
@@ -134,7 +141,16 @@ public class InteractionObj_stroke : MonoBehaviour
         else if (type == typeOfInteraction.dialogue)
         {
             isTouched = true;
-            CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
+            if (jsonFile)
+            {
+                if (endDialogueAction != null)
+                {
+                    CanvasControl.instance_CanvasControl.SetDialougueEndAction(endDialogueAction);
+                }
+                CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
+            }
+            else
+                Debug.LogError("json 파일 없는 오류");
             //대사활성화
         }
         else if (type == typeOfInteraction.camerasetting)
@@ -250,7 +266,7 @@ public class InteractionObj_stroke : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 13))
                     {
                         if (hit.collider.gameObject.Equals(touchTargetObject))
                         {
