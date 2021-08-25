@@ -6,7 +6,7 @@ public class HamburgerStoreManager : MonoBehaviour
 {
     // day 정보
     //int day_info; // 1이면 day1, 2이면 day2, 3이면 day3임.
-
+    public TextAsset jsonFile;
     // 스핏
     public GameObject speatPrefab;
     CharacterManager speatCharacterManager;
@@ -150,7 +150,7 @@ public class HamburgerStoreManager : MonoBehaviour
                 //Json 파일
                 //Json 파일
                 //Json 파일
-                CanvasControl.instance_CanvasControl.StartConversation();
+                CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
             }, 3);
         }
         else if (DataController.instance_DataController.mapCode == "202210")
@@ -206,7 +206,7 @@ public class HamburgerStoreManager : MonoBehaviour
             // 라우도 스핏의 웨이포인트 마지막 지점으로 ㄱㄱ
             //if (triggerRauMoving)
             //{
-                StartRauMoving();
+                StartCoroutine(StartRauMoving());
             //}
             //else
             //{
@@ -216,18 +216,23 @@ public class HamburgerStoreManager : MonoBehaviour
     }
     #endregion
 
-   
+
     //void OnEnable() {
     //    wall.enabled = true;
     //    InitialSetting();
     //}
 
-    void StartRauMoving() {
+    IEnumerator StartRauMoving()
+    {
         currentCharacter.PickUpCharacter();
         Transform tmpPoint = speatWayPoints.pointPos[speatWayPoints.pointIndex];
-        currentCharacter.transform.position = Vector3.MoveTowards(currentCharacter.transform.position, tmpPoint.position, speatWayPoints.speed * Time.deltaTime * 0.95f);
-        currentCharacter.transform.LookAt(tmpPoint);
-        currentCharacter.anim.SetFloat("Speed", 1f);
+        while (true)
+        {
+            currentCharacter.transform.position = Vector3.MoveTowards(currentCharacter.transform.position, tmpPoint.position, speatWayPoints.speed * Time.deltaTime * 0.95f);
+            currentCharacter.transform.LookAt(tmpPoint);
+            currentCharacter.anim.SetFloat("Speed", 1f);
+            yield return null;
+        }
     }
 
     //void StopRauMoving()

@@ -48,7 +48,7 @@ public class Task
     public string increaseVar;
 }
 
-[Serializable]
+[System.Serializable]
 public class Dialogue {
     public string name;
     public EXPRESSION experssion;

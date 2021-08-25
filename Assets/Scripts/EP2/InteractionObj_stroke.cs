@@ -61,7 +61,7 @@ public class InteractionObj_stroke : MonoBehaviour
     public float y; // 느낌표 위치(y좌표) 조절
     private bool isInteractionObj = false;
     public Outline outline;
-    private CharacterManager character;
+    private CharacterManager currentCharacter;
     public Camera cam;
 
     [Header("터치 여부 확인")]
@@ -190,9 +190,9 @@ public class InteractionObj_stroke : MonoBehaviour
         if (isTouched)
             return;
 
-        if (!character)
+        if (!currentCharacter)
         {
-            character = DataController.instance_DataController.currentChar;
+            currentCharacter = DataController.instance_DataController.currentChar;
         }
 
         if (!isInteractionObj)
@@ -232,6 +232,7 @@ public class InteractionObj_stroke : MonoBehaviour
         else
         {
             CheckAroundCharacter(); // 일정 범위 안에 선택된 캐릭터 있는지 확인
+            Debug.Log(isCharacterInRange + "  " + onOutline);
             if (isCharacterInRange && !onOutline) // 범위 내로 들어옴
             {
                 // 아웃라인 켜기
@@ -286,14 +287,15 @@ public class InteractionObj_stroke : MonoBehaviour
 
     void CheckAroundCharacter()
     {
+        //Layer 추가
         RaycastHit[] hits = Physics.SphereCastAll(gameObject.transform.position, radius, Vector3.up, 0f);
         if (hits.Length > 0)
         {
             foreach (RaycastHit hit in hits)
             {
-                if (hit.collider.gameObject != null)
+                if (hit.collider.gameObject.Equals(currentCharacter.gameObject))
                 {
-                    if (hit.collider.gameObject == character.gameObject) isCharacterInRange = true;
+                    isCharacterInRange = true;
 
                 }
                 else

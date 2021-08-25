@@ -244,7 +244,6 @@ public class MapData : MonoBehaviour
         // 현재 맵코드와 동일하지 않을 경우 - DataController의 MapCode로 이동
         if (!DataController.instance_DataController.mapCode.Equals(mapCode))
         {
-            Debug.Log("닮");
             DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
         }
     }
