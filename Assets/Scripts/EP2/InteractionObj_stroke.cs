@@ -232,7 +232,6 @@ public class InteractionObj_stroke : MonoBehaviour
         else
         {
             CheckAroundCharacter(); // 일정 범위 안에 선택된 캐릭터 있는지 확인
-            Debug.Log(isCharacterInRange + "  " + onOutline);
             if (isCharacterInRange && !onOutline) // 범위 내로 들어옴
             {
                 // 아웃라인 켜기
