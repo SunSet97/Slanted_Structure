@@ -18,8 +18,6 @@ public class NPCwaypoints : MonoBehaviour
     public float speed;
 
     public int pointIndex = 0;
-    public int branchCheckIndex = 0;
-    public bool isMoving = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +31,8 @@ public class NPCwaypoints : MonoBehaviour
     }
     public IEnumerator MoveToPoint()
     {
-        SetMoving(true);
+        bool isMoving = SetMoving(true);
+        transform.LookAt(point[pointIndex].transform);
         while (isMoving)
         {
             //이동 완료
@@ -41,14 +40,17 @@ public class NPCwaypoints : MonoBehaviour
             {
                 if (point[pointIndex].isStop)
                 {
-                    SetMoving(false);
+                    isMoving = SetMoving(false);
                     if (point[pointIndex].pointEvent != null)
                     {
                         point[pointIndex].pointEvent();
-                        branchCheckIndex++;
                     }
+                    pointIndex++;
                 }
-                transform.LookAt(point[++pointIndex].transform);
+                else
+                {
+                    transform.LookAt(point[++pointIndex].transform);
+                }
             }
             //이동 중
             else
@@ -65,7 +67,7 @@ public class NPCwaypoints : MonoBehaviour
         point[index].pointEvent = pointAction;
     }
 
-    public void SetMoving(bool isMove)
+    public bool SetMoving(bool isMove)
     {
         if (isMove)
         {
@@ -77,7 +79,7 @@ public class NPCwaypoints : MonoBehaviour
         }
 
         //GetComponent<Animator>().SetBool("Walk", isMove);
-        isMoving = isMove;
+        return isMove;
     }
     public void StartMoving()
     {

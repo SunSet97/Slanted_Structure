@@ -30,6 +30,7 @@ public class CanvasControl : MonoBehaviour
     public int dialogueLen = 0; // 대사의 갯
     UnityAction<int> pressBtnMethod;
     UnityAction endDialogueAction;
+    UnityAction startDialogueAction;
     public bool endConversation = false; // 대화 끝나면 true.
 
     private bool isExistFile;
@@ -356,6 +357,11 @@ public class CanvasControl : MonoBehaviour
         DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
         dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
         dialogueCnt = 0;
+        if(startDialogueAction != null)
+        {
+            startDialogueAction();
+            startDialogueAction = null;
+        }
         isPossibleCnvs = false;
         DialoguePanel.SetActive(true);
         UpdateWord();
@@ -434,6 +440,10 @@ public class CanvasControl : MonoBehaviour
     public void SetChoiceAction(UnityAction<int> pressBtn)
     {
         pressBtnMethod = pressBtn;
+    }
+    public void SetDialougueStartAction(UnityAction unityAction)
+    {
+        startDialogueAction = unityAction;
     }
     public void SetDialougueEndAction(UnityAction unityAction)
     {

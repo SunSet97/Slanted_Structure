@@ -233,7 +233,7 @@ public class CharacterManager : MonoBehaviour
         }
         else
         {
-            anim.SetFloat(SpeedHash, 0); //Speed
+            //anim.SetFloat(SpeedHash, 0); //Speed
         }
     }
     #endregion

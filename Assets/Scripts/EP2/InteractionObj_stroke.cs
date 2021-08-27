@@ -44,6 +44,7 @@ public class InteractionObj_stroke : MonoBehaviour
     public Stack<TaskData> jsonTask;
 
     private UnityAction endDialogueAction;
+    private UnityAction startDialogueAction;
 
     [Header("아웃라인 색 설정")]
     public OutlineColor color;
@@ -99,6 +100,11 @@ public class InteractionObj_stroke : MonoBehaviour
             Debug.Log("Json파일 없음");
         }
     }
+
+    public void SetDialogueStartEvent(UnityAction unityAction)
+    {
+        startDialogueAction = unityAction;
+    }
     
     public void SetDialogueEndEvent(UnityAction unityAction)
     {
@@ -143,6 +149,10 @@ public class InteractionObj_stroke : MonoBehaviour
             isTouched = true;
             if (jsonFile)
             {
+                if(startDialogueAction != null)
+                {
+                    CanvasControl.instance_CanvasControl.SetDialougueStartAction(startDialogueAction);
+                }
                 if (endDialogueAction != null)
                 {
                     CanvasControl.instance_CanvasControl.SetDialougueEndAction(endDialogueAction);
