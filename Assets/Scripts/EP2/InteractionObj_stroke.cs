@@ -196,10 +196,6 @@ public class InteractionObj_stroke : MonoBehaviour
     }
     void Update()
     {
-        //터치해서 무언가 하고 있는 경우
-        if (isTouched)
-            return;
-
         if (!currentCharacter)
         {
             currentCharacter = DataController.instance_DataController.currentChar;
@@ -242,7 +238,7 @@ public class InteractionObj_stroke : MonoBehaviour
         else
         {
             CheckAroundCharacter(); // 일정 범위 안에 선택된 캐릭터 있는지 확인
-            if (isCharacterInRange && !onOutline) // 범위 내로 들어옴
+            if (isCharacterInRange && !onOutline && !isTouched) // 범위 내로 들어옴
             {
                 // 아웃라인 켜기
                 onOutline = true;
@@ -255,7 +251,7 @@ public class InteractionObj_stroke : MonoBehaviour
                 }
 
             }
-            else if (!isCharacterInRange && onOutline) // 범위 밖
+            else if ((!isCharacterInRange && onOutline) || isTouched) // 범위 밖
             {
                 // 아웃라인 끄기
                 onOutline = false;
@@ -266,27 +262,26 @@ public class InteractionObj_stroke : MonoBehaviour
                     // 느낌표 안보이게
                     exclamationMark.gameObject.SetActive(false);
                 }
-
             }
-
-            // 플레이어의 인터렉션 오브젝트 터치 감지
-            if (touchOrNot == TouchOrNot.yes)
+            if (!isTouched)
             {
-
-                if (Input.GetMouseButtonDown(0))
+                // 플레이어의 인터렉션 오브젝트 터치 감지
+                if (touchOrNot == TouchOrNot.yes)
                 {
-                    Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 13))
+                    if (Input.GetMouseButtonDown(0))
                     {
-                        if (hit.collider.gameObject.Equals(touchTargetObject))
+                        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                        if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 13))
                         {
-                            interactionResponse();//인터렉션반응 나타남.
-                        }
+                            if (hit.collider.gameObject.Equals(touchTargetObject))
+                            {
+                                interactionResponse();//인터렉션반응 나타남.
+                            }
 
+                        }
                     }
                 }
             }
-
         }
         /*
         Vector3 myScreenPos = cam.WorldToScreenPoint(transform.position);

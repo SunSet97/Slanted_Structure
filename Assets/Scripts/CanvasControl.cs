@@ -373,6 +373,7 @@ public class CanvasControl : MonoBehaviour
         if (dialogueCnt >= dialogueLen)
         {
             DataController.instance_DataController.joyStick.gameObject.SetActive(true);
+            DataController.instance_DataController.joyStick.transform.GetChild(0).gameObject.SetActive(false);
             DialoguePanel.SetActive(false);
             endConversation = true;
 

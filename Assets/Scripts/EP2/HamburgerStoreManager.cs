@@ -43,49 +43,25 @@ public class HamburgerStoreManager : MonoBehaviour
     #region 초기세팅
     void InitialSetting()
     {
-        //wall.enabled = true;
-
-        // 스핏 위치시키기
-        //speatPrefab.transform.position = speatPointParent.transform.GetChild(0).transform.position;
-
-        // 캐릭터 맵으로 이동시키기
-        //DataController.instance_DataController.isMapChanged = true;
-
-        // 스토리 정보 수정
-        //DataController.instance_DataController.charData.story = 1;
-        //DataController.instance_DataController.charData.storyBranch = 2;
-        //DataController.instance_DataController.charData.storyBranch_scnd = 3;
-        //DataController.instance_DataController.charData.dialogue_index = 4;
-
-        // 캐릭터
         currentCharacter = DataController.instance_DataController.currentChar;
 
         if (!wayPoints) wayPoints = speatPrefab.GetComponent<NPCwaypoints>();
 
-        // 클리어박스
-        //if (!clearBox) clearBox = DataController.instance_DataController.currentMap.positionSets[0].clearBox;
-
-        // 스핏
         if (!speatCharacterManager)
         {
             speatCharacterManager = speatPrefab.GetComponent<CharacterManager>();
             speatCharacterManager.isControlled = false;
         }
 
-        // 스핏 애니메이터
         if (!speatAnimator) speatAnimator = speatPrefab.GetComponent<Animator>();
-
-        //if (!canvasControl) canvasControl = CanvasControl.instance_CanvasControl;
 
         if (DataController.instance_DataController.mapCode == "201110")
         {
-            //day_info = 1; // day1
-
             // 이해하기 본인도 힘듬
             // SetDialogueEndEvent는 터치로 대화를 시작할때 대화 시작을 임의로 조정할 수 없기 때문에 사용
             part.SetDialogueEndEvent(() => { sofa.enabled = true; });
             sofa.SetDialogueEndEvent(() => { SpeatInteraction(1); });
-            sofa.SetDialogueStartEvent(() => { currentCharacter.PickUpCharacter(); currentCharacter.transform.position = sofa.transform.position; currentCharacter.transform.rotation = sofa.transform.rotation; });
+            sofa.SetDialogueStartEvent(() => { currentCharacter.PickUpCharacter(); currentCharacter.transform.position = sofa.transform.GetChild(0).position; currentCharacter.transform.rotation = sofa.transform.GetChild(0).rotation; currentCharacter.anim.SetBool("Seat", true); });
             // 대화 시작이 "포인트에 도착했을 때"이기 때문에 바로 해줘도 됨
             wayPoints.SetPointEvent(() =>
             {
@@ -102,14 +78,6 @@ public class HamburgerStoreManager : MonoBehaviour
                 //Json 파일
                 CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
             }, 3);
-        }
-        else if (DataController.instance_DataController.mapCode == "202210")
-        {
-            //day_info = 2; // day2
-        }
-        else if (DataController.instance_DataController.mapCode == "203110")
-        {
-            //day_info = 3; // day3
         }
 
     }
@@ -144,8 +112,8 @@ public class HamburgerStoreManager : MonoBehaviour
         int index = wayPoints.pointIndex;
         PointData desPoint = wayPoints.point[index];
 
+        currentCharacter.anim.SetBool("Seat", false);
         yield return new WaitForSeconds(2f);
-
         currentCharacter.anim.SetFloat("Speed", 1f);
 
         currentCharacter.transform.LookAt(desPoint.transform);
