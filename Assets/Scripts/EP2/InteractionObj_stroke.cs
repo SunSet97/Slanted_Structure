@@ -54,7 +54,10 @@ public class InteractionObj_stroke : MonoBehaviour
     public bool onOutline = false; // 아웃라인 켜져있는 안켜져 있는지
     public bool isCharacterInRange = false; // obj_interaction 오브젝트 기준으로 일정 범위 내에 캐릭터가 있는지 확인
     public int radius = 5;
+    
+    [Header("#Mark setting")]
     public GameObject exclamationMark;
+    public Vector3 markOffset = Vector3.zero;
 
     [Header("느낌표 사용할 때 체크")]
     public bool useExclamationMark = false;
@@ -238,6 +241,8 @@ public class InteractionObj_stroke : MonoBehaviour
         else
         {
             CheckAroundCharacter(); // 일정 범위 안에 선택된 캐릭터 있는지 확인
+            if (exclamationMark.gameObject.activeSelf)
+                exclamationMark.transform.position = (Vector3)markOffset + DataController.instance_DataController.cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
             if (isCharacterInRange && !onOutline && !isTouched) // 범위 내로 들어옴
             {
                 // 아웃라인 켜기
