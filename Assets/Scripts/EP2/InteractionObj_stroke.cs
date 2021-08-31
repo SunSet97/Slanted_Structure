@@ -57,7 +57,7 @@ public class InteractionObj_stroke : MonoBehaviour
     
     [Header("#Mark setting")]
     public GameObject exclamationMark;
-    public Vector3 markOffset = Vector3.zero;
+    public Vector2 markOffset = Vector2.zero;
 
     [Header("느낌표 사용할 때 체크")]
     public bool useExclamationMark = false;
