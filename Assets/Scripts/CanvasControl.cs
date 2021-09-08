@@ -460,12 +460,12 @@ public class CanvasControl : MonoBehaviour
         for (int i = 0; i < choiceBtn[0].transform.parent.childCount; i++)
             choiceBtn[i].SetActive(false);
         choiceBtn[0].transform.parent.gameObject.SetActive(false);
+        int tmp = int.Parse(currentTaskData.tasks[currentTaskData.taskIndex].nextFile) + 1;
         pressBtnMethod(index);
 
 
         //taskIndex를 쓸 일이 있을 경우 여기서 사용  아니면 pressBtnMethod에서 taskIndex 더해주기
-        currentTaskData.taskIndex += int.Parse(currentTaskData.tasks[currentTaskData.taskIndex].nextFile) + 1;
-        
+        currentTaskData.taskIndex += tmp;
         
         
 

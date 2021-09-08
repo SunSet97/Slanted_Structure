@@ -122,7 +122,13 @@ public class InteractionObj_stroke : MonoBehaviour
 
         if (currentTaskData.tasks[currentTaskData.taskIndex + index].type.Equals(TYPE.DIALOGUE))
         {
-            //대화만 실행
+            currentTaskData.isContinue = false;
+            string path = currentTaskData.tasks[currentTaskData.taskIndex + index].nextFile;
+            string jsonString = (Resources.Load(path) as TextAsset).text;
+            //string path = Application.dataPath + "/Dialogues/101010/MainStory/Story/" + DataController.instance_DataController.dialogueData.tasks[index].nextFile + ".json";
+            //string jsonString = System.IO.File.ReadAllText(path);
+            currentTaskData.taskIndex--;
+            CanvasControl.instance_CanvasControl.StartConversation(jsonString);
         }
         else if(currentTaskData.tasks[currentTaskData.taskIndex + index].type.Equals(TYPE.TEMP))
         {
@@ -241,8 +247,9 @@ public class InteractionObj_stroke : MonoBehaviour
         else
         {
             CheckAroundCharacter(); // 일정 범위 안에 선택된 캐릭터 있는지 확인
-            if (exclamationMark.gameObject.activeSelf)
-                exclamationMark.transform.position = (Vector3)markOffset + DataController.instance_DataController.cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
+            if (exclamationMark != null)
+                if (exclamationMark.gameObject.activeSelf)
+                    exclamationMark.transform.position = (Vector3)markOffset + DataController.instance_DataController.cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
             if (isCharacterInRange && !onOutline && !isTouched) // 범위 내로 들어옴
             {
                 // 아웃라인 켜기
@@ -372,7 +379,7 @@ public class InteractionObj_stroke : MonoBehaviour
                     Debug.Log("tempEnd");
                     DataController.instance_DataController.taskData = null;
                     jsonTask.Pop();
-                    jsonTask.Peek().taskIndex++;
+                    //jsonTask.Peek().taskIndex++;
                     jsonTask.Peek().isContinue = true;
                     yield break;
                 case TYPE.TASKEND:
