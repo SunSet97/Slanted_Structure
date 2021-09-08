@@ -144,7 +144,7 @@ public class InteractionObj_stroke : MonoBehaviour
     }
 
 
-    void interactionResponse() 
+    public void interactionResponse() 
     {
         //3가지 1)애니메이션 2)대사 3)카메라 변환(확대라든지) 4)맵포탈
         if (type == typeOfInteraction.animation && this.gameObject.GetComponent<Animator>() != null)//애니메이터가 존재한다면 
