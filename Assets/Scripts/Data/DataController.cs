@@ -188,9 +188,7 @@ public class DataController : MonoBehaviour
 
         //조이스틱 초기화
         joyStick.gameObject.SetActive(true);
-        inputDegree = 0;
-        inputDirection = default;
-        inputJump = false;
+        InitializeJoystic();
 
 
         // CameraMoving 컨트롤
@@ -249,6 +247,14 @@ public class DataController : MonoBehaviour
         }
     }
     #endregion
+
+    public void InitializeJoystic()
+    {
+        joyStick.transform.GetChild(0).gameObject.SetActive(false);
+        inputDegree = 0;
+        inputDirection = default;
+        inputJump = false;
+    }
 
     void FindTutorialCommand()
     {

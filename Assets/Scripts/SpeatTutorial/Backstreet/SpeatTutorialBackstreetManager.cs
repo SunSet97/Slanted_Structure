@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class SpeatTutorialBackstreetManager : MonoBehaviour
 {
+    [Header("End Dialogue")]
+    [SerializeField] private TextAsset _jsonFile;
+
     [Header("#UI")]
     public Slider speatSlider;
     public Text endText;
@@ -64,7 +67,8 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
         // 게임 끝
         if (speatSlider.value >= speatSlider.maxValue)
         {
-            DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
+            CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear(); });
+            CanvasControl.instance_CanvasControl.StartConversation(_jsonFile.text);
         }
         else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1) DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
     }
@@ -76,6 +80,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
     {
         CharacterManager speat = DataController.instance_DataController.speat;
         speat.jumpForce = 7;
+        WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
         DataController.instance_DataController.joyStick.gameObject.SetActive(false);
         DataController.instance_DataController.inputDegree = 1;
         while (speatSlider.value < speatSlider.maxValue)
@@ -83,8 +88,8 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
             // 스핏 달리기(장애물에 막히지 않았을 때만)
             if (startPosition.position.x < speat.transform.position.x)
             {
-                speatSlider.value += 0.8f * Time.deltaTime + speatAccelator;
-                speatAccelator += 0.0009f * Time.deltaTime;
+                speatSlider.value += 0.8f * Time.fixedDeltaTime + speatAccelator;
+                speatAccelator += 0.0009f * Time.fixedDeltaTime;
             }
             else
             {
@@ -94,8 +99,8 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
             // 포주 달리기
             if (pimpSlider.handleRect.gameObject.activeSelf)
             {
-                pimpSlider.value += 0.85f * Time.deltaTime + pimpAccelator;
-                pimpAccelator += 0.0005f * Time.deltaTime;
+                pimpSlider.value += 0.85f * Time.fixedDeltaTime + pimpAccelator;
+                pimpAccelator += 0.0005f * Time.fixedDeltaTime;
             }
 
             if (startPosition.position.x < speat.transform.position.x)
@@ -105,7 +110,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
                     // 트레일러 이동
                     trailer[i].position = trailer[0].position.x - trailer[i].position.x >= 18f * 2 ?
                         trailer[0].position + 18.5f * 2 * Vector3.right: // 앞 위치로 이동
-                        trailer[i].position - Vector3.right * (runSpeed + speatAccelator) * Time.deltaTime; // 뒤로 밀기
+                        trailer[i].position - Vector3.right * (runSpeed + speatAccelator) * Time.fixedDeltaTime; // 뒤로 밀기
                     // 제거 및 생성
                     if (trailer[0].position.x - trailer[i].position.x >= 18f * 2)
                     {
@@ -123,7 +128,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
                     }
                 }
             }
-            yield return null;
+            yield return waitForFixedUpdate;
         }
         DataController.instance_DataController.currentChar.jumpForce = 4;
         DataController.instance_DataController.currentChar.UseJoystickCharacter();

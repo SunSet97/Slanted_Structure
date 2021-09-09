@@ -18,6 +18,7 @@ public class Event_IntoTheAzit : MonoBehaviour
             other.GetComponent<CharacterManager>().PickUpCharacter();
             if (!isCoroot)
             {
+                DataController.instance_DataController.InitializeJoystic();
                 isCoroot = true;
                 StartCoroutine(MoveToAzit(other));
             }
@@ -30,11 +31,12 @@ public class Event_IntoTheAzit : MonoBehaviour
         other.transform.LookAt(endPoint);
         // 도착 위치까지 반복
         Vector3 tick = (endPoint.position - startPoint.position) / 100f;
+        WaitForSeconds waitForSeconds = new WaitForSeconds(0.05f / moveSpeed);
+        other.GetComponent<Animator>().SetFloat("Speed", 1f);
         for (int i = 0; i < 100; i++)
         {
-            other.GetComponent<Animator>().SetFloat("Speed", 1f);
             other.transform.position += tick;
-            yield return new WaitForSeconds(0.05f / moveSpeed);
+            yield return waitForSeconds;
         }
         mapdata.method = MapData.JoystickInputMethod.AllDirection; // 이동 방식 변경
         other.GetComponent<CharacterManager>().UseJoystickCharacter(); // 캐릭터 이동활성화
