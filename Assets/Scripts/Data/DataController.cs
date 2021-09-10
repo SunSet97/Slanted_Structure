@@ -155,13 +155,14 @@ public class DataController : MonoBehaviour
         camRot = currentMap.camRot;
 
         // 해당되는 캐릭터 선택
-        speat.isSelected = false;
-        oun.isSelected = false;
-        rau.isSelected = false;
+        speat.InitializeCharacter();
+        oun.InitializeCharacter();
+        rau.InitializeCharacter();
 
-        speat.anim.SetFloat("Speed", 0f);
-        oun.anim.SetFloat("Speed", 0f);
-        rau.anim.SetFloat("Speed", 0f);
+
+        speat.InitializeCharacter();
+        oun.InitializeCharacter();
+        rau.InitializeCharacter();
 
         List<MapData.CharacterPositionSet> temp = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true);
         for (int k = 0; k < temp.Count; k++)

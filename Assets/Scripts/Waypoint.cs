@@ -82,10 +82,8 @@ public class Waypoint : MonoBehaviour
     // waypoint를 따라 움직일 캐릭터 설정
     void SelectCharacter()
     {
-        if (!character)
-        {
-            character = DataController.instance_DataController.currentChar.transform;
-        }
+        character = DataController.instance_DataController.currentChar.transform;
+        DataController.instance_DataController.currentChar.isJoystickInput = false;
     }
 
     // 캐릭터가 waypoint를 지나가면 체크
