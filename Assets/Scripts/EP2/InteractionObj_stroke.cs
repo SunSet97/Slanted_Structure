@@ -58,6 +58,7 @@ public class InteractionObj_stroke : MonoBehaviour
 
     [Header("아웃라인 색 설정")]
     public OutlineColor color;
+    public GameObject outlineObject;
 
     [Header("인터렉션 오브젝트 터치 유무 감지 기능 사용할건지 말건지")]
     public TouchOrNot touchOrNot;
@@ -198,6 +199,7 @@ public class InteractionObj_stroke : MonoBehaviour
         else if (type == typeOfInteraction.portal && this.gameObject.GetComponent<CheckMapClear>() != null)
         {
             DataController.instance_DataController.ChangeMap(DataController.instance_DataController.currentMap.nextMapcode);
+
         }
         //1회성 interaction인 경우 굳이 excel로 할 필요 없이 바로 실행 dialogue도 마찬가지 단순한 잡담이면 typeOfInteraction.dialogue에서 처리
         else if (type == typeOfInteraction.continuous)
@@ -235,8 +237,15 @@ public class InteractionObj_stroke : MonoBehaviour
             if (gameObject.tag.Equals("obj_interaction"))
             {
                 isInteractionObj = true;
+                if (outlineObject != null)
+                {
+                    outline = outlineObject.AddComponent<Outline>();
 
-                outline = gameObject.AddComponent<Outline>();
+                }
+                else 
+                {
+                    outline = gameObject.AddComponent<Outline>();
+                }
                 outline.OutlineMode = Outline.Mode.OutlineAll;
                 outline.OutlineWidth = 8f; // 아웃라인 두께 설정
                 outline.enabled = false; // 우선 outline 끄기
@@ -307,6 +316,11 @@ public class InteractionObj_stroke : MonoBehaviour
                             Debug.Log(hit.transform.gameObject);
                             if (hit.collider.gameObject.Equals(touchTargetObject))
                             {
+                                if (hit.collider.TryGetComponent(out CheckMapClear checkMapClear))
+
+                                    if (!checkMapClear.nextSelectMapcode.Equals("000000"))
+                                        DataController.instance_DataController.currentMap.nextMapcode = checkMapClear.nextSelectMapcode;
+
                                 interactionResponse();//인터렉션반응 나타남.
                             }
 
