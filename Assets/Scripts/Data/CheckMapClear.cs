@@ -34,6 +34,10 @@ public class CheckMapClear : MonoBehaviour
             CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
             CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => DataController.instance_DataController.ChangeMap(DataController.instance_DataController.currentMap.nextMapcode));
         }
+        else
+        {
+            DataController.instance_DataController.ChangeMap(DataController.instance_DataController.currentMap.nextMapcode);
+        }
     }
 
     // 캐릭터 확인 후 트리거 활성화
