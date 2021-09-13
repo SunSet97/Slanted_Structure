@@ -316,6 +316,11 @@ public class InteractionObj_stroke : MonoBehaviour
                             Debug.Log(hit.transform.gameObject);
                             if (hit.collider.gameObject.Equals(touchTargetObject))
                             {
+                                if (hit.collider.TryGetComponent(out CheckMapClear checkMapClear))
+
+                                    if (!checkMapClear.nextSelectMapcode.Equals("000000"))
+                                        DataController.instance_DataController.currentMap.nextMapcode = checkMapClear.nextSelectMapcode;
+
                                 interactionResponse();//인터렉션반응 나타남.
                             }
 
