@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class SpeatTutorialBackstreetManager : MonoBehaviour
 {
+    [Header("End Dialogue")]
+    [SerializeField] private TextAsset _jsonFile;
+
     [Header("#UI")]
     public Slider speatSlider;
     public Text endText;
@@ -22,41 +25,39 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
     public Button jumpBtn;
     public Button abilityBtn;
 
-    [Header("#Running")]
-    public bool isRunning = false;
-
     float percentage;
     private float speatDistance;
     float pimpDistance;
+    public float runSpeed;
 
     void Start()
     {
-        initPatterns();
+        initRunGame();
     }
-    private void initPatterns()
+    private void initRunGame()
     {
         for (int i = 0; i < 3; i++)
         {
             patterns.Add(Resources.LoadAll<GameObject>("Run_Pattern/Pattern" + i));
         }
+        StartCoroutine(StartRungame());
     }
+
     void Update()
     {
         percentage = 100 / speatSlider.maxValue;
         speatDistance = (speatSlider.maxValue - speatSlider.value) * percentage; // 종료 지점과 스핏의 거리
         pimpDistance = (speatSlider.value - pimpSlider.value) * percentage; // 스핏과 포주의 거리
 
-        // 조이스틱 입력 온오프
-        //foreach (Image image in DataController.instance_DataController.joyStick.GetComponentsInChildren<Image>())
-        //    image.color = image.name == "Transparent Dynamic Joystick" ? Color.clear : speatSlider.value < speatSlider.maxValue ? Color.clear : Color.white - Color.black * 0.3f;
-
-        // 런게임 시작
-        if (!isRunning) { isRunning = true; StartCoroutine("StartRungame"); }
 
         // 일정 거리 이후에 포주 출현
-        pimp.SetActive(speatSlider.value > speatSlider.maxValue * 0.1f);
-        pimpSlider.fillRect.gameObject.SetActive(speatSlider.value > speatSlider.maxValue * 0.1f);
-        pimpSlider.handleRect.gameObject.SetActive(speatSlider.value > speatSlider.maxValue * 0.1f);
+        if (!pimp.activeSelf && speatSlider.value > speatSlider.maxValue * 0.1f)
+        {
+            pimp.SetActive(true);
+            pimpSlider.fillRect.gameObject.SetActive(true);
+            pimpSlider.handleRect.gameObject.SetActive(true);
+        }
+        
         // 포주와 스핏의 거리 설정
         if (pimp.activeSelf) pimp.transform.localPosition = new Vector3(20 - pimpDistance * 2, pimp.transform.localPosition.y, pimp.transform.localPosition.z);
 
@@ -66,10 +67,10 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
         // 게임 끝
         if (speatSlider.value >= speatSlider.maxValue)
         {
-            GetComponentInParent<MapData>().positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
-            DataController.instance_DataController.joyStick.gameObject.SetActive(true);
+            CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear(); });
+            CanvasControl.instance_CanvasControl.StartConversation(_jsonFile.text);
         }
-        else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1) InitRungame();
+        else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1) DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
     }
 
     #region 런게임 세팅
@@ -77,21 +78,30 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
     float pimpAccelator = 0;
     IEnumerator StartRungame()
     {
-        WaitForSeconds waitForSeconds = new WaitForSeconds(0.05f);
         CharacterManager speat = DataController.instance_DataController.speat;
         speat.jumpForce = 7;
-        speat.transform.rotation = Quaternion.AngleAxis(90, Vector3.up);
+        WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
         DataController.instance_DataController.joyStick.gameObject.SetActive(false);
         DataController.instance_DataController.inputDegree = 1;
         while (speatSlider.value < speatSlider.maxValue)
         {
-            DataController.instance_DataController.inputDegree = 1;
             // 스핏 달리기(장애물에 막히지 않았을 때만)
-            if (startPosition.position.x < speat.transform.position.x) { speatSlider.value += 0.04f + speatAccelator; speatAccelator += 0.0004f; }
-            else speatAccelator *= 0.0003f;
+            if (startPosition.position.x < speat.transform.position.x)
+            {
+                speatSlider.value += 0.8f * Time.fixedDeltaTime + speatAccelator;
+                speatAccelator += 0.0009f * Time.fixedDeltaTime;
+            }
+            else
+            {
+                speatAccelator *= 0.97f;
+            }
 
             // 포주 달리기
-            if (pimpSlider.handleRect.gameObject.activeSelf) pimpSlider.value += 0.045f + pimpAccelator; pimpAccelator += 0.0002f;
+            if (pimpSlider.handleRect.gameObject.activeSelf)
+            {
+                pimpSlider.value += 0.85f * Time.fixedDeltaTime + pimpAccelator;
+                pimpAccelator += 0.0005f * Time.fixedDeltaTime;
+            }
 
             if (startPosition.position.x < speat.transform.position.x)
             {
@@ -99,49 +109,29 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
                 {
                     // 트레일러 이동
                     trailer[i].position = trailer[0].position.x - trailer[i].position.x >= 18f * 2 ?
-                        trailer[0].position + 18.5f * 2 * Vector3.right : // 앞 위치로 이동
-                        trailer[i].position - Vector3.right * (0.3f + speatAccelator); // 뒤로 밀기
+                        trailer[0].position + 18.5f * 2 * Vector3.right: // 앞 위치로 이동
+                        trailer[i].position - Vector3.right * (runSpeed + speatAccelator) * Time.fixedDeltaTime; // 뒤로 밀기
                     // 제거 및 생성
                     if (trailer[0].position.x - trailer[i].position.x >= 18f * 2)
                     {
                         Destroy(trailer[i].GetChild(0).gameObject); // 현재 장애물 패턴 제거
-                        //trailer[i].GetChild(0).gameObject.SetActive(false);
-                        //trailer[i].GetChild(0).SetParent(patternFolder);
+
                         if (speatSlider.value < speatSlider.maxValue * 0.8f)
                         {
                             int index = speatDistance > 66 ? 0 : speatDistance > 33 ? 1 : 2;
                             Instantiate(patterns[index][Random.Range(0, patterns[index].Length)], trailer[i]).SetActive(true); // 장애물 패턴 랜덤 생성
-
-                            //GameObject pattern = patterns[index][Random.Range(0, patterns[index].Length)];
-
-
-                            //GameObject pattern = GetPattern(index, patterns[index][Random.Range(0, patterns[index].Length)].name);
-                            //pattern.transform.SetParent(trailer[i]);
-                            //pattern.SetActive(true);
                         }
-                        else Instantiate(patterns[0][5], trailer[i]).SetActive(true); // 장애물 없는 길 생성
-                        //else
-                        //{
-                        //    patterns[0][5].SetActive(true);
-                        //    patterns[0][5].transform.SetParent(trailer[i]); // 장애물 없는 길 생성
-                        //}
+                        else
+                        {
+                            Instantiate(patterns[0][5], trailer[i]).SetActive(true); // 장애물 없는 길 생성
+                        }
                     }
                 }
             }
-            yield return waitForSeconds;
+            yield return waitForFixedUpdate;
         }
         DataController.instance_DataController.currentChar.jumpForce = 4;
         DataController.instance_DataController.currentChar.UseJoystickCharacter();
-    }
-    // 런게임 초기화
-    private void InitRungame()
-    {
-        StopCoroutine("StartRungame");
-        speatAccelator = 0;
-        speatSlider.value = 0;
-        pimpAccelator = 0;
-        pimpSlider.value = 0;
-        isRunning = false;
     }
     //private GameObject GetPattern(int index, string tag)
     //{

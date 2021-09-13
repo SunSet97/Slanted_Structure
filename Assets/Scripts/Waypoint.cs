@@ -35,6 +35,13 @@ public class Waypoint : MonoBehaviour
     public Transform checkedWaypoint = null; //check된 포인트
     public bool isInit = false; // check된 포인트에 처음 접한것 판단
     public bool isCheck = false;
+    private void Start()
+    {
+        if (Application.isPlaying)
+        {
+            SelectCharacter();
+        }
+    }
     void Update()
     {
         // Edit / Play mode에서 업데이트
@@ -68,7 +75,6 @@ public class Waypoint : MonoBehaviour
     {
         if (isPlaying && mapdata.map != null)
         {
-            SelectCharacter();
             WaypointCheck(waypoints.Count > 0);
             JoystickInputSetting();
         }
@@ -76,10 +82,8 @@ public class Waypoint : MonoBehaviour
     // waypoint를 따라 움직일 캐릭터 설정
     void SelectCharacter()
     {
-        if (!character)
-        {
-            character = DataController.instance_DataController.currentChar.transform;
-        }
+        character = DataController.instance_DataController.currentChar.transform;
+        DataController.instance_DataController.currentChar.isJoystickInput = false;
     }
 
     // 캐릭터가 waypoint를 지나가면 체크
@@ -113,8 +117,7 @@ public class Waypoint : MonoBehaviour
     {
         if (DataController.instance_DataController.joyStick != null)
         {
-            Vector2 inputDir = Vector2.zero; // 조이스틱 자체의 입력 방향
-            inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, 0); // 한 방향 입력은 수평값만 받음
+            Vector2 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, 0); // 한 방향 입력은 수평값만 받음
 
             // 움직였던 방향
             if (moveDirection == MoveDirection.Right && isInit)

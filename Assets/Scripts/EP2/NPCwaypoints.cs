@@ -3,109 +3,87 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[System.Serializable]
+public struct PointData
+{
+    public Transform transform;
+    public bool isStop;
+    public UnityAction pointEvent; 
+}
+
 public class NPCwaypoints : MonoBehaviour
 {
-    public Transform[] pointPos;
+    public PointData[] point;
 
-    public int[] branchIndexList;
     public float speed;
 
     public int pointIndex = 0;
-    public int branchCheckIndex = 0;
-    public bool isNpcMoving = false;
-
-    private int eventIndex;
-    private UnityAction pointAction;
 
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < pointPos.Length; i++) {
-            pointPos[i].position = new Vector3(pointPos[i].position.x, transform.position.y, pointPos[i].position.z);
-        }
+        for (int i = 0; i < point.Length; i++)
+            point[i].transform.position.Set(point[i].transform.position.x, transform.position.y, point[i].transform.position.z);
 
         // 처음 위치로
-        transform.position = pointPos[0].transform.position;
+        transform.position = point[0].transform.position;
 
     }
-
-    // Update is called once per frame
-    void Update()
+    public IEnumerator MoveToPoint()
     {
-        MoveToPoint();
-    }
-
-    public void MoveToPoint() {
-
-        //이동 완료
-        if (isNpcMoving && transform.position == pointPos[pointIndex].transform.position)
+        bool isMoving = SetMoving(true);
+        transform.LookAt(point[pointIndex].transform);
+        while (isMoving)
         {
-            if (pointIndex == eventIndex)
-                pointAction();
-
-            if (branchCheckIndex < branchIndexList.Length && pointIndex == branchIndexList[branchCheckIndex])
+            //이동 완료
+            if (transform.position == point[pointIndex].transform.position)
             {
-                StopMoving();
-                branchCheckIndex++;
+                if (point[pointIndex].isStop)
+                {
+                    isMoving = SetMoving(false);
+                    if (point[pointIndex].pointEvent != null)
+                    {
+                        point[pointIndex].pointEvent();
+                    }
+                    pointIndex++;
+                }
+                else
+                {
+                    transform.LookAt(point[++pointIndex].transform);
+                }
             }
-            else if (pointIndex == pointPos.Length - 1)
+            //이동 중
+            else
             {
-                StopMoving();
+                transform.position = Vector3.MoveTowards(transform.position, point[pointIndex].transform.position, speed * Time.deltaTime);
+
             }
-            pointIndex++;
+            yield return null;
         }
-        //이동 중
-        else if (isNpcMoving && transform.position != pointPos[pointIndex].transform.position)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, pointPos[pointIndex].transform.position, speed * Time.deltaTime);
-            transform.LookAt(pointPos[pointIndex]);
-
-        }
-        else if (!isNpcMoving)
-        {
-            // true 세팅은 ㅇㄷ??????
-            GetComponent<Animator>().SetBool("Dash", false);
-        }
-
-
-        /*
-        if (isNpcMoving)
-        {
-
-            transform.position = Vector3.MoveTowards(transform.position, pointPos[pointIndex].transform.position, speed * Time.deltaTime);
-            transform.LookAt(pointPos[pointIndex]);
-
-            if (pointIndex == pointPos.Length - 1)
-            {
-                StopMoving();
-                print("끝");
-            }
-
-        }
-        */
-
     }
 
     public void SetPointEvent(UnityAction pointAction, int index)
     {
-        this.pointAction = pointAction;
-        eventIndex = index;
+        point[index].pointEvent = pointAction;
     }
 
-    public void StopMoving()
+    public bool SetMoving(bool isMove)
     {
-        //????
-        GetComponent<Animator>().SetBool("Walk", false);
-        //GetComponent<Animator>().SetFloat("Speed", 0f);
-        isNpcMoving = false;
-    }
+        if (isMove)
+        {
+            GetComponent<Animator>().SetFloat("Speed", 1f);
+        }
+        else
+        {
+            GetComponent<Animator>().SetFloat("Speed", 0f);
+        }
 
+        //GetComponent<Animator>().SetBool("Walk", isMove);
+        return isMove;
+    }
     public void StartMoving()
     {
-        //?????
-        GetComponent<Animator>().SetBool("Walk", true);
-        //GetComponent<Animator>().SetFloat("Speed", 0.3f);
-        isNpcMoving = true;
+        StartCoroutine(MoveToPoint());
     }
 
 }

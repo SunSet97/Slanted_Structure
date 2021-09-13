@@ -30,6 +30,7 @@ public class CanvasControl : MonoBehaviour
     public int dialogueLen = 0; // 대사의 갯
     UnityAction<int> pressBtnMethod;
     UnityAction endDialogueAction;
+    UnityAction startDialogueAction;
     public bool endConversation = false; // 대화 끝나면 true.
 
     private bool isExistFile;
@@ -356,6 +357,11 @@ public class CanvasControl : MonoBehaviour
         DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
         dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
         dialogueCnt = 0;
+        if(startDialogueAction != null)
+        {
+            startDialogueAction();
+            startDialogueAction = null;
+        }
         isPossibleCnvs = false;
         DialoguePanel.SetActive(true);
         UpdateWord();
@@ -367,6 +373,7 @@ public class CanvasControl : MonoBehaviour
         if (dialogueCnt >= dialogueLen)
         {
             DataController.instance_DataController.joyStick.gameObject.SetActive(true);
+            DataController.instance_DataController.joyStick.transform.GetChild(0).gameObject.SetActive(false);
             DialoguePanel.SetActive(false);
             endConversation = true;
 
@@ -435,6 +442,10 @@ public class CanvasControl : MonoBehaviour
     {
         pressBtnMethod = pressBtn;
     }
+    public void SetDialougueStartAction(UnityAction unityAction)
+    {
+        startDialogueAction = unityAction;
+    }
     public void SetDialougueEndAction(UnityAction unityAction)
     {
         endDialogueAction = unityAction;
@@ -449,12 +460,12 @@ public class CanvasControl : MonoBehaviour
         for (int i = 0; i < choiceBtn[0].transform.parent.childCount; i++)
             choiceBtn[i].SetActive(false);
         choiceBtn[0].transform.parent.gameObject.SetActive(false);
+        int tmp = int.Parse(currentTaskData.tasks[currentTaskData.taskIndex].nextFile) + 1;
         pressBtnMethod(index);
 
 
         //taskIndex를 쓸 일이 있을 경우 여기서 사용  아니면 pressBtnMethod에서 taskIndex 더해주기
-        currentTaskData.taskIndex += int.Parse(currentTaskData.tasks[currentTaskData.taskIndex].nextFile) + 1;
-        
+        currentTaskData.taskIndex += tmp;
         
         
 

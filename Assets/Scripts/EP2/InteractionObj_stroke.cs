@@ -44,6 +44,7 @@ public class InteractionObj_stroke : MonoBehaviour
     public Stack<TaskData> jsonTask;
 
     private UnityAction endDialogueAction;
+    private UnityAction startDialogueAction;
 
     [Header("아웃라인 색 설정")]
     public OutlineColor color;
@@ -53,7 +54,10 @@ public class InteractionObj_stroke : MonoBehaviour
     public bool onOutline = false; // 아웃라인 켜져있는 안켜져 있는지
     public bool isCharacterInRange = false; // obj_interaction 오브젝트 기준으로 일정 범위 내에 캐릭터가 있는지 확인
     public int radius = 5;
+    
+    [Header("#Mark setting")]
     public GameObject exclamationMark;
+    public Vector2 markOffset = Vector2.zero;
 
     [Header("느낌표 사용할 때 체크")]
     public bool useExclamationMark = false;
@@ -99,6 +103,11 @@ public class InteractionObj_stroke : MonoBehaviour
             Debug.Log("Json파일 없음");
         }
     }
+
+    public void SetDialogueStartEvent(UnityAction unityAction)
+    {
+        startDialogueAction = unityAction;
+    }
     
     public void SetDialogueEndEvent(UnityAction unityAction)
     {
@@ -113,7 +122,13 @@ public class InteractionObj_stroke : MonoBehaviour
 
         if (currentTaskData.tasks[currentTaskData.taskIndex + index].type.Equals(TYPE.DIALOGUE))
         {
-            //대화만 실행
+            currentTaskData.isContinue = false;
+            string path = currentTaskData.tasks[currentTaskData.taskIndex + index].nextFile;
+            string jsonString = (Resources.Load(path) as TextAsset).text;
+            //string path = Application.dataPath + "/Dialogues/101010/MainStory/Story/" + DataController.instance_DataController.dialogueData.tasks[index].nextFile + ".json";
+            //string jsonString = System.IO.File.ReadAllText(path);
+            currentTaskData.taskIndex--;
+            CanvasControl.instance_CanvasControl.StartConversation(jsonString);
         }
         else if(currentTaskData.tasks[currentTaskData.taskIndex + index].type.Equals(TYPE.TEMP))
         {
@@ -129,7 +144,7 @@ public class InteractionObj_stroke : MonoBehaviour
     }
 
 
-    void interactionResponse() 
+    public void interactionResponse() 
     {
         //3가지 1)애니메이션 2)대사 3)카메라 변환(확대라든지) 4)맵포탈
         if (type == typeOfInteraction.animation && this.gameObject.GetComponent<Animator>() != null)//애니메이터가 존재한다면 
@@ -143,6 +158,10 @@ public class InteractionObj_stroke : MonoBehaviour
             isTouched = true;
             if (jsonFile)
             {
+                if(startDialogueAction != null)
+                {
+                    CanvasControl.instance_CanvasControl.SetDialougueStartAction(startDialogueAction);
+                }
                 if (endDialogueAction != null)
                 {
                     CanvasControl.instance_CanvasControl.SetDialougueEndAction(endDialogueAction);
@@ -186,10 +205,6 @@ public class InteractionObj_stroke : MonoBehaviour
     }
     void Update()
     {
-        //터치해서 무언가 하고 있는 경우
-        if (isTouched)
-            return;
-
         if (!currentCharacter)
         {
             currentCharacter = DataController.instance_DataController.currentChar;
@@ -232,8 +247,10 @@ public class InteractionObj_stroke : MonoBehaviour
         else
         {
             CheckAroundCharacter(); // 일정 범위 안에 선택된 캐릭터 있는지 확인
-            Debug.Log(isCharacterInRange + "  " + onOutline);
-            if (isCharacterInRange && !onOutline) // 범위 내로 들어옴
+            if (exclamationMark != null)
+                if (exclamationMark.gameObject.activeSelf)
+                    exclamationMark.transform.position = (Vector3)markOffset + DataController.instance_DataController.cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
+            if (isCharacterInRange && !onOutline && !isTouched) // 범위 내로 들어옴
             {
                 // 아웃라인 켜기
                 onOutline = true;
@@ -246,7 +263,7 @@ public class InteractionObj_stroke : MonoBehaviour
                 }
 
             }
-            else if (!isCharacterInRange && onOutline) // 범위 밖
+            else if ((!isCharacterInRange && onOutline) || isTouched) // 범위 밖
             {
                 // 아웃라인 끄기
                 onOutline = false;
@@ -257,27 +274,26 @@ public class InteractionObj_stroke : MonoBehaviour
                     // 느낌표 안보이게
                     exclamationMark.gameObject.SetActive(false);
                 }
-
             }
-
-            // 플레이어의 인터렉션 오브젝트 터치 감지
-            if (touchOrNot == TouchOrNot.yes)
+            if (!isTouched)
             {
-
-                if (Input.GetMouseButtonDown(0))
+                // 플레이어의 인터렉션 오브젝트 터치 감지
+                if (touchOrNot == TouchOrNot.yes)
                 {
-                    Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 13))
+                    if (Input.GetMouseButtonDown(0))
                     {
-                        if (hit.collider.gameObject.Equals(touchTargetObject))
+                        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                        if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 13))
                         {
-                            interactionResponse();//인터렉션반응 나타남.
-                        }
+                            if (hit.collider.gameObject.Equals(touchTargetObject))
+                            {
+                                interactionResponse();//인터렉션반응 나타남.
+                            }
 
+                        }
                     }
                 }
             }
-
         }
         /*
         Vector3 myScreenPos = cam.WorldToScreenPoint(transform.position);
@@ -363,7 +379,7 @@ public class InteractionObj_stroke : MonoBehaviour
                     Debug.Log("tempEnd");
                     DataController.instance_DataController.taskData = null;
                     jsonTask.Pop();
-                    jsonTask.Peek().taskIndex++;
+                    //jsonTask.Peek().taskIndex++;
                     jsonTask.Peek().isContinue = true;
                     yield break;
                 case TYPE.TASKEND:

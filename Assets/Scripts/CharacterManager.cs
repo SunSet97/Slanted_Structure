@@ -41,6 +41,7 @@ public class CharacterManager : MonoBehaviour
 
     #region 캐릭터 컨트롤
     [Header("#Character pick up controll")]
+    public bool isJoystickInput;
     public bool isControlled;   // 움직일 수 있는 여부
     public bool isSelected;     // 선택여부
     // 캐릭터를 스크립트로 직접 이동할 수 있게 함 (캐릭터를 손으로 집는다고 생각)
@@ -56,10 +57,16 @@ public class CharacterManager : MonoBehaviour
         isControlled = isSelected;
         anim.applyRootMotion = true;
     }
+    public void InitializeCharacter()
+    {
+        isSelected = false;
+        anim.SetFloat("Speed", 0f);
+    }
     public void SetCharacter(Transform settingTransform)
     {
         transform.position = settingTransform.position;
         transform.LookAt(transform.position + settingTransform.right);
+        isJoystickInput = true;
         isSelected = true;
         characterOriginRot = transform.eulerAngles;
 
@@ -183,6 +190,11 @@ public class CharacterManager : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (joyStick && cam && ctrl.enabled && isJoystickInput)
+        {
+            DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, DataController.instance_DataController.inputDirection); // 조정된 입력 방향으로 크기 계산
+            DataController.instance_DataController.inputDirection.Set(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 조정된 입력 방향 설정
+        }
         // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을 때
         if (joyStick && cam && ctrl.enabled && isControlled)
         {
@@ -229,11 +241,11 @@ public class CharacterManager : MonoBehaviour
             {
                 moveVerDir.y += Physics.gravity.y * gravityScale * Time.deltaTime;
             }
-            ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 최종 이동 시킴
+            ctrl.Move((moveHorDir + moveVerDir) * Time.fixedDeltaTime); //캐릭터를 최종 이동 시킴
         }
         else
         {
-            anim.SetFloat(SpeedHash, 0); //Speed
+            //anim.SetFloat(SpeedHash, 0); //Speed
         }
     }
     #endregion
