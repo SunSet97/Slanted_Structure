@@ -40,6 +40,8 @@ public class Event_IntoTheAzit : MonoBehaviour
         }
         mapdata.method = MapData.JoystickInputMethod.AllDirection; // 이동 방식 변경
         other.GetComponent<CharacterManager>().UseJoystickCharacter(); // 캐릭터 이동활성화
+        other.GetComponent<Animator>().SetFloat("Speed", 0f);
+        DataController.instance_DataController.InitializeJoystic();
         yield return new WaitForSeconds(0.5f); // 잠시 대기
         isCoroot = false; // 코루틴 초기화
     }

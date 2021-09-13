@@ -40,9 +40,12 @@ public class InteractionObj_stroke : MonoBehaviour
     {
         public enum TYPE { NONE, CLEAR, ACTIVE }
         public TYPE type;
-
+        [ConditionalHideInInspector("type", TYPE.CLEAR)]
         public CheckMapClear ClearBox;
+
+        [ConditionalHideInInspector("type", TYPE.ACTIVE)]
         public GameObject ActiveObject;
+        [ConditionalHideInInspector("type", TYPE.ACTIVE)]
         public bool Active;
     }
     [Header("인터렉션 방식")]
@@ -77,6 +80,12 @@ public class InteractionObj_stroke : MonoBehaviour
     public Outline outline;
     private CharacterManager currentCharacter;
     public Camera cam;
+
+    [Header("카메라 뷰")]
+    public bool isViewChange = false;
+    
+    public Vector3 CameraPos;
+    public Vector3 CameraRot;
 
     [Header("터치 여부 확인")]
     public bool isTouched = false;
@@ -198,6 +207,7 @@ public class InteractionObj_stroke : MonoBehaviour
         else if (type == typeOfInteraction.portal && this.gameObject.GetComponent<CheckMapClear>() != null)
         {
             DataController.instance_DataController.ChangeMap(DataController.instance_DataController.currentMap.nextMapcode);
+            
         }
         //1회성 interaction인 경우 굳이 excel로 할 필요 없이 바로 실행 dialogue도 마찬가지 단순한 잡담이면 typeOfInteraction.dialogue에서 처리
         else if (type == typeOfInteraction.continuous)
@@ -294,7 +304,7 @@ public class InteractionObj_stroke : MonoBehaviour
                     exclamationMark.gameObject.SetActive(false);
                 }
             }
-            if (!isTouched)
+            if (isCharacterInRange && !isTouched)
             {
                 // 플레이어의 인터렉션 오브젝트 터치 감지
                 if (touchOrNot == TouchOrNot.yes)

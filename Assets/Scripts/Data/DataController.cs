@@ -252,6 +252,8 @@ public class DataController : MonoBehaviour
     public void InitializeJoystic()
     {
         joyStick.transform.GetChild(0).gameObject.SetActive(false);
+        joyStick.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().position = default;
+        joyStick.OnPointerUp();
         inputDegree = 0;
         inputDirection = default;
         inputJump = false;
