@@ -38,10 +38,12 @@ public class InteractionObj_stroke : MonoBehaviour
     [System.Serializable]
     public class InteractionEvent
     {
-        public enum TYPE { NONE, CLEAR }
+        public enum TYPE { NONE, CLEAR, ACTIVE }
         public TYPE type;
 
         public CheckMapClear ClearBox;
+        public GameObject ActiveObject;
+        public bool Active;
     }
     [Header("인터렉션 방식")]
     public typeOfInteraction type;
@@ -174,9 +176,14 @@ public class InteractionObj_stroke : MonoBehaviour
                 {
                     CanvasControl.instance_CanvasControl.SetDialougueEndAction(endDialogueAction);
                 }
-                if (dialogueEndAction.type == InteractionEvent.TYPE.CLEAR)
+                switch (dialogueEndAction.type)
                 {
-                    CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => dialogueEndAction.ClearBox.Clear());
+                    case InteractionEvent.TYPE.CLEAR:
+                        CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => dialogueEndAction.ClearBox.Clear());
+                        break;
+                    case InteractionEvent.TYPE.ACTIVE:
+                        dialogueEndAction.ActiveObject.SetActive(dialogueEndAction.Active);
+                        break;
                 }
                 CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
             }
