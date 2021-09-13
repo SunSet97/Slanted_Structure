@@ -35,7 +35,14 @@ public class InteractionObj_stroke : MonoBehaviour
         yes,
         no
     }
+    [System.Serializable]
+    public class InteractionEvent
+    {
+        public enum TYPE { NONE, CLEAR }
+        public TYPE type;
 
+        public CheckMapClear ClearBox;
+    }
     [Header("인터렉션 방식")]
     public typeOfInteraction type;
 
@@ -45,6 +52,7 @@ public class InteractionObj_stroke : MonoBehaviour
 
     private UnityAction endDialogueAction;
     private UnityAction startDialogueAction;
+    public InteractionEvent dialogueEndAction;
 
     [Header("아웃라인 색 설정")]
     public OutlineColor color;
@@ -165,6 +173,10 @@ public class InteractionObj_stroke : MonoBehaviour
                 if (endDialogueAction != null)
                 {
                     CanvasControl.instance_CanvasControl.SetDialougueEndAction(endDialogueAction);
+                }
+                if (dialogueEndAction.type == InteractionEvent.TYPE.CLEAR)
+                {
+                    CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => dialogueEndAction.ClearBox.Clear());
                 }
                 CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
             }
