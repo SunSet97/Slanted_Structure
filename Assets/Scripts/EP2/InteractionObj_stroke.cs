@@ -245,7 +245,6 @@ public class InteractionObj_stroke : MonoBehaviour
             if (gameObject.tag.Equals("obj_interaction"))
             {
                 isInteractionObj = true;
-
                 outline = gameObject.AddComponent<Outline>();
                 outline.OutlineMode = Outline.Mode.OutlineAll;
                 outline.OutlineWidth = 8f; // 아웃라인 두께 설정

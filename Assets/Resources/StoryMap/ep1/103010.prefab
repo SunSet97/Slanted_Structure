@@ -230,7 +230,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5679713699259848832
 Transform:
   m_ObjectHideFlags: 0
@@ -270,6 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jsonFile: {fileID: 0}
   nextSelectMapcode: 104010
   who: {fileID: 0}
 --- !u!1 &5720161968964794779
@@ -345,6 +346,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!65 &6937157147427599821
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7086955885419216414}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 406.93, y: 243.15, z: 170.93}
+  m_Center: {x: 0, y: 120.96, z: 0}
 --- !u!114 &2611440465060189591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,6 +373,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   jsonFile: {fileID: 4900000, guid: 39411f39e7fe74e4290385e00d6ac2f4, type: 3}
+  dialogueEndAction:
+    type: 2
+    ClearBox: {fileID: 0}
+    ActiveObject: {fileID: 5679713699259848833}
+    Active: 1
   color: 0
   touchOrNot: 0
   onOutline: 0
@@ -373,19 +392,6 @@ MonoBehaviour:
   cam: {fileID: 0}
   isTouched: 0
   touchTargetObject: {fileID: 0}
---- !u!65 &6937157147427599821
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7086955885419216414}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 406.93, y: 243.15, z: 170.93}
-  m_Center: {x: 0, y: 120.96, z: 0}
 --- !u!1001 &5679713699439010352
 PrefabInstance:
   m_ObjectHideFlags: 0
