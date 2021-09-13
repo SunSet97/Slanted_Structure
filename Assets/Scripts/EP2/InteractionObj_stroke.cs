@@ -285,6 +285,7 @@ public class InteractionObj_stroke : MonoBehaviour
                         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                         if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 13))
                         {
+                            Debug.Log(hit.transform.gameObject);
                             if (hit.collider.gameObject.Equals(touchTargetObject))
                             {
                                 interactionResponse();//인터렉션반응 나타남.
