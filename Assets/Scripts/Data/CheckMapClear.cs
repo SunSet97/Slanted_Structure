@@ -21,6 +21,7 @@ class DebugmapClear : Editor
 
 public class CheckMapClear : MonoBehaviour
 {
+    public TextAsset jsonFile;
     public string nextSelectMapcode = "000000";//어디 스토리로 갈 건지.
     public CharacterManager who;  // 트리거 신호를 줄 캐릭터
 
@@ -28,8 +29,11 @@ public class CheckMapClear : MonoBehaviour
     {
         if (!nextSelectMapcode.Equals("000000"))
             DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
-
-        DataController.instance_DataController.ChangeMap(DataController.instance_DataController.currentMap.nextMapcode);
+        if(jsonFile != null)
+        {
+            CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
+            CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => DataController.instance_DataController.ChangeMap(DataController.instance_DataController.currentMap.nextMapcode));
+        }
     }
 
     // 캐릭터 확인 후 트리거 활성화

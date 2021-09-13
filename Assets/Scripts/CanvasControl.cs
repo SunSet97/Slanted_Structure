@@ -351,8 +351,6 @@ public class CanvasControl : MonoBehaviour
     {
         if(DataController.instance_DataController.taskData != null)
             DataController.instance_DataController.taskData.isContinue = false;
-        DataController.instance_DataController.inputDegree = 0;
-        DataController.instance_DataController.inputDirection = Vector2.zero;
         DataController.instance_DataController.joyStick.gameObject.SetActive(false);
         DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
         dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
@@ -362,6 +360,7 @@ public class CanvasControl : MonoBehaviour
             startDialogueAction();
             startDialogueAction = null;
         }
+        DataController.instance_DataController.InitializeJoystic();
         isPossibleCnvs = false;
         DialoguePanel.SetActive(true);
         UpdateWord();
