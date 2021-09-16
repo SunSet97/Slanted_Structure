@@ -38,7 +38,7 @@ public class InteractionObj_stroke : MonoBehaviour
     [System.Serializable]
     public class InteractionEvent
     {
-        public enum TYPE { NONE, CLEAR, ACTIVE }
+        public enum TYPE { NONE, CLEAR, ACTIVE, NULL, STOP}
         public TYPE type;
         [ConditionalHideInInspector("type", TYPE.CLEAR)]
         public CheckMapClear ClearBox;
@@ -47,6 +47,10 @@ public class InteractionObj_stroke : MonoBehaviour
         public GameObject ActiveObject;
         [ConditionalHideInInspector("type", TYPE.ACTIVE)]
         public bool Active;
+
+        [ConditionalHideInInspector("type", TYPE.STOP)]
+        public MovableObj Movables;
+
     }
     [Header("인터렉션 방식")]
     public typeOfInteraction type;
@@ -193,6 +197,15 @@ public class InteractionObj_stroke : MonoBehaviour
                     case InteractionEvent.TYPE.ACTIVE:
                         dialogueEndAction.ActiveObject.SetActive(dialogueEndAction.Active);
                         break;
+                    case InteractionEvent.TYPE.STOP:
+                        CanvasControl.instance_CanvasControl.SetDialougueEndAction(() =>
+                        {
+                            foreach (GameObject movable in dialogueEndAction.Movables.gameObjects)
+                            {
+                                movable.GetComponent<Movable>().IsMove = true;
+                            }
+                        });
+                        break;
                 }
                 CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
             }
@@ -252,7 +265,7 @@ public class InteractionObj_stroke : MonoBehaviour
 
                 cam = DataController.instance_DataController.cam;
 
-                if (exclamationMark.gameObject != null) exclamationMark.gameObject.SetActive(false); // 느낌표 끄기
+                if (useExclamationMark && exclamationMark.gameObject != null) exclamationMark.gameObject.SetActive(false); // 느낌표 끄기
 
 
                 if (!touchTargetObject)

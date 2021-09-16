@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PimpGuestMoving : MonoBehaviour
+public class PimpGuestMoving : MonoBehaviour, Movable
 {
     // 스핏
     [Header("스핏")]
@@ -22,6 +22,7 @@ public class PimpGuestMoving : MonoBehaviour
     CharacterController npc;
     Camera cam;
     public Animator animator;
+    public bool IsMove { get; set; }
 
     private readonly int speedHash = Animator.StringToHash("Speed");
 
@@ -54,27 +55,27 @@ public class PimpGuestMoving : MonoBehaviour
     {
 
         if (!npc.isGrounded) npc.Move(transform.up * -1); // 중력
-
-        if(!talking)
-            npc.Move((Vector3.right * nextDirection * speed) * Time.deltaTime); // 적들 이동.
-
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, rotVal, 0), rotationSpeed * Time.deltaTime); // 적들 이동 방향에 따른 회전
-
-
-
-        if (!speedUp) // SpeedUpFunc() 한번 수행될 수 있게.
+        if (IsMove)
         {
-            if (CheckSameFloorWithSpeat() && CheckCamera() && (speatAbility.isAbility || speatAbility.isHiding))
+            if (!talking)
+                npc.Move((Vector3.right * nextDirection * speed) * Time.deltaTime); // 적들 이동.
+
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, rotVal, 0), rotationSpeed * Time.deltaTime); // 적들 이동 방향에 따른 회전
+
+
+
+            if (!speedUp) // SpeedUpFunc() 한번 수행될 수 있게.
             {
-                speedUp = true;
-                StartCoroutine(SpeedUpFunc());
+                if (CheckSameFloorWithSpeat() && CheckCamera() && (speatAbility.isAbility || speatAbility.isHiding))
+                {
+                    speedUp = true;
+                    StartCoroutine(SpeedUpFunc());
 
+                }
             }
+            if (gameObject.name.Equals("Pimp_1")) print("rotVal: " + rotVal);
         }
-        if (gameObject.name.Equals("Pimp_1")) print("rotVal: " + rotVal);
-
-
-    }
+        }
 
 
     void Think() // 방향 설정.
@@ -85,20 +86,28 @@ public class PimpGuestMoving : MonoBehaviour
             return;
         }
 
-        nextDirection = (int)Random.Range(-1, 2);
+        if (IsMove)
+        {
+            nextDirection = (int)Random.Range(-1, 2);
+            if (nextDirection == 1) // 오른쪽으로 움직임
+            {
+                animator.SetFloat(speedHash, 1.0f);
+                rotVal = 90;
+            }
+            else if (nextDirection == -1) // 왼쪽으로 움직임
+            {
+                animator.SetFloat(speedHash, 1.0f);
+                rotVal = -90;
+            }
+            else if (nextDirection == 0) // 정면 바라보고 정지
+            {
+                animator.SetFloat(speedHash, 0.0f);
+                rotVal = 180;
+            }
+        }
+        else
+        {
 
-        if (nextDirection == 1) // 오른쪽으로 움직임
-        {
-            animator.SetFloat(speedHash, 1.0f);
-            rotVal = 90;
-        }
-        else if (nextDirection == -1) // 왼쪽으로 움직임
-        {
-            animator.SetFloat(speedHash, 1.0f);
-            rotVal = -90;
-        }
-        else if (nextDirection == 0) // 정면 바라보고 정지
-        {
             animator.SetFloat(speedHash, 0.0f);
             rotVal = 180;
         }
