@@ -43,7 +43,7 @@ public class PimpGuestMoving : MonoBehaviour, Movable
         animator = GetComponent<Animator>();
         //npc.GetComponent<Collider>().isTrigger = true;
 
-        speat = DataController.instance_DataController.speat;
+        speat = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
 
         cam = DataController.instance_DataController.cam;
         
@@ -75,7 +75,7 @@ public class PimpGuestMoving : MonoBehaviour, Movable
             }
             if (gameObject.name.Equals("Pimp_1")) print("rotVal: " + rotVal);
         }
-        }
+    }
 
 
     void Think() // 방향 설정.
@@ -117,6 +117,7 @@ public class PimpGuestMoving : MonoBehaviour, Movable
 
     void SetTalking(bool isTalking)
     {
+        speat.gameObject.layer = 0;
         //Debug.Log(NPCtransforms.Length);
         for (int i = 0; i < transform.parent.parent.childCount; i++)
         {
@@ -125,7 +126,7 @@ public class PimpGuestMoving : MonoBehaviour, Movable
                 PimpGuestMoving pimpGuestMoving = transform.parent.parent.GetChild(i).GetChild(j).GetComponent<PimpGuestMoving>();
                 pimpGuestMoving.talking = isTalking;
                 DataController.instance_DataController.currentMap.ui.SetActive(!isTalking);
-                DataController.instance_DataController.currentChar.isControlled = !isTalking;
+                speat.IsMove = !isTalking;
                 if (isTalking)
                 {
                     pimpGuestMoving.animator.SetFloat(speedHash, 0.0f);

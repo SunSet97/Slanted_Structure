@@ -29,7 +29,6 @@ public class InteractionObj_stroke : MonoBehaviour
         interact,
         continuous
     }
-
     public enum TouchOrNot // 인터렉션 오브젝트 터치했는지 안했는지 감지 기능 필요
     {
         yes,
@@ -39,16 +38,26 @@ public class InteractionObj_stroke : MonoBehaviour
     public class InteractionEvent
     {
         public enum TYPE { NONE, CLEAR, ACTIVE, NULL, STOP}
-        public TYPE type;
-        [ConditionalHideInInspector("type", TYPE.CLEAR)]
+        public TYPE eventType;
+        [Serializable]
+        public struct act
+        {
+            public GameObject ActiveObject;
+            public bool ActiveSelf;
+        }
+        [Serializable]
+        public struct Active
+        {
+            public act[] actives;
+        }
+        [ConditionalHideInInspector("eventType", TYPE.CLEAR)]
         public CheckMapClear ClearBox;
 
-        [ConditionalHideInInspector("type", TYPE.ACTIVE)]
-        public GameObject ActiveObject;
-        [ConditionalHideInInspector("type", TYPE.ACTIVE)]
-        public bool Active;
+        [ConditionalHideInInspector("eventType", TYPE.ACTIVE)]
+        public Active ActiveObjs;
+        //[ConditionalHideInInspector("type", TYPE.ACTIVE)]
 
-        [ConditionalHideInInspector("type", TYPE.STOP)]
+        [ConditionalHideInInspector("eventType", TYPE.STOP)]
         public MovableObj Movables;
 
     }
@@ -61,7 +70,7 @@ public class InteractionObj_stroke : MonoBehaviour
 
     private UnityAction endDialogueAction;
     private UnityAction startDialogueAction;
-    public InteractionEvent dialogueEndAction;
+    public InteractionEvent[] dialogueEndAction;
 
     [Header("아웃라인 색 설정")]
     public OutlineColor color;
@@ -125,16 +134,18 @@ public class InteractionObj_stroke : MonoBehaviour
         {
             Debug.Log("Json파일 없음");
         }
+
+        currentCharacter = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
     }
 
     public void SetDialogueStartEvent(UnityAction unityAction)
     {
-        startDialogueAction = unityAction;
+        startDialogueAction += unityAction;
     }
     
     public void SetDialogueEndEvent(UnityAction unityAction)
     {
-        endDialogueAction = unityAction;
+        endDialogueAction += unityAction;
     }
     void SetBtnPress(int index) {
         TaskData currentTaskData = jsonTask.Peek();
@@ -181,7 +192,7 @@ public class InteractionObj_stroke : MonoBehaviour
             isTouched = true;
             if (jsonFile)
             {
-                if(startDialogueAction != null)
+                if (startDialogueAction != null)
                 {
                     CanvasControl.instance_CanvasControl.SetDialougueStartAction(startDialogueAction);
                 }
@@ -189,23 +200,33 @@ public class InteractionObj_stroke : MonoBehaviour
                 {
                     CanvasControl.instance_CanvasControl.SetDialougueEndAction(endDialogueAction);
                 }
-                switch (dialogueEndAction.type)
+                foreach (InteractionEvent dialogueEndAction in dialogueEndAction)
                 {
-                    case InteractionEvent.TYPE.CLEAR:
-                        CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => dialogueEndAction.ClearBox.Clear());
-                        break;
-                    case InteractionEvent.TYPE.ACTIVE:
-                        dialogueEndAction.ActiveObject.SetActive(dialogueEndAction.Active);
-                        break;
-                    case InteractionEvent.TYPE.STOP:
-                        CanvasControl.instance_CanvasControl.SetDialougueEndAction(() =>
-                        {
-                            foreach (GameObject movable in dialogueEndAction.Movables.gameObjects)
+                    switch (dialogueEndAction.eventType)
+                    {
+                        case InteractionEvent.TYPE.CLEAR:
+                            CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => dialogueEndAction.ClearBox.Clear());
+                            break;
+                        case InteractionEvent.TYPE.ACTIVE:
+                            CanvasControl.instance_CanvasControl.SetDialougueEndAction(() =>
                             {
-                                movable.GetComponent<Movable>().IsMove = true;
-                            }
-                        });
-                        break;
+                                foreach (InteractionEvent.act active in dialogueEndAction.ActiveObjs.actives)
+                                {
+                                    Debug.Log(active.ActiveSelf);
+                                    active.ActiveObject.SetActive(active.ActiveSelf);
+                                }
+                            });
+                            break;
+                        case InteractionEvent.TYPE.STOP:
+                            CanvasControl.instance_CanvasControl.SetDialougueEndAction(() =>
+                            {
+                                foreach (GameObject movable in dialogueEndAction.Movables.gameObjects)
+                                {
+                                    movable.GetComponent<Movable>().IsMove = true;
+                                }
+                            });
+                            break;
+                    }
                 }
                 CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
             }
@@ -247,11 +268,6 @@ public class InteractionObj_stroke : MonoBehaviour
     }
     void Update()
     {
-        if (!currentCharacter)
-        {
-            currentCharacter = DataController.instance_DataController.currentChar;
-        }
-
         if (!isInteractionObj)
         {
             gameObject.tag = "obj_interaction";
@@ -265,7 +281,7 @@ public class InteractionObj_stroke : MonoBehaviour
 
                 cam = DataController.instance_DataController.cam;
 
-                if (useExclamationMark && exclamationMark.gameObject != null) exclamationMark.gameObject.SetActive(false); // 느낌표 끄기
+                if (useExclamationMark && exclamationMark.gameObject != null) exclamationMark.SetActive(false); // 느낌표 끄기
 
 
                 if (!touchTargetObject)
@@ -288,34 +304,8 @@ public class InteractionObj_stroke : MonoBehaviour
         else
         {
             CheckAroundCharacter(); // 일정 범위 안에 선택된 캐릭터 있는지 확인
-            if (exclamationMark != null)
-                if (exclamationMark.gameObject.activeSelf)
+            if (exclamationMark && exclamationMark.activeSelf)
                     exclamationMark.transform.position = (Vector3)markOffset + DataController.instance_DataController.cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
-            if (isCharacterInRange && !onOutline && !isTouched) // 범위 내로 들어옴
-            {
-                // 아웃라인 켜기
-                onOutline = true;
-                outline.enabled = true;
-
-                if (useExclamationMark)
-                {
-                    // 느낌표 보이게
-                    exclamationMark.gameObject.SetActive(true);
-                }
-
-            }
-            else if ((!isCharacterInRange && onOutline) || isTouched) // 범위 밖
-            {
-                // 아웃라인 끄기
-                onOutline = false;
-                outline.enabled = false;
-
-                if (useExclamationMark)
-                {
-                    // 느낌표 안보이게
-                    exclamationMark.gameObject.SetActive(false);
-                }
-            }
             if (isCharacterInRange && !isTouched)
             {
                 // 플레이어의 인터렉션 오브젝트 터치 감지
@@ -340,6 +330,31 @@ public class InteractionObj_stroke : MonoBehaviour
                         }
                     }
                 }
+
+                if (!outline)
+                {
+                    // 아웃라인 켜기
+                    onOutline = true;
+                    outline.enabled = true;
+
+                    if (useExclamationMark)
+                    {
+                        // 느낌표 보이게
+                        exclamationMark.gameObject.SetActive(true);
+                    }
+                }
+            }
+            else if ((!isCharacterInRange && onOutline) || isTouched) // 범위 밖이면서 아웃라인이 켜져있거나 눌렀을 경우
+            {
+                // 아웃라인 끄기
+                onOutline = false;
+                outline.enabled = false;
+
+                if (useExclamationMark)
+                {
+                    // 느낌표 안보이게
+                    exclamationMark.gameObject.SetActive(false);
+                }
             }
         }
         /*
@@ -352,19 +367,16 @@ public class InteractionObj_stroke : MonoBehaviour
     {
         //Layer 추가
         RaycastHit[] hits = Physics.SphereCastAll(gameObject.transform.position, radius, Vector3.up, 0f);
-        if (hits.Length > 0)
+        foreach (RaycastHit hit in hits)
         {
-            foreach (RaycastHit hit in hits)
+            if (hit.collider.gameObject.Equals(currentCharacter.gameObject))
             {
-                if (hit.collider.gameObject.Equals(currentCharacter.gameObject))
-                {
-                    isCharacterInRange = true;
+                isCharacterInRange = true;
 
-                }
-                else
-                {
-                    isCharacterInRange = false;
-                }
+            }
+            else
+            {
+                isCharacterInRange = false;
             }
         }
     }

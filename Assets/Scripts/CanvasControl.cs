@@ -33,6 +33,8 @@ public class CanvasControl : MonoBehaviour
     UnityAction startDialogueAction;
     public bool endConversation = false; // 대화 끝나면 true.
 
+    public Animator CharAnimator;
+
     private bool isExistFile;
 
     [Header("이야기 진행")]
@@ -176,10 +178,10 @@ public class CanvasControl : MonoBehaviour
             }
             // 데이터 저장 시 연필 개수, 캐릭터 위치, 현재 씬 등 업데이트 (점점 추가할 예정)
             DataController.instance_DataController.charData.pencilCnt -= 1;
-            DataController.instance_DataController.charData.currentCharPosition = DataController.instance_DataController.currentChar.transform.position;
-            DataController.instance_DataController.charData.speatPosition = DataController.instance_DataController.rau.transform.position;
-            DataController.instance_DataController.charData.speatPosition = DataController.instance_DataController.speat.transform.position;
-            DataController.instance_DataController.charData.ounPosition = DataController.instance_DataController.oun.transform.position;
+            DataController.instance_DataController.charData.currentCharPosition = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).transform.position;
+            DataController.instance_DataController.charData.rauPosition = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Rau).transform.position;
+            DataController.instance_DataController.charData.speatPosition = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Speat).transform.position;
+            DataController.instance_DataController.charData.ounPosition = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Oun).transform.position;
             DataController.instance_DataController.charData.currentScene = SceneManager.GetActiveScene().name;
 
             DataController.instance_DataController.SaveCharData("SaveData" + fileNum);
@@ -230,7 +232,7 @@ public class CanvasControl : MonoBehaviour
         finishFadeIn = false;
         fadeIn = StartCoroutine(FadeIn());
 
-        if (DataController.instance_DataController.currentChar.name == "Rau")
+        if (DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).name == "Rau")
         {
             commandText.text = DataController.instance_DataController.tutorialCmdData.RauTutorial[commandIndex];
         }
@@ -339,7 +341,8 @@ public class CanvasControl : MonoBehaviour
         if (DataController.instance_DataController.taskData != null)
             DataController.instance_DataController.taskData.isContinue = false;
 
-        DataController.instance_DataController.joyStick.gameObject.SetActive(false);
+        DataController.instance_DataController.InitializeJoystic();
+        DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).InitializeCharacter();
         dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
         dialogueCnt = 0;
         isPossibleCnvs = false;
@@ -368,9 +371,11 @@ public class CanvasControl : MonoBehaviour
 
     public void UpdateWord()
     {
+        DialogueData dialogueData = DataController.instance_DataController.dialogueData;
         // 대화가 끝나면 선택지 부를 지 여부결정 
         if (dialogueCnt >= dialogueLen)
         {
+
             DataController.instance_DataController.joyStick.gameObject.SetActive(true);
             DataController.instance_DataController.joyStick.transform.GetChild(0).gameObject.SetActive(false);
             DialoguePanel.SetActive(false);
@@ -383,7 +388,7 @@ public class CanvasControl : MonoBehaviour
                 endDialogueAction();
                 endDialogueAction = null;
             }
-            DataController.instance_DataController.dialogueData.dialogues = null;
+            dialogueData.dialogues = null;
             if (DataController.instance_DataController.taskData != null)
             {
                 DataController.instance_DataController.taskData.isContinue = true;
@@ -393,8 +398,21 @@ public class CanvasControl : MonoBehaviour
         else
         {
             // 대화가 진행되는 중 텍스트 업데이트
-            speakerName.text = DataController.instance_DataController.dialogueData.dialogues[dialogueCnt].name; // 이야기하는 캐릭터 이름
-            speakerWord.text = DataController.instance_DataController.dialogueData.dialogues[dialogueCnt].contents; // 캐릭터의 대사
+            if (dialogueData.dialogues[dialogueCnt].anim_name != null)
+            {
+                string path = "DialogueFace/" + dialogueData.dialogues[dialogueCnt].anim_name;
+                CharAnimator = Resources.Load(path) as Animator;
+                if (CharAnimator != null)
+                {
+                    CharAnimator.SetInteger("Emotion", ((int)dialogueData.dialogues[dialogueCnt].experssion));
+                }
+                else
+                {
+                    Debug.LogError("Dialogue 애니메이션 세팅 오류");
+                }
+            }
+            speakerName.text = dialogueData.dialogues[dialogueCnt].name; // 이야기하는 캐릭터 이름
+            speakerWord.text = dialogueData.dialogues[dialogueCnt].contents; // 캐릭터의 대사
             //애니메이션 추가
             dialogueCnt++;
         }
@@ -439,15 +457,15 @@ public class CanvasControl : MonoBehaviour
 
     public void SetChoiceAction(UnityAction<int> pressBtn)
     {
-        pressBtnMethod = pressBtn;
+        pressBtnMethod += pressBtn;
     }
     public void SetDialougueStartAction(UnityAction unityAction)
     {
-        startDialogueAction = unityAction;
+        startDialogueAction += unityAction;
     }
     public void SetDialougueEndAction(UnityAction unityAction)
     {
-        endDialogueAction = unityAction;
+        endDialogueAction += unityAction;
     }
 
     // 선택지를 눌렀을 때 불리는 함수 

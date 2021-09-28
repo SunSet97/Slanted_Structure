@@ -21,40 +21,37 @@ public class Interact_ObjectWithRau : MonoBehaviour
 
     void Update()
     {
-        if (DataController.instance_DataController != null)
+        // Outline이 없으면 추가 및 초기화
+        if (this.gameObject.GetComponent<Outline>() == null)
         {
-            // Outline이 없으면 추가 및 초기화
-            if (this.gameObject.GetComponent<Outline>() == null)
+            outline = this.gameObject.AddComponent<Outline>();  // 추가
+            outline.OutlineMode = mode;                         // 모드 설정
+            outline.OutlineColor = outlineColor;                // 색 설정
+            outline.OutlineWidth = 8f;                          // 아웃라인 두께 설정
+            outline.enabled = false;                            // Outline 끄기
+            if (this.gameObject.GetComponent<BoxCollider>() == null) this.gameObject.AddComponent<BoxCollider>().isTrigger = true;  // 콜라이더 없으면 자동 추가
+        }
+        // Outline 있을 시
+        else if (this.gameObject.activeSelf)
+        {
+            isIn = CheckAroundCharacter();
+            //if (mark != null &&!isInteracting)
+            if (!isInteracting)
             {
-                outline = this.gameObject.AddComponent<Outline>();  // 추가
-                outline.OutlineMode = mode;                         // 모드 설정
-                outline.OutlineColor = outlineColor;                // 색 설정
-                outline.OutlineWidth = 8f;                          // 아웃라인 두께 설정
-                outline.enabled = false;                            // Outline 끄기
-                if (this.gameObject.GetComponent<BoxCollider>() == null) this.gameObject.AddComponent<BoxCollider>().isTrigger = true;  // 콜라이더 없으면 자동 추가
+                outline.enabled = isIn; // Outline 활성화
+                if (mark != null)
+                {
+                    mark.gameObject.SetActive(isIn); // 마크 활성화
+                    mark.transform.position = (Vector3)markOffset + DataController.instance_DataController.cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
+                }
             }
-            // Outline 있을 시
-            else if (this.gameObject.activeSelf)
+            else if (isIn && isInteracting)
             {
-                isIn = CheckAroundCharacter();
-                //if (mark != null &&!isInteracting)
-                if (!isInteracting)
-                {
-                    outline.enabled = isIn; // Outline 활성화
-                    if (mark != null)
-                    {
-                        mark.gameObject.SetActive(isIn); // 마크 활성화
-                        mark.transform.position = (Vector3)markOffset + DataController.instance_DataController.cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
-                    }
-                }
-                else if (isIn && isInteracting)
-                {
-                    outline.enabled = false; // 범위 내에 있으면서 인터랙션중일 때 Outline 비활성화
-                    if (mark) mark.gameObject.SetActive(false); // 범위 내에 있으면서 인터랙션중일 때 마크 비활성화
-                }
+                outline.enabled = false; // 범위 내에 있으면서 인터랙션중일 때 Outline 비활성화
+                if (mark) mark.gameObject.SetActive(false); // 범위 내에 있으면서 인터랙션중일 때 마크 비활성화
+            }
 
-                if (CanvasControl.instance_CanvasControl.isPossibleCnvs && isIn) GetObjectTouch();
-            }
+            if (CanvasControl.instance_CanvasControl.isPossibleCnvs && isIn) GetObjectTouch();
         }
     }
 
@@ -63,12 +60,10 @@ public class Interact_ObjectWithRau : MonoBehaviour
     {
         RaycastHit[] hits = Physics.SphereCastAll(gameObject.transform.position + offset, radius, Vector3.up, 0f);
         bool temp = false;
+        CharacterManager currentChar = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
         foreach (RaycastHit hit in hits)
         {
-            if (hit.collider.gameObject != null && DataController.instance_DataController.currentChar != null)
-                temp = hit.collider.name == DataController.instance_DataController.currentChar.name ? true : false;
-            else
-                temp = false;
+            temp = hit.collider.name == currentChar.name ? true : false;
         }
 
         return temp;

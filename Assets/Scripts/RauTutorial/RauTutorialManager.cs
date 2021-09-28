@@ -19,7 +19,7 @@ public class RauTutorialManager : MonoBehaviour
         Down,
         none
     }
-
+    private CharacterManager rau;
     public MapData mapdata;
     public Swipe swipeDir;
     public GameObject[] ui;
@@ -31,6 +31,11 @@ public class RauTutorialManager : MonoBehaviour
     private CameraSetting view_river = new CameraSetting() { camDis = new Vector3(3f, 3f, -10f), camRot = new Vector3(10, 0, 0) };
     private CameraSetting view_quarter = new CameraSetting() { camDis = new Vector3(-6f, 5f, 0f), camRot = new Vector3(20, 90, 0) };
 
+    void Start()
+    {
+        rau = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Rau);
+        mapdata = DataController.instance_DataController.currentMap;
+    }
     void Update()
     {
         if (isCheckPoint[5]) { ui[3].SetActive(false); Forest(); }
@@ -87,7 +92,7 @@ public class RauTutorialManager : MonoBehaviour
         DataController.instance_DataController.camDis = view_forward.camDis; DataController.instance_DataController.camRot = view_forward.camRot;
         // 수풀길 헤쳐가기
         ChangeJoystickSetting(2, 1); // 이동 해제, 좌우 스와이프만 가능하도록 변경
-        DataController.instance_DataController.currentChar.PickUpCharacter();
+        rau.PickUpCharacter();
         TouchSlide();
         if (swipeDir == Swipe.Left && !isSwipe && swipe % 2 == 0)
         {
@@ -97,7 +102,7 @@ public class RauTutorialManager : MonoBehaviour
                 grass[1 + swipe / 2].SetActive(false);
             }
             isSwipe = true;
-            StartCoroutine(MoveForward(DataController.instance_DataController.currentChar.transform.position, grass[1 + swipe / 2].transform.position));
+            StartCoroutine(MoveForward(rau.transform.position, grass[1 + swipe / 2].transform.position));
             swipe++;
         }
         else if (swipeDir == Swipe.Right && !isSwipe && swipe % 2 == 1)
@@ -108,7 +113,7 @@ public class RauTutorialManager : MonoBehaviour
                 grass[8 + swipe / 2].SetActive(false);
             }
             isSwipe = true;
-            StartCoroutine(MoveForward(DataController.instance_DataController.currentChar.transform.position, grass[8 + swipe / 2].transform.position));
+            StartCoroutine(MoveForward(rau.transform.position, grass[8 + swipe / 2].transform.position));
             swipe++;
         }
         else if (swipeDir == Swipe.none && isSwipe && !isMoveForward)
@@ -118,7 +123,7 @@ public class RauTutorialManager : MonoBehaviour
         if (swipe == 12 && !isMoveForward)
         {
             swipe++;
-            StartCoroutine(MoveForward(DataController.instance_DataController.currentChar.transform.position, checkPoint[3].transform.position));
+            StartCoroutine(MoveForward(rau.transform.position, checkPoint[3].transform.position));
         }
         grass[0].transform.position += Vector3.forward * 0.2f;
         grass[7].transform.position -= Vector3.forward * 0.2f;
@@ -130,7 +135,7 @@ public class RauTutorialManager : MonoBehaviour
         isMoveForward = true;
         for (int i=0; i < 20; i++)
         {
-            DataController.instance_DataController.currentChar.transform.position += (new Vector3(grass.x, character.y, character.z) - character) / 20f;
+            rau.transform.position += (new Vector3(grass.x, character.y, character.z) - character) / 20f;
             yield return new WaitForSeconds(0.0001f);
         }
         isMoveForward = false;
@@ -148,7 +153,7 @@ public class RauTutorialManager : MonoBehaviour
         //강으로 넘어갈 때 한번만 실행
         if (!isRiver)
         {
-            DataController.instance_DataController.currentChar.UseJoystickCharacter();
+            rau.UseJoystickCharacter();
             // 카메라 방향 side
             DataController.instance_DataController.camDis = view_side.camDis; DataController.instance_DataController.camRot = view_side.camRot;
             ChangeJoystickSetting(0, 0); // 2D side view 이동
@@ -178,7 +183,7 @@ public class RauTutorialManager : MonoBehaviour
             ui[4].SetActive(true);
             DataController.instance_DataController.camDis = view_river.camDis; DataController.instance_DataController.camRot = view_river.camRot;
             ChangeJoystickSetting(2, 0); // 이동 해제
-            DataController.instance_DataController.currentChar.PickUpCharacter();
+            rau.PickUpCharacter();
             DataController.instance_DataController.inputDegree = 0;
             DataController.instance_DataController.inputDirection = Vector2.zero;
         }
@@ -188,7 +193,7 @@ public class RauTutorialManager : MonoBehaviour
             // 카메라 방향 side
             DataController.instance_DataController.camDis = view_river.camDis; DataController.instance_DataController.camRot = view_river.camRot;
             ChangeJoystickSetting(0, 0); // 2D side view 이동
-            DataController.instance_DataController.currentChar.UseJoystickCharacter();
+            rau.UseJoystickCharacter();
             riverTrees[0].SetActive(false);
             riverTrees[1].SetActive(true);
             riverTrees[2].SetActive(true);
@@ -235,10 +240,10 @@ public class RauTutorialManager : MonoBehaviour
             DataController.instance_DataController.camDis = view_forward.camDis; DataController.instance_DataController.camRot = view_forward.camRot;
             ChangeJoystickSetting(2, 2); // 이동 해제, 위아래 스와이프만 가능하도록 변경
             TouchSlide();
-            DataController.instance_DataController.currentChar.PickUpCharacter();
+            rau.PickUpCharacter();
             if (swipeDir == Swipe.Down && woodSwipeIndex <= 3 && !isMoveUp)
             {
-                StartCoroutine(MoveUp(DataController.instance_DataController.currentChar.transform.position, movePoint[woodSwipeIndex].position));
+                StartCoroutine(MoveUp(rau.transform.position, movePoint[woodSwipeIndex].position));
                 woodSwipeIndex++;
             }
             if (woodSwipeIndex > 3)
@@ -253,7 +258,7 @@ public class RauTutorialManager : MonoBehaviour
             DataController.instance_DataController.camDis = view_quarter.camDis; DataController.instance_DataController.camRot = view_quarter.camRot;
             // 둘러보기, 전방향 이동 튜토리얼
             ChangeJoystickSetting(1, 0); // 전방향 이동
-            DataController.instance_DataController.currentChar.UseJoystickCharacter();
+            rau.UseJoystickCharacter();
         }
 
         // 시네마틱 씬 전환
@@ -264,7 +269,7 @@ public class RauTutorialManager : MonoBehaviour
         isMoveUp = true;
         for (int i = 0; i < 20; i++)
         {
-            DataController.instance_DataController.currentChar.transform.position += (point-character) / 20f;
+            rau.transform.position += (point-character) / 20f;
             yield return new WaitForSeconds(0.0001f);
         }
         isMoveUp = false;

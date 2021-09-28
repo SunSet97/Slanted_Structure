@@ -61,7 +61,7 @@ public class MiniGameManager : MonoBehaviour
         //DataController.instance_DataController.isMapChanged = true;
         particle.Play();
         initialRauSpeed = rauSpeed;
-        rau = DataController.instance_DataController.rau;
+        rau = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Rau);
     }
 
     void Update()

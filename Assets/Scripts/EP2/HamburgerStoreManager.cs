@@ -43,14 +43,14 @@ public class HamburgerStoreManager : MonoBehaviour
     #region 초기세팅
     void InitialSetting()
     {
-        currentCharacter = DataController.instance_DataController.currentChar;
+        currentCharacter = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
 
         if (!wayPoints) wayPoints = speatPrefab.GetComponent<NPCwaypoints>();
 
         if (!speatCharacterManager)
         {
             speatCharacterManager = speatPrefab.GetComponent<CharacterManager>();
-            speatCharacterManager.isControlled = false;
+            speatCharacterManager.IsMove = false;
         }
 
         if (!speatAnimator) speatAnimator = speatPrefab.GetComponent<Animator>();

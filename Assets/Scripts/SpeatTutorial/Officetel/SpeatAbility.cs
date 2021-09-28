@@ -161,7 +161,7 @@ public class SpeatAbility : MonoBehaviour
         }
         else
         {
-            speat = DataController.instance_DataController.speat;
+            speat = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Speat);
         }
     }
 

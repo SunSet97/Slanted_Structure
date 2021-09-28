@@ -18,11 +18,10 @@ public class Camera_Moving : MonoBehaviour
     private float halfWidth;
     private float halfHeight;
 
-
     void Update()
     {
-        if (DataController.instance_DataController.currentChar)
-            character = DataController.instance_DataController.currentChar.gameObject.transform;
+        if (DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main))
+            character = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).transform;
 
         if (character)
         {

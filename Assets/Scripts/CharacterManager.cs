@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CharacterManager : MonoBehaviour
+public class CharacterManager : MonoBehaviour, Movable
 {
     #region 기본 설정
     [Header("#Default inspector setting(auto)")]
@@ -42,24 +42,26 @@ public class CharacterManager : MonoBehaviour
     #region 캐릭터 컨트롤
     [Header("#Character pick up controll")]
     public bool isJoystickInput;
-    public bool isControlled;   // 움직일 수 있는 여부
     public bool isSelected;     // 선택여부
+    public bool IsMove { get; set; }
     // 캐릭터를 스크립트로 직접 이동할 수 있게 함 (캐릭터를 손으로 집는다고 생각)
     public void PickUpCharacter()
     {
-        isControlled = false;
+        IsMove = false;
         anim.applyRootMotion = false;
     }
 
     // 캐릭터를 스크립트로 직접 이동할 수 있게 함 (캐릭터를 손으로 집는다고 생각)
     public void PutDownCharacter()
     {
-        isControlled = isSelected;
+        IsMove = isSelected;
         anim.applyRootMotion = true;
     }
     public void InitializeCharacter()
     {
-        isSelected = false;
+        gameObject.layer = 0;
+        moveHorDir = Vector3.zero;
+        moveVerDir = Vector3.zero;
         anim.SetFloat("Speed", 0f);
     }
     public void SetCharacter(Transform settingTransform)
@@ -196,7 +198,7 @@ public class CharacterManager : MonoBehaviour
             DataController.instance_DataController.inputDirection.Set(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 조정된 입력 방향 설정
         }
         // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을 때
-        if (joyStick && cam && ctrl.enabled && isControlled)
+        if (joyStick && cam && ctrl.enabled && IsMove)
         {
             // 메인 카메라 기준으로 캐릭터가 바라보는 방향 계산
             camRotation = Quaternion.Euler(0, -cam.transform.rotation.eulerAngles.y, 0);
