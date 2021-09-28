@@ -355,6 +355,7 @@ public class CanvasControl : MonoBehaviour
         if(DataController.instance_DataController.taskData != null)
             DataController.instance_DataController.taskData.isContinue = false;
         DataController.instance_DataController.joyStick.gameObject.SetActive(false);
+        DataController.instance_DataController.InitializeJoystic();
         DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
         dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
         dialogueCnt = 0;
@@ -363,7 +364,6 @@ public class CanvasControl : MonoBehaviour
             startDialogueAction();
             startDialogueAction = null;
         }
-        DataController.instance_DataController.InitializeJoystic();
         isPossibleCnvs = false;
         DialoguePanel.SetActive(true);
         UpdateWord();
@@ -422,6 +422,7 @@ public class CanvasControl : MonoBehaviour
     // 선택지가 있을 때 선택지 패널 염 
     public void OpenChoicePanel()
     {
+        DataController.instance_DataController.InitializeJoystic();
         DataController.instance_DataController.joyStick.gameObject.SetActive(false);
         TaskData currentTaskData = DataController.instance_DataController.taskData;
         int index = currentTaskData.taskIndex;

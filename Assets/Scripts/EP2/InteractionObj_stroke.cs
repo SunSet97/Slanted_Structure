@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using UnityEditor;
 using UnityEngine.UI;
 // 인터렉션하는 오브젝트에 컴포넌트로 추가!!
+[ExecuteInEditMode]
 public class InteractionObj_stroke : MonoBehaviour
 {
     public enum OutlineColor // 일단 내비둬
@@ -66,6 +67,8 @@ public class InteractionObj_stroke : MonoBehaviour
 
     [Header("Continuous 혹은 Dialogue인 경우에만 값을 넣으시오")]
     public TextAsset jsonFile;
+    //디버깅용
+    public DialogueData dialogueData;
     public Stack<TaskData> jsonTask;
 
     private UnityAction endDialogueAction;
@@ -107,6 +110,8 @@ public class InteractionObj_stroke : MonoBehaviour
     [Header("터치될 오브젝트. 만약 스크립트 적용된 오브젝트가 터치될 오브젝트라면 그냥 None인상태로 두기!")]
     public GameObject touchTargetObject;
 
+    private bool isStart = false;
+
     private void PushTask(string jsonString)
     {
         TaskData taskData = new TaskData();
@@ -117,25 +122,13 @@ public class InteractionObj_stroke : MonoBehaviour
 
     void Start()
     {
-        //Debug.Log(Application.dataPath.json); 에셋 경로    뒤에 타입 붙여야됨
-        //Debug.Log(Resources.Load("StoryMap/ep1/Song")); 리소스 경로        뒤에 타입 안붙어도 됨
-        if (jsonFile)
+        if (Application.isPlaying)
         {
-            if (type == typeOfInteraction.continuous)
-            {
-                jsonTask = new Stack<TaskData>();
-                PushTask(jsonFile.text);
-                Debug.Log(jsonFile.text);
-            }
-            else if (type == typeOfInteraction.dialogue)
-                DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonFile.text);
-        }
-        else
-        {
-            Debug.Log("Json파일 없음");
-        }
+            //Debug.Log(Application.dataPath.json); 에셋 경로    뒤에 타입 붙여야됨
+            //Debug.Log(Resources.Load("StoryMap/ep1/Song")); 리소스 경로        뒤에 타입 안붙어도 됨
 
-        currentCharacter = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
+            currentCharacter = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
+        }
     }
 
     public void SetDialogueStartEvent(UnityAction unityAction)
@@ -151,7 +144,6 @@ public class InteractionObj_stroke : MonoBehaviour
         TaskData currentTaskData = jsonTask.Peek();
         //호감도, 자존감 값
 
-        int[] changeVal = Array.ConvertAll(currentTaskData.tasks[currentTaskData.taskIndex + index].increaseVar.Split(','), (item) => int.Parse(item));
 
 
         if (currentTaskData.tasks[currentTaskData.taskIndex + index].type.Equals(TYPE.DIALOGUE))
@@ -166,6 +158,7 @@ public class InteractionObj_stroke : MonoBehaviour
         }
         else if(currentTaskData.tasks[currentTaskData.taskIndex + index].type.Equals(TYPE.TEMP))
         {
+            int[] changeVal = Array.ConvertAll(currentTaskData.tasks[currentTaskData.taskIndex + index].increaseVar.Split(','), (item) => int.Parse(item));
             //새로운 task 실행
             string path = currentTaskData.tasks[currentTaskData.taskIndex + index].nextFile;
             string jsonString = (Resources.Load(path) as TextAsset).text;
@@ -180,6 +173,10 @@ public class InteractionObj_stroke : MonoBehaviour
 
     public void interactionResponse() 
     {
+        if (!isStart)
+        {
+            TaskStart();
+        }
         //3가지 1)애니메이션 2)대사 3)카메라 변환(확대라든지) 4)맵포탈
         if (type == typeOfInteraction.animation && this.gameObject.GetComponent<Animator>() != null)//애니메이터가 존재한다면 
         {
@@ -268,101 +265,110 @@ public class InteractionObj_stroke : MonoBehaviour
     }
     void Update()
     {
-        if (!isInteractionObj)
+        if (Application.isPlaying)
         {
-            gameObject.tag = "obj_interaction";
-            if (gameObject.tag.Equals("obj_interaction"))
+            if (!isInteractionObj)
             {
-                isInteractionObj = true;
-                outline = gameObject.AddComponent<Outline>();
-                outline.OutlineMode = Outline.Mode.OutlineAll;
-                outline.OutlineWidth = 8f; // 아웃라인 두께 설정
-                outline.enabled = false; // 우선 outline 끄기
-
-                cam = DataController.instance_DataController.cam;
-
-                if (useExclamationMark && exclamationMark.gameObject != null) exclamationMark.SetActive(false); // 느낌표 끄기
-
-
-                if (!touchTargetObject)
+                gameObject.tag = "obj_interaction";
+                if (gameObject.tag.Equals("obj_interaction"))
                 {
-                    touchTargetObject = gameObject;
-                }
+                    isInteractionObj = true;
+                    outline = gameObject.AddComponent<Outline>();
+                    outline.OutlineMode = Outline.Mode.OutlineAll;
+                    outline.OutlineWidth = 8f; // 아웃라인 두께 설정
+                    outline.enabled = false; // 우선 outline 끄기
 
-                // 아웃라인 색깔 설정
-                if (color == OutlineColor.red) outline.OutlineColor = Color.red;
-                else if (color == OutlineColor.magenta) outline.OutlineColor = Color.magenta;
-                else if (color == OutlineColor.yellow) outline.OutlineColor = Color.yellow;
-                else if (color == OutlineColor.green) outline.OutlineColor = Color.green;
-                else if (color == OutlineColor.blue) outline.OutlineColor = Color.blue;
-                else if (color == OutlineColor.grey) outline.OutlineColor = Color.grey;
-                else if (color == OutlineColor.black) outline.OutlineColor = Color.black;
-                else if (color == OutlineColor.white) outline.OutlineColor = Color.white;
+                    cam = DataController.instance_DataController.cam;
 
-            }
-        }
-        else
-        {
-            CheckAroundCharacter(); // 일정 범위 안에 선택된 캐릭터 있는지 확인
-            if (exclamationMark && exclamationMark.activeSelf)
-                    exclamationMark.transform.position = (Vector3)markOffset + DataController.instance_DataController.cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
-            if (isCharacterInRange && !isTouched)
-            {
-                // 플레이어의 인터렉션 오브젝트 터치 감지
-                if (touchOrNot == TouchOrNot.yes)
-                {
-                    if (Input.GetMouseButtonDown(0))
+                    if (useExclamationMark && exclamationMark.gameObject != null) exclamationMark.SetActive(false); // 느낌표 끄기
+
+
+                    if (!touchTargetObject)
                     {
-                        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                        if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 13))
+                        touchTargetObject = gameObject;
+                    }
+
+                    // 아웃라인 색깔 설정
+                    if (color == OutlineColor.red) outline.OutlineColor = Color.red;
+                    else if (color == OutlineColor.magenta) outline.OutlineColor = Color.magenta;
+                    else if (color == OutlineColor.yellow) outline.OutlineColor = Color.yellow;
+                    else if (color == OutlineColor.green) outline.OutlineColor = Color.green;
+                    else if (color == OutlineColor.blue) outline.OutlineColor = Color.blue;
+                    else if (color == OutlineColor.grey) outline.OutlineColor = Color.grey;
+                    else if (color == OutlineColor.black) outline.OutlineColor = Color.black;
+                    else if (color == OutlineColor.white) outline.OutlineColor = Color.white;
+
+                }
+            }
+            else
+            {
+                CheckAroundCharacter(); // 일정 범위 안에 선택된 캐릭터 있는지 확인
+                if (exclamationMark && exclamationMark.activeSelf)
+                    exclamationMark.transform.position = (Vector3)markOffset + DataController.instance_DataController.cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
+                if (isCharacterInRange && !isTouched)
+                {
+                    // 플레이어의 인터렉션 오브젝트 터치 감지
+                    if (touchOrNot == TouchOrNot.yes)
+                    {
+                        if (Input.GetMouseButtonDown(0))
                         {
-                            Debug.Log(hit.transform.gameObject);
-                            if (hit.collider.gameObject.Equals(touchTargetObject))
+                            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                            if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 13))
                             {
-                                if (hit.collider.TryGetComponent(out CheckMapClear checkMapClear))
+                                Debug.Log(hit.transform.gameObject);
+                                if (hit.collider.gameObject.Equals(touchTargetObject))
+                                {
+                                    if (hit.collider.TryGetComponent(out CheckMapClear checkMapClear))
 
-                                    if (!checkMapClear.nextSelectMapcode.Equals("000000"))
-                                        DataController.instance_DataController.currentMap.nextMapcode = checkMapClear.nextSelectMapcode;
+                                        if (!checkMapClear.nextSelectMapcode.Equals("000000"))
+                                            DataController.instance_DataController.currentMap.nextMapcode = checkMapClear.nextSelectMapcode;
 
-                                interactionResponse();//인터렉션반응 나타남.
+                                    interactionResponse();//인터렉션반응 나타남.
+                                }
+
                             }
+                        }
+                    }
 
+                    if (!outline.enabled)
+                    {
+                        // 아웃라인 켜기
+                        onOutline = true;
+                        outline.enabled = true;
+
+                        if (useExclamationMark)
+                        {
+                            // 느낌표 보이게
+                            exclamationMark.gameObject.SetActive(true);
                         }
                     }
                 }
-
-                if (!outline)
+                else if ((!isCharacterInRange && onOutline) || isTouched) // 범위 밖이면서 아웃라인이 켜져있거나 눌렀을 경우
                 {
-                    // 아웃라인 켜기
-                    onOutline = true;
-                    outline.enabled = true;
+                    // 아웃라인 끄기
+                    onOutline = false;
+                    outline.enabled = false;
 
                     if (useExclamationMark)
                     {
-                        // 느낌표 보이게
-                        exclamationMark.gameObject.SetActive(true);
+                        // 느낌표 안보이게
+                        exclamationMark.gameObject.SetActive(false);
                     }
                 }
             }
-            else if ((!isCharacterInRange && onOutline) || isTouched) // 범위 밖이면서 아웃라인이 켜져있거나 눌렀을 경우
+            /*
+            Vector3 myScreenPos = cam.WorldToScreenPoint(transform.position);
+            exclamationMark.transform.position = myScreenPos + new Vector3(x, y, 0);
+            */
+        }
+        else
+        {
+            if(jsonFile != null)
             {
-                // 아웃라인 끄기
-                onOutline = false;
-                outline.enabled = false;
-
-                if (useExclamationMark)
-                {
-                    // 느낌표 안보이게
-                    exclamationMark.gameObject.SetActive(false);
-                }
+                dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonFile.text);
             }
         }
-        /*
-        Vector3 myScreenPos = cam.WorldToScreenPoint(transform.position);
-        exclamationMark.transform.position = myScreenPos + new Vector3(x, y, 0);
-        */
     }
-
     void CheckAroundCharacter()
     {
         //Layer 추가
@@ -386,10 +392,26 @@ public class InteractionObj_stroke : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(gameObject.transform.position, radius);
     }
+
+    void TaskStart()
+    {
+        isStart = true;
+        if (jsonFile)
+        {
+            if (type == typeOfInteraction.continuous)
+            {
+                jsonTask = new Stack<TaskData>();
+                PushTask(jsonFile.text);
+                Debug.Log(jsonFile.text);
+            }
+            else if (type == typeOfInteraction.dialogue)
+                DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonFile.text);
+        }
+    }
+
     private IEnumerator TaskCorutine()
     {
         TaskData currentTaskData = jsonTask.Peek();
-        Debug.Log(currentTaskData.tasks[0].name);
         if (!currentTaskData.isContinue)
         {
             Debug.LogError("멈춘 상태에서 실행 시도함");
@@ -402,7 +424,9 @@ public class InteractionObj_stroke : MonoBehaviour
 
         DataController.instance_DataController.taskData = currentTaskData;
 
-        
+        Debug.Log(currentTaskData.taskIndex);
+        Debug.Log(currentTaskData.tasks[currentTaskData.taskIndex].order);
+        Debug.Log(currentTaskData.taskOrder);
         while (currentTaskData.tasks[currentTaskData.taskIndex].order.Equals(currentTaskData.taskOrder) && currentTaskData.isContinue)     //순서 번호 동일한 것 반복
         {
             int taskIndex = currentTaskData.taskIndex;
