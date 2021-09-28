@@ -81,9 +81,6 @@ public class SpeechBubbleDialogue : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // 캐릭터 맵으로 이동시키기
-        //DataController.instance_DataController.isMapChanged = true;
-
         // 카메라
         cam = DataController.instance_DataController.cam;
 
@@ -98,16 +95,12 @@ public class SpeechBubbleDialogue : MonoBehaviour
         {
             gameObject.tag = "obj_interaction";
         }
-
+        character = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (character == null)
-        {
-            character = DataController.instance_DataController.currentChar;
-        }
 
         CheckAroundCharacter(); // obj_interaction 주위 범위내에 character있는지 확인
         SetSpeechBubblePosition(); // 말풍선 위치시키기

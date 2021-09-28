@@ -16,8 +16,11 @@ public class dovesComoponents
 
 }
 
-public class CatchRobberManager : MonoBehaviour
+public class CatchRobberManager : MonoBehaviour, Movable
 {
+    private short dir;
+
+    public bool IsMove { get; set; } = true;
     // 라우
     [Header("라우")]
     public CharacterManager rau;
@@ -25,7 +28,8 @@ public class CatchRobberManager : MonoBehaviour
     [SerializeField] private float acceleration;
     bool isStopping = false;
     Vector3 forwardDir;
-
+    [SerializeField] private Transform[] threeWay;
+    private bool isMoveSide;
     // 소매치기
     [Header("소매치기")]
     public GameObject robber;
@@ -64,15 +68,16 @@ public class CatchRobberManager : MonoBehaviour
     {
         if (rau != null)
         {
-            RauMove();
+            if (IsMove)
+            {
+                RauMove();
 
-            DoveMove(); ;
+                DoveMove(); ;
 
-            // 소매치기 이동
-            characterController_robber.Move(new Vector3(0, 0, robberSpeed * Time.deltaTime));
-
+                // 소매치기 이동
+                characterController_robber.Move(new Vector3(0, 0, robberSpeed * Time.deltaTime));
+            }
             CheckCompletion();
-
             timer -= Time.deltaTime;
         }
     }
@@ -107,9 +112,9 @@ public class CatchRobberManager : MonoBehaviour
     #region 초기 세팅
     void InitialSetting()
     {
-        DataController.instance_DataController.currentChar.isControlled = false;
         // 현재 캐릭터
-        rau = DataController.instance_DataController.currentChar;
+        rau = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
+        rau.IsMove = false;
         rau.anim.applyRootMotion = false;
         rau.anim.SetFloat("Speed", 0.7f);
         // 조이스틱 입력없을 때 라우가 바라보는 방향 설정
@@ -161,23 +166,63 @@ public class CatchRobberManager : MonoBehaviour
             }
             if (Vector3.SignedAngle(Vector3.forward, rot, Vector3.up) > 30)
             {
+                if (transform.position.x > threeWay[2].position.x)
+                {
+                    dir = 0;
+                }
+                else
+                {
+                    dir = 1;
+                }
                 rot.Set(Mathf.Cos(60 * Mathf.Deg2Rad) * DataController.instance_DataController.inputDegree, 0, Mathf.Sin(60 * Mathf.Deg2Rad) * DataController.instance_DataController.inputDegree);
             }
             else if (Vector3.SignedAngle(Vector3.forward, rot, Vector3.up) < -30)
             {
+                if (transform.position.x < threeWay[0].position.x)
+                {
+                    dir = 0;
+                }
+                else
+                {
+                    dir = -1;
+                }
                 rot.Set(Mathf.Cos(120 * Mathf.Deg2Rad) * DataController.instance_DataController.inputDegree, 0, Mathf.Sin(120 * Mathf.Deg2Rad) * DataController.instance_DataController.inputDegree);
             }
             rau.transform.rotation = Quaternion.Lerp(rau.transform.rotation, Quaternion.LookRotation(rot), Time.deltaTime * 3);
         }
+        // 몇프레임동안 이동하도록
+        //
+        //if (isMoveSide)
+        //{
+        //    DataController.instance_DataController.InitializeJoystic();
+        //    DataController.instance_DataController.joyStick.gameObject.SetActive(false);
+        //    if (Mathf.Abs(rau.transform.position.x - threeWay[0].position.x) < 1)
+        //    {
+        //        isMoveSide = false;
+        //        dir = 0;
+        //    }
+        //    else if (Mathf.Abs(rau.transform.position.x - threeWay[1].position.x) < 1)
+        //    {
+        //        isMoveSide = false;
+        //        dir = 0;
+        //    }else if(Mathf.Abs(rau.transform.position.x - threeWay[2].position.x) < 1)
+        //    {
+        //        isMoveSide = false;
+        //        dir = 0;
+        //    }
+        //}
         // 라우 이동
         if (!isStopping)
         {
-            rau.ctrl.Move(new Vector3(rot.x * Time.deltaTime, 0, Time.deltaTime) * rauSpeed);
+            isStopping = true;
+            rau.ctrl.Move(rau.transform.position-threeWay[0].position);
+            //rau.ctrl.Move(new Vector3(dir * 10 * Time.deltaTime, 0, Time.deltaTime) * rauSpeed);
             //character.anim.SetFloat("Speed", rauSpeed * Time.deltaTime);
             rauSpeed += acceleration * Time.deltaTime;
         }
         // 캐릭터매니저랑 라우랑 위치 일치시키기 => 충돌 감지때문
         gameObject.transform.position = rau.transform.position;
+        threeWay[0].parent.position.Set(threeWay[0].parent.position.x, threeWay[0].parent.position.y, rau.transform.position.z);
     }
     #endregion
 
@@ -236,6 +281,7 @@ public class CatchRobberManager : MonoBehaviour
             if (dis <= clearDis)
             {
                 Debug.Log("성공.");
+                DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
             }
             else
             {
@@ -248,6 +294,7 @@ public class CatchRobberManager : MonoBehaviour
             if (dis <= clearDis)
             {
                 Debug.Log("성공");
+                DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
             }
 
         }

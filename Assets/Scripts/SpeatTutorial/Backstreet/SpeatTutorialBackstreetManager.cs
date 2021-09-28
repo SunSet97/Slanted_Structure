@@ -29,7 +29,6 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
     private float speatDistance;
     float pimpDistance;
     public float runSpeed;
-
     void Start()
     {
         initRunGame();
@@ -78,7 +77,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
     float pimpAccelator = 0;
     IEnumerator StartRungame()
     {
-        CharacterManager speat = DataController.instance_DataController.speat;
+        CharacterManager speat = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Speat);
         speat.jumpForce = 7;
         WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
         DataController.instance_DataController.joyStick.gameObject.SetActive(false);
@@ -130,8 +129,8 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
             }
             yield return waitForFixedUpdate;
         }
-        DataController.instance_DataController.currentChar.jumpForce = 4;
-        DataController.instance_DataController.currentChar.UseJoystickCharacter();
+        speat.jumpForce = 4;
+        speat.UseJoystickCharacter();
     }
     //private GameObject GetPattern(int index, string tag)
     //{
@@ -170,13 +169,13 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
     {
         if (abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount == 0)
         {
-            DataController.instance_DataController.currentChar.gameObject.layer = 9;
+            DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).gameObject.layer = 9;
             StartCoroutine("AbilityCooldown");
         }
     }
     IEnumerator AbilityCooldown()
     {
-        DataController.instance_DataController.currentChar.gameObject.layer = 9;
+        DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).gameObject.layer = 9;
         WaitForSeconds waitForSeconds = new WaitForSeconds(0.005f);
         while (abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount < 1)
         {
@@ -184,7 +183,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
             yield return waitForSeconds;
         }
         waitForSeconds = new WaitForSeconds(0.002f);
-        DataController.instance_DataController.currentChar.gameObject.layer = 0;
+        DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).gameObject.layer = 0;
         while (abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount > 0)
         {
             abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount -= 0.02f;

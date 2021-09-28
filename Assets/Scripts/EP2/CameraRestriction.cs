@@ -12,7 +12,7 @@ public class CameraRestriction : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
 
-        if (other.name == DataController.instance_DataController.currentChar.name) {
+        if (other.name == DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).name) {
 
             if (gameObject.name == "hor" && !camera_Moving.enabled)
             {

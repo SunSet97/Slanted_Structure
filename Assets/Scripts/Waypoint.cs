@@ -82,8 +82,8 @@ public class Waypoint : MonoBehaviour
     // waypoint를 따라 움직일 캐릭터 설정
     void SelectCharacter()
     {
-        character = DataController.instance_DataController.currentChar.transform;
-        DataController.instance_DataController.currentChar.isJoystickInput = false;
+        character = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).transform;
+        DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).isJoystickInput = false;
     }
 
     // 캐릭터가 waypoint를 지나가면 체크
@@ -115,7 +115,7 @@ public class Waypoint : MonoBehaviour
     // 입력 방향 세팅
     void JoystickInputSetting()
     {
-        if (DataController.instance_DataController.joyStick != null)
+        if (DataController.instance_DataController.joyStick != null && DataController.instance_DataController.joyStick.gameObject.activeSelf)
         {
             Vector2 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, 0); // 한 방향 입력은 수평값만 받음
 
@@ -176,6 +176,10 @@ public class Waypoint : MonoBehaviour
             DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
             DataController.instance_DataController.inputDirection = changedDir; // 조정된 입력 방향 설정
             DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, changedDir) * Mathf.Abs(inputDir.x); // 조정된 입력 방향으로 크기 계산
+        }
+        else
+        {
+            DataController.instance_DataController.InitializeJoystic();
         }
     }
     #endregion

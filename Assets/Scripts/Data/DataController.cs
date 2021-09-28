@@ -22,11 +22,13 @@ public class DataController : MonoBehaviour
     public bool inputDash = false; // 조이스틱 입력 대쉬 판정
     public bool inputSeat = false;
 
+    public enum CharacterType { Main, Rau, Oun, Speat};
+
     [Header("캐릭터")]
-    public CharacterManager currentChar;
-    public CharacterManager rau;
-    public CharacterManager oun;
-    public CharacterManager speat;
+    private CharacterManager currentChar;
+    private CharacterManager rau;
+    private CharacterManager oun;
+    private CharacterManager speat;
 
     [Header("카메라 경계값")]
     public Camera cam;
@@ -105,6 +107,26 @@ public class DataController : MonoBehaviour
         if (!cam) cam = Camera.main;
     }
 
+    public CharacterManager GetCharacter(CharacterType characterType)
+    {
+        CharacterManager character = null;
+        switch (characterType)
+        {
+            case CharacterType.Main:
+                character = currentChar;
+                break;
+            case CharacterType.Rau:
+                character = rau;
+                break;
+            case CharacterType.Oun:
+                character = oun;
+                break;
+            case CharacterType.Speat:
+                character = speat;
+                break;
+        }
+        return character;
+    }
     public void Cinematic()//시네마틱 씬 로드
     {
         SceneManager.LoadScene("Cinematic");
@@ -145,7 +167,6 @@ public class DataController : MonoBehaviour
 
     private void SetByChangedMap()
     {
-
         speat.PickUpCharacter();
         oun.PickUpCharacter();
         rau.PickUpCharacter();
@@ -159,10 +180,7 @@ public class DataController : MonoBehaviour
         oun.InitializeCharacter();
         rau.InitializeCharacter();
 
-
-        speat.InitializeCharacter();
-        oun.InitializeCharacter();
-        rau.InitializeCharacter();
+        
 
         List<MapData.CharacterPositionSet> temp = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true);
         for (int k = 0; k < temp.Count; k++)

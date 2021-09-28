@@ -33,7 +33,7 @@ public enum TYPE
 
 public enum EXPRESSION
 {
-    IDLE, LAUGH, SAD, CRY, ANGRY, SURPISE, PANIC, SUSPICION, FEAR, CURIOUS
+    IDLE, LAUGH, SAD, CRY, ANGRY, SURPISE, PANIC, SUSPICION, FEAR, CURIOUS, ANIM_ONE, ANIM_TWO
 }
 
 // 직렬화 클래스들 
@@ -52,6 +52,6 @@ public class Task
 public class Dialogue {
     public string name;
     public EXPRESSION experssion;
-    public string kind;
+    public string anim_name;
     public string contents;
 }

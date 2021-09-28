@@ -22,12 +22,11 @@ public class NPCInteractor : MonoBehaviour
     {
         canvasCtrl = CanvasControl.instance_CanvasControl;
         FindNPC();
-    
+        character = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).transform;
     }
 
     void Update()
     {
-        if(DataController.instance_DataController.currentChar) character = DataController.instance_DataController.currentChar.transform;
         //if(character) FindInteractableNPC(interactableDistance);
 
         // 추가
