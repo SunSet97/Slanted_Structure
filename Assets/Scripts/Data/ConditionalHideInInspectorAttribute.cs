@@ -70,8 +70,12 @@ public class Drawer : PropertyDrawer
                     {
                         return true;
                     }
-
-                    return (ComparedField.intValue & (int)Attribute.ComparedValue) != 0;
+                    if((ComparedField.intValue & (int)Attribute.ComparedValue) != 0)
+                    {
+                        Debug.Log(ComparedField.intValue + "   " + (int)Attribute.ComparedValue);
+                    }
+                    //return (ComparedField.intValue & (int)Attribute.ComparedValue) != 0;
+                    return false;
                 }
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,13 +7,13 @@ public interface Playable
 {
     bool isPlay { get; set; }
 }
-[SerializeField]
+[Serializable]
 public struct PlayableList
 {
     public PlayableObj[] playableObjs;
 }
 
-[SerializeField]
+[Serializable]
 public struct PlayableObj
 {
     public GameObject gameObject;

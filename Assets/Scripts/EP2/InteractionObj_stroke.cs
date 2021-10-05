@@ -37,7 +37,7 @@ public class InteractionObj_stroke : MonoBehaviour
     [Serializable]
     public class InteractionEvent
     {
-        public enum TYPE { NONE, CLEAR, ACTIVE, NULL, MOVE, PLAY}
+        public enum TYPE { NONE, CLEAR, ACTIVE, MOVE, PLAY}
         public TYPE eventType;
         [Serializable]
         public struct act
@@ -55,7 +55,6 @@ public class InteractionObj_stroke : MonoBehaviour
 
         [ConditionalHideInInspector("eventType", TYPE.ACTIVE)]
         public Active ActiveObjs;
-        //[ConditionalHideInInspector("type", TYPE.ACTIVE)]
 
         [ConditionalHideInInspector("eventType", TYPE.MOVE)]
         public MovableList Movables;
