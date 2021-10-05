@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using System.Text;
 
 //주의사항 - 파일명과 클래스명은 동일해야된다. ex) JsonSong(클래스) - Song(파일)
 public class JsontoString : MonoBehaviour
@@ -48,6 +49,16 @@ public class JsontoString : MonoBehaviour
         T[] t = default;
         t = JsonUtility.FromJson<Wrapper<T>>("{\"wrapper\":" + json + "}").wrapper;
         return t;
+    }
+    public static string toJsonArray<T>(T[] wrapper)
+    {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < wrapper.Length - 1; i++)
+        {
+            sb.Append(JsonUtility.ToJson(wrapper[i])).Append(",");
+        }
+        sb.Append(JsonUtility.ToJson(wrapper[wrapper.Length - 1])).Append("]");
+        return sb.ToString();
     }
 
     // 추후 폴더 경로, 안드로이드 경로 변경 요망
