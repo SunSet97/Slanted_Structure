@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEditor;
-using UnityEngine.UI;
+
 // 인터렉션하는 오브젝트에 컴포넌트로 추가!!
 [ExecuteInEditMode]
 public class InteractionObj_stroke : MonoBehaviour
@@ -23,22 +22,22 @@ public class InteractionObj_stroke : MonoBehaviour
 
     public enum typeOfInteraction 
     {
-        portal,
+        POTAL,
         animation,
-        dialogue,
+        DIALOGUE,
         camerasetting,
         interact,
-        continuous
+        TASK
     }
     public enum TouchOrNot // 인터렉션 오브젝트 터치했는지 안했는지 감지 기능 필요
     {
         yes,
         no
     }
-    [System.Serializable]
+    [Serializable]
     public class InteractionEvent
     {
-        public enum TYPE { NONE, CLEAR, ACTIVE, NULL, STOP}
+        public enum TYPE { NONE, CLEAR, ACTIVE, NULL, MOVE, PLAY}
         public TYPE eventType;
         [Serializable]
         public struct act
@@ -58,9 +57,11 @@ public class InteractionObj_stroke : MonoBehaviour
         public Active ActiveObjs;
         //[ConditionalHideInInspector("type", TYPE.ACTIVE)]
 
-        [ConditionalHideInInspector("eventType", TYPE.STOP)]
-        public MovableObj Movables;
+        [ConditionalHideInInspector("eventType", TYPE.MOVE)]
+        public MovableList Movables;
 
+        [ConditionalHideInInspector("eventType", TYPE.PLAY)]
+        public PlayableList playableList;
     }
     [Header("인터렉션 방식")]
     public typeOfInteraction type;
@@ -90,9 +91,8 @@ public class InteractionObj_stroke : MonoBehaviour
 
     [Header("느낌표 사용할 때 체크")]
     public bool useExclamationMark = false;
-    public float x; // 느낌표 위치(x좌표) 조절
-    public float y; // 느낌표 위치(y좌표) 조절
     private bool isInteractionObj = false;
+    
     public Outline outline;
     private CharacterManager currentCharacter;
     public Camera cam;
@@ -100,6 +100,7 @@ public class InteractionObj_stroke : MonoBehaviour
     [Header("카메라 뷰")]
     public bool isViewChange = false;
     
+    [Header("대화가 진행될 때의 카메라 세팅")]
     public Vector3 CameraPos;
     public Vector3 CameraRot;
 
@@ -107,10 +108,8 @@ public class InteractionObj_stroke : MonoBehaviour
     public bool isTouched = false;
     public RaycastHit hit;
 
-    [Header("터치될 오브젝트. 만약 스크립트 적용된 오브젝트가 터치될 오브젝트라면 그냥 None인상태로 두기!")]
+    [Header("실제로 터치되는 오브젝트. 만약 스크립트 적용된 오브젝트가 터치될 오브젝트라면 그냥 None인상태로 두기!")]
     public GameObject touchTargetObject;
-
-    private bool isStart = false;
 
     private void PushTask(string jsonString)
     {
@@ -130,20 +129,29 @@ public class InteractionObj_stroke : MonoBehaviour
             currentCharacter = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
         }
     }
-
+    /// <summary>
+    /// Dialogue가 시작할 때 사용하는 1회성 Event, Task - Dialogue인 경우에 실행되지 않는다.
+    /// </summary>
+    /// <param name="unityAction">사용할 함수를 만들어서 넣으세요</param>
     public void SetDialogueStartEvent(UnityAction unityAction)
     {
         startDialogueAction += unityAction;
     }
-    
+    /// <summary>
+    /// Dialogue가 끝날 때 사용하는 1회성 Event, Task - Dialogue인 경우에 실행되지 않는다.
+    /// </summary>
+    /// <param name="unityAction">사용할 함수를 만들어서 넣으세요</param>
     public void SetDialogueEndEvent(UnityAction unityAction)
     {
         endDialogueAction += unityAction;
     }
+
+    /// <summary>
+    /// 선택지를 눌렀을 때 부르는 함수, Task에서는 실행이 된다
+    /// </summary>
+    /// <param name="index">선택지 번호, 1번부터 시작</param>
     void SetBtnPress(int index) {
         TaskData currentTaskData = jsonTask.Peek();
-        //호감도, 자존감 값
-
 
 
         if (currentTaskData.tasks[currentTaskData.taskIndex + index].type.Equals(TYPE.DIALOGUE))
@@ -170,10 +178,12 @@ public class InteractionObj_stroke : MonoBehaviour
         //실행
     }
 
-
+    /// <summary>
+    /// 인터랙션 실행하는 함수
+    /// </summary>
     public void interactionResponse() 
     {
-        if (!isStart)
+        if (jsonTask == null || jsonTask.Count == 0)
         {
             TaskStart();
         }
@@ -184,7 +194,7 @@ public class InteractionObj_stroke : MonoBehaviour
             this.gameObject.GetComponent<Animator>().Play("Start", 0);
 
         }
-        else if (type == typeOfInteraction.dialogue)
+        else if (type == typeOfInteraction.DIALOGUE)
         {
             isTouched = true;
             if (jsonFile)
@@ -214,14 +224,20 @@ public class InteractionObj_stroke : MonoBehaviour
                                 }
                             });
                             break;
-                        case InteractionEvent.TYPE.STOP:
+                        case InteractionEvent.TYPE.MOVE:
                             CanvasControl.instance_CanvasControl.SetDialougueEndAction(() =>
                             {
-                                foreach (GameObject movable in dialogueEndAction.Movables.gameObjects)
+                                foreach (MovableObj movable in dialogueEndAction.Movables.movables)
                                 {
-                                    movable.GetComponent<Movable>().IsMove = true;
+                                    movable.gameObject.GetComponent<Movable>().IsMove = movable.isMove;
                                 }
                             });
+                            break;
+                        case InteractionEvent.TYPE.PLAY:
+                            foreach (PlayableObj playable in dialogueEndAction.playableList.playableObjs)
+                            {
+                                playable.gameObject.GetComponent<Playable>().isPlay = playable.isPlay;
+                            }
                             break;
                     }
                 }
@@ -235,13 +251,13 @@ public class InteractionObj_stroke : MonoBehaviour
         {
             //카메라 변환 활성화
         }
-        else if (type == typeOfInteraction.portal && this.gameObject.GetComponent<CheckMapClear>() != null)
+        else if (type == typeOfInteraction.POTAL&& this.gameObject.GetComponent<CheckMapClear>() != null)
         {
             DataController.instance_DataController.ChangeMap(DataController.instance_DataController.currentMap.nextMapcode);
             
         }
         //1회성 interaction인 경우 굳이 excel로 할 필요 없이 바로 실행 dialogue도 마찬가지 단순한 잡담이면 typeOfInteraction.dialogue에서 처리
-        else if (type == typeOfInteraction.continuous)
+        else if (type == typeOfInteraction.TASK)
         {
             isTouched = true;
             if (jsonTask.Count == 0) { Debug.LogError("jsontask파일 없음 오류오류"); }
@@ -369,7 +385,7 @@ public class InteractionObj_stroke : MonoBehaviour
             }
         }
     }
-    void CheckAroundCharacter()
+    private void CheckAroundCharacter()
     {
         //Layer 추가
         RaycastHit[] hits = Physics.SphereCastAll(gameObject.transform.position, radius, Vector3.up, 0f);
@@ -393,18 +409,17 @@ public class InteractionObj_stroke : MonoBehaviour
         Gizmos.DrawWireSphere(gameObject.transform.position, radius);
     }
 
-    void TaskStart()
+    private void TaskStart()
     {
-        isStart = true;
         if (jsonFile)
         {
-            if (type == typeOfInteraction.continuous)
+            if (type == typeOfInteraction.TASK)
             {
                 jsonTask = new Stack<TaskData>();
                 PushTask(jsonFile.text);
                 Debug.Log(jsonFile.text);
             }
-            else if (type == typeOfInteraction.dialogue)
+            else if (type == typeOfInteraction.DIALOGUE)
                 DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonFile.text);
         }
     }

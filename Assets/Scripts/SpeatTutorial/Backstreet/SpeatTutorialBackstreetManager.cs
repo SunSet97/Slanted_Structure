@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SpeatTutorialBackstreetManager : MonoBehaviour
+public class SpeatTutorialBackstreetManager : MonoBehaviour, Playable
 {
+    public bool isPlay { get; set; }
     [Header("End Dialogue")]
     [SerializeField] private TextAsset _jsonFile;
 
@@ -66,8 +67,15 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
         // 게임 끝
         if (speatSlider.value >= speatSlider.maxValue)
         {
-            CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear(); });
-            CanvasControl.instance_CanvasControl.StartConversation(_jsonFile.text);
+            if (_jsonFile != null)
+            {
+                CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear(); });
+                CanvasControl.instance_CanvasControl.StartConversation(_jsonFile.text);
+            }
+            else
+            {
+                DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
+            }
         }
         else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1) DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
     }
@@ -80,7 +88,8 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour
         CharacterManager speat = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Speat);
         speat.jumpForce = 7;
         WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
-        DataController.instance_DataController.joyStick.gameObject.SetActive(false);
+        Debug.Log("지금");
+        DataController.instance_DataController.InitializeJoystic(false);
         DataController.instance_DataController.inputDegree = 1;
         while (speatSlider.value < speatSlider.maxValue)
         {

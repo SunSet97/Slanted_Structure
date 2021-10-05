@@ -341,7 +341,7 @@ public class CanvasControl : MonoBehaviour
         if (DataController.instance_DataController.taskData != null)
             DataController.instance_DataController.taskData.isContinue = false;
 
-        DataController.instance_DataController.InitializeJoystic();
+        DataController.instance_DataController.InitializeJoystic(false);
         DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).InitializeCharacter();
         dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
         dialogueCnt = 0;
@@ -354,8 +354,7 @@ public class CanvasControl : MonoBehaviour
     {
         if(DataController.instance_DataController.taskData != null)
             DataController.instance_DataController.taskData.isContinue = false;
-        DataController.instance_DataController.joyStick.gameObject.SetActive(false);
-        DataController.instance_DataController.InitializeJoystic();
+        DataController.instance_DataController.InitializeJoystic(false);
         DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
         dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
         dialogueCnt = 0;
@@ -375,9 +374,8 @@ public class CanvasControl : MonoBehaviour
         // 대화가 끝나면 선택지 부를 지 여부결정 
         if (dialogueCnt >= dialogueLen)
         {
-
-            DataController.instance_DataController.joyStick.gameObject.SetActive(true);
-            DataController.instance_DataController.joyStick.transform.GetChild(0).gameObject.SetActive(false);
+            //조이스틱 무조건 키지만 일부만 선택적으로 끄도록
+            DataController.instance_DataController.InitializeJoystic(true);
             DialoguePanel.SetActive(false);
             endConversation = true;
 
@@ -422,8 +420,7 @@ public class CanvasControl : MonoBehaviour
     // 선택지가 있을 때 선택지 패널 염 
     public void OpenChoicePanel()
     {
-        DataController.instance_DataController.InitializeJoystic();
-        DataController.instance_DataController.joyStick.gameObject.SetActive(false);
+        DataController.instance_DataController.InitializeJoystic(false);
         TaskData currentTaskData = DataController.instance_DataController.taskData;
         int index = currentTaskData.taskIndex;
         int choiceLen = int.Parse(currentTaskData.tasks[index].nextFile);
@@ -468,19 +465,24 @@ public class CanvasControl : MonoBehaviour
     {
         endDialogueAction += unityAction;
     }
-
-    // 선택지를 눌렀을 때 불리는 함수 
-    public void PressChoice(int index)
+    /// <summary>
+    /// 대화 선택지를 삭제하는 함수
+    /// </summary>
+    void RemoveChoice()
     {
-        TaskData currentTaskData = DataController.instance_DataController.taskData;
-        // 선택지 삭제
-        DataController.instance_DataController.joyStick.gameObject.SetActive(true);
         for (int i = 0; i < choiceBtn[0].transform.parent.childCount; i++)
             choiceBtn[i].SetActive(false);
         choiceBtn[0].transform.parent.gameObject.SetActive(false);
+    }
+
+    // 선택지를 눌렀을 때 불리는 함수, Index 1부터 시작
+    public void PressChoice(int index)
+    {
+        TaskData currentTaskData = DataController.instance_DataController.taskData;
+        DataController.instance_DataController.InitializeJoystic(true);
+        RemoveChoice();
         int tmp = int.Parse(currentTaskData.tasks[currentTaskData.taskIndex].nextFile) + 1;
         pressBtnMethod(index);
-
 
         //taskIndex를 쓸 일이 있을 경우 여기서 사용  아니면 pressBtnMethod에서 taskIndex 더해주기
         currentTaskData.taskIndex += tmp;

@@ -206,8 +206,7 @@ public class DataController : MonoBehaviour
         FindCurrentCharacter(); //다음 맵의 currentChar로 변경
 
         //조이스틱 초기화
-        joyStick.gameObject.SetActive(true);
-        InitializeJoystic();
+        InitializeJoystic(true);
 
 
         // CameraMoving 컨트롤
@@ -267,8 +266,13 @@ public class DataController : MonoBehaviour
     }
     #endregion
 
-    public void InitializeJoystic()
+    /// <summary>
+    /// 조이스틱 상태 초기화하는 함수
+    /// </summary>
+    /// <param name="isOn">JoyStick On/Off</param>
+    public void InitializeJoystic(bool isOn)
     {
+        joyStick.gameObject.SetActive(isOn);
         joyStick.transform.GetChild(0).gameObject.SetActive(false);
         joyStick.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().position = default;
         joyStick.OnPointerUp();
