@@ -6,7 +6,13 @@ public interface Movable
     bool IsMove { get; set; }
 }
 [Serializable]
+public struct MovableList
+{
+    public MovableObj[] movables;
+}
+[Serializable]
 public class MovableObj
 {
-    public List<GameObject> gameObjects;
+    public GameObject gameObject;
+    public bool isMove;
 }

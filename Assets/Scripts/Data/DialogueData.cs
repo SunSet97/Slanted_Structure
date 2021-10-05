@@ -15,10 +15,10 @@ public class TaskData
 
     public Task[] tasks;
 
-    //현재 인덱스
+    //현재 배열 인덱스
     public int taskIndex = 0;
 
-    //현재 순서 - 가독성을 위해
+    //현재 순서 - 가독성을 위해 1부터 시작
     public int taskOrder = 1;
 
     public bool isContinue = true;
@@ -36,7 +36,7 @@ public enum EXPRESSION
     IDLE, LAUGH, SAD, CRY, ANGRY, SURPISE, PANIC, SUSPICION, FEAR, CURIOUS, ANIM_ONE, ANIM_TWO
 }
 
-// 직렬화 클래스들 
+// 직렬화 클래스들
 [System.Serializable]
 public class Task
 {

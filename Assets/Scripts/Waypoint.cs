@@ -179,7 +179,7 @@ public class Waypoint : MonoBehaviour
         }
         else
         {
-            DataController.instance_DataController.InitializeJoystic();
+            DataController.instance_DataController.InitializeJoystic(true);
         }
     }
     #endregion
