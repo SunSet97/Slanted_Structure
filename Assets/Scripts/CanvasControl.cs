@@ -34,6 +34,9 @@ public class CanvasControl : MonoBehaviour
     public bool endConversation = false; // 대화 끝나면 true.
 
     public Animator CharAnimator;
+    public Animator SpeatAnimator;
+    public Animator RauAnimator;
+    public Animator OunAnimator;
 
     private bool isExistFile;
 
