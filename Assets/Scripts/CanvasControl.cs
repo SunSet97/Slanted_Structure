@@ -34,9 +34,6 @@ public class CanvasControl : MonoBehaviour
     public bool endConversation = false; // 대화 끝나면 true.
 
     public Animator CharAnimator;
-    public Animator SpeatAnimator;
-    public Animator RauAnimator;
-    public Animator OunAnimator;
 
     private bool isExistFile;
 
@@ -401,7 +398,7 @@ public class CanvasControl : MonoBehaviour
             // 대화가 진행되는 중 텍스트 업데이트
             if (dialogueData.dialogues[dialogueCnt].anim_name != null)
             {
-                string path = "DialogueFace/" + dialogueData.dialogues[dialogueCnt].anim_name;
+                string path = "Character_dialogue/" + dialogueData.dialogues[dialogueCnt].anim_name;
                 CharAnimator = Resources.Load(path) as Animator;
                 if (CharAnimator != null)
                 {
