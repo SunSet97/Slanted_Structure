@@ -396,10 +396,10 @@ public class CanvasControl : MonoBehaviour
         else
         {
             // 대화가 진행되는 중 텍스트 업데이트
-            if (dialogueData.dialogues[dialogueCnt].anim_name != null)
+            if (dialogueData.dialogues[dialogueCnt].anim_name != null && dialogueData.dialogues[dialogueCnt].anim_name.Length != 0)
             {
                 string path = "Character_dialogue/" + dialogueData.dialogues[dialogueCnt].anim_name;
-                CharAnimator = Resources.Load(path) as Animator;
+                CharAnimator.runtimeAnimatorController = Resources.Load(path) as UnityEditor.Animations.AnimatorController;
                 if (CharAnimator != null)
                 {
                     CharAnimator.SetInteger("Emotion", ((int)dialogueData.dialogues[dialogueCnt].experssion));

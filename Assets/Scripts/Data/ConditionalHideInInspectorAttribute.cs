@@ -70,10 +70,10 @@ public class Drawer : PropertyDrawer
                     {
                         return true;
                     }
-                    if((ComparedField.intValue & (int)Attribute.ComparedValue) != 0)
-                    {
-                        Debug.Log(ComparedField.intValue + "   " + (int)Attribute.ComparedValue);
-                    }
+                    //if((ComparedField.intValue & (int)Attribute.ComparedValue) != 0)
+                    //{
+                    //    Debug.Log(ComparedField.intValue + "   " + (int)Attribute.ComparedValue);
+                    //}
                     //return (ComparedField.intValue & (int)Attribute.ComparedValue) != 0;
                     return false;
                 }
