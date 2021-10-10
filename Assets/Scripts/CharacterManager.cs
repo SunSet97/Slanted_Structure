@@ -40,10 +40,11 @@ public class CharacterManager : MonoBehaviour, Movable
     #endregion
 
     #region 캐릭터 컨트롤
+    //joyStick 입력 여부, 소환 여부, 컨트롤 가능 여부
     [Header("#Character pick up controll")]
-    public bool isJoystickInput;
+    public bool isJoystickInput;    //조이스틱 사용 여부
     public bool isSelected;     // 선택여부
-    public bool IsMove { get; set; }
+    public bool IsMove { get; set; }    //움직일 수 있는지 여부
     // 캐릭터를 스크립트로 직접 이동할 수 있게 함 (캐릭터를 손으로 집는다고 생각)
     public void PickUpCharacter()
     {
@@ -192,13 +193,14 @@ public class CharacterManager : MonoBehaviour, Movable
     }
     private void FixedUpdate()
     {
-        if (joyStick && cam && ctrl.enabled && isJoystickInput)
+        //조이스틱 입력을 받을 경우
+        if (joyStick && cam && ctrl.enabled && isJoystickInput && isSelected)
         {
             DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, DataController.instance_DataController.inputDirection); // 조정된 입력 방향으로 크기 계산
             DataController.instance_DataController.inputDirection.Set(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 조정된 입력 방향 설정
         }
-        // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을 때
-        if (joyStick && cam && ctrl.enabled && IsMove)
+        // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을때(조이스틱 외 포함)
+        if (joyStick && cam && ctrl.enabled && IsMove && isSelected)
         {
             // 메인 카메라 기준으로 캐릭터가 바라보는 방향 계산
             camRotation = Quaternion.Euler(0, -cam.transform.rotation.eulerAngles.y, 0);
@@ -223,25 +225,29 @@ public class CharacterManager : MonoBehaviour, Movable
                 if (Mathf.Abs(joyRot) > 0) { transform.Rotate(Vector3.up, joyRot); } // 임시 회전
             }
             anim.SetFloat(SpeedHash, DataController.instance_DataController.inputDegree);
-
             //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
-            if (isSelected && DataController.instance_DataController.inputJump && ctrl.isGrounded)
+            if (DataController.instance_DataController.inputJump && ctrl.isGrounded)
             {
                 moveVerDir.y = 0;
                 anim.SetBool("Jump", true);  //점프 가능 상태로 변경
             }
 
-            //캐릭터 선택중일때 점프 가능
-            if (isSelected && DataController.instance_DataController.inputJump && anim.GetBool("Jump"))
-            {
-                moveVerDir.y += jumpForce; //점프력 만큼 힘을 가함
-                anim.SetBool("Jump", false); //점프 불가능 상태로 변경하여 연속적인 점프 제한
-            }
 
             //땅에서 떨어져 있을 경우 기본적으로 중력이 적용되고 중력은 가속도이므로 +=를 써서 계속해서 더해줌
             if (!ctrl.isGrounded)
             {
                 moveVerDir.y += Physics.gravity.y * gravityScale * Time.deltaTime;
+            }
+            //땅에 붙어있을 경우
+            else
+            {
+                moveVerDir.y = 0;
+                //캐릭터 점프 가능
+                if (DataController.instance_DataController.inputJump && anim.GetBool("Jump"))
+                {
+                    moveVerDir.y += jumpForce; //점프력 만큼 힘을 가함
+                    anim.SetBool("Jump", false); //점프 불가능 상태로 변경하여 연속적인 점프 제한
+                }
             }
             ctrl.Move((moveHorDir + moveVerDir) * Time.fixedDeltaTime); //캐릭터를 최종 이동 시킴
         }

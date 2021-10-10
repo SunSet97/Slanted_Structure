@@ -33,7 +33,7 @@ public class CanvasControl : MonoBehaviour
     UnityAction startDialogueAction;
     public bool endConversation = false; // 대화 끝나면 true.
 
-    public Animator CharAnimator;
+    public Animator charAnimator;
 
     private bool isExistFile;
 
@@ -355,6 +355,7 @@ public class CanvasControl : MonoBehaviour
         if(DataController.instance_DataController.taskData != null)
             DataController.instance_DataController.taskData.isContinue = false;
         DataController.instance_DataController.InitializeJoystic(false);
+        Debug.Log("지금");
         DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
         dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
         dialogueCnt = 0;
@@ -374,8 +375,6 @@ public class CanvasControl : MonoBehaviour
         // 대화가 끝나면 선택지 부를 지 여부결정 
         if (dialogueCnt >= dialogueLen)
         {
-            //조이스틱 무조건 키지만 일부만 선택적으로 끄도록
-            DataController.instance_DataController.InitializeJoystic(true);
             DialoguePanel.SetActive(false);
             endConversation = true;
 
@@ -392,21 +391,29 @@ public class CanvasControl : MonoBehaviour
                 DataController.instance_DataController.taskData.isContinue = true;
                 DataController.instance_DataController.taskData.taskIndex++;
             }
+            DataController.instance_DataController.InitializeJoystic(true);
         }
         else
         {
             // 대화가 진행되는 중 텍스트 업데이트
             if (dialogueData.dialogues[dialogueCnt].anim_name != null && dialogueData.dialogues[dialogueCnt].anim_name.Length != 0)
             {
-                string path = "Character_dialogue/" + dialogueData.dialogues[dialogueCnt].anim_name;
-                CharAnimator.runtimeAnimatorController = Resources.Load(path) as UnityEditor.Animations.AnimatorController;
-                if (CharAnimator != null)
+                if (charAnimator)
                 {
-                    CharAnimator.SetInteger("Emotion", ((int)dialogueData.dialogues[dialogueCnt].experssion));
+                    string path = "Character_dialogue/" + dialogueData.dialogues[dialogueCnt].anim_name;
+                    charAnimator.runtimeAnimatorController = Resources.Load(path) as UnityEditor.Animations.AnimatorController;
+                    if (charAnimator != null)
+                    {
+                        charAnimator.SetInteger("Emotion", ((int)dialogueData.dialogues[dialogueCnt].experssion));
+                    }
+                    else
+                    {
+                        Debug.LogError("Dialogue 애니메이션 세팅 오류");
+                    }
                 }
                 else
                 {
-                    Debug.LogError("Dialogue 애니메이션 세팅 오류");
+                    Debug.LogError("Canvas에 캐릭터 표정 charAnmator 넣으세요");
                 }
             }
             speakerName.text = dialogueData.dialogues[dialogueCnt].name; // 이야기하는 캐릭터 이름
@@ -479,11 +486,10 @@ public class CanvasControl : MonoBehaviour
     public void PressChoice(int index)
     {
         TaskData currentTaskData = DataController.instance_DataController.taskData;
-        DataController.instance_DataController.InitializeJoystic(true);
         RemoveChoice();
         int tmp = int.Parse(currentTaskData.tasks[currentTaskData.taskIndex].nextFile) + 1;
         pressBtnMethod(index);
-
+        DataController.instance_DataController.InitializeJoystic(true);
         //taskIndex를 쓸 일이 있을 경우 여기서 사용  아니면 pressBtnMethod에서 taskIndex 더해주기
         currentTaskData.taskIndex += tmp;
         
