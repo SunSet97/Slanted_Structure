@@ -233,10 +233,13 @@ public class InteractionObj_stroke : MonoBehaviour
                             });
                             break;
                         case InteractionEvent.TYPE.PLAY:
-                            foreach (PlayableObj playable in dialogueEndAction.playableList.playableObjs)
+                            CanvasControl.instance_CanvasControl.SetDialougueEndAction(() =>
                             {
-                                playable.gameObject.GetComponent<Playable>().isPlay = playable.isPlay;
-                            }
+                                foreach (PlayableObj playable in dialogueEndAction.playableList.playableObjs)
+                                {
+                                    playable.gameObject.GetComponent<Playable>().isPlay = playable.isPlay;
+                                }
+                            });
                             break;
                     }
                 }

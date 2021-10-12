@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SpeatTutorialBackstreetManager : MonoBehaviour, Playable
 {
-    public bool isPlay { get; set; }
+    public bool isPlay { get; set; } = false;
     [Header("End Dialogue")]
     [SerializeField] private TextAsset _jsonFile;
 
@@ -45,39 +45,42 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, Playable
 
     void Update()
     {
-        percentage = 100 / speatSlider.maxValue;
-        speatDistance = (speatSlider.maxValue - speatSlider.value) * percentage; // 종료 지점과 스핏의 거리
-        pimpDistance = (speatSlider.value - pimpSlider.value) * percentage; // 스핏과 포주의 거리
-
-
-        // 일정 거리 이후에 포주 출현
-        if (!pimp.activeSelf && speatSlider.value > speatSlider.maxValue * 0.1f)
+        if (isPlay)
         {
-            pimp.SetActive(true);
-            pimpSlider.fillRect.gameObject.SetActive(true);
-            pimpSlider.handleRect.gameObject.SetActive(true);
-        }
-        
-        // 포주와 스핏의 거리 설정
-        if (pimp.activeSelf) pimp.transform.localPosition = new Vector3(20 - pimpDistance * 2, pimp.transform.localPosition.y, pimp.transform.localPosition.z);
+            percentage = 100 / speatSlider.maxValue;
+            speatDistance = (speatSlider.maxValue - speatSlider.value) * percentage; // 종료 지점과 스핏의 거리
+            pimpDistance = (speatSlider.value - pimpSlider.value) * percentage; // 스핏과 포주의 거리
 
-        // 남은 거리, 포주와의 거리 텍스트 입력
-        endText.text = string.Format("{0:0}m", speatDistance); distanceText.text = string.Format("{0:0}m", pimpDistance);
 
-        // 게임 끝
-        if (speatSlider.value >= speatSlider.maxValue)
-        {
-            if (_jsonFile != null)
+            // 일정 거리 이후에 포주 출현
+            if (!pimp.activeSelf && speatSlider.value > speatSlider.maxValue * 0.1f)
             {
-                CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear(); });
-                CanvasControl.instance_CanvasControl.StartConversation(_jsonFile.text);
+                pimp.SetActive(true);
+                pimpSlider.fillRect.gameObject.SetActive(true);
+                pimpSlider.handleRect.gameObject.SetActive(true);
             }
-            else
+
+            // 포주와 스핏의 거리 설정
+            if (pimp.activeSelf) pimp.transform.localPosition = new Vector3(20 - pimpDistance * 2, pimp.transform.localPosition.y, pimp.transform.localPosition.z);
+
+            // 남은 거리, 포주와의 거리 텍스트 입력
+            endText.text = string.Format("{0:0}m", speatDistance); distanceText.text = string.Format("{0:0}m", pimpDistance);
+
+            // 게임 끝
+            if (speatSlider.value >= speatSlider.maxValue)
             {
-                DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
+                if (_jsonFile != null)
+                {
+                    CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear(); });
+                    CanvasControl.instance_CanvasControl.StartConversation(_jsonFile.text);
+                }
+                else
+                {
+                    DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
+                }
             }
+            else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1) DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
         }
-        else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1) DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
     }
 
     #region 런게임 세팅
@@ -85,12 +88,16 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, Playable
     float pimpAccelator = 0;
     IEnumerator StartRungame()
     {
+        yield return new WaitUntil(() => { return isPlay; });
         CharacterManager speat = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Speat);
         speat.jumpForce = 7;
         WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
-        Debug.Log("지금");
         DataController.instance_DataController.InitializeJoystic(false);
+        Debug.Log("지금");
+        speat.isJoystickInput = false;
         DataController.instance_DataController.inputDegree = 1;
+        DataController.instance_DataController.inputDirection.x = 1;
+
         while (speatSlider.value < speatSlider.maxValue)
         {
             // 스핏 달리기(장애물에 막히지 않았을 때만)

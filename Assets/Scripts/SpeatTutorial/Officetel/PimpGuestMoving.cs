@@ -152,7 +152,8 @@ public class PimpGuestMoving : MonoBehaviour, Movable
                 SetTalking(true);
                 //DataController.instance_DataController.LoadData(transform.parent.name, gameObject.name + ".json");
                 //수정
-                CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { SetTalking(false); });
+                speat.IsMove = false;
+                CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { SetTalking(false); speat.IsMove = true; });
                 if (jsonFile) CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
             }
 
