@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-public interface Movable
+public interface IMovable
 {
     bool IsMove { get; set; }
 }

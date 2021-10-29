@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CharacterManager : MonoBehaviour, Movable
+public class CharacterManager : MonoBehaviour, IMovable
 {
     #region 기본 설정
     [Header("#Default inspector setting(auto)")]

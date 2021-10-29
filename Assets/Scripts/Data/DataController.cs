@@ -272,6 +272,7 @@ public class DataController : MonoBehaviour
     /// <param name="isOn">JoyStick On/Off</param>
     public void InitializeJoystic(bool isOn)
     {
+        Debug.Log(isOn);
         joyStick.gameObject.SetActive(isOn);
         joyStick.transform.GetChild(0).gameObject.SetActive(false);
         joyStick.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().position = default;
