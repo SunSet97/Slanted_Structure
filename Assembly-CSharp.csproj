@@ -346,12 +346,16 @@
     <Compile Include="Assets\Test\Art_Animation_setting\Cinemachine\2.6.0\Cinemachine Example Scenes\Shared\Scripts\PlayerMoveOnSphere.cs" />
     <Compile Include="Assets\Test\Art_Animation_setting\Cinemachine\2.6.0\Cinemachine Example Scenes\Shared\Scripts\PlayerMovePhysics.cs" />
     <Compile Include="Assets\Test\Art_Animation_setting\Cinemachine\2.6.0\Cinemachine Example Scenes\Shared\Scripts\SpawnInCircle.cs" />
+    <Compile Include="Assets\UMotionExamples\Miscellaneous\Scripts\ResetPosition.cs" />
     <None Include="Assets\Asset_Bought\Plugins\SkinTools\SkinToolsResources\UnlitVertexColor.shader" />
+    <None Include="Assets\UMotionEditor\Shaders\UnlitDashedLine.shader" />
+    <None Include="Assets\UMotionEditor\Shaders\VertexColorUnlit.shader" />
     <None Include="Assets\Materials\Toon\Toon_Face.shader" />
     <None Include="Assets\Asset_Bought\Naninovel\Resources\Naninovel\Shaders\DepthOfFieldDiskKernel.cginc" />
     <None Include="Assets\Materials\Toon\Toon_Transparent.shader" />
     <None Include="Assets\Asset_Bought\PolygonNature\Shaders\SyntyStudios_Trees.shader" />
     <None Include="Assets\Asset_Bought\Magic Light Probes\Docs\README.txt" />
+    <None Include="Assets\UMotionEditor\Shaders\ColorUnlitTransparent.shader" />
     <None Include="Assets\Asset_Bought\Naninovel\Resources\Naninovel\Shaders\RevealableTMProTextRTL.shader" />
     <None Include="Assets\QuickOutline\Resources\Shaders\OutlineFill.shader" />
     <None Include="Assets\Asset_Bought\Dove\Shaders\Standard Two Sided Soft Blend.shader" />
@@ -366,11 +370,13 @@
     <None Include="Assets\Asset_Bought\Plugins\SkinTools\Readme.txt.txt" />
     <None Include="Assets\Asset_Bought\PrefabPainter\Shaders\GUITextureClipLevels.shader" />
     <None Include="Assets\Asset_Bought\PolygonNature\Shaders\SyntyStudios_Moss.shader" />
+    <None Include="Assets\UMotionEditor\Shaders\UnlitLine.shader" />
     <None Include="Assets\Materials\Toon\Toon_Mixed.shader" />
     <None Include="Assets\Asset_Bought\Naninovel\Resources\Naninovel\Shaders\TransitionEffects.cginc" />
     <None Include="Assets\Asset_Bought\Naninovel\Resources\Naninovel\Shaders\DepthOfFieldCommon.cginc" />
     <None Include="Assets\Test\VisualNovel\ManageText.txt" />
     <None Include="Assets\Asset_Bought\Naninovel\ThirdParty\NLayer\LICENSE.txt" />
+    <None Include="Assets\UMotionEditor\Shaders\ColorUnlit.shader" />
     <None Include="Assets\Asset_Bought\Naninovel\Resources\Naninovel\Shaders\TransitionalUI.shader" />
     <None Include="Assets\Asset_Bought\PolygonNature\Shaders\SyntyStudios_Vines.shader" />
     <None Include="Assets\Asset_Bought\PolygonPrototype\Shaders\Prototype_Object.shader" />
@@ -387,6 +393,7 @@
     <None Include="Assets\Asset_Bought\Naninovel\Resources\Naninovel\Shaders\DepthOfFieldComposition.cginc" />
     <None Include="Assets\Asset_Bought\Naninovel\Resources\Naninovel\Shaders\TransitionalSprite.shader" />
     <None Include="Assets\Asset_Bought\Dove\Dove_readme.txt" />
+    <None Include="Assets\UMotionEditor\Shaders\WiresOnly.shader" />
     <None Include="Assets\Materials\Toon\Toon_Metal.shader" />
     <None Include="Assets\Asset_Bought\ScreenshotUtility\Readme.txt" />
     <None Include="Assets\Asset_Bought\PolygonNature\Shaders\SyntyStudios_LOD.shader" />
@@ -402,6 +409,7 @@
     <None Include="Assets\Asset_Bought\Naninovel\Resources\Naninovel\Shaders\NaninovelCG.cginc" />
     <None Include="Assets\Asset_Bought\Road\CityStreets\READ-ME-FIRST.txt" />
     <None Include="Assets\Asset_Bought\Naninovel\Resources\Naninovel\Shaders\DigitalGlitch.shader" />
+    <None Include="Assets\UMotionEditor\Shaders\CameraLit.shader" />
     <None Include="Assets\Materials\Toon\ToonFresnel.shader" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/justb/Documents/GitHub/Slanted_Structure/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
@@ -690,6 +698,9 @@
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>C:/Users/justb/Documents/GitHub/Slanted_Structure/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
+    </Reference>
+    <Reference Include="UMotionApplication">
+      <HintPath>C:/Users/justb/Documents/GitHub/Slanted_Structure/Assets/UMotionEditor/Plugins/Application/UMotionApplication.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.17f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -1066,6 +1077,14 @@
     <ProjectReference Include="Elringus.Naninovel.Editor.csproj">
       <Project>{2028C6D8-4B3F-DE14-3B01-13DC35A42902}</Project>
       <Name>Elringus.Naninovel.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="UMotionSourceApplication.csproj">
+      <Project>{2CA40E6E-1819-F262-2F70-901FD95D2D94}</Project>
+      <Name>UMotionSourceApplication</Name>
+    </ProjectReference>
+    <ProjectReference Include="UMotionSourceEditor.csproj">
+      <Project>{57962432-7864-7DE2-1355-2E1D5835F4F0}</Project>
+      <Name>UMotionSourceEditor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
