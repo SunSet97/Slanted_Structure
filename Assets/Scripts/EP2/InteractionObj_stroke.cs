@@ -173,6 +173,8 @@ public class InteractionObj_stroke : MonoBehaviour
         }
         else if (currentTaskData.tasks[currentTaskData.taskIndex + index].type.Equals(TYPE.TEMP))
         {
+            //m3, 1, 2
+            currentTaskData.tasks[currentTaskData.taskIndex + index].increaseVar = currentTaskData.tasks[currentTaskData.taskIndex + index].increaseVar.Replace("m", "-");
             int[] changeVal = Array.ConvertAll(currentTaskData.tasks[currentTaskData.taskIndex + index].increaseVar.Split(','), (item) => int.Parse(item));
             {
                 DataController.instance_DataController.charData.selfEstm += changeVal[0];
@@ -535,7 +537,7 @@ public class InteractionObj_stroke : MonoBehaviour
                     if (taskData.tasks[i].type == TYPE.NEW || taskData.tasks[i].type == TYPE.TEMP)
                     {
                         int count = int.Parse(taskData.tasks[i].nextFile);
-                        for (int j = 1; i <= count; j++)
+                        for (int j = 1; j <= count; j++)
                         {
                             string path = taskData.tasks[i + j].nextFile;
                             string jsonString = (Resources.Load(path) as TextAsset).text;
@@ -549,6 +551,7 @@ public class InteractionObj_stroke : MonoBehaviour
                             }
                             _taskData.Add(data);
                         }
+                        i += count + 1;
                     }
                 }
             }

@@ -402,7 +402,7 @@ public class CanvasControl : MonoBehaviour
                 {
                     string path = "Character_dialogue/" + dialogueData.dialogues[dialogueCnt].anim_name;
                     charAnimator.runtimeAnimatorController = Resources.Load(path) as UnityEditor.Animations.AnimatorController;
-                    if (charAnimator != null)
+                    if (charAnimator.runtimeAnimatorController != null)
                     {
                         charAnimator.SetInteger("Emotion", ((int)dialogueData.dialogues[dialogueCnt].experssion));
                     }
@@ -445,7 +445,8 @@ public class CanvasControl : MonoBehaviour
         for (int i = 0; i < choiceLen; i++)
         {
             // 친밀도와 자존감이 기준보다 낮으면 일부 선택지가 나오지 않을 수 있음 
-            Debug.Log(currentTaskData.tasks[index + i + 1].condition);
+            //Debug.Log(currentTaskData.tasks[index + i + 1].condition);
+            currentTaskData.tasks[index + i + 1].condition = currentTaskData.tasks[index + i + 1].condition.Replace("m", "-");
             int[] condition = Array.ConvertAll(currentTaskData.tasks[index + i + 1].condition.Split(','), (item) => int.Parse(item));
             //if (
             //   curSelfEstm >= condition[0] &&
