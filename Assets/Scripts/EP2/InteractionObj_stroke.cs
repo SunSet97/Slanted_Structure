@@ -20,14 +20,15 @@ public class InteractionObj_stroke : MonoBehaviour
         white
     }
 
-    public enum typeOfInteraction 
+    public enum typeOfInteraction
     {
         POTAL,
         animation,
         DIALOGUE,
         camerasetting,
         interact,
-        TASK
+        TASK,
+        GAME
     }
     public enum TouchOrNot // 인터렉션 오브젝트 터치했는지 안했는지 감지 기능 필요
     {
@@ -37,7 +38,7 @@ public class InteractionObj_stroke : MonoBehaviour
     [Serializable]
     public class InteractionEvent
     {
-        public enum TYPE { NONE, CLEAR, ACTIVE, MOVE, PLAY}
+        public enum TYPE { NONE, CLEAR, ACTIVE, MOVE, PLAY }
         public TYPE eventType;
         [Serializable]
         public struct act
@@ -68,12 +69,18 @@ public class InteractionObj_stroke : MonoBehaviour
     [Header("Continuous 혹은 Dialogue인 경우에만 값을 넣으시오")]
     public TextAsset jsonFile;
     //디버깅용
+    [ConditionalHideInInspector("type", typeOfInteraction.DIALOGUE)]
     public DialogueData dialogueData;
+    [ConditionalHideInInspector("type", typeOfInteraction.DIALOGUE)]
+    public InteractionEvent[] dialogueEndAction;
+
+    [ConditionalHideInInspector("type", typeOfInteraction.TASK)]
+    public List<TaskData> _taskData;
+
     public Stack<TaskData> jsonTask;
 
     private UnityAction endDialogueAction;
     private UnityAction startDialogueAction;
-    public InteractionEvent[] dialogueEndAction;
 
     [Header("아웃라인 색 설정")]
     public OutlineColor color;
@@ -83,7 +90,7 @@ public class InteractionObj_stroke : MonoBehaviour
     public bool onOutline = false; // 아웃라인 켜져있는 안켜져 있는지
     public bool isCharacterInRange = false; // obj_interaction 오브젝트 기준으로 일정 범위 내에 캐릭터가 있는지 확인
     public int radius = 5;
-    
+
     [Header("#Mark setting")]
     public GameObject exclamationMark;
     public Vector2 markOffset = Vector2.zero;
@@ -91,14 +98,14 @@ public class InteractionObj_stroke : MonoBehaviour
     [Header("느낌표 사용할 때 체크")]
     public bool useExclamationMark = false;
     private bool isInteractionObj = false;
-    
+
     public Outline outline;
     private CharacterManager currentCharacter;
     public Camera cam;
 
     [Header("카메라 뷰")]
     public bool isViewChange = false;
-    
+
     [Header("대화가 진행될 때의 카메라 세팅")]
     public Vector3 CameraPos;
     public Vector3 CameraRot;
@@ -149,7 +156,8 @@ public class InteractionObj_stroke : MonoBehaviour
     /// 선택지를 눌렀을 때 부르는 함수, Task에서는 실행이 된다
     /// </summary>
     /// <param name="index">선택지 번호, 1번부터 시작</param>
-    void SetBtnPress(int index) {
+    void SetBtnPress(int index)
+    {
         TaskData currentTaskData = jsonTask.Peek();
 
 
@@ -163,9 +171,14 @@ public class InteractionObj_stroke : MonoBehaviour
             currentTaskData.taskIndex--;
             CanvasControl.instance_CanvasControl.StartConversation(jsonString);
         }
-        else if(currentTaskData.tasks[currentTaskData.taskIndex + index].type.Equals(TYPE.TEMP))
+        else if (currentTaskData.tasks[currentTaskData.taskIndex + index].type.Equals(TYPE.TEMP))
         {
             int[] changeVal = Array.ConvertAll(currentTaskData.tasks[currentTaskData.taskIndex + index].increaseVar.Split(','), (item) => int.Parse(item));
+            {
+                DataController.instance_DataController.charData.selfEstm += changeVal[0];
+                DataController.instance_DataController.charData.intimacy_spRau += changeVal[1];
+                DataController.instance_DataController.charData.intimacy_ounRau += changeVal[2];
+            }
             //새로운 task 실행
             string path = currentTaskData.tasks[currentTaskData.taskIndex + index].nextFile;
             string jsonString = (Resources.Load(path) as TextAsset).text;
@@ -177,10 +190,11 @@ public class InteractionObj_stroke : MonoBehaviour
         //실행
     }
 
+
     /// <summary>
     /// 인터랙션 실행하는 함수
     /// </summary>
-    public void interactionResponse() 
+    public void interactionResponse()
     {
         if (jsonTask == null || jsonTask.Count == 0)
         {
@@ -228,7 +242,7 @@ public class InteractionObj_stroke : MonoBehaviour
                             {
                                 foreach (MovableObj movable in dialogueEndAction.Movables.movables)
                                 {
-                                    movable.gameObject.GetComponent<Movable>().IsMove = movable.isMove;
+                                    movable.gameObject.GetComponent<IMovable>().IsMove = movable.isMove;
                                 }
                             });
                             break;
@@ -253,10 +267,10 @@ public class InteractionObj_stroke : MonoBehaviour
         {
             //카메라 변환 활성화
         }
-        else if (type == typeOfInteraction.POTAL&& this.gameObject.GetComponent<CheckMapClear>() != null)
+        else if (type == typeOfInteraction.POTAL && this.gameObject.GetComponent<CheckMapClear>() != null)
         {
             DataController.instance_DataController.ChangeMap(DataController.instance_DataController.currentMap.nextMapcode);
-            
+
         }
         //1회성 interaction인 경우 굳이 excel로 할 필요 없이 바로 실행 dialogue도 마찬가지 단순한 잡담이면 typeOfInteraction.dialogue에서 처리
         else if (type == typeOfInteraction.TASK)
@@ -381,9 +395,12 @@ public class InteractionObj_stroke : MonoBehaviour
         }
         else
         {
-            if(jsonFile != null)
+            if (jsonFile != null)
             {
-                dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonFile.text);
+                if (type == typeOfInteraction.DIALOGUE)
+                    dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonFile.text);
+                else if (type == typeOfInteraction.TASK)
+                    LoadTaskData();
             }
         }
     }
@@ -447,7 +464,7 @@ public class InteractionObj_stroke : MonoBehaviour
         while (currentTaskData.tasks[currentTaskData.taskIndex].order.Equals(currentTaskData.taskOrder) && currentTaskData.isContinue)     //순서 번호 동일한 것 반복
         {
             int taskIndex = currentTaskData.taskIndex;
-            Debug.Log("taskIndex  " + taskIndex  + "     " + currentTaskData.tasks[taskIndex].type);
+            Debug.Log("taskIndex  " + taskIndex + "     " + currentTaskData.tasks[taskIndex].type);
             switch (currentTaskData.tasks[taskIndex].type)
             {
                 case TYPE.DIALOGUE:
@@ -502,5 +519,39 @@ public class InteractionObj_stroke : MonoBehaviour
             Debug.Log("반복 중" + currentTaskData.taskIndex);
         }
         currentTaskData.taskOrder++;
+    }
+    //For Debugging
+    private void LoadTaskData()
+    {
+        if (_taskData.Count == 0)
+        {
+            TaskData data = new TaskData();
+            data.tasks = JsontoString.FromJsonArray<Task>(jsonFile.text);
+            _taskData.Add(data);
+            foreach (TaskData taskData in _taskData)
+            {
+                for (int i = 0; i < taskData.tasks.Length; i++)
+                {
+                    if (taskData.tasks[i].type == TYPE.NEW || taskData.tasks[i].type == TYPE.TEMP)
+                    {
+                        int count = int.Parse(taskData.tasks[i].nextFile);
+                        for (int j = 1; i <= count; j++)
+                        {
+                            string path = taskData.tasks[i + j].nextFile;
+                            string jsonString = (Resources.Load(path) as TextAsset).text;
+
+
+                            data = new TaskData();
+                            data.tasks = JsontoString.FromJsonArray<Task>(jsonString);
+                            if (_taskData.Count > 50)
+                            {
+                                return;
+                            }
+                            _taskData.Add(data);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

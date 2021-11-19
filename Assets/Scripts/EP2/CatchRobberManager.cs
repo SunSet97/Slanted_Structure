@@ -16,7 +16,7 @@ public class dovesComoponents
 
 }
 
-public class CatchRobberManager : MonoBehaviour, Movable
+public class CatchRobberManager : MonoBehaviour, IMovable
 {
     private short dir;
 

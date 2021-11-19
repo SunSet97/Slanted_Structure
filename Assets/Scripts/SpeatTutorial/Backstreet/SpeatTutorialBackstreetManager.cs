@@ -120,6 +120,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, Playable
 
             if (startPosition.position.x < speat.transform.position.x)
             {
+                GameObject.Find("Speat Tutorial backstreet");
                 for (int i = 1; i < trailer.Length; i++)
                 {
                     // 트레일러 이동

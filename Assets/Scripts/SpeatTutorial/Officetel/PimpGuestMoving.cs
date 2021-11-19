@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PimpGuestMoving : MonoBehaviour, Movable
+public class PimpGuestMoving : MonoBehaviour, IMovable
 {
     // 스핏
     [Header("스핏")]
