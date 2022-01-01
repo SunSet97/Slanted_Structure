@@ -59,7 +59,7 @@ public class InteractionObj_stroke : MonoBehaviour
 
         [ConditionalHideInInspector("eventType", TYPE.MOVE)]
         public MovableList Movables;
-
+        
         [ConditionalHideInInspector("eventType", TYPE.PLAY)]
         public PlayableList playableList;
     }
@@ -244,7 +244,7 @@ public class InteractionObj_stroke : MonoBehaviour
                             {
                                 foreach (MovableObj movable in dialogueEndAction.Movables.movables)
                                 {
-                                    movable.gameObject.GetComponent<IMovable>().IsMove = movable.isMove;
+                                    movable.gameObject.GetComponent<IMovable>().isMove = movable.isMove;
                                 }
                             });
                             break;

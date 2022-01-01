@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 747632002135095203}
   - component: {fileID: 2164849000575851573}
-  - component: {fileID: 193854822048181532}
   - component: {fileID: 9134467749511542344}
   m_Layer: 0
   m_Name: GameObject
@@ -45,39 +44,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &193854822048181532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 660173523167657815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   type: 2
   jsonFile: {fileID: 4900000, guid: 2c59b9308aa024742acb13f622d6ef48, type: 3}
-  dialogueEndAction:
-    type: 2
-    ClearBox: {fileID: 0}
-    ActiveObject: {fileID: 8096532742656294127}
-    Active: 1
+  dialogueData:
+    dialogues:
+    - name: "\uB77C\uC6B0"
+      experssion: 0
+      anim_name: 
+      contents: "\uD750\uC544\uC554 \uC798\uC7A4\uB2E4! \uBC8C\uC368 \uC544\uCE68\uC774\uB124?"
+    - name: "\uB77C\uC6B0"
+      experssion: 0
+      anim_name: 
+      contents: "\uC5BC\uB978 \uB098\uAC00\uC11C \uC138\uBAA8\uB9C8\uC744\uC744 \uAD6C\uACBD\uD558\uACE0
+        \uC2F6\uC5B4!!!"
+    - name: "\uB77C\uC6B0"
+      experssion: 0
+      anim_name: 
+      contents: "(\uAF2C\uB974\uB975\u2026)"
+    - name: "\uB77C\uC6B0"
+      experssion: 0
+      anim_name: 
+      contents: "\uC557...\uC77C\uB2E8 \uBC25\uC744 \uBA39\uC73C\uB7EC \uB098\uAC00\uBD10\uC57C
+        \uB420 \uAC70 \uAC19\uC740\uB370...?"
+    - name: 
+      experssion: 0
+      anim_name: 
+      contents: "\uB77C\uC6B0\uC640 \uD568\uAED8 \uC219\uC18C \uBC16\uC73C\uB85C \uB098\uAC00\uBD05\uC2DC\uB2E4!"
+  dialogueEndAction: []
+  _taskData: []
   color: 0
-  touchOrNot: 1
+  touchOrNot: 0
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  x: 0
-  y: 0
   outline: {fileID: 0}
   cam: {fileID: 0}
+  isViewChange: 0
+  CameraPos: {x: 0, y: 0, z: 0}
+  CameraRot: {x: 0, y: 0, z: 0}
   isTouched: 0
   touchTargetObject: {fileID: 0}
+  isLoop: 0
 --- !u!65 &9134467749511542344
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -170,11 +180,12 @@ MonoBehaviour:
     startPosition: {fileID: 8096532742418028382}
     clearBox: {fileID: 8096532742656293648}
     posSet: {fileID: 8096532741615645103}
-    isControl: 1
+    isMain: 0
   posIndex: 0
   cam: {fileID: 0}
   camDis: {x: -24, y: 16.61, z: 16.61}
   camRot: {x: 30, y: 126.722, z: 0}
+  isJoystickUse: 0
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &8096532741615645102
 GameObject:
@@ -249,7 +260,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8096532742479889282}
   m_Layer: 0
-  m_Name: Position Setting (1)
+  m_Name: Position Setting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -67,7 +67,7 @@ public class MapData : MonoBehaviour
             map = Instantiate(temp, transform.position, Quaternion.identity, transform);
             map.name = "Map Name";
         }
-        if (positionSetting == null)// 캐릭터 위치 세팅 오브젝트 생성 및 이름 설정
+        if (positionSetting == null)    // 캐릭터 위치 세팅 오브젝트 생성 및 이름 설정
         {
             positionSetting = Instantiate(temp, transform.position, Quaternion.identity, transform);
             positionSetting.name = "Position Setting";
@@ -125,7 +125,7 @@ public class MapData : MonoBehaviour
         public Transform startPosition; // 시작 위치
         public Transform clearBox;      // 클리어 박스
         public Transform posSet;        // 포지션 세팅 오브젝트
-        public bool isControl;
+        public bool isMain;
     }
 
     [Tooltip("각각의 캐릭터의 시작위치와 목표위치를 설정하세요.")]
@@ -214,7 +214,11 @@ public class MapData : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            Invoke("Init", 0.01f);
+            if (DataController.instance_DataController.mapCode != mapCode)
+            {
+                DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
+                Destroy(gameObject);
+            }
         }
         else
         {
@@ -228,6 +232,10 @@ public class MapData : MonoBehaviour
         {
             PositionSettingUpdate();
         }
+        else
+        {
+            JoystickInputUpdate();
+        }
 
         //타임라인 인식
         if (SceneManager.GetActiveScene().name == "Cinematic")
@@ -237,18 +245,10 @@ public class MapData : MonoBehaviour
 
     }
 
-    void Init()
+    public void Initialize()
     {
         DataController.instance_DataController.currentMap = this;
-        // 현재 맵코드와 동일하지 않을 경우 - DataController의 MapCode로 이동
-        if (!DataController.instance_DataController.mapCode.Equals(mapCode))
-        {
-            DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
-        }
-    }
 
-    public void MapChanged()
-    {
         // 오브젝트의 이름을 맵 코드로 변경
         if (name != mapCode) name = mapCode;
 
@@ -258,15 +258,29 @@ public class MapData : MonoBehaviour
         //UI 세팅
         if (ui != null) ui.transform.SetParent(CanvasControl.instance_CanvasControl.transform.Find("UI"));
 
-        //ClearBox who 설정
-        CharacterManager[] arr = FindObjectsOfType<CharacterManager>();
-        List<CharacterManager> lists = new List<CharacterManager>(arr);
-        foreach (CharacterPositionSet positionSet in positionSets)
-            positionSet.clearBox.GetComponent<CheckMapClear>().who = lists.Find(item => item.name == positionSet.who.ToString());
-
-
+        // //ClearBox who 설정
+        // CharacterManager[] arr = FindObjectsOfType<CharacterManager>();
+        // List<CharacterManager> lists = new List<CharacterManager>(arr);
+        // foreach (CharacterPositionSet positionSet in positionSets)
+        //     positionSet.clearBox.GetComponent<CheckMapClear>().who = lists.Find(item => item.name == positionSet.who.ToString());
     }
 
+    #region Input 설정
+
+    public bool isJoystickUse;
+    private void JoystickInputUpdate()
+    {
+        //Joystick Input
+        if (isJoystickUse)
+        {
+            DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, DataController.instance_DataController.inputDirection); // 조정된 입력 방향으로 크기 계산
+            DataController.instance_DataController.inputDirection.Set(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 조정된 입력 방향 설정
+        }
+
+        DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).MoveCharacter();
+        
+    }
+    #endregion
     #region 디버깅용
     [Space(40)]
     [ContextMenuItem("All Off", "AllOffDebug")]

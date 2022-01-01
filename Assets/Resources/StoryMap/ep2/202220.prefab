@@ -250,11 +250,12 @@ MonoBehaviour:
     startPosition: {fileID: 586399221686276720}
     clearBox: {fileID: 586399222419395052}
     posSet: {fileID: 586399222547527601}
-    isControl: 1
+    isMain: 0
   posIndex: 0
   cam: {fileID: 0}
   camDis: {x: 2, y: 1, z: -3.5}
   camRot: {x: 0, y: 0, z: 0}
+  isJoystickUse: 0
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &586399222419395055
 GameObject:
@@ -362,11 +363,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 3
   jsonFile: {fileID: 0}
+  dialogueData:
+    dialogues: []
   dialogueEndAction:
-    type: 0
+  - eventType: 0
     ClearBox: {fileID: 0}
-    ActiveObject: {fileID: 0}
-    Active: 0
+    ActiveObjs:
+      actives: []
+    Movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    ClearBox: {fileID: 0}
+    ActiveObjs:
+      actives: []
+    Movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    ClearBox: {fileID: 0}
+    ActiveObjs:
+      actives: []
+    Movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    ClearBox: {fileID: 0}
+    ActiveObjs:
+      actives: []
+    Movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  _taskData: []
   color: 0
   touchOrNot: 0
   onOutline: 0
@@ -375,8 +407,6 @@ MonoBehaviour:
   exclamationMark: {fileID: 6028227959986880301}
   markOffset: {x: 0, y: 150}
   useExclamationMark: 1
-  x: 0
-  y: 0
   outline: {fileID: 0}
   cam: {fileID: 0}
   isViewChange: 0
@@ -398,11 +428,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 3
   jsonFile: {fileID: 0}
+  dialogueData:
+    dialogues: []
   dialogueEndAction:
-    type: 0
+  - eventType: 0
     ClearBox: {fileID: 0}
-    ActiveObject: {fileID: 0}
-    Active: 0
+    ActiveObjs:
+      actives: []
+    Movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    ClearBox: {fileID: 0}
+    ActiveObjs:
+      actives: []
+    Movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    ClearBox: {fileID: 0}
+    ActiveObjs:
+      actives: []
+    Movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    ClearBox: {fileID: 0}
+    ActiveObjs:
+      actives: []
+    Movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  _taskData: []
   color: 0
   touchOrNot: 0
   onOutline: 0
@@ -411,8 +472,6 @@ MonoBehaviour:
   exclamationMark: {fileID: 3424609071662312292}
   markOffset: {x: 0, y: 150}
   useExclamationMark: 1
-  x: 0
-  y: 0
   outline: {fileID: 0}
   cam: {fileID: 0}
   isViewChange: 0
@@ -430,7 +489,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3318149910157607546}
   - component: {fileID: 9011250483042046751}
-  - component: {fileID: 6518630959498477300}
   - component: {fileID: 315781710306970482}
   m_Layer: 0
   m_Name: GameObject
@@ -465,35 +523,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6518630959498477300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8573487392365792681}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   type: 2
   jsonFile: {fileID: 4900000, guid: 2b8bf484f58366e4eb5bbce858ec39bb, type: 3}
-  dialogueEndAction:
-    type: 0
-    ClearBox: {fileID: 0}
-    ActiveObject: {fileID: 0}
-    Active: 0
+  dialogueData:
+    dialogues:
+    - name: "\uC2A4\uD54F"
+      experssion: 0
+      anim_name: 
+      contents: "\uC5EC\uAE34 \uC2DC\uC7A5 \uACE8\uBAA9\uC778\uB370 \uB098\uB9CC \uB530\uB77C\uC624\uBA74
+        \uB3FC. \uC774 \uACE8\uBAA9 \uB05D\uCABD\uC73C\uB85C \uAC00\uBA74 \uC788\uC5B4."
+    - name: "\uB77C\uC6B0"
+      experssion: 0
+      anim_name: 
+      contents: "\uC77C\uB2E8 \uC2A4\uD54F\uC744 \uB530\uB77C\uAC00\uBCF4\uC790."
+  dialogueEndAction: []
+  _taskData: []
   color: 0
-  touchOrNot: 1
+  touchOrNot: 0
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  x: 0
-  y: 0
   outline: {fileID: 0}
   cam: {fileID: 0}
   isViewChange: 0
@@ -501,6 +553,7 @@ MonoBehaviour:
   CameraRot: {x: 0, y: 0, z: 0}
   isTouched: 0
   touchTargetObject: {fileID: 0}
+  isLoop: 0
 --- !u!65 &315781710306970482
 BoxCollider:
   m_ObjectHideFlags: 0

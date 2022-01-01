@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public interface IMovable
 {
-    bool IsMove { get; set; }
+    bool isMove { get; set; }
 }
 [Serializable]
 public struct MovableList

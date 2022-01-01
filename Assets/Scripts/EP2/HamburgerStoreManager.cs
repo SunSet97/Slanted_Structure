@@ -50,7 +50,7 @@ public class HamburgerStoreManager : MonoBehaviour
         if (!speatCharacterManager)
         {
             speatCharacterManager = speatPrefab.GetComponent<CharacterManager>();
-            speatCharacterManager.IsMove = false;
+            speatCharacterManager.isMove = false;
         }
 
         if (!speatAnimator) speatAnimator = speatPrefab.GetComponent<Animator>();

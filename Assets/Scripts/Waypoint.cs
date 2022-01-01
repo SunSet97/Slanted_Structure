@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 
 public class Waypoint : MonoBehaviour
@@ -39,6 +37,7 @@ public class Waypoint : MonoBehaviour
     {
         if (Application.isPlaying)
         {
+            mapdata = DataController.instance_DataController.currentMap;
             SelectCharacter();
         }
     }
@@ -54,7 +53,6 @@ public class Waypoint : MonoBehaviour
     #region 에디트, 맵데이터 세팅
     void EditSettingUpdate()
     {
-        if (!mapdata) mapdata = GetComponentInParent<MapData>();
         UpdateWaypoints();
     }
     // waypoint 리스트 업데이트
@@ -83,7 +81,7 @@ public class Waypoint : MonoBehaviour
     void SelectCharacter()
     {
         character = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).transform;
-        DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).isJoystickInput = false;
+        mapdata.isJoystickUse = false;
     }
 
     // 캐릭터가 waypoint를 지나가면 체크
@@ -115,7 +113,7 @@ public class Waypoint : MonoBehaviour
     // 입력 방향 세팅
     void JoystickInputSetting()
     {
-        if (DataController.instance_DataController.joyStick != null && DataController.instance_DataController.joyStick.gameObject.activeSelf)
+        if (DataController.instance_DataController.joyStick.gameObject.activeSelf)
         {
             Vector2 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, 0); // 한 방향 입력은 수평값만 받음
 

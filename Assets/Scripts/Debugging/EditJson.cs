@@ -58,8 +58,10 @@ public class EditJson : MonoBehaviour
             {
                 dialogues = null;
                 taskDatas.Clear();
-                TaskData data = new TaskData();
-                data.tasks = JsontoString.FromJsonArray<Task>(jsonFile.text);
+                TaskData data = new TaskData
+                {
+                    tasks = JsontoString.FromJsonArray<Task>(jsonFile.text)
+                };
                 taskDatas.Add(data);
                 for (int index = 0; index < taskDatas.Count; index++)
                 {
@@ -77,11 +79,14 @@ public class EditJson : MonoBehaviour
                                 string path = taskDatas[index].tasks[i + j].nextFile;
                                 //Debug.Log(i + "  " + j + "  " + path);
                                 //Debug.Log(taskData.tasks[0].name);
-                                string jsonString = (Resources.Load(path) as TextAsset).text;
+                                string jsonString = (Resources.Load(path) as TextAsset)?.text;
 
 
-                                data = new TaskData();
-                                data.tasks = JsontoString.FromJsonArray<Task>(jsonString);
+                                data = new TaskData
+                                {
+                                    tasks = JsontoString.FromJsonArray<Task>(jsonString)
+                                };
+                                // 오류가 발생해서 사용 왜 그럴까..
                                 if (taskDatas.Count > 50)
                                 {
                                     return;

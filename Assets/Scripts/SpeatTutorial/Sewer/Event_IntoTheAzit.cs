@@ -4,25 +4,21 @@ using UnityEngine;
 
 public class Event_IntoTheAzit : MonoBehaviour
 {
-    public MapData mapdata;
     public Transform startPoint; // 시작 위치
     public Transform endPoint; // 도착 위치
     [Range(5, 20)]
     public int moveSpeed = 10; // 이동 속도
-    private bool isCoroot = false; // 코루틴 실행 여부
+
+    private static readonly int Speed = Animator.StringToHash("Speed");
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name.Equals(DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).name))
-        {
-            other.GetComponent<CharacterManager>().PickUpCharacter();
-            if (!isCoroot)
-            {
-                DataController.instance_DataController.InitializeJoystic(true);
-                isCoroot = true;
-                StartCoroutine(MoveToAzit(other));
-            }
-        }
+        if (!other.TryGetComponent(out CharacterManager character)) return;
+
+        character.PickUpCharacter();
+        GetComponent<Collider>().enabled = false;
+        DataController.instance_DataController.InitializeJoystic(false);
+        StartCoroutine(MoveToAzit(other));
     }
 
     IEnumerator MoveToAzit(Collider other)
@@ -30,20 +26,20 @@ public class Event_IntoTheAzit : MonoBehaviour
         other.transform.position = startPoint.position; // 시작 위치로 이동
         other.transform.LookAt(endPoint);
         // 도착 위치까지 반복
-        Vector3 tick = (endPoint.position - startPoint.position) / 100f;
+        Vector3 tick = (endPoint.position - startPoint.position) * 0.01f;
         WaitForSeconds waitForSeconds = new WaitForSeconds(0.05f / moveSpeed);
-        other.GetComponent<Animator>().SetFloat("Speed", 1f);
+        other.GetComponent<Animator>().SetFloat(Speed, 1f);
         for (int i = 0; i < 100; i++)
         {
             other.transform.position += tick;
             yield return waitForSeconds;
         }
-        mapdata.method = MapData.JoystickInputMethod.AllDirection; // 이동 방식 변경
+        //DataController.instance_DataController.currentMap.method = MapData.JoystickInputMethod.AllDirection; // 이동 방식 변경
         other.GetComponent<CharacterManager>().UseJoystickCharacter(); // 캐릭터 이동활성화
-        other.GetComponent<Animator>().SetFloat("Speed", 0f);
-        DataController.instance_DataController.InitializeJoystic(true);
+        other.GetComponent<Animator>().SetFloat(Speed, 0f);
         yield return new WaitForSeconds(0.5f); // 잠시 대기
-        isCoroot = false; // 코루틴 초기화
+        DataController.instance_DataController.InitializeJoystic(true);
+        GetComponent<Collider>().enabled = true;
     }
 
     private void OnDrawGizmos()

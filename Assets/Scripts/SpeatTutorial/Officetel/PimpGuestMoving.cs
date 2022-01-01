@@ -22,7 +22,7 @@ public class PimpGuestMoving : MonoBehaviour, IMovable
     CharacterController npc;
     Camera cam;
     public Animator animator;
-    public bool IsMove { get; set; }
+    public bool isMove { get; set; }
 
     private readonly int speedHash = Animator.StringToHash("Speed");
 
@@ -55,7 +55,7 @@ public class PimpGuestMoving : MonoBehaviour, IMovable
     {
 
         if (!npc.isGrounded) npc.Move(transform.up * -1); // 중력
-        if (IsMove)
+        if (isMove)
         {
             if (!talking)
                 npc.Move((Vector3.right * nextDirection * speed) * Time.deltaTime); // 적들 이동.
@@ -86,7 +86,7 @@ public class PimpGuestMoving : MonoBehaviour, IMovable
             return;
         }
 
-        if (IsMove)
+        if (isMove)
         {
             nextDirection = (int)Random.Range(-1, 2);
             if (nextDirection == 1) // 오른쪽으로 움직임
@@ -126,7 +126,7 @@ public class PimpGuestMoving : MonoBehaviour, IMovable
                 PimpGuestMoving pimpGuestMoving = transform.parent.parent.GetChild(i).GetChild(j).GetComponent<PimpGuestMoving>();
                 pimpGuestMoving.talking = isTalking;
                 DataController.instance_DataController.currentMap.ui.SetActive(!isTalking);
-                speat.IsMove = !isTalking;
+                speat.isMove = !isTalking;
                 if (isTalking)
                 {
                     pimpGuestMoving.animator.SetFloat(speedHash, 0.0f);
@@ -152,8 +152,8 @@ public class PimpGuestMoving : MonoBehaviour, IMovable
                 SetTalking(true);
                 //DataController.instance_DataController.LoadData(transform.parent.name, gameObject.name + ".json");
                 //수정
-                speat.IsMove = false;
-                CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { SetTalking(false); speat.IsMove = true; });
+                speat.isMove = false;
+                CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { SetTalking(false); speat.isMove = true; });
                 if (jsonFile) CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
             }
 

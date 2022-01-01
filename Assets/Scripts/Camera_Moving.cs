@@ -26,7 +26,7 @@ public class Camera_Moving : MonoBehaviour
         if (character)
         {
             //플레이어 위치 변수에 플레이어 위치 값 넣음.
-            charPos = character.transform.position;
+            charPos = character.position;
             //메인 카메라의 위치를 플레이어 위치와 동일시함.
             Camera.main.transform.position = charPos + DataController.instance_DataController.camDis;
             //지금 카메라의 위치를 카메라 위치변수에 넣음
