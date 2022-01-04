@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4982263586835520790}
-  - component: {fileID: 6437921207983117210}
   - component: {fileID: 240133258883362122}
   - component: {fileID: 6039280548406544292}
   m_Layer: 0
@@ -33,7 +32,7 @@ Transform:
   m_Father: {fileID: 8827356394752289631}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6437921207983117210
+--- !u!114 &240133258883362122
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1492367758361472708}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
@@ -65,8 +64,9 @@ MonoBehaviour:
       contents: "\uD5C9! \uBAA8\uB974\uB294 \uC0AC\uB78C\uC774\uC9C0\uB9CC \uB3C4\uC640\uC918\uC57C
         \uB420\uAE4C? \uB108\uBB34 \uACE0\uD1B5\uC2A4\uB7EC\uC6CC \uBCF4\uC5EC"
   dialogueEndAction: []
+  _taskData: []
   color: 0
-  touchOrNot: 1
+  touchOrNot: 0
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -80,18 +80,6 @@ MonoBehaviour:
   CameraRot: {x: 0, y: 0, z: 0}
   isTouched: 0
   touchTargetObject: {fileID: 0}
---- !u!114 &240133258883362122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1492367758361472708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   isLoop: 0
 --- !u!65 &6039280548406544292
 BoxCollider:
@@ -123,6 +111,7 @@ MonoBehaviour:
   dialogueData:
     dialogues: []
   dialogueEndAction: []
+  _taskData: []
   color: 0
   touchOrNot: 0
   onOutline: 0
@@ -181,6 +170,51 @@ MonoBehaviour:
         \uC800\uBD84 \uD63C\uC790 \uD798\uC73C\uB85C\uB294 \uBC97\uC5B4\uB098\uAE30
         \uC5B4\uB824\uC6CC \uBCF4\uC5EC. \uC5B4\uB5BB\uAC8C \uD574\uC57C\uB420\uAE4C?"
   dialogueEndAction: []
+  _taskData:
+  - tasks:
+    - name: "\uB77C\uC6B0\uB300\uD6541"
+      type: 2
+      nextFile: StoryMap/ep1/Song1
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: "\uC120\uD0DD\uC784"
+      type: 3
+      nextFile: 1
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: "\uC6D0\uB798\uAEBC"
+      type: 3
+      nextFile: StoryMap/ep1/Choice2
+      order: 0
+      condition: 1,1,1,1
+      increaseVar: 1,1,1,1
+    - name: "\uB05D"
+      type: 4
+      nextFile: 
+      order: 1
+      condition: 
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
+  - tasks:
+    - name: "\uB77C\uC6B0\uB300\uD6542"
+      type: 2
+      nextFile: StoryMap/ep1/Song2
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: "\uB05D"
+      type: 4
+      nextFile: 
+      order: 1
+      condition: 
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
   color: 2
   touchOrNot: 0
   onOutline: 0
@@ -322,17 +356,18 @@ MonoBehaviour:
     startPosition: {fileID: 8827356394752289631}
     clearBox: {fileID: 8827356395818957755}
     posSet: {fileID: 8827356394552030419}
-    isControl: 0
+    isMain: 0
   - index: 1
     who: 2
     startPosition: {fileID: 8827356394212707149}
     clearBox: {fileID: 2033622971165245501}
     posSet: {fileID: 8827356394202057606}
-    isControl: 0
+    isMain: 0
   posIndex: 0
   cam: {fileID: 0}
   camDis: {x: -2, y: 3.7, z: 5}
   camRot: {x: 25, y: 162, z: 2}
+  isJoystickUse: 0
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &8827356394552030420
 GameObject:

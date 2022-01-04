@@ -25,7 +25,7 @@ public class DataController : MonoBehaviour
     public enum CharacterType { Main, Rau, Oun, Speat};
 
     [Header("캐릭터")]
-    private CharacterManager currentChar;
+    private CharacterManager mainChar;
     private CharacterManager rau;
     private CharacterManager oun;
     private CharacterManager speat;
@@ -38,6 +38,9 @@ public class DataController : MonoBehaviour
     public float max_y;
     public Vector3 camDis;
     public Vector3 camRot;
+    /// <summary>
+    /// 디버깅용
+    /// </summary>
     public float orthgraphic_Size;
 
     [Header("맵")]
@@ -89,8 +92,8 @@ public class DataController : MonoBehaviour
         if (!speat && GameObject.Find("Speat")) speat = GameObject.Find("Speat").GetComponent<CharacterManager>();
         if (!oun && GameObject.Find("Oun")) oun = GameObject.Find("Oun").GetComponent<CharacterManager>();
         if (!rau && GameObject.Find("Rau")) rau = GameObject.Find("Rau").GetComponent<CharacterManager>();
-
-
+        joyStick = FindObjectOfType<Joystick>();
+        cam = Camera.main;
         //맵 찾아서 저장
         for (int i = 0; i < 5; i++)
         {
@@ -99,21 +102,13 @@ public class DataController : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        //조이스틱 찾기
-        if (!joyStick) joyStick = Joystick.FindObjectOfType<Joystick>();
-        //카메라 찾기
-        if (!cam) cam = Camera.main;
-    }
-
     public CharacterManager GetCharacter(CharacterType characterType)
     {
         CharacterManager character = null;
         switch (characterType)
         {
             case CharacterType.Main:
-                character = currentChar;
+                character = mainChar;
                 break;
             case CharacterType.Rau:
                 character = rau;
@@ -139,29 +134,31 @@ public class DataController : MonoBehaviour
 
     #region 맵 이동
 
-    //맵이 바뀔 때 초기화
+    /// <summary>
+    /// 맵 바꾸는 함수
+    /// </summary>
+    /// <param name="mapCodeBeMove">생성되는 맵의 코드</param>
     public void ChangeMap(string mapCodeBeMove)
     {
         mapCode = string.Format("{0:000000}", mapCodeBeMove); // 맵 코드 변경
 
-
+        
         //모든 캐릭터 위치 대기실로 이동
         speat.WaitInRoom();
         oun.WaitInRoom();
         rau.WaitInRoom();
-
-        Destroy(currentMap.ui);
-        Destroy(currentMap.gameObject);//현재 맵코드 오브젝트 삭제
-
-        foreach (MapData findMap in storymaps)
+        
+        if (currentMap != null)
         {
-            if (findMap.name.Equals(mapCode))
-            {
-                currentMap = Instantiate(findMap, mapGenerate);
-                currentMap.MapChanged();
-                break;
-            }
+            //현재 맵 제거
+            Destroy(currentMap.ui);
+            Destroy(currentMap.gameObject);
         }
+
+        //새로운 맵 생성
+        currentMap = Instantiate(Array.Find(storymaps, mapData => mapData.mapCode.Equals(mapCode)), mapGenerate);
+        currentMap.Initialize();
+
         SetByChangedMap();
     }
 
@@ -175,36 +172,36 @@ public class DataController : MonoBehaviour
         camDis = currentMap.camDis;
         camRot = currentMap.camRot;
 
-        // 해당되는 캐릭터 선택
+        // 해당되는 캐릭터 초기화
         speat.InitializeCharacter();
         oun.InitializeCharacter();
         rau.InitializeCharacter();
 
-        
+
 
         List<MapData.CharacterPositionSet> temp = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true);
         for (int k = 0; k < temp.Count; k++)
         {
-            //if (temp[k].isControl)
+            if (temp[k].who.Equals(MapData.Character.Speat))
             {
-                if (temp[k].who.Equals(MapData.Character.Speat))
-                {
-                    speat.SetCharacter(temp[k].startPosition);
-                }
-                else if (temp[k].who.Equals(MapData.Character.Oun))
-                {
-                    oun.SetCharacter(temp[k].startPosition);
-                }
-                else if (temp[k].who.Equals(MapData.Character.Rau))
-                {
-                    rau.SetCharacter(temp[k].startPosition);
-                }
+                //if (temp[k].isMain)
+                    mainChar = speat;
+                speat.SetCharacter(temp[k].startPosition);
+            }
+            else if (temp[k].who.Equals(MapData.Character.Oun))
+            {
+                //if (temp[k].isMain)
+                    mainChar = oun;
+                oun.SetCharacter(temp[k].startPosition);
+            }
+            else if (temp[k].who.Equals(MapData.Character.Rau))
+            {
+                //if (temp[k].isMain)
+                    mainChar = rau;
+                rau.SetCharacter(temp[k].startPosition);
             }
         }
-
-
-        FindCurrentCharacter(); //다음 맵의 currentChar로 변경
-
+        // mainChar.isMain = true; - mainChar만 있으면 됨, 필요 없음
         //조이스틱 초기화
         InitializeJoystic(true);
 
@@ -224,7 +221,6 @@ public class DataController : MonoBehaviour
         if (currentMap.isOrthographic)
         {
             orthgraphic_Size = currentMap.orthographicSize;
-            cam.orthographicSize = currentMap.orthographicSize;
         }
 
 
@@ -234,17 +230,6 @@ public class DataController : MonoBehaviour
         speat.UseJoystickCharacter();
         oun.UseJoystickCharacter();
         rau.UseJoystickCharacter();
-    }
-
-    //현재 캐릭터 찾아서 저장
-    private void FindCurrentCharacter()
-    {
-        if (canvasCtrl && speat && oun && rau)
-        {
-            if (speat.isSelected) currentChar = speat;
-            if (oun.isSelected) currentChar = oun;
-            if (rau.isSelected) currentChar = rau;
-        }
     }
 
     // 게임 진행에 필요한 콜라이더와 이미지를 획득
@@ -272,7 +257,6 @@ public class DataController : MonoBehaviour
     /// <param name="isOn">JoyStick On/Off</param>
     public void InitializeJoystic(bool isOn)
     {
-        Debug.Log(isOn);
         joyStick.gameObject.SetActive(isOn);
         joyStick.transform.GetChild(0).gameObject.SetActive(false);
         joyStick.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().position = default;
@@ -284,7 +268,7 @@ public class DataController : MonoBehaviour
 
     void FindTutorialCommand()
     {
-        if (currentChar.name == "Rau")
+        if (mainChar.name == "Rau")
             LoadData("TutorialCommandData", "RauTutorial");
         else
             LoadData("TutorialCommandData", "SpeatTutorial");
@@ -417,10 +401,10 @@ public class DataController : MonoBehaviour
     IEnumerator SetCameraMovingState(bool isCameraMoving) {
         
         // 맵 바뀌기 전에 카메라 무빙 안되는 거 막기 위함.
-        yield return new WaitUntil(() => currentChar != null && currentMap != null &&
-        Mathf.Round(cam.transform.position.x) == Mathf.Round(currentChar.transform.position.x + currentMap.camDis.x) &&
-        Mathf.Round(cam.transform.position.y) == Mathf.Round(currentChar.transform.position.y + currentMap.camDis.y) &&
-        Mathf.Round(cam.transform.position.z) == Mathf.Round(currentChar.transform.position.z + currentMap.camDis.z));
+        yield return new WaitUntil(() => mainChar != null && currentMap != null &&
+        Mathf.Round(cam.transform.position.x) == Mathf.Round(mainChar.transform.position.x + currentMap.camDis.x) &&
+        Mathf.Round(cam.transform.position.y) == Mathf.Round(mainChar.transform.position.y + currentMap.camDis.y) &&
+        Mathf.Round(cam.transform.position.z) == Mathf.Round(mainChar.transform.position.z + currentMap.camDis.z));
        
         if (isCameraMoving) cam.GetComponent<Camera_Moving>().enabled = true;
         else if(!isCameraMoving) cam.GetComponent<Camera_Moving>().enabled = false;

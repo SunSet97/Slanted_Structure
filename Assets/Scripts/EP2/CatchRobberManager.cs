@@ -16,11 +16,10 @@ public class dovesComoponents
 
 }
 
-public class CatchRobberManager : MonoBehaviour, IMovable
+public class CatchRobberManager : MonoBehaviour, Playable
 {
     private short dir;
-
-    public bool IsMove { get; set; } = true;
+    public bool isPlay { get; set; }
     // 라우
     [Header("라우")]
     public CharacterManager rau;
@@ -59,16 +58,19 @@ public class CatchRobberManager : MonoBehaviour, IMovable
 
     [Header("라우~소매치기 성공 거리")]
     public float clearDis;
+
+    private static readonly int Speed = Animator.StringToHash("Speed");
+
     private void Start()
     {
-        Invoke("InitialSetting", 0.5f);
+        InitialSetting();
     }
 
     void Update()
     {
         if (rau != null)
         {
-            if (IsMove)
+            if (isPlay)
             {
                 RauMove();
 
@@ -114,9 +116,9 @@ public class CatchRobberManager : MonoBehaviour, IMovable
     {
         // 현재 캐릭터
         rau = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
-        rau.IsMove = false;
+        rau.isMove = false;
         rau.anim.applyRootMotion = false;
-        rau.anim.SetFloat("Speed", 0.7f);
+        rau.anim.SetFloat(Speed, 0.7f);
         // 조이스틱 입력없을 때 라우가 바라보는 방향 설정
         forwardDir = rau.transform.position - DataController.instance_DataController.cam.transform.position;
         forwardDir.y = 0;
@@ -370,5 +372,4 @@ public class CatchRobberManager : MonoBehaviour, IMovable
         yield return new WaitForSeconds(time);
 
     }
-
 }

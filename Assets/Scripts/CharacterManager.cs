@@ -20,6 +20,8 @@ public class CharacterManager : MonoBehaviour, IMovable
     {
         ctrl = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
+        joyStick = DataController.instance_DataController.joyStick;
+        cam = DataController.instance_DataController.cam;
         // 표정 머테리얼 초기화
         faceExpression = Resources.LoadAll<Texture>("Face");
         skinnedMesh = this.GetComponentInChildren<SkinnedMeshRenderer>();
@@ -28,34 +30,26 @@ public class CharacterManager : MonoBehaviour, IMovable
 
     void Update()
     {
-        // 조이스틱 설정
-        if (!joyStick && DataController.instance_DataController.joyStick) joyStick = DataController.instance_DataController.joyStick;
-
-        // 카메라 설정
-        if (!cam && DataController.instance_DataController.cam) cam = DataController.instance_DataController.cam;
-
         // 에니메이션 설정
         AnimationSetting();
     }
     #endregion
 
     #region 캐릭터 컨트롤
-    //joyStick 입력 여부, 소환 여부, 컨트롤 가능 여부
-    [Header("#Character pick up controll")]
-    public bool isJoystickInput;    //조이스틱 사용 여부
-    public bool isSelected;     // 선택여부
-    public bool IsMove { get; set; }    //움직일 수 있는지 여부
+    
+    public bool isMove { get; set; }    //움직일 수 있는지 여부 (움직임을 억지로 막을 때 사용)
+
     // 캐릭터를 스크립트로 직접 이동할 수 있게 함 (캐릭터를 손으로 집는다고 생각)
     public void PickUpCharacter()
     {
-        IsMove = false;
+        isMove = false;
         anim.applyRootMotion = false;
     }
 
     // 캐릭터를 스크립트로 직접 이동할 수 있게 함 (캐릭터를 손으로 집는다고 생각)
     public void PutDownCharacter()
     {
-        IsMove = isSelected;
+        isMove = true;
         anim.applyRootMotion = true;
     }
     public void InitializeCharacter()
@@ -63,14 +57,13 @@ public class CharacterManager : MonoBehaviour, IMovable
         gameObject.layer = 0;
         moveHorDir = Vector3.zero;
         moveVerDir = Vector3.zero;
-        anim.SetFloat("Speed", 0f);
+        anim.SetFloat(SpeedHash, 0f);
     }
-    public void SetCharacter(Transform settingTransform)
+    public void SetCharacter(Transform mapSettingTransform)
     {
-        transform.position = settingTransform.position;
-        transform.LookAt(transform.position + settingTransform.right);
-        isJoystickInput = true;
-        isSelected = true;
+        gameObject.SetActive(true);
+        transform.position = mapSettingTransform.position;
+        transform.LookAt(transform.position + mapSettingTransform.right);
         characterOriginRot = transform.eulerAngles;
 
         camRotation = Quaternion.Euler(0, -DataController.instance_DataController.camRot.y, 0);
@@ -83,6 +76,7 @@ public class CharacterManager : MonoBehaviour, IMovable
     //대기 방으로 이동하는 함수
     public void WaitInRoom()
     {
+        gameObject.SetActive(false);
         transform.position = waitTransform.position;
         transform.rotation = waitTransform.rotation;
     }
@@ -191,16 +185,11 @@ public class CharacterManager : MonoBehaviour, IMovable
         if (Mathf.Abs(joyRot) > 0) { transform.Rotate(Vector3.up, joyRot); } // 임시 회전
         anim.SetFloat("Direction", joyRot); //X방향
     }
-    private void FixedUpdate()
+
+    public void MoveCharacter()
     {
-        //조이스틱 입력을 받을 경우
-        if (joyStick && cam && ctrl.enabled && isJoystickInput && isSelected)
-        {
-            DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, DataController.instance_DataController.inputDirection); // 조정된 입력 방향으로 크기 계산
-            DataController.instance_DataController.inputDirection.Set(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 조정된 입력 방향 설정
-        }
-        // 조이스틱 설정이 끝난 이후 이동 가능, 캐릭터를 조종할 수 있을때(조이스틱 외 포함)
-        if (joyStick && cam && ctrl.enabled && IsMove && isSelected)
+        // 캐릭터를 조종할 수 있을때(조이스틱 외 미포함)
+        if (isMove)
         {
             // 메인 카메라 기준으로 캐릭터가 바라보는 방향 계산
             camRotation = Quaternion.Euler(0, -cam.transform.rotation.eulerAngles.y, 0);
@@ -249,7 +238,7 @@ public class CharacterManager : MonoBehaviour, IMovable
                     anim.SetBool("Jump", false); //점프 불가능 상태로 변경하여 연속적인 점프 제한
                 }
             }
-            ctrl.Move((moveHorDir + moveVerDir) * Time.fixedDeltaTime); //캐릭터를 최종 이동 시킴
+            ctrl.Move((moveHorDir + moveVerDir) * Time.deltaTime); //캐릭터를 최종 이동 시킴
         }
         else
         {

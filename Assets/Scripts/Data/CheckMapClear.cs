@@ -6,7 +6,7 @@ using UnityEditor;
 
 
 [CustomEditor(typeof(CheckMapClear))]
-class DebugmapClear : Editor
+class DebugMapClear : Editor
 {
     public override void OnInspectorGUI()
     {
@@ -23,7 +23,7 @@ public class CheckMapClear : MonoBehaviour
 {
     public TextAsset jsonFile;
     public string nextSelectMapcode = "000000";//어디 스토리로 갈 건지.
-    public CharacterManager who;  // 트리거 신호를 줄 캐릭터
+    // public CharacterManager who;  // 트리거 신호를 줄 캐릭터
 
     public void Clear()
     {
@@ -43,11 +43,16 @@ public class CheckMapClear : MonoBehaviour
     // 캐릭터 확인 후 트리거 활성화
     private void OnTriggerEnter(Collider other)
     {
-        if (who)
-            if (other.GetComponent<CharacterManager>() == who)
-            {
-                Clear();
-            }
+        if (DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).name
+            .Equals(other.name))
+        {
+            Clear();
+        }
+        // if (who)
+        //     if (other.GetComponent<CharacterManager>() == who)
+        //     {
+        //         Clear();
+        //     }
     }
 
 }

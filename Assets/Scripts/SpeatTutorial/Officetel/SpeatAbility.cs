@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class SpeatAbility : MonoBehaviour
 {
-    public float test;
-
     [Header("-UI")]
     public Image abilityImage;  // 능력 시간 UI 이미지
     public Text abilityText;    // 통과한 벽 UI 텍스트

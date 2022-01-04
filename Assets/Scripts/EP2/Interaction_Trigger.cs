@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interaction_Trigger : MonoBehaviour
+public class Interaction_Trigger : InteractionObj_stroke
 {
     public bool isLoop;
+
     void OnTriggerEnter(Collider other)
     {
-        if (TryGetComponent(out InteractionObj_stroke interactionObj_Stroke))
-        {
-            interactionObj_Stroke.interactionResponse();
-            gameObject.SetActive(isLoop);
-        }
+        interactionResponse();
+        gameObject.SetActive(isLoop);
     }
 }

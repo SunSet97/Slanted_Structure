@@ -279,6 +279,7 @@ public class CanvasControl : MonoBehaviour
     CanvasGroup canvasGroup;
     float speed = 0.7f;
     public bool finishFadeIn = false;
+    private static readonly int Emotion = Animator.StringToHash("Emotion");
 
     IEnumerator FadeIn()
     {
@@ -342,7 +343,8 @@ public class CanvasControl : MonoBehaviour
             DataController.instance_DataController.taskData.isContinue = false;
 
         DataController.instance_DataController.InitializeJoystic(false);
-        DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).InitializeCharacter();
+        //DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).InitializeCharacter();
+        //캐릭터 멈추기
         dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
         dialogueCnt = 0;
         isPossibleCnvs = false;
@@ -396,15 +398,15 @@ public class CanvasControl : MonoBehaviour
         else
         {
             // 대화가 진행되는 중 텍스트 업데이트
-            if (dialogueData.dialogues[dialogueCnt].anim_name != null && dialogueData.dialogues[dialogueCnt].anim_name.Length != 0)
+            if (!string.IsNullOrEmpty(dialogueData.dialogues[dialogueCnt].anim_name))
             {
                 if (charAnimator)
                 {
                     string path = "Character_dialogue/" + dialogueData.dialogues[dialogueCnt].anim_name;
                     charAnimator.runtimeAnimatorController = Resources.Load(path) as UnityEditor.Animations.AnimatorController;
-                    if (charAnimator != null)
+                    if (charAnimator.runtimeAnimatorController != null)
                     {
-                        charAnimator.SetInteger("Emotion", ((int)dialogueData.dialogues[dialogueCnt].experssion));
+                        charAnimator.SetInteger(Emotion, ((int)dialogueData.dialogues[dialogueCnt].experssion));
                     }
                     else
                     {
@@ -445,13 +447,25 @@ public class CanvasControl : MonoBehaviour
         for (int i = 0; i < choiceLen; i++)
         {
             // 친밀도와 자존감이 기준보다 낮으면 일부 선택지가 나오지 않을 수 있음 
-            Debug.Log(currentTaskData.tasks[index + i + 1].condition);
+            //Debug.Log(currentTaskData.tasks[index + i + 1].condition);
+            currentTaskData.tasks[index + i + 1].condition = currentTaskData.tasks[index + i + 1].condition.Replace("m", "-");
             int[] condition = Array.ConvertAll(currentTaskData.tasks[index + i + 1].condition.Split(','), (item) => int.Parse(item));
-            //if (
-            //   curSelfEstm >= condition[0] &&
-            //   curIntimacy_ounRau >= condition[1] &&
-            //   curIntimacy_spRau >= condition[2]
-            //  )
+            // if (currentTaskData.tasks[index + 1].order >= 0)
+            // {
+            //     //if (
+            //     //   curSelfEstm >= condition[0] &&
+            //     //   curIntimacy_ounRau >= condition[1] &&
+            //     //   curIntimacy_spRau >= condition[2]
+            //     //  )    
+            // }
+            // else
+            // {
+            //     //if (
+            //     //   curSelfEstm <= condition[0] &&
+            //     //   curIntimacy_ounRau <= condition[1] &&
+            //     //   curIntimacy_spRau <= condition[2]
+            //     //  )
+            // }
             {
                 choiceBtn[i].SetActive(true);
                 choice[i].text = currentTaskData.tasks[index + i + 1].name;
