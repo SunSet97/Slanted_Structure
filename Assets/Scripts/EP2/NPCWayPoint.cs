@@ -15,7 +15,7 @@ public class StorySetting
 }
 
 
-
+// 사용하지 않는 NPCWayPoint
 public class NPCWayPoint : MonoBehaviour
 {
     public CharacterManager npcCharacter;

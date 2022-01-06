@@ -16,10 +16,10 @@ public class dovesComoponents
 
 }
 
-public class CatchRobberManager : MonoBehaviour, Playable
+public class CatchRobberManager : MonoBehaviour, IPlayable
 {
     private short dir;
-    public bool isPlay { get; set; }
+    public bool IsPlay { get; set; }
     // 라우
     [Header("라우")]
     public CharacterManager rau;
@@ -70,7 +70,7 @@ public class CatchRobberManager : MonoBehaviour, Playable
     {
         if (rau != null)
         {
-            if (isPlay)
+            // if (IsPlay)
             {
                 RauMove();
 
@@ -79,7 +79,7 @@ public class CatchRobberManager : MonoBehaviour, Playable
                 // 소매치기 이동
                 characterController_robber.Move(new Vector3(0, 0, robberSpeed * Time.deltaTime));
             }
-            CheckCompletion();
+            // CheckCompletion();
             timer -= Time.deltaTime;
         }
     }
@@ -116,7 +116,7 @@ public class CatchRobberManager : MonoBehaviour, Playable
     {
         // 현재 캐릭터
         rau = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
-        rau.isMove = false;
+        rau.IsMove = false;
         rau.anim.applyRootMotion = false;
         rau.anim.SetFloat(Speed, 0.7f);
         // 조이스틱 입력없을 때 라우가 바라보는 방향 설정
@@ -217,14 +217,14 @@ public class CatchRobberManager : MonoBehaviour, Playable
         if (!isStopping)
         {
             isStopping = true;
-            rau.ctrl.Move(rau.transform.position-threeWay[0].position);
-            //rau.ctrl.Move(new Vector3(dir * 10 * Time.deltaTime, 0, Time.deltaTime) * rauSpeed);
+            // rau.ctrl.Move(rau.transform.position-threeWay[0].position);
+            rau.ctrl.Move(new Vector3(dir * 10 * Time.deltaTime, 0, Time.deltaTime) * rauSpeed);
             //character.anim.SetFloat("Speed", rauSpeed * Time.deltaTime);
             rauSpeed += acceleration * Time.deltaTime;
         }
         // 캐릭터매니저랑 라우랑 위치 일치시키기 => 충돌 감지때문
         gameObject.transform.position = rau.transform.position;
-        threeWay[0].parent.position.Set(threeWay[0].parent.position.x, threeWay[0].parent.position.y, rau.transform.position.z);
+        // threeWay[0].parent.position.Set(threeWay[0].parent.position.x, threeWay[0].parent.position.y, rau.transform.position.z);
     }
     #endregion
 

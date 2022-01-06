@@ -28,7 +28,7 @@ public class TaskData
 
 public enum TYPE
 {
-    NONE = 0, ANIMATION, DIALOGUE, TEMP, TEMPEND, TASKEND, NEW, THEEND
+    NONE = 0, ANIMATION, DIALOGUE, TEMP, TEMPEND, TASKEND, NEW, THEEND, TempDialogueEnd
 }
 
 public enum EXPRESSION

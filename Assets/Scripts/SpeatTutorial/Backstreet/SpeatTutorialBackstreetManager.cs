@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SpeatTutorialBackstreetManager : MonoBehaviour, Playable
+public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
 {
-    public bool isPlay { get; set; } = false;
+    public bool IsPlay { get; set; } = false;
     [Header("End Dialogue")]
     [SerializeField] private TextAsset _jsonFile;
 
@@ -45,7 +45,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, Playable
 
     void Update()
     {
-        if (isPlay)
+        if (IsPlay)
         {
             percentage = 100 / speatSlider.maxValue;
             speatDistance = (speatSlider.maxValue - speatSlider.value) * percentage; // 종료 지점과 스핏의 거리
@@ -88,7 +88,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, Playable
     float pimpAccelator = 0;
     IEnumerator StartRungame()
     {
-        yield return new WaitUntil(() => { return isPlay; });
+        yield return new WaitUntil(() => { return IsPlay; });
         CharacterManager speat = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Speat);
         speat.jumpForce = 7;
         WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();

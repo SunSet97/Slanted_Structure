@@ -45,6 +45,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionType: 2
+  jsonFile: {fileID: 4900000, guid: 5b992a13ca09b9b4b81c2b0899fddb83, type: 3}
+  dialogueData:
+    dialogues:
+    - name: "\uB77C\uC6B0"
+      experssion: 0
+      anim_name: Rau
+      contents: "\uC640! \uBD80\uB3C4\uC2EC\uC774\uB791 \uB3C4\uC2EC\uC740 \uC5C4\uCCAD
+        \uB2E4\uB974\uB124? \uB2E4\uB978 \uC138\uC0C1 \uAC19\uC544!"
+    - name: "\uB77C\uC6B0"
+      experssion: 0
+      anim_name: Rau
+      contents: "\uBA39\uC744 \uACF3\uB3C4 \uB9CE\uC544 \uBCF4\uC778\uB2E4. \uBB58
+        \uBA39\uC5B4\uBCFC\uAE4C~"
+    - name: "\uAC15\uB3C4"
+      experssion: 0
+      anim_name: 
+      contents: "\uC774\uC787 \uB0B4\uB194! \uC5D0\uC787!"
+    - name: ???
+      experssion: 0
+      anim_name: Oun
+      contents: "\uC548\uB3FC \uB0B4 \uC9C0\uAC11!!! \uB3C4\uB451\uC774\uC57C!!!"
+    - name: "\uB77C\uC6B0"
+      experssion: 0
+      anim_name: Rau
+      contents: "\uC557? \uC18C\uB9E4\uCE58\uAE30\uB97C \uB2F9\uD55C \uAC83 \uAC19\uC740\uB370??"
+    - name: ???
+      experssion: 0
+      anim_name: Oun
+      contents: "\uB204\uAC00 \uC880 \uB3C4\uC640\uC8FC\uC138\uC694\u2026!"
+    - name: 
+      experssion: 0
+      anim_name: 
+      contents: "\uD558\uC9C0\uB9CC \uC0AC\uB78C\uB4E4\uC740 \uD790\uB057 \uCCD0\uB2E4\uB9CC
+        \uBCF4\uACE0 \uAC01\uC790 \uC790\uAE30 \uAC08\uAE38\uC744 \uAC08 \uBFD0\uC774\uC5C8\uB2E4."
+    - name: "\uB77C\uC6B0"
+      experssion: 0
+      anim_name: Rau
+      contents: "\uC544\uBB34\uB3C4 \uB3C4\uC640\uC8FC\uC9C8 \uC54A\uC796\uC544??"
+    - name: "\uB77C\uC6B0"
+      experssion: 0
+      anim_name: Rau
+      contents: "\uB0B4\uAC00 \uB3C4\uB451\uC744 \uC7A1\uC544\uC918\uC57C \uACA0\uC5B4\u2026!"
+  dialogueEndAction: []
+  taskData_Debug: []
+  color: 0
+  interactionMethod: 2
+  onOutline: 0
+  isCharacterInRange: 0
+  radius: 5
+  exclamationMark: {fileID: 0}
+  markOffset: {x: 0, y: 0}
+  useExclamationMark: 0
+  outline: {fileID: 0}
+  cam: {fileID: 0}
+  isViewChange: 0
+  CameraPos: {x: 0, y: 0, z: 0}
+  CameraRot: {x: 0, y: 0, z: 0}
+  isTouched: 0
+  touchTargetObject: {fileID: 0}
+  isLoop: 0
 --- !u!114 &8270744664594706040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  interactionType: 0
   jsonFile: {fileID: 4900000, guid: 5b992a13ca09b9b4b81c2b0899fddb83, type: 3}
   dialogueData:
     dialogues:
@@ -102,21 +163,22 @@ MonoBehaviour:
       contents: "\uB0B4\uAC00 \uB3C4\uB451\uC744 \uC7A1\uC544\uC918\uC57C \uACA0\uC5B4\u2026!"
   dialogueEndAction:
   - eventType: 1
-    ClearBox: {fileID: 6636765974117012320}
-    ActiveObjs:
+    clearBox: {fileID: 0}
+    activeObjs:
       actives: []
-    Movables:
-      gameObjects: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 1
+  interactionMethod: 0
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  x: 0
-  y: 0
   outline: {fileID: 0}
   cam: {fileID: 0}
   isViewChange: 0
@@ -196,7 +258,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
-  who: {fileID: 0}
 --- !u!1 &6636765974148541770
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,11 +385,12 @@ MonoBehaviour:
     startPosition: {fileID: 6636765974148541769}
     clearBox: {fileID: 6636765974117012321}
     posSet: {fileID: 6636765975987800642}
-    isControl: 1
+    isMain: 0
   posIndex: 0
   cam: {fileID: 0}
   camDis: {x: 0, y: 6, z: -15}
   camRot: {x: 17.13, y: 0, z: 0}
+  isJoystickUse: 0
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &6636765975987800643
 GameObject:

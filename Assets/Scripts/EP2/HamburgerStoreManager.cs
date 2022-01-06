@@ -32,13 +32,6 @@ public class HamburgerStoreManager : MonoBehaviour
         }
 
     }
-    void Update()
-    {
-        if (!currentCharacter)
-        {
-            InitialSetting();
-        }
-    }
 
     #region 초기세팅
     void InitialSetting()
@@ -50,7 +43,7 @@ public class HamburgerStoreManager : MonoBehaviour
         if (!speatCharacterManager)
         {
             speatCharacterManager = speatPrefab.GetComponent<CharacterManager>();
-            speatCharacterManager.isMove = false;
+            speatCharacterManager.IsMove = false;
         }
 
         if (!speatAnimator) speatAnimator = speatPrefab.GetComponent<Animator>();

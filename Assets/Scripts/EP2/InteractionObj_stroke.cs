@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx.Async;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 // 인터렉션하는 오브젝트에 컴포넌트로 추가!!
 [ExecuteInEditMode]
@@ -20,73 +22,78 @@ public class InteractionObj_stroke : MonoBehaviour
         white
     }
 
-    public enum typeOfInteraction
+    public enum InteractionType
     {
-        POTAL,
-        animation,
-        DIALOGUE,
-        camerasetting,
+        None = -1,
+        Potal,
+        Animation,
+        Dialogue,
+        CameraSetting,
         interact,
-        TASK,
+        Task,
         GAME
     }
-    public enum TouchOrNot // 인터렉션 오브젝트 터치했는지 안했는지 감지 기능 필요
+
+    public enum InteractionMethod // 인터렉션 오브젝트 터치했는지 안했는지 감지 기능 필요
     {
-        yes,
-        no
+        Touch,
+        Trigger,
+        No
     }
+
     [Serializable]
     public class InteractionEvent
     {
-        public enum TYPE { NONE, CLEAR, ACTIVE, MOVE, PLAY }
-        public TYPE eventType;
+        public enum EventType { NONE, CLEAR, ACTIVE, MOVE, PLAY }
+        public EventType eventType;
         [Serializable]
-        public struct act
+        public struct Act
         {
-            public GameObject ActiveObject;
-            public bool ActiveSelf;
+            public GameObject activeObject;
+            public bool activeSelf;
         }
         [Serializable]
         public struct Active
         {
-            public act[] actives;
+            public Act[] actives;
         }
-        [ConditionalHideInInspector("eventType", TYPE.CLEAR)]
-        public CheckMapClear ClearBox;
+        [ConditionalHideInInspector("eventType", EventType.CLEAR)]
+        public CheckMapClear clearBox;
 
-        [ConditionalHideInInspector("eventType", TYPE.ACTIVE)]
-        public Active ActiveObjs;
+        [ConditionalHideInInspector("eventType", EventType.ACTIVE)]
+        public Active activeObjs;
 
-        [ConditionalHideInInspector("eventType", TYPE.MOVE)]
-        public MovableList Movables;
+        [ConditionalHideInInspector("eventType", EventType.MOVE)]
+        public MovableList movables;
         
-        [ConditionalHideInInspector("eventType", TYPE.PLAY)]
+        [ConditionalHideInInspector("eventType", EventType.PLAY)]
         public PlayableList playableList;
     }
     [Header("인터렉션 방식")]
-    public typeOfInteraction type;
+    public InteractionType interactionType;
 
     [Header("Continuous 혹은 Dialogue인 경우에만 값을 넣으시오")]
     public TextAsset jsonFile;
-    //디버깅용
-    [ConditionalHideInInspector("type", typeOfInteraction.DIALOGUE)]
-    public DialogueData dialogueData;
-    [ConditionalHideInInspector("type", typeOfInteraction.DIALOGUE)]
-    public InteractionEvent[] dialogueEndAction;
-
-    [ConditionalHideInInspector("type", typeOfInteraction.TASK)]
-    public List<TaskData> _taskData;
-
-    public Stack<TaskData> jsonTask;
+    
+    private Stack<TaskData> jsonTask;
 
     private UnityAction endDialogueAction;
     private UnityAction startDialogueAction;
+    
+    [ConditionalHideInInspector("interactionType", InteractionType.Dialogue)]
+    public DialogueData dialogueData;
+    [ConditionalHideInInspector("interactionType", InteractionType.Dialogue)]
+    public InteractionEvent[] dialogueEndAction;
+
+    [Header("디버깅 전용 TaskData")]
+    [ConditionalHideInInspector("interactionType", InteractionType.Task)]
+    public List<TaskData> taskData_Debug;
 
     [Header("아웃라인 색 설정")]
     public OutlineColor color;
 
     [Header("인터렉션 오브젝트 터치 유무 감지 기능 사용할건지 말건지")]
-    public TouchOrNot touchOrNot;
+    public InteractionMethod interactionMethod;
     public bool onOutline = false; // 아웃라인 켜져있는 안켜져 있는지
     public bool isCharacterInRange = false; // obj_interaction 오브젝트 기준으로 일정 범위 내에 캐릭터가 있는지 확인
     public int radius = 5;
@@ -111,30 +118,31 @@ public class InteractionObj_stroke : MonoBehaviour
     public Vector3 CameraRot;
 
     [Header("터치 여부 확인")]
-    public bool isTouched = false;
-    public RaycastHit hit;
+    public bool isTouched;
+    private RaycastHit hit;
 
     [Header("실제로 터치되는 오브젝트. 만약 스크립트 적용된 오브젝트가 터치될 오브젝트라면 그냥 None인상태로 두기!")]
     public GameObject touchTargetObject;
 
     private void PushTask(string jsonString)
     {
-        TaskData taskData = new TaskData();
-        taskData.tasks = JsontoString.FromJsonArray<Task>(jsonString);
+        TaskData taskData = new TaskData
+        {
+            tasks = JsontoString.FromJsonArray<Task>(jsonString)
+        };
         jsonTask.Push(taskData);
         DataController.instance_DataController.taskData = taskData;
     }
 
-    void Start()
+    protected virtual void Start()
     {
-        if (Application.isPlaying)
-        {
-            //Debug.Log(Application.dataPath.json); 에셋 경로    뒤에 타입 붙여야됨
-            //Debug.Log(Resources.Load("StoryMap/ep1/Song")); 리소스 경로        뒤에 타입 안붙어도 됨
+        if (!Application.isPlaying) return;
 
-            currentCharacter = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
-        }
+        //Debug.Log(Application.dataPath.json); 에셋 경로    뒤에 타입 붙여야됨
+        //Debug.Log(Resources.Load("StoryMap/ep1/Song")); 리소스 경로        뒤에 타입 안붙어도 됨
+        currentCharacter = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
     }
+
     /// <summary>
     /// Dialogue가 시작할 때 사용하는 1회성 Event, Task - Dialogue인 경우에 실행되지 않는다.
     /// </summary>
@@ -160,56 +168,60 @@ public class InteractionObj_stroke : MonoBehaviour
     {
         TaskData currentTaskData = jsonTask.Peek();
 
-
-        if (currentTaskData.tasks[currentTaskData.taskIndex + index].type.Equals(TYPE.DIALOGUE))
+        //변화값
+        currentTaskData.tasks[currentTaskData.taskIndex + index].increaseVar = currentTaskData
+            .tasks[currentTaskData.taskIndex + index].increaseVar.Replace("m", "-");
+        int[] changeVal =
+            Array.ConvertAll(currentTaskData.tasks[currentTaskData.taskIndex + index].increaseVar.Split(','),
+                int.Parse);
+        DataController.instance_DataController.charData.selfEstm += changeVal[0];
+        DataController.instance_DataController.charData.intimacy_spRau += changeVal[1];
+        DataController.instance_DataController.charData.intimacy_ounRau += changeVal[2];
+        
+        string path, jsonString;
+        switch (currentTaskData.tasks[currentTaskData.taskIndex + index].type)
         {
-            currentTaskData.isContinue = false;
-            string path = currentTaskData.tasks[currentTaskData.taskIndex + index].nextFile;
-            string jsonString = (Resources.Load(path) as TextAsset).text;
-            //string path = Application.dataPath + "/Dialogues/101010/MainStory/Story/" + DataController.instance_DataController.dialogueData.tasks[index].nextFile + ".json";
-            //string jsonString = System.IO.File.ReadAllText(path);
-            currentTaskData.taskIndex--;
-            CanvasControl.instance_CanvasControl.StartConversation(jsonString);
+            case TYPE.DIALOGUE:
+                int choiceLen = int.Parse(currentTaskData.tasks[currentTaskData.taskIndex].nextFile);
+                currentTaskData.tasks[currentTaskData.taskIndex + choiceLen + 1].type = TYPE.TempDialogueEnd;
+                
+                currentTaskData.isContinue = false;
+                path = currentTaskData.tasks[currentTaskData.taskIndex + index].nextFile;
+                jsonString = (Resources.Load(path) as TextAsset)?.text;
+                currentTaskData.taskIndex--;    // 현재 taskIndex는 선택지이며 선택지 다음 인덱스가 된다. 그런데 대화 종료시 Index가 1 증가하기에 1을 줄여준다.
+                CanvasControl.instance_CanvasControl.StartConversation(jsonString);
+                //다음 인덱스의 타입 변경
+                break;
+            case TYPE.TEMP:
+                //새로운 task 실행
+                path = currentTaskData.tasks[currentTaskData.taskIndex + index].nextFile;
+                jsonString = (Resources.Load(path) as TextAsset)?.text;
+                PushTask(jsonString);
+                InteractionResponse();
+                break;
+            case TYPE.NEW:
+                break;
         }
-        else if (currentTaskData.tasks[currentTaskData.taskIndex + index].type.Equals(TYPE.TEMP))
-        {
-            //m3, 1, 2
-            currentTaskData.tasks[currentTaskData.taskIndex + index].increaseVar = currentTaskData.tasks[currentTaskData.taskIndex + index].increaseVar.Replace("m", "-");
-            int[] changeVal = Array.ConvertAll(currentTaskData.tasks[currentTaskData.taskIndex + index].increaseVar.Split(','), (item) => int.Parse(item));
-            {
-                DataController.instance_DataController.charData.selfEstm += changeVal[0];
-                DataController.instance_DataController.charData.intimacy_spRau += changeVal[1];
-                DataController.instance_DataController.charData.intimacy_ounRau += changeVal[2];
-            }
-            //새로운 task 실행
-            string path = currentTaskData.tasks[currentTaskData.taskIndex + index].nextFile;
-            string jsonString = (Resources.Load(path) as TextAsset).text;
-            PushTask(jsonString);
-            interactionResponse();
-        }
-
-        //index에 따른 task 추가
-        //실행
     }
 
 
     /// <summary>
     /// 인터랙션 실행하는 함수
     /// </summary>
-    public void interactionResponse()
+    public void InteractionResponse()
     {
         if (jsonTask == null || jsonTask.Count == 0)
         {
             TaskStart();
         }
         //3가지 1)애니메이션 2)대사 3)카메라 변환(확대라든지) 4)맵포탈
-        if (type == typeOfInteraction.animation && this.gameObject.GetComponent<Animator>() != null)//애니메이터가 존재한다면 
+        if (interactionType == InteractionType.Animation && this.gameObject.GetComponent<Animator>() != null)//애니메이터가 존재한다면 
         {
             //세팅된 애니메이터 시작
             this.gameObject.GetComponent<Animator>().Play("Start", 0);
 
         }
-        else if (type == typeOfInteraction.DIALOGUE)
+        else if (interactionType == InteractionType.Dialogue)
         {
             isTouched = true;
             if (jsonFile)
@@ -222,38 +234,41 @@ public class InteractionObj_stroke : MonoBehaviour
                 {
                     CanvasControl.instance_CanvasControl.SetDialougueEndAction(endDialogueAction);
                 }
-                foreach (InteractionEvent dialogueEndAction in dialogueEndAction)
+                foreach (InteractionEvent endAction in dialogueEndAction)
                 {
-                    switch (dialogueEndAction.eventType)
+                    switch (endAction.eventType)
                     {
-                        case InteractionEvent.TYPE.CLEAR:
-                            CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => dialogueEndAction.ClearBox.Clear());
+                        case InteractionEvent.EventType.CLEAR:
+                            Debug.Log($"DialogueEndAction {endAction.eventType}");
+                            CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => endAction.clearBox.Clear());
                             break;
-                        case InteractionEvent.TYPE.ACTIVE:
+                        case InteractionEvent.EventType.ACTIVE:
                             CanvasControl.instance_CanvasControl.SetDialougueEndAction(() =>
                             {
-                                foreach (InteractionEvent.act active in dialogueEndAction.ActiveObjs.actives)
+                                foreach (InteractionEvent.Act active in endAction.activeObjs.actives)
                                 {
-                                    Debug.Log(active.ActiveSelf);
-                                    active.ActiveObject.SetActive(active.ActiveSelf);
+                                    Debug.Log($"DialogueEndAction {endAction.eventType} - " + active.activeSelf);
+                                    active.activeObject.SetActive(active.activeSelf);
                                 }
                             });
                             break;
-                        case InteractionEvent.TYPE.MOVE:
+                        case InteractionEvent.EventType.MOVE:
                             CanvasControl.instance_CanvasControl.SetDialougueEndAction(() =>
                             {
-                                foreach (MovableObj movable in dialogueEndAction.Movables.movables)
+                                foreach (MovableObj movable in endAction.movables.movables)
                                 {
-                                    movable.gameObject.GetComponent<IMovable>().isMove = movable.isMove;
+                                    Debug.Log($"DialogueEndAction {endAction.eventType} - " + movable.isMove);
+                                    movable.gameObject.GetComponent<IMovable>().IsMove = movable.isMove;
                                 }
                             });
                             break;
-                        case InteractionEvent.TYPE.PLAY:
+                        case InteractionEvent.EventType.PLAY:
                             CanvasControl.instance_CanvasControl.SetDialougueEndAction(() =>
                             {
-                                foreach (PlayableObj playable in dialogueEndAction.playableList.playableObjs)
+                                foreach (PlayableObj playable in endAction.playableList.playableObjs)
                                 {
-                                    playable.gameObject.GetComponent<Playable>().isPlay = playable.isPlay;
+                                    Debug.Log($"DialogueEndAction {endAction.eventType} - " + playable.isPlay);
+                                    playable.gameObject.GetComponent<IPlayable>().IsPlay = playable.isPlay;
                                 }
                             });
                             break;
@@ -263,25 +278,24 @@ public class InteractionObj_stroke : MonoBehaviour
             }
             else
                 Debug.LogError("json 파일 없는 오류");
-            //대사활성화
         }
-        else if (type == typeOfInteraction.camerasetting)
+        else if (interactionType == InteractionType.CameraSetting)
         {
             //카메라 변환 활성화
         }
-        else if (type == typeOfInteraction.POTAL && this.gameObject.GetComponent<CheckMapClear>() != null)
+        else if (interactionType == InteractionType.Potal && this.gameObject.GetComponent<CheckMapClear>() != null)
         {
             DataController.instance_DataController.ChangeMap(DataController.instance_DataController.currentMap.nextMapcode);
 
         }
         //1회성 interaction인 경우 굳이 excel로 할 필요 없이 바로 실행 dialogue도 마찬가지 단순한 잡담이면 typeOfInteraction.dialogue에서 처리
-        else if (type == typeOfInteraction.TASK)
+        else if (interactionType == InteractionType.Task)
         {
             isTouched = true;
             if (jsonTask.Count == 0) { Debug.LogError("jsontask파일 없음 오류오류"); }
             StartCoroutine(TaskCorutine());
         }
-        else if (type == typeOfInteraction.interact && TryGetComponent(out CheckMapClear checkMapClear))
+        else if (interactionType == InteractionType.interact && TryGetComponent(out CheckMapClear checkMapClear))
         {
             //애니메이션 재생 후 다음 맵으로 넘어가는 등의 인터렉션이 있을 때.
             if (TryGetComponent(out Animator animator))
@@ -342,7 +356,7 @@ public class InteractionObj_stroke : MonoBehaviour
                 if (isCharacterInRange && !isTouched)
                 {
                     // 플레이어의 인터렉션 오브젝트 터치 감지
-                    if (touchOrNot == TouchOrNot.yes)
+                    if (interactionMethod == InteractionMethod.Touch)
                     {
                         if (Input.GetMouseButtonDown(0))
                         {
@@ -357,7 +371,7 @@ public class InteractionObj_stroke : MonoBehaviour
                                         if (!checkMapClear.nextSelectMapcode.Equals("000000"))
                                             DataController.instance_DataController.currentMap.nextMapcode = checkMapClear.nextSelectMapcode;
 
-                                    interactionResponse();//인터렉션반응 나타남.
+                                    InteractionResponse();//인터렉션반응 나타남.
                                 }
 
                             }
@@ -399,9 +413,9 @@ public class InteractionObj_stroke : MonoBehaviour
         {
             if (jsonFile != null)
             {
-                if (type == typeOfInteraction.DIALOGUE)
+                if (interactionType == InteractionType.Dialogue)
                     dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonFile.text);
-                else if (type == typeOfInteraction.TASK)
+                else if (interactionType == InteractionType.Task)
                     LoadTaskData();
             }
         }
@@ -432,17 +446,11 @@ public class InteractionObj_stroke : MonoBehaviour
 
     private void TaskStart()
     {
-        if (jsonFile)
-        {
-            if (type == typeOfInteraction.TASK)
-            {
-                jsonTask = new Stack<TaskData>();
-                PushTask(jsonFile.text);
-                Debug.Log(jsonFile.text);
-            }
-            else if (type == typeOfInteraction.DIALOGUE)
-                DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonFile.text);
-        }
+        if (!jsonFile) return;
+        if (interactionType != InteractionType.Task) return;
+        
+        jsonTask = new Stack<TaskData>();
+        PushTask(jsonFile.text);
     }
 
     private IEnumerator TaskCorutine()
@@ -458,29 +466,21 @@ public class InteractionObj_stroke : MonoBehaviour
         // 진행 후 멈췄다가 한 번 더 클릭해야되는 경우 번호를 다음 번호로 하도록한다
         WaitUntil waitUntil = new WaitUntil(() => currentTaskData.isContinue);
 
-        DataController.instance_DataController.taskData = currentTaskData;
-
-        Debug.Log(currentTaskData.taskIndex);
-        Debug.Log(currentTaskData.tasks[currentTaskData.taskIndex].order);
-        Debug.Log(currentTaskData.taskOrder);
         while (currentTaskData.tasks[currentTaskData.taskIndex].order.Equals(currentTaskData.taskOrder) && currentTaskData.isContinue)     //순서 번호 동일한 것 반복
         {
+            DataController.instance_DataController.taskData = currentTaskData;
             int taskIndex = currentTaskData.taskIndex;
-            Debug.Log("taskIndex  " + taskIndex + "     " + currentTaskData.tasks[taskIndex].type);
+            Task currentTask = currentTaskData.tasks[taskIndex];
+            Debug.Log("taskIndex - " + taskIndex + "\nInteractionType - " + currentTaskData.tasks[taskIndex].type);
             switch (currentTaskData.tasks[taskIndex].type)
             {
                 case TYPE.DIALOGUE:
-                    Debug.Log("dialogue");
+                    Debug.Log("대화 시작");
                     currentTaskData.isContinue = false;
-                    string path = currentTaskData.tasks[taskIndex].nextFile;
-                    Debug.Log(path);
-                    string jsonString = (Resources.Load(path) as TextAsset).text;
-                    Debug.Log(path);
-                    //string path = Application.dataPath + "/Dialogues/101010/MainStory/Story/" + DataController.instance_DataController.dialogueData.tasks[index].nextFile + ".json";
-                    //string jsonString = System.IO.File.ReadAllText(path);
+                    string path = currentTask.nextFile;
+                    string jsonString = (Resources.Load(path) as TextAsset)?.text;
+                    Debug.Log($"대화 경로 - {path}");
                     CanvasControl.instance_CanvasControl.StartConversation(jsonString);
-
-                    //대화가 끝날 경우 iscontinue 다시 활성화
                     break;
                 case TYPE.ANIMATION:
                     //세팅된 애니메이션 실행
@@ -488,17 +488,22 @@ public class InteractionObj_stroke : MonoBehaviour
                     gameObject.GetComponent<Animator>().Play("Start", 0);
                     break;
                 case TYPE.TEMP:
-                    Debug.Log("temp");
+                    Debug.Log("선택지 열기");
                     currentTaskData.isContinue = false;
                     CanvasControl.instance_CanvasControl.SetChoiceAction(SetBtnPress);
                     CanvasControl.instance_CanvasControl.OpenChoicePanel();
                     break;
                 case TYPE.TEMPEND:
                     //Temp Task 끝날 때
-                    Debug.Log("tempEnd");
+                    Debug.Log("선택지 종료");
                     DataController.instance_DataController.taskData = null;
                     jsonTask.Pop();
-                    //jsonTask.Peek().taskIndex++;
+                    jsonTask.Peek().isContinue = true;
+                    yield break;
+                case TYPE.TempDialogueEnd:
+                    //선택지에서 대화를 고른 경우
+                    Debug.Log("선택지 종료 - 단순 대화");
+                    DataController.instance_DataController.taskData = null;
                     jsonTask.Peek().isContinue = true;
                     yield break;
                 case TYPE.TASKEND:
@@ -514,45 +519,47 @@ public class InteractionObj_stroke : MonoBehaviour
                         break;
                     }
                 default:
-                    Debug.LogError($"{currentTaskData.tasks[taskIndex].type}은 존재하지 않는 type입니다.");
+                    Debug.LogError($"{currentTask.type}은 존재하지 않는 type입니다.");
                     break;
             }
+            Debug.Log("Task 종료 대기 중 - " + currentTask.type + ", Index - " + currentTaskData.taskIndex);
             yield return waitUntil;
-            Debug.Log("반복 중" + currentTaskData.taskIndex);
+            Debug.Log("Task 종료 - " + currentTask.type + ", Index - " + currentTaskData.taskIndex);
         }
         currentTaskData.taskOrder++;
     }
     //For Debugging
     private void LoadTaskData()
     {
-        if (_taskData.Count == 0)
+        if (taskData_Debug.Count != 0) return;
+
+        taskData_Debug.Add(new TaskData
         {
-            TaskData data = new TaskData();
-            data.tasks = JsontoString.FromJsonArray<Task>(jsonFile.text);
-            _taskData.Add(data);
-            foreach (TaskData taskData in _taskData)
+            tasks = JsontoString.FromJsonArray<Task>(jsonFile.text)
+        });
+        foreach (TaskData taskData in taskData_Debug)
+        {
+            for (int i = 0; i < taskData.tasks.Length; i++)
             {
-                for (int i = 0; i < taskData.tasks.Length; i++)
+                if (taskData.tasks[i].type == TYPE.NEW || taskData.tasks[i].type == TYPE.TEMP)
                 {
-                    if (taskData.tasks[i].type == TYPE.NEW || taskData.tasks[i].type == TYPE.TEMP)
+                    int count = int.Parse(taskData.tasks[i].nextFile);
+                    for (int j = 1; j <= count; j++)
                     {
-                        int count = int.Parse(taskData.tasks[i].nextFile);
-                        for (int j = 1; j <= count; j++)
+                        string path = taskData.tasks[i + j].nextFile;
+                        string jsonString = (Resources.Load(path) as TextAsset)?.text;
+
+                        TaskData data = new TaskData()
                         {
-                            string path = taskData.tasks[i + j].nextFile;
-                            string jsonString = (Resources.Load(path) as TextAsset).text;
-
-
-                            data = new TaskData();
-                            data.tasks = JsontoString.FromJsonArray<Task>(jsonString);
-                            if (_taskData.Count > 50)
-                            {
-                                return;
-                            }
-                            _taskData.Add(data);
+                            tasks = JsontoString.FromJsonArray<Task>(jsonString)
+                        };
+                        if (taskData_Debug.Count > 50)
+                        {
+                            return;
                         }
-                        i += count + 1;
+                        taskData_Debug.Add(data);
                     }
+                    i += count + 1;
                 }
             }
         }

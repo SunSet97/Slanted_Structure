@@ -37,19 +37,19 @@ public class CharacterManager : MonoBehaviour, IMovable
 
     #region 캐릭터 컨트롤
     
-    public bool isMove { get; set; }    //움직일 수 있는지 여부 (움직임을 억지로 막을 때 사용)
+    public bool IsMove { get; set; }    //움직일 수 있는지 여부 (움직임을 억지로 막을 때 사용)
 
     // 캐릭터를 스크립트로 직접 이동할 수 있게 함 (캐릭터를 손으로 집는다고 생각)
     public void PickUpCharacter()
     {
-        isMove = false;
+        IsMove = false;
         anim.applyRootMotion = false;
     }
 
     // 캐릭터를 스크립트로 직접 이동할 수 있게 함 (캐릭터를 손으로 집는다고 생각)
     public void PutDownCharacter()
     {
-        isMove = true;
+        IsMove = true;
         anim.applyRootMotion = true;
     }
     public void InitializeCharacter()
@@ -189,7 +189,7 @@ public class CharacterManager : MonoBehaviour, IMovable
     public void MoveCharacter()
     {
         // 캐릭터를 조종할 수 있을때(조이스틱 외 미포함)
-        if (isMove)
+        if (IsMove)
         {
             // 메인 카메라 기준으로 캐릭터가 바라보는 방향 계산
             camRotation = Quaternion.Euler(0, -cam.transform.rotation.eulerAngles.y, 0);

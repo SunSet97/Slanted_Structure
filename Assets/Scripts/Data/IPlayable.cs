@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface Playable
+public interface IPlayable
 {
-    bool isPlay { get; set; }
+    bool IsPlay { get; set; }
 }
 [Serializable]
 public struct PlayableList

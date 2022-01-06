@@ -11,6 +11,7 @@ public struct PointData
     public UnityAction pointEvent; 
 }
 
+//사용 중인 NPCWayPoint
 public class NPCwaypoints : MonoBehaviour
 {
     public PointData[] point;

@@ -21,6 +21,8 @@ public class DataController : MonoBehaviour
     public bool inputJump = false; // 조이스틱 입력 점프 판정
     public bool inputDash = false; // 조이스틱 입력 대쉬 판정
     public bool inputSeat = false;
+    private bool isAlreadySave;
+    private bool wasJoystickUse;
 
     public enum CharacterType { Main, Rau, Oun, Speat};
 
@@ -266,6 +268,31 @@ public class DataController : MonoBehaviour
         inputJump = false;
     }
 
+    /// <summary>
+    /// 조이스틱 멈추고 이전 상태에 따라 키거나 끄는 함수
+    /// ex) 대화 이전에 조이스틱을 사용하지 않으면 계속 사용하지 않는다.
+    /// </summary>
+    /// <param name="isStop">Stop여부</param>
+    public void StopSaveLoadJoyStick(bool isStop)
+    {
+        Debug.Log(isStop +  "  " + isAlreadySave);
+        //처음 실행하는 경우
+        if (isStop)
+        {
+            if(isAlreadySave) return;
+            
+            isAlreadySave = true;
+            wasJoystickUse = joyStick.gameObject.activeSelf;
+            InitializeJoystic(false);
+        }
+        // Load하는 경우
+        else
+        {
+            isAlreadySave = false;
+            InitializeJoystic(wasJoystickUse);
+        }
+    }
+    
     void FindTutorialCommand()
     {
         if (mainChar.name == "Rau")

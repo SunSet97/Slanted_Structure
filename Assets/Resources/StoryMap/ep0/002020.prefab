@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  interactionType: 2
   jsonFile: {fileID: 4900000, guid: a364bbb1d3686a543a80121aea97658c, type: 3}
   dialogueData:
     dialogues:
@@ -375,7 +375,7 @@ MonoBehaviour:
       contents: "\uC800\uAE44\uB2E4!! \uC7A1\uC544!!!"
     - name: ??
       experssion: 0
-      anim_name: 
+      anim_name: Speat_past
       contents: "\uC820\uC7A5...! \uBE68\uB9AC \uC228\uC744 \uACF3\uC744 \uCC3E\uC544\uC57C
         \uB3C4\uB9DD\uCCD0\uC57C\uACA0\uC5B4..!"
     - name: 
@@ -386,51 +386,19 @@ MonoBehaviour:
         \uCD08\uB2A5\uB825\uACFC \uC810\uD50C\uB97C \uC798 \uD65C\uC6A9\uD574\uC11C
         \uC7A5\uC560\uBB3C\uC5D0 \uBD80\uB52A\uD788\uC9C0 \uC54A\uB3C4\uB85D \uD569\uC2DC\uB2E4."
   dialogueEndAction:
-  - eventType: 2
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives:
-      - ActiveObject: {fileID: 3727060294897509859}
-        ActiveSelf: 1
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
   - eventType: 4
-    ClearBox: {fileID: 0}
-    ActiveObjs:
+    clearBox: {fileID: 0}
+    activeObjs:
       actives: []
-    Movables:
+    movables:
       movables: []
     playableList:
       playableObjs:
       - gameObject: {fileID: 3345937348623267755}
         isPlay: 1
-  _taskData:
-  - tasks:
-    - name: "\uD3EC\uC8FC\uB4E4"
-      type: 0
-      nextFile: 
-      order: 0
-      condition: 
-      increaseVar: 
-    - name: ??
-      type: 0
-      nextFile: 
-      order: 0
-      condition: 
-      increaseVar: 
-    - name: 
-      type: 0
-      nextFile: 
-      order: 0
-      condition: 
-      increaseVar: 
-    taskIndex: 0
-    taskOrder: 1
-    isContinue: 1
+  taskData_Debug: []
   color: 0
-  touchOrNot: 0
+  interactionMethod: 2
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -577,7 +545,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
-  who: {fileID: 0}
 --- !u!1 &3345937349244790311
 GameObject:
   m_ObjectHideFlags: 0

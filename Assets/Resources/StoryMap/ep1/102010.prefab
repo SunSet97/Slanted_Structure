@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3995037207082909432}
-  - component: {fileID: 8132472556564614911}
   - component: {fileID: 912897387092602481}
   - component: {fileID: 8181872782455681742}
   m_Layer: 0
@@ -33,7 +32,20 @@ Transform:
   m_Father: {fileID: 8789859594402832128}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8132472556564614911
+--- !u!65 &912897387092602481
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 941878886091302370}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 8.25, y: 2.41, z: 4.11}
+  m_Center: {x: 0, y: 0.58, z: 0}
+--- !u!114 &8181872782455681742
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,10 +54,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 941878886091302370}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  interactionType: 2
   jsonFile: {fileID: 4900000, guid: 55e7c7c23c5749e4a9b11d30aed93650, type: 3}
   dialogueData:
     dialogues:
@@ -86,52 +98,13 @@ MonoBehaviour:
       experssion: 0
       anim_name: Rau
       contents: " \uC2DC\uC7A5\uCABD\uC73C\uB85C \uAC00\uC57C\uACA0\uAD6C\uB098..!"
-  dialogueEndAction:
-  - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives: []
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives: []
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives: []
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives: []
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives: []
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
+  dialogueEndAction: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 0
+  interactionMethod: 2
   onOutline: 0
   isCharacterInRange: 0
-  radius: 3
+  radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
@@ -142,31 +115,6 @@ MonoBehaviour:
   CameraRot: {x: 0, y: 0, z: 0}
   isTouched: 0
   touchTargetObject: {fileID: 0}
---- !u!65 &912897387092602481
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 941878886091302370}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 8.25, y: 2.41, z: 4.11}
-  m_Center: {x: 0, y: 0.58, z: 0}
---- !u!114 &8181872782455681742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 941878886091302370}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   isLoop: 0
 --- !u!1 &2844447012569675724
 GameObject:
@@ -178,7 +126,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5776668774739304591}
   - component: {fileID: 6288247591348764109}
-  - component: {fileID: 7001732905981184004}
   - component: {fileID: 1074385379566669228}
   m_Layer: 0
   m_Name: GameObject
@@ -213,20 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoop: 0
---- !u!114 &7001732905981184004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2844447012569675724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 2
+  interactionType: 2
   jsonFile: {fileID: 4900000, guid: f106207f238b2d840a48536a3c0a47bb, type: 3}
   dialogueData:
     dialogues:
@@ -245,52 +179,108 @@ MonoBehaviour:
       experssion: 0
       anim_name: Rau
       contents: "\uC800 \uD560\uC544\uBC84\uC9C0\uD55C\uD14C \uBB3C\uC5B4\uBD10\uC57C\uC9C0"
-  dialogueEndAction:
-  - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives: []
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives: []
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives: []
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives: []
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives: []
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
+  dialogueEndAction: []
+  taskData_Debug:
+  - tasks:
+    - name: "\uB77C\uC6B0\uB300\uD6541"
+      type: 2
+      nextFile: dialogue_ep1/102010_old
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: 
+      type: 3
+      nextFile: 3
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: "(\uCE74\uBA54\uB77C\uB97C \uCF1C\uB3C4 \uACBD\uCC30\uC5D0 \uC2E0\uACE0\uD55C\uB2E4\uB294
+        \uACBD\uACE0\uB97C \uD55C\uB2E4.)"
+      type: 2
+      nextFile: dialogue_ep1/102010_old1
+      order: 0
+      condition: 1,1,1
+      increaseVar: 1,1,1
+    - name: "(\uB178\uC778\uC744 \uBB34\uC2DC\uD55C\uB2E4.)"
+      type: 3
+      nextFile: dialogue_ep1/choice2
+      order: 0
+      condition: 2,2,2
+      increaseVar: 2,2,2
+    - name: "(\uAC00\uB9CC\uD788 \uC788\uB294\uB2E4.)"
+      type: 3
+      nextFile: dialogue_ep1/choice3
+      order: 0
+      condition: 3,3,3
+      increaseVar: 2,2,2
+    - name: "\uB05D"
+      type: 4
+      nextFile: 
+      order: 1
+      condition: 
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
+  - tasks:
+    - name: "\uB77C\uC6B0"
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    - name: 
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    - name: "\uB77C\uC6B0"
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
+  - tasks:
+    - name: "\uB77C\uC6B0\uB300\uD6541"
+      type: 1
+      nextFile: dialogue_ep1/102010_old2
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: "\uB05D"
+      type: 4
+      nextFile: 
+      order: 1
+      condition: 
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
+  - tasks:
+    - name: "\uB77C\uC6B0\uB300\uD6541"
+      type: 1
+      nextFile: dialogue_ep1/102010_old3
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: "\uB05D"
+      type: 4
+      nextFile: 
+      order: 1
+      condition: 
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
   color: 0
-  touchOrNot: 1
+  interactionMethod: 2
   onOutline: 0
   isCharacterInRange: 0
-  radius: 3
+  radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
@@ -301,6 +291,7 @@ MonoBehaviour:
   CameraRot: {x: 0, y: 0, z: 0}
   isTouched: 0
   touchTargetObject: {fileID: 0}
+  isLoop: 0
 --- !u!65 &1074385379566669228
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -475,11 +466,12 @@ MonoBehaviour:
     startPosition: {fileID: 4592693783565110444}
     clearBox: {fileID: 4162450160276159013}
     posSet: {fileID: 4592693783146049665}
-    isControl: 0
+    isMain: 0
   posIndex: 0
   cam: {fileID: 0}
   camDis: {x: -2, y: 3.6, z: 16}
   camRot: {x: 1.062, y: 173.17, z: -0.043}
+  isJoystickUse: 0
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &6041002278122676726
 GameObject:
@@ -490,7 +482,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7059842367817232119}
-  - component: {fileID: 6398694974959299742}
   - component: {fileID: 531416223564354496}
   - component: {fileID: 292830771892740610}
   m_Layer: 0
@@ -514,7 +505,7 @@ Transform:
   m_Father: {fileID: 8191801494702275357}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6398694974959299742
+--- !u!114 &531416223564354496
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -523,81 +514,112 @@ MonoBehaviour:
   m_GameObject: {fileID: 6041002278122676726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 5
-  jsonFile: {fileID: 4900000, guid: 94dd2d04a74cc8d47a74bec222798ef3, type: 3}
+  interactionType: 5
+  jsonFile: {fileID: 4900000, guid: 8b8813ee340a8a14a8f4cdefb6f6ee4b, type: 3}
   dialogueData:
-    dialogues:
+    dialogues: []
+  dialogueEndAction: []
+  taskData_Debug:
+  - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      experssion: 0
-      anim_name: 
-      contents: 
+      type: 2
+      nextFile: dialogue_ep1/102010_old
+      order: 1
+      condition: 
+      increaseVar: 
     - name: 
-      experssion: 0
-      anim_name: 
-      contents: 
+      type: 3
+      nextFile: 3
+      order: 1
+      condition: 
+      increaseVar: 
     - name: "(\uCE74\uBA54\uB77C\uB97C \uCF1C\uB3C4 \uACBD\uCC30\uC5D0 \uC2E0\uACE0\uD55C\uB2E4\uB294
         \uACBD\uACE0\uB97C \uD55C\uB2E4.)"
-      experssion: 0
-      anim_name: 
-      contents: 
+      type: 2
+      nextFile: dialogue_ep1/102010_old1
+      order: 0
+      condition: 1,1,1
+      increaseVar: 1,1,1
     - name: "(\uB178\uC778\uC744 \uBB34\uC2DC\uD55C\uB2E4.)"
-      experssion: 0
-      anim_name: 
-      contents: 
+      type: 3
+      nextFile: dialogue_ep1/choice2
+      order: 0
+      condition: 2,2,2
+      increaseVar: 2,2,2
     - name: "(\uAC00\uB9CC\uD788 \uC788\uB294\uB2E4.)"
-      experssion: 0
-      anim_name: 
-      contents: 
+      type: 3
+      nextFile: dialogue_ep1/choice3
+      order: 0
+      condition: 3,3,3
+      increaseVar: 2,2,2
     - name: "\uB05D"
-      experssion: 0
-      anim_name: 
-      contents: 
-  dialogueEndAction:
-  - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives: []
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives: []
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives: []
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives: []
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives: []
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
+      type: 4
+      nextFile: 
+      order: 1
+      condition: 
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
+  - tasks:
+    - name: "\uB77C\uC6B0"
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    - name: 
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    - name: "\uB77C\uC6B0"
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
+  - tasks:
+    - name: "\uB77C\uC6B0\uB300\uD6541"
+      type: 1
+      nextFile: dialogue_ep1/102010_old2
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: "\uB05D"
+      type: 4
+      nextFile: 
+      order: 1
+      condition: 
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
+  - tasks:
+    - name: "\uB77C\uC6B0\uB300\uD6541"
+      type: 1
+      nextFile: dialogue_ep1/102010_old3
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: "\uB05D"
+      type: 4
+      nextFile: 
+      order: 1
+      condition: 
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
   color: 0
-  touchOrNot: 1
+  interactionMethod: 2
   onOutline: 0
   isCharacterInRange: 0
   radius: 3
@@ -611,18 +633,6 @@ MonoBehaviour:
   CameraRot: {x: 0, y: 0, z: 0}
   isTouched: 0
   touchTargetObject: {fileID: 0}
---- !u!114 &531416223564354496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6041002278122676726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   isLoop: 0
 --- !u!65 &292830771892740610
 BoxCollider:
@@ -683,7 +693,7 @@ MonoBehaviour:
   jsonFile: {fileID: 4900000, guid: 94dd2d04a74cc8d47a74bec222798ef3, type: 3}
   type: 2
   dialogues: []
-  tasks: []
+  taskDatas: []
 --- !u!1 &7516509802141283363
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,6 +875,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
+--- !u!1 &6138314364282686254 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7679528853820744176, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+    type: 3}
+  m_PrefabInstance: {fileID: 4592693783051004638}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4162450160276159013 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 468225877287719163, guid: b5d6f4e8e25d0d646a2290b24e60c706,
@@ -874,12 +890,6 @@ Transform:
 --- !u!4 &6138314364282686253 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7679528853820744179, guid: b5d6f4e8e25d0d646a2290b24e60c706,
-    type: 3}
-  m_PrefabInstance: {fileID: 4592693783051004638}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6138314364282686254 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7679528853820744176, guid: b5d6f4e8e25d0d646a2290b24e60c706,
     type: 3}
   m_PrefabInstance: {fileID: 4592693783051004638}
   m_PrefabAsset: {fileID: 0}

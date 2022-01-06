@@ -90,7 +90,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07ef907c01255f44aae0a2880b29aad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapdata: {fileID: 0}
   startPoint: {fileID: 586399221629213120}
   endPoint: {fileID: 586399221204919049}
   moveSpeed: 8
@@ -250,11 +249,12 @@ MonoBehaviour:
     startPosition: {fileID: 586399221686276720}
     clearBox: {fileID: 586399222419395052}
     posSet: {fileID: 586399222547527601}
-    isControl: 1
+    isMain: 0
   posIndex: 0
   cam: {fileID: 0}
   camDis: {x: 2, y: 1, z: -3.5}
   camRot: {x: 0, y: 0, z: 0}
+  isJoystickUse: 0
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &586399222419395055
 GameObject:
@@ -315,7 +315,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 0}
   nextSelectMapcode: 201130
-  who: {fileID: 0}
 --- !u!1 &586399222547527600
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,7 +357,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2948966827684190099}
   - component: {fileID: 5328263806447248522}
-  - component: {fileID: 4045154786452431592}
   - component: {fileID: 4636287008674004281}
   m_Layer: 0
   m_Name: GameObject
@@ -393,20 +391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoop: 0
---- !u!114 &4045154786452431592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1928658545862876265}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 2
+  interactionType: 2
   jsonFile: {fileID: 4900000, guid: 2b8bf484f58366e4eb5bbce858ec39bb, type: 3}
   dialogueData:
     dialogues:
@@ -420,8 +405,9 @@ MonoBehaviour:
       anim_name: Rau
       contents: "\uC77C\uB2E8 \uC2A4\uD54F\uC744 \uB530\uB77C\uAC00\uBCF4\uC790."
   dialogueEndAction: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 1
+  interactionMethod: 2
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -435,6 +421,7 @@ MonoBehaviour:
   CameraRot: {x: 0, y: 0, z: 0}
   isTouched: 0
   touchTargetObject: {fileID: 0}
+  isLoop: 0
 --- !u!65 &4636287008674004281
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -460,45 +447,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 4
+  interactionType: 0
   jsonFile: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction:
   - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
+    clearBox: {fileID: 0}
+    activeObjs:
       actives: []
-    Movables:
+    movables:
       movables: []
     playableList:
       playableObjs: []
   - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
+    clearBox: {fileID: 0}
+    activeObjs:
       actives: []
-    Movables:
+    movables:
       movables: []
     playableList:
       playableObjs: []
   - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
+    clearBox: {fileID: 0}
+    activeObjs:
       actives: []
-    Movables:
+    movables:
       movables: []
     playableList:
       playableObjs: []
   - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
+    clearBox: {fileID: 0}
+    activeObjs:
       actives: []
-    Movables:
+    movables:
       movables: []
     playableList:
       playableObjs: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 0
+  interactionMethod: 0
   onOutline: 0
   isCharacterInRange: 0
   radius: 3
@@ -524,45 +512,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  interactionType: 0
   jsonFile: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction:
   - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
+    clearBox: {fileID: 0}
+    activeObjs:
       actives: []
-    Movables:
+    movables:
       movables: []
     playableList:
       playableObjs: []
   - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
+    clearBox: {fileID: 0}
+    activeObjs:
       actives: []
-    Movables:
+    movables:
       movables: []
     playableList:
       playableObjs: []
   - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
+    clearBox: {fileID: 0}
+    activeObjs:
       actives: []
-    Movables:
+    movables:
       movables: []
     playableList:
       playableObjs: []
   - eventType: 0
-    ClearBox: {fileID: 0}
-    ActiveObjs:
+    clearBox: {fileID: 0}
+    activeObjs:
       actives: []
-    Movables:
+    movables:
       movables: []
     playableList:
       playableObjs: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 0
+  interactionMethod: 0
   onOutline: 0
   isCharacterInRange: 0
   radius: 3

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayGroundManager : MonoBehaviour, Playable
+public class PlayGroundManager : MonoBehaviour, IPlayable
 {
-    public bool isPlay { get; set; } = false;
+    public bool IsPlay { get; set; } = false;
 
     public RectTransform[] range;
     public CreateRing ring;
@@ -200,7 +200,7 @@ public class PlayGroundManager : MonoBehaviour, Playable
     //게임 끝날 경우 함수
     public void EndPlaying()
     {
-        isPlay = false;
+        IsPlay = false;
         DataController.instance_DataController.currentMap.ui.SetActive(false);
     }
 }

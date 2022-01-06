@@ -273,8 +273,11 @@ public class MapData : MonoBehaviour
         //Joystick Input
         if (isJoystickUse)
         {
-            DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, DataController.instance_DataController.inputDirection); // 조정된 입력 방향으로 크기 계산
-            DataController.instance_DataController.inputDirection.Set(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 조정된 입력 방향 설정
+            DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero,
+                DataController.instance_DataController.inputDirection); // 조정된 입력 방향으로 크기 계산
+            DataController.instance_DataController.inputDirection.Set(
+                DataController.instance_DataController.joyStick.Horizontal,
+                DataController.instance_DataController.joyStick.Vertical); // 조정된 입력 방향 설정
         }
 
         DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).MoveCharacter();

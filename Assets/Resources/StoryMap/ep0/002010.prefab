@@ -124,7 +124,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
-  who: {fileID: 0}
 --- !u!1 &2038639325761473504
 GameObject:
   m_ObjectHideFlags: 0
@@ -1218,23 +1217,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  interactionType: 2
   jsonFile: {fileID: 4900000, guid: 8cd43709b88b2504a97b4be66441cb44, type: 3}
   dialogueData:
     dialogues:
     - name: ???
       experssion: 0
-      anim_name: 
+      anim_name: Speat_past
       contents: "\uBB34\uD131\uB300\uACE0 \uB098\uC624\uAE34 \uD588\uB294\uB370 \uC5B4\uB5BB\uAC8C
         \uD3EC\uC8FC\uB4E4\uC5D0\uAC8C\uC11C \uD53C\uD558\uC9C0..?"
     - name: ???
       experssion: 0
-      anim_name: 
+      anim_name: Speat_past
       contents: "\uADF8\uB9AC\uACE0 \uC190\uB2D8\uB4E4\uB3C4 \uB9CE\uC740\uB370 \uC218\uC0C1\uD574
         \uBCF4\uC774\uC9C0 \uC54A\uAC8C \uC870\uC2EC\uD574\uC57C\uACA0\uC5B4"
     - name: ???
       experssion: 0
-      anim_name: 
+      anim_name: Speat_past
       contents: "\uB2F9\uC7A5\uC774 \uAC70\uC9C0\uAC19\uC740 \uACF3\uC5D0\uC11C \uBC97\uC5B4\uB0A0
         \uAC70\uC57C...! \uB4E4\uD0A4\uC9C0 \uC54A\uAC8C \uC870\uC2EC\uD558\uC790."
     - name: 
@@ -1245,10 +1244,10 @@ MonoBehaviour:
         \uC788\uC2B5\uB2C8\uB2E4. ??\uC758 \uD0C8\uCD9C\uC744 \uB3C4\uC640\uC8FC\uC138\uC694."
   dialogueEndAction:
   - eventType: 3
-    ClearBox: {fileID: 0}
-    ActiveObjs:
+    clearBox: {fileID: 0}
+    activeObjs:
       actives: []
-    Movables:
+    movables:
       movables:
       - gameObject: {fileID: 6993392094172035364}
         isMove: 1
@@ -1267,22 +1266,12 @@ MonoBehaviour:
       - gameObject: {fileID: 88592300224813186}
         isMove: 1
       - gameObject: {fileID: 4658671245825510023}
-        isMove: 0
+        isMove: 1
     playableList:
       playableObjs: []
-  - eventType: 2
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives:
-      - ActiveObject: {fileID: 5148484462038437868}
-        ActiveSelf: 1
-    Movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  _taskData: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 0
+  interactionMethod: 2
   onOutline: 0
   isCharacterInRange: 0
   radius: 5

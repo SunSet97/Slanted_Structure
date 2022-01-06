@@ -204,17 +204,18 @@ MonoBehaviour:
     startPosition: {fileID: 298279038216090857}
     clearBox: {fileID: 8879888587250245638}
     posSet: {fileID: 298279038310455053}
-    isControl: 1
+    isMain: 0
   - index: 1
     who: 2
     startPosition: {fileID: 298279038216090857}
     clearBox: {fileID: 470084240778176068}
     posSet: {fileID: 298279037440128714}
-    isControl: 1
+    isMain: 0
   posIndex: 0
   cam: {fileID: 0}
   camDis: {x: 0, y: 2.7, z: 5.12}
   camRot: {x: 8, y: 180, z: 0}
+  isJoystickUse: 0
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &298279038216090858
 GameObject:
@@ -289,7 +290,6 @@ GameObject:
   - component: {fileID: 3051096071903516480}
   - component: {fileID: 9013680962989907303}
   - component: {fileID: 4193404030694675950}
-  - component: {fileID: 1275473885020803989}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -336,20 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoop: 0
---- !u!114 &1275473885020803989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6351919820635261786}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 2
+  interactionType: 2
   jsonFile: {fileID: 4900000, guid: 21df0d475e32421498f70bc81d38c727, type: 3}
   dialogueData:
     dialogues:
@@ -373,8 +360,9 @@ MonoBehaviour:
         \uC21C\uC11C\uAC00 \uBC14\uB00C\uAE30\uB3C4, \uB54C\uB85C\uB294 \uC804\uD600
         \uB2E4\uB978 \uC804\uAC1C\uAC00 \uC774\uC5B4\uC9C0\uAE30\uB3C4 \uD569\uB2C8\uB2E4."
   dialogueEndAction: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 1
+  interactionMethod: 2
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -388,6 +376,7 @@ MonoBehaviour:
   CameraRot: {x: 0, y: 0, z: 0}
   isTouched: 0
   touchTargetObject: {fileID: 0}
+  isLoop: 0
 --- !u!1001 &298279038301885372
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -395,6 +384,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 298279038185799588}
     m_Modifications:
+    - target: {fileID: 1008197126064203463, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: dialogueEndAction.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1763288363328598635, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
       propertyPath: m_Name
@@ -422,6 +416,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2491228757351992403, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
+      propertyPath: dialogueEndAction.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2491228757351992403, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
       propertyPath: outlineObject
       value: 
       objectReference: {fileID: 9118059275212216089}
@@ -444,6 +443,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5738893206336546903, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: dialogueEndAction.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6833819731772867256, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: dialogueEndAction.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7679528853820744176, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
@@ -512,9 +521,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8578321909766587059, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
+      propertyPath: dialogueEndAction.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8578321909766587059, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
       propertyPath: outlineObject
       value: 
       objectReference: {fileID: 6131015936614995302}
+    - target: {fileID: 8826406548415856755, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: dialogueEndAction.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8826406548415856755, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
       propertyPath: outlineObject

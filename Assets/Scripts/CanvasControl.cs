@@ -20,18 +20,17 @@ public class CanvasControl : MonoBehaviour
     [Header("대화 관련")]
     public GameObject DialoguePanel;
     public bool isPossibleCnvs = true;
-    public GameObject[] choiceBtn;
-    public Text[] choice;
+    public Transform choiceParent;
+    private GameObject[] choiceBtn;
+    private Text[] choiceText;
     public Text speakerName;
     public Text speakerWord;
 
     // 대화 관련 변수 
     public int dialogueCnt = 0; // 대사 카운트 변수
-    public int dialogueLen = 0; // 대사의 갯
     UnityAction<int> pressBtnMethod;
     UnityAction endDialogueAction;
     UnityAction startDialogueAction;
-    public bool endConversation = false; // 대화 끝나면 true.
 
     public Animator charAnimator;
 
@@ -65,6 +64,17 @@ public class CanvasControl : MonoBehaviour
 
     private void Start()
     {
+        if (choiceParent != null)
+        {
+            var childCount = choiceParent.childCount;
+            choiceBtn = new GameObject[childCount];
+            choiceText = new Text[childCount];
+            for (int i = 0; i < childCount; i++)
+            {
+                choiceBtn[i] = choiceParent.GetChild(i).gameObject;
+                choiceText[i] = choiceBtn[i].GetComponentInChildren<Text>(true);
+            }
+        }
 
         if (DataController.instance_DataController != null && selfEstmText != null)
         {
@@ -335,31 +345,16 @@ public class CanvasControl : MonoBehaviour
 
     // 대화 관련 함수
 
-    // 일반 dialogue
-    
-    public void StartConversation()
-    {
-        if (DataController.instance_DataController.taskData != null)
-            DataController.instance_DataController.taskData.isContinue = false;
-
-        DataController.instance_DataController.InitializeJoystic(false);
-        //DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).InitializeCharacter();
-        //캐릭터 멈추기
-        dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
-        dialogueCnt = 0;
-        isPossibleCnvs = false;
-        DialoguePanel.SetActive(true);
-        UpdateWord();
-    }
-
     public void StartConversation(string jsonString)
     {
+        //task인 경우 대화하는동안 task 일시 중지
         if(DataController.instance_DataController.taskData != null)
             DataController.instance_DataController.taskData.isContinue = false;
-        DataController.instance_DataController.InitializeJoystic(false);
-        Debug.Log("지금");
+        
+        //Joystick 중지
+        DataController.instance_DataController.StopSaveLoadJoyStick(true);
+        
         DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
-        dialogueLen = DataController.instance_DataController.dialogueData.dialogues.Length;
         dialogueCnt = 0;
         if(startDialogueAction != null)
         {
@@ -374,11 +369,11 @@ public class CanvasControl : MonoBehaviour
     public void UpdateWord()
     {
         DialogueData dialogueData = DataController.instance_DataController.dialogueData;
+        int dialogueLen = dialogueData.dialogues.Length;
         // 대화가 끝나면 선택지 부를 지 여부결정 
         if (dialogueCnt >= dialogueLen)
         {
             DialoguePanel.SetActive(false);
-            endConversation = true;
 
             isPossibleCnvs = true;
             dialogueCnt = 0;
@@ -393,11 +388,11 @@ public class CanvasControl : MonoBehaviour
                 DataController.instance_DataController.taskData.isContinue = true;
                 DataController.instance_DataController.taskData.taskIndex++;
             }
-            DataController.instance_DataController.InitializeJoystic(true);
+            DataController.instance_DataController.StopSaveLoadJoyStick(false);
         }
         else
         {
-            // 대화가 진행되는 중 텍스트 업데이트
+            // 캐릭터 표정 업데이트 (애니메이션)
             if (!string.IsNullOrEmpty(dialogueData.dialogues[dialogueCnt].anim_name))
             {
                 if (charAnimator)
@@ -418,9 +413,10 @@ public class CanvasControl : MonoBehaviour
                     Debug.LogError("Canvas에 캐릭터 표정 charAnmator 넣으세요");
                 }
             }
+            
+            // 대화 텍스트 업데이트
             speakerName.text = dialogueData.dialogues[dialogueCnt].name; // 이야기하는 캐릭터 이름
             speakerWord.text = dialogueData.dialogues[dialogueCnt].contents; // 캐릭터의 대사
-            //애니메이션 추가
             dialogueCnt++;
         }
 
@@ -429,28 +425,33 @@ public class CanvasControl : MonoBehaviour
     // 선택지가 있을 때 선택지 패널 염 
     public void OpenChoicePanel()
     {
-        DataController.instance_DataController.InitializeJoystic(false);
+        DataController.instance_DataController.StopSaveLoadJoyStick(true);
         TaskData currentTaskData = DataController.instance_DataController.taskData;
         int index = currentTaskData.taskIndex;
         int choiceLen = int.Parse(currentTaskData.tasks[index].nextFile);
 
         int curIntimacy_spRau = DataController.instance_DataController.charData.intimacy_spRau;
         int curIntimacy_ounRau = DataController.instance_DataController.charData.intimacy_ounRau;
-
-        // 라우가 플레이어일 때만 확인하나 ???? 
-        //if (DataController.instance_DataController.charData.curPlayer == "Rau")
-        //{
         int curSelfEstm = DataController.instance_DataController.charData.selfEstm;
 
         choiceBtn[0].transform.parent.gameObject.SetActive(true);
-        // 선택지 개수와 조건에 맞게 선택지가 나올 수 있도록 함.
-        for (int i = 0; i < choiceLen; i++)
+        if (currentTaskData.tasks.Length <= index + choiceLen)
         {
+            Debug.LogError("선택지 개수 오류 - 인덱스 오버플로우");
+        }
+        // 선택지 개수와 조건에 맞게 선택지가 나올 수 있도록 함.
+        for (int i = 0; i < choiceBtn.Length; i++)
+        {
+            if (choiceLen <= i)
+            {
+                choiceBtn[i].SetActive(false);
+                continue;
+            }
             // 친밀도와 자존감이 기준보다 낮으면 일부 선택지가 나오지 않을 수 있음 
-            //Debug.Log(currentTaskData.tasks[index + i + 1].condition);
+            Debug.Log("선택지 조건 - " + currentTaskData.tasks[index + i + 1].condition);
             currentTaskData.tasks[index + i + 1].condition = currentTaskData.tasks[index + i + 1].condition.Replace("m", "-");
-            int[] condition = Array.ConvertAll(currentTaskData.tasks[index + i + 1].condition.Split(','), (item) => int.Parse(item));
-            // if (currentTaskData.tasks[index + 1].order >= 0)
+            int[] condition = Array.ConvertAll(currentTaskData.tasks[index + i + 1].condition.Split(','), int.Parse);
+            // if (currentTaskData.tasks[index + i + 1].order >= 0)
             // {
             //     //if (
             //     //   curSelfEstm >= condition[0] &&
@@ -461,14 +462,14 @@ public class CanvasControl : MonoBehaviour
             // else
             // {
             //     //if (
-            //     //   curSelfEstm <= condition[0] &&
-            //     //   curIntimacy_ounRau <= condition[1] &&
-            //     //   curIntimacy_spRau <= condition[2]
+            //     //   curSelfEstm < condition[0] &&
+            //     //   curIntimacy_ounRau < condition[1] &&
+            //     //   curIntimacy_spRau < condition[2]
             //     //  )
             // }
             {
                 choiceBtn[i].SetActive(true);
-                choice[i].text = currentTaskData.tasks[index + i + 1].name;
+                choiceText[i].text = currentTaskData.tasks[index + i + 1].name;
             }
         }
     }
@@ -491,8 +492,6 @@ public class CanvasControl : MonoBehaviour
     /// </summary>
     void RemoveChoice()
     {
-        for (int i = 0; i < choiceBtn[0].transform.parent.childCount; i++)
-            choiceBtn[i].SetActive(false);
         choiceBtn[0].transform.parent.gameObject.SetActive(false);
     }
 
@@ -501,13 +500,14 @@ public class CanvasControl : MonoBehaviour
     {
         TaskData currentTaskData = DataController.instance_DataController.taskData;
         RemoveChoice();
-        int tmp = int.Parse(currentTaskData.tasks[currentTaskData.taskIndex].nextFile) + 1;
+        int choiceLen = int.Parse(currentTaskData.tasks[currentTaskData.taskIndex].nextFile);
+        DataController.instance_DataController.StopSaveLoadJoyStick(false);
         pressBtnMethod(index);
-        DataController.instance_DataController.InitializeJoystic(true);
+        // DataController.instance_DataController.InitializeJoystic(true);
         //taskIndex를 쓸 일이 있을 경우 여기서 사용  아니면 pressBtnMethod에서 taskIndex 더해주기
-        currentTaskData.taskIndex += tmp;
         
-        
+        currentTaskData.taskIndex += choiceLen + 1;
+
 
         //    // 씬 바꿀 일 있을 때 씬 변경하는 함수 부름
         //    if (DataController.instance_DataController.dialogueData.isSceneChange[cnvsCnt].sceneChange[i])

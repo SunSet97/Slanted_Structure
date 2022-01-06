@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  interactionType: 2
   jsonFile: {fileID: 4900000, guid: f73535788d39d444fa52db292e36640d, type: 3}
   dialogueData:
     dialogues:
@@ -63,10 +63,14 @@ MonoBehaviour:
       anim_name: Rau
       contents: "\uD5C9! \uBAA8\uB974\uB294 \uC0AC\uB78C\uC774\uC9C0\uB9CC \uB3C4\uC640\uC918\uC57C
         \uB420\uAE4C? \uB108\uBB34 \uACE0\uD1B5\uC2A4\uB7EC\uC6CC \uBCF4\uC5EC"
+    - name: 
+      experssion: 0
+      anim_name: 
+      contents: ' '
   dialogueEndAction: []
-  _taskData: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 0
+  interactionMethod: 2
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -106,14 +110,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 4
+  interactionType: 4
   jsonFile: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
-  _taskData: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 0
+  interactionMethod: 0
   onOutline: 0
   isCharacterInRange: 0
   radius: 1
@@ -141,7 +145,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 0}
   nextSelectMapcode: 101110
-  who: {fileID: 0}
 --- !u!114 &2116634930570612063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,7 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  interactionType: 2
   jsonFile: {fileID: 4900000, guid: c3cd1485adf0f2f478cfbdbf4ccdb4e9, type: 3}
   dialogueData:
     dialogues:
@@ -170,53 +173,9 @@ MonoBehaviour:
         \uC800\uBD84 \uD63C\uC790 \uD798\uC73C\uB85C\uB294 \uBC97\uC5B4\uB098\uAE30
         \uC5B4\uB824\uC6CC \uBCF4\uC5EC. \uC5B4\uB5BB\uAC8C \uD574\uC57C\uB420\uAE4C?"
   dialogueEndAction: []
-  _taskData:
-  - tasks:
-    - name: "\uB77C\uC6B0\uB300\uD6541"
-      type: 2
-      nextFile: StoryMap/ep1/Song1
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: "\uC120\uD0DD\uC784"
-      type: 3
-      nextFile: 1
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: "\uC6D0\uB798\uAEBC"
-      type: 3
-      nextFile: StoryMap/ep1/Choice2
-      order: 0
-      condition: 1,1,1,1
-      increaseVar: 1,1,1,1
-    - name: "\uB05D"
-      type: 4
-      nextFile: 
-      order: 1
-      condition: 
-      increaseVar: 
-    taskIndex: 0
-    taskOrder: 1
-    isContinue: 1
-  - tasks:
-    - name: "\uB77C\uC6B0\uB300\uD6542"
-      type: 2
-      nextFile: StoryMap/ep1/Song2
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: "\uB05D"
-      type: 4
-      nextFile: 
-      order: 1
-      condition: 
-      increaseVar: 
-    taskIndex: 0
-    taskOrder: 1
-    isContinue: 1
+  taskData_Debug: []
   color: 2
-  touchOrNot: 0
+  interactionMethod: 0
   onOutline: 0
   isCharacterInRange: 0
   radius: 2
@@ -523,7 +482,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 0}
   nextSelectMapcode: 102010
-  who: {fileID: 0}
 --- !u!1001 &3853793652951839288
 PrefabInstance:
   m_ObjectHideFlags: 0
