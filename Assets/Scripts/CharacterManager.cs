@@ -186,7 +186,7 @@ public class CharacterManager : MonoBehaviour, IMovable
         anim.SetFloat("Direction", joyRot); //X방향
     }
 
-    public void MoveCharacter()
+    public void MoveCharacter(MapData.JoystickInputMethod joystickInputMethod)
     {
         // 캐릭터를 조종할 수 있을때(조이스틱 외 미포함)
         if (IsMove)
@@ -200,12 +200,12 @@ public class CharacterManager : MonoBehaviour, IMovable
 
             joyRot = Vector2.SignedAngle(joystickDir, characterDir);
             //사이드뷰 일 때
-            if (DataController.instance_DataController.currentMap.method.Equals(MapData.JoystickInputMethod.OneDirection))
+            if (joystickInputMethod.Equals(MapData.JoystickInputMethod.OneDirection))
             {
                 Move2DSide(joystickDir.x);
             }
             //쿼터뷰일 때    
-            else if(DataController.instance_DataController.currentMap.method.Equals(MapData.JoystickInputMethod.AllDirection))
+            else if(joystickInputMethod.Equals(MapData.JoystickInputMethod.AllDirection))
             {
                 QuarterView();
             }

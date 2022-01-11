@@ -1,10 +1,38 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UniRx.Async;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
+
+
+[Serializable]
+public class InteractionEvent
+{
+    public enum EventType { NONE, CLEAR, ACTIVE, MOVE, PLAY }
+    public EventType eventType;
+    [Serializable]
+    public struct Act
+    {
+        public GameObject activeObject;
+        public bool activeSelf;
+    }
+    [Serializable]
+    public struct Active
+    {
+        public Act[] actives;
+    }
+    [ConditionalHideInInspector("eventType", EventType.CLEAR)]
+    public CheckMapClear clearBox;
+
+    [ConditionalHideInInspector("eventType", EventType.ACTIVE)]
+    public Active activeObjs;
+
+    [ConditionalHideInInspector("eventType", EventType.MOVE)]
+    public MovableList movables;
+        
+    [ConditionalHideInInspector("eventType", EventType.PLAY)]
+    public PlayableList playableList;
+}
 
 // 인터렉션하는 오브젝트에 컴포넌트로 추가!!
 [ExecuteInEditMode]
@@ -41,34 +69,6 @@ public class InteractionObj_stroke : MonoBehaviour
         No
     }
 
-    [Serializable]
-    public class InteractionEvent
-    {
-        public enum EventType { NONE, CLEAR, ACTIVE, MOVE, PLAY }
-        public EventType eventType;
-        [Serializable]
-        public struct Act
-        {
-            public GameObject activeObject;
-            public bool activeSelf;
-        }
-        [Serializable]
-        public struct Active
-        {
-            public Act[] actives;
-        }
-        [ConditionalHideInInspector("eventType", EventType.CLEAR)]
-        public CheckMapClear clearBox;
-
-        [ConditionalHideInInspector("eventType", EventType.ACTIVE)]
-        public Active activeObjs;
-
-        [ConditionalHideInInspector("eventType", EventType.MOVE)]
-        public MovableList movables;
-        
-        [ConditionalHideInInspector("eventType", EventType.PLAY)]
-        public PlayableList playableList;
-    }
     [Header("인터렉션 방식")]
     public InteractionType interactionType;
 
@@ -84,6 +84,9 @@ public class InteractionObj_stroke : MonoBehaviour
     public DialogueData dialogueData;
     [ConditionalHideInInspector("interactionType", InteractionType.Dialogue)]
     public InteractionEvent[] dialogueEndAction;
+
+    [ConditionalHideInInspector("interactionType", InteractionType.Task)]
+    public InteractionEvent[] taskEndActions;
 
     [Header("디버깅 전용 TaskData")]
     [ConditionalHideInInspector("interactionType", InteractionType.Task)]
@@ -210,10 +213,7 @@ public class InteractionObj_stroke : MonoBehaviour
     /// </summary>
     public void InteractionResponse()
     {
-        if (jsonTask == null || jsonTask.Count == 0)
-        {
-            TaskStart();
-        }
+        TaskStart();
         //3가지 1)애니메이션 2)대사 3)카메라 변환(확대라든지) 4)맵포탈
         if (interactionType == InteractionType.Animation && this.gameObject.GetComponent<Animator>() != null)//애니메이터가 존재한다면 
         {
@@ -293,6 +293,7 @@ public class InteractionObj_stroke : MonoBehaviour
         {
             isTouched = true;
             if (jsonTask.Count == 0) { Debug.LogError("jsontask파일 없음 오류오류"); }
+
             StartCoroutine(TaskCorutine());
         }
         else if (interactionType == InteractionType.interact && TryGetComponent(out CheckMapClear checkMapClear))
@@ -448,6 +449,7 @@ public class InteractionObj_stroke : MonoBehaviour
     {
         if (!jsonFile) return;
         if (interactionType != InteractionType.Task) return;
+        if (jsonTask != null && jsonTask.Count != 0) return;
         
         jsonTask = new Stack<TaskData>();
         PushTask(jsonFile.text);
@@ -506,11 +508,44 @@ public class InteractionObj_stroke : MonoBehaviour
                     DataController.instance_DataController.taskData = null;
                     jsonTask.Peek().isContinue = true;
                     yield break;
-                case TYPE.TASKEND:
+                // TaskEnd 보다는 TaskReset이라는 말이 어울린다
+                // 애매하네
+                //TaskEnd, TaskReset - TaskEnd를 할 때 Task를 재사용 가능하도록 하냐 Task를 재사용하지 못하도록 하냐..
+                case TYPE.TaskReset:
                     isTouched = false;
-                    jsonTask.Peek().isContinue = true;
-                    jsonTask.Peek().taskIndex = 0;
-                    jsonTask.Peek().taskOrder = 1;
+                    jsonTask.Pop();
+                    if (jsonTask.Count > 0) Debug.LogError("Task 엑셀 관련 오류");
+                    foreach (var taskEndAction in taskEndActions)
+                    {
+                        switch (taskEndAction.eventType)
+                        {
+                            case InteractionEvent.EventType.CLEAR:
+                                taskEndAction.clearBox.Clear();
+                                break;
+                            case InteractionEvent.EventType.ACTIVE:
+                                foreach (var t in taskEndAction.activeObjs.actives)
+                                {
+                                    Debug.Log($"DialogueEndAction {taskEndAction.eventType} - " + t.activeSelf);
+                                    t.activeObject.SetActive(t.activeSelf);
+                                }
+                                break;
+                            case InteractionEvent.EventType.MOVE:
+                                foreach (var t in taskEndAction.movables.movables)
+                                {
+                                    Debug.Log($"DialogueEndAction {taskEndAction.eventType} - " + t.isMove);
+                                    t.gameObject.GetComponent<IMovable>().IsMove = t.isMove;
+                                }
+
+                                break;
+                            case InteractionEvent.EventType.PLAY:
+                                foreach (var t in taskEndAction.playableList.playableObjs)
+                                {
+                                    Debug.Log($"DialogueEndAction {taskEndAction.eventType} - " + t.isPlay);
+                                    t.gameObject.GetComponent<IPlayable>().IsPlay = t.isPlay;
+                                }
+                                break;
+                        }
+                    }
                     yield break;
                 case TYPE.NEW:
                     {

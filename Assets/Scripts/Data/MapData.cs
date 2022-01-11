@@ -280,7 +280,7 @@ public class MapData : MonoBehaviour
                 DataController.instance_DataController.joyStick.Vertical); // 조정된 입력 방향 설정
         }
 
-        DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).MoveCharacter();
+        DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).MoveCharacter(method);
         
     }
     #endregion
