@@ -401,10 +401,12 @@ public class CanvasControl : MonoBehaviour
                     charAnimator.runtimeAnimatorController = Resources.Load(path) as UnityEditor.Animations.AnimatorController;
                     if (charAnimator.runtimeAnimatorController != null)
                     {
+                        charAnimator.GetComponent<Image>().enabled = true;
                         charAnimator.SetInteger(Emotion, ((int)dialogueData.dialogues[dialogueCnt].experssion));
                     }
                     else
                     {
+                        charAnimator.GetComponent<Image>().enabled = false;
                         Debug.LogError("Dialogue 애니메이션 세팅 오류");
                     }
                 }
