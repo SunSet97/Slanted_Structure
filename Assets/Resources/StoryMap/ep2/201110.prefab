@@ -242,6 +242,7 @@ MonoBehaviour:
   dialogueData:
     dialogues: []
   dialogueEndAction: []
+  taskEndActions: []
   taskData_Debug: []
   color: 0
   interactionMethod: 0
@@ -302,6 +303,7 @@ MonoBehaviour:
       anim_name: Rau
       contents: "\uC557? \uC774\uB807\uAC8C \uBC14\uB85C \uB098\uC628\uB2E4\uACE0..?\uBD88\uC548\uD55C\uB370.."
   dialogueEndAction: []
+  taskEndActions: []
   taskData_Debug: []
   color: 0
   interactionMethod: 0
@@ -340,8 +342,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5381451930135607006}
-  - component: {fileID: 5460988138991909583}
   - component: {fileID: 3962056467846344500}
+  - component: {fileID: 3947402992013597257}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -363,44 +365,6 @@ Transform:
   m_Father: {fileID: 1295089235287822847}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5460988138991909583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7429269497000686336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionType: 2
-  jsonFile: {fileID: 4900000, guid: 63155dc23fbeb4041b222f36220193eb, type: 3}
-  dialogueData:
-    dialogues:
-    - name: "\uB77C\uC6B0"
-      experssion: 0
-      anim_name: Rau
-      contents: "\uD328\uC2A4\uD2B8 \uD478\uB4DC\uC810\uC5D0 \uB4E4\uC5B4\uC624\uAE34
-        \uD588\uB294\uB370 \uBB50\uBA39\uC9C0...?"
-  dialogueEndAction: []
-  taskData_Debug: []
-  color: 0
-  interactionMethod: 1
-  onOutline: 0
-  isCharacterInRange: 0
-  radius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
-  outline: {fileID: 0}
-  cam: {fileID: 0}
-  isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
-  isTouched: 0
-  touchTargetObject: {fileID: 0}
 --- !u!65 &3962056467846344500
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -414,6 +378,46 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3947402992013597257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7429269497000686336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionType: 2
+  jsonFile: {fileID: 4900000, guid: 63155dc23fbeb4041b222f36220193eb, type: 3}
+  dialogueData:
+    dialogues:
+    - name: "\uB77C\uC6B0"
+      experssion: 0
+      anim_name: Rau
+      contents: "\uD328\uC2A4\uD2B8 \uD478\uB4DC\uC810\uC5D0 \uB4E4\uC5B4\uC624\uAE34
+        \uD588\uB294\uB370 \uBB50\uBA39\uC9C0...?"
+  dialogueEndAction: []
+  taskEndActions: []
+  taskData_Debug: []
+  color: 0
+  interactionMethod: 2
+  onOutline: 0
+  isCharacterInRange: 0
+  radius: 5
+  exclamationMark: {fileID: 0}
+  markOffset: {x: 0, y: 0}
+  useExclamationMark: 0
+  outline: {fileID: 0}
+  cam: {fileID: 0}
+  isViewChange: 0
+  CameraPos: {x: 0, y: 0, z: 0}
+  CameraRot: {x: 0, y: 0, z: 0}
+  isTouched: 0
+  touchTargetObject: {fileID: 0}
+  isLoop: 0
 --- !u!1001 &1295089236106902008
 PrefabInstance:
   m_ObjectHideFlags: 0
