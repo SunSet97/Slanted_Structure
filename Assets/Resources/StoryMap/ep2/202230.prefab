@@ -140,7 +140,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
-  who: {fileID: 0}
 --- !u!1 &8009694060335357786
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,7 +150,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1700378028372006010}
   - component: {fileID: 745301354052555158}
-  - component: {fileID: 1097578810392383479}
   - component: {fileID: 410855844595104578}
   m_Layer: 0
   m_Name: GameObject
@@ -186,20 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoop: 0
---- !u!114 &1097578810392383479
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8009694060335357786}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 2
+  interactionType: 2
   jsonFile: {fileID: 4900000, guid: 2af38cac14dc3374981afad5b62afdc7, type: 3}
   dialogueData:
     dialogues:
@@ -512,15 +497,16 @@ MonoBehaviour:
         \uD558\uB8E8\uB97C \uC54C\uCC28\uAC8C \uBCF4\uB0BC \uC218 \uC788\uC5C8\uB2E4!)"
   dialogueEndAction:
   - eventType: 1
-    ClearBox: {fileID: 8679703665204864266}
-    ActiveObjs:
+    clearBox: {fileID: 8679703665204864266}
+    activeObjs:
       actives: []
-    Movables:
+    movables:
       movables: []
     playableList:
       playableObjs: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 1
+  interactionMethod: 2
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -534,6 +520,7 @@ MonoBehaviour:
   CameraRot: {x: 0, y: 0, z: 0}
   isTouched: 0
   touchTargetObject: {fileID: 0}
+  isLoop: 0
 --- !u!65 &410855844595104578
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -637,7 +624,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
-  who: {fileID: 0}
 --- !u!1 &8679703665690156164
 GameObject:
   m_ObjectHideFlags: 0
@@ -767,17 +753,18 @@ MonoBehaviour:
     startPosition: {fileID: 7435682805899636833}
     clearBox: {fileID: 5326259469162163744}
     posSet: {fileID: 8679703665690156167}
-    isControl: 0
+    isMain: 0
   - index: 1
     who: 2
     startPosition: {fileID: 8679703665006688726}
     clearBox: {fileID: 8679703665204864267}
     posSet: {fileID: 2804103812362165567}
-    isControl: 0
+    isMain: 0
   posIndex: 0
   cam: {fileID: 0}
   camDis: {x: 0.82, y: 2.45, z: 25}
   camRot: {x: 4.763, y: 180, z: 0}
+  isJoystickUse: 0
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1001 &190875996527668149
 PrefabInstance:

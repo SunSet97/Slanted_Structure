@@ -450,7 +450,7 @@ public class CanvasControl : MonoBehaviour
                 continue;
             }
             // 친밀도와 자존감이 기준보다 낮으면 일부 선택지가 나오지 않을 수 있음 
-            Debug.Log("선택지 조건 - " + currentTaskData.tasks[index + i + 1].condition);
+            Debug.Log($"{i}번째 선택지 조건 - " + currentTaskData.tasks[index + i + 1].condition);
             currentTaskData.tasks[index + i + 1].condition = currentTaskData.tasks[index + i + 1].condition.Replace("m", "-");
             int[] condition = Array.ConvertAll(currentTaskData.tasks[index + i + 1].condition.Split(','), int.Parse);
             // if (currentTaskData.tasks[index + i + 1].order >= 0)
