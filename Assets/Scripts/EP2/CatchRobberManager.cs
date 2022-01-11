@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class dovesComoponents
@@ -18,17 +19,18 @@ public class dovesComoponents
 
 public class CatchRobberManager : MonoBehaviour, IPlayable
 {
-    private short dir;
     public bool IsPlay { get; set; }
+
+    private readonly int SpeedHash = Animator.StringToHash("Speed");
+
     // 라우
+    private CharacterManager rau;
     [Header("라우")]
-    public CharacterManager rau;
     public float rauSpeed;
     [SerializeField] private float acceleration;
     bool isStopping = false;
-    Vector3 forwardDir;
-    [SerializeField] private Transform[] threeWay;
-    private bool isMoveSide;
+    private Transform[] moveTransforms;
+    public Transform moveLeftAndRight;
     // 소매치기
     [Header("소매치기")]
     public GameObject robber;
@@ -66,20 +68,67 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
         InitialSetting();
     }
 
+    public enum Dir { 
+        Middle, Left, Right
+    }
+    
+    //public Dir GoDir;
+    public Dir CurrentDir;
+    public bool isDragged;
+    public bool isMoving;
     void Update()
     {
-        if (rau != null)
+        if (IsPlay)
         {
-            // if (IsPlay)
+            if (!isMoving && !isStopping)
             {
+                if (DataController.instance_DataController.joyStick.Horizontal < -0.5 && !isDragged && CurrentDir != Dir.Left)
+                {
+                    // 왼 드래그 공통
+                    isDragged = true;
+
+
+                    //이동 실행
+                    if (CurrentDir == Dir.Middle)
+                    {
+                        CurrentDir = Dir.Left;
+                        StartCoroutine(GoHorizontal(moveTransforms[0], moveTransforms[1]));
+                    }
+                    else if (CurrentDir == Dir.Right)
+                    {
+                        CurrentDir = Dir.Middle;
+                        StartCoroutine(GoHorizontal(moveTransforms[2], moveTransforms[0]));
+                    }
+                }
+                else if (DataController.instance_DataController.joyStick.Horizontal > 0.5 && !isDragged && CurrentDir != Dir.Right)
+                {
+                    //GoDir = Dir.Right;
+                    isDragged = true;
+                    if (CurrentDir == Dir.Middle)
+                    {
+                        CurrentDir = Dir.Right;
+                        StartCoroutine(GoHorizontal(moveTransforms[0], moveTransforms[2]));
+                    }
+                    else if (CurrentDir == Dir.Left)
+                    {
+                        CurrentDir = Dir.Middle;
+                        StartCoroutine(GoHorizontal(moveTransforms[1], moveTransforms[0]));
+                    }
+                }
+                else if (DataController.instance_DataController.joyStick.Horizontal >= -0.5 && DataController.instance_DataController.joyStick.Horizontal <= 0.5)
+                {
+                    isDragged = false;
+                    //Debug.Log("none");
+                }
+            }
                 RauMove();
 
-                DoveMove(); ;
-
+                DoveMove(); 
+            
                 // 소매치기 이동
                 characterController_robber.Move(new Vector3(0, 0, robberSpeed * Time.deltaTime));
-            }
-            // CheckCompletion();
+            
+            CheckCompletion();
             timer -= Time.deltaTime;
         }
     }
@@ -119,10 +168,6 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
         rau.IsMove = false;
         rau.anim.applyRootMotion = false;
         rau.anim.SetFloat(Speed, 0.7f);
-        // 조이스틱 입력없을 때 라우가 바라보는 방향 설정
-        forwardDir = rau.transform.position - DataController.instance_DataController.cam.transform.position;
-        forwardDir.y = 0;
-        forwardDir.x = 0;
         // 라우 위치시키기
         robber.transform.position = rau.transform.position + new Vector3(0, 0, 10);
         if (robber) characterController_robber = robber.GetComponent<CharacterController>();
@@ -146,87 +191,67 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
             //tmpCamFollowList2[i].SmoothSpeed = a;
         }
         dovesComponents.Add(new dovesComoponents(tmpAnimsList, tmpCamFollowList));
+        //조이스틱 이미지 끄기
+        foreach (Image image in DataController.instance_DataController.joyStick.GetComponentsInChildren(typeof(Image), true))
+        {
+            image.color = Color.clear;
+        }
+        //조이스틱이 수평으로만 움직이도록
+        DataController.instance_DataController.joyStick.AxisOptions = AxisOptions.Horizontal;
+        //
+        rau.PickUpCharacter();
+        //
+        
+        moveTransforms = new Transform[3];
+        moveTransforms[0] = moveLeftAndRight.GetChild(0);
+        moveTransforms[1] = moveLeftAndRight.GetChild(1);
+        moveTransforms[2] = moveLeftAndRight.GetChild(2);
+        Debug.Log("길이 - " + moveTransforms.Length);
 
+        moveLeftAndRight.position = rau.transform.position;
     }
     #endregion
 
     #region 라우 이동 관련
     void RauMove() {
-        Vector3 rot = default;
-        // 조이스틱 input없을때 forwadDir방향 바라보게하기
-        if (DataController.instance_DataController.inputDirection == Vector2.zero) // 조이스틱 인풋 없을 때 forwadDir방향 바라보게하기
-        {
-            Quaternion targetRot = Quaternion.LookRotation(forwardDir);
-            rau.transform.rotation = Quaternion.Lerp(rau.transform.rotation, targetRot, Time.deltaTime * 2);
-        }
-        else
-        {
-            rot = new Vector3(DataController.instance_DataController.inputDirection.x, 0, DataController.instance_DataController.inputDirection.y);
-            if(rot.z < 0)
-            {
-                rot.z = 0;
-            }
-            if (Vector3.SignedAngle(Vector3.forward, rot, Vector3.up) > 30)
-            {
-                if (transform.position.x > threeWay[2].position.x)
-                {
-                    dir = 0;
-                }
-                else
-                {
-                    dir = 1;
-                }
-                rot.Set(Mathf.Cos(60 * Mathf.Deg2Rad) * DataController.instance_DataController.inputDegree, 0, Mathf.Sin(60 * Mathf.Deg2Rad) * DataController.instance_DataController.inputDegree);
-            }
-            else if (Vector3.SignedAngle(Vector3.forward, rot, Vector3.up) < -30)
-            {
-                if (transform.position.x < threeWay[0].position.x)
-                {
-                    dir = 0;
-                }
-                else
-                {
-                    dir = -1;
-                }
-                rot.Set(Mathf.Cos(120 * Mathf.Deg2Rad) * DataController.instance_DataController.inputDegree, 0, Mathf.Sin(120 * Mathf.Deg2Rad) * DataController.instance_DataController.inputDegree);
-            }
-            rau.transform.rotation = Quaternion.Lerp(rau.transform.rotation, Quaternion.LookRotation(rot), Time.deltaTime * 3);
-        }
-        // 몇프레임동안 이동하도록
-        //
-        //if (isMoveSide)
-        //{
-        //    DataController.instance_DataController.InitializeJoystic();
-        //    DataController.instance_DataController.joyStick.gameObject.SetActive(false);
-        //    if (Mathf.Abs(rau.transform.position.x - threeWay[0].position.x) < 1)
-        //    {
-        //        isMoveSide = false;
-        //        dir = 0;
-        //    }
-        //    else if (Mathf.Abs(rau.transform.position.x - threeWay[1].position.x) < 1)
-        //    {
-        //        isMoveSide = false;
-        //        dir = 0;
-        //    }else if(Mathf.Abs(rau.transform.position.x - threeWay[2].position.x) < 1)
-        //    {
-        //        isMoveSide = false;
-        //        dir = 0;
-        //    }
-        //}
-        // 라우 이동
+        
         if (!isStopping)
         {
-            isStopping = true;
+            //rau.PickUpCharacter();
+            //rau.ctrl.enabled = false;
+            Vector3 followZofRau = moveLeftAndRight.position;
+            followZofRau.z = rau.transform.position.z;
+
+            moveLeftAndRight.position = followZofRau;
             // rau.ctrl.Move(rau.transform.position-threeWay[0].position);
-            rau.ctrl.Move(new Vector3(dir * 10 * Time.deltaTime, 0, Time.deltaTime) * rauSpeed);
-            //character.anim.SetFloat("Speed", rauSpeed * Time.deltaTime);
+            rau.ctrl.Move(new Vector3(0, -1, Time.deltaTime) * rauSpeed);
+            rau.anim.SetFloat(SpeedHash, rauSpeed * Time.deltaTime);
             rauSpeed += acceleration * Time.deltaTime;
         }
         // 캐릭터매니저랑 라우랑 위치 일치시키기 => 충돌 감지때문
         gameObject.transform.position = rau.transform.position;
-        // threeWay[0].parent.position.Set(threeWay[0].parent.position.x, threeWay[0].parent.position.y, rau.transform.position.z);
     }
     #endregion
+
+    IEnumerator GoHorizontal(Transform start, Transform target) {
+
+        Debug.Log(target.name + "이동 시작");
+        
+        var t = 0.0f;
+        isMoving = true;
+        while (t <= 1) {
+            Vector3 moveXofRau = rau.transform.position;
+            moveXofRau.x = Vector3.Lerp(start.position, target.position, t).x;
+            rau.transform.position = moveXofRau;
+
+            t += Time.deltaTime / 2f; //원하는 시간
+            
+        //    //Debug.Log(target.name + "이동 중" + t);
+            yield return null;
+        }
+        Debug.Log(target.name + "이동 완료");
+        isMoving = false;
+    }
 
     #region 장애물 위치시키기
     void PositioningObstacle() {
@@ -307,15 +332,11 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
     #region Stop코루틴
     IEnumerator Stop(float time) {
 
-        DataController.instance_DataController.joyStick.input = new Vector2(0,0);
-
-        DataController.instance_DataController.joyStick.gameObject.SetActive(false); // 조이스틱 없애기
         isStopping = true;
 
         yield return new WaitForSeconds(time);
 
         isStopping = false;
-        DataController.instance_DataController.joyStick.gameObject.SetActive(true); // 조이스틱 없애기
     }
     #endregion
 
@@ -371,5 +392,9 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
     {
         yield return new WaitForSeconds(time);
 
+    }
+    private void OnDestroy()
+    {
+        GameObject.Destroy(moveLeftAndRight);
     }
 }
