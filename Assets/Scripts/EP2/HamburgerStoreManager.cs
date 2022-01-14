@@ -48,7 +48,7 @@ public class HamburgerStoreManager : MonoBehaviour
 
         if (!speatAnimator) speatAnimator = speatPrefab.GetComponent<Animator>();
 
-        if (DataController.instance_DataController.mapCode == "201110")
+        
         {
             // 이해하기 본인도 힘듬
             // SetDialogueEndEvent는 터치로 대화를 시작할때 대화 시작을 임의로 조정할 수 없기 때문에 사용

@@ -397,21 +397,30 @@ public class CanvasControl : MonoBehaviour
             {
                 if (charAnimator)
                 {
+                    Debug.Log(dialogueData.dialogues[dialogueCnt].anim_name);
                     string path = "Character_dialogue/" + dialogueData.dialogues[dialogueCnt].anim_name;
                     charAnimator.runtimeAnimatorController = Resources.Load(path) as UnityEditor.Animations.AnimatorController;
                     if (charAnimator.runtimeAnimatorController != null)
                     {
-                        charAnimator.SetInteger(Emotion, ((int)dialogueData.dialogues[dialogueCnt].experssion));
+                        charAnimator.GetComponent<Image>().enabled = true;
+                        Debug.Log((int)dialogueData.dialogues[dialogueCnt].expression + "  " + dialogueData.dialogues[dialogueCnt].expression);
+                        charAnimator.SetInteger(Emotion, ((int)dialogueData.dialogues[dialogueCnt].expression));
                     }
                     else
                     {
-                        Debug.LogError("Dialogue 애니메이션 세팅 오류");
+                        charAnimator.GetComponent<Image>().enabled = false;
+                       // Debug.LogError("Dialogue 애니메이션 세팅 오류");
                     }
                 }
                 else
                 {
                     Debug.LogError("Canvas에 캐릭터 표정 charAnmator 넣으세요");
                 }
+            }
+            else
+            {
+                charAnimator.runtimeAnimatorController = null;
+                charAnimator.GetComponent<Image>().enabled = false;
             }
             
             // 대화 텍스트 업데이트

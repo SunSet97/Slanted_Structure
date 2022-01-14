@@ -51,7 +51,7 @@ public class Task
 [System.Serializable]
 public class Dialogue {
     public string name;
-    public EXPRESSION experssion;
+    public EXPRESSION expression;
     public string anim_name;
     public string contents;
 }
