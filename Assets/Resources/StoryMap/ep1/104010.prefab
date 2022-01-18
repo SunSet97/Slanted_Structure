@@ -62,22 +62,23 @@ MonoBehaviour:
   dialogueData:
     dialogues:
     - name: "\uB77C\uC6B0"
-      experssion: 0
+      expression: 0
       anim_name: Rau
       contents: "\uC800 \uC7A5\uC0AC\uAFBC\uC774 \uD55C \uB9D0\uC774 \uC9C4\uC2EC\uC73C\uB85C
         \uD55C \uB9D0 \uAC19\uC73C\uB2C8 \uC624\uB298\uC740 \uC5BC\uB978 \uC219\uC18C\uB85C
         \uB4E4\uC5B4\uAC00\uC11C \uC26C\uC5B4\uC57C \uACA0\uC5B4"
     - name: "\uB77C\uC6B0"
-      experssion: 0
+      expression: 0
       anim_name: Rau
       contents: "\uAE38\uC744 \uD5E4\uBA58 \uD0D3\uC5D0 \uBC8C\uC368 \uBC24\uC774
         \uB418\uBC84\uB838\uC5B4. \uC5BC\uB978 \uC219\uC18C\uB85C \uAC00\uC790."
     - name: 
-      experssion: 0
+      expression: 0
       anim_name: 
       contents: "\uC6B0\uCE21\uC73C\uB85C \uCB49\uAC00\uBA74 \uB77C\uC6B0\uC758 \uC219\uC18C\uAC00
         \uB098\uD0C0\uB0A9\uB2C8\uB2E4."
   dialogueEndAction: []
+  taskEndActions: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
@@ -95,6 +96,36 @@ MonoBehaviour:
   isTouched: 0
   touchTargetObject: {fileID: 0}
   isLoop: 0
+--- !u!1 &5859266698824446595
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1854334051065470192}
+  m_Layer: 0
+  m_Name: ClearBox Setting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1854334051065470192
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5859266698824446595}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6590479492518291379}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6590479491685344753
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,6 +218,7 @@ Transform:
   m_Children:
   - {fileID: 3595346825478808763}
   - {fileID: 6590479491920353239}
+  - {fileID: 1854334051065470192}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -218,6 +250,9 @@ MonoBehaviour:
   orthographicSize: 7
   isCameraMoving: 1
   cameraBound: {fileID: 0}
+  clearBoxSetting: {fileID: 5859266698824446595}
+  clearBoxList:
+  - {fileID: 8274702644512686179}
   positionSetting: {fileID: 6590479491920353238}
   positionSets:
   - index: 0
@@ -460,3 +495,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6590479493518263624}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8274702644512686179 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3000435396880172331, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+    type: 3}
+  m_PrefabInstance: {fileID: 6590479493518263624}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

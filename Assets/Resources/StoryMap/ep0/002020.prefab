@@ -235,6 +235,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!1 &2584970956351160312
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8262357181571145263}
+  m_Layer: 0
+  m_Name: ClearBox Setting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8262357181571145263
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2584970956351160312}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3345937349244790312}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2904641302060474391
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,16 +400,16 @@ MonoBehaviour:
   dialogueData:
     dialogues:
     - name: "\uD3EC\uC8FC\uB4E4"
-      experssion: 0
+      expression: 0
       anim_name: 
       contents: "\uC800\uAE44\uB2E4!! \uC7A1\uC544!!!"
     - name: ??
-      experssion: 0
+      expression: 4
       anim_name: Speat_past
       contents: "\uC820\uC7A5...! \uBE68\uB9AC \uC228\uC744 \uACF3\uC744 \uCC3E\uC544\uC57C
         \uB3C4\uB9DD\uCCD0\uC57C\uACA0\uC5B4..!"
     - name: 
-      experssion: 0
+      expression: 0
       anim_name: 
       contents: "\uAC8C\uC784 \uC18D\uC5D0\uB294 \uB2E4\uC591\uD55C \uBBF8\uB2C8 \uAC8C\uC784\uC774
         \uC874\uC7AC\uD569\uB2C8\uB2E4. ??\uC774 \uB3C4\uB9DD\uCE60 \uC218 \uC788\uB3C4\uB85D
@@ -396,6 +426,7 @@ MonoBehaviour:
       playableObjs:
       - gameObject: {fileID: 3345937348623267755}
         isPlay: 1
+  taskEndActions: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
@@ -576,6 +607,7 @@ Transform:
   - {fileID: 3345937348623267756}
   - {fileID: 3345937350307993780}
   - {fileID: 1229646641000817502}
+  - {fileID: 8262357181571145263}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -607,6 +639,9 @@ MonoBehaviour:
   orthographicSize: 8
   isCameraMoving: 1
   cameraBound: {fileID: 0}
+  clearBoxSetting: {fileID: 2584970956351160312}
+  clearBoxList:
+  - {fileID: 3345937348758904124}
   positionSetting: {fileID: 3345937350307993779}
   positionSets:
   - index: 0
@@ -2252,6 +2287,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3343356933140090334}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3345937348623267755 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3049084059482741, guid: 984835cea0425b3498014cb683a1074a,
+    type: 3}
+  m_PrefabInstance: {fileID: 3343356933140090334}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3343356934018250019 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1549318397, guid: 984835cea0425b3498014cb683a1074a,
@@ -2267,12 +2308,6 @@ MonoBehaviour:
 --- !u!4 &3345937348623267756 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3049084059482738, guid: 984835cea0425b3498014cb683a1074a,
-    type: 3}
-  m_PrefabInstance: {fileID: 3343356933140090334}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3345937348623267755 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3049084059482741, guid: 984835cea0425b3498014cb683a1074a,
     type: 3}
   m_PrefabInstance: {fileID: 3343356933140090334}
   m_PrefabAsset: {fileID: 0}

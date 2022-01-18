@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &667683428432858916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3193458636163205587}
+  m_Layer: 0
+  m_Name: ClearBox Setting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3193458636163205587
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667683428432858916}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6005943890886827749}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2354003764107072981
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,8 +208,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSelectMapcode: 000000
-  who: {fileID: 0}
+  jsonFile: {fileID: 0}
+  nextSelectMapcode: 204220
 --- !u!1 &5853082869754555329
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,6 +367,7 @@ Transform:
   - {fileID: 5356483322133288293}
   - {fileID: 6005943890414339471}
   - {fileID: 1176540362957925279}
+  - {fileID: 3193458636163205587}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -365,6 +396,9 @@ MonoBehaviour:
   orthographicSize: 0
   isCameraMoving: 1
   cameraBound: {fileID: 0}
+  clearBoxSetting: {fileID: 667683428432858916}
+  clearBoxList:
+  - {fileID: 8558591690487152949}
   positionSetting: {fileID: 6005943890414339464}
   positionSets:
   - index: 0
@@ -372,17 +406,18 @@ MonoBehaviour:
     startPosition: {fileID: 8943134169707400837}
     clearBox: {fileID: 6389806365216747518}
     posSet: {fileID: 6001385600508940770}
-    isControl: 0
+    isMain: 0
   - index: 1
     who: 1
     startPosition: {fileID: 6005943889770735677}
     clearBox: {fileID: 6005943891110375642}
     posSet: {fileID: 6005943890618038871}
-    isControl: 0
+    isMain: 0
   posIndex: 0
   cam: {fileID: 0}
   camDis: {x: -1.22, y: 1.88, z: 6.22}
   camRot: {x: 5.5, y: 167, z: 0}
+  isJoystickUse: 0
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &6005943891110375643
 GameObject:
@@ -441,8 +476,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
-  who: {fileID: 0}
 --- !u!1001 &1775726175831896147
 PrefabInstance:
   m_ObjectHideFlags: 0

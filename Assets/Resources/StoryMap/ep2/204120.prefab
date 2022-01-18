@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &840397620770398358
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 338250917701732835}
+  m_Layer: 0
+  m_Name: ClearBox Setting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &338250917701732835
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840397620770398358}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6402695762669684867}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6402695762669684866
 GameObject:
   m_ObjectHideFlags: 0
@@ -31,6 +61,7 @@ Transform:
   - {fileID: 6402695764158438385}
   - {fileID: 7179274479370777882}
   - {fileID: 2298425662408039565}
+  - {fileID: 338250917701732835}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -59,6 +90,9 @@ MonoBehaviour:
   orthographicSize: 7
   isCameraMoving: 1
   cameraBound: {fileID: 0}
+  clearBoxSetting: {fileID: 840397620770398358}
+  clearBoxList:
+  - {fileID: 6402695764329872773}
   positionSetting: {fileID: 6402695764158438384}
   positionSets:
   - index: 0
@@ -66,11 +100,12 @@ MonoBehaviour:
     startPosition: {fileID: 6402695763069972232}
     clearBox: {fileID: 6402695764329872772}
     posSet: {fileID: 6402695763431204835}
-    isControl: 0
+    isMain: 0
   posIndex: 0
   cam: {fileID: 0}
   camDis: {x: 0, y: 2, z: 5.97}
   camRot: {x: 0, y: 180, z: 0}
+  isJoystickUse: 0
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &6402695763069972279
 GameObject:
@@ -222,8 +257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSelectMapcode: 000000
-  who: {fileID: 0}
+  jsonFile: {fileID: 0}
+  nextSelectMapcode: 204130
 --- !u!65 &4744586326011187698
 BoxCollider:
   m_ObjectHideFlags: 0

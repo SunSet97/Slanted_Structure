@@ -49,42 +49,42 @@ MonoBehaviour:
   dialogueData:
     dialogues:
     - name: "\uB77C\uC6B0"
-      experssion: 0
+      expression: 5
       anim_name: Rau
       contents: "\uC640! \uBD80\uB3C4\uC2EC\uC774\uB791 \uB3C4\uC2EC\uC740 \uC5C4\uCCAD
         \uB2E4\uB974\uB124? \uB2E4\uB978 \uC138\uC0C1 \uAC19\uC544!"
     - name: "\uB77C\uC6B0"
-      experssion: 0
+      expression: 0
       anim_name: Rau
       contents: "\uBA39\uC744 \uACF3\uB3C4 \uB9CE\uC544 \uBCF4\uC778\uB2E4. \uBB58
         \uBA39\uC5B4\uBCFC\uAE4C~"
     - name: "\uAC15\uB3C4"
-      experssion: 0
+      expression: 0
       anim_name: 
       contents: "\uC774\uC787 \uB0B4\uB194! \uC5D0\uC787!"
     - name: ???
-      experssion: 0
+      expression: 3
       anim_name: Oun
       contents: "\uC548\uB3FC \uB0B4 \uC9C0\uAC11!!! \uB3C4\uB451\uC774\uC57C!!!"
     - name: "\uB77C\uC6B0"
-      experssion: 0
+      expression: 5
       anim_name: Rau
       contents: "\uC557? \uC18C\uB9E4\uCE58\uAE30\uB97C \uB2F9\uD55C \uAC83 \uAC19\uC740\uB370??"
     - name: ???
-      experssion: 0
+      expression: 3
       anim_name: Oun
       contents: "\uB204\uAC00 \uC880 \uB3C4\uC640\uC8FC\uC138\uC694\u2026!"
     - name: 
-      experssion: 0
+      expression: 0
       anim_name: 
       contents: "\uD558\uC9C0\uB9CC \uC0AC\uB78C\uB4E4\uC740 \uD790\uB057 \uCCD0\uB2E4\uB9CC
         \uBCF4\uACE0 \uAC01\uC790 \uC790\uAE30 \uAC08\uAE38\uC744 \uAC08 \uBFD0\uC774\uC5C8\uB2E4."
     - name: "\uB77C\uC6B0"
-      experssion: 0
+      expression: 4
       anim_name: Rau
       contents: "\uC544\uBB34\uB3C4 \uB3C4\uC640\uC8FC\uC9C8 \uC54A\uC796\uC544??"
     - name: "\uB77C\uC6B0"
-      experssion: 0
+      expression: 4
       anim_name: Rau
       contents: "\uB0B4\uAC00 \uB3C4\uB451\uC744 \uC7A1\uC544\uC918\uC57C \uACA0\uC5B4\u2026!"
   dialogueEndAction:
@@ -127,6 +127,36 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &5432035562915726616
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 637261405075556011}
+  m_Layer: 0
+  m_Name: ClearBox Setting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &637261405075556011
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5432035562915726616}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6636765975576392727}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6636765974117012322
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,7 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 0}
-  nextSelectMapcode: 000000
+  nextSelectMapcode: 202111
 --- !u!1 &6636765974148541770
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,6 +308,7 @@ Transform:
   m_Children:
   - {fileID: 6636765975079231584}
   - {fileID: 819999345507790526}
+  - {fileID: 637261405075556011}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -306,6 +337,9 @@ MonoBehaviour:
   orthographicSize: 5
   isCameraMoving: 1
   cameraBound: {fileID: 0}
+  clearBoxSetting: {fileID: 5432035562915726616}
+  clearBoxList:
+  - {fileID: 6636765974117012320}
   positionSetting: {fileID: 6636765975079231585}
   positionSets:
   - index: 0

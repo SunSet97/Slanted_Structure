@@ -49,17 +49,18 @@ MonoBehaviour:
   dialogueData:
     dialogues:
     - name: ??
-      experssion: 0
+      expression: 0
       anim_name: Speat_past
       contents: "\uC544\uC774\uACE0 \uD5C8\uB9AC\uC57C...\uC5EC\uAE34 \uC5B4\uB514\uC9C0..?
         \uC544\uC624 \uB0C4\uC0C8..."
     - name: ??
-      experssion: 0
+      expression: 7
       anim_name: Speat_past
       contents: "\uB0C4\uC0C8\uB294 \uB098\uC9C0\uB9CC \uB300\uCDA9 \uD3EC\uC8FC\uB4E4\uC5D0\uAC8C\uC11C
         \uBC97\uC5B4\uB09C \uAC70 \uAC19\uC73C\uB2C8...\uADF8\uB798\uC11C \uC774\uC81C
         \uB098\uB294 \uC5B4\uB514\uB85C \uAC00\uC9C0..?"
   dialogueEndAction: []
+  taskEndActions: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
@@ -258,11 +259,12 @@ MonoBehaviour:
   dialogueData:
     dialogues:
     - name: ??
-      experssion: 0
+      expression: 0
       anim_name: Speat_past
       contents: "\uBC84\uB824\uC9C4 \uACF3\uC778\uAC00..? \uC77C\uB2E8 \uB4E4\uC5B4\uAC00\uC11C
         \uC7A0\uC2DC \uC26C\uC790.."
   dialogueEndAction: []
+  taskEndActions: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
@@ -310,6 +312,7 @@ Transform:
   m_Children:
   - {fileID: 5724989134008353925}
   - {fileID: 5724989133969462291}
+  - {fileID: 7384799361294551677}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -340,6 +343,9 @@ MonoBehaviour:
   orthographicSize: 0
   isCameraMoving: 1
   cameraBound: {fileID: 0}
+  clearBoxSetting: {fileID: 7045955273984404481}
+  clearBoxList:
+  - {fileID: 5724989132166803283}
   positionSetting: {fileID: 5724989133969462290}
   positionSets:
   - index: 0
@@ -507,6 +513,36 @@ Transform:
   - {fileID: 5724989133188044672}
   m_Father: {fileID: 5724989132033950183}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7045955273984404481
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7384799361294551677}
+  m_Layer: 0
+  m_Name: ClearBox Setting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7384799361294551677
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7045955273984404481}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5724989132033950183}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3232174595239595789
 PrefabInstance:
@@ -860,9 +896,9 @@ PrefabInstance:
     - {fileID: 9041618419365923478, guid: 42e97f8469a2e6c4a8fa14a3f06cf447, type: 3}
     - {fileID: 6393034377965923167, guid: 42e97f8469a2e6c4a8fa14a3f06cf447, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 42e97f8469a2e6c4a8fa14a3f06cf447, type: 3}
---- !u!1 &5724989134008353924 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7181485363494800265, guid: 42e97f8469a2e6c4a8fa14a3f06cf447,
+--- !u!4 &5724989132377452188 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7181485365110776209, guid: 42e97f8469a2e6c4a8fa14a3f06cf447,
     type: 3}
   m_PrefabInstance: {fileID: 3232174595239595789}
   m_PrefabAsset: {fileID: 0}
@@ -872,9 +908,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3232174595239595789}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &5724989132377452188 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7181485365110776209, guid: 42e97f8469a2e6c4a8fa14a3f06cf447,
+--- !u!1 &5724989134008353924 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7181485363494800265, guid: 42e97f8469a2e6c4a8fa14a3f06cf447,
     type: 3}
   m_PrefabInstance: {fileID: 3232174595239595789}
   m_PrefabAsset: {fileID: 0}

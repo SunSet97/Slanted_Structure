@@ -87,8 +87,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
-  who: {fileID: 0}
 --- !u!1 &1760185040600408797
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,8 +361,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSelectMapcode: 000000
-  who: {fileID: 0}
+  jsonFile: {fileID: 0}
+  nextSelectMapcode: 203220
 --- !u!1 &6362254535811528114
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,6 +395,7 @@ Transform:
   - {fileID: 1451924006629376566}
   - {fileID: 1760185040600408787}
   - {fileID: 6892518932763041727}
+  - {fileID: 4435192461080995022}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -423,6 +424,9 @@ MonoBehaviour:
   orthographicSize: 6
   isCameraMoving: 0
   cameraBound: {fileID: 0}
+  clearBoxSetting: {fileID: 7720731831600634607}
+  clearBoxList:
+  - {fileID: 6362254535734482516}
   positionSetting: {fileID: 179141934288582893}
   positionSets:
   - index: 0
@@ -430,17 +434,18 @@ MonoBehaviour:
     startPosition: {fileID: 6362254535141502773}
     clearBox: {fileID: 6362254535734482507}
     posSet: {fileID: 6362254536310298727}
-    isControl: 0
+    isMain: 0
   - index: 1
     who: 1
     startPosition: {fileID: 4719751338407491149}
     clearBox: {fileID: 3718798915025551805}
     posSet: {fileID: 4218353106869322121}
-    isControl: 0
+    isMain: 0
   posIndex: 0
   cam: {fileID: 0}
   camDis: {x: 0, y: 7.6, z: 8.99}
   camRot: {x: 39.689, y: 170.507, z: 1.312}
+  isJoystickUse: 0
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &6362254536310298726
 GameObject:
@@ -473,6 +478,36 @@ Transform:
   - {fileID: 6362254535734482507}
   m_Father: {fileID: 6362254535440612985}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7720731831600634607
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4435192461080995022}
+  m_Layer: 0
+  m_Name: ClearBox Setting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4435192461080995022
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7720731831600634607}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6362254535811528115}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5103965475715163904
 PrefabInstance:

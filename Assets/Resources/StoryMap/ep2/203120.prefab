@@ -103,29 +103,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  interactionType: 0
   jsonFile: {fileID: 4900000, guid: 40dcc38d2e4ca4240b3dbb0873c70a01, type: 3}
   dialogueData:
     dialogues:
     - name: "\uC2A4\uD54F"
-      experssion: 0
+      expression: 0
       anim_name: Speat
       contents: "\uC774\uBBF8 \uC640\uBD24\uC744 \uC218 \uB3C4 \uC788\uB294\uB370
         \uC0AC\uC2E4 \uBD80\uB3C4\uC2EC\uC740 \uBCFC \uAC8C \uC5C6\uC5B4\uC11C..\uD558\uD558"
     - name: "\uB77C\uC6B0"
-      experssion: 0
+      expression: 0
       anim_name: Rau
       contents: "\uC800\uBC88\uC5D0 \uC720\uC2EC\uCE69 \uC0AC\uB7EC \uC654\uB294\uB370
         \uC81C\uB300\uB85C \uAD6C\uACBD\uC740 \uBABB\uD588\uC5C8\uC5B4..!"
     - name: "\uC2A4\uD54F"
-      experssion: 0
+      expression: 0
       anim_name: Speat
       contents: "\uADF8\uB7EC\uBA74 \uB2E4\uD589\uC774\uB2E4! \uAC19\uC774 \uAD6C\uACBD\uC774\uB098
         \uD558\uC790!"
   dialogueEndAction: []
-  _taskData: []
+  taskEndActions: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 0
+  interactionMethod: 2
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -247,6 +248,7 @@ Transform:
   m_Children:
   - {fileID: 6432171025233255360}
   - {fileID: 3877089292092178608}
+  - {fileID: 1380248546720423454}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -276,6 +278,9 @@ MonoBehaviour:
   orthographicSize: 5
   isCameraMoving: 1
   cameraBound: {fileID: 0}
+  clearBoxSetting: {fileID: 5772984942624331488}
+  clearBoxList:
+  - {fileID: 3877089292194072861}
   positionSetting: {fileID: 3877089292092178607}
   positionSets:
   - index: 0
@@ -418,6 +423,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 0}
   nextSelectMapcode: 203130
+--- !u!1 &5772984942624331488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1380248546720423454}
+  m_Layer: 0
+  m_Name: ClearBox Setting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1380248546720423454
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5772984942624331488}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3877089290998424834}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5930794435401843023
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,14 +495,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  interactionType: 0
   jsonFile: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
-  _taskData: []
+  taskEndActions: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 0
+  interactionMethod: 0
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -493,14 +529,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  interactionType: 0
   jsonFile: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
-  _taskData: []
+  taskEndActions: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 0
+  interactionMethod: 0
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -526,14 +563,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  interactionType: 0
   jsonFile: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
-  _taskData: []
+  taskEndActions: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 0
+  interactionMethod: 0
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -559,14 +597,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  interactionType: 0
   jsonFile: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
-  _taskData: []
+  taskEndActions: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 0
+  interactionMethod: 0
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -592,14 +631,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  interactionType: 0
   jsonFile: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
-  _taskData: []
+  taskEndActions: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 0
+  interactionMethod: 0
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -625,14 +665,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  interactionType: 0
   jsonFile: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
-  _taskData: []
+  taskEndActions: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 0
+  interactionMethod: 0
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -658,60 +699,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  interactionType: 0
   jsonFile: {fileID: 4900000, guid: b5e067fec4c12ce459ccb584a92c5cbc, type: 3}
   dialogueData:
     dialogues:
     - name: "\uB77C\uC6B0"
-      experssion: 0
+      expression: 0
       anim_name: Rau
       contents: "\uC557, \uC5EC\uAE30\uB294!"
     - name: "\uC2A4\uD54F"
-      experssion: 0
+      expression: 0
       anim_name: Speat
       contents: "??\uC5EC\uAE30 \uC640\uBD24\uC5C8\uC5B4?? "
     - name: "\uB77C\uC6B0"
-      experssion: 0
+      expression: 0
       anim_name: Rau
       contents: "\uC751! \uC800\uBC88\uC5D0 \uC5EC\uAE30 \uC640\uBD24\uB2E4\uACE0
         \uD588\uC796\uC544!"
     - name: "\uB77C\uC6B0"
-      experssion: 0
+      expression: 0
       anim_name: Rau
       contents: "\uC5EC\uAE30\uC11C \uC720\uC2EC\uCE69 \uC0C0\uC5C8\uAC70\uB4E0"
     - name: "\uC2A4\uD54F"
-      experssion: 0
+      expression: 0
       anim_name: Speat
       contents: "\uC544~\uD558\uAE34 \uC5EC\uAE30\uAC00 \uC9C4\uC9DC \uC5C6\uB294\uAC8C
         \uC5C6\uAE34\uD574"
     - name: "\uC7A1\uC0C1\uC778"
-      experssion: 0
+      expression: 0
       anim_name: 
       contents: "\uC624~\uC6D0\uC778\uC5EC\uC131\uBD84 \uB610\uBCF4\uB124! \uC138\uBAA8\uB9C8\uC744\uC740
         \uC798 \uAD6C\uACBD\uD558\uACE0 \uC788\uB294\uC9C0??"
     - name: "\uB77C\uC6B0"
-      experssion: 0
+      expression: 0
       anim_name: Rau
       contents: "\uB124! \uB355\uBD84\uC5D0\uC694."
     - name: "\uC7A1\uC0C1\uC778"
-      experssion: 0
+      expression: 0
       anim_name: 
       contents: "\uADF8\uB7EC\uBA74 \uB2E4\uD589\uC774\uAD6C\uBA3C~\uD568 \uAD6C\uACBD\uD558\uACE0
         \uAC00~"
   dialogueEndAction:
   - eventType: 2
-    ClearBox: {fileID: 0}
-    ActiveObjs:
-      actives:
-      - ActiveObject: {fileID: 3877089292194072859}
-        ActiveSelf: 1
-    Movables:
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
       movables: []
     playableList:
       playableObjs: []
-  _taskData: []
+  taskEndActions: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 1
+  interactionMethod: 0
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -737,14 +777,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  interactionType: 0
   jsonFile: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
-  _taskData: []
+  taskEndActions: []
+  taskData_Debug: []
   color: 0
-  touchOrNot: 0
+  interactionMethod: 2
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -909,27 +950,9 @@ PrefabInstance:
     - {fileID: 7822076750405509055, guid: d3d83f0271f08ab459da75e83523ee01, type: 3}
     - {fileID: 6854510984984837604, guid: d3d83f0271f08ab459da75e83523ee01, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d3d83f0271f08ab459da75e83523ee01, type: 3}
---- !u!1 &6432171024120070455 stripped
+--- !u!1 &6432171024083627489 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 7822076751205896476, guid: d3d83f0271f08ab459da75e83523ee01,
-    type: 3}
-  m_PrefabInstance: {fileID: 3877089290760802347}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6432171025675376972 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7822076752216459623, guid: d3d83f0271f08ab459da75e83523ee01,
-    type: 3}
-  m_PrefabInstance: {fileID: 3877089290760802347}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6432171023916636413 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7822076750465616086, guid: d3d83f0271f08ab459da75e83523ee01,
-    type: 3}
-  m_PrefabInstance: {fileID: 3877089290760802347}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6432171023856553866 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7822076750405509025, guid: d3d83f0271f08ab459da75e83523ee01,
+  m_CorrespondingSourceObject: {fileID: 7822076751237119434, guid: d3d83f0271f08ab459da75e83523ee01,
     type: 3}
   m_PrefabInstance: {fileID: 3877089290760802347}
   m_PrefabAsset: {fileID: 0}
@@ -945,6 +968,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3877089290760802347}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6432171025675376972 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7822076752216459623, guid: d3d83f0271f08ab459da75e83523ee01,
+    type: 3}
+  m_PrefabInstance: {fileID: 3877089290760802347}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8487068852210935903 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4613392514329901172, guid: d3d83f0271f08ab459da75e83523ee01,
@@ -957,15 +986,27 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3877089290760802347}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6432171023916636413 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7822076750465616086, guid: d3d83f0271f08ab459da75e83523ee01,
+    type: 3}
+  m_PrefabInstance: {fileID: 3877089290760802347}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6432171025233255367 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7822076752386214892, guid: d3d83f0271f08ab459da75e83523ee01,
     type: 3}
   m_PrefabInstance: {fileID: 3877089290760802347}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6432171024083627489 stripped
+--- !u!1 &6432171023856553866 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 7822076751237119434, guid: d3d83f0271f08ab459da75e83523ee01,
+  m_CorrespondingSourceObject: {fileID: 7822076750405509025, guid: d3d83f0271f08ab459da75e83523ee01,
+    type: 3}
+  m_PrefabInstance: {fileID: 3877089290760802347}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6432171024120070455 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7822076751205896476, guid: d3d83f0271f08ab459da75e83523ee01,
     type: 3}
   m_PrefabInstance: {fileID: 3877089290760802347}
   m_PrefabAsset: {fileID: 0}
