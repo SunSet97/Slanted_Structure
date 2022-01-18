@@ -20,6 +20,16 @@ public class PlayGroundManager : MonoBehaviour, IPlayable
         Startplaying();
     }
 
+    public void Play()
+    {
+        IsPlay = true;
+    }
+
+    public void EndPlay()
+    {
+        IsPlay = false;
+    }
+    
     //원 생성
     public void Startplaying()
     {

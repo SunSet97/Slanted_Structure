@@ -68,6 +68,16 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
         InitialSetting();
     }
 
+    public void Play()
+    {
+        IsPlay = true;
+    }
+
+    public void EndPlay()
+    {
+        IsPlay = false;
+    }
+
     public enum Dir { 
         Middle, Left, Right
     }
@@ -309,6 +319,8 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
             {
                 Debug.Log("성공.");
                 DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
+                DataController.instance_DataController.currentMap.MapClear();
+
             }
             else
             {
@@ -322,6 +334,7 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
             {
                 Debug.Log("성공");
                 DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
+                DataController.instance_DataController.currentMap.MapClear();
             }
 
         }

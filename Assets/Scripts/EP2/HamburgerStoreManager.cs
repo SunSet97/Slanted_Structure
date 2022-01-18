@@ -8,29 +8,18 @@ public class HamburgerStoreManager : MonoBehaviour
     public TextAsset jsonFile;
     // 스핏
     public GameObject speatPrefab;
-    CharacterManager speatCharacterManager;
-    Animator speatAnimator;
+    private CharacterManager speatCharacterManager;
+    private NPCwaypoints _wayPoints;
 
-    private NPCwaypoints wayPoints;
+    [Range(0, 1f)] public float rauAniSpeed;
 
-
-    public InteractionObj_stroke part;
+    public InteractionObj_stroke partTimeJob;
     public InteractionObj_stroke sofa;
-    public NPCwaypoints speat;
-    CharacterManager currentCharacter;
-
-
-    // 투명 벽
-    public BoxCollider wall;
+    private CharacterManager currentCharacter;
 
     void Start()
     {
-        {
-
-            InitialSetting();
-
-        }
-
+        InitialSetting();
     }
 
     #region 초기세팅
@@ -38,25 +27,26 @@ public class HamburgerStoreManager : MonoBehaviour
     {
         currentCharacter = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
 
-        if (!wayPoints) wayPoints = speatPrefab.GetComponent<NPCwaypoints>();
-
-        if (!speatCharacterManager)
+        if (speatPrefab != null)
         {
+            _wayPoints = speatPrefab.GetComponent<NPCwaypoints>();
+
             speatCharacterManager = speatPrefab.GetComponent<CharacterManager>();
             speatCharacterManager.IsMove = false;
         }
+        else
+        {
+            Debug.LogError("오류 public 오브젝트 비어있음");
+        }
 
-        if (!speatAnimator) speatAnimator = speatPrefab.GetComponent<Animator>();
-
-        
         {
             // 이해하기 본인도 힘듬
             // SetDialogueEndEvent는 터치로 대화를 시작할때 대화 시작을 임의로 조정할 수 없기 때문에 사용
-            part.SetDialogueEndEvent(() => { sofa.enabled = true; });
+            partTimeJob.SetDialogueEndEvent(() => { sofa.enabled = true; });
             sofa.SetDialogueEndEvent(() => { SpeatInteraction(1); });
             sofa.SetDialogueStartEvent(() => { currentCharacter.PickUpCharacter(); currentCharacter.transform.position = sofa.transform.GetChild(0).position; currentCharacter.transform.rotation = sofa.transform.GetChild(0).rotation; currentCharacter.anim.SetBool("Seat", true); });
             // 대화 시작이 "포인트에 도착했을 때"이기 때문에 바로 해줘도 됨
-            wayPoints.SetPointEvent(() =>
+            _wayPoints.SetPointEvent(() =>
             {
                 CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { SpeatInteraction(2); });
                 //Json 파일
@@ -83,16 +73,16 @@ public class HamburgerStoreManager : MonoBehaviour
         if (index == 1)
         {
             // 플레이어가 라우 못 움직이게 하기
-            DataController.instance_DataController.joyStick.gameObject.SetActive(false);
+            DataController.instance_DataController.InitializeJoyStick(false);
 
             // 웨이포인트에 따라 스핏 움직이게 하기.
-            wayPoints.StartMoving();
+            _wayPoints.StartMoving();
         }
 
         // 스핏 인터랙션2 - 라우의 손을 잡아끌고 씬 밖으로 이동. 시장 뒷골목으로 이동!
         else if (index == 2)
         {
-            wayPoints.StartMoving(); // 스핏 웨이포인트에 따라 다시 이동 ㄱㄱ
+            _wayPoints.StartMoving(); // 스핏 웨이포인트에 따라 다시 이동 ㄱㄱ
 
             StartCoroutine(StartRauMoving());
         }
@@ -102,25 +92,25 @@ public class HamburgerStoreManager : MonoBehaviour
     private IEnumerator StartRauMoving()
     {
         currentCharacter.PickUpCharacter();
-        int index = wayPoints.pointIndex;
-        PointData desPoint = wayPoints.point[index];
+        int index = _wayPoints.pointIndex;
+        PointData desPoint = _wayPoints.point[index];
 
         currentCharacter.anim.SetBool("Seat", false);
         yield return new WaitForSeconds(2f);
-        currentCharacter.anim.SetFloat("Speed", 1f);
+        currentCharacter.anim.SetFloat("Speed", rauAniSpeed);
 
         currentCharacter.transform.LookAt(desPoint.transform);
 
-        while (index < wayPoints.point.Length || !wayPoints.point[index].isStop)
+        while (index < _wayPoints.point.Length || !_wayPoints.point[index].isStop)
         {
-            if (currentCharacter.transform.position == wayPoints.point[index].transform.position)
+            if (currentCharacter.transform.position == _wayPoints.point[index].transform.position)
             {
-                desPoint = wayPoints.point[++index];
+                desPoint = _wayPoints.point[++index];
                 currentCharacter.transform.LookAt(desPoint.transform);
             }
             else
             {
-                currentCharacter.transform.position = Vector3.MoveTowards(currentCharacter.transform.position, desPoint.transform.position, wayPoints.speed * Time.deltaTime * 0.95f);
+                currentCharacter.transform.position = Vector3.MoveTowards(currentCharacter.transform.position, desPoint.transform.position, _wayPoints.speed * Time.deltaTime * 0.95f);
             }
             yield return null;
         }

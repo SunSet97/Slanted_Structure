@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 [ExecuteInEditMode]
 public class MapData : MonoBehaviour
@@ -57,7 +59,14 @@ public class MapData : MonoBehaviour
     [Tooltip("CameraMoving 사용 설정")]
     public bool isCameraMoving = true; // 카메라 무빙 사용 여부
     [Tooltip("CameraMoving 경계 설정")]
-    public BoxCollider cameraBound; // 카메라 
+    public BoxCollider cameraBound; // 카메라
+    
+    [Header("#클리어 박스를 넣으세요")]
+    [ContextMenuItem("Create ClearBox", "CreateClearBox")]
+    [Tooltip("인스펙터 설정창에서 클리어박스를 생성하세요.")]
+    [SerializeField] private GameObject clearBoxSetting;
+    [SerializeField] private List<CheckMapClear> clearBoxList = new List<CheckMapClear>();
+    
     // 초기 세팅 설정
     void CreateDefaultSetting()
     {
@@ -66,6 +75,12 @@ public class MapData : MonoBehaviour
         {
             map = Instantiate(temp, transform.position, Quaternion.identity, transform);
             map.name = "Map Name";
+        }
+
+        if (clearBoxSetting == null)
+        {
+            clearBoxSetting = Instantiate(temp, transform.position, Quaternion.identity, transform);
+            clearBoxSetting.name = "ClearBox Setting";
         }
         if (positionSetting == null)    // 캐릭터 위치 세팅 오브젝트 생성 및 이름 설정
         {
@@ -101,6 +116,8 @@ public class MapData : MonoBehaviour
         //positionSets.Find(item=>(item.who).ToString()==DataController.instance_DataController.currentChar.name).clearBox.GetComponent<CheckMapClear>().isClear = true;
         //방문 횟수Index에 따라서
         positionSets.Find(item => item.index == posIndex).clearBox.GetComponent<CheckMapClear>().Clear();
+
+        MapClear();
     }
     #endregion
 
@@ -137,7 +154,22 @@ public class MapData : MonoBehaviour
     public Vector3 camDis;  // 캐릭터와 카메라와의 거리
     public Vector3 camRot;  // 캐릭터와 카메라와의 거리 
 
-
+    [ContextMenu("Create Clear")]
+    public void CreateClearBox()
+    {
+        Transform instant = new GameObject().transform;   
+        // 클리어 박스 설정
+        Transform clearBox = Instantiate(instant, positionSetting.transform.position, Quaternion.identity, clearBoxSetting.transform);
+        clearBox.name = "Clear Box";
+        clearBox.gameObject.AddComponent<BoxCollider>();
+        clearBox.GetComponent<BoxCollider>().isTrigger = true;
+        clearBox.gameObject.AddComponent<CheckMapClear>();
+        // 임시 오브젝트 제거
+        DestroyImmediate(instant.gameObject);
+        // 리스트에 설정 추가
+        clearBoxList.Add(clearBox.GetComponent<CheckMapClear>());
+    }
+    
     // 캐릭터 위치 설정 생성
     public void CreateSpeatPosition() { CreatePositionSetting(Character.Speat); }
     public void CreateOunPosition() { CreatePositionSetting(Character.Oun); }
@@ -265,6 +297,14 @@ public class MapData : MonoBehaviour
         //     positionSet.clearBox.GetComponent<CheckMapClear>().who = lists.Find(item => item.name == positionSet.who.ToString());
     }
 
+    public void MapClear()
+    {
+        if (clearBoxList.Count > 0)
+            clearBoxList[0].Clear();
+        else
+            Debug.LogError("클리어 박스 세팅 오류");
+    }
+    
     #region Input 설정
 
     public bool isJoystickUse;
@@ -311,6 +351,11 @@ public class MapData : MonoBehaviour
                 Gizmos.DrawCube(positionSets[i].startPosition.position + Vector3.up, new Vector3(0.3f, 0.9f, 0.3f));
                 Gizmos.DrawSphere(positionSets[i].startPosition.position + Vector3.up * 0.2f, 0.2f);
                 Gizmos.DrawCube(positionSets[i].clearBox.position, positionSets[i].clearBox.GetComponent<BoxCollider>().size);
+            }
+
+            for (int i = 0; i < clearBoxList.Count; i++)
+            {
+                Gizmos.DrawCube(clearBoxList[i].gameObject.transform.position, clearBoxList[i].GetComponent<BoxCollider>().size);
             }
         }
     }

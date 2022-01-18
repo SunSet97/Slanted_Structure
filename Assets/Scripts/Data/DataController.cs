@@ -203,9 +203,8 @@ public class DataController : MonoBehaviour
                 rau.SetCharacter(temp[k].startPosition);
             }
         }
-        // mainChar.isMain = true; - mainChar만 있으면 됨, 필요 없음
         //조이스틱 초기화
-        InitializeJoystic(true);
+        InitializeJoyStick(true);
 
 
         // CameraMoving 컨트롤
@@ -229,9 +228,9 @@ public class DataController : MonoBehaviour
         FindProgressCollider();
 
         // 조작 가능한 상태로 변경 (중력 적용)
-        speat.UseJoystickCharacter();
-        oun.UseJoystickCharacter();
-        rau.UseJoystickCharacter();
+        speat.PutDownCharacter();
+        oun.PutDownCharacter();
+        rau.PutDownCharacter();
     }
 
     // 게임 진행에 필요한 콜라이더와 이미지를 획득
@@ -257,7 +256,7 @@ public class DataController : MonoBehaviour
     /// 조이스틱 상태 초기화하는 함수
     /// </summary>
     /// <param name="isOn">JoyStick On/Off</param>
-    public void InitializeJoystic(bool isOn)
+    public void InitializeJoyStick(bool isOn)
     {
         joyStick.gameObject.SetActive(isOn);
         joyStick.transform.GetChild(0).gameObject.SetActive(false);
@@ -283,13 +282,13 @@ public class DataController : MonoBehaviour
             
             isAlreadySave = true;
             wasJoystickUse = joyStick.gameObject.activeSelf;
-            InitializeJoystic(false);
+            InitializeJoyStick(false);
         }
         // Load하는 경우
         else
         {
             isAlreadySave = false;
-            InitializeJoystic(wasJoystickUse);
+            InitializeJoyStick(wasJoystickUse);
         }
     }
     

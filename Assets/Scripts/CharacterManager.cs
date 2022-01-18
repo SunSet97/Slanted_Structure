@@ -180,7 +180,7 @@ public class CharacterManager : MonoBehaviour, IMovable
         Vector2 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
         DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
         DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
-
+        
         anim.SetBool("2DSide", false);
         if (Mathf.Abs(joyRot) > 0) { transform.Rotate(Vector3.up, joyRot); } // 임시 회전
         anim.SetFloat("Direction", joyRot); //X방향
@@ -188,7 +188,7 @@ public class CharacterManager : MonoBehaviour, IMovable
 
     public void MoveCharacter(MapData.JoystickInputMethod joystickInputMethod)
     {
-        // 캐릭터를 조종할 수 있을때(조이스틱 외 미포함)
+        // 캐릭터를 이 함수로 조종할 수 있을때 (조이스틱 외 미포함)
         if (IsMove)
         {
             // 메인 카메라 기준으로 캐릭터가 바라보는 방향 계산

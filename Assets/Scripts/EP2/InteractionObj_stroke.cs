@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Playables;
 
 
 [Serializable]
@@ -199,6 +200,11 @@ public class InteractionObj_stroke : MonoBehaviour
                 //새로운 task 실행
                 path = currentTaskData.tasks[currentTaskData.taskIndex + index].nextFile;
                 jsonString = (Resources.Load(path) as TextAsset)?.text;
+                if (currentTaskData.tasks[currentTaskData.taskIndex].order != 0)
+                {
+                    DataController.instance_DataController.currentMap.mapCode =
+                        $"{currentTaskData.tasks[currentTaskData.taskIndex].order, 000000}";
+                }
                 PushTask(jsonString);
                 InteractionResponse();
                 break;
@@ -473,8 +479,8 @@ public class InteractionObj_stroke : MonoBehaviour
             DataController.instance_DataController.taskData = currentTaskData;
             int taskIndex = currentTaskData.taskIndex;
             Task currentTask = currentTaskData.tasks[taskIndex];
-            Debug.Log("taskIndex - " + taskIndex + "\nInteractionType - " + currentTaskData.tasks[taskIndex].type);
-            switch (currentTaskData.tasks[taskIndex].type)
+            Debug.Log("taskIndex - " + taskIndex + "\nInteractionType - " + currentTask.type);
+            switch (currentTask.type)
             {
                 case TYPE.DIALOGUE:
                     Debug.Log("대화 시작");
@@ -488,6 +494,13 @@ public class InteractionObj_stroke : MonoBehaviour
                     //세팅된 애니메이션 실행
                     currentTaskData.taskIndex++;
                     gameObject.GetComponent<Animator>().Play("Start", 0);
+                    break;
+                case TYPE.Play:
+                    currentTaskData.isContinue = false; //디버깅용
+                    IPlayable playable = GameObject.Find(currentTask.nextFile).GetComponent<IPlayable>();
+                    playable.Play();
+                    yield return new WaitUntil(() => playable.IsPlay);
+                    currentTaskData.isContinue = true;  //디버깅용
                     break;
                 case TYPE.TEMP:
                     Debug.Log("선택지 열기");

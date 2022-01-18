@@ -43,6 +43,16 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
         StartCoroutine(StartRungame());
     }
 
+    public void Play()
+    {
+        IsPlay = true;
+    }
+
+    public void EndPlay()
+    {
+        IsPlay = false;
+    }
+
     void Update()
     {
         if (IsPlay)
@@ -72,11 +82,13 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
                 if (_jsonFile != null)
                 {
                     CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear(); });
+                    CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { DataController.instance_DataController.currentMap.MapClear(); });
                     CanvasControl.instance_CanvasControl.StartConversation(_jsonFile.text);
                 }
                 else
                 {
                     DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
+                    DataController.instance_DataController.currentMap.MapClear();
                 }
             }
             else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1) DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
@@ -92,7 +104,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
         CharacterManager speat = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Speat);
         speat.jumpForce = 7;
         WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
-        DataController.instance_DataController.InitializeJoystic(false);
+        DataController.instance_DataController.InitializeJoyStick(false);
         Debug.Log("지금");
         DataController.instance_DataController.currentMap.isJoystickUse = false;
         DataController.instance_DataController.inputDegree = 1;
