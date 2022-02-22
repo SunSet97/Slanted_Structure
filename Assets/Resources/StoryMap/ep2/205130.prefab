@@ -151,7 +151,7 @@ Transform:
   m_Children:
   - {fileID: 132210625347605054}
   - {fileID: 3900362541078826571}
-  - {fileID: 7602754017048943611}
+  - {fileID: 8127831064357518253}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -168,8 +168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scriptDesription: "\uC778\uACF5 \uD638\uC218 \uBCA4\uCE58\n\uBE44\uB458\uAE30\uB098
-    \uC624\uB9AC\uB4E4\uC5D0\uAC8C \uBC25\uC744 \uC8FC\uB294 \uC778\uD130\uB809\uC158\n\uC624\uC6B4\uACFC\uC758
-    \uB300\uD654\n+\uB300\uD654\uC2DC \uCE74\uBA54\uB77C \uBDF0\ndir(2.9,1.13,2.26)\nrot(16.88,218.1)"
+    \uC624\uB9AC\uB4E4\uC5D0\uAC8C \uBC25\uC744 \uC8FC\uB294 \uC778\uD130\uB809\uC158\n\n+\uB300\uD654\uC2DC
+    \uCE74\uBA54\uB77C \uBDF0\ndir(2.9,1.13,2.26)\nrot(16.88,218.1)"
   mapCode: 205130
   method: 2
   endMap: 1
@@ -182,7 +182,7 @@ MonoBehaviour:
   orthographicSize: 5
   isCameraMoving: 1
   cameraBound: {fileID: 0}
-  clearBoxSetting: {fileID: 6279188448093247072}
+  clearBoxSetting: {fileID: 2605623699351195845}
   clearBoxList:
   - {fileID: 44233077663622425}
   positionSetting: {fileID: 132210625347605053}
@@ -201,8 +201,8 @@ MonoBehaviour:
     isMain: 0
   posIndex: 0
   cam: {fileID: 0}
-  camDis: {x: 2.9, y: 1.13, z: 26}
-  camRot: {x: 16.88, y: 218.1, z: 0}
+  camDis: {x: -0.2, y: 0.9, z: 2.79}
+  camRot: {x: 15.15, y: 180.4, z: 0}
   isJoystickUse: 0
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &132210625347605053
@@ -329,7 +329,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!1 &2153049276018603114
+--- !u!1 &2169106978770980749
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -337,8 +337,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 91871358088084608}
-  - component: {fileID: 8701157698128573463}
+  - component: {fileID: 5600221453334636876}
+  - component: {fileID: 4282471844471554200}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -346,13 +346,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &91871358088084608
+--- !u!4 &5600221453334636876
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2153049276018603114}
+  m_GameObject: {fileID: 2169106978770980749}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -360,22 +360,58 @@ Transform:
   m_Father: {fileID: 1508624755088979051}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8701157698128573463
+--- !u!114 &4282471844471554200
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2153049276018603114}
+  m_GameObject: {fileID: 2169106978770980749}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionType: 2
-  jsonFile: {fileID: 0}
+  interactionType: 5
+  jsonFile: {fileID: 4900000, guid: 4d2c1b566e1ae1845a252701b9c21ad1, type: 3}
   dialogueData:
-    dialogues: []
+    dialogues:
+    - name: "\uB77C\uC6B0"
+      expression: 1
+      anim_name: Rau
+      contents: "\uC544~\uC7AC\uBC0C\uC5C8\uB2E4~"
+    - name: "\uC624\uC6B4"
+      expression: 1
+      anim_name: Oun
+      contents: "\uC7AC\uBC0C\uC5C8\uB2E4\uB2C8 \uB2E4\uD589\uC774\uB124\uC694 \uD558\uD558."
+    - name: "\uB77C\uC6B0"
+      expression: 0
+      anim_name: Rau
+      contents: "\uB355\uBD84\uC5D0 \uC7AC\uBC0C\uAC8C \uB17C\uAC70 \uAC19\uC544\uC694!
+        \uADF8\uB9AC\uACE0 \uC5EC\uAE30 \uACBD\uCE58 \uB108\uBB34 \uC88B\uB2E4!"
+    - name: "\uC624\uC6B4"
+      expression: 1
+      anim_name: Oun
+      contents: "\uADF8\uCE58! \uC5EC\uAE30\uAC00 \uD48D\uACBD\uC774 \uC9C4\uC9DC
+        \uC88B\uC544\uC694!"
+    - name: "\uC624\uC6B4"
+      expression: 1
+      anim_name: Oun
+      contents: "\uADF8\uB9AC\uACE0 \uC740\uADFC \uAD6C\uC11D\uC9C4 \uB370\uC5D0 \uC788\uC5B4\uC11C
+        \uADF8\uB7F0\uC9C0 \uC0AC\uB78C\uB3C4 \uB9CE\uC9C0 \uC54A\uACE0!"
+    - name: "\uB77C\uC6B0"
+      expression: 0
+      anim_name: Rau
+      contents: "\uC5B4\uB77C? \uADF8\uB7EC\uB124 \uBE44\uB458\uAE30\uB4E4 \uBC16\uC5D0
+        \uC5C6\uB124"
+    - name: "\uC624\uC6B4"
+      expression: 0
+      anim_name: Oun
+      contents: "\uBE44\uB458\uAE30\uB4E4\uD55C\uD14C \uBC25 \uC918\uBCFC\uAE4C\uC694?"
+    - name: "\uB77C\uC6B0"
+      expression: 0
+      anim_name: Rau
+      contents: "\uADF8\uB7F4\uAE4C\uC694?"
   dialogueEndAction: []
   taskEndActions:
   - eventType: 1
@@ -386,7 +422,59 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
-  taskData_Debug: []
+  taskData_Debug:
+  - tasks:
+    - name: "\uB77C\uC6B0"
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    - name: "\uC624\uC6B4"
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    - name: "\uB77C\uC6B0"
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    - name: "\uC624\uC6B4"
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    - name: "\uC624\uC6B4"
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    - name: "\uB77C\uC6B0"
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    - name: "\uC624\uC6B4"
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    - name: "\uB77C\uC6B0"
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
   color: 0
   interactionMethod: 2
   onOutline: 0
@@ -403,6 +491,36 @@ MonoBehaviour:
   isTouched: 0
   touchTargetObject: {fileID: 0}
   isLoop: 0
+--- !u!1 &2605623699351195845
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8127831064357518253}
+  m_Layer: 0
+  m_Name: ClearBox Setting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8127831064357518253
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2605623699351195845}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 132210625273347805}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3497916248403802176
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,37 +579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 0}
-  nextSelectMapcode: 000000
---- !u!1 &6279188448093247072
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7602754017048943611}
-  m_Layer: 0
-  m_Name: ClearBox Setting
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7602754017048943611
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6279188448093247072}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 132210625273347805}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  nextSelectMapcode: 206110
 --- !u!1 &6459680923671341419
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,7 +607,7 @@ Transform:
   m_LocalPosition: {x: 1.98, y: 0, z: -5.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 91871358088084608}
+  - {fileID: 5600221453334636876}
   m_Father: {fileID: 2611587555137135063}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
