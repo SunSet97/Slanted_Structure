@@ -44,34 +44,121 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 5
+  interactionType: 5
   jsonFile: {fileID: 4900000, guid: 4cfd5ef8912062b4b9e39f171c63e2d3, type: 3}
   dialogueData:
     dialogues:
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      experssion: 0
+      expression: 0
       anim_name: 
       contents: 
     - name: 
-      experssion: 0
+      expression: 0
       anim_name: 
       contents: 
     - name: "\uAD81\uAE08\uD558\uB2C8 \uBC16\uC73C\uB85C \uD55C\uBC88 \uB098\uAC00\uBCF8\uB2E4."
-      experssion: 0
+      expression: 0
       anim_name: 
       contents: 
     - name: "\uBB34\uC11C\uC6B0\uB2C8 \uADF8\uB0E5 \uC790\uBC84\uB9B0\uB2E4."
-      experssion: 0
+      expression: 0
       anim_name: 
       contents: 
     - name: "\uB05D"
-      experssion: 0
+      expression: 0
       anim_name: 
       contents: 
   dialogueEndAction: []
-  _taskData: []
+  taskEndActions:
+  - eventType: 1
+    clearBox: {fileID: 8096532742656293649}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  taskData_Debug:
+  - tasks:
+    - name: "\uB77C\uC6B0\uB300\uD6541"
+      type: 2
+      nextFile: dialogue_ep3/301010
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: 
+      type: 3
+      nextFile: 2
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: "\uAD81\uAE08\uD558\uB2C8 \uBC16\uC73C\uB85C \uD55C\uBC88 \uB098\uAC00\uBCF8\uB2E4."
+      type: 3
+      nextFile: dialogue_ep3/301010_choice1
+      order: 0
+      condition: 0,0,0,0
+      increaseVar: 0,0,0
+    - name: "\uBB34\uC11C\uC6B0\uB2C8 \uADF8\uB0E5 \uC790\uBC84\uB9B0\uB2E4."
+      type: 3
+      nextFile: dialogue_ep3/301010_choice2
+      order: 0
+      condition: 0,0,0,0
+      increaseVar: 0,0,0
+    - name: "\uB05D"
+      type: 5
+      nextFile: 
+      order: 1
+      condition: 
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
+  - tasks:
+    - name: "\uB77C\uC6B0\uB300\uD6541"
+      type: 2
+      nextFile: dialogue_ep2/301010_gameover
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: "\uB77C\uC6B0\uB300\uD6542"
+      type: 2
+      nextFile: dialogue_ep2/301011_gameover2
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: "\uB05D"
+      type: 7
+      nextFile: 
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: 
+      type: 4
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
+  - tasks:
+    - name: "\uB77C\uC6B0\uB300\uD6541"
+      type: 2
+      nextFile: dialogue_ep2/301010_live
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: "\uB05D"
+      type: 4
+      nextFile: 
+      order: 1
+      condition: 
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
   color: 0
-  touchOrNot: 0
+  interactionMethod: 2
   onOutline: 0
   isCharacterInRange: 0
   radius: 5
@@ -113,6 +200,36 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: -6095727921720688781, guid: f1921e55a4dc91f479e22005b38a23f2, type: 3}
+--- !u!1 &3854271869228353602
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1128584298593482864}
+  m_Layer: 0
+  m_Name: ClearBox Setting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1128584298593482864
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3854271869228353602}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8096532741582089409}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8096532741582089439
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,6 +260,7 @@ Transform:
   m_Children:
   - {fileID: 5880418021948619969}
   - {fileID: 8096532742479889282}
+  - {fileID: 1128584298593482864}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -173,6 +291,8 @@ MonoBehaviour:
   orthographicSize: 7
   isCameraMoving: 1
   cameraBound: {fileID: 0}
+  clearBoxSetting: {fileID: 3854271869228353602}
+  clearBoxList: []
   positionSetting: {fileID: 8096532742479889281}
   positionSets:
   - index: 0
