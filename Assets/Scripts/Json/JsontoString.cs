@@ -1,34 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
 using System.Text;
 
-//주의사항 - 파일명과 클래스명은 동일해야된다. ex) JsonSong(클래스) - Song(파일)
-public class JsontoString : MonoBehaviour
+public class JsontoString
 {
-    public enum EXPRESSION
-    {
-        IDLE, SMILE
-    }
-
-    public enum CHARACTER
-    {
-        NONE, KIMBAB, CHICKEN
-    }
-
-
-    //Enum도 json으로 가능
-    //json 정보에 표정, 캐릭터명(or Enum) 추가
-    [System.Serializable]
-    public class JsonSong
-    {
-        public string name;
-        public EXPRESSION expression;
-        public string kind;
-        public string contents;
-    }
 
 
     //json 데이터 배열로 받기 위해 (문장만 이해함)
@@ -50,7 +25,7 @@ public class JsontoString : MonoBehaviour
         t = JsonUtility.FromJson<Wrapper<T>>("{\"wrapper\":" + json + "}").wrapper;
         return t;
     }
-    public static string toJsonArray<T>(T[] wrapper)
+    public static string ToJsonArray<T>(T[] wrapper)
     {
         StringBuilder sb = new StringBuilder("[");
         for (int i = 0; i < wrapper.Length - 1; i++)
@@ -82,8 +57,6 @@ public class JsontoString : MonoBehaviour
             else
             {
                 //ex) JsonMessage클래스 -> 폴더경로/000000/NPC/Default/type명  -  class type명과 폴더명 동일하게
-                //string jsonPath = string.Format("{0}/{1}/NPC/Default/{2}.json", GetDataFolderPath(), "000000", type.Substring(4));
-                //string jsonPath = string.Format("{0}/{1}/NPC/{2}/{3}.json", GetDataFolderPath(), DataController.instance_DataController.mapCode, type.Substring(4));
                 string jsonPath = string.Format("{0}/{1}/NPC/{2}/{3}.json", GetDataFolderPath(), "000000", "Default", type.Substring(4));
                 //NPC 여부 스토리여부
                 string jsonString = File.ReadAllText(jsonPath);

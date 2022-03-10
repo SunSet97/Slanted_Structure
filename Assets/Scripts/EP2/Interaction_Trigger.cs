@@ -17,6 +17,6 @@ public class Interaction_Trigger : InteractionObj_stroke
     {
         if (isLoop) return;
         isLoop = true;
-        InteractionResponse();
+        StartInteraction();
     }
 }

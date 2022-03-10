@@ -26,22 +26,12 @@ public class TaskData
 
 }
 
-public enum TYPE
-{
-    NONE = 0, ANIMATION = 1, DIALOGUE = 2, TEMP = 3, TEMPEND = 4, TaskReset = 5, NEW = 6, THEEND = 7, Play = 8, TempDialogueEnd = 9
-}
-
-public enum EXPRESSION
-{
-    IDLE = 0, LAUGH, SAD, CRY, ANGRY, SURPISE, PANIC, SUSPICION, FEAR, CURIOUS, ANIM_ONE, ANIM_TWO
-}
-
 // 직렬화 클래스들
 [System.Serializable]
 public class Task
 {
     public string name;
-    public TYPE type;
+    public CustomEnum.TYPE type;
     public string nextFile;
     public int order;
     public string condition;
@@ -51,7 +41,7 @@ public class Task
 [System.Serializable]
 public class Dialogue {
     public string name;
-    public EXPRESSION expression;
+    public CustomEnum.EXPRESSION expression;
     public string anim_name;
     public string contents;
 }

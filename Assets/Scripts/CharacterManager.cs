@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Move;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class CharacterManager : MonoBehaviour, IMovable
