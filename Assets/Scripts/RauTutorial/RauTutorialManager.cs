@@ -20,7 +20,7 @@ public class RauTutorialManager : MonoBehaviour
         none
     }
     private CharacterManager rau;
-    public MapData mapdata;
+    public MapData mapData;
     public Swipe swipeDir;
     public GameObject[] ui;
     public List<Transform> checkPoint;
@@ -34,7 +34,7 @@ public class RauTutorialManager : MonoBehaviour
     void Start()
     {
         rau = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Rau);
-        mapdata = DataController.instance_DataController.currentMap;
+        mapData = DataController.instance_DataController.currentMap;
     }
     void Update()
     {
@@ -66,11 +66,11 @@ public class RauTutorialManager : MonoBehaviour
     }
 
     // 이동 방식 변환 함수
-    void ChangeJoystickSetting(int methodNum, int axisNum)
+    void ChangeJoystickSetting(MapData.JoystickInputMethod methodNum, AxisOptions axisNum)
     {
-        mapdata.method = (MapData.JoystickInputMethod)methodNum; // 0 = one dir, 1 = all dir, 2 = other
-        OnOffJoystick(methodNum != 2); // other일 경우 인터렉션 부분이므로 조이스틱 안보이게 함
-        DataController.instance_DataController.joyStick.AxisOptions = (AxisOptions)axisNum; // 0 = both, 1 = hor, 2 = ver
+        mapData.method = methodNum; // 0 = one dir, 1 = all dir, 2 = other
+        OnOffJoystick(methodNum != MapData.JoystickInputMethod.Other); // other일 경우 인터렉션 부분이므로 조이스틱 안보이게 함
+        DataController.instance_DataController.joyStick.AxisOptions = axisNum; // 0 = both, 1 = hor, 2 = ver
     }
 
     // 숲 초입길
@@ -91,7 +91,7 @@ public class RauTutorialManager : MonoBehaviour
         // 카메라 방향 앞, 어깨 뒤 방향
         DataController.instance_DataController.camDis = view_forward.camDis; DataController.instance_DataController.camRot = view_forward.camRot;
         // 수풀길 헤쳐가기
-        ChangeJoystickSetting(2, 1); // 이동 해제, 좌우 스와이프만 가능하도록 변경
+        ChangeJoystickSetting(MapData.JoystickInputMethod.Other, AxisOptions.Horizontal); // 이동 해제, 좌우 스와이프만 가능하도록 변경
         rau.PickUpCharacter();
         TouchSlide();
         if (swipeDir == Swipe.Left && !isSwipe && swipe % 2 == 0)
@@ -182,7 +182,7 @@ public class RauTutorialManager : MonoBehaviour
         {
             ui[4].SetActive(true);
             DataController.instance_DataController.camDis = view_river.camDis; DataController.instance_DataController.camRot = view_river.camRot;
-            ChangeJoystickSetting(2, 0); // 이동 해제
+            ChangeJoystickSetting(MapData.JoystickInputMethod.Other, 0); // 이동 해제
             rau.PickUpCharacter();
             DataController.instance_DataController.inputDegree = 0;
             DataController.instance_DataController.inputDirection = Vector2.zero;
@@ -223,7 +223,7 @@ public class RauTutorialManager : MonoBehaviour
         // 카메라 방향 앞, 쿼터뷰
         DataController.instance_DataController.camDis = view_quarter.camDis; DataController.instance_DataController.camRot = view_quarter.camRot;
         // 둘러보기, 전방향 이동 튜토리얼
-        ChangeJoystickSetting(1, 0); // 전방향 이동
+        ChangeJoystickSetting(MapData.JoystickInputMethod.AllDirection, 0); // 전방향 이동
         ui[5].SetActive(true);
 
         // 특정 지점에서 나무 쓰러짐
@@ -238,7 +238,7 @@ public class RauTutorialManager : MonoBehaviour
             ui[6].SetActive(true);
             // 카메라 방향 앞, 쿼터뷰
             DataController.instance_DataController.camDis = view_forward.camDis; DataController.instance_DataController.camRot = view_forward.camRot;
-            ChangeJoystickSetting(2, 2); // 이동 해제, 위아래 스와이프만 가능하도록 변경
+            ChangeJoystickSetting(MapData.JoystickInputMethod.Other, AxisOptions.Vertical); // 이동 해제, 위아래 스와이프만 가능하도록 변경
             TouchSlide();
             rau.PickUpCharacter();
             if (swipeDir == Swipe.Down && woodSwipeIndex <= 3 && !isMoveUp)
@@ -257,7 +257,7 @@ public class RauTutorialManager : MonoBehaviour
             // 카메라 방향 앞, 쿼터뷰
             DataController.instance_DataController.camDis = view_quarter.camDis; DataController.instance_DataController.camRot = view_quarter.camRot;
             // 둘러보기, 전방향 이동 튜토리얼
-            ChangeJoystickSetting(1, 0); // 전방향 이동
+            ChangeJoystickSetting(MapData.JoystickInputMethod.AllDirection, 0); // 전방향 이동
             rau.UseJoystickCharacter();
         }
 

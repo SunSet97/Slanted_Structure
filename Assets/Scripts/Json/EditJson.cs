@@ -68,7 +68,8 @@ public class EditJson : MonoBehaviour
                     //Debug.Log(taskDatas[index]);
                     for (int i = 0; i < taskDatas[index].tasks.Length; i++)
                     {
-                        if (taskDatas[index].tasks[i].type == TYPE.NEW || taskDatas[index].tasks[i].type == TYPE.TEMP)
+                        if (taskDatas[index].tasks[i].type == CustomEnum.TYPE.NEW ||
+                            taskDatas[index].tasks[i].type == CustomEnum.TYPE.TEMP)
                         {
                             //Debug.Log(taskDatas[index].tasks[i].nextFile);
                             int count = int.Parse(taskDatas[index].tasks[i].nextFile);
@@ -91,9 +92,11 @@ public class EditJson : MonoBehaviour
                                 {
                                     return;
                                 }
+
                                 //Debug.Log(taskDatas.IndexOf(taskData) + "에서 " + data.tasks + " 추가");
                                 taskDatas.Add(data);
                             }
+
                             i += count + 1;
                         }
                     }
@@ -119,7 +122,7 @@ public class EditJson : MonoBehaviour
         if (type == JsonType.DIALOGUE)
         {
             if (dialogues != null && dialogues.Length > 0)
-                json = JsontoString.toJsonArray(dialogues);
+                json = JsontoString.ToJsonArray(dialogues);
         }
         else if (type == JsonType.TASK)
         {

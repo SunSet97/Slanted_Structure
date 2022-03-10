@@ -22,23 +22,23 @@ public class AlleyInMarketManager : MonoBehaviour
     {
         int index = 0;
 
-        if ((waypoint.idx == 1 && waypoint.moveTo == Waypoint.MoveDirection.Left) || waypoint.idx == 0)
+        if ((waypoint.currentIndex == 1 && waypoint.movingDir == Waypoint.MoveDirection.Left) || waypoint.currentIndex == 0)
         {
             index = 0; camRotDir = 1;
         }
-        else if ((waypoint.idx == 2 && waypoint.moveTo == Waypoint.MoveDirection.Left) || waypoint.idx == 1)
+        else if ((waypoint.currentIndex == 2 && waypoint.movingDir == Waypoint.MoveDirection.Left) || waypoint.currentIndex == 1)
         {
             index = 1; camRotDir = 1;
         }
-        else if ((waypoint.idx == 1 && waypoint.moveTo == Waypoint.MoveDirection.Right) || waypoint.idx == 2 || (waypoint.idx == 3 && waypoint.moveTo == Waypoint.MoveDirection.Left))
+        else if ((waypoint.currentIndex == 1 && waypoint.movingDir == Waypoint.MoveDirection.Right) || waypoint.currentIndex == 2 || (waypoint.currentIndex == 3 && waypoint.movingDir == Waypoint.MoveDirection.Left))
         {
             index = 2; camRotDir = -1;
         }
-        else if ((waypoint.idx == 2 && waypoint.moveTo == Waypoint.MoveDirection.Right) || waypoint.idx == 3 || (waypoint.idx == 4 && waypoint.moveTo == Waypoint.MoveDirection.Left))
+        else if ((waypoint.currentIndex == 2 && waypoint.movingDir == Waypoint.MoveDirection.Right) || waypoint.currentIndex == 3 || (waypoint.currentIndex == 4 && waypoint.movingDir == Waypoint.MoveDirection.Left))
         {
             index = 3;
         }
-        else if ((waypoint.idx == 3 && waypoint.moveTo == Waypoint.MoveDirection.Right) || waypoint.idx == 4)
+        else if ((waypoint.currentIndex == 3 && waypoint.movingDir == Waypoint.MoveDirection.Right) || waypoint.currentIndex == 4)
         {
             index = 4;
         }

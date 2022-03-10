@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Move;
 using UnityEngine;
 
 public class PimpGuestMoving : MonoBehaviour, IMovable

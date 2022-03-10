@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEditor;
@@ -60,6 +61,9 @@ public class MapData : MonoBehaviour
     public bool isCameraMoving = true; // 카메라 무빙 사용 여부
     [Tooltip("CameraMoving 경계 설정")]
     public BoxCollider cameraBound; // 카메라
+
+    [Header("캐릭터 넣으세요")]
+    public List<AnimationCharacterSet> characters;
     
     [Header("#클리어 박스를 넣으세요")]
     [ContextMenuItem("Create ClearBox", "CreateClearBox")]
@@ -87,6 +91,17 @@ public class MapData : MonoBehaviour
             positionSetting = Instantiate(temp, transform.position, Quaternion.identity, transform);
             positionSetting.name = "Position Setting";
         }
+
+        foreach (var t in positionSets)
+        {
+            characters.Add(new AnimationCharacterSet()
+            {
+                characterAnimator = DataController.instance_DataController
+                    .GetCharacter((DataController.CharacterType) t.who).anim,
+                who = t.who
+            });
+        }
+
         DestroyImmediate(temp); //임시 오브젝트 제거
     }
 
@@ -134,6 +149,12 @@ public class MapData : MonoBehaviour
     [Tooltip("인스펙터를 우클릭하여 원하는 캐릭터의 시작위치와 목표위치를 생성 및 제거하세요.")]
     [SerializeField] private GameObject positionSetting; // auto setting
 
+    [Serializable]
+    public class AnimationCharacterSet
+    {
+        public Animator characterAnimator;
+        public Character who;
+    }
     [Serializable]
     public class CharacterPositionSet
     {
@@ -250,6 +271,11 @@ public class MapData : MonoBehaviour
             {
                 DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
                 Destroy(gameObject);
+            }
+
+            if (FadeEffect.instance.isFade)
+            {
+                StartCoroutine(FadeEffect.instance.FadeIn());
             }
         }
         else

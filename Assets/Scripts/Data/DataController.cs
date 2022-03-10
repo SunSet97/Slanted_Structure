@@ -24,7 +24,7 @@ public class DataController : MonoBehaviour
     private bool isAlreadySave;
     private bool wasJoystickUse;
 
-    public enum CharacterType { Main, Rau, Oun, Speat};
+    public enum CharacterType { Main = -1, Rau, Oun, Speat};
 
     [Header("캐릭터")]
     private CharacterManager mainChar;
@@ -287,6 +287,7 @@ public class DataController : MonoBehaviour
         // Load하는 경우
         else
         {
+            Debug.Log(wasJoystickUse);
             isAlreadySave = false;
             InitializeJoyStick(wasJoystickUse);
         }

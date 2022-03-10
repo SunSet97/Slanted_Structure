@@ -399,22 +399,24 @@ public class CanvasControl : MonoBehaviour
                 {
                     Debug.Log(dialogueData.dialogues[dialogueCnt].anim_name);
                     string path = "Character_dialogue/" + dialogueData.dialogues[dialogueCnt].anim_name;
-                    charAnimator.runtimeAnimatorController = Resources.Load(path) as UnityEditor.Animations.AnimatorController;
+                    charAnimator.runtimeAnimatorController =
+                        Resources.Load(path) as UnityEditor.Animations.AnimatorController;
                     if (charAnimator.runtimeAnimatorController != null)
                     {
                         charAnimator.GetComponent<Image>().enabled = true;
-                        Debug.Log((int)dialogueData.dialogues[dialogueCnt].expression + "  " + dialogueData.dialogues[dialogueCnt].expression);
-                        charAnimator.SetInteger(Emotion, ((int)dialogueData.dialogues[dialogueCnt].expression));
+                        Debug.Log((int) dialogueData.dialogues[dialogueCnt].expression + "  " +
+                                  dialogueData.dialogues[dialogueCnt].expression);
+                        charAnimator.SetInteger(Emotion, ((int) dialogueData.dialogues[dialogueCnt].expression));
                     }
                     else
                     {
                         charAnimator.GetComponent<Image>().enabled = false;
-                       // Debug.LogError("Dialogue 애니메이션 세팅 오류");
+                        // Debug.LogError("Dialogue 애니메이션 세팅 오류");
                     }
                 }
                 else
                 {
-                    Debug.LogError("Canvas에 캐릭터 표정 charAnmator 넣으세요");
+                    Debug.LogError("Canvas에 캐릭터 표정 charAnimator 넣으세요");
                 }
             }
             else
@@ -422,8 +424,19 @@ public class CanvasControl : MonoBehaviour
                 charAnimator.runtimeAnimatorController = null;
                 charAnimator.GetComponent<Image>().enabled = false;
             }
-            
+
             // 대화 텍스트 업데이트
+
+            // 현재 실행 중인 캐릭터에 대해서
+            // 현재 맵에 기준???    햄버거 집 스핏의 경우 임시로 존재하는 거니까
+            // MapData에 inspector window에서 setting, position setting되어있는 캐릭터들도 추가
+            // 대화 시 무슨 캐릭터인지 anim_name으로 Find (who를 사용)
+            MapData.AnimationCharacterSet animator = DataController.instance_DataController.currentMap.characters.Find(
+                item => item.who.ToString().Equals(dialogueData.dialogues[dialogueCnt].anim_name));
+            animator?.characterAnimator.SetInteger(Emotion, (int) dialogueData.dialogues[dialogueCnt].expression);
+
+            // 해당 캐릭터에 setEmotion
+            // anim.SetInteger("Emotion", (int)emotion); // 애니메이션실행
             speakerName.text = dialogueData.dialogues[dialogueCnt].name; // 이야기하는 캐릭터 이름
             speakerWord.text = dialogueData.dialogues[dialogueCnt].contents; // 캐릭터의 대사
             dialogueCnt++;
