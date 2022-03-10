@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionType: 2
+  interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 5b992a13ca09b9b4b81c2b0899fddb83, type: 3}
   dialogueData:
     dialogues:
@@ -111,7 +111,6 @@ MonoBehaviour:
   isViewChange: 0
   CameraPos: {x: 0, y: 0, z: 0}
   CameraRot: {x: 0, y: 0, z: 0}
-  isTouched: 0
   touchTargetObject: {fileID: 0}
   isLoop: 0
 --- !u!65 &5198473125481702987
@@ -155,7 +154,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6636765975576392727}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6636765974117012322
 GameObject:
@@ -307,8 +306,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6636765975079231584}
-  - {fileID: 819999345507790526}
   - {fileID: 637261405075556011}
+  - {fileID: 819999345507790526}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -337,6 +336,9 @@ MonoBehaviour:
   orthographicSize: 5
   isCameraMoving: 1
   cameraBound: {fileID: 0}
+  characters:
+  - characterAnimator: {fileID: 0}
+    who: 2
   clearBoxSetting: {fileID: 5432035562915726616}
   clearBoxList:
   - {fileID: 6636765974117012320}
@@ -511,7 +513,7 @@ PrefabInstance:
     - target: {fileID: 6303841502435006001, guid: 5811bf7d55dfaa1418a7fe753b1d170c,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6303841502435006001, guid: 5811bf7d55dfaa1418a7fe753b1d170c,
         type: 3}

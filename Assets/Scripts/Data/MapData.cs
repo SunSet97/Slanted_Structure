@@ -92,16 +92,6 @@ public class MapData : MonoBehaviour
             positionSetting.name = "Position Setting";
         }
 
-        foreach (var t in positionSets)
-        {
-            characters.Add(new AnimationCharacterSet()
-            {
-                characterAnimator = DataController.instance_DataController
-                    .GetCharacter((DataController.CharacterType) t.who).anim,
-                who = t.who
-            });
-        }
-
         DestroyImmediate(temp); //임시 오브젝트 제거
     }
 
@@ -272,11 +262,20 @@ public class MapData : MonoBehaviour
                 DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
                 Destroy(gameObject);
             }
-
-            if (FadeEffect.instance.isFade)
+            foreach (var t in positionSets)
             {
-                StartCoroutine(FadeEffect.instance.FadeIn());
+                characters = new List<AnimationCharacterSet>();
+                characters.Add(new AnimationCharacterSet()
+                {
+                    characterAnimator = DataController.instance_DataController
+                        .GetCharacter((DataController.CharacterType)t.who).anim,
+                    who = t.who
+                });
             }
+            //if (FadeEffect.instance.isFade)
+            //{
+            //    StartCoroutine(FadeEffect.instance.FadeIn());
+            //}
         }
         else
         {
