@@ -1,86 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &72843314563607794
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3847668905343507040}
-  - component: {fileID: 294748904347296775}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3847668905343507040
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 72843314563607794}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4929897616873960939}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &294748904347296775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 72843314563607794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionType: 5
-  jsonFile: {fileID: 4900000, guid: 685e43cb09101dc459f54158224b33cd, type: 3}
-  dialogueData:
-    dialogues: []
-  dialogueEndAction: []
-  taskEndActions: []
-  taskData_Debug:
-  - tasks:
-    - name: "\uB77C\uC6B0\uB300\uD6541"
-      type: 2
-      nextFile: dialogue_ep2/203120_2
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: 
-      type: 8
-      nextFile: IceCream Game
-      order: 1
-      condition: dialogue_ep2/203120_2_after
-      increaseVar: 
-    taskIndex: 0
-    taskOrder: 1
-    isContinue: 1
-  color: 0
-  interactionMethod: 0
-  onOutline: 0
-  isCharacterInRange: 0
-  radius: 3
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
-  outline: {fileID: 0}
-  cam: {fileID: 0}
-  isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
-  isTouched: 0
-  touchTargetObject: {fileID: 0}
 --- !u!1 &230285205702458876
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionType: 0
+  interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 40dcc38d2e4ca4240b3dbb0873c70a01, type: 3}
   dialogueData:
     dialogues:
@@ -199,7 +118,7 @@ MonoBehaviour:
       contents: "\uC800\uBC88\uC5D0 \uC720\uC2EC\uCE69 \uC0AC\uB7EC \uC654\uB294\uB370
         \uC81C\uB300\uB85C \uAD6C\uACBD\uC740 \uBABB\uD588\uC5C8\uC5B4..!"
     - name: "\uC2A4\uD54F"
-      expression: 0
+      expression: 1
       anim_name: Speat
       contents: "\uADF8\uB7EC\uBA74 \uB2E4\uD589\uC774\uB2E4! \uAC19\uC774 \uAD6C\uACBD\uC774\uB098
         \uD558\uC790!"
@@ -219,7 +138,6 @@ MonoBehaviour:
   isViewChange: 0
   CameraPos: {x: 0, y: 0, z: 0}
   CameraRot: {x: 0, y: 0, z: 0}
-  isTouched: 0
   touchTargetObject: {fileID: 0}
   isLoop: 0
 --- !u!65 &1272254333119056819
@@ -235,7 +153,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &1670918246641985093
+--- !u!65 &4224357041490311795
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2632592626292202117}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.2218262, y: 7.1163216, z: 1.0029081}
+  m_Center: {x: -0.3890869, y: 3.0581608, z: 0.0031447632}
+--- !u!1 &3631272372192362120
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -243,8 +174,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2116826986427751844}
-  - component: {fileID: 1459080805431888020}
+  - component: {fileID: 2131186251265164074}
+  - component: {fileID: 3383485565503584597}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -252,85 +183,63 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2116826986427751844
+--- !u!4 &2131186251265164074
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1670918246641985093}
+  m_GameObject: {fileID: 3631272372192362120}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4869369760250747468}
-  m_RootOrder: 4
+  m_Father: {fileID: 4929897616873960939}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1459080805431888020
+--- !u!114 &3383485565503584597
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1670918246641985093}
+  m_GameObject: {fileID: 3631272372192362120}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionType: 2
-  jsonFile: {fileID: 4900000, guid: b5e067fec4c12ce459ccb584a92c5cbc, type: 3}
+  interactionPlayType: 5
+  jsonFile: {fileID: 4900000, guid: 685e43cb09101dc459f54158224b33cd, type: 3}
   dialogueData:
     dialogues:
-    - name: "\uB77C\uC6B0"
-      expression: 5
-      anim_name: Rau
-      contents: "\uC557, \uC5EC\uAE30\uB294!"
-    - name: "\uC2A4\uD54F"
-      expression: 1
-      anim_name: Speat
-      contents: "??\uC5EC\uAE30 \uC640\uBD24\uC5C8\uC5B4?? "
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: Rau
-      contents: "\uC751! \uC800\uBC88\uC5D0 \uC5EC\uAE30 \uC640\uBD24\uB2E4\uACE0
-        \uD588\uC796\uC544!"
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: Rau
-      contents: "\uC5EC\uAE30\uC11C \uC720\uC2EC\uCE69 \uC0C0\uC5C8\uAC70\uB4E0"
-    - name: "\uC2A4\uD54F"
-      expression: 0
-      anim_name: Speat
-      contents: "\uC544~\uD558\uAE34 \uC5EC\uAE30\uAC00 \uC9C4\uC9DC \uC5C6\uB294\uAC8C
-        \uC5C6\uAE34\uD574"
-    - name: "\uC7A1\uC0C1\uC778"
+    - name: "\uB77C\uC6B0\uB300\uD6541"
       expression: 0
       anim_name: 
-      contents: "\uC624~\uC6D0\uC778\uC5EC\uC131\uBD84 \uB610\uBCF4\uB124! \uC138\uBAA8\uB9C8\uC744\uC740
-        \uC798 \uAD6C\uACBD\uD558\uACE0 \uC788\uB294\uC9C0??"
-    - name: "\uB77C\uC6B0"
-      expression: 1
-      anim_name: Rau
-      contents: "\uB124! \uB355\uBD84\uC5D0\uC694."
-    - name: "\uC7A1\uC0C1\uC778"
+      contents: 
+    - name: 
       expression: 0
       anim_name: 
-      contents: "\uADF8\uB7EC\uBA74 \uB2E4\uD589\uC774\uAD6C\uBA3C~\uD568 \uAD6C\uACBD\uD558\uACE0
-        \uAC00~"
+      contents: 
   dialogueEndAction: []
-  taskEndActions:
-  - eventType: 2
-    clearBox: {fileID: 0}
-    activeObjs:
-      actives:
-      - activeObject: {fileID: 3877089292194072859}
-        activeSelf: 1
-    movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  taskData_Debug: []
+  taskEndActions: []
+  taskData_Debug:
+  - tasks:
+    - name: "\uB77C\uC6B0\uB300\uD6541"
+      type: 2
+      nextFile: dialogue_ep2/203120_2
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: 
+      type: 8
+      nextFile: IceCream Game
+      order: 1
+      condition: dialogue_ep2/203120_2_after
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
   color: 0
   interactionMethod: 0
   onOutline: 0
@@ -344,7 +253,6 @@ MonoBehaviour:
   isViewChange: 0
   CameraPos: {x: 0, y: 0, z: 0}
   CameraRot: {x: 0, y: 0, z: 0}
-  isTouched: 0
   touchTargetObject: {fileID: 0}
 --- !u!1 &3668851867477751262
 GameObject:
@@ -470,6 +378,15 @@ MonoBehaviour:
   orthographicSize: 5
   isCameraMoving: 1
   cameraBound: {fileID: 0}
+  characters:
+  - characterAnimator: {fileID: 0}
+    who: 2
+  - characterAnimator: {fileID: 0}
+    who: 0
+  - characterAnimator: {fileID: 0}
+    who: 2
+  - characterAnimator: {fileID: 0}
+    who: 0
   clearBoxSetting: {fileID: 5772984942624331488}
   clearBoxList:
   - {fileID: 3877089292194072861}
@@ -582,7 +499,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3877089292194072859}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.55, z: 17.27}
+  m_LocalPosition: {x: 0, y: 1.55, z: 17.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3877089290614172796}
@@ -614,8 +531,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 0}
-  nextSelectMapcode: 205230
---- !u!1 &4169747979358331801
+  nextSelectMapcode: 203130
+--- !u!1 &5490432893542053613
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -623,8 +540,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3470180744718217749}
-  - component: {fileID: 3764617182961404775}
+  - component: {fileID: 5458153775495816801}
+  - component: {fileID: 8459097568999440141}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -632,13 +549,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3470180744718217749
+--- !u!4 &5458153775495816801
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4169747979358331801}
+  m_GameObject: {fileID: 5490432893542053613}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -646,22 +563,30 @@ Transform:
   m_Father: {fileID: 1497651964627832860}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3764617182961404775
+--- !u!114 &8459097568999440141
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4169747979358331801}
+  m_GameObject: {fileID: 5490432893542053613}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionType: 5
+  interactionPlayType: 5
   jsonFile: {fileID: 4900000, guid: a0491ee003fa2fa44b876c7707a41f5c, type: 3}
   dialogueData:
-    dialogues: []
+    dialogues:
+    - name: "\uB77C\uC6B0\uB300\uD6541"
+      expression: 0
+      anim_name: 
+      contents: 
+    - name: 
+      expression: 0
+      anim_name: 
+      contents: 
   dialogueEndAction: []
   taskEndActions: []
   taskData_Debug:
@@ -694,7 +619,116 @@ MonoBehaviour:
   isViewChange: 0
   CameraPos: {x: 0, y: 0, z: 0}
   CameraRot: {x: 0, y: 0, z: 0}
-  isTouched: 0
+  touchTargetObject: {fileID: 0}
+--- !u!1 &5762629141687968490
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4677546381338890093}
+  - component: {fileID: 8185713748205451869}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4677546381338890093
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5762629141687968490}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4869369760250747468}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8185713748205451869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5762629141687968490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionPlayType: 2
+  jsonFile: {fileID: 4900000, guid: b5e067fec4c12ce459ccb584a92c5cbc, type: 3}
+  dialogueData:
+    dialogues:
+    - name: "\uB77C\uC6B0"
+      expression: 5
+      anim_name: Rau
+      contents: "\uC557, \uC5EC\uAE30\uB294!"
+    - name: "\uC2A4\uD54F"
+      expression: 1
+      anim_name: Speat
+      contents: "??\uC5EC\uAE30 \uC640\uBD24\uC5C8\uC5B4?? "
+    - name: "\uB77C\uC6B0"
+      expression: 0
+      anim_name: Rau
+      contents: "\uC751! \uC800\uBC88\uC5D0 \uC5EC\uAE30 \uC640\uBD24\uB2E4\uACE0
+        \uD588\uC796\uC544!"
+    - name: "\uB77C\uC6B0"
+      expression: 0
+      anim_name: Rau
+      contents: "\uC5EC\uAE30\uC11C \uC720\uC2EC\uCE69 \uC0C0\uC5C8\uAC70\uB4E0"
+    - name: "\uC2A4\uD54F"
+      expression: 0
+      anim_name: Speat
+      contents: "\uC544~\uD558\uAE34 \uC5EC\uAE30\uAC00 \uC9C4\uC9DC \uC5C6\uB294\uAC8C
+        \uC5C6\uAE34\uD574"
+    - name: "\uC7A1\uC0C1\uC778"
+      expression: 0
+      anim_name: 
+      contents: "\uC624~\uC6D0\uC778\uC5EC\uC131\uBD84 \uB610\uBCF4\uB124! \uC138\uBAA8\uB9C8\uC744\uC740
+        \uC798 \uAD6C\uACBD\uD558\uACE0 \uC788\uB294\uC9C0??"
+    - name: "\uB77C\uC6B0"
+      expression: 1
+      anim_name: Rau
+      contents: "\uB124! \uB355\uBD84\uC5D0\uC694."
+    - name: "\uC7A1\uC0C1\uC778"
+      expression: 0
+      anim_name: 
+      contents: "\uADF8\uB7EC\uBA74 \uB2E4\uD589\uC774\uAD6C\uBA3C~\uD568 \uAD6C\uACBD\uD558\uACE0
+        \uAC00~"
+  dialogueEndAction: []
+  taskEndActions:
+  - eventType: 2
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives:
+      - activeObject: {fileID: 3877089292194072859}
+        activeSelf: 1
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  taskData_Debug: []
+  color: 0
+  interactionMethod: 0
+  onOutline: 0
+  isCharacterInRange: 0
+  radius: 5
+  exclamationMark: {fileID: 0}
+  markOffset: {x: 0, y: 0}
+  useExclamationMark: 0
+  outline: {fileID: 0}
+  cam: {fileID: 0}
+  isViewChange: 0
+  CameraPos: {x: 0, y: 0, z: 0}
+  CameraRot: {x: 0, y: 0, z: 0}
   touchTargetObject: {fileID: 0}
 --- !u!1 &5772984942624331488
 GameObject:
@@ -756,6 +790,117 @@ Transform:
   m_Father: {fileID: 6493782910071428584}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &1728017532501205061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8487068852210935903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionPlayType: 0
+  jsonFile: {fileID: 4900000, guid: b5e067fec4c12ce459ccb584a92c5cbc, type: 3}
+  dialogueData:
+    dialogues:
+    - name: "\uB77C\uC6B0"
+      expression: 0
+      anim_name: Rau
+      contents: "\uC557, \uC5EC\uAE30\uB294!"
+    - name: "\uC2A4\uD54F"
+      expression: 0
+      anim_name: Speat
+      contents: "??\uC5EC\uAE30 \uC640\uBD24\uC5C8\uC5B4?? "
+    - name: "\uB77C\uC6B0"
+      expression: 0
+      anim_name: Rau
+      contents: "\uC751! \uC800\uBC88\uC5D0 \uC5EC\uAE30 \uC640\uBD24\uB2E4\uACE0
+        \uD588\uC796\uC544!"
+    - name: "\uB77C\uC6B0"
+      expression: 0
+      anim_name: Rau
+      contents: "\uC5EC\uAE30\uC11C \uC720\uC2EC\uCE69 \uC0C0\uC5C8\uAC70\uB4E0"
+    - name: "\uC2A4\uD54F"
+      expression: 0
+      anim_name: Speat
+      contents: "\uC544~\uD558\uAE34 \uC5EC\uAE30\uAC00 \uC9C4\uC9DC \uC5C6\uB294\uAC8C
+        \uC5C6\uAE34\uD574"
+    - name: "\uC7A1\uC0C1\uC778"
+      expression: 0
+      anim_name: 
+      contents: "\uC624~\uC6D0\uC778\uC5EC\uC131\uBD84 \uB610\uBCF4\uB124! \uC138\uBAA8\uB9C8\uC744\uC740
+        \uC798 \uAD6C\uACBD\uD558\uACE0 \uC788\uB294\uC9C0??"
+    - name: "\uB77C\uC6B0"
+      expression: 0
+      anim_name: Rau
+      contents: "\uB124! \uB355\uBD84\uC5D0\uC694."
+    - name: "\uC7A1\uC0C1\uC778"
+      expression: 0
+      anim_name: 
+      contents: "\uADF8\uB7EC\uBA74 \uB2E4\uD589\uC774\uAD6C\uBA3C~\uD568 \uAD6C\uACBD\uD558\uACE0
+        \uAC00~"
+  dialogueEndAction:
+  - eventType: 2
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  taskEndActions: []
+  taskData_Debug: []
+  color: 0
+  interactionMethod: 0
+  onOutline: 0
+  isCharacterInRange: 0
+  radius: 5
+  exclamationMark: {fileID: 0}
+  markOffset: {x: 0, y: 0}
+  useExclamationMark: 0
+  outline: {fileID: 0}
+  cam: {fileID: 0}
+  isViewChange: 0
+  CameraPos: {x: 0, y: 0, z: 0}
+  CameraRot: {x: 0, y: 0, z: 0}
+  touchTargetObject: {fileID: 0}
+--- !u!114 &8738023976046660642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8487068852210935903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionPlayType: 0
+  jsonFile: {fileID: 0}
+  dialogueData:
+    dialogues: []
+  dialogueEndAction: []
+  taskEndActions: []
+  taskData_Debug: []
+  color: 0
+  interactionMethod: 2
+  onOutline: 0
+  isCharacterInRange: 0
+  radius: 5
+  exclamationMark: {fileID: 0}
+  markOffset: {x: 0, y: 0}
+  useExclamationMark: 0
+  outline: {fileID: 0}
+  cam: {fileID: 0}
+  isViewChange: 0
+  CameraPos: {x: 0, y: 0, z: 0}
+  CameraRot: {x: 0, y: 0, z: 0}
+  touchTargetObject: {fileID: 0}
+  isLoop: 0
 --- !u!1001 &3877089290760802347
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -767,6 +912,36 @@ PrefabInstance:
         type: 3}
       propertyPath: y
       value: 210
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988124269678061982, guid: d3d83f0271f08ab459da75e83523ee01,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988124269678061982, guid: d3d83f0271f08ab459da75e83523ee01,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -11.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2226387132289675554, guid: d3d83f0271f08ab459da75e83523ee01,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 95.8271
+      objectReference: {fileID: 0}
+    - target: {fileID: 2226387133056151237, guid: d3d83f0271f08ab459da75e83523ee01,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 95.588936
+      objectReference: {fileID: 0}
+    - target: {fileID: 2379741932882100279, guid: d3d83f0271f08ab459da75e83523ee01,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.237
+      objectReference: {fileID: 0}
+    - target: {fileID: 2379741932882100279, guid: d3d83f0271f08ab459da75e83523ee01,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.328
       objectReference: {fileID: 0}
     - target: {fileID: 3051553522355898619, guid: d3d83f0271f08ab459da75e83523ee01,
         type: 3}
@@ -782,6 +957,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 3794169849021816622, guid: d3d83f0271f08ab459da75e83523ee01,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3794169849858162894, guid: d3d83f0271f08ab459da75e83523ee01,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.138031
       objectReference: {fileID: 0}
     - target: {fileID: 5212067969829792726, guid: d3d83f0271f08ab459da75e83523ee01,
         type: 3}
@@ -807,6 +992,11 @@ PrefabInstance:
         type: 3}
       propertyPath: y
       value: 210
+      objectReference: {fileID: 0}
+    - target: {fileID: 7822076750578853907, guid: d3d83f0271f08ab459da75e83523ee01,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7822076751237119433, guid: d3d83f0271f08ab459da75e83523ee01,
         type: 3}
@@ -883,6 +1073,16 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 1.317
       objectReference: {fileID: 0}
+    - target: {fileID: 8529054445894535783, guid: d3d83f0271f08ab459da75e83523ee01,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8.629999
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529054445894535783, guid: d3d83f0271f08ab459da75e83523ee01,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -10.82
+      objectReference: {fileID: 0}
     - target: {fileID: 8852564826754976485, guid: d3d83f0271f08ab459da75e83523ee01,
         type: 3}
       propertyPath: y
@@ -930,15 +1130,27 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3877089290760802347}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &4869369760250747468 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8529054445894535783, guid: d3d83f0271f08ab459da75e83523ee01,
+    type: 3}
+  m_PrefabInstance: {fileID: 3877089290760802347}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8487068852210935903 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4613392514329901172, guid: d3d83f0271f08ab459da75e83523ee01,
+    type: 3}
+  m_PrefabInstance: {fileID: 3877089290760802347}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1497651964627832860 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2379741932882100279, guid: d3d83f0271f08ab459da75e83523ee01,
     type: 3}
   m_PrefabInstance: {fileID: 3877089290760802347}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &4869369760250747468 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8529054445894535783, guid: d3d83f0271f08ab459da75e83523ee01,
+--- !u!1 &2632592626292202117 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1244938673786538670, guid: d3d83f0271f08ab459da75e83523ee01,
     type: 3}
   m_PrefabInstance: {fileID: 3877089290760802347}
   m_PrefabAsset: {fileID: 0}
