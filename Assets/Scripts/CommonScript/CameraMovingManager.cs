@@ -163,12 +163,16 @@ public class CameraMovingManager : MonoBehaviour
             var cornerPos = waypoint.waypoints[index].position;
             var frontDir = (waypoint.waypoints[front].position - cornerPos).normalized;
             var backDir = (waypoint.waypoints[back].position - cornerPos).normalized;
-            cornerCameraSettings[i].front = new GameObject(waypoint.waypoints[index].name + " front").transform;
+            var temp = new GameObject(waypoint.waypoints[index].name + " front").gameObject;
+            cornerCameraSettings[i].front = Instantiate(temp).transform;
             cornerCameraSettings[i].front.parent = waypoint.waypoints[index];
             cornerCameraSettings[i].front.position = cornerPos + frontDir;
-            cornerCameraSettings[i].back = new GameObject(waypoint.waypoints[index].name + " back").transform;
+            Destroy(temp);
+            temp = new GameObject(waypoint.waypoints[index].name + " back");
+            cornerCameraSettings[i].back = Instantiate(temp).transform;
             cornerCameraSettings[i].back.parent = waypoint.waypoints[index];
             cornerCameraSettings[i].back.position = cornerPos + backDir;
+            Destroy(temp);
         }
     }
     
