@@ -16,11 +16,9 @@ public class CamerMovingManagerEditor : Editor
         
     }
 }
-
 public class CameraMovingManager : MonoBehaviour
 {
     public Waypoint waypoint;           // 코너 웨이포인트
-    public Transform cornerPosition;        // 코너 위치
     public float cornerRadius;              // 코너 범위
     
     private Transform character;   
@@ -29,7 +27,7 @@ public class CameraMovingManager : MonoBehaviour
     [SerializeField]
     public CornerCameraSetting[] cornerCameraSettings;
     
-    [System.Serializable]
+    [Serializable]
     public struct CornerCameraSetting
     {
         [Header("코너 Waypoint 개체를 넣으세요")]
@@ -41,8 +39,6 @@ public class CameraMovingManager : MonoBehaviour
         //오른쪽이 이동방향이면 왼쪽, 오른쪽 순으로
         [Header("웨이포인트처럼 뒤, 앞 순서대로 넣으세요")]
         public CamInfo[] camSettings;
-
-        private CamInfo cornerCamInfo;
     }
     // 카메라 세팅 구조체
     [Serializable]
@@ -50,10 +46,11 @@ public class CameraMovingManager : MonoBehaviour
         public Vector3 camDis;
         public Vector3 camRot;
     }
-    
+
     private void Start()
     {
-        character = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).transform;
+        character = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main)
+            .transform;
     }
 
     void Update()
@@ -70,13 +67,13 @@ public class CameraMovingManager : MonoBehaviour
             // float t  = backDistance / (frontDistance + backDistance);
             // Debug.Log(frontDistance  + "  " + backDistance);
             float distance;
-            if (waypoint.DistanceIgnoreY(corner.corner.position, character.position) <  waypoint.checkingDist)
+            if (waypoint.DistanceIgnoreY(corner.corner.position, character.position) < waypoint.checkingDist)
             {
                 distance = waypoint.DistanceIgnoreY(waypoint.GetMiddlePoint(), character.position);
             }
             else
             {
-                distance =  waypoint.DistanceIgnoreY(character.position, corner.corner.position);
+                distance = waypoint.DistanceIgnoreY(character.position, corner.corner.position);
             }
 
             // -1 ~ 1 -> 0 ~ 2 -> 0 ~ 1    0.5는 가운데  뒤인 경우 0 ~ 0.5, 앞인 경우 0.5 ~ 1
@@ -100,18 +97,24 @@ public class CameraMovingManager : MonoBehaviour
             Vector3 camRot;
             if (camRotDir == 1)
             {
-                camDis = Vector3.Lerp(DataController.instance_DataController.camDis, corner.camSettings[1].camDis, 0.05f);
-                camRot = Vector3.Lerp(DataController.instance_DataController.camRot, corner.camSettings[1].camRot, 0.05f);
+                camDis = Vector3.Lerp(DataController.instance_DataController.camDis, corner.camSettings[1].camDis,
+                    0.05f);
+                camRot = Vector3.Lerp(DataController.instance_DataController.camRot, corner.camSettings[1].camRot,
+                    0.05f);
             }
             else
             {
-                camDis = Vector3.Lerp(DataController.instance_DataController.camDis, corner.camSettings[0].camDis, 0.05f);
-                camRot = Vector3.Lerp(DataController.instance_DataController.camRot, corner.camSettings[0].camRot, 0.05f);   
+                camDis = Vector3.Lerp(DataController.instance_DataController.camDis, corner.camSettings[0].camDis,
+                    0.05f);
+                camRot = Vector3.Lerp(DataController.instance_DataController.camRot, corner.camSettings[0].camRot,
+                    0.05f);
             }
+
             DataController.instance_DataController.camDis = camDis;
             DataController.instance_DataController.camRot = camRot;
         }
     }
+
 
     int GetDir(CornerCameraSetting corner)
     {
@@ -157,22 +160,27 @@ public class CameraMovingManager : MonoBehaviour
         for (int i = 0; i < cornerCameraSettings.Length; i++)
         {
             var index = waypoint.waypoints.FindIndex(item => item.Equals(cornerCameraSettings[i].corner));
-            Debug.Log(index);
             var front = index + 1;
             var back = index - 1;
             var cornerPos = waypoint.waypoints[index].position;
             var frontDir = (waypoint.waypoints[front].position - cornerPos).normalized;
             var backDir = (waypoint.waypoints[back].position - cornerPos).normalized;
-            var temp = new GameObject(waypoint.waypoints[index].name + " front").gameObject;
-            cornerCameraSettings[i].front = Instantiate(temp).transform;
-            cornerCameraSettings[i].front.parent = waypoint.waypoints[index];
-            cornerCameraSettings[i].front.position = cornerPos + frontDir;
-            Destroy(temp);
-            temp = new GameObject(waypoint.waypoints[index].name + " back");
-            cornerCameraSettings[i].back = Instantiate(temp).transform;
-            cornerCameraSettings[i].back.parent = waypoint.waypoints[index];
-            cornerCameraSettings[i].back.position = cornerPos + backDir;
-            Destroy(temp);
+            GameObject temp;
+            if (cornerCameraSettings[i].front == null)
+            {
+                temp = new GameObject(waypoint.waypoints[index].name + " front");
+                cornerCameraSettings[i].front = Instantiate(temp).transform;
+                cornerCameraSettings[i].front.parent = waypoint.waypoints[index];
+                cornerCameraSettings[i].front.position = cornerPos + frontDir;
+            }
+
+            if (cornerCameraSettings[i].back == null)
+            {
+                temp = new GameObject(waypoint.waypoints[index].name + " back");
+                cornerCameraSettings[i].back = Instantiate(temp).transform;
+                cornerCameraSettings[i].back.parent = waypoint.waypoints[index];
+                cornerCameraSettings[i].back.position = cornerPos + backDir;
+            }
         }
     }
     
@@ -180,6 +188,9 @@ public class CameraMovingManager : MonoBehaviour
     {
         // 코너 판단영역 기즈모
         Gizmos.color = Color.yellow - Color.black * 0.4f;
-        Gizmos.DrawSphere(cornerPosition.position, cornerRadius);
+        foreach (var t in cornerCameraSettings)
+        {
+            Gizmos.DrawSphere(t.corner.position, cornerRadius);    
+        }
     }
 }

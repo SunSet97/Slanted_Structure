@@ -26,7 +26,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 5679713699259848832}
   m_Father: {fileID: 5679713699132621523}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -107,7 +108,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5679713699117899516}
-  - {fileID: 5679713699259848832}
   m_Father: {fileID: 5679713698888438022}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -231,6 +231,7 @@ MonoBehaviour:
   orthographicSize: 7
   isCameraMoving: 1
   cameraBound: {fileID: 0}
+  characters: []
   clearBoxSetting: {fileID: 364162799213658732}
   clearBoxList:
   - {fileID: 5679713699259848835}
@@ -241,7 +242,7 @@ MonoBehaviour:
     startPosition: {fileID: 5679713699117899516}
     clearBox: {fileID: 5679713699259848832}
     posSet: {fileID: 5679713697842561505}
-    isMain: 0
+    isMain: 1
   posIndex: 0
   cam: {fileID: 0}
   camDis: {x: -15.4, y: 15.4, z: 14.09}
@@ -260,7 +261,7 @@ GameObject:
   - component: {fileID: 5679713699259848834}
   - component: {fileID: 5679713699259848835}
   m_Layer: 0
-  m_Name: Rau Clear Box
+  m_Name: Clear Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -277,8 +278,8 @@ Transform:
   m_LocalPosition: {x: -0.17, y: 1.53, z: 23.33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5679713697842561505}
-  m_RootOrder: 1
+  m_Father: {fileID: 4133205288298632302}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &5679713699259848834
 BoxCollider:
@@ -405,7 +406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionType: 2
+  interactionPlayType: 0
   jsonFile: {fileID: 4900000, guid: 39411f39e7fe74e4290385e00d6ac2f4, type: 3}
   dialogueData:
     dialogues:
@@ -495,7 +496,6 @@ MonoBehaviour:
   isViewChange: 0
   CameraPos: {x: 0, y: 0, z: 0}
   CameraRot: {x: 0, y: 0, z: 0}
-  isTouched: 0
   touchTargetObject: {fileID: 0}
 --- !u!1001 &5679713699439010352
 PrefabInstance:

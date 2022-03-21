@@ -57,7 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionType: 2
+  interactionPlayType: 0
   jsonFile: {fileID: 4900000, guid: c04797a6b95aa754fbffa83c35c12561, type: 3}
   dialogueData:
     dialogues:
@@ -140,7 +140,6 @@ MonoBehaviour:
   isViewChange: 0
   CameraPos: {x: 0, y: 0, z: 0}
   CameraRot: {x: 0, y: 0, z: 0}
-  isTouched: 0
   touchTargetObject: {fileID: 0}
   isLoop: 0
 --- !u!114 &7684895251071856094
@@ -155,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionType: 2
+  interactionPlayType: 0
   jsonFile: {fileID: 4900000, guid: 803b77ea70914f1478281d6083e9beeb, type: 3}
   dialogueData:
     dialogues:
@@ -180,7 +179,6 @@ MonoBehaviour:
   isViewChange: 0
   CameraPos: {x: 0, y: 0, z: 0}
   CameraRot: {x: 0, y: 0, z: 0}
-  isTouched: 0
   touchTargetObject: {fileID: 0}
 --- !u!1 &6408308634869032343
 GameObject:
@@ -208,9 +206,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 7684895251589288443}
   m_Father: {fileID: 7684895251521473775}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7684895251521473769
 GameObject:
@@ -241,8 +240,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7684895251809826837}
-  - {fileID: 4996712655644327898}
   - {fileID: 5119831002890223678}
+  - {fileID: 4996712655644327898}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -272,6 +271,7 @@ MonoBehaviour:
   orthographicSize: 4.24
   isCameraMoving: 1
   cameraBound: {fileID: 0}
+  characters: []
   clearBoxSetting: {fileID: 6408308634869032343}
   clearBoxList:
   - {fileID: 7684895251589288440}
@@ -282,7 +282,7 @@ MonoBehaviour:
     startPosition: {fileID: 7684895251594130213}
     clearBox: {fileID: 7684895251589288443}
     posSet: {fileID: 7684895252231995492}
-    isMain: 0
+    isMain: 1
   posIndex: 0
   cam: {fileID: 0}
   camDis: {x: -2, y: 3.19, z: 5}
@@ -301,7 +301,7 @@ GameObject:
   - component: {fileID: 7684895251589288441}
   - component: {fileID: 7684895251589288440}
   m_Layer: 0
-  m_Name: Rau Clear Box
+  m_Name: Clear Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -318,8 +318,8 @@ Transform:
   m_LocalPosition: {x: -1.49, y: 0.532, z: -11.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7684895252231995492}
-  m_RootOrder: 1
+  m_Father: {fileID: 5119831002890223678}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &7684895251589288441
 BoxCollider:
@@ -438,7 +438,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7684895251594130213}
-  - {fileID: 7684895251589288443}
   m_Father: {fileID: 7684895251809826837}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -597,7 +596,7 @@ PrefabInstance:
     - target: {fileID: 3454780072670667338, guid: a35fed5e55aebc34f8f867a73de39ed5,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3454780072670667338, guid: a35fed5e55aebc34f8f867a73de39ed5,
         type: 3}

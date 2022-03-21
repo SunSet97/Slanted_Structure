@@ -165,7 +165,7 @@ public class MapData : MonoBehaviour
     public Vector3 camDis;  // 캐릭터와 카메라와의 거리
     public Vector3 camRot;  // 캐릭터와 카메라와의 거리 
 
-    [ContextMenu("Create Clear")]
+    // [ContextMenu("Create Clear")]
     public void CreateClearBox()
     {
         Transform instant = new GameObject().transform;   
@@ -201,11 +201,11 @@ public class MapData : MonoBehaviour
         temp.startPosition = Instantiate(instant, positionSetting.transform.position, Quaternion.identity, temp.posSet) as Transform;
         temp.startPosition.name = createWho.ToString() + " Start Position";
         // 클리어 박스 설정
-        temp.clearBox = Instantiate(instant, positionSetting.transform.position, Quaternion.identity, temp.posSet) as Transform;
-        temp.clearBox.name = createWho.ToString() + " Clear Box";
-        temp.clearBox.gameObject.AddComponent<BoxCollider>();
-        temp.clearBox.GetComponent<BoxCollider>().isTrigger = true;
-        temp.clearBox.gameObject.AddComponent<CheckMapClear>();
+        // temp.clearBox = Instantiate(instant, positionSetting.transform.position, Quaternion.identity, temp.posSet) as Transform;
+        // temp.clearBox.name = createWho.ToString() + " Clear Box";
+        // temp.clearBox.gameObject.AddComponent<BoxCollider>();
+        // temp.clearBox.GetComponent<BoxCollider>().isTrigger = true;
+        // temp.clearBox.gameObject.AddComponent<CheckMapClear>();
         // 임시 오브젝트 제거
         DestroyImmediate(instant.gameObject);
         // 리스트에 설정 추가
@@ -240,7 +240,7 @@ public class MapData : MonoBehaviour
         foreach (CharacterPositionSet Item in positionSets)
         {
             if (Item.startPosition) Item.startPosition.name = Item.who.ToString() + " Start Position";
-            if (Item.clearBox) Item.clearBox.name = Item.who.ToString() + " Clear Box";
+            // if (Item.clearBox) Item.clearBox.name = Item.who.ToString() + " Clear Box";
         }
         // 리스트 정렬
         SortPositionSets();
@@ -265,7 +265,7 @@ public class MapData : MonoBehaviour
             foreach (var t in positionSets)
             {
                 characters = new List<AnimationCharacterSet>();
-                characters.Add(new AnimationCharacterSet()
+                characters.Add(new AnimationCharacterSet
                 {
                     characterAnimator = DataController.instance_DataController
                         .GetCharacter((DataController.CharacterType)t.who).anim,

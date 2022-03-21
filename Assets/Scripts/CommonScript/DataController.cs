@@ -186,19 +186,19 @@ public class DataController : MonoBehaviour
         {
             if (temp[k].who.Equals(MapData.Character.Speat))
             {
-                //if (temp[k].isMain)
+                if (temp[k].isMain)
                     mainChar = speat;
                 speat.SetCharacter(temp[k].startPosition);
             }
             else if (temp[k].who.Equals(MapData.Character.Oun))
             {
-                //if (temp[k].isMain)
+                if (temp[k].isMain)
                     mainChar = oun;
                 oun.SetCharacter(temp[k].startPosition);
             }
             else if (temp[k].who.Equals(MapData.Character.Rau))
             {
-                //if (temp[k].isMain)
+                if (temp[k].isMain)
                     mainChar = rau;
                 rau.SetCharacter(temp[k].startPosition);
             }
