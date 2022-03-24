@@ -17,7 +17,8 @@ public class MapData : MonoBehaviour
     {
         Speat,
         Oun,
-        Rau
+        Rau,
+        Other_Speat
     }
     public enum JoystickInputMethod
     {
@@ -357,8 +358,9 @@ public class MapData : MonoBehaviour
                     DataController.instance_DataController.inputDirection); // 조정된 입력 방향으로 크기 계산
             }
         }
-        
+        //Debug.Log(mainChar.transform.position);
         mainChar.MoveCharacter(method);
+        //Debug.Log(mainChar.transform.position);
         
     }
     #endregion
