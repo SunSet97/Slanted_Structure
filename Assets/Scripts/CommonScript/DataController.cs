@@ -149,7 +149,7 @@ public class DataController : MonoBehaviour
         speat.WaitInRoom();
         oun.WaitInRoom();
         rau.WaitInRoom();
-        
+
         if (currentMap != null)
         {
             //현재 맵 제거
@@ -157,10 +157,8 @@ public class DataController : MonoBehaviour
             Destroy(currentMap.gameObject);
         }
 
-        //새로운 맵 생성
         currentMap = Instantiate(Array.Find(storymaps, mapData => mapData.mapCode.Equals(mapCode)), mapGenerate);
         currentMap.Initialize();
-
         SetByChangedMap();
     }
 
@@ -205,7 +203,7 @@ public class DataController : MonoBehaviour
         }
         //조이스틱 초기화
         InitializeJoyStick(!currentMap.isJoystickNone);
-
+        
 
         // CameraMoving 컨트롤
         bool checkCameraMoving = cam.GetComponent<Camera_Moving>().enabled;
@@ -228,9 +226,9 @@ public class DataController : MonoBehaviour
         FindProgressCollider();
 
         // 조작 가능한 상태로 변경 (중력 적용)
-        speat.PutDownCharacter();
-        oun.PutDownCharacter();
-        rau.PutDownCharacter();
+        speat.UseJoystickCharacter();
+        oun.UseJoystickCharacter();
+        rau.UseJoystickCharacter();
     }
 
     // 게임 진행에 필요한 콜라이더와 이미지를 획득

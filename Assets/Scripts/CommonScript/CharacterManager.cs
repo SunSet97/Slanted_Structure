@@ -13,6 +13,7 @@ public class CharacterManager : MonoBehaviour, IMovable
     private SkinnedMeshRenderer skinnedMesh; // 캐릭터 머테리얼
     private Texture[] faceExpression;//표정 메터리얼
 
+    public MapData.Character who;
     private Camera cam; // 카메라
     [Tooltip("캐릭터 Pos을 넣으시오.")]
     [SerializeField] private Transform waitTransform;
@@ -24,9 +25,12 @@ public class CharacterManager : MonoBehaviour, IMovable
         joyStick = DataController.instance_DataController.joyStick;
         cam = DataController.instance_DataController.cam;
         // 표정 머테리얼 초기화
-        faceExpression = Resources.LoadAll<Texture>("Face");
-        skinnedMesh = this.GetComponentInChildren<SkinnedMeshRenderer>();
-        skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int)emotion]);
+        if (!who.Equals(MapData.Character.Other_Speat))
+        {
+            faceExpression = Resources.LoadAll<Texture>("Face");
+            skinnedMesh = this.GetComponentInChildren<SkinnedMeshRenderer>();
+            skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int) emotion]);
+        }
     }
 
     void Update()
@@ -84,7 +88,7 @@ public class CharacterManager : MonoBehaviour, IMovable
     // 일정 시간 후 캐릭터를 조이스틱으로 움직이게 함
     public void UseJoystickCharacter()
     {
-        Invoke("PutDownCharacter", 0.2f);
+        Invoke("PutDownCharacter", 0.02f);
     }
     #endregion
 
@@ -107,7 +111,8 @@ public class CharacterManager : MonoBehaviour, IMovable
         {
             anim.SetInteger("Emotion", (int)emotion); // 애니메이션실행
         }
-        skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int)emotion]); // 현재 감정으로 메터리얼 변경
+        if(!who.Equals(MapData.Character.Other_Speat))
+            skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int)emotion]); // 현재 감정으로 메터리얼 변경
 
 
     }
