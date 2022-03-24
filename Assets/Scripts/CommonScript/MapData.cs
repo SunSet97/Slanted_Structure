@@ -264,7 +264,6 @@ public class MapData : MonoBehaviour
             }
             foreach (var t in positionSets)
             {
-                characters = new List<AnimationCharacterSet>();
                 characters.Add(new AnimationCharacterSet
                 {
                     characterAnimator = DataController.instance_DataController
@@ -332,20 +331,34 @@ public class MapData : MonoBehaviour
     
     #region Input 설정
 
-    public bool isJoystickUse;
+    [Header("조이스틱 인풋 사용 유무, 조이스틱 존재 유무가 아님")]
+    public bool isJoystickInputIgnore;
+    [Header("조이스틱 존재 유무")]
+    public bool isJoystickNone;
     private void JoystickInputUpdate()
     {
+        var mainChar = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
         //Joystick Input
-        if (isJoystickUse)
+        if (!isJoystickInputIgnore)
         {
-            DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero,
-                DataController.instance_DataController.inputDirection); // 조정된 입력 방향으로 크기 계산
-            DataController.instance_DataController.inputDirection.Set(
-                DataController.instance_DataController.joyStick.Horizontal,
-                DataController.instance_DataController.joyStick.Vertical); // 조정된 입력 방향 설정
+            //사이드뷰 일 때
+            if (method.Equals(JoystickInputMethod.OneDirection))
+            {
+                DataController.instance_DataController.inputDegree = Mathf.Abs(DataController.instance_DataController.joyStick.Horizontal); // 조정된 입력 방향으로 크기 계산
+                DataController.instance_DataController.inputDirection.Set(DataController.instance_DataController.joyStick.Horizontal, 0); // 조정된 입력 방향 설정
+                DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
+            }
+            else
+            {
+                DataController.instance_DataController.inputDirection.Set(
+                    DataController.instance_DataController.joyStick.Horizontal,
+                    DataController.instance_DataController.joyStick.Vertical); // 조정된 입력 방향 설정
+                DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero,
+                    DataController.instance_DataController.inputDirection); // 조정된 입력 방향으로 크기 계산
+            }
         }
-
-        DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).MoveCharacter(method);
+        
+        mainChar.MoveCharacter(method);
         
     }
     #endregion

@@ -434,7 +434,7 @@ public class CanvasControl : MonoBehaviour
             MapData.AnimationCharacterSet animator = DataController.instance_DataController.currentMap.characters.Find(
                 item => item.who.ToString().Equals(dialogueData.dialogues[dialogueCnt].anim_name));
             animator?.characterAnimator.SetInteger(Emotion, (int) dialogueData.dialogues[dialogueCnt].expression);
-
+    
             // 해당 캐릭터에 setEmotion
             // anim.SetInteger("Emotion", (int)emotion); // 애니메이션실행
             speakerName.text = dialogueData.dialogues[dialogueCnt].name; // 이야기하는 캐릭터 이름

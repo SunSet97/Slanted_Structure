@@ -107,7 +107,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
         WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
         DataController.instance_DataController.InitializeJoyStick(false);
         Debug.Log("지금");
-        DataController.instance_DataController.currentMap.isJoystickUse = false;
+        DataController.instance_DataController.currentMap.isJoystickInputIgnore = true;
         DataController.instance_DataController.inputDegree = 1;
         DataController.instance_DataController.inputDirection.x = 1;
 
