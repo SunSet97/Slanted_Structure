@@ -204,7 +204,7 @@ public class DataController : MonoBehaviour
             }
         }
         //조이스틱 초기화
-        InitializeJoyStick(true);
+        InitializeJoyStick(!currentMap.isJoystickNone);
 
 
         // CameraMoving 컨트롤

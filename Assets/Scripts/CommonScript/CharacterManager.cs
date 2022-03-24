@@ -158,10 +158,6 @@ public class CharacterManager : MonoBehaviour, IMovable
 
     private void Move2DSide(float x)
     {
-        DataController.instance_DataController.inputDegree = Mathf.Abs(DataController.instance_DataController.joyStick.Horizontal); // 조정된 입력 방향으로 크기 계산
-        DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
-        DataController.instance_DataController.inputDirection.Set(DataController.instance_DataController.joyStick.Horizontal, 0); // 조정된 입력 방향 설정
-
         anim.SetBool("2DSide", true);
 
         Vector2 characterRot = default;
@@ -178,10 +174,6 @@ public class CharacterManager : MonoBehaviour, IMovable
     }
     private void QuarterView()
     {
-        Vector2 inputDir = new Vector2(DataController.instance_DataController.joyStick.Horizontal, DataController.instance_DataController.joyStick.Vertical); // 모든 방향 입력은 수평, 수직값을 받음
-        DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero, inputDir); // 조정된 입력 방향으로 크기 계산
-        DataController.instance_DataController.inputDirection = inputDir; // 조정된 입력 방향 설정
-        
         anim.SetBool("2DSide", false);
         if (Mathf.Abs(joyRot) > 0) { transform.Rotate(Vector3.up, joyRot); } // 임시 회전
         anim.SetFloat("Direction", joyRot); //X방향
@@ -210,7 +202,7 @@ public class CharacterManager : MonoBehaviour, IMovable
             {
                 QuarterView();
             }
-            else
+            if(joystickInputMethod.Equals(MapData.JoystickInputMethod.Other))
             {
                 if (Mathf.Abs(joyRot) > 0) { transform.Rotate(Vector3.up, joyRot); } // 임시 회전
             }
