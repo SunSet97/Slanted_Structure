@@ -153,7 +153,7 @@ public class InteractionObj_stroke : MonoBehaviour
             }
             return;
         }
-        currentCharacter = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
+        currentCharacter = DataController.instance_DataController.GetCharacter(MapData.Character.Main);
     }
 
     /// <summary>
@@ -233,7 +233,7 @@ public class InteractionObj_stroke : MonoBehaviour
         if (interactionPlayType == InteractionPlayType.Animation && this.gameObject.GetComponent<Animator>() != null)//애니메이터가 존재한다면 
         {
             //세팅된 애니메이터 시작
-            this.gameObject.GetComponent<Animator>().Play("Start", 0);
+            gameObject.GetComponent<Animator>().Play("Start", 0);
 
         }
         else if (interactionPlayType == InteractionPlayType.Dialogue)
@@ -495,7 +495,7 @@ public class InteractionObj_stroke : MonoBehaviour
                     IPlayable playable = GameObject.Find(currentTask.nextFile).GetComponent<IPlayable>();
                     playable.Play();
                     yield return new WaitUntil(() => playable.IsPlay);
-                    currentTaskData.isContinue = true;  //디버깅용
+                    currentTaskData.isContinue = true; //디버깅용
                     break;
                 case CustomEnum.TYPE.TEMP:
                     Debug.Log("선택지 열기");
@@ -536,6 +536,7 @@ public class InteractionObj_stroke : MonoBehaviour
                                     Debug.Log($"DialogueEndAction {taskEndAction.eventType} - " + t.activeSelf);
                                     t.activeObject.SetActive(t.activeSelf);
                                 }
+
                                 break;
                             case InteractionEvent.EventType.MOVE:
                                 foreach (var t in taskEndAction.movables.movables)
@@ -551,22 +552,24 @@ public class InteractionObj_stroke : MonoBehaviour
                                     Debug.Log($"DialogueEndAction {taskEndAction.eventType} - " + t.isPlay);
                                     t.gameObject.GetComponent<IPlayable>().IsPlay = t.isPlay;
                                 }
+
                                 break;
                         }
                     }
+
                     yield break;
                 case CustomEnum.TYPE.NEW:
-                    {
-                        //
-                        //End가 필요한가
-                        break;
-                    }
+                {
+                    //
+                    //End가 필요한가
+                    break;
+                }
                 case CustomEnum.TYPE.FadeOut:
                 {
                     currentTaskData.isContinue = false;
                     StartCoroutine(FadeEffect.instance.FadeOut());
                     yield return new WaitUntil(() => FadeEffect.instance.isFade);
-                    currentTaskData.isContinue = true;  //디버깅용
+                    currentTaskData.isContinue = true; //디버깅용
 
                     break;
                 }
@@ -578,9 +581,17 @@ public class InteractionObj_stroke : MonoBehaviour
                     currentTaskData.isContinue = true;
                     break;
                 }
+                // case CustomEnum.TYPE.BGM:
+                //{
+                    //AudioSource audioSorce;
+                    //audioSorce.PlayOneShot(new AudioClip());
+                    break;
+                //}
                 default:
+                {
                     Debug.LogError($"{currentTask.type}은 존재하지 않는 type입니다.");
                     break;
+                }
             }
             Debug.Log("Task 종료 대기 중 - " + currentTask.type + ", Index - " + currentTaskData.taskIndex);
             yield return waitUntil;

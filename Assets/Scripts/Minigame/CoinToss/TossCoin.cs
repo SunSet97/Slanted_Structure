@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Play;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TossCoin : MonoBehaviour
+public class TossCoin : MonoBehaviour, IPlayable
 {
     public GameObject coin; // 동전 프리펩
     public Transform arrow; // 화살표
@@ -28,36 +29,39 @@ public class TossCoin : MonoBehaviour
 
     void Update()
     {
-        if (!isPass) // 미성공시 실행
+        if (IsPlay)
         {
-            tryNumText.text = "시도 횟수 : " + tryNum.ToString(); // 시도 횟수 갱신
+            if (!isPass) // 미성공시 실행
+            {
+                tryNumText.text = "시도 횟수 : " + tryNum.ToString(); // 시도 횟수 갱신
 
-            if (step == 0) // 화살표 각도 회전
-            {
-                time += Time.deltaTime * rotateSpd;
-                transform.eulerAngles = Vector3.forward * (Mathf.Sin(time) * 45 + 45);
-            }
-            else if (step == 1) // 화살표 길이 변화
-            {
-                time += Time.deltaTime * gaugeSpd;
-                arrow.localScale = new Vector3(0.1f, Mathf.Sin(time) * 0.045f + 0.055f, 0.1f);
+                if (step == 0) // 화살표 각도 회전
+                {
+                    time += Time.deltaTime * rotateSpd;
+                    transform.eulerAngles = Vector3.forward * (Mathf.Sin(time) * 45 + 45);
+                }
+                else if (step == 1) // 화살표 길이 변화
+                {
+                    time += Time.deltaTime * gaugeSpd;
+                    arrow.localScale = new Vector3(0.1f, Mathf.Sin(time) * 0.045f + 0.055f, 0.1f);
+                }
+                else
+                {
+                    arrow.localScale = Vector3.one * 0.1f; // 화살표 초기화
+                    time = 270 * Mathf.Deg2Rad; // 타이머 초기화
+                    step = 0; // 단계 초기화
+                }
+
+                if (tryNum >= 5)
+                    passText.text = " 실 패 !!! ";
             }
             else
             {
-                arrow.localScale = Vector3.one * 0.1f; // 화살표 초기화
-                time = 270 * Mathf.Deg2Rad; // 타이머 초기화
-                step = 0; // 단계 초기화
+                passText.text = " 성 공 !!! ";
             }
 
-            if(tryNum>=5)
-                passText.text = " 실 패 !!! ";
+            //if (Input.GetButtonDown("Fire1")) TossTheCoin(); // 테스트용(마우스 좌클릭시 실행)
         }
-        else
-        {
-            passText.text = " 성 공 !!! ";
-        }
-
-        //if (Input.GetButtonDown("Fire1")) TossTheCoin(); // 테스트용(마우스 좌클릭시 실행)
     }
 
     // 동전을 던져라(버튼 누를 시 실행)
@@ -89,5 +93,16 @@ public class TossCoin : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public bool IsPlay { get; set; }
+    public void Play()
+    {
+        IsPlay = true;
+    }
+
+    public void EndPlay()
+    {
+        IsPlay = false;
     }
 }

@@ -22,7 +22,7 @@ public class NPCInteractor : MonoBehaviour
     {
         canvasCtrl = CanvasControl.instance_CanvasControl;
         FindNPC();
-        character = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).transform;
+        character = DataController.instance_DataController.GetCharacter(MapData.Character.Main).transform;
     }
 
     void Update()

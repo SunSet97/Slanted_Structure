@@ -15,10 +15,13 @@ public class MapData : MonoBehaviour
     #region Default
     public enum Character
     {
+        Main = -1,
         Speat,
         Oun,
         Rau,
-        Other_Speat
+        Speat_Child,
+        Speat_Adult,
+        Speat_Adolescene
     }
     public enum JoystickInputMethod
     {
@@ -63,7 +66,9 @@ public class MapData : MonoBehaviour
     [Tooltip("CameraMoving 경계 설정")]
     public BoxCollider cameraBound; // 카메라
 
-    [Header("캐릭터 넣으세요")]
+    [Header("BGM입니다")]
+    public AudioClip BGM;
+    [Header("애니메이션 실행되는 캐릭터 넣으세요")]
     public List<AnimationCharacterSet> characters;
     
     [Header("#클리어 박스를 넣으세요")]
@@ -163,8 +168,11 @@ public class MapData : MonoBehaviour
 
     [Header("Camera Setting")]
     [SerializeField] private Camera cam; // auto setting
+
+    [SerializeField] private CustomEnum.CameraViewType cameraViewType; 
     public Vector3 camDis;  // 캐릭터와 카메라와의 거리
     public Vector3 camRot;  // 캐릭터와 카메라와의 거리 
+    
 
     // [ContextMenu("Create Clear")]
     public void CreateClearBox()
@@ -268,7 +276,7 @@ public class MapData : MonoBehaviour
                 characters.Add(new AnimationCharacterSet
                 {
                     characterAnimator = DataController.instance_DataController
-                        .GetCharacter((DataController.CharacterType)t.who).anim,
+                        .GetCharacter(t.who).anim,
                     who = t.who
                 });
             }
@@ -315,6 +323,10 @@ public class MapData : MonoBehaviour
         //UI 세팅
         if (ui != null) ui.transform.SetParent(CanvasControl.instance_CanvasControl.transform.Find("UI"));
 
+        if (BGM != null)
+        {
+            AudioController.instance.PlayBgm(BGM);
+        }
         // //ClearBox who 설정
         // CharacterManager[] arr = FindObjectsOfType<CharacterManager>();
         // List<CharacterManager> lists = new List<CharacterManager>(arr);
@@ -330,6 +342,13 @@ public class MapData : MonoBehaviour
             Debug.LogError("클리어 박스 세팅 오류");
     }
     
+    public void DestroyMap()
+    {
+        AudioController.instance.StopBgm();
+        Destroy(ui);
+        Destroy(gameObject);    
+    }
+    
     #region Input 설정
 
     [Header("조이스틱 인풋 사용 유무, 조이스틱 존재 유무가 아님")]
@@ -338,7 +357,7 @@ public class MapData : MonoBehaviour
     public bool isJoystickNone;
     private void JoystickInputUpdate()
     {
-        var mainChar = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
+        var mainChar = DataController.instance_DataController.GetCharacter(Character.Main);
         //Joystick Input
         if (!isJoystickInputIgnore)
         {

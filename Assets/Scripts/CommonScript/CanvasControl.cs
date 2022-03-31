@@ -188,10 +188,10 @@ public class CanvasControl : MonoBehaviour
             }
             // 데이터 저장 시 연필 개수, 캐릭터 위치, 현재 씬 등 업데이트 (점점 추가할 예정)
             DataController.instance_DataController.charData.pencilCnt -= 1;
-            DataController.instance_DataController.charData.currentCharPosition = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).transform.position;
-            DataController.instance_DataController.charData.rauPosition = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Rau).transform.position;
-            DataController.instance_DataController.charData.speatPosition = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Speat).transform.position;
-            DataController.instance_DataController.charData.ounPosition = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Oun).transform.position;
+            DataController.instance_DataController.charData.currentCharPosition = DataController.instance_DataController.GetCharacter(MapData.Character.Main).transform.position;
+            DataController.instance_DataController.charData.rauPosition = DataController.instance_DataController.GetCharacter(MapData.Character.Rau).transform.position;
+            DataController.instance_DataController.charData.speatPosition = DataController.instance_DataController.GetCharacter(MapData.Character.Speat).transform.position;
+            DataController.instance_DataController.charData.ounPosition = DataController.instance_DataController.GetCharacter(MapData.Character.Oun).transform.position;
             DataController.instance_DataController.charData.currentScene = SceneManager.GetActiveScene().name;
 
             DataController.instance_DataController.SaveCharData("SaveData" + fileNum);
@@ -242,7 +242,7 @@ public class CanvasControl : MonoBehaviour
         finishFadeIn = false;
         fadeIn = StartCoroutine(FadeIn());
 
-        if (DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).name == "Rau")
+        if (DataController.instance_DataController.GetCharacter(MapData.Character.Main).name == "Rau")
         {
             commandText.text = DataController.instance_DataController.tutorialCmdData.RauTutorial[commandIndex];
         }

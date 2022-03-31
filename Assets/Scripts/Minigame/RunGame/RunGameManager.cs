@@ -88,7 +88,7 @@ public class RunGameManager : MonoBehaviour
             //DataController.instance_DataController.isMapChanged = true;
 
             // 캐릭터
-            speat = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
+            speat = DataController.instance_DataController.GetCharacter(MapData.Character.Main);
 
             // 애니메이터
             anim = speat.GetComponent<Animator>();

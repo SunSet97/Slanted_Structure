@@ -25,7 +25,7 @@ public class HamburgerStoreManager : MonoBehaviour
     #region 초기세팅
     void InitialSetting()
     {
-        currentCharacter = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
+        currentCharacter = DataController.instance_DataController.GetCharacter(MapData.Character.Main);
 
         if (speatPrefab != null)
         {
