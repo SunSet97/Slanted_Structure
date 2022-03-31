@@ -19,8 +19,18 @@ public class AudioController : MonoBehaviour
     }
     public void PlayBgm(AudioClip audioClip)
     {
-        bgmSource.clip = audioClip;
-        bgmSource.Play();
+        if (audioClip == null)
+        {
+            bgmSource.clip = null;
+            bgmSource.Stop();
+            return;
+        }
+        
+        if (!audioClip.Equals(bgmSource.clip))
+        {
+            bgmSource.clip = audioClip;
+            bgmSource.Play();   
+        }
     }
 
     public void StopBgm()

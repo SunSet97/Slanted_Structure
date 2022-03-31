@@ -244,13 +244,10 @@ public class DataController : MonoBehaviour
 
         // CameraMoving 컨트롤
         var camera_Moving = cam.GetComponent<Camera_Moving>();
-        bool checkCameraMoving = camera_Moving.enabled;
-        if ((currentMap.isCameraMoving && !checkCameraMoving) || (!currentMap.isCameraMoving && checkCameraMoving))
-        {
             // StartCoroutine(SetCameraMovingState(currentMap.isCameraMoving));
-            if (currentMap.isCameraMoving) camera_Moving.Initialize(CustomEnum.CameraViewType.FollowCharacter);
-            else if (!currentMap.isCameraMoving) camera_Moving.Initialize(CustomEnum.CameraViewType.FixedView);
-        }
+        if (currentMap.isCameraMoving) camera_Moving.Initialize(CustomEnum.CameraViewType.FollowCharacter);
+        else if (!currentMap.isCameraMoving) camera_Moving.Initialize(CustomEnum.CameraViewType.FixedView);
+        
 
         //스카이박스 세팅
         RenderSettings.skybox = currentMap.SkyboxSetting;
