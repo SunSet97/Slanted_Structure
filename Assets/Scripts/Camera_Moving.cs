@@ -23,22 +23,26 @@ public class Camera_Moving : MonoBehaviour
         Debug.Log("초기화초기화초기화" + viewType);
         this.viewType = viewType;
         character = DataController.instance_DataController.GetCharacter(MapData.Character.Main).transform;
+        Debug.Log(character);
     }
     void Update()
     {
         var cam = Camera.main;
-        
-        Follow_Player(cam.transform.position);
-        
-        if (cam.orthographic) cam.orthographicSize = DataController.instance_DataController.orthgraphic_Size;
+        Debug.Log(character);
+        if (character)
+        {
+            if (cam.orthographic) cam.orthographicSize = DataController.instance_DataController.orthgraphic_Size;
 
-        if (viewType.Equals(CustomEnum.CameraViewType.FixedView))
-        {
-            cam.transform.position = DataController.instance_DataController.currentMap.transform.position + DataController.instance_DataController.camDis;
-        }
-        else if (viewType.Equals(CustomEnum.CameraViewType.FollowCharacter))
-        {
-            cam.transform.position = character.position + DataController.instance_DataController.camDis;
+            if (viewType.Equals(CustomEnum.CameraViewType.FixedView))
+            {
+                cam.transform.position = DataController.instance_DataController.currentMap.transform.position +
+                                         DataController.instance_DataController.camDis;
+            }
+            else if (viewType.Equals(CustomEnum.CameraViewType.FollowCharacter))
+            {
+                cam.transform.position = character.position + DataController.instance_DataController.camDis;
+            }
+            Follow_Player(cam.transform.position);
         }
     }
 

@@ -323,10 +323,8 @@ public class MapData : MonoBehaviour
         //UI 세팅
         if (ui != null) ui.transform.SetParent(CanvasControl.instance_CanvasControl.transform.Find("UI"));
 
-        if (BGM != null)
-        {
-            AudioController.instance.PlayBgm(BGM);
-        }
+        AudioController.instance.PlayBgm(BGM);
+
         // //ClearBox who 설정
         // CharacterManager[] arr = FindObjectsOfType<CharacterManager>();
         // List<CharacterManager> lists = new List<CharacterManager>(arr);
@@ -344,7 +342,6 @@ public class MapData : MonoBehaviour
     
     public void DestroyMap()
     {
-        AudioController.instance.StopBgm();
         Destroy(ui);
         Destroy(gameObject);    
     }
