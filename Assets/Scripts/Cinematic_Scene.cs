@@ -34,15 +34,15 @@ public class Cinematic_Scene : MonoBehaviour
 
         if (Main_char == "Speat")
         {
-            DataController.instance_DataController.GetCharacter(DataController.CharacterType.Speat).emotion = (CharacterManager.Emotion)emotion;
+            DataController.instance_DataController.GetCharacter(MapData.Character.Speat).emotion = (CharacterManager.Emotion)emotion;
         }
         if (Main_char == "Rau")
         {
-            DataController.instance_DataController.GetCharacter(DataController.CharacterType.Rau).emotion = (CharacterManager.Emotion)emotion;
+            DataController.instance_DataController.GetCharacter(MapData.Character.Rau).emotion = (CharacterManager.Emotion)emotion;
         }
         if (Main_char == "Oun")
         {
-            DataController.instance_DataController.GetCharacter(DataController.CharacterType.Oun).emotion = (CharacterManager.Emotion)emotion;
+            DataController.instance_DataController.GetCharacter(MapData.Character.Oun).emotion = (CharacterManager.Emotion)emotion;
         }
 
     }

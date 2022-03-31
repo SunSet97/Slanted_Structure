@@ -49,7 +49,7 @@ public class CameraMovingManager : MonoBehaviour
 
     private void Start()
     {
-        character = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main)
+        character = DataController.instance_DataController.GetCharacter(MapData.Character.Main)
             .transform;
     }
 

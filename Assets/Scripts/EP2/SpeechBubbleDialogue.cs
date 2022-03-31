@@ -95,7 +95,7 @@ public class SpeechBubbleDialogue : MonoBehaviour
         {
             gameObject.tag = "obj_interaction";
         }
-        character = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main);
+        character = DataController.instance_DataController.GetCharacter(MapData.Character.Main);
     }
 
     // Update is called once per frame

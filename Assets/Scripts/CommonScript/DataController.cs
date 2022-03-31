@@ -24,13 +24,15 @@ public class DataController : MonoBehaviour
     private bool isAlreadySave;
     private bool wasJoystickUse;
 
-    public enum CharacterType { Main = -1, Rau, Oun, Speat};
 
     [Header("캐릭터")]
     private CharacterManager mainChar;
     private CharacterManager rau;
     private CharacterManager oun;
     private CharacterManager speat;
+    private CharacterManager speat_Adult;
+    private CharacterManager speat_Child;
+    private CharacterManager speat_Adolescene;
 
     [Header("카메라 경계값")]
     public Camera cam;
@@ -94,6 +96,9 @@ public class DataController : MonoBehaviour
         if (!speat && GameObject.Find("Speat")) speat = GameObject.Find("Speat").GetComponent<CharacterManager>();
         if (!oun && GameObject.Find("Oun")) oun = GameObject.Find("Oun").GetComponent<CharacterManager>();
         if (!rau && GameObject.Find("Rau")) rau = GameObject.Find("Rau").GetComponent<CharacterManager>();
+        if (!speat_Adolescene && GameObject.Find("Speat_Adolescene")) speat_Adolescene = GameObject.Find("Speat_Adolescene").GetComponent<CharacterManager>();
+        if (!speat_Adult && GameObject.Find("Speat_Adult")) speat_Adult = GameObject.Find("Speat_Adult").GetComponent<CharacterManager>();
+        if (!speat_Child && GameObject.Find("Speat_Child")) speat_Child = GameObject.Find("Speat_Child").GetComponent<CharacterManager>();
         joyStick = FindObjectOfType<Joystick>();
         cam = Camera.main;
         //맵 찾아서 저장
@@ -104,22 +109,31 @@ public class DataController : MonoBehaviour
         }
     }
 
-    public CharacterManager GetCharacter(CharacterType characterType)
+    public CharacterManager GetCharacter(MapData.Character characterType)
     {
         CharacterManager character = null;
         switch (characterType)
         {
-            case CharacterType.Main:
+            case MapData.Character.Main:
                 character = mainChar;
                 break;
-            case CharacterType.Rau:
+            case MapData.Character.Rau:
                 character = rau;
                 break;
-            case CharacterType.Oun:
+            case MapData.Character.Oun:
                 character = oun;
                 break;
-            case CharacterType.Speat:
+            case MapData.Character.Speat:
                 character = speat;
+                break;
+            case MapData.Character.Speat_Adult:
+                character = speat_Adult;
+                break;
+            case MapData.Character.Speat_Child:
+                character = speat_Child;
+                break;
+            case MapData.Character.Speat_Adolescene:
+                character = speat_Adolescene;
                 break;
         }
         return character;
@@ -149,16 +163,18 @@ public class DataController : MonoBehaviour
         speat.WaitInRoom();
         oun.WaitInRoom();
         rau.WaitInRoom();
+        speat_Child.WaitInRoom();
+        speat_Adolescene.WaitInRoom();
+        speat_Adult.WaitInRoom();
 
         if (currentMap != null)
         {
-            //현재 맵 제거
-            Destroy(currentMap.ui);
-            Destroy(currentMap.gameObject);
+            currentMap.DestroyMap();
         }
 
         currentMap = Instantiate(Array.Find(storymaps, mapData => mapData.mapCode.Equals(mapCode)), mapGenerate);
         currentMap.Initialize();
+        
         SetByChangedMap();
     }
 
@@ -167,7 +183,10 @@ public class DataController : MonoBehaviour
         speat.PickUpCharacter();
         oun.PickUpCharacter();
         rau.PickUpCharacter();
-
+        speat_Adolescene.PickUpCharacter();
+        speat_Adult.PickUpCharacter();
+        speat_Child.PickUpCharacter();
+        
         //카메라 위치와 회전
         camDis = currentMap.camDis;
         camRot = currentMap.camRot;
@@ -176,6 +195,9 @@ public class DataController : MonoBehaviour
         speat.InitializeCharacter();
         oun.InitializeCharacter();
         rau.InitializeCharacter();
+        speat_Adolescene.InitializeCharacter();
+        speat_Adult.InitializeCharacter();
+        speat_Child.InitializeCharacter();
 
 
 
@@ -199,6 +221,21 @@ public class DataController : MonoBehaviour
                 if (temp[k].isMain)
                     mainChar = rau;
                 rau.SetCharacter(temp[k].startPosition);
+            }else if (temp[k].who.Equals(MapData.Character.Speat_Adolescene))
+            {
+                if (temp[k].isMain)
+                    mainChar = speat_Adolescene;
+                speat_Adolescene.SetCharacter(temp[k].startPosition);
+            }else if (temp[k].who.Equals(MapData.Character.Speat_Adult))
+            {
+                if (temp[k].isMain)
+                    mainChar = speat_Adult;
+                speat_Adult.SetCharacter(temp[k].startPosition);
+            }else if (temp[k].who.Equals(MapData.Character.Speat_Child))
+            {
+                if (temp[k].isMain)
+                    mainChar = speat_Child;
+                speat_Child.SetCharacter(temp[k].startPosition);
             }
         }
         //조이스틱 초기화
@@ -206,9 +243,14 @@ public class DataController : MonoBehaviour
         
 
         // CameraMoving 컨트롤
-        bool checkCameraMoving = cam.GetComponent<Camera_Moving>().enabled;
-        if (currentMap.isCameraMoving && !checkCameraMoving) StartCoroutine(SetCameraMovingState(currentMap.isCameraMoving));
-        else if (!currentMap.isCameraMoving && checkCameraMoving) StartCoroutine(SetCameraMovingState(currentMap.isCameraMoving));
+        var camera_Moving = cam.GetComponent<Camera_Moving>();
+        bool checkCameraMoving = camera_Moving.enabled;
+        if ((currentMap.isCameraMoving && !checkCameraMoving) || (!currentMap.isCameraMoving && checkCameraMoving))
+        {
+            // StartCoroutine(SetCameraMovingState(currentMap.isCameraMoving));
+            if (currentMap.isCameraMoving) camera_Moving.Initialize(CustomEnum.CameraViewType.FollowCharacter);
+            else if (!currentMap.isCameraMoving) camera_Moving.Initialize(CustomEnum.CameraViewType.FixedView);
+        }
 
         //스카이박스 세팅
         RenderSettings.skybox = currentMap.SkyboxSetting;
@@ -222,13 +264,15 @@ public class DataController : MonoBehaviour
             orthgraphic_Size = currentMap.orthographicSize;
         }
 
-
         FindProgressCollider();
 
         // 조작 가능한 상태로 변경 (중력 적용)
         speat.UseJoystickCharacter();
         oun.UseJoystickCharacter();
         rau.UseJoystickCharacter();
+        speat_Adolescene.UseJoystickCharacter();
+        speat_Child.UseJoystickCharacter();
+        speat_Adult.UseJoystickCharacter();
     }
 
     // 게임 진행에 필요한 콜라이더와 이미지를 획득
@@ -392,8 +436,6 @@ public class DataController : MonoBehaviour
                 //_dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
             }
         }
-
-
     }
 
     // 캐릭터 데이터 저장

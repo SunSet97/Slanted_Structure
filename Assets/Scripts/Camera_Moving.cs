@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,9 +8,8 @@ public class Camera_Moving : MonoBehaviour
     //캐릭터 오브젝트 받는 변수
     public Transform character;
 
-    //각 카메라와 Player의 Position값 저장할 Vector3 변수
-    private Vector3 charPos;
-    private Vector3 camPos;
+    private CustomEnum.CameraViewType viewType;
+    
 
     // 카메라 무빙 경계
     private BoxCollider bound;
@@ -18,27 +18,30 @@ public class Camera_Moving : MonoBehaviour
     private float halfWidth;
     private float halfHeight;
 
+    public void Initialize(CustomEnum.CameraViewType viewType)
+    {
+        Debug.Log("초기화초기화초기화" + viewType);
+        this.viewType = viewType;
+        character = DataController.instance_DataController.GetCharacter(MapData.Character.Main).transform;
+    }
     void Update()
     {
-        if (DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main))
-            character = DataController.instance_DataController.GetCharacter(DataController.CharacterType.Main).transform;
+        var cam = Camera.main;
+        
+        Follow_Player(cam.transform.position);
+        
+        if (cam.orthographic) cam.orthographicSize = DataController.instance_DataController.orthgraphic_Size;
 
-        if (character)
+        if (viewType.Equals(CustomEnum.CameraViewType.FixedView))
         {
-            //플레이어 위치 변수에 플레이어 위치 값 넣음.
-            charPos = character.position;
-            //메인 카메라의 위치를 플레이어 위치와 동일시함.
-            Camera.main.transform.position = charPos + DataController.instance_DataController.camDis;
-            //지금 카메라의 위치를 카메라 위치변수에 넣음
-            camPos = Camera.main.transform.position;
-            //카메라의 이동과 제한을 위한 함수에 매개변수로 카메라 위치변수 넣음.
-            Follow_Player(camPos);
-            //Player_transform.position = Player_Position;
-            if(Camera.main.orthographic)
-                Camera.main.orthographicSize = DataController.instance_DataController.orthgraphic_Size;
-
+            cam.transform.position = DataController.instance_DataController.currentMap.transform.position + DataController.instance_DataController.camDis;
+        }
+        else if (viewType.Equals(CustomEnum.CameraViewType.FollowCharacter))
+        {
+            cam.transform.position = character.position + DataController.instance_DataController.camDis;
         }
     }
+
 
     void Follow_Player(Vector3 position)
     {
@@ -64,10 +67,6 @@ public class Camera_Moving : MonoBehaviour
             //float clampedZ;
             transform.position = new Vector3(clampedX, clampedY, transform.position.z);
 
-        }
-        else
-        {
-            Camera.main.transform.position = position + DataController.instance_DataController.camDis;
         }
 
         //입력 된 카메라 각도 설정

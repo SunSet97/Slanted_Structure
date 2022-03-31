@@ -13,4 +13,10 @@ public class CustomEnum
     {
         NONE = 0, ANIMATION = 1, DIALOGUE = 2, TEMP = 3, TEMPEND = 4, TaskReset = 5, NEW = 6, THEEND = 7, Play = 8, FadeOut = 9, FadeIn = 10, Cinematic = 11, TempDialogueEnd = 99
     }
+    
+    public enum CameraViewType
+    {
+        FollowCharacter, FixedView         
+    }
+    
 }

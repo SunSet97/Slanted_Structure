@@ -25,7 +25,7 @@ public class CharacterManager : MonoBehaviour, IMovable
         joyStick = DataController.instance_DataController.joyStick;
         cam = DataController.instance_DataController.cam;
         // 표정 머테리얼 초기화
-        if (!who.Equals(MapData.Character.Other_Speat))
+        if (who.Equals(MapData.Character.Speat) || who.Equals(MapData.Character.Oun) || who.Equals(MapData.Character.Rau))
         {
             faceExpression = Resources.LoadAll<Texture>("Face");
             skinnedMesh = this.GetComponentInChildren<SkinnedMeshRenderer>();
@@ -111,7 +111,7 @@ public class CharacterManager : MonoBehaviour, IMovable
         {
             anim.SetInteger("Emotion", (int)emotion); // 애니메이션실행
         }
-        if(!who.Equals(MapData.Character.Other_Speat))
+        if (who.Equals(MapData.Character.Speat) || who.Equals(MapData.Character.Oun) || who.Equals(MapData.Character.Rau))
             skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int)emotion]); // 현재 감정으로 메터리얼 변경
 
 
