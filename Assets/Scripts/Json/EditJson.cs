@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using Data;
 using UnityEditor;
 
 [CustomEditor(typeof(EditJson))]
@@ -68,8 +69,8 @@ public class EditJson : MonoBehaviour
                     //Debug.Log(taskDatas[index]);
                     for (int i = 0; i < taskDatas[index].tasks.Length; i++)
                     {
-                        if (taskDatas[index].tasks[i].type == CustomEnum.TYPE.NEW ||
-                            taskDatas[index].tasks[i].type == CustomEnum.TYPE.TEMP)
+                        if (taskDatas[index].tasks[i].taskContentType == CustomEnum.TaskContentType.NEW ||
+                            taskDatas[index].tasks[i].taskContentType == CustomEnum.TaskContentType.TEMP)
                         {
                             //Debug.Log(taskDatas[index].tasks[i].nextFile);
                             int count = int.Parse(taskDatas[index].tasks[i].nextFile);

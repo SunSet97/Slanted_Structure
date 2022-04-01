@@ -61,7 +61,7 @@ public class MiniGameManager : MonoBehaviour
         //DataController.instance_DataController.isMapChanged = true;
         particle.Play();
         initialRauSpeed = rauSpeed;
-        rau = DataController.instance_DataController.GetCharacter(MapData.Character.Rau);
+        rau = DataController.instance.GetCharacter(MapData.Character.Rau);
     }
 
     void Update()
@@ -82,7 +82,7 @@ public class MiniGameManager : MonoBehaviour
             // 라우 이동
             rau.ctrl.Move(new Vector3(0, 0, 1) * rauSpeed * Time.deltaTime);
 
-            if (DataController.instance_DataController.inputDirection == new Vector2(0, 0)) // 조이스틱 인풋 없을 때 forwadDir방향 바라보게하기
+            if (DataController.instance.inputDirection == new Vector2(0, 0)) // 조이스틱 인풋 없을 때 forwadDir방향 바라보게하기
             { 
                 rau.gameObject.transform.eulerAngles = forwardDir;
             }
@@ -149,7 +149,7 @@ public class MiniGameManager : MonoBehaviour
 
     private void SetDataController()
     {   // 카메라 설정
-        DataController.instance_DataController.camDis = new Vector3(0,1.3f,-2.5f);
+        DataController.instance.camDis = new Vector3(0,1.3f,-2.5f);
     }
 
     private void SetPickPocket()
@@ -222,13 +222,13 @@ public class MiniGameManager : MonoBehaviour
     {
         if (isStopping)//isStopping이 참일 때만 활성화.
         {
-            DataController.instance_DataController.joyStick.gameObject.SetActive(false); // 조이스틱 없애기
+            DataController.instance.joyStick.gameObject.SetActive(false); // 조이스틱 없애기
             float tempAcceleration = acceleration;
             //float tempSpeed = rauSpeed;
             rauSpeed = 0;
             acceleration = 0;
             yield return new WaitForSeconds(time);
-            DataController.instance_DataController.joyStick.gameObject.SetActive(true); // 조이스틱 생기게
+            DataController.instance.joyStick.gameObject.SetActive(true); // 조이스틱 생기게
             rauSpeed = initialRauSpeed; // 장애물과 충돌하면, 라우 스피트는 다시 초기화!
             acceleration = tempAcceleration; // 장애물과 충돌하면, 라우 가속도 다시 초기화!
             //rau.isCollisionObstacle = false;
@@ -250,7 +250,7 @@ public class MiniGameManager : MonoBehaviour
     {
         while (true)
         {
-            if (DataController.instance_DataController.mapCode != "010001") break;
+            if (DataController.instance.mapCode != "010001") break;
             //kickboard.SetActive(true);
             //kickboardSpeat.SetActive(true);
             kickboardParent.SetActive(true);
@@ -267,7 +267,7 @@ public class MiniGameManager : MonoBehaviour
     IEnumerator Wait(float waitingtime)
     {
         yield return new WaitForSeconds(waitingtime);
-        forwardDir = rau.transform.position - DataController.instance_DataController.cam.transform.position;
+        forwardDir = rau.transform.position - DataController.instance.cam.transform.position;
         forwardDir = forwardDir.normalized;
         rau.gameObject.transform.eulerAngles = forwardDir;
         InitialSetting();

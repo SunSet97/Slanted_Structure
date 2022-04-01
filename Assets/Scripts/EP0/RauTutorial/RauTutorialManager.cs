@@ -33,8 +33,8 @@ public class RauTutorialManager : MonoBehaviour
 
     void Start()
     {
-        rau = DataController.instance_DataController.GetCharacter(MapData.Character.Rau);
-        mapData = DataController.instance_DataController.currentMap;
+        rau = DataController.instance.GetCharacter(MapData.Character.Rau);
+        mapData = DataController.instance.currentMap;
     }
     void Update()
     {
@@ -49,16 +49,16 @@ public class RauTutorialManager : MonoBehaviour
     void TouchSlide()
     {
         // https://www.youtube.com/watch?v=98dQBWUyy9M 멀티 터치 참고
-        if (DataController.instance_DataController.joyStick.Horizontal > 0) swipeDir = Swipe.Right;
-        else if (DataController.instance_DataController.joyStick.Horizontal < 0) swipeDir = Swipe.Left;
-        else if (DataController.instance_DataController.joyStick.Vertical < 0) swipeDir = Swipe.Down;
+        if (DataController.instance.joyStick.Horizontal > 0) swipeDir = Swipe.Right;
+        else if (DataController.instance.joyStick.Horizontal < 0) swipeDir = Swipe.Left;
+        else if (DataController.instance.joyStick.Vertical < 0) swipeDir = Swipe.Down;
         else swipeDir = Swipe.none;
     }
 
     // 조이스틱 이미지 껐다 끄기
     void OnOffJoystick(bool isOn)
     {
-        foreach (Image image in DataController.instance_DataController.joyStick.GetComponentsInChildren(typeof(Image), true))
+        foreach (Image image in DataController.instance.joyStick.GetComponentsInChildren(typeof(Image), true))
         {
             if (isOn && !image.name.Equals("Transparent Dynamic Joystick")) image.color = Color.white - Color.black * 0.3f;
             else image.color = Color.clear;
@@ -70,14 +70,14 @@ public class RauTutorialManager : MonoBehaviour
     {
         mapData.method = methodNum; // 0 = one dir, 1 = all dir, 2 = other
         OnOffJoystick(methodNum != MapData.JoystickInputMethod.Other); // other일 경우 인터렉션 부분이므로 조이스틱 안보이게 함
-        DataController.instance_DataController.joyStick.AxisOptions = axisNum; // 0 = both, 1 = hor, 2 = ver
+        DataController.instance.joyStick.AxisOptions = axisNum; // 0 = both, 1 = hor, 2 = ver
     }
 
     // 숲 초입길
     void ForestIntro()
     {
         // 카메라 방향 side
-        DataController.instance_DataController.camDis = view_side.camDis; DataController.instance_DataController.camRot = view_side.camRot;
+        DataController.instance.camDis = view_side.camDis; DataController.instance.camRot = view_side.camRot;
         // side 이동 및 점프 튜토리얼
         ChangeJoystickSetting(0, 0); // 2D side view 이동
     }
@@ -89,7 +89,7 @@ public class RauTutorialManager : MonoBehaviour
     void GrassSwipe()
     {
         // 카메라 방향 앞, 어깨 뒤 방향
-        DataController.instance_DataController.camDis = view_forward.camDis; DataController.instance_DataController.camRot = view_forward.camRot;
+        DataController.instance.camDis = view_forward.camDis; DataController.instance.camRot = view_forward.camRot;
         // 수풀길 헤쳐가기
         ChangeJoystickSetting(MapData.JoystickInputMethod.Other, AxisOptions.Horizontal); // 이동 해제, 좌우 스와이프만 가능하도록 변경
         rau.PickUpCharacter();
@@ -155,7 +155,7 @@ public class RauTutorialManager : MonoBehaviour
         {
             rau.UseJoystickCharacter();
             // 카메라 방향 side
-            DataController.instance_DataController.camDis = view_side.camDis; DataController.instance_DataController.camRot = view_side.camRot;
+            DataController.instance.camDis = view_side.camDis; DataController.instance.camRot = view_side.camRot;
             ChangeJoystickSetting(0, 0); // 2D side view 이동
             isRiver = true;
         }
@@ -181,17 +181,17 @@ public class RauTutorialManager : MonoBehaviour
         if (isKickWood && !isWoodBridge && kickIndex < 3)
         {
             ui[4].SetActive(true);
-            DataController.instance_DataController.camDis = view_river.camDis; DataController.instance_DataController.camRot = view_river.camRot;
+            DataController.instance.camDis = view_river.camDis; DataController.instance.camRot = view_river.camRot;
             ChangeJoystickSetting(MapData.JoystickInputMethod.Other, 0); // 이동 해제
             rau.PickUpCharacter();
-            DataController.instance_DataController.inputDegree = 0;
-            DataController.instance_DataController.inputDirection = Vector2.zero;
+            DataController.instance.inputDegree = 0;
+            DataController.instance.inputDirection = Vector2.zero;
         }
         else if (isKickWood && !isWoodBridge && kickIndex >= 3)
         {
             ui[4].SetActive(false);
             // 카메라 방향 side
-            DataController.instance_DataController.camDis = view_river.camDis; DataController.instance_DataController.camRot = view_river.camRot;
+            DataController.instance.camDis = view_river.camDis; DataController.instance.camRot = view_river.camRot;
             ChangeJoystickSetting(0, 0); // 2D side view 이동
             rau.UseJoystickCharacter();
             riverTrees[0].SetActive(false);
@@ -221,7 +221,7 @@ public class RauTutorialManager : MonoBehaviour
     void Forest()
     {
         // 카메라 방향 앞, 쿼터뷰
-        DataController.instance_DataController.camDis = view_quarter.camDis; DataController.instance_DataController.camRot = view_quarter.camRot;
+        DataController.instance.camDis = view_quarter.camDis; DataController.instance.camRot = view_quarter.camRot;
         // 둘러보기, 전방향 이동 튜토리얼
         ChangeJoystickSetting(MapData.JoystickInputMethod.AllDirection, 0); // 전방향 이동
         ui[5].SetActive(true);
@@ -237,7 +237,7 @@ public class RauTutorialManager : MonoBehaviour
         {
             ui[6].SetActive(true);
             // 카메라 방향 앞, 쿼터뷰
-            DataController.instance_DataController.camDis = view_forward.camDis; DataController.instance_DataController.camRot = view_forward.camRot;
+            DataController.instance.camDis = view_forward.camDis; DataController.instance.camRot = view_forward.camRot;
             ChangeJoystickSetting(MapData.JoystickInputMethod.Other, AxisOptions.Vertical); // 이동 해제, 위아래 스와이프만 가능하도록 변경
             TouchSlide();
             rau.PickUpCharacter();
@@ -255,7 +255,7 @@ public class RauTutorialManager : MonoBehaviour
         else if (isCheckPoint[6] && isSwipeWood)
         {
             // 카메라 방향 앞, 쿼터뷰
-            DataController.instance_DataController.camDis = view_quarter.camDis; DataController.instance_DataController.camRot = view_quarter.camRot;
+            DataController.instance.camDis = view_quarter.camDis; DataController.instance.camRot = view_quarter.camRot;
             // 둘러보기, 전방향 이동 튜토리얼
             ChangeJoystickSetting(MapData.JoystickInputMethod.AllDirection, 0); // 전방향 이동
             rau.UseJoystickCharacter();

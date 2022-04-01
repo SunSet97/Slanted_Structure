@@ -116,7 +116,7 @@ public class PimpGuestMoving : MonoBehaviour
             {
                 PimpGuestMoving pimpGuestMoving = transform.parent.parent.GetChild(i).GetChild(j).GetComponent<PimpGuestMoving>();
                 pimpGuestMoving.talking = isTalking;
-                DataController.instance_DataController.currentMap.ui.SetActive(!isTalking);
+                DataController.instance.currentMap.ui.SetActive(!isTalking);
                 speat.IsMove = !isTalking;
                 if (isTalking)
                 {
@@ -145,8 +145,8 @@ public class PimpGuestMoving : MonoBehaviour
                 //수정
                 var speat = pimpGameManager.speat;
                 speat.IsMove = false;
-                CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { SetTalking(false); speat.IsMove = true; });
-                if (jsonFile) CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
+                CanvasControl.instance.SetDialougueEndAction(() => { SetTalking(false); speat.IsMove = true; });
+                if (jsonFile) CanvasControl.instance.StartConversation(jsonFile.text);
             }
 
         }
@@ -155,7 +155,7 @@ public class PimpGuestMoving : MonoBehaviour
             if (hit.gameObject.name.Equals("Speat"))
             {
                 print("포주와 마주침. 게임 종료");
-                DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
+                DataController.instance.ChangeMap(DataController.instance.mapCode);
                 return;
             }
         }
@@ -184,7 +184,7 @@ public class PimpGuestMoving : MonoBehaviour
     // pimp나 guest가 카메라에 걸리는지 확인하는 함수
     private bool CheckCamera()
     {
-        var cam = DataController.instance_DataController.cam;
+        var cam = DataController.instance.cam;
         Vector3 screenPoint = cam.WorldToViewportPoint(gameObject.transform.position);
         bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
 

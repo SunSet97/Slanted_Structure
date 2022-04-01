@@ -40,7 +40,7 @@ public class Waypoint : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            mapData = DataController.instance_DataController.currentMap;
+            mapData = DataController.instance.currentMap;
             SelectCharacter();
         }
     }
@@ -86,7 +86,7 @@ public class Waypoint : MonoBehaviour
     // waypoint를 따라 움직일 캐릭터 설정
     private void SelectCharacter()
     {
-        character = DataController.instance_DataController.GetCharacter(MapData.Character.Main).transform;
+        character = DataController.instance.GetCharacter(MapData.Character.Main).transform;
         mapData.isJoystickInputIgnore = true;
     }
 
@@ -156,16 +156,16 @@ public class Waypoint : MonoBehaviour
     // 입력 방향 세팅
     private void JoystickInput()
     {
-        float joystickInput = DataController.instance_DataController.joyStick.Horizontal; // 한 방향 입력은 수평값만 받음
+        float joystickInput = DataController.instance.joyStick.Horizontal; // 한 방향 입력은 수평값만 받음
 
         if (Mathf.Approximately(joystickInput, 0f))
         {
-            DataController.instance_DataController.inputDegree = 0f; // 조정된 입력 방향으로 크기 계산
+            DataController.instance.inputDegree = 0f; // 조정된 입력 방향으로 크기 계산
             return;
         }
 
-        if (DataController.instance_DataController.joyStick.gameObject.activeSelf && waypoints.Count > 0 &&
-            DataController.instance_DataController.GetCharacter(MapData.Character.Main).IsMove)
+        if (DataController.instance.joyStick.gameObject.activeSelf && waypoints.Count > 0 &&
+            DataController.instance.GetCharacter(MapData.Character.Main).IsMove)
         {
             int fwdIndex, bwdIndex;
             SetBackFrontIndex(out fwdIndex, out bwdIndex);
@@ -229,10 +229,10 @@ public class Waypoint : MonoBehaviour
 
             Vector2 changedDir = new Vector2(moveDir.x, moveDir.z).normalized;
             
-            DataController.instance_DataController.inputJump =
-                DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
-            DataController.instance_DataController.inputDirection = changedDir; // 조정된 입력 방향 설정
-            DataController.instance_DataController.inputDegree = Mathf.Abs(joystickInput); // 조정된 입력 방향으로 크기 계산
+            DataController.instance.inputJump =
+                DataController.instance.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
+            DataController.instance.inputDirection = changedDir; // 조정된 입력 방향 설정
+            DataController.instance.inputDegree = Mathf.Abs(joystickInput); // 조정된 입력 방향으로 크기 계산
             
             //애니메이션 세팅 해줘야 되지 않나???
         }

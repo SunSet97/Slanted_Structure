@@ -42,7 +42,7 @@ public class Interact_ObjectWithRau : MonoBehaviour
                 if (mark != null)
                 {
                     mark.gameObject.SetActive(isIn); // 마크 활성화
-                    mark.transform.position = (Vector3)markOffset + DataController.instance_DataController.cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
+                    mark.transform.position = (Vector3)markOffset + DataController.instance.cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
                 }
             }
             else if (isIn && isInteracting)
@@ -51,7 +51,7 @@ public class Interact_ObjectWithRau : MonoBehaviour
                 if (mark) mark.gameObject.SetActive(false); // 범위 내에 있으면서 인터랙션중일 때 마크 비활성화
             }
 
-            if (CanvasControl.instance_CanvasControl.isPossibleCnvs && isIn) GetObjectTouch();
+            if (CanvasControl.instance.isPossibleCnvs && isIn) GetObjectTouch();
         }
     }
 
@@ -60,7 +60,7 @@ public class Interact_ObjectWithRau : MonoBehaviour
     {
         RaycastHit[] hits = Physics.SphereCastAll(gameObject.transform.position + offset, radius, Vector3.up, 0f);
         bool temp = false;
-        CharacterManager currentChar = DataController.instance_DataController.GetCharacter(MapData.Character.Main);
+        CharacterManager currentChar = DataController.instance.GetCharacter(MapData.Character.Main);
         foreach (RaycastHit hit in hits)
         {
             temp = hit.collider.name == currentChar.name ? true : false;
@@ -75,7 +75,7 @@ public class Interact_ObjectWithRau : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = DataController.instance_DataController.cam.ScreenPointToRay(Input.mousePosition);
+            Ray ray = DataController.instance.cam.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 20f, Color.red, 5f);
             int layerMask = 1 << 13; // 13번 레이어마스크가 ClickObject임. 해당 레이어 마스크만 터치로 받아들인다. 터치될 오브젝트 or 캐릭터에 무조건!! 13번레이어 ClickObject 설정해줘야 한다.
             RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
@@ -92,7 +92,7 @@ public class Interact_ObjectWithRau : MonoBehaviour
                         if (mark != null)
                             if (mark) mark.gameObject.SetActive(false); // 마크 끄기
                     }
-                    if (isTouched && hit.collider.transform.parent.name == "NPCManager" && CanvasControl.instance_CanvasControl.isPossibleCnvs)
+                    if (isTouched && hit.collider.transform.parent.name == "NPCManager" && CanvasControl.instance.isPossibleCnvs)
                     {
                         if (hit.collider.transform.parent.TryGetComponent(out NPCInteractor npcInteractor))
                         {

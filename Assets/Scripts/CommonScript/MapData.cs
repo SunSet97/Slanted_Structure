@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using JetBrains.Annotations;
+using Data;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 [ExecuteInEditMode]
 public class MapData : MonoBehaviour
@@ -266,16 +262,17 @@ public class MapData : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            if (DataController.instance_DataController.mapCode != mapCode)
+            if (DataController.instance.mapCode != mapCode)
             {
-                DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
+                DataController.instance.ChangeMap(DataController.instance.mapCode);
                 Destroy(gameObject);
             }
+            characters.RemoveAll(item => item == null);
             foreach (var t in positionSets)
             {
                 characters.Add(new AnimationCharacterSet
                 {
-                    characterAnimator = DataController.instance_DataController
+                    characterAnimator = DataController.instance
                         .GetCharacter(t.who).anim,
                     who = t.who
                 });
@@ -312,7 +309,7 @@ public class MapData : MonoBehaviour
 
     public void Initialize()
     {
-        DataController.instance_DataController.currentMap = this;
+        DataController.instance.currentMap = this;
 
         // 오브젝트의 이름을 맵 코드로 변경
         if (name != mapCode) name = mapCode;
@@ -321,7 +318,7 @@ public class MapData : MonoBehaviour
         if (ui != null) ui.name = map.name;
 
         //UI 세팅
-        if (ui != null) ui.transform.SetParent(CanvasControl.instance_CanvasControl.transform.Find("UI"));
+        if (ui != null) ui.transform.SetParent(CanvasControl.instance.transform.Find("UI"));
 
         AudioController.instance.PlayBgm(BGM);
 
@@ -354,24 +351,24 @@ public class MapData : MonoBehaviour
     public bool isJoystickNone;
     private void JoystickInputUpdate()
     {
-        var mainChar = DataController.instance_DataController.GetCharacter(Character.Main);
+        var mainChar = DataController.instance.GetCharacter(Character.Main);
         //Joystick Input
         if (!isJoystickInputIgnore)
         {
             //사이드뷰 일 때
             if (method.Equals(JoystickInputMethod.OneDirection))
             {
-                DataController.instance_DataController.inputDegree = Mathf.Abs(DataController.instance_DataController.joyStick.Horizontal); // 조정된 입력 방향으로 크기 계산
-                DataController.instance_DataController.inputDirection.Set(DataController.instance_DataController.joyStick.Horizontal, 0); // 조정된 입력 방향 설정
-                DataController.instance_DataController.inputJump = DataController.instance_DataController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
+                DataController.instance.inputDegree = Mathf.Abs(DataController.instance.joyStick.Horizontal); // 조정된 입력 방향으로 크기 계산
+                DataController.instance.inputDirection.Set(DataController.instance.joyStick.Horizontal, 0); // 조정된 입력 방향 설정
+                DataController.instance.inputJump = DataController.instance.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
             }
             else
             {
-                DataController.instance_DataController.inputDirection.Set(
-                    DataController.instance_DataController.joyStick.Horizontal,
-                    DataController.instance_DataController.joyStick.Vertical); // 조정된 입력 방향 설정
-                DataController.instance_DataController.inputDegree = Vector2.Distance(Vector2.zero,
-                    DataController.instance_DataController.inputDirection); // 조정된 입력 방향으로 크기 계산
+                DataController.instance.inputDirection.Set(
+                    DataController.instance.joyStick.Horizontal,
+                    DataController.instance.joyStick.Vertical); // 조정된 입력 방향 설정
+                DataController.instance.inputDegree = Vector2.Distance(Vector2.zero,
+                    DataController.instance.inputDirection); // 조정된 입력 방향으로 크기 계산
             }
         }
         //Debug.Log(mainChar.transform.position);

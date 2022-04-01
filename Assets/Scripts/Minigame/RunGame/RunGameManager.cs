@@ -88,7 +88,7 @@ public class RunGameManager : MonoBehaviour
             //DataController.instance_DataController.isMapChanged = true;
 
             // 캐릭터
-            speat = DataController.instance_DataController.GetCharacter(MapData.Character.Main);
+            speat = DataController.instance.GetCharacter(MapData.Character.Main);
 
             // 애니메이터
             anim = speat.GetComponent<Animator>();
@@ -97,12 +97,12 @@ public class RunGameManager : MonoBehaviour
             //DataController.instance_DataController.joyStick.gameObject.SetActive(false);
 
             // DataController 카메라 설정값 변경
-            DataController.instance_DataController.camDis.x = 4f;
-            DataController.instance_DataController.camDis.y = 3.5f;
+            DataController.instance.camDis.x = 4f;
+            DataController.instance.camDis.y = 3.5f;
 
             // 카메라 뷰 설정
-            DataController.instance_DataController.cam.orthographicSize = 4;
-            DataController.instance_DataController.cam.orthographic = true;
+            DataController.instance.cam.orthographicSize = 4;
+            DataController.instance.cam.orthographic = true;
 
             LoadPattern(); // start, end를 제외한 나머지 패턴 프리팹 로딩.
             SetPrefab(); // prefabList 배열에서 랜덤하게 3개 선택.
@@ -137,9 +137,9 @@ public class RunGameManager : MonoBehaviour
         {
             if (!speat)
             {
-                if (DataController.instance_DataController.cam.GetComponent<Camera_Moving>().enabled)
+                if (DataController.instance.cam.GetComponent<Camera_Moving>().enabled)
                 {
-                    DataController.instance_DataController.cam.GetComponent<Camera_Moving>().enabled = false;
+                    DataController.instance.cam.GetComponent<Camera_Moving>().enabled = false;
                 }
             }
             
@@ -168,7 +168,7 @@ public class RunGameManager : MonoBehaviour
             }
 
             // 점프
-            if (DataController.instance_DataController.inputJump && anim.GetBool("Jump"))
+            if (DataController.instance.inputJump && anim.GetBool("Jump"))
             {
                 anim.SetBool("Jump", false); //점프 불가능 상태로 변경하여 연속적인 점프 제한
                 speat.moveVerDir.y = originMoveVerDirY;
@@ -186,7 +186,7 @@ public class RunGameManager : MonoBehaviour
             if (isJump && speat.ctrl.isGrounded) // 점프했다가 내려온거!
             {
                 isJump = false;
-                DataController.instance_DataController.inputJump = false;
+                DataController.instance.inputJump = false;
             }
 
             // 프리팹 이동 관련
@@ -313,7 +313,7 @@ public class RunGameManager : MonoBehaviour
     {
 
         // 맨홀쪽으로 이동해야하니깐, 조이스틱 다시 사용할 수 있게 하기.
-        DataController.instance_DataController.joyStick.gameObject.SetActive(true);
+        DataController.instance.joyStick.gameObject.SetActive(true);
 
         // 웨이포인트 사용
         waypoints.transform.GetChild(0).transform.position = speat.transform.position; // 첫번째 waypoint(1)을 스핏 위치와 일치 시키기
@@ -341,7 +341,7 @@ public class RunGameManager : MonoBehaviour
             if (speat.ctrl.isGrounded)
             {
                 clickJump = true;
-                DataController.instance_DataController.inputJump = true;
+                DataController.instance.inputJump = true;
                 anim.SetBool("Jump", true);
             }
         }

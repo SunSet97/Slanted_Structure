@@ -35,7 +35,7 @@ public class PlazaManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cam = DataController.instance_DataController.cam;
+        cam = DataController.instance.cam;
 
         // 벤치들의 인터랙션 컴포넌트들 interactionBenchList에 넣기
         for (int i = 0; i < interactionBenchParent.transform.childCount; i++)
@@ -90,7 +90,7 @@ public class PlazaManager : MonoBehaviour
 
 
         // 대화를 할 수 없는 상황이 되면(즉, 대화중일때)
-        if (!CanvasControl.instance_CanvasControl.isPossibleCnvs)
+        if (!CanvasControl.instance.isPossibleCnvs)
         {
             Interact_ObjectWithRau interaction_oldMan = oldMan.GetComponent<Interact_ObjectWithRau>();
             Interact_ObjectWithRau interaction_police = police.GetComponent<Interact_ObjectWithRau>();

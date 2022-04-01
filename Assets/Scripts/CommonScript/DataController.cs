@@ -6,13 +6,12 @@ using System;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System.Text;
-
+using Data;
 
 
 public class DataController : MonoBehaviour
 {
     public bool[] isExistdata = new bool[3];
-    private CanvasControl canvasCtrl;
 
     [Header("조이스틱")]
     public Joystick joyStick;
@@ -65,23 +64,15 @@ public class DataController : MonoBehaviour
 
     #region 싱글톤
     //인스턴스화
-    private static DataController instance = null;
-    public static DataController instance_DataController
+    private static DataController _instance;
+    public static DataController instance
     {
-        get
-        {
-            return instance;
-        }
+        get => instance;
     }
 
     private void Awake()
     {
-        if (instance)
-        {
-            DestroyImmediate(this.gameObject);
-            return;
-        }
-        instance = this;
+        _instance = this;
         DontDestroyOnLoad(this.gameObject);
     }
     #endregion
@@ -92,13 +83,13 @@ public class DataController : MonoBehaviour
         LoadData("TutorialCommandData", "RauTutorial");
 
         //초기화
-        if (CanvasControl.instance_CanvasControl) canvasCtrl = CanvasControl.instance_CanvasControl;
-        if (!speat && GameObject.Find("Speat")) speat = GameObject.Find("Speat").GetComponent<CharacterManager>();
-        if (!oun && GameObject.Find("Oun")) oun = GameObject.Find("Oun").GetComponent<CharacterManager>();
-        if (!rau && GameObject.Find("Rau")) rau = GameObject.Find("Rau").GetComponent<CharacterManager>();
-        if (!speat_Adolescene && GameObject.Find("Speat_Adolescene")) speat_Adolescene = GameObject.Find("Speat_Adolescene").GetComponent<CharacterManager>();
-        if (!speat_Adult && GameObject.Find("Speat_Adult")) speat_Adult = GameObject.Find("Speat_Adult").GetComponent<CharacterManager>();
-        if (!speat_Child && GameObject.Find("Speat_Child")) speat_Child = GameObject.Find("Speat_Child").GetComponent<CharacterManager>();
+        speat = GameObject.Find("Speat").GetComponent<CharacterManager>();
+        oun = GameObject.Find("Oun").GetComponent<CharacterManager>();
+        rau = GameObject.Find("Rau").GetComponent<CharacterManager>();
+        speat_Adolescene = GameObject.Find("Speat_Adolescene").GetComponent<CharacterManager>();
+        speat_Adult = GameObject.Find("Speat_Adult").GetComponent<CharacterManager>();
+        speat_Child = GameObject.Find("Speat_Child").GetComponent<CharacterManager>();
+        
         joyStick = FindObjectOfType<Joystick>();
         cam = Camera.main;
         //맵 찾아서 저장
@@ -156,7 +147,7 @@ public class DataController : MonoBehaviour
     /// <param name="mapCodeBeMove">생성되는 맵의 코드</param>
     public void ChangeMap(string mapCodeBeMove)
     {
-        mapCode = string.Format("{0:000000}", mapCodeBeMove); // 맵 코드 변경
+        mapCode = $"{mapCodeBeMove:000000}"; // 맵 코드 변경
 
         
         //모든 캐릭터 위치 대기실로 이동
@@ -199,9 +190,7 @@ public class DataController : MonoBehaviour
         speat_Adult.InitializeCharacter();
         speat_Child.InitializeCharacter();
 
-
-
-        List<MapData.CharacterPositionSet> temp = currentMap.positionSets.FindAll(item => item.posSet.gameObject.activeSelf == true);
+        var temp = currentMap.positionSets;
         for (int k = 0; k < temp.Count; k++)
         {
             if (temp[k].who.Equals(MapData.Character.Speat))
@@ -243,11 +232,10 @@ public class DataController : MonoBehaviour
         
 
         // CameraMoving 컨트롤
-        var camera_Moving = cam.GetComponent<Camera_Moving>();
-            // StartCoroutine(SetCameraMovingState(currentMap.isCameraMoving));
-        if (currentMap.isCameraMoving) camera_Moving.Initialize(CustomEnum.CameraViewType.FollowCharacter);
-        else if (!currentMap.isCameraMoving) camera_Moving.Initialize(CustomEnum.CameraViewType.FixedView);
-        
+        var cameraMoving = cam.GetComponent<Camera_Moving>();
+
+        cameraMoving.Initialize(currentMap.isCameraMoving);
+
 
         //스카이박스 세팅
         RenderSettings.skybox = currentMap.SkyboxSetting;
@@ -460,19 +448,6 @@ public class DataController : MonoBehaviour
                 isExistdata[i] = false;
             }
         }
-    }
-
-    IEnumerator SetCameraMovingState(bool isCameraMoving) {
-        
-        // 맵 바뀌기 전에 카메라 무빙 안되는 거 막기 위함.
-        yield return new WaitUntil(() => mainChar != null && currentMap != null &&
-        Mathf.Round(cam.transform.position.x) == Mathf.Round(mainChar.transform.position.x + currentMap.camDis.x) &&
-        Mathf.Round(cam.transform.position.y) == Mathf.Round(mainChar.transform.position.y + currentMap.camDis.y) &&
-        Mathf.Round(cam.transform.position.z) == Mathf.Round(mainChar.transform.position.z + currentMap.camDis.z));
-       
-        if (isCameraMoving) cam.GetComponent<Camera_Moving>().enabled = true;
-        else if(!isCameraMoving) cam.GetComponent<Camera_Moving>().enabled = false;
-
     }
 
 }

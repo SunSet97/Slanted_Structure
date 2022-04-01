@@ -34,12 +34,12 @@ public class PlayGroundManager : MonoBehaviour, IPlayable
     //원 생성
     public void Startplaying()
     {
-        CanvasControl.instance_CanvasControl.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
-        CanvasControl.instance_CanvasControl.GetComponent<Canvas>().worldCamera = DataController.instance_DataController.cam;
-        CanvasControl.instance_CanvasControl.GetComponent<Canvas>().planeDistance = 1;
+        CanvasControl.instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+        CanvasControl.instance.GetComponent<Canvas>().worldCamera = DataController.instance.cam;
+        CanvasControl.instance.GetComponent<Canvas>().planeDistance = 1;
         //ring.Setup(radius *range[2].localScale.x / 2, CanvasControl.instance_CanvasControl.GetComponent<Canvas>().planeDistance * 0.03f * width, speed, segments);
        
-        DataController.instance_DataController.currentMap.ui.SetActive(true);
+        DataController.instance.currentMap.ui.SetActive(true);
     }
 
     //원 판정함수
@@ -89,9 +89,9 @@ public class PlayGroundManager : MonoBehaviour, IPlayable
     //게임 끝날 경우 함수
     public void EndPlaying()
     {
-        CanvasControl.instance_CanvasControl.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+        CanvasControl.instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
         IsPlay = false;
-        DataController.instance_DataController.currentMap.ui.SetActive(false);
+        DataController.instance.currentMap.ui.SetActive(false);
 
     }
 }
