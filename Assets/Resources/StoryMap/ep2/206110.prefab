@@ -269,8 +269,8 @@ Transform:
   m_LocalPosition: {x: 36.5, y: 22.76, z: 0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 6001385600508940770}
-  m_RootOrder: 1
+  m_Father: {fileID: 1659486291853255515}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &4189517863589172047
 BoxCollider:
@@ -327,7 +327,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8943134169707400837}
-  - {fileID: 6389806365216747518}
   m_Father: {fileID: 6005943890414339471}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -421,7 +420,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6005943889770735677}
-  - {fileID: 6005943891110375642}
   m_Father: {fileID: 6005943890414339471}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -483,8 +481,9 @@ MonoBehaviour:
   SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 0
   orthographicSize: 0
-  isCameraMoving: 1
+  isCameraMoving: 0
   cameraBound: {fileID: 0}
+  BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 8702950728014630964}
   clearBoxList:
@@ -496,78 +495,21 @@ MonoBehaviour:
     startPosition: {fileID: 8943134169707400837}
     clearBox: {fileID: 6389806365216747518}
     posSet: {fileID: 6001385600508940770}
-    isMain: 0
+    isMain: 1
   - index: 1
     who: 1
     startPosition: {fileID: 6005943889770735677}
-    clearBox: {fileID: 6005943891110375642}
+    clearBox: {fileID: 0}
     posSet: {fileID: 6005943890618038871}
     isMain: 0
   posIndex: 0
   cam: {fileID: 0}
+  cameraViewType: 0
   camDis: {x: -1.22, y: 1.88, z: 6.22}
   camRot: {x: 5.5, y: 167, z: 0}
-  isJoystickUse: 0
+  isJoystickInputIgnore: 1
+  isJoystickNone: 1
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
---- !u!1 &6005943891110375643
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6005943891110375642}
-  - component: {fileID: 6005943891110375640}
-  - component: {fileID: 6005943891110375641}
-  m_Layer: 0
-  m_Name: Oun Clear Box
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6005943891110375642
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6005943891110375643}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 36.5, y: 22.76, z: 0.01}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 6005943890618038871}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6005943891110375640
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6005943891110375643}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6005943891110375641
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6005943891110375643}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jsonFile: {fileID: 0}
-  nextSelectMapcode: 000000
 --- !u!1 &8702950728014630964
 GameObject:
   m_ObjectHideFlags: 0
@@ -594,7 +536,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 6389806365216747518}
   m_Father: {fileID: 6005943890886827749}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

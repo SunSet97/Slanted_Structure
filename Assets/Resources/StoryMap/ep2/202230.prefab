@@ -28,7 +28,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7435682805899636833}
-  - {fileID: 5326259469162163744}
   m_Father: {fileID: 8679703665770041348}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -107,69 +106,11 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 8679703665204864267}
   m_Father: {fileID: 8679703665964732383}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3489183427107453942
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5326259469162163744}
-  - component: {fileID: 2903390476215062645}
-  - component: {fileID: 5124282035017950257}
-  m_Layer: 0
-  m_Name: Speat Clear Box
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5326259469162163744
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3489183427107453942}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 36.5, y: 22.76, z: 0.01}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2804103812362165567}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2903390476215062645
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3489183427107453942}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5124282035017950257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3489183427107453942}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jsonFile: {fileID: 0}
-  nextSelectMapcode: 000000
 --- !u!1 &8009694060335357786
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,7 +160,7 @@ MonoBehaviour:
   dialogueData:
     dialogues:
     - name: "\uC2A4\uD54F"
-      expression: 0
+      expression: 1
       anim_name: Speat
       contents: "\uB9AC\uB098 \uC5B8\uB2C8~~~~~~~!"
     - name: "\uB9AC\uB098"
@@ -234,7 +175,7 @@ MonoBehaviour:
         \uC911\uC0DD\uD558\uB098 \uBD10\uAC00\uC8FC\uACE0 \uC5B8\uB2C8\uD55C\uD14C
         \uB370\uB824\uC654\uC9C0"
     - name: "\uB77C\uC6B0"
-      expression: 0
+      expression: 9
       anim_name: Rau
       contents: "\uC911\uC0DD...?"
     - name: "\uB9AC\uB098"
@@ -256,7 +197,7 @@ MonoBehaviour:
       contents: "\uB531\uBCF4\uB2C8 \uC5EC\uAE30 \uC628\uC9C0 \uC5BC\uB9C8 \uC548\uB418\uC168\uB098
         \uBCF4\uB124... \uADF8\uB798\uC11C \uB370\uB824\uC654\uAD6C\uB098?"
     - name: "\uC2A4\uD54F"
-      expression: 0
+      expression: 1
       anim_name: Speat
       contents: "\uBE59\uACE0! \uD639\uC2DC \uBD80\uD0C1\uD560 \uC218 \uC788\uC744\uAE4C?"
     - name: "\uB9AC\uB098"
@@ -274,7 +215,7 @@ MonoBehaviour:
       contents: "\uBE44\uB85D \uCD08\uB77C\uD558\uC9C0\uB9CC \uB9DB\uC740 \uC790\uC2E0\uC788\uC73C\uB2C8
         \uBA39\uC5B4\uBD10\uC694"
     - name: "\uB77C\uC6B0"
-      expression: 0
+      expression: 1
       anim_name: Rau
       contents: "\uAC10\uC0AC\uD569\uB2C8\uB2E4..(\uBE44\uC8FC\uC5BC\uC740 \uD3C9\uBC94\uD574
         \uBCF4\uC778\uB2E4.)"
@@ -291,15 +232,15 @@ MonoBehaviour:
       anim_name: Rau
       contents: '....'
     - name: "\uB77C\uC6B0"
-      expression: 0
+      expression: 5
       anim_name: Rau
       contents: '.....!!!! '
     - name: "\uB77C\uC6B0"
-      expression: 0
+      expression: 5
       anim_name: Rau
       contents: "\uC624\uC624\uC624\uC624!!!"
     - name: "\uB77C\uC6B0"
-      expression: 0
+      expression: 1
       anim_name: Rau
       contents: "\uBAB8\uC5D0 \uC788\uB358 \uC4F0\uB808\uAE30\uB4E4\uC774 \uB0B4\uB824\uAC00\uB294
         \uB290\uB08C\uC774\uC5D0\uC694"
@@ -314,7 +255,7 @@ MonoBehaviour:
       contents: "\uB2E4\uB978\uAC70 \uBA39\uC5B4\uB3C4 \uBB50\uB4E0 \uB2E4 \uB9DB\uC788\uAC8C
         \uB290\uAEF4\uC9C0\uAE34 \uD560\uAC70\uC57C"
     - name: "\uC2A4\uD54F"
-      expression: 0
+      expression: 1
       anim_name: Speat
       contents: "\uBB34\uC2A8 \uC18C\uB9AC\uC57C \uC5B8\uB2C8, \uC5B8\uB2C8 \uC694\uB9AC\uB294
         \uCD5C\uACE0\uB77C\uACE0"
@@ -366,11 +307,11 @@ MonoBehaviour:
       contents: "\uB0A8\uC774 \uC548\uC88B\uC740 \uC77C \uACAA\uB294\uAC70 \uBCF4\uACE0
         \uADF8\uB0E5 \uC9C0\uB098\uCE5C \uC801\uC774 \uC5C6\uC5B4."
     - name: "\uB77C\uC6B0"
-      expression: 0
+      expression: 1
       anim_name: Rau
       contents: "\uB124 \u314E\u314E \uADF8\uB7F0 \uAC83 \uAC19\uC544\uC694"
     - name: "\uC2A4\uD54F"
-      expression: 0
+      expression: 4
       anim_name: Speat
       contents: "\uBB50? \uC2F9\uD241\uBC14\uAC00\uC9C0?"
     - name: "\uB77C\uC6B0"
@@ -392,7 +333,7 @@ MonoBehaviour:
       contents: "\uAD1C\uD788 \uBBFC\uB9DD\uD574\uC11C \uC800\uB798\uC694. \uAC89\uC73C\uB85C\uB294
         \uAEC4\uB801\uD574 \uBCF4\uC5EC\uB3C4 \uB9C9\uC0C1 \uC815\uB9CE\uC544."
     - name: "\uB77C\uC6B0"
-      expression: 0
+      expression: 1
       anim_name: Rau
       contents: "\uC2A4\uD54F \uACE0\uB9C8\uC6CC\uC694."
     - name: "\uC2A4\uD54F"
@@ -427,7 +368,7 @@ MonoBehaviour:
       anim_name: Rau
       contents: "\uC774\uB807\uAC8C \uB9CC\uB09C \uAC83\uB3C4 \uC778\uC5F0\uC774\uB2C8\uAE4C!"
     - name: "\uB77C\uC6B0"
-      expression: 0
+      expression: 1
       anim_name: Rau
       contents: "\uADF8\uB9AC\uACE0 \uB2F9\uC2E0\uC774\uB791 \uC788\uC73C\uBA74 \uC7AC\uBC0C\uC744
         \uAC83 \uAC19\uC544. \uC6D0\uB798 \uC5EC\uD589\uC740 \uD604\uC9C0\uC778 \uCD94\uCC9C\uC73C\uB85C
@@ -503,7 +444,7 @@ MonoBehaviour:
         \uC624\uB298\uC740 \uBD80\uB3C4\uC2EC\uC5D0\uC11C \uB3CC\uC544\uB2E4\uB2D0\uAE4C
         \uC2F6\uC5B4\uC694"
     - name: "\uB77C\uC6B0"
-      expression: 0
+      expression: 5
       anim_name: Rau
       contents: "\uC557 \uBB38\uC790\uAC00?"
     - name: "\uB77C\uC6B0"
@@ -516,7 +457,7 @@ MonoBehaviour:
       anim_name: Rhina
       contents: "\uC9DC\uC2DD, \uC740\uADFC \uB2E4\uC815\uD558\uB2E4\uB2C8\uAE4C"
     - name: "\uB77C\uC6B0"
-      expression: 0
+      expression: 1
       anim_name: Rau
       contents: "\uC2A4\uD54F \uB355\uBD84\uC5D0 \uC5B4\uB514 \uB3CC\uC544\uB2E4\uB2D0\uC9C0
         \uC815\uD574\uC9C4 \uAC83 \uAC19\uB124\uC694 \u314E\u314E"
@@ -624,8 +565,8 @@ Transform:
   m_LocalPosition: {x: 36.5, y: 22.76, z: 0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 8679703665690156167}
-  m_RootOrder: 1
+  m_Father: {fileID: 8686275292486322292}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &8679703665204864261
 BoxCollider:
@@ -682,7 +623,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8679703665006688726}
-  - {fileID: 8679703665204864267}
   m_Father: {fileID: 8679703665770041348}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -775,13 +715,10 @@ MonoBehaviour:
   SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 1
   orthographicSize: 1.5
-  isCameraMoving: 1
+  isCameraMoving: 0
   cameraBound: {fileID: 0}
-  characters:
-  - characterAnimator: {fileID: 0}
-    who: 0
-  - characterAnimator: {fileID: 0}
-    who: 2
+  BGM: {fileID: 0}
+  characters: []
   clearBoxSetting: {fileID: 3483611395831600990}
   clearBoxList: []
   positionSetting: {fileID: 8679703665770041349}
@@ -789,7 +726,7 @@ MonoBehaviour:
   - index: 0
     who: 0
     startPosition: {fileID: 7435682805899636833}
-    clearBox: {fileID: 5326259469162163744}
+    clearBox: {fileID: 0}
     posSet: {fileID: 8679703665690156167}
     isMain: 0
   - index: 1
@@ -797,12 +734,14 @@ MonoBehaviour:
     startPosition: {fileID: 8679703665006688726}
     clearBox: {fileID: 8679703665204864267}
     posSet: {fileID: 2804103812362165567}
-    isMain: 0
+    isMain: 1
   posIndex: 0
   cam: {fileID: 0}
+  cameraViewType: 0
   camDis: {x: 0.82, y: 2.45, z: 25}
   camRot: {x: 4.763, y: 180, z: 0}
-  isJoystickUse: 0
+  isJoystickInputIgnore: 1
+  isJoystickNone: 1
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1001 &190875996527668149
 PrefabInstance:
@@ -1014,6 +953,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7da2a937a59599f4aae06a30a5110d0b, type: 3}
+--- !u!1 &1678648368582325179 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4801619789447668155, guid: 7da2a937a59599f4aae06a30a5110d0b,
+    type: 3}
+  m_PrefabInstance: {fileID: 6190485820141523456}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1678648368582325178 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4801619789447668154, guid: 7da2a937a59599f4aae06a30a5110d0b,
@@ -1023,12 +968,6 @@ Transform:
 --- !u!4 &1863420747734108215 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5491353878759217719, guid: 7da2a937a59599f4aae06a30a5110d0b,
-    type: 3}
-  m_PrefabInstance: {fileID: 6190485820141523456}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1678648368582325179 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4801619789447668155, guid: 7da2a937a59599f4aae06a30a5110d0b,
     type: 3}
   m_PrefabInstance: {fileID: 6190485820141523456}
   m_PrefabAsset: {fileID: 0}

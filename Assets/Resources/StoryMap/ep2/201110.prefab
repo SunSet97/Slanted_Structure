@@ -122,8 +122,8 @@ MonoBehaviour:
   isCameraMoving: 0
   cameraBound: {fileID: 0}
   characters:
-  - characterAnimator: {fileID: 0}
-    who: 2
+  - characterAnimator: {fileID: 4391502202504482035}
+    who: 0
   clearBoxSetting: {fileID: 2047099091420609578}
   clearBoxList:
   - {fileID: 1295089236111235649}
@@ -134,12 +134,13 @@ MonoBehaviour:
     startPosition: {fileID: 1295089235287822847}
     clearBox: {fileID: 1295089236111235648}
     posSet: {fileID: 1295089235837433861}
-    isMain: 0
+    isMain: 1
   posIndex: 0
   cam: {fileID: 0}
   camDis: {x: -7.18, y: 5.22, z: 4.93}
   camRot: {x: 25, y: 115, z: 0}
-  isJoystickUse: 0
+  isJoystickInputIgnore: 0
+  isJoystickNone: 0
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &1295089235837433860
 GameObject:
@@ -169,7 +170,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1295089235287822847}
-  - {fileID: 1295089236111235648}
   m_Father: {fileID: 1295089234482046498}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -202,8 +202,8 @@ Transform:
   m_LocalPosition: {x: -3.44, y: 0.56, z: 4.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1295089235837433861}
-  m_RootOrder: 1
+  m_Father: {fileID: 8451448029808633417}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1295089236111235662
 BoxCollider:
@@ -244,14 +244,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 0
+  interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 1e75d4e75141e9544bab990f4c79d26c, type: 3}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
   taskEndActions: []
   taskData_Debug: []
-  color: 0
+  color: 2
   interactionMethod: 0
   onOutline: 0
   isCharacterInRange: 0
@@ -291,7 +291,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1295089236111235648}
   m_Father: {fileID: 1295089235827552046}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -307,7 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 0
+  interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 4d689c4b17e59bc439e41c1047464771, type: 3}
   dialogueData:
     dialogues:
@@ -341,7 +342,7 @@ MonoBehaviour:
   dialogueEndAction: []
   taskEndActions: []
   taskData_Debug: []
-  color: 0
+  color: 2
   interactionMethod: 0
   onOutline: 0
   isCharacterInRange: 0
@@ -739,6 +740,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3966852475525968817, guid: a6d894731640db04188175c428b46680,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4095659655237402629, guid: a6d894731640db04188175c428b46680,
         type: 3}
       propertyPath: m_Layer
@@ -927,6 +933,12 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 2318227472193791578, guid: a6d894731640db04188175c428b46680, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a6d894731640db04188175c428b46680, type: 3}
+--- !u!1 &3543910822874225993 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2366523757251650737, guid: a6d894731640db04188175c428b46680,
+    type: 3}
+  m_PrefabInstance: {fileID: 1295089236106902008}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3285353922485866185 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4354698471498954545, guid: a6d894731640db04188175c428b46680,
@@ -957,6 +969,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1cdbd34a551aee4abc4e3faaf3b046b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &4391502202504482035 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3245031754237834507, guid: a6d894731640db04188175c428b46680,
+    type: 3}
+  m_PrefabInstance: {fileID: 1295089236106902008}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1445505056700466986 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 429640751383379666, guid: a6d894731640db04188175c428b46680,
@@ -990,12 +1008,6 @@ Transform:
 --- !u!4 &4593274248514189194 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3334777379334016626, guid: a6d894731640db04188175c428b46680,
-    type: 3}
-  m_PrefabInstance: {fileID: 1295089236106902008}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3543910822874225993 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2366523757251650737, guid: a6d894731640db04188175c428b46680,
     type: 3}
   m_PrefabInstance: {fileID: 1295089236106902008}
   m_PrefabAsset: {fileID: 0}

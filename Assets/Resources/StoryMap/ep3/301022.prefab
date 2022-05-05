@@ -896,7 +896,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 7296916641934074965}
   - {fileID: 1706461214631344214}
   m_Father: {fileID: 7726012751125093131}
   m_RootOrder: 0
@@ -2031,11 +2030,13 @@ MonoBehaviour:
   SkyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
   isOrthographic: 1
   orthographicSize: 5
-  isCameraMoving: 1
+  isCameraMoving: 0
   cameraBound: {fileID: 0}
+  BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 7948298344098382078}
-  clearBoxList: []
+  clearBoxList:
+  - {fileID: 5537770241786144307}
   positionSetting: {fileID: 5253707418536335396}
   positionSets:
   - index: 0
@@ -2043,12 +2044,14 @@ MonoBehaviour:
     startPosition: {fileID: 1706461214631344214}
     clearBox: {fileID: 7296916641934074965}
     posSet: {fileID: 899632972740420636}
-    isMain: 0
+    isMain: 1
   posIndex: 0
   cam: {fileID: 0}
+  cameraViewType: 0
   camDis: {x: -24, y: 16.61, z: 16.61}
   camRot: {x: 30, y: 126.722, z: 0}
-  isJoystickUse: 0
+  isJoystickInputIgnore: 1
+  isJoystickNone: 1
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &6914974736281788910
 GameObject:
@@ -2076,10 +2079,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6914974736281788910}
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: -1.5286579, y: 0.88041663, z: -1.5278776}
+  m_LocalPosition: {x: -4.55, y: 1.35, z: -3.200002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 899632972740420636}
+  m_Father: {fileID: 2783347264331798728}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!65 &460638782475627195
@@ -2585,7 +2588,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 7296916641934074965}
   m_Father: {fileID: 6258846052053539309}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2618,7 +2622,7 @@ Transform:
   m_Children:
   - {fileID: 2370559492415991950}
   m_Father: {fileID: 899632972740420636}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &8096589981498173802
 GameObject:
