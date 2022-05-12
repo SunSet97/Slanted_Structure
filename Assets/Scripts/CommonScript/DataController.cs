@@ -67,7 +67,7 @@ public class DataController : MonoBehaviour
     private static DataController _instance;
     public static DataController instance
     {
-        get => instance;
+        get => _instance;
     }
 
     private void Awake()

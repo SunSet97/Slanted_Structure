@@ -563,11 +563,7 @@ public class InteractionObj_stroke : MonoBehaviour
                     currentTaskData.isContinue = false;
                     DataController.instance.currentMap.cinematic.SetActive(true);
                     timeline.Play();
-                    timeline.paused += director =>
-                    {
-                        currentTaskData.isContinue = true;
-                        DataController.instance.currentMap.cinematic.SetActive(false);
-                    }; 
+                    waitUntil = new WaitUntil(() => { return timeline.state != PlayState.Playing; });
                     break;
                 default:
                 {

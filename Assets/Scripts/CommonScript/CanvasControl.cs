@@ -53,7 +53,7 @@ public class CanvasControl : MonoBehaviour
     private static CanvasControl _instance;
     public static CanvasControl instance
     {
-        get => instance;
+        get => _instance;
     }
 
     private void Awake()
