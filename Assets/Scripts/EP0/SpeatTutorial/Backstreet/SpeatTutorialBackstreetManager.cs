@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Play;
 using UnityEngine;
 using UnityEngine.UI;
-
+using static Data.CustomEnum;
 public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
 {
     public bool IsPlay { get; set; } = false;
@@ -102,12 +102,12 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
     IEnumerator StartRungame()
     {
         yield return new WaitUntil(() => { return IsPlay; });
-        CharacterManager mainChar = DataController.instance.GetCharacter(MapData.Character.Speat);
+        CharacterManager mainChar = DataController.instance.GetCharacter(Character.Speat);
         mainChar.jumpForce = 7;
         WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
         DataController.instance.InitializeJoyStick(false);
         Debug.Log("지금");
-        DataController.instance.currentMap.isJoystickInputIgnore = true;
+        DataController.instance.currentMap.isJoystickInputUse = false;
         DataController.instance.inputDegree = 1;
         DataController.instance.inputDirection.x = 1;
 
@@ -199,13 +199,13 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
     {
         if (abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount == 0)
         {
-            DataController.instance.GetCharacter(MapData.Character.Main).gameObject.layer = 9;
+            DataController.instance.GetCharacter(Character.Main).gameObject.layer = 9;
             StartCoroutine("AbilityCooldown");
         }
     }
     IEnumerator AbilityCooldown()
     {
-        DataController.instance.GetCharacter(MapData.Character.Main).gameObject.layer = 9;
+        DataController.instance.GetCharacter(Character.Main).gameObject.layer = 9;
         WaitForSeconds waitForSeconds = new WaitForSeconds(0.005f);
         while (abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount < 1)
         {
@@ -213,7 +213,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
             yield return waitForSeconds;
         }
         waitForSeconds = new WaitForSeconds(0.002f);
-        DataController.instance.GetCharacter(MapData.Character.Main).gameObject.layer = 0;
+        DataController.instance.GetCharacter(Character.Main).gameObject.layer = 0;
         while (abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount > 0)
         {
             abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount -= 0.02f;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
+using static Data.CustomEnum;
 public class MiniGameManager : MonoBehaviour
 {
     [Header("라우")]
@@ -61,7 +61,7 @@ public class MiniGameManager : MonoBehaviour
         //DataController.instance_DataController.isMapChanged = true;
         particle.Play();
         initialRauSpeed = rauSpeed;
-        rau = DataController.instance.GetCharacter(MapData.Character.Rau);
+        rau = DataController.instance.GetCharacter(Character.Rau);
     }
 
     void Update()

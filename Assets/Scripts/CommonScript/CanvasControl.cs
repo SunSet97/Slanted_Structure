@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using static Data.CustomEnum;
+
 public class CanvasControl : MonoBehaviour
 {
     [Header("저장 패널")]
@@ -185,10 +187,10 @@ public class CanvasControl : MonoBehaviour
             }
             // 데이터 저장 시 연필 개수, 캐릭터 위치, 현재 씬 등 업데이트 (점점 추가할 예정)
             DataController.instance.charData.pencilCnt -= 1;
-            DataController.instance.charData.currentCharPosition = DataController.instance.GetCharacter(MapData.Character.Main).transform.position;
-            DataController.instance.charData.rauPosition = DataController.instance.GetCharacter(MapData.Character.Rau).transform.position;
-            DataController.instance.charData.speatPosition = DataController.instance.GetCharacter(MapData.Character.Speat).transform.position;
-            DataController.instance.charData.ounPosition = DataController.instance.GetCharacter(MapData.Character.Oun).transform.position;
+            DataController.instance.charData.currentCharPosition = DataController.instance.GetCharacter(Character.Main).transform.position;
+            DataController.instance.charData.rauPosition = DataController.instance.GetCharacter(Character.Rau).transform.position;
+            DataController.instance.charData.speatPosition = DataController.instance.GetCharacter(Character.Speat).transform.position;
+            DataController.instance.charData.ounPosition = DataController.instance.GetCharacter(Character.Oun).transform.position;
             DataController.instance.charData.currentScene = SceneManager.GetActiveScene().name;
 
             DataController.instance.SaveCharData("SaveData" + fileNum);
@@ -239,7 +241,7 @@ public class CanvasControl : MonoBehaviour
         finishFadeIn = false;
         fadeIn = StartCoroutine(FadeIn());
 
-        if (DataController.instance.GetCharacter(MapData.Character.Main).name == "Rau")
+        if (DataController.instance.GetCharacter(Character.Main).name == "Rau")
         {
             commandText.text = DataController.instance.tutorialCmdData.RauTutorial[commandIndex];
         }
@@ -449,9 +451,7 @@ public class CanvasControl : MonoBehaviour
         int index = currentTaskData.taskIndex;
         int choiceLen = int.Parse(currentTaskData.tasks[index].nextFile);
 
-        int curIntimacy_spRau = DataController.instance.charData.intimacy_spRau;
-        int curIntimacy_ounRau = DataController.instance.charData.intimacy_ounRau;
-        int curSelfEstm = DataController.instance.charData.selfEstm;
+        int[] likeable = DataController.instance.GetLikeable();
 
         choiceBtn[0].transform.parent.gameObject.SetActive(true);
         if (currentTaskData.tasks.Length <= index + choiceLen)
@@ -473,18 +473,18 @@ public class CanvasControl : MonoBehaviour
             // if (currentTaskData.tasks[index + i + 1].order >= 0)
             // {
             //     //if (
-            //     //   curSelfEstm >= condition[0] &&
-            //     //   curIntimacy_ounRau >= condition[1] &&
-            //     //   curIntimacy_spRau >= condition[2]
+            //     //   curSelfEstm >= likeable[0] &&
+            //     //   curIntimacy_spRau >= likeable[1] &&
+            //     //   curIntimacy_ounRau >= likeable[2]
             //     //  )    
             // }
             // else
             // {
             //     //if (
-            //     //   curSelfEstm < condition[0] &&
-            //     //   curIntimacy_ounRau < condition[1] &&
-            //     //   curIntimacy_spRau < condition[2]
-            //     //  )
+            //     //   curSelfEstm < likeable[0] &&
+            //     //   curIntimacy_spRau < likeable[1] &&
+            //     //   curIntimacy_ounRau < likeable[2]
+            //     //  )    
             // }
             {
                 choiceBtn[i].SetActive(true);

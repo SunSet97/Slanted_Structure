@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Play;
 using UnityEngine;
 using UnityEngine.UI;
+using static Data.CustomEnum;
 
 [System.Serializable]
 public class dovesComoponents
@@ -175,7 +176,7 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
     void InitialSetting()
     {
         // 현재 캐릭터
-        rau = DataController.instance.GetCharacter(MapData.Character.Main);
+        rau = DataController.instance.GetCharacter(Character.Main);
         rau.IsMove = false;
         rau.anim.applyRootMotion = false;
         rau.anim.SetFloat(Speed, 0.7f);

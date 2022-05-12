@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using static Data.CustomEnum;
 public class Cinematic_Scene : MonoBehaviour
 {
     #region 싱글톤
@@ -34,15 +34,15 @@ public class Cinematic_Scene : MonoBehaviour
 
         if (Main_char == "Speat")
         {
-            DataController.instance.GetCharacter(MapData.Character.Speat).emotion = (CharacterManager.Emotion)emotion;
+            DataController.instance.GetCharacter(Character.Speat).emotion = (CharacterManager.Emotion)emotion;
         }
         if (Main_char == "Rau")
         {
-            DataController.instance.GetCharacter(MapData.Character.Rau).emotion = (CharacterManager.Emotion)emotion;
+            DataController.instance.GetCharacter(Character.Rau).emotion = (CharacterManager.Emotion)emotion;
         }
         if (Main_char == "Oun")
         {
-            DataController.instance.GetCharacter(MapData.Character.Oun).emotion = (CharacterManager.Emotion)emotion;
+            DataController.instance.GetCharacter(Character.Oun).emotion = (CharacterManager.Emotion)emotion;
         }
 
     }

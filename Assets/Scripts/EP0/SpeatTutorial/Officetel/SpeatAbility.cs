@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using static Data.CustomEnum;
 public class SpeatAbility : MonoBehaviour
 {
     [Header("-UI")]
@@ -159,7 +159,7 @@ public class SpeatAbility : MonoBehaviour
         }
         else
         {
-            speat = DataController.instance.GetCharacter(MapData.Character.Speat);
+            speat = DataController.instance.GetCharacter(Character.Speat);
         }
     }
 

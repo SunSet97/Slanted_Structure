@@ -1,6 +1,7 @@
 ﻿using Move;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static Data.CustomEnum;
 
 public class CharacterManager : MonoBehaviour, IMovable
 {
@@ -13,7 +14,7 @@ public class CharacterManager : MonoBehaviour, IMovable
     private SkinnedMeshRenderer skinnedMesh; // 캐릭터 머테리얼
     private Texture[] faceExpression;//표정 메터리얼
 
-    public MapData.Character who;
+    public Character who;
     private Camera cam; // 카메라
     [Tooltip("캐릭터 Pos을 넣으시오.")]
     [SerializeField] private Transform waitTransform;
@@ -25,7 +26,7 @@ public class CharacterManager : MonoBehaviour, IMovable
         joyStick = DataController.instance.joyStick;
         cam = DataController.instance.cam;
         // 표정 머테리얼 초기화
-        if (who.Equals(MapData.Character.Speat) || who.Equals(MapData.Character.Oun) || who.Equals(MapData.Character.Rau))
+        if (who.Equals(Character.Speat) || who.Equals(Character.Oun) || who.Equals(Character.Rau))
         {
             faceExpression = Resources.LoadAll<Texture>("Face");
             skinnedMesh = this.GetComponentInChildren<SkinnedMeshRenderer>();
@@ -103,7 +104,6 @@ public class CharacterManager : MonoBehaviour, IMovable
         EmotionAnimationSetting();
         ActionAnimationSetting();
     }
-
     // 현재 Emotion상태값 넣기
     void EmotionAnimationSetting()
     {
@@ -111,12 +111,25 @@ public class CharacterManager : MonoBehaviour, IMovable
         {
             anim.SetInteger("Emotion", (int)emotion); // 애니메이션실행
         }
-        if (who.Equals(MapData.Character.Speat) || who.Equals(MapData.Character.Oun) || who.Equals(MapData.Character.Rau))
+        if (who.Equals(Character.Speat) || who.Equals(Character.Oun) || who.Equals(Character.Rau))
             skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int)emotion]); // 현재 감정으로 메터리얼 변경
-
-
     }
 
+    // public void EmotionAnimationSetting(Emotion inEmotion)
+    // {
+    //     if (SceneManager.GetActiveScene().name == "Cinematic")
+    //     {
+    //         anim.SetInteger("Emotion", (int)inEmotion); // 애니메이션실행
+    //     }
+    //     skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int)inEmotion]); // 현재 감정으로 메터리얼 변경
+    // }
+
+    public void SetCinematic()
+    {
+        faceExpression = Resources.LoadAll<Texture>("Face");
+        skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
+    }
+    
     // 액션 관련
     void ActionAnimationSetting()
     {
@@ -184,7 +197,7 @@ public class CharacterManager : MonoBehaviour, IMovable
         anim.SetFloat("Direction", joyRot); //X방향
     }
 
-    public void MoveCharacter(MapData.JoystickInputMethod joystickInputMethod)
+    public void MoveCharacter(JoystickInputMethod joystickInputMethod)
     {
         // 캐릭터를 이 함수로 조종할 수 있을때 (조이스틱 외 미포함)
         if (IsMove)
@@ -198,16 +211,16 @@ public class CharacterManager : MonoBehaviour, IMovable
 
             joyRot = Vector2.SignedAngle(joystickDir, characterDir);
             //사이드뷰 일 때
-            if (joystickInputMethod.Equals(MapData.JoystickInputMethod.OneDirection))
+            if (joystickInputMethod.Equals(JoystickInputMethod.OneDirection))
             {
                 Move2DSide(joystickDir.x);
             }
             //쿼터뷰일 때    
-            else if(joystickInputMethod.Equals(MapData.JoystickInputMethod.AllDirection))
+            else if(joystickInputMethod.Equals(JoystickInputMethod.AllDirection))
             {
                 QuarterView();
             }
-            if(joystickInputMethod.Equals(MapData.JoystickInputMethod.Other))
+            if(joystickInputMethod.Equals(JoystickInputMethod.Other))
             {
                 if (Mathf.Abs(joyRot) > 0) { transform.Rotate(Vector3.up, joyRot); } // 임시 회전
             }

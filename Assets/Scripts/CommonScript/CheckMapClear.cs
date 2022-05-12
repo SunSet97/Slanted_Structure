@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
+using static Data.CustomEnum;
 
 
 [CustomEditor(typeof(CheckMapClear))]
@@ -44,7 +44,7 @@ public class CheckMapClear : MonoBehaviour
     // 캐릭터 확인 후 트리거 활성화
     private void OnTriggerEnter(Collider other)
     {
-        if (DataController.instance.GetCharacter(MapData.Character.Main).name.Equals(other.name))
+        if (DataController.instance.GetCharacter(Character.Main).name.Equals(other.name))
         {
             Clear();
         }

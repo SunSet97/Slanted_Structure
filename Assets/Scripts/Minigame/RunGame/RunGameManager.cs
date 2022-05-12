@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using static Data.CustomEnum;
 public class RunGameManager : MonoBehaviour
 {
     [Header("스핏")]
@@ -88,7 +88,7 @@ public class RunGameManager : MonoBehaviour
             //DataController.instance_DataController.isMapChanged = true;
 
             // 캐릭터
-            speat = DataController.instance.GetCharacter(MapData.Character.Main);
+            speat = DataController.instance.GetCharacter(Character.Main);
 
             // 애니메이터
             anim = speat.GetComponent<Animator>();

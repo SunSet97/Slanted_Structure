@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Data.CustomEnum;
 
 public class HamburgerStoreManager : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class HamburgerStoreManager : MonoBehaviour
     #region 초기세팅
     void InitialSetting()
     {
-        curChar = DataController.instance.GetCharacter(MapData.Character.Main);
+        curChar = DataController.instance.GetCharacter(Character.Main);
 
         if (speatPrefab != null)
         {

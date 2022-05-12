@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Data.CustomEnum;
 
 [System.Serializable]
 public class Script // 대사
@@ -95,7 +96,7 @@ public class SpeechBubbleDialogue : MonoBehaviour
         {
             gameObject.tag = "obj_interaction";
         }
-        character = DataController.instance.GetCharacter(MapData.Character.Main);
+        character = DataController.instance.GetCharacter(Character.Main);
     }
 
     // Update is called once per frame

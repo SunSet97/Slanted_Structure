@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using System.Text;
 using Data;
-
+using static Data.CustomEnum;
 
 public class DataController : MonoBehaviour
 {
@@ -100,30 +100,30 @@ public class DataController : MonoBehaviour
         }
     }
 
-    public CharacterManager GetCharacter(MapData.Character characterType)
+    public CharacterManager GetCharacter(Character characterType)
     {
         CharacterManager character = null;
         switch (characterType)
         {
-            case MapData.Character.Main:
+            case Character.Main:
                 character = mainChar;
                 break;
-            case MapData.Character.Rau:
+            case Character.Rau:
                 character = rau;
                 break;
-            case MapData.Character.Oun:
+            case Character.Oun:
                 character = oun;
                 break;
-            case MapData.Character.Speat:
+            case Character.Speat:
                 character = speat;
                 break;
-            case MapData.Character.Speat_Adult:
+            case Character.Speat_Adult:
                 character = speat_Adult;
                 break;
-            case MapData.Character.Speat_Child:
+            case Character.Speat_Child:
                 character = speat_Child;
                 break;
-            case MapData.Character.Speat_Adolescene:
+            case Character.Speat_Adolescene:
                 character = speat_Adolescene;
                 break;
         }
@@ -193,34 +193,34 @@ public class DataController : MonoBehaviour
         var temp = currentMap.positionSets;
         for (int k = 0; k < temp.Count; k++)
         {
-            if (temp[k].who.Equals(MapData.Character.Speat))
+            if (temp[k].who.Equals(Character.Speat))
             {
                 if (temp[k].isMain)
                     mainChar = speat;
                 speat.SetCharacter(temp[k].startPosition);
             }
-            else if (temp[k].who.Equals(MapData.Character.Oun))
+            else if (temp[k].who.Equals(Character.Oun))
             {
                 if (temp[k].isMain)
                     mainChar = oun;
                 oun.SetCharacter(temp[k].startPosition);
             }
-            else if (temp[k].who.Equals(MapData.Character.Rau))
+            else if (temp[k].who.Equals(Character.Rau))
             {
                 if (temp[k].isMain)
                     mainChar = rau;
                 rau.SetCharacter(temp[k].startPosition);
-            }else if (temp[k].who.Equals(MapData.Character.Speat_Adolescene))
+            }else if (temp[k].who.Equals(Character.Speat_Adolescene))
             {
                 if (temp[k].isMain)
                     mainChar = speat_Adolescene;
                 speat_Adolescene.SetCharacter(temp[k].startPosition);
-            }else if (temp[k].who.Equals(MapData.Character.Speat_Adult))
+            }else if (temp[k].who.Equals(Character.Speat_Adult))
             {
                 if (temp[k].isMain)
                     mainChar = speat_Adult;
                 speat_Adult.SetCharacter(temp[k].startPosition);
-            }else if (temp[k].who.Equals(MapData.Character.Speat_Child))
+            }else if (temp[k].who.Equals(Character.Speat_Child))
             {
                 if (temp[k].isMain)
                     mainChar = speat_Child;
@@ -294,6 +294,18 @@ public class DataController : MonoBehaviour
         inputJump = false;
     }
 
+    public void UpdateLikeable(int[] rauLikeables)
+    {
+        charData.selfEstm += rauLikeables[0];
+        charData.intimacy_spRau += rauLikeables[1];
+        charData.intimacy_ounRau += rauLikeables[2];
+    }
+
+    public int[] GetLikeable()
+    {
+        int[] likable = {charData.selfEstm, charData.intimacy_spRau, charData.intimacy_ounRau};
+        return likable;
+    }
     /// <summary>
     /// 조이스틱 멈추고 이전 상태에 따라 키거나 끄는 함수
     /// ex) 대화 이전에 조이스틱을 사용하지 않으면 계속 사용하지 않는다.

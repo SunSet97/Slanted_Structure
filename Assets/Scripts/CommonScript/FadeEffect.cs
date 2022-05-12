@@ -9,7 +9,7 @@ public class FadeEffect : MonoBehaviour
     public static FadeEffect instance { get; private set; }
     public Image fadeImage;
 
-    public bool isFade;
+    public bool isFadeOver;
 
     private void Awake()
     {
@@ -18,7 +18,7 @@ public class FadeEffect : MonoBehaviour
 
     public IEnumerator FadeIn()
     {
-        isFade = false;
+        isFadeOver = false;
         fadeImage.raycastTarget = true;
         float t = 1;
         while (t > 0)
@@ -30,12 +30,12 @@ public class FadeEffect : MonoBehaviour
             yield return null;
         }
         fadeImage.raycastTarget = false;
-        isFade = true;
+        isFadeOver = true;
     }
     
     public IEnumerator FadeOut()
     {
-        isFade = false;
+        isFadeOver = false;
         fadeImage.raycastTarget = true;
         float t = 0;
         while (t > 1)
@@ -48,6 +48,6 @@ public class FadeEffect : MonoBehaviour
         }
 
         fadeImage.raycastTarget = false;
-        isFade = true;
+        isFadeOver = true;
     }
 }

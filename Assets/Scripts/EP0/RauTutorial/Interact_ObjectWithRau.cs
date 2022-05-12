@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Data.CustomEnum;
 
 public class Interact_ObjectWithRau : MonoBehaviour
 {
@@ -60,7 +61,7 @@ public class Interact_ObjectWithRau : MonoBehaviour
     {
         RaycastHit[] hits = Physics.SphereCastAll(gameObject.transform.position + offset, radius, Vector3.up, 0f);
         bool temp = false;
-        CharacterManager currentChar = DataController.instance.GetCharacter(MapData.Character.Main);
+        CharacterManager currentChar = DataController.instance.GetCharacter(Character.Main);
         foreach (RaycastHit hit in hits)
         {
             temp = hit.collider.name == currentChar.name ? true : false;
