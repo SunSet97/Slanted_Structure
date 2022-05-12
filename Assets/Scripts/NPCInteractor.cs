@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using static Data.CustomEnum;
 public class NPCInteractor : MonoBehaviour
 {
     //캐릭터 오브젝트 받는 변수
@@ -22,7 +22,7 @@ public class NPCInteractor : MonoBehaviour
     {
         canvasCtrl = CanvasControl.instance;
         FindNPC();
-        character = DataController.instance.GetCharacter(MapData.Character.Main).transform;
+        character = DataController.instance.GetCharacter(Character.Main).transform;
     }
 
     void Update()

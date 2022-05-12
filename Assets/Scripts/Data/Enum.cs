@@ -1,7 +1,52 @@
-﻿namespace Data
+﻿using System;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace Data
 {
+
+    struct Cinematic
+    {
+        private string cinematic_id;
+        
+    }
+
+    [Serializable]
+    public struct Ending
+    {
+        public string ending_id;
+        public string ending_content;
+        public Color color;
+
+        public Image image;
+        public CustomEnum.EndingType endingType;
+
+    }
     public static class CustomEnum
     {
+        public enum EndingType
+        {
+            Normal,
+            Bad,
+            Special,
+            Happy
+        }
+        public enum Character
+        {
+            Main = -1,
+            Speat,
+            Oun,
+            Rau,
+            Speat_Child,
+            Speat_Adult,
+            Speat_Adolescene
+        }
+        public enum JoystickInputMethod
+        {
+            OneDirection,
+            AllDirection,
+            Other
+        }
         public enum Expression
         {
             IDLE = 0, LAUGH, SAD, CRY, ANGRY, SURPISE, PANIC, SUSPICION, FEAR, CURIOUS, ANIM_ONE, ANIM_TWO
@@ -9,22 +54,30 @@
     
         public enum TaskContentType
         {
-            NONE = 0, ANIMATION = 1, DIALOGUE = 2, TEMP = 3, TEMPEND = 4, TaskReset = 5, NEW = 6, THEEND = 7, Play = 8, FadeOut = 9, FadeIn = 10, Cinematic = 11, TempDialogue = 99
+            NONE = 0, ANIMATION = 1, DIALOGUE = 2, TEMP = 3, TEMPEND = 4, TaskReset = 5, NEW = 6, THEEND = 7, Play = 8, FadeIn = 9, FadeOut = 10, Cinematic = 11, EndingChoice = 12, TempDialogue = 99
         }
     
         public enum CameraViewType
         {
             FollowCharacter, FixedView         
         }
-    
+        public enum OutlineColor
+        {
+            red,
+            magenta,
+            yellow,
+            green,
+            blue,
+            grey,
+            black,
+            white
+        }
         public enum InteractionPlayType
         {
             None = -1,
             Potal,
             Animation,
             Dialogue,
-            CameraSetting,
-            Interact,
             Task,
             Game
         }

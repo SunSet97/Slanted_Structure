@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using UnityEditor;
+using static Data.CustomEnum;
 
 [CustomEditor(typeof(CameraMovingManager))]
 public class CamerMovingManagerEditor : Editor
@@ -49,7 +50,7 @@ public class CameraMovingManager : MonoBehaviour
 
     private void Start()
     {
-        character = DataController.instance.GetCharacter(MapData.Character.Main)
+        character = DataController.instance.GetCharacter(Character.Main)
             .transform;
     }
 

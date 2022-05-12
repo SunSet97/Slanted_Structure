@@ -4,27 +4,12 @@ using Data;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using static Data.CustomEnum;
 
 [ExecuteInEditMode]
 public class MapData : MonoBehaviour
 {
     #region Default
-    public enum Character
-    {
-        Main = -1,
-        Speat,
-        Oun,
-        Rau,
-        Speat_Child,
-        Speat_Adult,
-        Speat_Adolescene
-    }
-    public enum JoystickInputMethod
-    {
-        OneDirection,
-        AllDirection,
-        Other
-    }
     public enum EndMap
     {
         EndingPoint,
@@ -162,6 +147,9 @@ public class MapData : MonoBehaviour
     public List<CharacterPositionSet> positionSets; // auto setting
     public int posIndex = 0; // 시작위치 순서
 
+    [Header("Cinematic")]
+    public GameObject cinematic;
+    
     [Header("Camera Setting")]
     [SerializeField] private Camera cam; // auto setting
 
@@ -193,6 +181,7 @@ public class MapData : MonoBehaviour
     public void CreateAllPosition() { CreateSpeatPosition(); CreateOunPosition(); CreateRauPosition(); }
     void CreatePositionSetting(Character createWho)
     {
+        cinematic.SetActive(false);
         // 임시 설정 및 오브젝트 생성
         CharacterPositionSet temp = new CharacterPositionSet();
         Transform instant = new GameObject().transform;
@@ -329,6 +318,10 @@ public class MapData : MonoBehaviour
         //     positionSet.clearBox.GetComponent<CheckMapClear>().who = lists.Find(item => item.name == positionSet.who.ToString());
     }
 
+    public void SetNextMapCode(string nextMapCode)
+    {
+        clearBoxList[0].nextSelectMapcode = nextMapCode;
+    }
     public void MapClear()
     {
         if (clearBoxList.Count > 0)
@@ -346,30 +339,16 @@ public class MapData : MonoBehaviour
     #region Input 설정
 
     [Header("조이스틱 인풋 사용 유무, 조이스틱 존재 유무가 아님")]
-    public bool isJoystickInputIgnore;
+    public bool isJoystickInputUse;
     [Header("조이스틱 존재 유무")]
     public bool isJoystickNone;
     private void JoystickInputUpdate()
     {
         var mainChar = DataController.instance.GetCharacter(Character.Main);
         //Joystick Input
-        if (!isJoystickInputIgnore)
+        if (isJoystickInputUse)
         {
-            //사이드뷰 일 때
-            if (method.Equals(JoystickInputMethod.OneDirection))
-            {
-                DataController.instance.inputDegree = Mathf.Abs(DataController.instance.joyStick.Horizontal); // 조정된 입력 방향으로 크기 계산
-                DataController.instance.inputDirection.Set(DataController.instance.joyStick.Horizontal, 0); // 조정된 입력 방향 설정
-                DataController.instance.inputJump = DataController.instance.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
-            }
-            else
-            {
-                DataController.instance.inputDirection.Set(
-                    DataController.instance.joyStick.Horizontal,
-                    DataController.instance.joyStick.Vertical); // 조정된 입력 방향 설정
-                DataController.instance.inputDegree = Vector2.Distance(Vector2.zero,
-                    DataController.instance.inputDirection); // 조정된 입력 방향으로 크기 계산
-            }
+            JoystickInputManager.instance.JoystickInputUpdate();
         }
         //Debug.Log(mainChar.transform.position);
         mainChar.MoveCharacter(method);

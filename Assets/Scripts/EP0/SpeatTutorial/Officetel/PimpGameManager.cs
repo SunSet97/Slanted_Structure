@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Move;
 using Play;
 using UnityEngine;
-
+using static Data.CustomEnum;
 public class PimpGameManager : MonoBehaviour, IMovable
 {
     public bool IsMove { get; set; }
@@ -24,7 +24,7 @@ public class PimpGameManager : MonoBehaviour, IMovable
         }
 
         canvasCtrl = CanvasControl.instance;
-        speat = DataController.instance.GetCharacter(MapData.Character.Main);
+        speat = DataController.instance.GetCharacter(Character.Main);
     }
 
     void Update()

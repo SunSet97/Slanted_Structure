@@ -35,6 +35,11 @@ namespace Data
         public int order;
         public string condition;
         public string increaseVar;
+
+        public Task[] this[int taskIndex]
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 
     [Serializable]

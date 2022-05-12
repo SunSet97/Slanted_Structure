@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Data;
 using UnityEngine;
-
+using static Data.CustomEnum;
 public class Camera_Moving : MonoBehaviour
 {
     //캐릭터 오브젝트 받는 변수
@@ -23,7 +23,7 @@ public class Camera_Moving : MonoBehaviour
     {
         this.viewType = viewType ? CustomEnum.CameraViewType.FollowCharacter : CustomEnum.CameraViewType.FixedView;
         cam = Camera.main;
-        character = DataController.instance.GetCharacter(MapData.Character.Main).transform;
+        character = DataController.instance.GetCharacter(Character.Main).transform;
     }
 
     void Update()
