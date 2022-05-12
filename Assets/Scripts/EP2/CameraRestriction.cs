@@ -7,12 +7,12 @@ public class CameraRestriction : MonoBehaviour
     Camera_Moving camera_Moving;
 
     void Start() {
-        camera_Moving = DataController.instance_DataController.cam.GetComponent<Camera_Moving>();
+        camera_Moving = DataController.instance.cam.GetComponent<Camera_Moving>();
     }
 
     private void OnTriggerEnter(Collider other) {
 
-        if (other.name == DataController.instance_DataController.GetCharacter(MapData.Character.Main).name) {
+        if (other.name == DataController.instance.GetCharacter(MapData.Character.Main).name) {
 
             if (gameObject.name == "hor" && !camera_Moving.enabled)
             {

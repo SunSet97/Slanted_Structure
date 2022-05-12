@@ -23,8 +23,8 @@ public class PimpGameManager : MonoBehaviour, IMovable
             t.pimpGameManager = this;
         }
 
-        canvasCtrl = CanvasControl.instance_CanvasControl;
-        speat = DataController.instance_DataController.GetCharacter(MapData.Character.Main);
+        canvasCtrl = CanvasControl.instance;
+        speat = DataController.instance.GetCharacter(MapData.Character.Main);
     }
 
     void Update()

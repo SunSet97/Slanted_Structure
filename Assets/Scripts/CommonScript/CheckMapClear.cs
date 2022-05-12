@@ -22,37 +22,31 @@ class DebugMapClear : Editor
 public class CheckMapClear : MonoBehaviour
 {
     public TextAsset jsonFile;
-    public string nextSelectMapcode = "000000";//어디 스토리로 갈 건지.
-    // public CharacterManager who;  // 트리거 신호를 줄 캐릭터
+
+    public string nextSelectMapcode = "000000"; //어디 스토리로 갈 건지.
 
     public void Clear()
     {
         if (!nextSelectMapcode.Equals("000000"))
-            DataController.instance_DataController.currentMap.nextMapcode = nextSelectMapcode;
-        if(jsonFile != null)
+            DataController.instance.currentMap.nextMapcode = nextSelectMapcode;
+        if (jsonFile != null)
         {
-            CanvasControl.instance_CanvasControl.StartConversation(jsonFile.text);
-            CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => DataController.instance_DataController.ChangeMap(DataController.instance_DataController.currentMap.nextMapcode));
+            CanvasControl.instance.StartConversation(jsonFile.text);
+            CanvasControl.instance.SetDialougueEndAction(() =>
+                DataController.instance.ChangeMap(DataController.instance.currentMap.nextMapcode));
         }
         else
         {
-            DataController.instance_DataController.ChangeMap(DataController.instance_DataController.currentMap.nextMapcode);
+            DataController.instance.ChangeMap(DataController.instance.currentMap.nextMapcode);
         }
     }
 
     // 캐릭터 확인 후 트리거 활성화
     private void OnTriggerEnter(Collider other)
     {
-        if (DataController.instance_DataController.GetCharacter(MapData.Character.Main).name
-            .Equals(other.name))
+        if (DataController.instance.GetCharacter(MapData.Character.Main).name.Equals(other.name))
         {
             Clear();
         }
-        // if (who)
-        //     if (other.GetComponent<CharacterManager>() == who)
-        //     {
-        //         Clear();
-        //     }
     }
-
 }

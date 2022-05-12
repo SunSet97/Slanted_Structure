@@ -93,7 +93,7 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
         {
             if (!isMoving && !isStopping)
             {
-                if (DataController.instance_DataController.joyStick.Horizontal < -0.5 && !isDragged && CurrentDir != Dir.Left)
+                if (DataController.instance.joyStick.Horizontal < -0.5 && !isDragged && CurrentDir != Dir.Left)
                 {
                     // 왼 드래그 공통
                     isDragged = true;
@@ -111,7 +111,7 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
                         StartCoroutine(GoHorizontal(moveTransforms[2], moveTransforms[0]));
                     }
                 }
-                else if (DataController.instance_DataController.joyStick.Horizontal > 0.5 && !isDragged && CurrentDir != Dir.Right)
+                else if (DataController.instance.joyStick.Horizontal > 0.5 && !isDragged && CurrentDir != Dir.Right)
                 {
                     //GoDir = Dir.Right;
                     isDragged = true;
@@ -126,7 +126,7 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
                         StartCoroutine(GoHorizontal(moveTransforms[1], moveTransforms[0]));
                     }
                 }
-                else if (DataController.instance_DataController.joyStick.Horizontal >= -0.5 && DataController.instance_DataController.joyStick.Horizontal <= 0.5)
+                else if (DataController.instance.joyStick.Horizontal >= -0.5 && DataController.instance.joyStick.Horizontal <= 0.5)
                 {
                     isDragged = false;
                     //Debug.Log("none");
@@ -175,7 +175,7 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
     void InitialSetting()
     {
         // 현재 캐릭터
-        rau = DataController.instance_DataController.GetCharacter(MapData.Character.Main);
+        rau = DataController.instance.GetCharacter(MapData.Character.Main);
         rau.IsMove = false;
         rau.anim.applyRootMotion = false;
         rau.anim.SetFloat(Speed, 0.7f);
@@ -203,12 +203,12 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
         }
         dovesComponents.Add(new dovesComoponents(tmpAnimsList, tmpCamFollowList));
         //조이스틱 이미지 끄기
-        foreach (Image image in DataController.instance_DataController.joyStick.GetComponentsInChildren(typeof(Image), true))
+        foreach (Image image in DataController.instance.joyStick.GetComponentsInChildren(typeof(Image), true))
         {
             image.color = Color.clear;
         }
         //조이스틱이 수평으로만 움직이도록
-        DataController.instance_DataController.joyStick.AxisOptions = AxisOptions.Horizontal;
+        DataController.instance.joyStick.AxisOptions = AxisOptions.Horizontal;
         //
         rau.PickUpCharacter();
         //
@@ -319,8 +319,8 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
             if (dis <= clearDis)
             {
                 Debug.Log("성공.");
-                DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
-                DataController.instance_DataController.currentMap.MapClear();
+                DataController.instance.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
+                DataController.instance.currentMap.MapClear();
 
             }
             else
@@ -334,8 +334,8 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
             if (dis <= clearDis)
             {
                 Debug.Log("성공");
-                DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
-                DataController.instance_DataController.currentMap.MapClear();
+                DataController.instance.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
+                DataController.instance.currentMap.MapClear();
             }
 
         }

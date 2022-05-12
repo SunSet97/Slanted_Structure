@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Data;
 using UnityEngine;
 
 public class Camera_Moving : MonoBehaviour
@@ -9,8 +10,8 @@ public class Camera_Moving : MonoBehaviour
     public Transform character;
 
     private CustomEnum.CameraViewType viewType;
+    private Camera cam;
     
-
     // 카메라 무빙 경계
     private BoxCollider bound;
     private Vector3 minBound;
@@ -18,53 +19,52 @@ public class Camera_Moving : MonoBehaviour
     private float halfWidth;
     private float halfHeight;
 
-    public void Initialize(CustomEnum.CameraViewType viewType)
+    public void Initialize(bool viewType)
     {
-        Debug.Log("초기화초기화초기화" + viewType);
-        this.viewType = viewType;
-        character = DataController.instance_DataController.GetCharacter(MapData.Character.Main).transform;
-        Debug.Log(character);
+        this.viewType = viewType ? CustomEnum.CameraViewType.FollowCharacter : CustomEnum.CameraViewType.FixedView;
+        cam = Camera.main;
+        character = DataController.instance.GetCharacter(MapData.Character.Main).transform;
     }
+
     void Update()
     {
-        var cam = Camera.main;
-        Debug.Log(character);
-        if (character)
-        {
-            if (cam.orthographic) cam.orthographicSize = DataController.instance_DataController.orthgraphic_Size;
+        if (!character) return;
 
-            if (viewType.Equals(CustomEnum.CameraViewType.FixedView))
-            {
-                cam.transform.position = DataController.instance_DataController.currentMap.transform.position +
-                                         DataController.instance_DataController.camDis;
-            }
-            else if (viewType.Equals(CustomEnum.CameraViewType.FollowCharacter))
-            {
-                cam.transform.position = character.position + DataController.instance_DataController.camDis;
-            }
-            Follow_Player(cam.transform.position);
+
+        if (cam.orthographic) cam.orthographicSize = DataController.instance.orthgraphic_Size;
+
+        if (viewType.Equals(CustomEnum.CameraViewType.FixedView))
+        {
+            cam.transform.position = DataController.instance.currentMap.transform.position +
+                                     DataController.instance.camDis;
         }
+        else if (viewType.Equals(CustomEnum.CameraViewType.FollowCharacter))
+        {
+            cam.transform.position = character.position + DataController.instance.camDis;
+        }
+
+        Follow_Player(cam.transform.position);
     }
 
 
     void Follow_Player(Vector3 position)
     {
         //카메라 경계값정보 Information_Scene오브젝트에서 받아오기
-        float min_x = DataController.instance_DataController.min_x;
-        float max_x = DataController.instance_DataController.max_x;
-        float min_y = DataController.instance_DataController.min_y;
-        float max_y = DataController.instance_DataController.max_y;
+        float min_x = DataController.instance.min_x;
+        float max_x = DataController.instance.max_x;
+        float min_y = DataController.instance.min_y;
+        float max_y = DataController.instance.max_y;
 
         //카메라 위치 제한 설정
         //position.x = Mathf.Clamp(position.x,min_x,max_x);
         //position.y= Mathf.Clamp(position.y, min_y, max_y);
 
-        if (DataController.instance_DataController.currentMap.cameraBound) // 카메라 경계 설정 시
+        if (DataController.instance.currentMap.cameraBound) // 카메라 경계 설정 시
         {
-            bound = DataController.instance_DataController.currentMap.cameraBound;
+            bound = DataController.instance.currentMap.cameraBound;
             minBound = bound.bounds.min;
             maxBound = bound.bounds.max;
-            halfHeight = GetComponent<Camera>().orthographicSize;
+            halfHeight = cam.orthographicSize;
             halfWidth = halfHeight * Screen.width / Screen.height;
             float clampedX = Mathf.Clamp(transform.position.x, minBound.x + halfWidth, maxBound.x - halfWidth);
             float clampedY = Mathf.Clamp(transform.position.y, minBound.y + halfHeight, maxBound.y - halfHeight); ;
@@ -74,7 +74,7 @@ public class Camera_Moving : MonoBehaviour
         }
 
         //입력 된 카메라 각도 설정
-        Camera.main.transform.rotation = Quaternion.Euler(DataController.instance_DataController.camRot);
+        cam.transform.rotation = Quaternion.Euler(DataController.instance.camRot);
 
         ////카메라의 Z값 고정을 위한 If문
         ////if (position.z != Z)

@@ -22,8 +22,8 @@ public class CharacterManager : MonoBehaviour, IMovable
     {
         ctrl = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
-        joyStick = DataController.instance_DataController.joyStick;
-        cam = DataController.instance_DataController.cam;
+        joyStick = DataController.instance.joyStick;
+        cam = DataController.instance.cam;
         // 표정 머테리얼 초기화
         if (who.Equals(MapData.Character.Speat) || who.Equals(MapData.Character.Oun) || who.Equals(MapData.Character.Rau))
         {
@@ -71,7 +71,7 @@ public class CharacterManager : MonoBehaviour, IMovable
         transform.LookAt(transform.position + mapSettingTransform.right);
         characterOriginRot = transform.eulerAngles;
 
-        camRotation = Quaternion.Euler(0, -DataController.instance_DataController.camRot.y, 0);
+        camRotation = Quaternion.Euler(0, -DataController.instance.camRot.y, 0);
         Vector3 transformedDir = camRotation * transform.forward;
 
         if(transformedDir.x < 0)
@@ -123,16 +123,16 @@ public class CharacterManager : MonoBehaviour, IMovable
         if (SceneManager.GetActiveScene().name == "Ingame")
         {
             // 대시
-            if (DataController.instance_DataController.inputDash == true)
+            if (DataController.instance.inputDash == true)
             {
                 anim.SetTrigger("Dash");
-                DataController.instance_DataController.inputDash = false;
+                DataController.instance.inputDash = false;
             }
 
             // 앉기
             /*  인터렉션 으로 의자 주변에 있을 때, 의자 자체에 트리거가 활성화 되고, /희원이랑 이야기해야될 부분
             *  터치하면 bool값이 변경되는 것으로 세팅할 필요가 있음!*/
-            if (DataController.instance_DataController.inputSeat == true)
+            if (DataController.instance.inputSeat == true)
                 anim.SetBool("Seat", true);
             else
                 anim.SetBool("Seat", false);
@@ -194,7 +194,7 @@ public class CharacterManager : MonoBehaviour, IMovable
             Vector3 transformedDir = camRotation * transform.forward;
             Vector2 characterDir = new Vector2(transformedDir.x, transformedDir.z);
             // 조이스틱이 가리키는 방향
-            Vector2 joystickDir = new Vector2(DataController.instance_DataController.inputDirection.x, DataController.instance_DataController.inputDirection.y);
+            Vector2 joystickDir = new Vector2(DataController.instance.inputDirection.x, DataController.instance.inputDirection.y);
 
             joyRot = Vector2.SignedAngle(joystickDir, characterDir);
             //사이드뷰 일 때
@@ -211,9 +211,9 @@ public class CharacterManager : MonoBehaviour, IMovable
             {
                 if (Mathf.Abs(joyRot) > 0) { transform.Rotate(Vector3.up, joyRot); } // 임시 회전
             }
-            anim.SetFloat(SpeedHash, DataController.instance_DataController.inputDegree);
+            anim.SetFloat(SpeedHash, DataController.instance.inputDegree);
             //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
-            if (DataController.instance_DataController.inputJump && ctrl.isGrounded)
+            if (DataController.instance.inputJump && ctrl.isGrounded)
             {
                 moveVerDir.y = 0;
                 anim.SetBool("Jump", true);  //점프 가능 상태로 변경
@@ -230,7 +230,7 @@ public class CharacterManager : MonoBehaviour, IMovable
             {
                 moveVerDir.y = 0;
                 //캐릭터 점프 가능
-                if (DataController.instance_DataController.inputJump && anim.GetBool("Jump"))
+                if (DataController.instance.inputJump && anim.GetBool("Jump"))
                 {
                     moveVerDir.y += jumpForce; //점프력 만큼 힘을 가함
                     anim.SetBool("Jump", false); //점프 불가능 상태로 변경하여 연속적인 점프 제한

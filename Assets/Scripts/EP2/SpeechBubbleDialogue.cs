@@ -82,7 +82,7 @@ public class SpeechBubbleDialogue : MonoBehaviour
     void Start()
     {
         // 카메라
-        cam = DataController.instance_DataController.cam;
+        cam = DataController.instance.cam;
 
         // 오브젝트 주위 선
         if(!gameObject.GetComponent<InteractionObj_stroke>())interactionObj_Stroke = gameObject.GetComponent<InteractionObj_stroke>();
@@ -95,7 +95,7 @@ public class SpeechBubbleDialogue : MonoBehaviour
         {
             gameObject.tag = "obj_interaction";
         }
-        character = DataController.instance_DataController.GetCharacter(MapData.Character.Main);
+        character = DataController.instance.GetCharacter(MapData.Character.Main);
     }
 
     // Update is called once per frame
@@ -165,7 +165,7 @@ public class SpeechBubbleDialogue : MonoBehaviour
 
         }
 
-        if (speechBubbleDialogueType == SpeechBubbleDialogueType.loop && !CanvasControl.instance_CanvasControl.isPossibleCnvs) //!CanvasControl.instance_CanvasControl.isPossibleCnvs한 이유는 npc대화와 말풍선이 겹치치 않게 하기 위함
+        if (speechBubbleDialogueType == SpeechBubbleDialogueType.loop && !CanvasControl.instance.isPossibleCnvs) //!CanvasControl.instance_CanvasControl.isPossibleCnvs한 이유는 npc대화와 말풍선이 겹치치 않게 하기 위함
         {  
             speechBubbleObj.SetActive(false);
         }

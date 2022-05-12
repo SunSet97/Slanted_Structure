@@ -20,9 +20,9 @@ public class NPCInteractor : MonoBehaviour
 
     private void Start()
     {
-        canvasCtrl = CanvasControl.instance_CanvasControl;
+        canvasCtrl = CanvasControl.instance;
         FindNPC();
-        character = DataController.instance_DataController.GetCharacter(MapData.Character.Main).transform;
+        character = DataController.instance.GetCharacter(MapData.Character.Main).transform;
     }
 
     void Update()
@@ -62,9 +62,9 @@ public class NPCInteractor : MonoBehaviour
                 // 대화가 끝나기 전까지 다시 대화 불가능하도록 설정
                 canvasCtrl.isPossibleCnvs = false;
                 canvasCtrl.dialogueCnt = 0;
-                DataController.instance_DataController.LoadData(closestNPC.gameObject.name, DataController.instance_DataController.charData.story + "_"
-                    + DataController.instance_DataController.charData.storyBranch + "_" + DataController.instance_DataController.charData.storyBranch_scnd + "_"
-                    + DataController.instance_DataController.charData.dialogue_index + ".json");
+                DataController.instance.LoadData(closestNPC.gameObject.name, DataController.instance.charData.story + "_"
+                    + DataController.instance.charData.storyBranch + "_" + DataController.instance.charData.storyBranch_scnd + "_"
+                    + DataController.instance.charData.dialogue_index + ".json");
                 
                 //수정
                 //canvasCtrl.StartConversation();

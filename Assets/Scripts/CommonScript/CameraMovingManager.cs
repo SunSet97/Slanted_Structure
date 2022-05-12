@@ -49,7 +49,7 @@ public class CameraMovingManager : MonoBehaviour
 
     private void Start()
     {
-        character = DataController.instance_DataController.GetCharacter(MapData.Character.Main)
+        character = DataController.instance.GetCharacter(MapData.Character.Main)
             .transform;
     }
 
@@ -82,11 +82,11 @@ public class CameraMovingManager : MonoBehaviour
             Debug.Log(t);
             // t(0 ~ 1)에 따라 Vector3.Lerp(camSetting[0], camSetting[1], t)
             Vector3 camDis = Vector3.Lerp(corner.camSettings[0].camDis, corner.camSettings[1].camDis, t);
-            camDis = Vector3.Lerp(DataController.instance_DataController.camDis, camDis, 0.05f);
+            camDis = Vector3.Lerp(DataController.instance.camDis, camDis, 0.05f);
             Vector3 camRot = Vector3.Lerp(corner.camSettings[0].camRot, corner.camSettings[1].camRot, t);
-            camRot = Vector3.Lerp(DataController.instance_DataController.camRot, camRot, 0.05f);
-            DataController.instance_DataController.camDis = camDis;
-            DataController.instance_DataController.camRot = camRot;
+            camRot = Vector3.Lerp(DataController.instance.camRot, camRot, 0.05f);
+            DataController.instance.camDis = camDis;
+            DataController.instance.camRot = camRot;
         }
         else
         {
@@ -97,21 +97,21 @@ public class CameraMovingManager : MonoBehaviour
             Vector3 camRot;
             if (camRotDir == 1)
             {
-                camDis = Vector3.Lerp(DataController.instance_DataController.camDis, corner.camSettings[1].camDis,
+                camDis = Vector3.Lerp(DataController.instance.camDis, corner.camSettings[1].camDis,
                     0.05f);
-                camRot = Vector3.Lerp(DataController.instance_DataController.camRot, corner.camSettings[1].camRot,
+                camRot = Vector3.Lerp(DataController.instance.camRot, corner.camSettings[1].camRot,
                     0.05f);
             }
             else
             {
-                camDis = Vector3.Lerp(DataController.instance_DataController.camDis, corner.camSettings[0].camDis,
+                camDis = Vector3.Lerp(DataController.instance.camDis, corner.camSettings[0].camDis,
                     0.05f);
-                camRot = Vector3.Lerp(DataController.instance_DataController.camRot, corner.camSettings[0].camRot,
+                camRot = Vector3.Lerp(DataController.instance.camRot, corner.camSettings[0].camRot,
                     0.05f);
             }
 
-            DataController.instance_DataController.camDis = camDis;
-            DataController.instance_DataController.camRot = camRot;
+            DataController.instance.camDis = camDis;
+            DataController.instance.camRot = camRot;
         }
     }
 

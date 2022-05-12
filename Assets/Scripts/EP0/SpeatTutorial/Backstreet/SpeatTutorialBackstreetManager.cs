@@ -82,17 +82,17 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
             {
                 if (_jsonFile != null)
                 {
-                    CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear(); });
-                    CanvasControl.instance_CanvasControl.SetDialougueEndAction(() => { DataController.instance_DataController.currentMap.MapClear(); });
-                    CanvasControl.instance_CanvasControl.StartConversation(_jsonFile.text);
+                    CanvasControl.instance.SetDialougueEndAction(() => { DataController.instance.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear(); });
+                    CanvasControl.instance.SetDialougueEndAction(() => { DataController.instance.currentMap.MapClear(); });
+                    CanvasControl.instance.StartConversation(_jsonFile.text);
                 }
                 else
                 {
-                    DataController.instance_DataController.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
-                    DataController.instance_DataController.currentMap.MapClear();
+                    DataController.instance.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
+                    DataController.instance.currentMap.MapClear();
                 }
             }
-            else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1) DataController.instance_DataController.ChangeMap(DataController.instance_DataController.mapCode);
+            else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1) DataController.instance.ChangeMap(DataController.instance.mapCode);
         }
     }
 
@@ -102,14 +102,14 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
     IEnumerator StartRungame()
     {
         yield return new WaitUntil(() => { return IsPlay; });
-        CharacterManager mainChar = DataController.instance_DataController.GetCharacter(MapData.Character.Speat);
+        CharacterManager mainChar = DataController.instance.GetCharacter(MapData.Character.Speat);
         mainChar.jumpForce = 7;
         WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
-        DataController.instance_DataController.InitializeJoyStick(false);
+        DataController.instance.InitializeJoyStick(false);
         Debug.Log("지금");
-        DataController.instance_DataController.currentMap.isJoystickInputIgnore = true;
-        DataController.instance_DataController.inputDegree = 1;
-        DataController.instance_DataController.inputDirection.x = 1;
+        DataController.instance.currentMap.isJoystickInputIgnore = true;
+        DataController.instance.inputDegree = 1;
+        DataController.instance.inputDirection.x = 1;
 
         while (speatSlider.value < speatSlider.maxValue)
         {
@@ -179,7 +179,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
     public void JumpBtn(){
         if (jumpBtn.GetComponentsInChildren<Image>()[1].fillAmount == 0)
         {
-            DataController.instance_DataController.inputJump = true;
+            DataController.instance.inputJump = true;
             StartCoroutine("JumpCooldown");
         }
     }
@@ -190,7 +190,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
         while (jumpBtn.GetComponentsInChildren<Image>()[1].fillAmount > 0)
         {
             jumpBtn.GetComponentsInChildren<Image>()[1].fillAmount -= 0.04f;
-            if (jumpBtn.GetComponentsInChildren<Image>()[1].fillAmount < 0.9f) DataController.instance_DataController.inputJump = false;
+            if (jumpBtn.GetComponentsInChildren<Image>()[1].fillAmount < 0.9f) DataController.instance.inputJump = false;
             yield return waitForSeconds;
         }
     }
@@ -199,13 +199,13 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
     {
         if (abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount == 0)
         {
-            DataController.instance_DataController.GetCharacter(MapData.Character.Main).gameObject.layer = 9;
+            DataController.instance.GetCharacter(MapData.Character.Main).gameObject.layer = 9;
             StartCoroutine("AbilityCooldown");
         }
     }
     IEnumerator AbilityCooldown()
     {
-        DataController.instance_DataController.GetCharacter(MapData.Character.Main).gameObject.layer = 9;
+        DataController.instance.GetCharacter(MapData.Character.Main).gameObject.layer = 9;
         WaitForSeconds waitForSeconds = new WaitForSeconds(0.005f);
         while (abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount < 1)
         {
@@ -213,7 +213,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
             yield return waitForSeconds;
         }
         waitForSeconds = new WaitForSeconds(0.002f);
-        DataController.instance_DataController.GetCharacter(MapData.Character.Main).gameObject.layer = 0;
+        DataController.instance.GetCharacter(MapData.Character.Main).gameObject.layer = 0;
         while (abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount > 0)
         {
             abilityBtn.GetComponentsInChildren<Image>()[1].fillAmount -= 0.02f;

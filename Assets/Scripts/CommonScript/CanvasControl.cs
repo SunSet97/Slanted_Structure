@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
+using Data;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -18,7 +18,7 @@ public class CanvasControl : MonoBehaviour
     public Text selfEstmText;
 
     [Header("대화 관련")]
-    public GameObject DialoguePanel;
+    public GameObject dialoguePanel;
     public bool isPossibleCnvs = true;
     public Transform choiceParent;
     private GameObject[] choiceBtn;
@@ -28,11 +28,11 @@ public class CanvasControl : MonoBehaviour
 
     // 대화 관련 변수 
     public int dialogueCnt = 0; // 대사 카운트 변수
-    UnityAction<int> pressBtnMethod;
-    UnityAction endDialogueAction;
-    UnityAction startDialogueAction;
+    private UnityAction<int> pressBtnMethod;
+    private UnityAction endDialogueAction;
+    private UnityAction startDialogueAction;
 
-    public Animator charAnimator;
+    public Animator charDialogueAnimator;
 
     private bool isExistFile;
 
@@ -48,18 +48,15 @@ public class CanvasControl : MonoBehaviour
     public Toggle[] selectedCharacter; //선택된 캐릭터
     public GameObject selectedGuest;
     //인스턴스화
-    private static CanvasControl instance = null;
-    public static CanvasControl instance_CanvasControl
+    private static CanvasControl _instance;
+    public static CanvasControl instance
     {
-        get
-        {
-            return instance;
-        }
+        get => instance;
     }
 
     private void Awake()
     {
-        instance = this;
+        _instance = this;
     }
 
     private void Start()
@@ -76,11 +73,11 @@ public class CanvasControl : MonoBehaviour
             }
         }
 
-        if (DataController.instance_DataController != null && selfEstmText != null)
+        if (DataController.instance != null && selfEstmText != null)
         {
-            selfEstmText.text = "자존감: " + DataController.instance_DataController.charData.selfEstm;
-            intimacyText_speat.text = "스핏 친밀도: " + DataController.instance_DataController.charData.intimacy_spOun;
-            intimacyText_oun.text = "오운 친밀도: " + DataController.instance_DataController.charData.intimacy_ounRau;
+            selfEstmText.text = "자존감: " + DataController.instance.charData.selfEstm;
+            intimacyText_speat.text = "스핏 친밀도: " + DataController.instance.charData.intimacy_spOun;
+            intimacyText_oun.text = "오운 친밀도: " + DataController.instance.charData.intimacy_ounRau;
         }
 
     }
@@ -99,20 +96,20 @@ public class CanvasControl : MonoBehaviour
         //    DataController.Instance.LoadCharData("NewData.json");
         //}
 
-        DataController.instance_DataController.LoadData("Save", "NewData.json");
+        DataController.instance.LoadData("Save", "NewData.json");
 
         // 씬 이동 시 현재 씬 이름 데이터 파일에 저장
-        DataController.instance_DataController.charData.currentScene = sceneName;
+        DataController.instance.charData.currentScene = sceneName;
     }
 
     //세이브 된 게임 데이터 파일을 여는 함수
     public void SaveFileOpen(int fileNum)
     {
-        if (DataController.instance_DataController.isExistdata[fileNum])
+        if (DataController.instance.isExistdata[fileNum])
         {
-            DataController.instance_DataController.LoadData("Save", "SaveData" + fileNum);
+            DataController.instance.LoadData("Save", "SaveData" + fileNum);
 
-            SceneManager.LoadScene(DataController.instance_DataController.charData.currentScene);
+            SceneManager.LoadScene(DataController.instance.charData.currentScene);
             print("SaveData" + fileNum + ".json");
 
         }
@@ -141,12 +138,12 @@ public class CanvasControl : MonoBehaviour
         {
             savePanel.SetActive(true);
             // 세이브 데이터 패널이 열릴 때마다 각 세이브 파일이 존재하는 지 확인 
-            DataController.instance_DataController.ExistsData();
+            DataController.instance.ExistsData();
 
             for (int i = 0; i < 3; i++)
             {
 
-                if (DataController.instance_DataController.isExistdata[i])
+                if (DataController.instance.isExistdata[i])
                 {
                     // 해당 칸에 데이턱 존재하면 버튼 텍스트 업데이트
                     saveText[i].text = "FULL DATA";
@@ -178,23 +175,23 @@ public class CanvasControl : MonoBehaviour
         //}
 
 
-        if (DataController.instance_DataController.charData.pencilCnt > 0)
+        if (DataController.instance.charData.pencilCnt > 0)
         {
             // 기존 데이터 없을 경우 버튼 텍스트 업데이트
-            if (DataController.instance_DataController.isExistdata[fileNum] == false)
+            if (DataController.instance.isExistdata[fileNum] == false)
             {
-                DataController.instance_DataController.isExistdata[fileNum] = true;
+                DataController.instance.isExistdata[fileNum] = true;
                 saveText[fileNum].text = "FULL DATA";
             }
             // 데이터 저장 시 연필 개수, 캐릭터 위치, 현재 씬 등 업데이트 (점점 추가할 예정)
-            DataController.instance_DataController.charData.pencilCnt -= 1;
-            DataController.instance_DataController.charData.currentCharPosition = DataController.instance_DataController.GetCharacter(MapData.Character.Main).transform.position;
-            DataController.instance_DataController.charData.rauPosition = DataController.instance_DataController.GetCharacter(MapData.Character.Rau).transform.position;
-            DataController.instance_DataController.charData.speatPosition = DataController.instance_DataController.GetCharacter(MapData.Character.Speat).transform.position;
-            DataController.instance_DataController.charData.ounPosition = DataController.instance_DataController.GetCharacter(MapData.Character.Oun).transform.position;
-            DataController.instance_DataController.charData.currentScene = SceneManager.GetActiveScene().name;
+            DataController.instance.charData.pencilCnt -= 1;
+            DataController.instance.charData.currentCharPosition = DataController.instance.GetCharacter(MapData.Character.Main).transform.position;
+            DataController.instance.charData.rauPosition = DataController.instance.GetCharacter(MapData.Character.Rau).transform.position;
+            DataController.instance.charData.speatPosition = DataController.instance.GetCharacter(MapData.Character.Speat).transform.position;
+            DataController.instance.charData.ounPosition = DataController.instance.GetCharacter(MapData.Character.Oun).transform.position;
+            DataController.instance.charData.currentScene = SceneManager.GetActiveScene().name;
 
-            DataController.instance_DataController.SaveCharData("SaveData" + fileNum);
+            DataController.instance.SaveCharData("SaveData" + fileNum);
 
         }
     }
@@ -213,9 +210,9 @@ public class CanvasControl : MonoBehaviour
     // 자존감 및 친밀도 text 업데이트
     public void UpdateStats(){
 
-        selfEstmText.text = "자존감: " + DataController.instance_DataController.charData.selfEstm;
-        intimacyText_speat.text = "스핏 친밀도: " + DataController.instance_DataController.charData.intimacy_spOun;
-        intimacyText_oun.text = "오운 친밀도: " + DataController.instance_DataController.charData.intimacy_ounRau;
+        selfEstmText.text = "자존감: " + DataController.instance.charData.selfEstm;
+        intimacyText_speat.text = "스핏 친밀도: " + DataController.instance.charData.intimacy_spOun;
+        intimacyText_oun.text = "오운 친밀도: " + DataController.instance.charData.intimacy_ounRau;
 
     }
 
@@ -226,10 +223,10 @@ public class CanvasControl : MonoBehaviour
     public void TutorialCmdCtrl()
     {
         // 지시문과 함께 나올 이미지가 있을 때, 그 오브젝트를 배열로 받음 
-        if (DataController.instance_DataController.commandSprite.Find(commandIndex.ToString()) != null)
+        if (DataController.instance.commandSprite.Find(commandIndex.ToString()) != null)
         {
             isExistCmdSpr = true;
-            curCmdSpr = DataController.instance_DataController.commandSprite.Find(commandIndex.ToString()).gameObject;
+            curCmdSpr = DataController.instance.commandSprite.Find(commandIndex.ToString()).gameObject;
             sprRenderers = new SpriteRenderer[curCmdSpr.transform.childCount];
             sprRenderers = curCmdSpr.GetComponentsInChildren<SpriteRenderer>();
         }
@@ -242,13 +239,13 @@ public class CanvasControl : MonoBehaviour
         finishFadeIn = false;
         fadeIn = StartCoroutine(FadeIn());
 
-        if (DataController.instance_DataController.GetCharacter(MapData.Character.Main).name == "Rau")
+        if (DataController.instance.GetCharacter(MapData.Character.Main).name == "Rau")
         {
-            commandText.text = DataController.instance_DataController.tutorialCmdData.RauTutorial[commandIndex];
+            commandText.text = DataController.instance.tutorialCmdData.RauTutorial[commandIndex];
         }
         else
         {
-            commandText.text = DataController.instance_DataController.tutorialCmdData.SpeatTutorial[commandIndex];
+            commandText.text = DataController.instance.tutorialCmdData.SpeatTutorial[commandIndex];
         }
         commandIndex++;
     }
@@ -268,9 +265,9 @@ public class CanvasControl : MonoBehaviour
 
             }
 
-            if (progressIndex < DataController.instance_DataController.progressColliders.Length)
+            if (progressIndex < DataController.instance.progressColliders.Length)
             {
-                DataController.instance_DataController.progressColliders[progressIndex].gameObject.SetActive(true);
+                DataController.instance.progressColliders[progressIndex].gameObject.SetActive(true);
             }
             isGoNextStep = false; 
         }
@@ -348,13 +345,13 @@ public class CanvasControl : MonoBehaviour
     public void StartConversation(string jsonString)
     {
         //task인 경우 대화하는동안 task 일시 중지
-        if(DataController.instance_DataController.taskData != null)
-            DataController.instance_DataController.taskData.isContinue = false;
+        if(DataController.instance.taskData != null)
+            DataController.instance.taskData.isContinue = false;
         
         //Joystick 중지
-        DataController.instance_DataController.StopSaveLoadJoyStick(true);
+        DataController.instance.StopSaveLoadJoyStick(true);
         
-        DataController.instance_DataController.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
+        DataController.instance.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
         dialogueCnt = 0;
         if(startDialogueAction != null)
         {
@@ -362,18 +359,18 @@ public class CanvasControl : MonoBehaviour
             startDialogueAction = null;
         }
         isPossibleCnvs = false;
-        DialoguePanel.SetActive(true);
+        dialoguePanel.SetActive(true);
         UpdateWord();
     }
 
     public void UpdateWord()
     {
-        DialogueData dialogueData = DataController.instance_DataController.dialogueData;
+        DialogueData dialogueData = DataController.instance.dialogueData;
         int dialogueLen = dialogueData.dialogues.Length;
         // 대화가 끝나면 선택지 부를 지 여부결정 
         if (dialogueCnt >= dialogueLen)
         {
-            DialoguePanel.SetActive(false);
+            dialoguePanel.SetActive(false);
 
             isPossibleCnvs = true;
             dialogueCnt = 0;
@@ -383,34 +380,34 @@ public class CanvasControl : MonoBehaviour
                 endDialogueAction = null;
             }
             dialogueData.dialogues = null;
-            if (DataController.instance_DataController.taskData != null)
+            if (DataController.instance.taskData != null)
             {
-                DataController.instance_DataController.taskData.isContinue = true;
-                DataController.instance_DataController.taskData.taskIndex++;
+                DataController.instance.taskData.isContinue = true;
+                DataController.instance.taskData.taskIndex++;
             }
-            DataController.instance_DataController.StopSaveLoadJoyStick(false);
+            DataController.instance.StopSaveLoadJoyStick(false);
         }
         else
         {
             // 캐릭터 표정 업데이트 (애니메이션)
-            if (!string.IsNullOrEmpty(dialogueData.dialogues[dialogueCnt].anim_name))
+            if (!string.IsNullOrEmpty(dialogueData.dialogues[dialogueCnt].animName))
             {
-                if (charAnimator)
+                if (charDialogueAnimator)
                 {
-                    Debug.Log(dialogueData.dialogues[dialogueCnt].anim_name);
-                    string path = "Character_dialogue/" + dialogueData.dialogues[dialogueCnt].anim_name;
-                    charAnimator.runtimeAnimatorController =
+                    Debug.Log(dialogueData.dialogues[dialogueCnt].animName);
+                    string path = "Character_dialogue/" + dialogueData.dialogues[dialogueCnt].animName;
+                    charDialogueAnimator.runtimeAnimatorController =
                         Resources.Load(path) as UnityEditor.Animations.AnimatorController;
-                    if (charAnimator.runtimeAnimatorController != null)
+                    if (charDialogueAnimator.runtimeAnimatorController != null)
                     {
-                        charAnimator.GetComponent<Image>().enabled = true;
+                        charDialogueAnimator.GetComponent<Image>().enabled = true;
                         Debug.Log((int) dialogueData.dialogues[dialogueCnt].expression + "  " +
                                   dialogueData.dialogues[dialogueCnt].expression);
-                        charAnimator.SetInteger(Emotion, ((int) dialogueData.dialogues[dialogueCnt].expression));
+                        charDialogueAnimator.SetInteger(Emotion, ((int) dialogueData.dialogues[dialogueCnt].expression));
                     }
                     else
                     {
-                        charAnimator.GetComponent<Image>().enabled = false;
+                        charDialogueAnimator.GetComponent<Image>().enabled = false;
                         // Debug.LogError("Dialogue 애니메이션 세팅 오류");
                     }
                 }
@@ -421,8 +418,8 @@ public class CanvasControl : MonoBehaviour
             }
             else
             {
-                charAnimator.runtimeAnimatorController = null;
-                charAnimator.GetComponent<Image>().enabled = false;
+                charDialogueAnimator.runtimeAnimatorController = null;
+                charDialogueAnimator.GetComponent<Image>().enabled = false;
             }
 
             // 대화 텍스트 업데이트
@@ -431,8 +428,8 @@ public class CanvasControl : MonoBehaviour
             // 현재 맵에 기준???    햄버거 집 스핏의 경우 임시로 존재하는 거니까
             // MapData에 inspector window에서 setting, position setting되어있는 캐릭터들도 추가
             // 대화 시 무슨 캐릭터인지 anim_name으로 Find (who를 사용)
-            MapData.AnimationCharacterSet animator = DataController.instance_DataController.currentMap.characters.Find(
-                item => item.who.ToString().Equals(dialogueData.dialogues[dialogueCnt].anim_name));
+            MapData.AnimationCharacterSet animator = DataController.instance.currentMap.characters.Find(
+                item => item.who.ToString().Equals(dialogueData.dialogues[dialogueCnt].animName));
             animator?.characterAnimator.SetInteger(Emotion, (int) dialogueData.dialogues[dialogueCnt].expression);
     
             // 해당 캐릭터에 setEmotion
@@ -447,19 +444,19 @@ public class CanvasControl : MonoBehaviour
     // 선택지가 있을 때 선택지 패널 염 
     public void OpenChoicePanel()
     {
-        DataController.instance_DataController.StopSaveLoadJoyStick(true);
-        TaskData currentTaskData = DataController.instance_DataController.taskData;
+        DataController.instance.StopSaveLoadJoyStick(true);
+        TaskData currentTaskData = DataController.instance.taskData;
         int index = currentTaskData.taskIndex;
         int choiceLen = int.Parse(currentTaskData.tasks[index].nextFile);
 
-        int curIntimacy_spRau = DataController.instance_DataController.charData.intimacy_spRau;
-        int curIntimacy_ounRau = DataController.instance_DataController.charData.intimacy_ounRau;
-        int curSelfEstm = DataController.instance_DataController.charData.selfEstm;
+        int curIntimacy_spRau = DataController.instance.charData.intimacy_spRau;
+        int curIntimacy_ounRau = DataController.instance.charData.intimacy_ounRau;
+        int curSelfEstm = DataController.instance.charData.selfEstm;
 
         choiceBtn[0].transform.parent.gameObject.SetActive(true);
         if (currentTaskData.tasks.Length <= index + choiceLen)
         {
-            Debug.LogError("선택지 개수 오류 - 인덱스 오버플로우");
+            Debug.LogError("선택지 개수 오류 - IndexOverFlow");
         }
         // 선택지 개수와 조건에 맞게 선택지가 나올 수 있도록 함.
         for (int i = 0; i < choiceBtn.Length; i++)
@@ -470,8 +467,8 @@ public class CanvasControl : MonoBehaviour
                 continue;
             }
             // 친밀도와 자존감이 기준보다 낮으면 일부 선택지가 나오지 않을 수 있음 
-            Debug.Log($"{i}번째 선택지 조건 - " + currentTaskData.tasks[index + i + 1].condition);
             currentTaskData.tasks[index + i + 1].condition = currentTaskData.tasks[index + i + 1].condition.Replace("m", "-");
+            Debug.Log($"{i}번째 선택지 조건 - {currentTaskData.tasks[index + i + 1].condition}");
             int[] condition = Array.ConvertAll(currentTaskData.tasks[index + i + 1].condition.Split(','), int.Parse);
             // if (currentTaskData.tasks[index + i + 1].order >= 0)
             // {
@@ -520,10 +517,10 @@ public class CanvasControl : MonoBehaviour
     // 선택지를 눌렀을 때 불리는 함수, Index 1부터 시작
     public void PressChoice(int index)
     {
-        TaskData currentTaskData = DataController.instance_DataController.taskData;
+        TaskData currentTaskData = DataController.instance.taskData;
         RemoveChoice();
         int choiceLen = int.Parse(currentTaskData.tasks[currentTaskData.taskIndex].nextFile);
-        DataController.instance_DataController.StopSaveLoadJoyStick(false);
+        DataController.instance.StopSaveLoadJoyStick(false);
         pressBtnMethod(index);
         // DataController.instance_DataController.InitializeJoystic(true);
         //taskIndex를 쓸 일이 있을 경우 여기서 사용  아니면 pressBtnMethod에서 taskIndex 더해주기

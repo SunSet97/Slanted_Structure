@@ -18,6 +18,7 @@ public class FadeEffect : MonoBehaviour
 
     public IEnumerator FadeIn()
     {
+        isFade = false;
         fadeImage.raycastTarget = true;
         float t = 1;
         while (t > 0)
@@ -29,11 +30,12 @@ public class FadeEffect : MonoBehaviour
             yield return null;
         }
         fadeImage.raycastTarget = false;
-        isFade = false;
+        isFade = true;
     }
     
     public IEnumerator FadeOut()
     {
+        isFade = false;
         fadeImage.raycastTarget = true;
         float t = 0;
         while (t > 1)

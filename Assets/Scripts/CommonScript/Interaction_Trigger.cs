@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
+using Data;
 using UnityEngine;
 
 public class Interaction_Trigger : InteractionObj_stroke
@@ -10,7 +11,7 @@ public class Interaction_Trigger : InteractionObj_stroke
     protected override void Start()
     {
         base.Start();
-        interactionMethod = InteractionMethod.No;
+        interactionMethod = CustomEnum.InteractionMethod.No;
     }
 
     void OnTriggerEnter(Collider other)
