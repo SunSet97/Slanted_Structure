@@ -50,12 +50,12 @@ MonoBehaviour:
     dialogues:
     - name: ??
       expression: 0
-      anim_name: Speat_past
+      animName: 
       contents: "\uC544\uC774\uACE0 \uD5C8\uB9AC\uC57C...\uC5EC\uAE34 \uC5B4\uB514\uC9C0..?
         \uC544\uC624 \uB0C4\uC0C8..."
     - name: ??
       expression: 7
-      anim_name: Speat_past
+      animName: 
       contents: "\uB0C4\uC0C8\uB294 \uB098\uC9C0\uB9CC \uB300\uCDA9 \uD3EC\uC8FC\uB4E4\uC5D0\uAC8C\uC11C
         \uBC97\uC5B4\uB09C \uAC70 \uAC19\uC73C\uB2C8...\uADF8\uB798\uC11C \uC774\uC81C
         \uB098\uB294 \uC5B4\uB514\uB85C \uAC00\uC9C0..?"
@@ -64,17 +64,15 @@ MonoBehaviour:
   taskData_Debug: []
   color: 0
   interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
   CameraPos: {x: 0, y: 0, z: 0}
   CameraRot: {x: 0, y: 0, z: 0}
+  timeline: {fileID: 0}
   touchTargetObject: {fileID: 0}
   isLoop: 0
 --- !u!65 &7996873064597938293
@@ -319,25 +317,39 @@ MonoBehaviour:
     dialogues:
     - name: ??
       expression: 0
-      anim_name: Speat_past
+      animName: 
       contents: "\uBC84\uB824\uC9C4 \uACF3\uC778\uAC00..? \uC77C\uB2E8 \uB4E4\uC5B4\uAC00\uC11C
         \uC7A0\uC2DC \uC26C\uC790.."
-  dialogueEndAction: []
-  taskEndActions: []
+  dialogueEndAction:
+  - eventType: 1
+    clearBox: {fileID: 5724989132166803283}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  taskEndActions:
+  - eventType: 0
+    clearBox: {fileID: 5724989132166803283}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
   CameraPos: {x: 0, y: 0, z: 0}
   CameraRot: {x: 0, y: 0, z: 0}
+  timeline: {fileID: 0}
   touchTargetObject: {fileID: 0}
   isLoop: 0
 --- !u!1 &5724989132033950182
@@ -391,9 +403,9 @@ MonoBehaviour:
     \uD50C\uB808\uC774: \uD50C\uB7AB\uD3EC\uBA38 \uAC8C\uC784\n\uB2A5\uB825: X\n"
   mapCode: 002030
   method: 2
-  endMap: 0
+  endMap: 1
   director: {fileID: 0}
-  nextMapcode: 101010
+  nextMapcode: 002031
   map: {fileID: 5724989134008353924}
   ui: {fileID: 0}
   SkyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
@@ -401,6 +413,7 @@ MonoBehaviour:
   orthographicSize: 0
   isCameraMoving: 1
   cameraBound: {fileID: 0}
+  BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 7045955273984404481}
   clearBoxList:
@@ -408,16 +421,18 @@ MonoBehaviour:
   positionSetting: {fileID: 5724989133969462290}
   positionSets:
   - index: 0
-    who: 0
+    who: 4
     startPosition: {fileID: 5724989133351906227}
     clearBox: {fileID: 5724989132166803282}
     posSet: {fileID: 5724989133188044672}
     isMain: 1
   posIndex: 0
+  cinematic: {fileID: 0}
   cam: {fileID: 0}
+  cameraViewType: 0
   camDis: {x: 0, y: 2, z: -8}
   camRot: {x: 10, y: 0, z: 0}
-  isJoystickInputIgnore: 0
+  isJoystickInputUse: 0
   isJoystickNone: 0
   ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &5724989132166803285
@@ -479,7 +494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 0}
-  nextSelectMapcode: 000000
+  nextSelectMapcode: 002031
 --- !u!1 &5724989133188044675
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,7 +536,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5724989133351906227}
   m_Layer: 0
-  m_Name: Speat Start Position
+  m_Name: Speat_Adult Start Position
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
