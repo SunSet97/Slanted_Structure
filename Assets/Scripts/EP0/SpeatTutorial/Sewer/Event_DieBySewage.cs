@@ -8,11 +8,9 @@ public class Event_DieBySewage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //if (other.name == "Speat")
-        {
-            other.GetComponent<CharacterManager>().PickUpCharacter();
-            other.transform.position = respawnPoint.position; // 리스폰 포인트로 이동
-            other.GetComponent<CharacterManager>().UseJoystickCharacter();
-        }
+        var character = other.GetComponent<CharacterManager>();
+        character.PickUpCharacter();
+        other.transform.position = respawnPoint.position; // 리스폰 포인트로 이동
+        character.UseJoystickCharacter();
     }
 }

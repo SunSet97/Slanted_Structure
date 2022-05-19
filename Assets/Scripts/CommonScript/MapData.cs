@@ -10,26 +10,18 @@ using static Data.CustomEnum;
 public class MapData : MonoBehaviour
 {
     #region Default
-    public enum EndMap
-    {
-        EndingPoint,
-        FinishDialogue,
-        FinishTimeLine
-    }
 
     [TextArea(7, int.MaxValue)]
     [SerializeField]
     private string scriptDesription = "맵 자동 생성 및 맵 정보 포함 스크립트이며\n인스펙터 창에서 각각의 이름에 마우스를 갖다대면 설명을 볼 수 있습니다.\n(Edit mode에서도 바로 사용 가능)";
     #endregion
+    
     #region 맵 설정
     [Header("#Map Setting")]
     [Tooltip("맵의 코드이며 변경시 오브젝트의 이름도 같이 변경 됩니다.(코드는 반드시 6자리)")]
     public string mapCode = "000000"; // auto setting
     [Tooltip("이 맵의 조이스틱 입력 방식입니다.")]
     public JoystickInputMethod method; // 맵의 조이스틱 입력 방식
-    [Tooltip("맵코드 엔딩 방식입니다.")]
-    public EndMap endMap; // 맵 종료 여부
-    public PlayableDirector director;
     [Tooltip("클리어시 넘어갈 다음 맵의 맵 코드입니다.")]
     public string nextMapcode = "000000"; // 클리어시 넘어갈 다음 맵의 코드
     [Space(15)]
@@ -42,8 +34,6 @@ public class MapData : MonoBehaviour
     [Tooltip("카메라의 orthographic 뷰를 제어할 수 있습니다.")]
     public bool isOrthographic = false;
     public float orthographicSize;
-    [Tooltip("CameraMoving 사용 설정")]
-    public bool isCameraMoving = true; // 카메라 무빙 사용 여부
     [Tooltip("CameraMoving 경계 설정")]
     public BoxCollider cameraBound; // 카메라
 
@@ -57,6 +47,14 @@ public class MapData : MonoBehaviour
     [Tooltip("인스펙터 설정창에서 클리어박스를 생성하세요.")]
     [SerializeField] private GameObject clearBoxSetting;
     [SerializeField] private List<CheckMapClear> clearBoxList = new List<CheckMapClear>();
+    
+    
+    [Tooltip("각각의 캐릭터의 시작위치와 목표위치를 설정하세요.")]
+    public List<CharacterPositionSet> positionSets; // auto setting
+
+    public CameraViewType cameraViewType; 
+    public Vector3 camDis;  // 캐릭터와 카메라와의 거리
+    public Vector3 camRot;  // 캐릭터와 카메라와의 거리 
     
     // 초기 세팅 설정
     void CreateDefaultSetting()
@@ -81,36 +79,6 @@ public class MapData : MonoBehaviour
 
         DestroyImmediate(temp); //임시 오브젝트 제거
     }
-
-    
-    //맵 엔딩 세팅
-
-    bool isStop = false;
-    void TimeLineStop() 
-    {
-        if (isStop == false)
-        {
-            director.stopped += OnPlaybleDirectorStopped;
-            isStop = true;
-        }
-    }
-    void OnPlaybleDirectorStopped(PlayableDirector Director) //타임라인 인식
-    {
-        if (director == Director)//현재 Director가 맵데이터에 연결된 타임라인이라면~!
-        {
-            Invoke("EndingDelay", 1.5f);//타임라인 끝난거 인식한 1.5초 뒤에 함수 호출
-        }
-    }
-    //타임라인이 멈춰있는지에 대해 인식을 받고 이에 대해 1.5초 이후 Map Clear체크 누르기!
-    private void EndingDelay()
-    {
-        //현재 캐릭터와 맞는 포시션 세팅을 찾아서 Clear box활성화
-        //positionSets.Find(item=>(item.who).ToString()==DataController.instance_DataController.currentChar.name).clearBox.GetComponent<CheckMapClear>().isClear = true;
-        //방문 횟수Index에 따라서
-        positionSets.Find(item => item.index == posIndex).clearBox.GetComponent<CheckMapClear>().Clear();
-
-        MapClear();
-    }
     #endregion
 
     #region 위치 설정
@@ -118,10 +86,16 @@ public class MapData : MonoBehaviour
     [ContextMenuItem("Remove/Rau", "RemoveRauPosition")]
     [ContextMenuItem("Remove/Oun", "RemoveOunPosition")]
     [ContextMenuItem("Remove/Speat", "RemoveSpeatPosition")]
+    [ContextMenuItem("Remove/SpeatAdult", "RemoveSpeatAdultPosition")]
+    [ContextMenuItem("Remove/SpeatChild", "RemoveSpeatChildPosition")]
+    [ContextMenuItem("Remove/SpeatAdolescene", "RemoveSpeatAdolescenePosition")]
     [ContextMenuItem("Remove/All", "RemoveAllPosition")]
     [ContextMenuItem("Create/Rau", "CreateRauPosition")]
     [ContextMenuItem("Create/Oun", "CreateOunPosition")]
     [ContextMenuItem("Create/Speat", "CreateSpeatPosition")]
+    [ContextMenuItem("Create/SpeatAdult", "CreateSpeatAdultPosition")]
+    [ContextMenuItem("Create/SpeatChild", "CreateSpeatChildPosition")]
+    [ContextMenuItem("Create/SpeatAdolescene", "CreateSpeatAdolescenePosition")]
     [ContextMenuItem("Create/All", "CreateAllPosition")]
     [Tooltip("인스펙터를 우클릭하여 원하는 캐릭터의 시작위치와 목표위치를 생성 및 제거하세요.")]
     [SerializeField] private GameObject positionSetting; // auto setting
@@ -138,27 +112,11 @@ public class MapData : MonoBehaviour
         public int index;               // 시작위치 순서
         public Character who;           // 누군지
         public Transform startPosition; // 시작 위치
-        public Transform clearBox;      // 클리어 박스
         public Transform posSet;        // 포지션 세팅 오브젝트
         public bool isMain;
     }
 
-    [Tooltip("각각의 캐릭터의 시작위치와 목표위치를 설정하세요.")]
-    public List<CharacterPositionSet> positionSets; // auto setting
-    public int posIndex = 0; // 시작위치 순서
-
-    [Header("Cinematic")]
-    public GameObject cinematic;
-    
-    [Header("Camera Setting")]
-    [SerializeField] private Camera cam; // auto setting
-
-    [SerializeField] private CustomEnum.CameraViewType cameraViewType; 
-    public Vector3 camDis;  // 캐릭터와 카메라와의 거리
-    public Vector3 camRot;  // 캐릭터와 카메라와의 거리 
-    
-
-    // [ContextMenu("Create Clear")]
+    //ContextMenu 연결
     public void CreateClearBox()
     {
         Transform instant = new GameObject().transform;   
@@ -178,10 +136,16 @@ public class MapData : MonoBehaviour
     public void CreateSpeatPosition() { CreatePositionSetting(Character.Speat); }
     public void CreateOunPosition() { CreatePositionSetting(Character.Oun); }
     public void CreateRauPosition() { CreatePositionSetting(Character.Rau); }
-    public void CreateAllPosition() { CreateSpeatPosition(); CreateOunPosition(); CreateRauPosition(); }
+    public void CreateSpeatAdolescenePosition() { CreatePositionSetting(Character.Speat_Adolescene); }
+    public void CreateSpeatAdultPosition() { CreatePositionSetting(Character.Speat_Adult); }
+    public void CreateSpeatChildPosition() { CreatePositionSetting(Character.Speat_Child); }
+    public void CreateAllPosition() { CreateSpeatPosition(); CreateOunPosition(); CreateRauPosition();
+        CreateSpeatAdolescenePosition();
+        CreateSpeatAdultPosition();
+        CreateSpeatChildPosition();
+    }
     void CreatePositionSetting(Character createWho)
     {
-        cinematic.SetActive(false);
         // 임시 설정 및 오브젝트 생성
         CharacterPositionSet temp = new CharacterPositionSet();
         Transform instant = new GameObject().transform;
@@ -210,7 +174,14 @@ public class MapData : MonoBehaviour
     public void RemoveSpeatPosition() { RemovePositionSetting(Character.Speat); }
     public void RemoveOunPosition() { RemovePositionSetting(Character.Oun); }
     public void RemoveRauPosition() { RemovePositionSetting(Character.Rau); }
-    public void RemoveAllPosition() { RemoveSpeatPosition(); RemoveOunPosition(); RemoveRauPosition(); }
+    public void RemoveSpeatAdolescenePosition() { RemovePositionSetting(Character.Speat_Adolescene); }
+    public void RemoveSpeatAdultPosition() { RemovePositionSetting(Character.Speat_Adult); }
+    public void RemoveSpeatChildPosition() { RemovePositionSetting(Character.Speat_Child); }
+    public void RemoveAllPosition() { RemoveSpeatPosition(); RemoveOunPosition(); RemoveRauPosition();
+        RemoveSpeatAdolescenePosition();
+        RemoveSpeatAdultPosition();
+        RemoveSpeatChildPosition();
+    }
     private void RemovePositionSetting(Character removeWho)
     {
         // 리스트의 범위안에서 해당 설정 제거
@@ -243,7 +214,7 @@ public class MapData : MonoBehaviour
     // 인덱스에 따라 위치 설정들 보기 편하고 일관성 있게 리스트 정렬
     void SortPositionSets()
     {
-        positionSets.Sort(delegate (CharacterPositionSet A, CharacterPositionSet B) { if (A.index > B.index) return 1; else return -1; });
+        positionSets.Sort(delegate (CharacterPositionSet A, CharacterPositionSet B) { if (A.index > B.index) return 1; return -1; });
     }
     #endregion
 
@@ -261,8 +232,7 @@ public class MapData : MonoBehaviour
             {
                 characters.Add(new AnimationCharacterSet
                 {
-                    characterAnimator = DataController.instance
-                        .GetCharacter(t.who).anim,
+                    characterAnimator = DataController.instance.GetCharacter(t.who).anim,
                     who = t.who
                 });
             }
@@ -287,13 +257,6 @@ public class MapData : MonoBehaviour
         {
             JoystickInputUpdate();
         }
-
-        //타임라인 인식
-        if (SceneManager.GetActiveScene().name == "Cinematic")
-        {
-            TimeLineStop();
-        }
-
     }
 
     public void Initialize()
@@ -310,12 +273,6 @@ public class MapData : MonoBehaviour
         if (ui != null) ui.transform.SetParent(CanvasControl.instance.transform.Find("UI"));
 
         AudioController.instance.PlayBgm(BGM);
-
-        // //ClearBox who 설정
-        // CharacterManager[] arr = FindObjectsOfType<CharacterManager>();
-        // List<CharacterManager> lists = new List<CharacterManager>(arr);
-        // foreach (CharacterPositionSet positionSet in positionSets)
-        //     positionSet.clearBox.GetComponent<CheckMapClear>().who = lists.Find(item => item.name == positionSet.who.ToString());
     }
 
     public void SetNextMapCode(string nextMapCode)
@@ -345,17 +302,16 @@ public class MapData : MonoBehaviour
     private void JoystickInputUpdate()
     {
         var mainChar = DataController.instance.GetCharacter(Character.Main);
-        //Joystick Input
+        if(mainChar == null) return;
         if (isJoystickInputUse)
         {
-            JoystickInputManager.instance.JoystickInputUpdate();
+            JoystickInputManager.instance.JoystickInputUpdate(method);
         }
-        //Debug.Log(mainChar.transform.position);
+
         mainChar.MoveCharacter(method);
-        //Debug.Log(mainChar.transform.position);
-        
     }
     #endregion
+    
     #region 디버깅용
     [Space(40)]
     [ContextMenuItem("All Off", "AllOffDebug")]
@@ -364,7 +320,7 @@ public class MapData : MonoBehaviour
     [ContextMenuItem("On&Off/UI", "UIOnOffDebug")]
     [ContextMenuItem("On&Off/Map", "MapOnOffDebug")]
     [Tooltip("Edit mode에서 편리한 기능을 사용할 수 있습니다.")]
-    [SerializeField] private string ForDebuging = "인스펙터의 이름을 우클릭해주세요"; // 디버깅 세팅
+    [SerializeField] private string forDebuging = "인스펙터의 이름을 우클릭해주세요"; // 디버깅 세팅
 
     void MapOnOffDebug() { if (map != null) map.SetActive(!map.activeSelf); } // 맵을 키고 끔
     void UIOnOffDebug() { if (ui != null) ui.SetActive(!ui.activeSelf); } // 맵 전용 UI가 있을 경우 UI 키고 끔
@@ -382,7 +338,6 @@ public class MapData : MonoBehaviour
                 Gizmos.color = preset[(int)positionSets[i].who] * 0.8f;
                 Gizmos.DrawCube(positionSets[i].startPosition.position + Vector3.up, new Vector3(0.3f, 0.9f, 0.3f));
                 Gizmos.DrawSphere(positionSets[i].startPosition.position + Vector3.up * 0.2f, 0.2f);
-                Gizmos.DrawCube(positionSets[i].clearBox.position, positionSets[i].clearBox.GetComponent<BoxCollider>().size);
             }
 
             for (int i = 0; i < clearBoxList.Count; i++)

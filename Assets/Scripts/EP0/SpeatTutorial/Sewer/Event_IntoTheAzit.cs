@@ -16,27 +16,27 @@ public class Event_IntoTheAzit : MonoBehaviour
         if (!other.TryGetComponent(out CharacterManager character)) return;
 
         character.PickUpCharacter();
-        GetComponent<Collider>().enabled = false;
         DataController.instance.InitializeJoyStick(false);
-        StartCoroutine(MoveToAzit(other));
+        StartCoroutine(MoveToAzit(character));
     }
 
-    IEnumerator MoveToAzit(Collider other)
+    IEnumerator MoveToAzit(CharacterManager other)
     {
+        GetComponent<Collider>().enabled = false;
         other.transform.position = startPoint.position; // 시작 위치로 이동
         other.transform.LookAt(endPoint);
         // 도착 위치까지 반복
         Vector3 tick = (endPoint.position - startPoint.position) * 0.01f;
         WaitForSeconds waitForSeconds = new WaitForSeconds(0.05f / moveSpeed);
-        other.GetComponent<Animator>().SetFloat(Speed, 1f);
+        other.anim.SetFloat(Speed, 1f);
         for (int i = 0; i < 100; i++)
         {
             other.transform.position += tick;
             yield return waitForSeconds;
         }
         //DataController.instance_DataController.currentMap.method = MapData.JoystickInputMethod.AllDirection; // 이동 방식 변경
-        other.GetComponent<CharacterManager>().UseJoystickCharacter(); // 캐릭터 이동활성화
-        other.GetComponent<Animator>().SetFloat(Speed, 0f);
+        other.UseJoystickCharacter(); // 캐릭터 이동활성화
+        other.anim.SetFloat(Speed, 0f);
         yield return new WaitForSeconds(0.5f); // 잠시 대기
         DataController.instance.InitializeJoyStick(true);
         GetComponent<Collider>().enabled = true;

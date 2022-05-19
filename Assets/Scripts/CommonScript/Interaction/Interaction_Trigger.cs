@@ -16,6 +16,7 @@ public class Interaction_Trigger : InteractionObj_stroke
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("트리거");
         if (isLoop) return;
         isLoop = true;
         StartInteraction();

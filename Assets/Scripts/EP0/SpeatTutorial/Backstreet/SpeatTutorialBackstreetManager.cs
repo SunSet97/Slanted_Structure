@@ -82,13 +82,11 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
             {
                 if (_jsonFile != null)
                 {
-                    CanvasControl.instance.SetDialougueEndAction(() => { DataController.instance.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear(); });
                     CanvasControl.instance.SetDialougueEndAction(() => { DataController.instance.currentMap.MapClear(); });
                     CanvasControl.instance.StartConversation(_jsonFile.text);
                 }
                 else
                 {
-                    DataController.instance.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
                     DataController.instance.currentMap.MapClear();
                 }
             }

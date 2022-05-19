@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using static Data.CustomEnum;
 
 public class Interact_ObjectWithRau : MonoBehaviour
@@ -23,17 +21,18 @@ public class Interact_ObjectWithRau : MonoBehaviour
     void Update()
     {
         // Outline이 없으면 추가 및 초기화
-        if (this.gameObject.GetComponent<Outline>() == null)
+        if (outline == null)
         {
-            outline = this.gameObject.AddComponent<Outline>();  // 추가
+            outline = gameObject.AddComponent<Outline>();  // 추가
             outline.OutlineMode = mode;                         // 모드 설정
             outline.OutlineColor = outlineColor;                // 색 설정
             outline.OutlineWidth = 8f;                          // 아웃라인 두께 설정
             outline.enabled = false;                            // Outline 끄기
-            if (this.gameObject.GetComponent<BoxCollider>() == null) this.gameObject.AddComponent<BoxCollider>().isTrigger = true;  // 콜라이더 없으면 자동 추가
+            if (gameObject.GetComponent<BoxCollider>() == null) 
+                gameObject.AddComponent<BoxCollider>().isTrigger = true;  // 콜라이더 없으면 자동 추가
         }
         // Outline 있을 시
-        else if (this.gameObject.activeSelf)
+        else if (gameObject.activeSelf)
         {
             isIn = CheckAroundCharacter();
             //if (mark != null &&!isInteracting)
@@ -60,14 +59,13 @@ public class Interact_ObjectWithRau : MonoBehaviour
     private bool CheckAroundCharacter()
     {
         RaycastHit[] hits = Physics.SphereCastAll(gameObject.transform.position + offset, radius, Vector3.up, 0f);
-        bool temp = false;
         CharacterManager currentChar = DataController.instance.GetCharacter(Character.Main);
         foreach (RaycastHit hit in hits)
         {
-            temp = hit.collider.name == currentChar.name ? true : false;
+            if (hit.collider.name.Equals(currentChar.name))
+                return true;
         }
-
-        return temp;
+        return false;
     }
 
     // 오브젝트 터치 판정
@@ -82,22 +80,22 @@ public class Interact_ObjectWithRau : MonoBehaviour
             RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
             foreach (RaycastHit hit in hits)
             {
-                if (hit.collider.gameObject != null && hit.collider.gameObject == this.gameObject)
+                if (hit.collider.gameObject == gameObject)
                 {
-                    isTouched = hit.collider.name == this.gameObject.name ? true : false;
-                    if (isTouched && outline.enabled)
+                    if (outline.enabled)
                     {
                         isInteracting = true;
                         outline.enabled = false; // 아웃라인 끄기
                         StartCoroutine(ChangeIsInteractingToFalse(5));
                         if (mark != null)
-                            if (mark) mark.gameObject.SetActive(false); // 마크 끄기
+                            mark.gameObject.SetActive(false); // 마크 끄기
                     }
-                    if (isTouched && hit.collider.transform.parent.name == "NPCManager" && CanvasControl.instance.isPossibleCnvs)
+                    if (hit.collider.transform.parent.name == "NPCManager" && CanvasControl.instance.isPossibleCnvs)
                     {
                         if (hit.collider.transform.parent.TryGetComponent(out NPCInteractor npcInteractor))
                         {
                             npcInteractor.FindInteractableNPC(hit, radius);
+                            //이걸 써??? 에반데  이딴게 코드?
                         }
                         else
                         {
@@ -107,8 +105,6 @@ public class Interact_ObjectWithRau : MonoBehaviour
                     }
                     break;
                 }
-                else
-                    isTouched = false;
             }
             StartCoroutine(ChangeIsTouchedToFalse()); // 한 프레임 이후 isTouched = false로 바뀜.
         }
@@ -117,8 +113,7 @@ public class Interact_ObjectWithRau : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = outlineColor - Color.black * 0.7f;
-        Gizmos.DrawWireSphere(gameObject.transform.position + offset, radius);
-        Gizmos.DrawSphere(gameObject.transform.position + offset, radius);
+        Gizmos.DrawWireSphere(transform.position + offset, radius);
     }
 
     IEnumerator ChangeIsInteractingToFalse(float time)

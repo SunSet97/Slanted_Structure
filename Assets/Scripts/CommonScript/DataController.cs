@@ -234,7 +234,7 @@ public class DataController : MonoBehaviour
         // CameraMoving 컨트롤
         var cameraMoving = cam.GetComponent<Camera_Moving>();
 
-        cameraMoving.Initialize(currentMap.isCameraMoving);
+        cameraMoving.Initialize();
 
 
         //스카이박스 세팅

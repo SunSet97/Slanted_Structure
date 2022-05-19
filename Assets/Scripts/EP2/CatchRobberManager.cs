@@ -320,7 +320,6 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
             if (dis <= clearDis)
             {
                 Debug.Log("성공.");
-                DataController.instance.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
                 DataController.instance.currentMap.MapClear();
 
             }
@@ -335,7 +334,6 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
             if (dis <= clearDis)
             {
                 Debug.Log("성공");
-                DataController.instance.currentMap.positionSets[0].clearBox.GetComponent<CheckMapClear>().Clear();
                 DataController.instance.currentMap.MapClear();
             }
 

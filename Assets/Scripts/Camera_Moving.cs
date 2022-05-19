@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Data;
-using UnityEngine;
+﻿using UnityEngine;
 using static Data.CustomEnum;
 public class Camera_Moving : MonoBehaviour
 {
     //캐릭터 오브젝트 받는 변수
     public Transform character;
 
-    private CustomEnum.CameraViewType viewType;
+    private CameraViewType viewType;
     private Camera cam;
     
     // 카메라 무빙 경계
@@ -19,30 +15,35 @@ public class Camera_Moving : MonoBehaviour
     private float halfWidth;
     private float halfHeight;
 
-    public void Initialize(bool viewType)
+    public void Initialize()
     {
-        this.viewType = viewType ? CustomEnum.CameraViewType.FollowCharacter : CustomEnum.CameraViewType.FixedView;
+        viewType = DataController.instance.currentMap.cameraViewType;
         cam = Camera.main;
-        character = DataController.instance.GetCharacter(Character.Main).transform;
+        var mainChar = DataController.instance.GetCharacter(Character.Main);
+        if (mainChar != null)
+            character = mainChar.transform;
+        else
+            character = null;
     }
 
     void Update()
     {
-        if (!character) return;
 
 
         if (cam.orthographic) cam.orthographicSize = DataController.instance.orthgraphic_Size;
 
-        if (viewType.Equals(CustomEnum.CameraViewType.FixedView))
+        if (viewType.Equals(CameraViewType.FixedView))
         {
             cam.transform.position = DataController.instance.currentMap.transform.position +
                                      DataController.instance.camDis;
         }
-        else if (viewType.Equals(CustomEnum.CameraViewType.FollowCharacter))
+        
+        if (character == null) return;
+        
+        if (viewType.Equals(CameraViewType.FollowCharacter))
         {
             cam.transform.position = character.position + DataController.instance.camDis;
         }
-
         Follow_Player(cam.transform.position);
     }
 

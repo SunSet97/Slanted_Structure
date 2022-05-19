@@ -127,6 +127,9 @@ public class InteractionObj_stroke : MonoBehaviour
 
     [Header("타임라인")]
     public PlayableDirector timeline;
+
+    public GameObject[] cinematics;
+    public GameObject[] inGames;
     
     //[Header("터치 여부 확인")]
     private bool isTouched;
@@ -359,14 +362,10 @@ public class InteractionObj_stroke : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            // Debug.Log(timeline.state);
-            // Debug.Log(timeline.time);
-            // Debug.Log(timeline.duration);
             var cam = DataController.instance.cam;
             var isCharacterInRange = CheckAroundCharacter(); // 일정 범위 안에 선택된 캐릭터 있는지 확인
             if (exclamationMark && exclamationMark.activeSelf)
-                exclamationMark.transform.position =
-                    (Vector3) markOffset + cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
+                exclamationMark.transform.position = (Vector3) markOffset + cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
             if (isCharacterInRange && !isTouched)
             {
                 // 플레이어의 인터렉션 오브젝트 터치 감지
@@ -394,7 +393,7 @@ public class InteractionObj_stroke : MonoBehaviour
                     }
                 }
             }
-            else if ((!isCharacterInRange && outline.enabled) || isTouched) // 범위 밖이면서 아웃라인이 켜져있거나 눌렀을 경우
+            else if (!isCharacterInRange && outline.enabled || isTouched) // 범위 밖이면서 아웃라인이 켜져있거나 눌렀을 경우
             {
                 // 아웃라인 끄기
                 outline.enabled = false;
@@ -405,15 +404,12 @@ public class InteractionObj_stroke : MonoBehaviour
                     exclamationMark.gameObject.SetActive(false);
                 }
             }
-            /*
-            Vector3 myScreenPos = cam.WorldToScreenPoint(transform.position);
-            exclamationMark.transform.position = myScreenPos + new Vector3(x, y, 0);
-            */
         }
     }
     private bool CheckAroundCharacter()
     {
         var curChar = DataController.instance.GetCharacter(Character.Main);
+        if (curChar == null) return false;
         //Layer 추가
         RaycastHit[] hits = Physics.SphereCastAll(transform.position, radius, Vector3.up, 0f);
         foreach (RaycastHit hit in hits)
@@ -556,11 +552,27 @@ public class InteractionObj_stroke : MonoBehaviour
                     break;
                 case TaskContentType.Cinematic:
                     currentTaskData.isContinue = false;
-                    DataController.instance.currentMap.cinematic.SetActive(true);
+                    foreach (var cinematic in cinematics)
+                    {
+                        cinematic.SetActive(true);
+                    }
+                    foreach (var inGame in inGames)
+                    {
+                        inGame.SetActive(false);
+                    }
                     timeline.Play();
-                    yield return new WaitUntil(() => timeline.state == PlayState.Paused);
-                    currentTaskData.isContinue = true;
-                    DataController.instance.currentMap.cinematic.SetActive(false);
+                    timeline.paused += director =>
+                    {
+                        currentTaskData.isContinue = true;
+                        foreach (var cinematic in cinematics)
+                        {
+                            cinematic.SetActive(false);
+                        }
+                        foreach (var inGame in inGames)
+                        {
+                            inGame.SetActive(true);
+                        }  
+                    };
                     break;
                 default:
                 {
