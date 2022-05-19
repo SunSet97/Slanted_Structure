@@ -310,7 +310,7 @@ public class DataController : MonoBehaviour
     /// 조이스틱 멈추고 이전 상태에 따라 키거나 끄는 함수
     /// ex) 대화 이전에 조이스틱을 사용하지 않으면 계속 사용하지 않는다.
     /// </summary>
-    /// <param name="isStop">Stop여부</param>
+    /// <param name="isStop">Stop여부   true - save, false - load</param>
     public void StopSaveLoadJoyStick(bool isStop)
     {
         Debug.Log(isStop +  "  " + isAlreadySave);

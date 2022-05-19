@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Data;
 using Move;
 using Play;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
-using UnityEngine.Timeline;
 using IPlayable = Play.IPlayable;
 using Task = Data.Task;
 using static Data.CustomEnum;
@@ -107,7 +105,7 @@ public class InteractionObj_stroke : MonoBehaviour
     public OutlineColor color;
 
     [Header("인터렉션 오브젝트 터치 유무 감지 기능 사용할건지 말건지")]
-    public CustomEnum.InteractionMethod interactionMethod;
+    public InteractionMethod interactionMethod;
     public int radius = 5;
 
     [Header("#Mark setting")]
@@ -153,9 +151,9 @@ public class InteractionObj_stroke : MonoBehaviour
         {
             if (jsonFile != null)
             {
-                if (interactionPlayType == CustomEnum.InteractionPlayType.Dialogue)
+                if (interactionPlayType == InteractionPlayType.Dialogue)
                     dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonFile.text);
-                else if (interactionPlayType == CustomEnum.InteractionPlayType.Task)
+                else if (interactionPlayType == InteractionPlayType.Task)
                     LoadTaskData();
             }
         }
@@ -221,12 +219,14 @@ public class InteractionObj_stroke : MonoBehaviour
     void ChoiceEvent(int index)
     {
         TaskData currentTaskData = jsonTask.Peek();
-        Task curTask = currentTaskData.tasks[currentTaskData.taskIndex + index];
+        var tempTaskIndex = currentTaskData.taskIndex;
+        var choiceLengh = int.Parse(currentTaskData.tasks[tempTaskIndex].nextFile);
+        currentTaskData.taskIndex += choiceLengh;
+        Task curTask = currentTaskData.tasks[tempTaskIndex + index];
         //변화값
-        currentTaskData.tasks[currentTaskData.taskIndex + index].increaseVar = currentTaskData
-            .tasks[currentTaskData.taskIndex + index].increaseVar.Replace("m", "-");
+        curTask.increaseVar = curTask.increaseVar.Replace("m", "-");
         int[] changeVal =
-            Array.ConvertAll(currentTaskData.tasks[currentTaskData.taskIndex + index].increaseVar.Split(','),
+            Array.ConvertAll(curTask.increaseVar.Split(','),
                 int.Parse);
         DataController.instance.UpdateLikeable(changeVal);
         
@@ -236,7 +236,7 @@ public class InteractionObj_stroke : MonoBehaviour
         if (curTask.order != 0)
         {
             DataController.instance.currentMap.SetNextMapCode(
-                $"{currentTaskData.tasks[currentTaskData.taskIndex].order,000000}");
+                $"{curTask.order,000000}");
         }
 
         switch (curTask.taskContentType)
@@ -244,12 +244,12 @@ public class InteractionObj_stroke : MonoBehaviour
             case TaskContentType.DIALOGUE:
                 int choiceLen = int.Parse(curTask.nextFile);
                 Task[] array1 = new Task()[currentTaskData.tasks.Length + 1];
-                Array.Copy(currentTaskData.tasks, 0, array1, 0, currentTaskData.taskIndex + choiceLen);
-                array1[currentTaskData.taskIndex + choiceLen + 1].taskContentType =
+                Array.Copy(currentTaskData.tasks, 0, array1, 0, currentTaskData.taskIndex);
+                array1[currentTaskData.taskIndex + 1].taskContentType =
                     TaskContentType.TempDialogue;
-                array1[currentTaskData.taskIndex + choiceLen + 1].order =
-                    array1[currentTaskData.taskIndex].order;
-                Array.Copy(currentTaskData.tasks, currentTaskData.taskIndex + choiceLen, array1, currentTaskData.taskIndex + choiceLen + 2, currentTaskData.tasks.Length - currentTaskData.taskIndex - choiceLen);
+                array1[currentTaskData.taskIndex + 1].order =
+                    array1[tempTaskIndex].order;
+                Array.Copy(currentTaskData.tasks, currentTaskData.taskIndex, array1, currentTaskData.taskIndex + 2, currentTaskData.tasks.Length - tempTaskIndex - choiceLen);
 
                 //dispose gc로 바로 하긴 힘들다
                 currentTaskData.tasks = array1;
@@ -257,7 +257,7 @@ public class InteractionObj_stroke : MonoBehaviour
                 currentTaskData.isContinue = false;
                 path = curTask.nextFile;
                 jsonString = (Resources.Load(path) as TextAsset)?.text;
-                currentTaskData.taskIndex--;    // 현재 taskIndex는 선택지이며 선택지 다음 인덱스가 된다. 그런데 대화 종료시 Index가 1 증가하기에 1을 줄여준다.
+                // currentTaskData.taskIndex--;    // 현재 taskIndex는 선택지이며 선택지 다음 인덱스가 된다. 그런데 대화 종료시 Index가 1 증가하기에 1을 줄여준다.
                 CanvasControl.instance.StartConversation(jsonString);
                 //다음 인덱스의 타입 변경
                 break;
@@ -359,6 +359,9 @@ public class InteractionObj_stroke : MonoBehaviour
     {
         if (Application.isPlaying)
         {
+            // Debug.Log(timeline.state);
+            // Debug.Log(timeline.time);
+            // Debug.Log(timeline.duration);
             var cam = DataController.instance.cam;
             var isCharacterInRange = CheckAroundCharacter(); // 일정 범위 안에 선택된 캐릭터 있는지 확인
             if (exclamationMark && exclamationMark.activeSelf)
@@ -367,7 +370,7 @@ public class InteractionObj_stroke : MonoBehaviour
             if (isCharacterInRange && !isTouched)
             {
                 // 플레이어의 인터렉션 오브젝트 터치 감지
-                if (interactionMethod == CustomEnum.InteractionMethod.Touch)
+                if (interactionMethod == InteractionMethod.Touch)
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
@@ -479,7 +482,6 @@ public class InteractionObj_stroke : MonoBehaviour
                     break;
                 case TaskContentType.ANIMATION:
                     //세팅된 애니메이션 실행
-                    currentTaskData.taskIndex++;
                     GetComponent<Animator>().Play("Start", 0);
                     break;
                 case TaskContentType.Play:
@@ -495,13 +497,6 @@ public class InteractionObj_stroke : MonoBehaviour
                     CanvasControl.instance.SetChoiceAction(ChoiceEvent);
                     CanvasControl.instance.OpenChoicePanel();
                     break;
-                // case CustomEnum.TaskContentType.TEMPEND:
-                //     //Temp Task 끝날 때
-                //     Debug.Log("선택지 종료");
-                //     DataController.instance.taskData = null;     // null이 아닌 상태에서 모든 task가 끝나면 없어야되는데 남아있음
-                //     jsonTask.Pop();
-                //     jsonTask.Peek().isContinue = true;
-                //     yield break;
                 case TaskContentType.TempDialogue:
                     //선택지에서 대화를 고른 경우
                     Debug.Log("선택지 선택 - 단순 대화");
@@ -563,7 +558,9 @@ public class InteractionObj_stroke : MonoBehaviour
                     currentTaskData.isContinue = false;
                     DataController.instance.currentMap.cinematic.SetActive(true);
                     timeline.Play();
-                    waitUntil = new WaitUntil(() => { return timeline.state != PlayState.Playing; });
+                    yield return new WaitUntil(() => timeline.state == PlayState.Paused);
+                    currentTaskData.isContinue = true;
+                    DataController.instance.currentMap.cinematic.SetActive(false);
                     break;
                 default:
                 {
@@ -573,9 +570,12 @@ public class InteractionObj_stroke : MonoBehaviour
             }
             Debug.Log("Task 종료 대기 중 - " + currentTask.taskContentType + ", Index - " + currentTaskData.taskIndex);
             yield return waitUntil;
+            currentTaskData.taskIndex++;
             Debug.Log("Task 종료 - " + currentTask.taskContentType + ", Index - " + currentTaskData.taskIndex);
+            Debug.Log(currentTaskData.tasks.Length > currentTaskData.taskIndex && currentTaskData.tasks[currentTaskData.taskIndex].order.Equals(currentTaskData.taskOrder) && currentTaskData.isContinue);
         }
-        currentTaskData.taskOrder++;    //인터랙션을 두 차례 비연속적으로 진행하는 경우
+        currentTaskData.taskOrder++;
+        
         if (currentTaskData.tasks.Length == currentTaskData.taskIndex)
         {
             if (jsonTask.Count > 1)
@@ -600,14 +600,17 @@ public class InteractionObj_stroke : MonoBehaviour
         };
         foreach (TaskData taskData in taskData_Debug)
         {
+            Debug.Log("task 길이" + taskData.tasks.Length);
             for (int i = 0; i < taskData.tasks.Length; i++)
             {
-                if (taskData.tasks[i].taskContentType == CustomEnum.TaskContentType.NEW || taskData.tasks[i].taskContentType == CustomEnum.TaskContentType.TEMP)
+                if (taskData.tasks[i].taskContentType == TaskContentType.NEW || taskData.tasks[i].taskContentType == TaskContentType.TEMP)
                 {
-                    int count = int.Parse(taskData.tasks[i].nextFile);
-                    for (int j = 1; j <= count; j++)
+                    Debug.Log("디버그 Task 추가");
+                    var count = int.Parse(taskData.tasks[i].nextFile);
+                    for (var j = 0; j < count; j++)
                     {
-                        string path = taskData.tasks[i + j].nextFile;
+                        i++;
+                        string path = taskData.tasks[i].nextFile;
                         string jsonString = (Resources.Load(path) as TextAsset)?.text;
 
                         if (taskData_Debug.Count > 50)
@@ -620,7 +623,7 @@ public class InteractionObj_stroke : MonoBehaviour
                             tasks = JsontoString.FromJsonArray<Task>(jsonString)
                         });
                     }
-                    i += count + 1;
+                    Debug.Log("디버그 Task 추가" + taskData_Debug.Count);
                 }
             }
         }

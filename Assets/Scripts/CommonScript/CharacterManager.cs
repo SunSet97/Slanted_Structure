@@ -29,7 +29,7 @@ public class CharacterManager : MonoBehaviour, IMovable
         if (who.Equals(Character.Speat) || who.Equals(Character.Oun) || who.Equals(Character.Rau))
         {
             faceExpression = Resources.LoadAll<Texture>("Face");
-            skinnedMesh = this.GetComponentInChildren<SkinnedMeshRenderer>();
+            skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
             skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int) emotion]);
         }
     }
