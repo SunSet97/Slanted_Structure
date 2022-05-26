@@ -84,6 +84,9 @@ public class InteractionObj_stroke : MonoBehaviour
     [Header("Continuous 혹은 Dialogue인 경우에만 값을 넣으시오")]
     public TextAsset jsonFile;
     
+    [Header("타입이 Game인 경우 게임 오브젝트를 넣으세요")]
+    public IPlayable playableGame;
+    
     private Stack<TaskData> jsonTask;
 
     private UnityAction endDialogueAction;
@@ -355,6 +358,10 @@ public class InteractionObj_stroke : MonoBehaviour
 
             StartCoroutine(TaskCoroutine());
         }
+        else if (interactionPlayType == InteractionPlayType.Game)
+        {
+            playableGame.Play();
+        }
     }
     
     // private void InteractionEvent
@@ -523,6 +530,7 @@ public class InteractionObj_stroke : MonoBehaviour
                                 break;
                         }
                     }
+
                     yield break;
                 case TaskContentType.NEW:
                 {
@@ -556,23 +564,34 @@ public class InteractionObj_stroke : MonoBehaviour
                     {
                         cinematic.SetActive(true);
                     }
+
                     foreach (var inGame in inGames)
                     {
                         inGame.SetActive(false);
                     }
+
+                    timeline.Pause();
                     timeline.Play();
-                    timeline.paused += director =>
+                    var temp = timeline.playableAsset.outputs;
+                    foreach (var playableBinding in temp)
                     {
-                        currentTaskData.isContinue = true;
-                        foreach (var cinematic in cinematics)
-                        {
-                            cinematic.SetActive(false);
-                        }
-                        foreach (var inGame in inGames)
-                        {
-                            inGame.SetActive(true);
-                        }  
-                    };
+                        if(playableBinding.sourceObject == null) continue;
+                        Debug.Log(playableBinding.sourceObject);
+                        Debug.Log(timeline.GetGenericBinding(playableBinding.sourceObject));
+                    }
+
+                    yield return new WaitUntil(() => timeline.state == PlayState.Paused);
+                    currentTaskData.isContinue = true;
+                    foreach (var cinematic in cinematics)
+                    {
+                        cinematic.SetActive(false);
+                    }
+
+                    foreach (var inGame in inGames)
+                    {
+                        inGame.SetActive(true);
+                    }
+
                     break;
                 default:
                 {
@@ -580,6 +599,7 @@ public class InteractionObj_stroke : MonoBehaviour
                     break;
                 }
             }
+
             Debug.Log("Task 종료 대기 중 - " + currentTask.taskContentType + ", Index - " + currentTaskData.taskIndex);
             yield return waitUntil;
             currentTaskData.taskIndex++;

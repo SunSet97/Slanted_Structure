@@ -84,6 +84,7 @@ public class Interact_ObjectWithRau : MonoBehaviour
                 {
                     if (outline.enabled)
                     {
+                        isTouched = true;
                         isInteracting = true;
                         outline.enabled = false; // 아웃라인 끄기
                         StartCoroutine(ChangeIsInteractingToFalse(5));
@@ -118,7 +119,6 @@ public class Interact_ObjectWithRau : MonoBehaviour
 
     IEnumerator ChangeIsInteractingToFalse(float time)
     {
-        if (!isInteracting) isInteracting = true;
         yield return new WaitForSeconds(time); // 일정 시간 후 isInteracting 상태 변경
         isInteracting = false;
     }
