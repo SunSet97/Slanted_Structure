@@ -88,6 +88,7 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
     public Dir CurrentDir;
     public bool isDragged;
     public bool isMoving;
+    float facedir = 25;
     void Update()
     {
         if (IsPlay)
@@ -98,17 +99,19 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
                 {
                     // 왼 드래그 공통
                     isDragged = true;
-
+                    
 
                     //이동 실행
                     if (CurrentDir == Dir.Middle)
                     {
                         CurrentDir = Dir.Left;
+                        rau.transform.rotation = Quaternion.Euler(-facedir, 0, facedir);
                         StartCoroutine(GoHorizontal(moveTransforms[0], moveTransforms[1]));
                     }
                     else if (CurrentDir == Dir.Right)
                     {
                         CurrentDir = Dir.Middle;
+                        rau.transform.rotation = Quaternion.Euler(facedir, 0, facedir);
                         StartCoroutine(GoHorizontal(moveTransforms[2], moveTransforms[0]));
                     }
                 }
@@ -119,11 +122,13 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
                     if (CurrentDir == Dir.Middle)
                     {
                         CurrentDir = Dir.Right;
+                        rau.transform.rotation = Quaternion.Euler(-facedir, 0, facedir);
                         StartCoroutine(GoHorizontal(moveTransforms[0], moveTransforms[2]));
                     }
                     else if (CurrentDir == Dir.Left)
                     {
                         CurrentDir = Dir.Middle;
+                        rau.transform.rotation = Quaternion.Euler(-facedir, 0, facedir);
                         StartCoroutine(GoHorizontal(moveTransforms[1], moveTransforms[0]));
                     }
                 }
@@ -233,6 +238,7 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
             //rau.ctrl.enabled = false;
             Vector3 followZofRau = moveLeftAndRight.position;
             followZofRau.z = rau.transform.position.z;
+            followZofRau.y = rau.transform.position.y;
 
             moveLeftAndRight.position = followZofRau;
             // rau.ctrl.Move(rau.transform.position-threeWay[0].position);
@@ -246,7 +252,7 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
     #endregion
 
     IEnumerator GoHorizontal(Transform start, Transform target) {
-
+        //Debug.Log(start);
         Debug.Log(target.name + "이동 시작");
         
         var t = 0.0f;
@@ -257,12 +263,13 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
             rau.transform.position = moveXofRau;
 
             t += Time.deltaTime / 2f; //원하는 시간
-            
+      
         //    //Debug.Log(target.name + "이동 중" + t);
             yield return null;
         }
         Debug.Log(target.name + "이동 완료");
         isMoving = false;
+        rau.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
     #region 장애물 위치시키기
