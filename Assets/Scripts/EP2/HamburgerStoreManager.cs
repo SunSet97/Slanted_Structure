@@ -106,7 +106,9 @@ public class HamburgerStoreManager : MonoBehaviour
         {
             if (curChar.transform.position == _wayPoints.point[index].transform.position)
             {
-                desPoint = _wayPoints.point[++index];
+                index++;
+                if (index >= _wayPoints.point.Length) yield break;
+                desPoint = _wayPoints.point[index];
                 curChar.transform.LookAt(desPoint.transform);
             }
             else

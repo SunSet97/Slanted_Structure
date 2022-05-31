@@ -111,37 +111,33 @@ MonoBehaviour:
   scriptDesription: "Episode2 \uB77C\uC6B0_\uC2A4\uD54F_\uD584\uBC84\uAC70\uAC00\uAC8C"
   mapCode: 201110
   method: 1
-  endMap: 0
-  director: {fileID: 0}
   nextMapcode: 201120
   map: {fileID: 2145268177353536149}
   ui: {fileID: 0}
   SkyboxSetting: {fileID: 0}
   isOrthographic: 1
   orthographicSize: 5
-  isCameraMoving: 0
   cameraBound: {fileID: 0}
+  BGM: {fileID: 0}
   characters:
   - characterAnimator: {fileID: 4391502202504482035}
     who: 0
   clearBoxSetting: {fileID: 2047099091420609578}
   clearBoxList:
   - {fileID: 1295089236111235649}
-  positionSetting: {fileID: 1295089234482046501}
   positionSets:
   - index: 0
     who: 2
     startPosition: {fileID: 1295089235287822847}
-    clearBox: {fileID: 1295089236111235648}
     posSet: {fileID: 1295089235837433861}
     isMain: 1
-  posIndex: 0
-  cam: {fileID: 0}
+  cameraViewType: 0
   camDis: {x: -7.18, y: 5.22, z: 4.93}
   camRot: {x: 25, y: 115, z: 0}
-  isJoystickInputIgnore: 0
+  positionSetting: {fileID: 1295089234482046501}
+  isJoystickInputUse: 1
   isJoystickNone: 0
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &1295089235837433860
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,6 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 1
   jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
 --- !u!114 &5736475530547590559
@@ -249,22 +246,25 @@ MonoBehaviour:
   dialogueData:
     dialogues: []
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 2
   interactionMethod: 0
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 2
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timeline: {fileID: 0}
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
 --- !u!1 &2047099091420609578
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,48 +314,51 @@ MonoBehaviour:
     dialogues:
     - name: "\uC54C\uBC14\uC0DD"
       expression: 0
-      anim_name: 
+      animName: 
       contents: "\uB124...\uC5B4\uC11C\uC624\uC138\uC694..\uD558\uC554..."
     - name: "\uB77C\uC6B0"
       expression: 0
-      anim_name: Rau
+      animName: 
       contents: " \uC5B4... \uB124... \uD639\uC2DC \uC5EC\uAE30\uC11C \uC81C\uC77C
         \uB9CE\uC774 \uBA39\uB294 \uAC8C \uBB54\uAC00\uC694"
     - name: "\uC54C\uBC14\uC0DD"
       expression: 0
-      anim_name: 
+      animName: 
       contents: "\uC74C...\uADF8\uB0E5 \uBB34\uB09C\uD558\uAC8C \uBA39\uB294\uAC70\uB85C
         \uCD94\uCC9C\uD574\uB4DC\uB9B4\uAED8\uC694..."
     - name: "\uB77C\uC6B0"
       expression: 0
-      anim_name: Rau
+      animName: 
       contents: "\uC557 \uB124 \uAC10\uC0AC\uD569\uB2C8\uB2E4!"
     - name: "\uC54C\uBC14\uC0DD"
       expression: 0
-      anim_name: 
+      animName: 
       contents: "\uC5EC\uAE30 \uBCA0\uC774\uCEE8 '\uC640\uADF8\uC791' \uBC84\uAC70
         \uC138\uD2B8\uC785\uB2C8\uB2E4."
     - name: "\uB77C\uC6B0"
       expression: 7
-      anim_name: Rau
+      animName: 
       contents: "\uC557? \uC774\uB807\uAC8C \uBC14\uB85C \uB098\uC628\uB2E4\uACE0..?\uBD88\uC548\uD55C\uB370.."
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 2
   interactionMethod: 0
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 2
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timeline: {fileID: 0}
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 3285353922485866185}
+  isLoopDialogue: 0
 --- !u!65 &1295089234569999056
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -432,26 +435,29 @@ MonoBehaviour:
     dialogues:
     - name: "\uB77C\uC6B0"
       expression: 9
-      anim_name: Rau
+      animName: 
       contents: "\uD328\uC2A4\uD2B8 \uD478\uB4DC\uC810\uC5D0 \uB4E4\uC5B4\uC624\uAE34
         \uD588\uB294\uB370 \uBB50\uBA39\uC9C0...?"
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timeline: {fileID: 0}
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
   isLoop: 0
 --- !u!1001 &1295089236106902008
 PrefabInstance:

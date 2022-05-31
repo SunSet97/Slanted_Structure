@@ -35,18 +35,13 @@ namespace Data
         public int order;
         public string condition;
         public string increaseVar;
-
-        public Task[] this[int taskIndex]
-        {
-            get { throw new NotImplementedException(); }
-        }
     }
 
     [Serializable]
     public class Dialogue {
         public string name;
         public CustomEnum.Expression expression;
-        public string animName;
+        public string anim_name;
         public string contents;
     }
 }

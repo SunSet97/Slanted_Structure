@@ -117,11 +117,15 @@ public class InteractionObj_stroke : MonoBehaviour
     // [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Task)]
     // public InteractionEventMedium newTaskEndActions;
     
+    [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Cinematic)]
+    [SerializeField]
+    public InteractionEventMedium cinematicEndAction;
 
     [ConditionalHideInInspector("InteractionPlayType", InteractionPlayType.Task)]
     [Header("디버깅 전용 TaskData")]
     public List<TaskData> taskData_Debug;
 
+    
     [Header("아웃라인 색 설정")]
     public OutlineColor color;
 
@@ -155,6 +159,8 @@ public class InteractionObj_stroke : MonoBehaviour
     [Header("실제로 터치되는 오브젝트. 만약 스크립트 적용된 오브젝트가 터치될 오브젝트라면 그냥 None인상태로 두기!")]
     public GameObject touchTargetObject;
 
+    public bool isLoopDialogue;
+    
     private void PushTask(string jsonString)
     {
         TaskData taskData = new TaskData
@@ -240,8 +246,8 @@ public class InteractionObj_stroke : MonoBehaviour
     {
         TaskData currentTaskData = jsonTask.Peek();
         var tempTaskIndex = currentTaskData.taskIndex;
-        var choiceLengh = int.Parse(currentTaskData.tasks[tempTaskIndex].nextFile);
-        currentTaskData.taskIndex += choiceLengh;
+        var choiceLen = int.Parse(currentTaskData.tasks[tempTaskIndex].nextFile);
+        currentTaskData.taskIndex += choiceLen;
         Task curTask = currentTaskData.tasks[tempTaskIndex + index];
         //변화값
         curTask.increaseVar = curTask.increaseVar.Replace("m", "-");
@@ -258,19 +264,29 @@ public class InteractionObj_stroke : MonoBehaviour
             DataController.instance.currentMap.SetNextMapCode(
                 $"{curTask.order,000000}");
         }
-
         switch (curTask.type)
         {
             case TaskContentType.DIALOGUE:
-                int choiceLen = int.Parse(curTask.nextFile);
-                Task[] array1 = new Task()[currentTaskData.tasks.Length + 1];
+                Debug.Log("하이");
+                Debug.Log(curTask.name);
+                var newLen = currentTaskData.tasks.Length + 1;
+                Debug.Log(newLen);
+                Task[] array1 = new Task[newLen];
+                Debug.Log("하이");
+                Debug.Log(array1[newLen - 1]);
                 Array.Copy(currentTaskData.tasks, 0, array1, 0, currentTaskData.taskIndex);
-                array1[currentTaskData.taskIndex + 1].type =
-                    TaskContentType.TempDialogue;
-                array1[currentTaskData.taskIndex + 1].order =
-                    array1[tempTaskIndex].order;
-                Array.Copy(currentTaskData.tasks, currentTaskData.taskIndex, array1, currentTaskData.taskIndex + 2, currentTaskData.tasks.Length - tempTaskIndex - choiceLen);
-
+                Debug.Log("하이");
+                array1[currentTaskData.taskIndex + 1] = new Task
+                {
+                    type = TaskContentType.TempDialogue,
+                    order = array1[tempTaskIndex].order
+                };
+                Debug.Log("하이");
+                Debug.Log(currentTaskData.taskIndex + 2);
+                Debug.Log(currentTaskData.tasks.Length - tempTaskIndex - choiceLen);
+                Debug.Log(array1.Length);
+                Array.Copy(currentTaskData.tasks, currentTaskData.taskIndex, array1, currentTaskData.taskIndex + 1, currentTaskData.tasks.Length - tempTaskIndex - choiceLen);
+                Debug.Log("하이");
                 //dispose gc로 바로 하긴 힘들다
                 currentTaskData.tasks = array1;
                 
@@ -279,7 +295,8 @@ public class InteractionObj_stroke : MonoBehaviour
                 jsonString = (Resources.Load(path) as TextAsset)?.text;
                 // currentTaskData.taskIndex--;    // 현재 taskIndex는 선택지이며 선택지 다음 인덱스가 된다. 그런데 대화 종료시 Index가 1 증가하기에 1을 줄여준다.
                 CanvasControl.instance.StartConversation(jsonString);
-                //다음 인덱스의 타입 변경
+                //다음 인덱스의 타입 
+                Debug.Log("하이");
                 break;
             case TaskContentType.TEMP:
                 //새로운 task 실행
@@ -314,7 +331,8 @@ public class InteractionObj_stroke : MonoBehaviour
         }
         else if (interactionPlayType == InteractionPlayType.Dialogue)
         {
-            isTouched = true;
+            if(!isLoopDialogue)
+                isTouched = true;
             if (jsonFile)
             {
                 if (startDialogueAction != null)
@@ -375,6 +393,31 @@ public class InteractionObj_stroke : MonoBehaviour
         else if (interactionPlayType == InteractionPlayType.Game)
         {
             playableGame.Play();
+        }else if (interactionPlayType == InteractionPlayType.Cinematic)
+        {
+            timeline.Play();
+            timeline.stopped += director =>
+            {
+                foreach (var endAction in cinematicEndAction.interactionEvents)
+                {
+                    switch (endAction.eventType)
+                    {
+                        case InteractionEvent.EventType.CLEAR:
+                            CanvasControl.instance.SetDialougueEndAction(() =>
+                                endAction.ClearEvent());
+                            break;
+                        case InteractionEvent.EventType.ACTIVE:
+                            CanvasControl.instance.SetDialougueEndAction(() => { endAction.ActiveEvent(); });
+                            break;
+                        case InteractionEvent.EventType.MOVE:
+                            CanvasControl.instance.SetDialougueEndAction(() => { endAction.MoveEvent(); });
+                            break;
+                        case InteractionEvent.EventType.PLAY:
+                            CanvasControl.instance.SetDialougueEndAction(() => { endAction.PlayEvent(); });
+                            break;
+                    }
+                }
+            };
         }
     }
     

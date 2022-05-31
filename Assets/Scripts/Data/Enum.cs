@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Data
 {
 
-    struct Cinematic
+    public struct Cinematic
     {
         private string cinematic_id;
         
@@ -79,7 +79,8 @@ namespace Data
             Animation,
             Dialogue,
             Task,
-            Game
+            Game,
+            Cinematic
         }
         public enum InteractionMethod // 인터렉션 오브젝트 터치했는지 안했는지 감지 기능 필요
         {

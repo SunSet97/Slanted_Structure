@@ -373,6 +373,7 @@ public class CanvasControl : MonoBehaviour
         if (dialogueCnt >= dialogueLen)
         {
             dialoguePanel.SetActive(false);
+            DataController.instance.StopSaveLoadJoyStick(false);
 
             isPossibleCnvs = true;
             dialogueCnt = 0;
@@ -386,17 +387,16 @@ public class CanvasControl : MonoBehaviour
             {
                 DataController.instance.taskData.isContinue = true;
             }
-            DataController.instance.StopSaveLoadJoyStick(false);
         }
         else
         {
             // 캐릭터 표정 업데이트 (애니메이션)
-            if (!string.IsNullOrEmpty(dialogueData.dialogues[dialogueCnt].animName))
+            if (!string.IsNullOrEmpty(dialogueData.dialogues[dialogueCnt].anim_name))
             {
                 if (charDialogueAnimator)
                 {
-                    Debug.Log(dialogueData.dialogues[dialogueCnt].animName);
-                    string path = "Character_dialogue/" + dialogueData.dialogues[dialogueCnt].animName;
+                    Debug.Log(dialogueData.dialogues[dialogueCnt].anim_name);
+                    string path = "Character_dialogue/" + dialogueData.dialogues[dialogueCnt].anim_name;
                     charDialogueAnimator.runtimeAnimatorController =
                         Resources.Load(path) as UnityEditor.Animations.AnimatorController;
                     if (charDialogueAnimator.runtimeAnimatorController != null)
@@ -430,7 +430,7 @@ public class CanvasControl : MonoBehaviour
             // MapData에 inspector window에서 setting, position setting되어있는 캐릭터들도 추가
             // 대화 시 무슨 캐릭터인지 anim_name으로 Find (who를 사용)
             MapData.AnimationCharacterSet animator = DataController.instance.currentMap.characters.Find(
-                item => item.who.ToString().Equals(dialogueData.dialogues[dialogueCnt].animName));
+                item => item.who.ToString().Equals(dialogueData.dialogues[dialogueCnt].anim_name));
             animator?.characterAnimator.SetInteger(Emotion, (int) dialogueData.dialogues[dialogueCnt].expression);
     
             // 해당 캐릭터에 setEmotion

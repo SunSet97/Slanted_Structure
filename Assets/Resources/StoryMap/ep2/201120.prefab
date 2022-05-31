@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 586399220801641129}
   m_Layer: 0
-  m_Name: Position Setting (1)
+  m_Name: Position Setting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPoint: {fileID: 586399221629213120}
   endPoint: {fileID: 586399221204919049}
-  moveSpeed: 8
+  moveSpeed: 5
 --- !u!1 &586399221204919048
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,37 +233,31 @@ MonoBehaviour:
   scriptDesription: "Episode2 \uB77C\uC6B0_\uC2A4\uD54F_\uC2DC\uC7A5 \uC548 \uACE8\uBAA9"
   mapCode: 201120
   method: 2
-  endMap: 0
-  director: {fileID: 0}
   nextMapcode: 201130
   map: {fileID: 5368723130412494120}
   ui: {fileID: 5101098260977799676}
   SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 0
   orthographicSize: 0
-  isCameraMoving: 1
   cameraBound: {fileID: 0}
   BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 601651777780013674}
   clearBoxList:
   - {fileID: 586399222419395053}
-  positionSetting: {fileID: 586399220801641128}
   positionSets:
   - index: 0
     who: 2
     startPosition: {fileID: 586399221686276720}
-    clearBox: {fileID: 586399222419395052}
     posSet: {fileID: 586399222547527601}
     isMain: 1
-  posIndex: 0
-  cam: {fileID: 0}
   cameraViewType: 0
-  camDis: {x: 2, y: 1, z: -3.5}
+  camDis: {x: 2, y: 1, z: -5}
   camRot: {x: 0, y: 0, z: 0}
-  isJoystickInputIgnore: 0
+  positionSetting: {fileID: 586399220801641128}
+  isJoystickInputUse: 0
   isJoystickNone: 0
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &586399222419395055
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,8 +287,8 @@ Transform:
   m_LocalPosition: {x: -57.39, y: 0.67, z: -3.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 586399222547527601}
-  m_RootOrder: 1
+  m_Father: {fileID: 2638333660928744107}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &586399222419395050
 BoxCollider:
@@ -321,6 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 1
   jsonFile: {fileID: 0}
   nextSelectMapcode: 201130
 --- !u!1 &586399222547527600
@@ -351,7 +346,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 586399221686276720}
-  - {fileID: 586399222419395052}
   m_Father: {fileID: 586399220801641129}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -381,7 +375,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 586399222419395052}
   m_Father: {fileID: 586399222184849336}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -435,30 +430,33 @@ MonoBehaviour:
     dialogues:
     - name: "\uC2A4\uD54F"
       expression: 0
-      anim_name: Speat
+      animName: 
       contents: "\uC5EC\uAE34 \uC2DC\uC7A5 \uACE8\uBAA9\uC778\uB370 \uB098\uB9CC \uB530\uB77C\uC624\uBA74
         \uB3FC. \uC774 \uACE8\uBAA9 \uB05D\uCABD\uC73C\uB85C \uAC00\uBA74 \uC788\uC5B4."
     - name: "\uB77C\uC6B0"
       expression: 0
-      anim_name: Rau
+      animName: 
       contents: "\uC77C\uB2E8 \uC2A4\uD54F\uC744 \uB530\uB77C\uAC00\uBCF4\uC790."
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timeline: {fileID: 0}
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
   isLoop: 0
 --- !u!65 &4636287008674004281
 BoxCollider:
@@ -480,32 +478,35 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5089735150138470773}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 0
+  interactionPlayType: -1
   jsonFile: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
   interactionMethod: 0
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 3
   exclamationMark: {fileID: 6028227959986880301}
   markOffset: {x: 0, y: 150}
   useExclamationMark: 1
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timeline: {fileID: 0}
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
 --- !u!114 &8054175035460179165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -513,32 +514,35 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8535225174012428321}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 0
+  interactionPlayType: -1
   jsonFile: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
   interactionMethod: 0
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 3
   exclamationMark: {fileID: 3424609071662312292}
   markOffset: {x: 0, y: 150}
   useExclamationMark: 1
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timeline: {fileID: 0}
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
 --- !u!1001 &586399221350616211
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -579,12 +583,12 @@ PrefabInstance:
     - target: {fileID: 2547253992093580045, guid: bf43b3b0bfb904f4f8c96920d82b7301,
         type: 3}
       propertyPath: cornerCameraSettings.Array.data[0].camSettings.Array.data[0].camDis.z
-      value: -3
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 2547253992093580045, guid: bf43b3b0bfb904f4f8c96920d82b7301,
         type: 3}
       propertyPath: cornerCameraSettings.Array.data[0].camSettings.Array.data[1].camDis.x
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2547253992093580045, guid: bf43b3b0bfb904f4f8c96920d82b7301,
         type: 3}
@@ -594,7 +598,7 @@ PrefabInstance:
     - target: {fileID: 2547253992093580045, guid: bf43b3b0bfb904f4f8c96920d82b7301,
         type: 3}
       propertyPath: cornerCameraSettings.Array.data[1].camSettings.Array.data[1].camDis.z
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2547253992093580045, guid: bf43b3b0bfb904f4f8c96920d82b7301,
         type: 3}
@@ -604,12 +608,17 @@ PrefabInstance:
     - target: {fileID: 2547253992093580045, guid: bf43b3b0bfb904f4f8c96920d82b7301,
         type: 3}
       propertyPath: cornerCameraSettings.Array.data[1].camSettings.Array.data[0].camDis.x
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2547253992093580045, guid: bf43b3b0bfb904f4f8c96920d82b7301,
         type: 3}
       propertyPath: cornerCameraSettings.Array.data[1].camSettings.Array.data[0].camDis.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2547253992093580045, guid: bf43b3b0bfb904f4f8c96920d82b7301,
+        type: 3}
+      propertyPath: cornerCameraSettings.Array.data[1].camSettings.Array.data[0].camDis.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4213064661063900217, guid: bf43b3b0bfb904f4f8c96920d82b7301,
         type: 3}
@@ -754,6 +763,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4213064661063900217, guid: bf43b3b0bfb904f4f8c96920d82b7301, type: 3}
     - {fileID: 8138613065711722208, guid: bf43b3b0bfb904f4f8c96920d82b7301, type: 3}
+    - {fileID: 3313634629309136850, guid: bf43b3b0bfb904f4f8c96920d82b7301, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: bf43b3b0bfb904f4f8c96920d82b7301, type: 3}
 --- !u!1 &5368723130412494120 stripped
 GameObject:

@@ -57,6 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 203210
 --- !u!1 &6571003619915153711
@@ -160,6 +161,8 @@ MonoBehaviour:
       anim_name: 
       contents: 
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions:
   - eventType: 0
     clearBox: {fileID: 0}
@@ -169,6 +172,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug:
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6541"
@@ -250,18 +255,17 @@ MonoBehaviour:
     isContinue: 1
   color: 0
   interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timeline: {fileID: 0}
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
   isLoop: 0
 --- !u!65 &3157405220051808109
 BoxCollider:
@@ -325,15 +329,12 @@ MonoBehaviour:
   scriptDesription: "Episode2-Day3 \uB77C\uC6B0 \uC219\uC18C"
   mapCode: 203010
   method: 1
-  endMap: 0
-  director: {fileID: 0}
   nextMapcode: 
   map: {fileID: 3371646261997034261}
   ui: {fileID: 0}
   SkyboxSetting: {fileID: 0}
   isOrthographic: 1
   orthographicSize: 7
-  isCameraMoving: 0
   cameraBound: {fileID: 0}
   BGM: {fileID: 0}
   characters: []
@@ -341,22 +342,19 @@ MonoBehaviour:
   clearBoxList:
   - {fileID: 8195409946951475808}
   - {fileID: 6804218609852677782}
-  positionSetting: {fileID: 8195409945370627800}
   positionSets:
   - index: 0
     who: 2
     startPosition: {fileID: 8195409945449437646}
-    clearBox: {fileID: 8195409946951475823}
     posSet: {fileID: 8195409945860835748}
     isMain: 1
-  posIndex: 0
-  cam: {fileID: 0}
   cameraViewType: 0
   camDis: {x: -24, y: 16.61, z: 16.61}
   camRot: {x: 30, y: 126.722, z: 0}
-  isJoystickInputIgnore: 0
+  positionSetting: {fileID: 8195409945370627800}
+  isJoystickInputUse: 1
   isJoystickNone: 0
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &8195409945370627800
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,6 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 203110
 --- !u!1001 &8195409945802695123

@@ -63,18 +63,18 @@ MonoBehaviour:
     dialogues:
     - name: "\uB77C\uC6B0"
       expression: 0
-      anim_name: Rau
+      animName: 
       contents: "\uC800 \uC7A5\uC0AC\uAFBC\uC774 \uD55C \uB9D0\uC774 \uC9C4\uC2EC\uC73C\uB85C
         \uD55C \uB9D0 \uAC19\uC73C\uB2C8 \uC624\uB298\uC740 \uC5BC\uB978 \uC219\uC18C\uB85C
         \uB4E4\uC5B4\uAC00\uC11C \uC26C\uC5B4\uC57C \uACA0\uC5B4"
     - name: "\uB77C\uC6B0"
       expression: 0
-      anim_name: Rau
+      animName: 
       contents: "\uAE38\uC744 \uD5E4\uBA58 \uD0D3\uC5D0 \uBC8C\uC368 \uBC24\uC774
         \uB418\uBC84\uB838\uC5B4. \uC5BC\uB978 \uC219\uC18C\uB85C \uAC00\uC790."
     - name: 
       expression: 0
-      anim_name: 
+      animName: 
       contents: "\uC6B0\uCE21\uC73C\uB85C \uCB49\uAC00\uBA74 \uB77C\uC6B0\uC758 \uC219\uC18C\uAC00
         \uB098\uD0C0\uB0A9\uB2C8\uB2E4."
   dialogueEndAction:
@@ -86,22 +86,23 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timeline: {fileID: 0}
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
   isLoop: 0
 --- !u!1 &5859266698824446595
 GameObject:
@@ -247,34 +248,31 @@ MonoBehaviour:
     \uB9F5\uC740 \uC548\uB4E4\uC5B4\uAC00\uC9D0.\n"
   mapCode: 104010
   method: 0
-  endMap: 0
-  director: {fileID: 0}
   nextMapcode: 201010
   map: {fileID: 3595346825478808760}
   ui: {fileID: 0}
   SkyboxSetting: {fileID: 2100000, guid: 60a35dfd0bcf1404ba332b8f6ab0b5b8, type: 2}
   isOrthographic: 1
   orthographicSize: 7
-  isCameraMoving: 1
   cameraBound: {fileID: 0}
+  BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 5859266698824446595}
   clearBoxList:
   - {fileID: 8274702644512686179}
-  positionSetting: {fileID: 6590479491920353238}
   positionSets:
   - index: 0
     who: 2
     startPosition: {fileID: 6590479492548782690}
-    clearBox: {fileID: 5257138561427428443}
     posSet: {fileID: 6590479491685344758}
     isMain: 1
-  posIndex: 0
-  cam: {fileID: 0}
+  cameraViewType: 0
   camDis: {x: -2, y: 3.6, z: 16}
   camRot: {x: 1.062, y: 173.17, z: -0.043}
-  isJoystickUse: 1
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  positionSetting: {fileID: 6590479491920353238}
+  isJoystickInputUse: 1
+  isJoystickNone: 0
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &6590479492548782701
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,6 +315,11 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogueEndAction.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1970574898372511802, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: nextSelectMapcode
+      value: 201110
       objectReference: {fileID: 0}
     - target: {fileID: 2126143353559508351, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
@@ -483,7 +486,24 @@ PrefabInstance:
       propertyPath: dialogueEndAction.Array.size
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8826406548415856755, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8826406548415856755, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
+    - {fileID: 1970574898372511802, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
+    - {fileID: 2006227514933912774, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
+    - {fileID: 6833819731772867256, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
+    - {fileID: 5209476354693123359, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
+    - {fileID: 608012451485628335, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
+    - {fileID: 2491228757351992403, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
+    - {fileID: 5097493226435065249, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
+    - {fileID: 2126143353559508351, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
+    - {fileID: 1008197126064203463, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
+    - {fileID: 4910907089392082189, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
+    - {fileID: 7604010332265168975, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
 --- !u!1 &3595346825478808760 stripped
 GameObject:
@@ -494,12 +514,6 @@ GameObject:
 --- !u!4 &3595346825478808763 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7679528853820744179, guid: b5d6f4e8e25d0d646a2290b24e60c706,
-    type: 3}
-  m_PrefabInstance: {fileID: 6590479493518263624}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &5257138561427428443 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1405982375669977363, guid: b5d6f4e8e25d0d646a2290b24e60c706,
     type: 3}
   m_PrefabInstance: {fileID: 6590479493518263624}
   m_PrefabAsset: {fileID: 0}

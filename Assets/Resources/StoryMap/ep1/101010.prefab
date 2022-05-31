@@ -68,6 +68,8 @@ MonoBehaviour:
       animName: 
       contents: ' '
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   taskData_Debug: []
   color: 0
@@ -78,8 +80,6 @@ MonoBehaviour:
   useExclamationMark: 0
   outline: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
   timeline: {fileID: 0}
   cinematics: []
   inGames: []
@@ -110,13 +110,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 0
-  jsonFile: {fileID: 0}
+  interactionPlayType: 2
+  jsonFile: {fileID: 4900000, guid: c3cd1485adf0f2f478cfbdbf4ccdb4e9, type: 3}
   dialogueData:
-    dialogues: []
-  dialogueEndAction: []
+    dialogues:
+    - name: ???
+      expression: 0
+      animName: 
+      contents: "\uC5EC\uAE30 \uC21C\uCC30\uD558\uB2E4\uAC00 \uB36B\uC5D0 \uAC78\uB9AC\uACE0
+        \uB9D0\uC558\uB124 \uB098\uC880 \uB3C4\uC640\uC8FC\uC2DC\uAC8C"
+    - name: "\uB77C\uC6B0"
+      expression: 0
+      animName: 
+      contents: "\uB531\uBD10\uB3C4 \uD06C\uAC8C \uBB3C\uB9B0 \uAC83 \uAC19\uC544.
+        \uC800\uBD84 \uD63C\uC790 \uD798\uC73C\uB85C\uB294 \uBC97\uC5B4\uB098\uAE30
+        \uC5B4\uB824\uC6CC \uBCF4\uC5EC. \uC5B4\uB5BB\uAC8C \uD574\uC57C\uB420\uAE4C?"
+  dialogueEndAction:
+  - eventType: 1
+    clearBox: {fileID: 7838671512082927193}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
-  taskData_Debug: []
+  taskData_Debug:
+  - tasks:
+    - name: ???
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    - name: "\uB77C\uC6B0"
+      type: 0
+      nextFile: 
+      order: 0
+      condition: 
+      increaseVar: 
+    taskIndex: 0
+    taskOrder: 1
+    isContinue: 1
   color: 0
   interactionMethod: 0
   radius: 1
@@ -125,8 +162,6 @@ MonoBehaviour:
   useExclamationMark: 0
   outline: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
   timeline: {fileID: 0}
   cinematics: []
   inGames: []
@@ -143,6 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 101110
 --- !u!114 &2116634930570612063
@@ -173,6 +209,8 @@ MonoBehaviour:
         \uC800\uBD84 \uD63C\uC790 \uD798\uC73C\uB85C\uB294 \uBC97\uC5B4\uB098\uAE30
         \uC5B4\uB824\uC6CC \uBCF4\uC5EC. \uC5B4\uB5BB\uAC8C \uD574\uC57C\uB420\uAE4C?"
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   taskData_Debug: []
   color: 2
@@ -183,8 +221,6 @@ MonoBehaviour:
   useExclamationMark: 0
   outline: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
   timeline: {fileID: 0}
   cinematics: []
   inGames: []
@@ -414,6 +450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 1
   jsonFile: {fileID: 0}
   nextSelectMapcode: 102010
 --- !u!1 &9152339363227293229
@@ -544,6 +581,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Center.z
       value: -0.47054264
+      objectReference: {fileID: 0}
+    - target: {fileID: 4627930152164578497, guid: a0fbab29208054241ae6ef287606613f,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0fbab29208054241ae6ef287606613f, type: 3}

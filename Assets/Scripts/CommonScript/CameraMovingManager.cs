@@ -43,7 +43,7 @@ public class CameraMovingManager : MonoBehaviour
     }
     // 카메라 세팅 구조체
     [Serializable]
-    public struct CamInfo {
+    public class CamInfo {
         public Vector3 camDis;
         public Vector3 camRot;
     }
@@ -113,6 +113,8 @@ public class CameraMovingManager : MonoBehaviour
 
             DataController.instance.camDis = camDis;
             DataController.instance.camRot = camRot;
+            Debug.Log(camDis);
+            Debug.Log(corner.corner);
         }
     }
 

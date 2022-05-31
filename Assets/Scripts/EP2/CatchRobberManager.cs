@@ -67,7 +67,7 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
 
     private void Start()
     {
-        InitialSetting();
+        this.StartCoroutine(InitialSetting());
     }
 
     public void Play()
@@ -143,7 +143,7 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
                 DoveMove(); 
             
                 // 소매치기 이동
-                characterController_robber.Move(new Vector3(0, 0, robberSpeed * Time.deltaTime));
+                characterController_robber.Move(new Vector3(0, -1, robberSpeed * Time.deltaTime));
             
             CheckCompletion();
             timer -= Time.deltaTime;
@@ -178,8 +178,10 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
 
 
     #region 초기 세팅
-    void InitialSetting()
+    IEnumerator InitialSetting()
     {
+        yield return new WaitUntil(() => DataController.instance.GetCharacter(Character.Main) != null);
+
         // 현재 캐릭터
         rau = DataController.instance.GetCharacter(Character.Main);
         rau.IsMove = false;
@@ -262,7 +264,7 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
             moveXofRau.x = Vector3.Lerp(start.position, target.position, t).x;
             rau.transform.position = moveXofRau;
 
-            t += Time.deltaTime / 2f; //원하는 시간
+            t += Time.deltaTime / 0.5f; //원하는 시간
       
         //    //Debug.Log(target.name + "이동 중" + t);
             yield return null;
@@ -318,9 +320,10 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
     }
 
     #region 판정
-    void CheckCompletion() {
+    void CheckCompletion()
+    {
 
-        float dis = Vector3.Distance(rau.transform.position, robber.transform.position);
+        float dis = robber.transform.position.z - rau.transform.position.z;
 
         if (Mathf.Round(timer) == 0)
         {
