@@ -194,38 +194,31 @@ MonoBehaviour:
     X\n"
   mapCode: 001010
   method: 0
-  endMap: 0
-  director: {fileID: 0}
   nextMapcode: 002010
   map: {fileID: 1264833713866841843}
   ui: {fileID: 4439638563088059685}
   SkyboxSetting: {fileID: 2100000, guid: 5a6e6064c7a621e48b9ea96033587994, type: 2}
   isOrthographic: 0
   orthographicSize: 0
-  isCameraMoving: 1
   cameraBound: {fileID: 0}
   BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 2918022534388849636}
   clearBoxList:
   - {fileID: 1264833714552710649}
-  positionSetting: {fileID: 1264833714867396893}
   positionSets:
   - index: 0
     who: 2
     startPosition: {fileID: 1264833714219407301}
-    clearBox: {fileID: 1264833714552710648}
     posSet: {fileID: 1264833714903881101}
     isMain: 1
-  posIndex: 0
-  cinematic: {fileID: 3812931365187858538}
-  cam: {fileID: 0}
   cameraViewType: 0
   camDis: {x: 0, y: 1, z: -5}
   camRot: {x: 0, y: 0, z: 0}
+  positionSetting: {fileID: 1264833714867396893}
   isJoystickInputUse: 1
   isJoystickNone: 0
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &1264833714219407300
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,6 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 1
   jsonFile: {fileID: 0}
   nextSelectMapcode: 002010
 --- !u!1 &1264833714867396893
@@ -946,77 +940,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 3
+  interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 2c480c7b9eb40b148bed71d381284346, type: 3}
   dialogueData:
     dialogues:
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      animName: 
-      contents: "\uC73C\uC545! \uCC29\uAC01\uD574\uC11C \uBC84\uC2A4\uC5D0\uC11C \uC798\uBABB\uB0B4\uB838\uC5B4.."
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      animName: 
-      contents: "\uC5EC\uAE30\uC11C \uC5B4\uB5BB\uAC8C \uC138\uBAA8\uB9C8\uC744\uC5D0
-        \uAC00\uC9C0..?"
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      animName: 
-      contents: "\uADF8\uB798\uB3C4 \uC800 \uBA40\uB9AC\uC5D0 \uAC74\uBB3C\uB4E4\uC774
-        \uBCF4\uC774\uB294\uB370...\uC800\uCABD\uC73C\uB85C \uAC00\uBA74 \uC5B4\uB5BB\uAC8C\uB4E0
-        \uB418\uACA0\uC9C0..?"
     - name: 
       expression: 0
       animName: 
-      contents: "\uC88C\uC6B0\uB85C \uC870\uC774\uC2A4\uD2F1\uC744 \uC6C0\uC9C1\uC774\uBA74
-        \uCE90\uB9AD\uD130\uAC00 \uC6C0\uC9C1\uC785\uB2C8\uB2E4."
-    - name: 
+      contents: 
+    - name: "\uB77C\uC6B0\uB300\uD6541"
       expression: 0
       animName: 
-      contents: "\uC870\uC774\uC2A4\uD2F1\uC744 \uC704\uB85C \uC6C0\uC9C1\uC774\uBA74
-        \uC810\uD504\uB97C \uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
-    - name: 
-      expression: 0
-      animName: 
-      contents: "\uB77C\uC6B0\uC758 \uC5EC\uD589\uC744 \uC704\uD574 \uC624\uB978\uCABD\uC73C\uB85C
-        \uAC00\uBD05\uC2DC\uB2E4!"
+      contents: 
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   taskData_Debug:
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      taskContentType: 0
+      type: 0
       nextFile: StoryMap/ep1/102010
       order: 1
       condition: 
       increaseVar: 
     - name: 
-      taskContentType: 0
+      type: 0
       nextFile: 3
       order: 1
       condition: 
       increaseVar: 
     - name: "(\uCE74\uBA54\uB77C\uB97C \uCF1C\uB3C4 \uACBD\uCC30\uC5D0 \uC2E0\uACE0\uD55C\uB2E4\uB294
         \uACBD\uACE0\uB97C \uD55C\uB2E4.)"
-      taskContentType: 0
+      type: 0
       nextFile: StoryMap/ep1/Choice1
       order: 0
       condition: 1,1,1,1
       increaseVar: 1,1,1,1
     - name: "(\uB178\uC778\uC744 \uBB34\uC2DC\uD55C\uB2E4.)"
-      taskContentType: 0
+      type: 0
       nextFile: StoryMap/ep1/Choice2
       order: 0
       condition: 2,2,2,2
       increaseVar: 2,2,2,2
     - name: "(\uAC00\uB9CC\uD788 \uC788\uB294\uB2E4.)"
-      taskContentType: 0
+      type: 0
       nextFile: StoryMap/ep1/Choice3
       order: 0
       condition: 3,3,3,3
       increaseVar: 2,2,2,2
     - name: "\uB05D"
-      taskContentType: 0
+      type: 0
       nextFile: 
       order: 1
       condition: 
@@ -1026,25 +1000,25 @@ MonoBehaviour:
     isContinue: 1
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      taskContentType: 0
+      type: 0
       nextFile: StoryMap/ep1/Song1
       order: 1
       condition: 
       increaseVar: 
     - name: "\uC120\uD0DD\uC784"
-      taskContentType: 0
+      type: 0
       nextFile: 1
       order: 1
       condition: 
       increaseVar: 
     - name: "\uC6D0\uB798\uAEBC"
-      taskContentType: 0
+      type: 0
       nextFile: StoryMap/ep1/Choice2
       order: 0
       condition: 1,1,1,1
       increaseVar: 1,1,1,1
     - name: "\uB05D"
-      taskContentType: 0
+      type: 0
       nextFile: 
       order: 1
       condition: 
@@ -1054,13 +1028,13 @@ MonoBehaviour:
     isContinue: 1
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6542"
-      taskContentType: 0
+      type: 0
       nextFile: StoryMap/ep1/Song2
       order: 1
       condition: 
       increaseVar: 
     - name: "\uB05D"
-      taskContentType: 0
+      type: 0
       nextFile: 
       order: 1
       condition: 
@@ -1070,13 +1044,13 @@ MonoBehaviour:
     isContinue: 1
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6543"
-      taskContentType: 0
+      type: 0
       nextFile: StoryMap/ep1/Song3
       order: 1
       condition: 
       increaseVar: 
     - name: "\uB05D"
-      taskContentType: 0
+      type: 0
       nextFile: 
       order: 1
       condition: 
@@ -1092,9 +1066,9 @@ MonoBehaviour:
   useExclamationMark: 0
   outline: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
   timeline: {fileID: 6343341615378901095}
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
   isLoop: 0
 --- !u!1 &2918022534388849636
@@ -1344,6 +1318,8 @@ MonoBehaviour:
   dialogueData:
     dialogues: []
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   taskData_Debug: []
   color: 0
@@ -1354,9 +1330,9 @@ MonoBehaviour:
   useExclamationMark: 0
   outline: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
   timeline: {fileID: 0}
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
   isLoop: 0
 --- !u!65 &2489386545976285702

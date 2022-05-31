@@ -122,6 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 1
   jsonFile: {fileID: 0}
   nextSelectMapcode: 002020
 --- !u!1 &2038639325761473504
@@ -260,7 +261,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7a93a498b4923ca4992814df4d4d1d29, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1460a32b5fffdf647a2022fca37b8c6f, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -387,7 +388,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5554950b522bb94499d9f3931edb32d5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1460a32b5fffdf647a2022fca37b8c6f, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -679,7 +680,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7a93a498b4923ca4992814df4d4d1d29, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1460a32b5fffdf647a2022fca37b8c6f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1179,7 +1180,7 @@ MonoBehaviour:
     \uD0C8\uCD9C\n\uBC30\uACBD: \uC624\uD53C\uC2A4\uD154\n\uAC8C\uC784 \uBDF0:2D\uC0AC\uC774\uB4DC
     \uBDF0(orthographic)\n\uAC8C\uC784 \uD50C\uB808\uC774: \uD50C\uB7AB\uD3EC\uBA38
     \uAC8C\n\uB2A5\uB825: O\n"
-  mapCode: 002010
+  mapCode: 002011
   method: 0
   nextMapcode: 002020
   map: {fileID: 9056443105064200046}
@@ -1195,7 +1196,7 @@ MonoBehaviour:
   - {fileID: 1055738509457955646}
   positionSets:
   - index: 0
-    who: 0
+    who: 4
     startPosition: {fileID: 130550365025338250}
     posSet: {fileID: 2717001758374522331}
     isMain: 1
@@ -1298,17 +1299,41 @@ MonoBehaviour:
         isMove: 1
     playableList:
       playableObjs: []
-  taskEndActions: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  taskEndActions:
+  - eventType: 4
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs:
+      - gameObject: {fileID: 9056443105064200046}
+        isPlay: 1
+  - eventType: 2
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives:
+      - activeObject: {fileID: 5148484462038437868}
+        activeSelf: 1
+    movables:
+      movables: []
+    playableList:
+      playableObjs:
+      - gameObject: {fileID: 9056443105064200046}
+        isPlay: 1
   taskData_Debug:
   - tasks:
     - name: 
-      taskContentType: 0
+      type: 9
       nextFile: 
-      order: 0
+      order: 1
       condition: 
       increaseVar: 
     - name: "\uC2A4\uD54F\uB300\uD6541"
-      taskContentType: 0
+      type: 2
       nextFile: dialogue_ep0/002011
       order: 1
       condition: 
@@ -1324,8 +1349,6 @@ MonoBehaviour:
   useExclamationMark: 0
   outline: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
   timeline: {fileID: 0}
   cinematics: []
   inGames: []
@@ -1387,6 +1410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deb16415df8b5d448bc731ea043c967d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTalking: 0
   canvasCtrl: {fileID: 0}
   speat: {fileID: 0}
   pimpGuestMoving:
@@ -1785,7 +1809,8 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3496090301898248553, guid: 71358b296c7d1654b96e059a14296a65, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 71358b296c7d1654b96e059a14296a65, type: 3}
 --- !u!114 &7608571959104014730 stripped
 MonoBehaviour:

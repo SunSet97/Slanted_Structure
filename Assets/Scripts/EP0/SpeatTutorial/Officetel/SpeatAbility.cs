@@ -159,7 +159,7 @@ public class SpeatAbility : MonoBehaviour
         }
         else
         {
-            speat = DataController.instance.GetCharacter(Character.Speat);
+            speat = DataController.instance.GetCharacter(Character.Speat_Adult);
         }
     }
 
@@ -326,21 +326,7 @@ public class SpeatAbility : MonoBehaviour
             }
         }
     }
-
-    private void CheckGoal(GameObject goal)
-    {
-        Vector3 goalPos = goal.transform.position;
-        Vector3 speatPos = speat.transform.position;
-        float clearRange = 2.0f; // 출구로부터 어느 범위 내에 있어야지 clear
-
-        if (goalPos.y - clearRange <= speatPos.y && speatPos.y <= goalPos.y + clearRange
-            && goalPos.x - clearRange <= speatPos.x && speatPos.x <= goalPos.x + clearRange)
-        {
-            Debug.Log("!!스핏 튜토리얼 - 클리어!!");
-            // 다음 맵으로 넘어가기 ~~
-        }
-
-    }
+    
 
     private void HideBehindDoor() {
 

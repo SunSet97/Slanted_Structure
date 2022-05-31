@@ -1,5 +1,65 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &388573392934470134
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1857200121433143258}
+  - component: {fileID: 899831539865710796}
+  - component: {fileID: 3657249771106411439}
+  m_Layer: 0
+  m_Name: Clear Box
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1857200121433143258
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388573392934470134}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5726004021087108152}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &899831539865710796
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388573392934470134}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3657249771106411439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388573392934470134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isTrigger: 0
+  jsonFile: {fileID: 0}
+  nextSelectMapcode: 002011
 --- !u!1 &660646936843566564
 GameObject:
   m_ObjectHideFlags: 0
@@ -49,25 +109,35 @@ MonoBehaviour:
   dialogueData:
     dialogues: []
   dialogueEndAction: []
-  taskEndActions: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  taskEndActions:
+  - eventType: 1
+    clearBox: {fileID: 3657249771106411439}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
   taskData_Debug:
   - tasks:
     - name: 
-      taskContentType: 0
+      type: 11
       nextFile: 
       order: 1
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      taskContentType: 0
-      nextFile: dialogue_ep0/002010_1
+      type: 2
+      nextFile: dialogue_ep0/002010
       order: 1
       condition: 
       increaseVar: 
-    - name: "\uB77C\uC6B0\uB300\uD6541"
-      taskContentType: 0
-      nextFile: dialogue_ep0/002010_2
-      order: 1
+    - name: 
+      type: 10
+      nextFile: 
+      order: 0
       condition: 
       increaseVar: 
     taskIndex: 0
@@ -81,9 +151,9 @@ MonoBehaviour:
   useExclamationMark: 0
   outline: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
   timeline: {fileID: 4878962634566299628}
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
   isLoop: 0
 --- !u!65 &3215597784726685742
@@ -155,31 +225,26 @@ MonoBehaviour:
     \uBC14\uB85C \uC0AC\uC6A9 \uAC00\uB2A5)"
   mapCode: 002010
   method: 0
-  endMap: 2
-  director: {fileID: 0}
   nextMapcode: 002011
   map: {fileID: 4027758850991802394}
   ui: {fileID: 0}
   SkyboxSetting: {fileID: 0}
   isOrthographic: 0
   orthographicSize: 0
-  isCameraMoving: 1
   cameraBound: {fileID: 0}
   BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 2063626742438227840}
-  clearBoxList: []
-  positionSetting: {fileID: 5490524615875481573}
+  clearBoxList:
+  - {fileID: 3657249771106411439}
   positionSets: []
-  posIndex: 0
-  cinematic: {fileID: 2999755017061852483}
-  cam: {fileID: 0}
   cameraViewType: 0
   camDis: {x: -1.62, y: 2, z: 6.55}
   camRot: {x: 16.5, y: 166.1, z: 0}
+  positionSetting: {fileID: 5490524615875481573}
   isJoystickInputUse: 0
   isJoystickNone: 0
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &2063626742438227840
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,7 +271,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1857200121433143258}
   m_Father: {fileID: 1547722528846873599}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -517,7 +583,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4878962634877198868}
-  m_LocalRotation: {x: 0.017340712, y: 0.98240274, z: -0.1423369, w: 0.11968479}
+  m_LocalRotation: {x: 0.01734072, y: 0.98240274, z: -0.14233693, w: 0.11968483}
   m_LocalPosition: {x: -1.62, y: 1.9971282, z: 6.55}
   m_LocalScale: {x: 1.4285734, y: 1.4285716, z: 1.4285731}
   m_Children:
@@ -772,7 +838,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4878962636408948708}
-  m_LocalRotation: {x: -0.0125252465, y: 0.98640865, z: -0.13660656, w: -0.090442285}
+  m_LocalRotation: {x: -0.012525239, y: 0.98640865, z: -0.13660656, w: -0.09044223}
   m_LocalPosition: {x: 0.54, y: 1.31, z: 2.9199998}
   m_LocalScale: {x: 1.4285725, y: 1.4285716, z: 1.4285727}
   m_Children:

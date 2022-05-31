@@ -100,7 +100,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
     IEnumerator StartRungame()
     {
         yield return new WaitUntil(() => { return IsPlay; });
-        CharacterManager mainChar = DataController.instance.GetCharacter(Character.Speat);
+        CharacterManager mainChar = DataController.instance.GetCharacter(Character.Speat_Adult);
         mainChar.jumpForce = 7;
         WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
         DataController.instance.InitializeJoyStick(false);

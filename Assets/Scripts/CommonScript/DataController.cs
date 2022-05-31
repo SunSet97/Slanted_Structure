@@ -5,6 +5,7 @@ using System.IO;
 using System;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Data;
 using static Data.CustomEnum;
@@ -163,7 +164,9 @@ public class DataController : MonoBehaviour
             currentMap.DestroyMap();
         }
 
-        currentMap = Instantiate(Array.Find(storymaps, mapData => mapData.mapCode.Equals(mapCode)), mapGenerate);
+        var nextMap = Array.Find(storymaps, mapData => mapData.mapCode.Equals(mapCode));
+        // Debug.Log(nextMap);
+        currentMap = Instantiate(nextMap, mapGenerate);
         currentMap.Initialize();
         
         SetByChangedMap();
@@ -177,6 +180,8 @@ public class DataController : MonoBehaviour
         speat_Adolescene.PickUpCharacter();
         speat_Adult.PickUpCharacter();
         speat_Child.PickUpCharacter();
+
+        FadeEffect.instance.SetImage(false);
         
         //카메라 위치와 회전
         camDis = currentMap.camDis;
@@ -290,7 +295,7 @@ public class DataController : MonoBehaviour
         joyStick.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().position = default;
         joyStick.OnPointerUp();
         inputDegree = 0;
-        inputDirection = default;
+        inputDirection = Vector2.zero;
         inputJump = false;
     }
 

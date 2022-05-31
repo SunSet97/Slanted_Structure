@@ -11,6 +11,13 @@ using IPlayable = Play.IPlayable;
 using Task = Data.Task;
 using static Data.CustomEnum;
 
+
+[Serializable]
+public class InteractionEventMedium
+{
+    [SerializeField]
+    public InteractionEvent[] interactionEvents;
+}
 [Serializable]
 public class InteractionEvent
 {
@@ -68,7 +75,8 @@ public class InteractionEvent
         foreach (var t in playableList.playableObjs)
         {
             Debug.Log($"Play Event - {t.gameObject}: {t.isPlay} ");
-            t.gameObject.GetComponent<IPlayable>().IsPlay = t.isPlay;
+            t.gameObject.GetComponent<IPlayable>().Play();
+            // t.gameObject.GetComponent<IPlayable>().IsPlay = t.isPlay;
         }
     }
 }
@@ -77,7 +85,6 @@ public class InteractionEvent
 [ExecuteInEditMode]
 public class InteractionObj_stroke : MonoBehaviour
 {
-
     [Header("인터렉션 방식")]
     public InteractionPlayType interactionPlayType;
 
@@ -92,16 +99,27 @@ public class InteractionObj_stroke : MonoBehaviour
     private UnityAction endDialogueAction;
     private UnityAction startDialogueAction;
     
-    [ConditionalHideInInspector("interactionType", CustomEnum.InteractionPlayType.Dialogue)]
+    [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
     public DialogueData dialogueData;
-    [ConditionalHideInInspector("interactionType", CustomEnum.InteractionPlayType.Dialogue)]
+    [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
     public InteractionEvent[] dialogueEndAction;
 
-    [ConditionalHideInInspector("interactionType", CustomEnum.InteractionPlayType.Task)]
-    public InteractionEvent[] taskEndActions;
+    // [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
+    // public InteractionEventMedium newDialogueEndAction;
+    
+    [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
+    public Vector3 dialogueCameraPos;
+    [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
+    public Vector3 dialogueCameraRot;
 
+    [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Task)]
+    public InteractionEvent[] taskEndActions;
+    // [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Task)]
+    // public InteractionEventMedium newTaskEndActions;
+    
+
+    [ConditionalHideInInspector("InteractionPlayType", InteractionPlayType.Task)]
     [Header("디버깅 전용 TaskData")]
-    [ConditionalHideInInspector("interactionType", CustomEnum.InteractionPlayType.Task)]
     public List<TaskData> taskData_Debug;
 
     [Header("아웃라인 색 설정")]
@@ -123,10 +141,6 @@ public class InteractionObj_stroke : MonoBehaviour
 
     [Header("카메라 뷰")]
     public bool isViewChange = false;
-
-    [Header("대화가 진행될 때의 카메라 세팅")]
-    public Vector3 CameraPos;
-    public Vector3 CameraRot;
 
     [Header("타임라인")]
     public PlayableDirector timeline;
@@ -245,13 +259,13 @@ public class InteractionObj_stroke : MonoBehaviour
                 $"{curTask.order,000000}");
         }
 
-        switch (curTask.taskContentType)
+        switch (curTask.type)
         {
             case TaskContentType.DIALOGUE:
                 int choiceLen = int.Parse(curTask.nextFile);
                 Task[] array1 = new Task()[currentTaskData.tasks.Length + 1];
                 Array.Copy(currentTaskData.tasks, 0, array1, 0, currentTaskData.taskIndex);
-                array1[currentTaskData.taskIndex + 1].taskContentType =
+                array1[currentTaskData.taskIndex + 1].type =
                     TaskContentType.TempDialogue;
                 array1[currentTaskData.taskIndex + 1].order =
                     array1[tempTaskIndex].order;
@@ -472,8 +486,8 @@ public class InteractionObj_stroke : MonoBehaviour
         {
             DataController.instance.taskData = currentTaskData;
             Task currentTask = currentTaskData.tasks[currentTaskData.taskIndex];
-            Debug.Log("taskIndex - " + currentTaskData.taskIndex + "\nInteractionType - " + currentTask.taskContentType);
-            switch (currentTask.taskContentType)
+            Debug.Log("taskIndex - " + currentTaskData.taskIndex + "\nInteractionType - " + currentTask.type);
+            switch (currentTask.type)
             {
                 case TaskContentType.DIALOGUE:
                     Debug.Log("대화 시작");
@@ -570,17 +584,37 @@ public class InteractionObj_stroke : MonoBehaviour
                         inGame.SetActive(false);
                     }
 
+                    DataController.instance.StopSaveLoadJoyStick(true);
                     timeline.Pause();
                     timeline.Play();
-                    var temp = timeline.playableAsset.outputs;
-                    foreach (var playableBinding in temp)
-                    {
-                        if(playableBinding.sourceObject == null) continue;
-                        Debug.Log(playableBinding.sourceObject);
-                        Debug.Log(timeline.GetGenericBinding(playableBinding.sourceObject));
-                    }
+                    // Debug.Log(timeline.);
+                    // timeline.playableAsset
+                    // var temp = timeline.playableAsset.outputs;
+                    // foreach (var playableBinding in temp)
+                    // {
+                    //     Debug.Log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+                    //     // Debug.Log(playableBinding.sourceObject);
+                    //     Debug.Log(playableBinding);
+                    //     Debug.Log(playableBinding.outputTargetType);
+                    //     if(playableBinding.sourceObject == null) continue;
+                    //     Debug.Log(playableBinding.streamName);
+                    //     Debug.Log(playableBinding.sourceObject);
+                    //     timeline.playableAsset.
+                    //     var source = playableBinding.sourceObject;
+                    //     if (playableBinding.sourceObject.GetType() == typeof(AnimationTrack))
+                    //     {
+                    //         // Debug.Log(((AnimationTrack) playableBinding.sourceObject));
+                    //         ((AnimationTrack)playableBinding). = DataController.instance.GetCharacter(Character.Main).anim;
+                    //         Debug.Log(((AnimationTrack) playableBinding.sourceObject).name);
+                    //     }
+                    //     Debug.Log(playableBinding.sourceObject.name);
+                    //     Debug.Log(playableBinding.sourceObject.hideFlags);
+                    //     // playableBinding.
+                    //     Debug.Log(timeline.GetGenericBinding(playableBinding.sourceObject));
+                    // }
 
                     yield return new WaitUntil(() => timeline.state == PlayState.Paused);
+                    DataController.instance.StopSaveLoadJoyStick(false);
                     currentTaskData.isContinue = true;
                     foreach (var cinematic in cinematics)
                     {
@@ -595,15 +629,15 @@ public class InteractionObj_stroke : MonoBehaviour
                     break;
                 default:
                 {
-                    Debug.LogError($"{currentTask.taskContentType}은 존재하지 않는 type입니다.");
+                    Debug.LogError($"{currentTask.type}은 존재하지 않는 type입니다.");
                     break;
                 }
             }
 
-            Debug.Log("Task 종료 대기 중 - " + currentTask.taskContentType + ", Index - " + currentTaskData.taskIndex);
+            Debug.Log("Task 종료 대기 중 - " + currentTask.type + ", Index - " + currentTaskData.taskIndex);
             yield return waitUntil;
             currentTaskData.taskIndex++;
-            Debug.Log("Task 종료 - " + currentTask.taskContentType + ", Index - " + currentTaskData.taskIndex);
+            Debug.Log("Task 종료 - " + currentTask.type + ", Index - " + currentTaskData.taskIndex);
             Debug.Log(currentTaskData.tasks.Length > currentTaskData.taskIndex && currentTaskData.tasks[currentTaskData.taskIndex].order.Equals(currentTaskData.taskOrder) && currentTaskData.isContinue);
         }
         currentTaskData.taskOrder++;
@@ -616,6 +650,27 @@ public class InteractionObj_stroke : MonoBehaviour
                 DataController.instance.taskData = null;     // null이 아닌 상태에서 모든 task가 끝나면 없어야되는데 남아있음
                 jsonTask.Pop();
                 jsonTask.Peek().isContinue = true;
+            }
+            else
+            {
+                foreach (var taskEndAction in taskEndActions)
+                {
+                    switch (taskEndAction.eventType)
+                    {
+                        case InteractionEvent.EventType.CLEAR:
+                            taskEndAction.ClearEvent();
+                            break;
+                        case InteractionEvent.EventType.ACTIVE:
+                            taskEndAction.ActiveEvent();
+                            break;
+                        case InteractionEvent.EventType.MOVE:
+                            taskEndAction.MoveEvent();
+                            break;
+                        case InteractionEvent.EventType.PLAY:
+                            taskEndAction.PlayEvent();
+                            break;
+                    }
+                }
             }
         }
     }
@@ -635,7 +690,7 @@ public class InteractionObj_stroke : MonoBehaviour
             Debug.Log("task 길이" + taskData.tasks.Length);
             for (int i = 0; i < taskData.tasks.Length; i++)
             {
-                if (taskData.tasks[i].taskContentType == TaskContentType.NEW || taskData.tasks[i].taskContentType == TaskContentType.TEMP)
+                if (taskData.tasks[i].type == TaskContentType.NEW || taskData.tasks[i].type == TaskContentType.TEMP)
                 {
                     Debug.Log("디버그 Task 추가");
                     var count = int.Parse(taskData.tasks[i].nextFile);

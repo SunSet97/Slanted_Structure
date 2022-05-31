@@ -74,7 +74,7 @@ MonoBehaviour:
   camRot: {x: 33.45, y: -105.553, z: 0}
   positionSetting: {fileID: 2209803742004484381}
   isJoystickInputUse: 0
-  isJoystickNone: 0
+  isJoystickNone: 1
   forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &1129271954830250821
 GameObject:
@@ -135,6 +135,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 0}
   nextSelectMapcode: 101010
+--- !u!54 &5881613383373356226
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1723061866810045326}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!136 &2607533365417406580
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -162,22 +178,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   who: 4
---- !u!54 &5881613383373356226
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1723061866810045326}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &1917202997979265716
 GameObject:
   m_ObjectHideFlags: 0
@@ -952,6 +952,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   taskData_Debug: []
   color: 0
@@ -962,8 +964,6 @@ MonoBehaviour:
   useExclamationMark: 0
   outline: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
   timeline: {fileID: 0}
   cinematics: []
   inGames: []

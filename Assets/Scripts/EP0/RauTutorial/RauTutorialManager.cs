@@ -78,7 +78,8 @@ public class RauTutorialManager : MonoBehaviour
     void ForestIntro()
     {
         // 카메라 방향 side
-        DataController.instance.camDis = view_side.camDis; DataController.instance.camRot = view_side.camRot;
+        DataController.instance.camDis = view_side.camDis;
+        DataController.instance.camRot = view_side.camRot;
         // side 이동 및 점프 튜토리얼
         ChangeJoystickSetting(0, 0); // 2D side view 이동
     }

@@ -207,7 +207,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3618411424307104058}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!320 &1131524807068970349
 PlayableDirector:
@@ -801,7 +801,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionPlayType: 3
-  jsonFile: {fileID: 4900000, guid: 530919f15509d734fb190634e20dc939, type: 3}
+  jsonFile: {fileID: 4900000, guid: 2c480c7b9eb40b148bed71d381284346, type: 3}
   dialogueData:
     dialogues:
     - name: "\uB77C\uC6B0"
@@ -835,17 +835,19 @@ MonoBehaviour:
       contents: "\uB77C\uC6B0\uC758 \uC5EC\uD589\uC744 \uC704\uD574 \uC624\uB978\uCABD\uC73C\uB85C
         \uAC00\uBD05\uC2DC\uB2E4!"
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   taskData_Debug:
   - tasks:
     - name: 
-      taskContentType: 0
+      type: 0
       nextFile: 
       order: 1
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      taskContentType: 0
+      type: 0
       nextFile: dialogue_ep0/001010
       order: 1
       condition: 
@@ -861,9 +863,11 @@ MonoBehaviour:
   useExclamationMark: 0
   outline: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
   timeline: {fileID: 1131524807068970349}
+  cinematics:
+  - {fileID: 3618411424307104057}
+  inGames:
+  - {fileID: 1129257561940410482}
   touchTargetObject: {fileID: 0}
   isLoop: 0
 --- !u!1 &2000064520940667278
@@ -1027,6 +1031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 1
   jsonFile: {fileID: 0}
   nextSelectMapcode: 002010
 --- !u!1 &2574574144458070235
@@ -1145,38 +1150,31 @@ MonoBehaviour:
     X\n"
   mapCode: 001011
   method: 0
-  endMap: 0
-  director: {fileID: 0}
   nextMapcode: 002010
   map: {fileID: 2574574145566413732}
   ui: {fileID: 1129257561940410482}
   SkyboxSetting: {fileID: 2100000, guid: 5a6e6064c7a621e48b9ea96033587994, type: 2}
   isOrthographic: 0
   orthographicSize: 0
-  isCameraMoving: 1
   cameraBound: {fileID: 0}
   BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 1894265072759969459}
   clearBoxList:
   - {fileID: 2574574144104868014}
-  positionSetting: {fileID: 2574574144553708618}
   positionSets:
   - index: 0
     who: 2
     startPosition: {fileID: 2574574143905258130}
-    clearBox: {fileID: 2574574144104868015}
     posSet: {fileID: 2574574144458070234}
     isMain: 1
-  posIndex: 0
-  cinematic: {fileID: 3618411424307104057}
-  cam: {fileID: 0}
   cameraViewType: 0
   camDis: {x: 0, y: 1, z: -5}
   camRot: {x: 0, y: 0, z: 0}
-  isJoystickInputUse: 0
+  positionSetting: {fileID: 2574574144553708618}
+  isJoystickInputUse: 1
   isJoystickNone: 0
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &3074829541713056235
 GameObject:
   m_ObjectHideFlags: 0
@@ -1515,7 +1513,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3618411424307104058}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &3618411423470723706
 Camera:
@@ -1625,7 +1623,6 @@ Transform:
   - {fileID: 1131524807558549357}
   - {fileID: 1131524806957654638}
   - {fileID: 1131524807489889282}
-  - {fileID: 8073797722099312741}
   - {fileID: 1131524807068970348}
   - {fileID: 3618411423470723704}
   - {fileID: 3205108748343174932}
@@ -2034,83 +2031,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &7412752189275995290
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8073797722099312741}
-  - component: {fileID: 1325773586138021203}
-  - component: {fileID: 2699488582105590479}
-  m_Layer: 0
-  m_Name: Dialogue
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &8073797722099312741
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7412752189275995290}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -22.45, y: 0, z: 7.82}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 3618411424307104058}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1325773586138021203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7412752189275995290}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionPlayType: 5
-  jsonFile: {fileID: 4900000, guid: 2c480c7b9eb40b148bed71d381284346, type: 3}
-  dialogueData:
-    dialogues: []
-  dialogueEndAction: []
-  taskEndActions: []
-  taskData_Debug: []
-  color: 0
-  interactionMethod: 2
-  radius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
-  outline: {fileID: 0}
-  isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
-  timeline: {fileID: 0}
-  touchTargetObject: {fileID: 0}
-  isLoop: 0
---- !u!65 &2699488582105590479
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7412752189275995290}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7546275349307902706
 GameObject:
   m_ObjectHideFlags: 0
@@ -2659,15 +2579,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a0ddcff28bafbb4cbb5c1a9f4579d6a, type: 3}
---- !u!4 &8570623519357114077 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8737831549958398793, guid: 7a0ddcff28bafbb4cbb5c1a9f4579d6a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1131524808288974228}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4659995769392424142 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5699405001842905434, guid: 7a0ddcff28bafbb4cbb5c1a9f4579d6a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1131524808288974228}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8570623519357114077 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8737831549958398793, guid: 7a0ddcff28bafbb4cbb5c1a9f4579d6a,
     type: 3}
   m_PrefabInstance: {fileID: 1131524808288974228}
   m_PrefabAsset: {fileID: 0}
@@ -2721,7 +2641,7 @@ PrefabInstance:
     - target: {fileID: 2183677819124031933, guid: 7478d9aa9a76d2442b69d41e7d19652e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2183677819124031933, guid: 7478d9aa9a76d2442b69d41e7d19652e,
         type: 3}
@@ -2931,12 +2851,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e3694a5a805d50242bc940f005a1bf8a, type: 3}
---- !u!4 &2574574145566413403 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7481765437582914155, guid: e3694a5a805d50242bc940f005a1bf8a,
-    type: 3}
-  m_PrefabInstance: {fileID: 4930926526834712624}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4930926527468476726 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1053276422, guid: e3694a5a805d50242bc940f005a1bf8a,
@@ -2949,6 +2863,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24cf947e587cc1140b4ae274a43e4894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &2574574145566413403 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7481765437582914155, guid: e3694a5a805d50242bc940f005a1bf8a,
+    type: 3}
+  m_PrefabInstance: {fileID: 4930926526834712624}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2574574145566413732 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7481765437582914452, guid: e3694a5a805d50242bc940f005a1bf8a,

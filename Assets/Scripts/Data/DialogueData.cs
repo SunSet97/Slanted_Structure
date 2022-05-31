@@ -30,7 +30,7 @@ namespace Data
     public class Task
     {
         public string name;
-        public CustomEnum.TaskContentType taskContentType;
+        public CustomEnum.TaskContentType type;
         public string nextFile;
         public int order;
         public string condition;

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using static Data.CustomEnum;
 
@@ -21,6 +19,7 @@ class DebugMapClear : Editor
 
 public class CheckMapClear : MonoBehaviour
 {
+    public bool isTrigger;
     public TextAsset jsonFile;
 
     public string nextSelectMapcode = "000000"; //어디 스토리로 갈 건지.
@@ -44,6 +43,7 @@ public class CheckMapClear : MonoBehaviour
     // 캐릭터 확인 후 트리거 활성화
     private void OnTriggerEnter(Collider other)
     {
+        if(!isTrigger) return;
         if (DataController.instance.GetCharacter(Character.Main).name.Equals(other.name))
         {
             Clear();

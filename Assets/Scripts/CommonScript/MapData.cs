@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Data;
 using UnityEngine;
-using UnityEngine.Playables;
-using UnityEngine.SceneManagement;
 using static Data.CustomEnum;
 
 [ExecuteInEditMode]
@@ -308,7 +305,8 @@ public class MapData : MonoBehaviour
             JoystickInputManager.instance.JoystickInputUpdate(method);
         }
 
-        mainChar.MoveCharacter(method);
+        if(mainChar.gameObject.activeSelf)
+            mainChar.MoveCharacter(method);
     }
     #endregion
     
@@ -332,7 +330,7 @@ public class MapData : MonoBehaviour
     {
         if (isOnGizmo)
         {
-            Color[] preset = new Color[3] { Color.red, Color.yellow, Color.blue };
+            Color[] preset = new Color[6] { Color.red, Color.yellow, Color.blue, Color.red, Color.red, Color.red };
             for (int i = 0; i < positionSets.Count; i++)
             {
                 Gizmos.color = preset[(int)positionSets[i].who] * 0.8f;

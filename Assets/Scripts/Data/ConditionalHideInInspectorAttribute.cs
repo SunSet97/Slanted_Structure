@@ -1,29 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using System;
+using System.Runtime.CompilerServices;
+
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
 public class ConditionalHideInInspectorAttribute : PropertyAttribute
 {
    
-    public string ComparedPropertyName { get; private set; }
-    public object ComparedValue { get; private set; }
+    public string comparedProperty { get; private set; }
+    public object comparedPropertyValue { get; private set; }
 
-    public ConditionalHideInInspectorAttribute(string InComparedPropertyName, object InComparedValue)
+    public ConditionalHideInInspectorAttribute(string comparedProperty, object comparedPropertyValue)
     {
-        ComparedPropertyName = InComparedPropertyName;
-        ComparedValue = InComparedValue;
+        this.comparedProperty = comparedProperty;
+        this.comparedPropertyValue = comparedPropertyValue;
+
+        // Debug.Log(comparedPropertyValue);
     }
 }
 
 [CustomPropertyDrawer(typeof(ConditionalHideInInspectorAttribute))]
 public class Drawer : PropertyDrawer
 {
-    ConditionalHideInInspectorAttribute Attribute;
-    SerializedProperty ComparedField;
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+        // var Attribute = (ConditionalHideInInspectorAttribute)attribute;
         if (CanDraw(property))
         {
             EditorGUI.PropertyField(position, property, label, true);
@@ -35,25 +36,29 @@ public class Drawer : PropertyDrawer
     }
     private bool CanDraw(SerializedProperty property)
     {
-        Attribute = attribute as ConditionalHideInInspectorAttribute;
+        var Attribute = (ConditionalHideInInspectorAttribute)attribute;
 
-        string path = property.propertyPath.Contains(".") ? System.IO.Path.ChangeExtension(property.propertyPath, Attribute.ComparedPropertyName) : Attribute.ComparedPropertyName;
+        // Debug.Log(property.propertyPath);
+        // Debug.Log(Attribute.comparedProperty);
+        // Debug.Log(Attribute.comparedPropertyValue);
+        // Debug.Log(property.propertyPath.Contains("."));
+        string path = property.propertyPath.Contains(".") ? System.IO.Path.ChangeExtension(property.propertyPath, Attribute.comparedProperty) : Attribute.comparedProperty;
 
-        ComparedField = property.serializedObject.FindProperty(path);
-
+        var ComparedField = property.serializedObject.FindProperty(path);
+        // Debug.Log(ComparedField);
         if (ComparedField == null)
         {
             int LastIndex = property.propertyPath.LastIndexOf(".");
-
+            // Debug.Log(Attribute.comparedEnum);
             if (LastIndex == -1)
             {
                 return true;
             }
 
-            path = System.IO.Path.ChangeExtension(property.propertyPath.Substring(0, LastIndex), Attribute.ComparedPropertyName);
+            path = System.IO.Path.ChangeExtension(property.propertyPath.Substring(0, LastIndex), Attribute.comparedProperty);
 
             ComparedField = property.serializedObject.FindProperty(path);
-
+            // Debug.Log(ComparedField);
             if (ComparedField == null)
             {
                 return true;
@@ -63,10 +68,12 @@ public class Drawer : PropertyDrawer
         switch (ComparedField.type)
         {
             case "bool":
-                return ComparedField.boolValue.Equals(Attribute.ComparedValue);
+                return ComparedField.boolValue.Equals(Attribute.comparedPropertyValue);
             case "Enum":
                 {
-                    if (ComparedField.intValue.Equals((int)Attribute.ComparedValue))
+                    // Debug.Log(ComparedField.intValue);
+                    // Debug.Log((int)Attribute.comparedPropertyValue);
+                    if (ComparedField.intValue.Equals((int)Attribute.comparedPropertyValue))
                     {
                         return true;
                     }

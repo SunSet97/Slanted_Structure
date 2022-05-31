@@ -27,8 +27,6 @@ public class PimpGuestMoving : MonoBehaviour
     [Header("속도 증가 여부")]
     public bool speedUp = false;
 
-    // 대화
-    public bool talking = false;
 
     public TextAsset jsonFile;
 
@@ -38,7 +36,8 @@ public class PimpGuestMoving : MonoBehaviour
         animator = GetComponent<Animator>();
         // npc.GetComponent<Collider>().isTrigger = true;
         // cam = DataController.instance_DataController.cam;
-        Invoke("Think", 0);
+        animator.SetFloat(pimpGameManager.speedHash, 0.0f);
+        rotVal = 180;
     }
 
     public void Move(bool isMove)
@@ -47,7 +46,7 @@ public class PimpGuestMoving : MonoBehaviour
 
         if (isMove)
         {
-            if (!talking)
+            if (!pimpGameManager.isTalking)
                 npc.Move((Vector3.right * nextDirection * speed) * Time.deltaTime); // 적들 이동.
 
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, rotVal, 0),
@@ -68,39 +67,39 @@ public class PimpGuestMoving : MonoBehaviour
     }
 
 
-    private void Think() // 방향 설정.
+    public void Think() // 방향 설정.
     {
-        if(talking)
+        if (pimpGameManager.isTalking)
         {
             Invoke("Think", changeDirectionCycle);
             return;
         }
 
-        if (pimpGameManager.IsMove)
-        {
-            nextDirection = (int)Random.Range(-1, 2);
-            if (nextDirection == 1) // 오른쪽으로 움직임
-            {
-                animator.SetFloat(pimpGameManager.speedHash, 1.0f);
-                rotVal = 90;
-            }
-            else if (nextDirection == -1) // 왼쪽으로 움직임
-            {
-                animator.SetFloat(pimpGameManager.speedHash, 1.0f);
-                rotVal = -90;
-            }
-            else if (nextDirection == 0) // 정면 바라보고 정지
-            {
-                animator.SetFloat(pimpGameManager.speedHash, 0.0f);
-                rotVal = 180;
-            }
-        }
-        else
-        {
+        Debug.Log("하이");
 
+        nextDirection = (int) Random.Range(-1, 2);
+        if (nextDirection == 1) // 오른쪽으로 움직임
+        {
+            animator.SetFloat(pimpGameManager.speedHash, 1.0f);
+            rotVal = 90;
+        }
+        else if (nextDirection == -1) // 왼쪽으로 움직임
+        {
+            animator.SetFloat(pimpGameManager.speedHash, 1.0f);
+            rotVal = -90;
+        }
+        else if (nextDirection == 0) // 정면 바라보고 정지
+        {
             animator.SetFloat(pimpGameManager.speedHash, 0.0f);
             rotVal = 180;
         }
+
+        // else
+        // {
+        //
+        //     animator.SetFloat(pimpGameManager.speedHash, 0.0f);
+        //     rotVal = 180;
+        // }
 
         Invoke("Think", changeDirectionCycle);
     }
@@ -114,17 +113,16 @@ public class PimpGuestMoving : MonoBehaviour
         {
             for(int j = 0; j < transform.parent.parent.GetChild(i).childCount; j++)
             {
-                PimpGuestMoving pimpGuestMoving = transform.parent.parent.GetChild(i).GetChild(j).GetComponent<PimpGuestMoving>();
-                pimpGuestMoving.talking = isTalking;
+                pimpGameManager.isTalking = isTalking;
                 DataController.instance.currentMap.ui.SetActive(!isTalking);
                 speat.IsMove = !isTalking;
                 if (isTalking)
                 {
-                    pimpGuestMoving.animator.SetFloat(pimpGameManager.speedHash, 0.0f);
+                    animator.SetFloat(pimpGameManager.speedHash, 0.0f);
                 }
                 else
                 {
-                    pimpGuestMoving.animator.SetFloat(pimpGameManager.speedHash, nextDirection);
+                    animator.SetFloat(pimpGameManager.speedHash, nextDirection);
                 }
             }
         }
@@ -135,7 +133,7 @@ public class PimpGuestMoving : MonoBehaviour
         // 대화시작
         if (transform.parent.name.Equals("Guest"))
         {
-            if (hit.gameObject.name.Equals("Speat") && pimpGameManager.canvasCtrl.isPossibleCnvs)
+            if (hit.gameObject.name.Equals("Speat_Adult") && pimpGameManager.canvasCtrl.isPossibleCnvs)
             {
                 print("스핏과 만남");
                 pimpGameManager.canvasCtrl.selectedGuest = gameObject;
