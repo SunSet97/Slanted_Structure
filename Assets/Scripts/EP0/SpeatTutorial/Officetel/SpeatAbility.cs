@@ -36,8 +36,8 @@ public class SpeatAbility : MonoBehaviour
     private bool isUp = false, isDown = false;
 
     public Interact_ObjectWithRau[] doors;
-    int clickedDoorIndex;
-    bool isInRoom = false; // 스핏이 방 안이면 true
+    public int clickedDoorIndex;
+    public bool isInRoom = false; // 스핏이 방 안이면 true
     public bool isHiding = false; // true면 숨고 있는 중
     float touchRange = 0.5f; // 터치(클릭) 허용 범위
     Ray touchDown;
@@ -371,7 +371,7 @@ public class SpeatAbility : MonoBehaviour
     {
         WaitForSeconds waitForSeconds = new WaitForSeconds(0f);
         isHiding = true;
-
+        speat.IsMove = false;
         if (isInRoom) isInRoom = false; // 능력써서 방 밖으로 나올 때
         else isInRoom = true; // 능력써서 방안으로 들어올 때
 
@@ -382,7 +382,7 @@ public class SpeatAbility : MonoBehaviour
             speat.transform.position = Vector3.MoveTowards(speat.transform.position, target, 0.1f); // 마지막 파라미터는 숨을 때 속도!
             yield return waitForSeconds;
         }
-
+        speat.IsMove = true;
         speat.ctrl.enabled = true;
         isHiding = false;
 

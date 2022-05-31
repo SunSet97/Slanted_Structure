@@ -330,7 +330,8 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
             if (dis <= clearDis)
             {
                 Debug.Log("성공.");
-                DataController.instance.currentMap.MapClear();
+                StopAllCoroutines();
+                DataController.instance.currentMap.MapClear(Time.deltaTime);
 
             }
             else
@@ -344,7 +345,8 @@ public class CatchRobberManager : MonoBehaviour, IPlayable
             if (dis <= clearDis)
             {
                 Debug.Log("성공");
-                DataController.instance.currentMap.MapClear();
+                StopAllCoroutines();
+                DataController.instance.currentMap.MapClear(Time.deltaTime);
             }
 
         }

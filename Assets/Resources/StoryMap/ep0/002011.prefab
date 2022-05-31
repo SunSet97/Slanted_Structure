@@ -195,6 +195,8 @@ MonoBehaviour:
   - {fileID: 1379883068466187905}
   - {fileID: 7608571959104014730}
   - {fileID: 3334723921201561453}
+  clickedDoorIndex: 0
+  isInRoom: 0
   isHiding: 0
   speat: {fileID: 0}
 --- !u!1 &2148563954227612181
@@ -408,7 +410,7 @@ GameObject:
   m_Component:
   - component: {fileID: 130550365025338250}
   m_Layer: 0
-  m_Name: Speat Start Position
+  m_Name: Speat_Adult Start Position
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1257,22 +1259,22 @@ MonoBehaviour:
     dialogues:
     - name: ???
       expression: 0
-      animName: 
+      anim_name: 
       contents: "\uBB34\uD131\uB300\uACE0 \uB098\uC624\uAE34 \uD588\uB294\uB370 \uC5B4\uB5BB\uAC8C
         \uD3EC\uC8FC\uB4E4\uC5D0\uAC8C\uC11C \uD53C\uD558\uC9C0..?"
     - name: ???
       expression: 0
-      animName: 
+      anim_name: 
       contents: "\uADF8\uB9AC\uACE0 \uC190\uB2D8\uB4E4\uB3C4 \uB9CE\uC740\uB370 \uC218\uC0C1\uD574
         \uBCF4\uC774\uC9C0 \uC54A\uAC8C \uC870\uC2EC\uD574\uC57C\uACA0\uC5B4"
     - name: ???
       expression: 0
-      animName: 
+      anim_name: 
       contents: "\uB2F9\uC7A5\uC774 \uAC70\uC9C0\uAC19\uC740 \uACF3\uC5D0\uC11C \uBC97\uC5B4\uB0A0
         \uAC70\uC57C...! \uB4E4\uD0A4\uC9C0 \uC54A\uAC8C \uC870\uC2EC\uD558\uC790."
     - name: 
       expression: 0
-      animName: 
+      anim_name: 
       contents: "??\uC758 \uCD08\uB2A5\uB825\uC744 \uC0AC\uC6A9\uD574 \uC7A5\uC560\uBB3C\uC744
         \uD1B5\uACFC\uD560 \uC218 \uC788\uACE0, \uBB38 \uB4A4\uB85C \uC228\uC744 \uC218
         \uC788\uC2B5\uB2C8\uB2E4. ??\uC758 \uD0C8\uCD9C\uC744 \uB3C4\uC640\uC8FC\uC138\uC694."
@@ -1324,16 +1326,18 @@ MonoBehaviour:
       playableObjs:
       - gameObject: {fileID: 9056443105064200046}
         isPlay: 1
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug:
   - tasks:
     - name: 
-      type: 9
+      taskContentType: 0
       nextFile: 
       order: 1
       condition: 
       increaseVar: 
     - name: "\uC2A4\uD54F\uB300\uD6541"
-      type: 2
+      taskContentType: 0
       nextFile: dialogue_ep0/002011
       order: 1
       condition: 
@@ -1353,6 +1357,7 @@ MonoBehaviour:
   cinematics: []
   inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
   isLoop: 0
 --- !u!65 &4655247251106991303
 BoxCollider:
@@ -1444,10 +1449,20 @@ PrefabInstance:
       propertyPath: speatAbility
       value: 
       objectReference: {fileID: 4935334905155174166}
+    - target: {fileID: 1063399412397233884, guid: 71358b296c7d1654b96e059a14296a65,
+        type: 3}
+      propertyPath: offset.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1175304478065149153, guid: 71358b296c7d1654b96e059a14296a65,
         type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2647407932172973057, guid: 71358b296c7d1654b96e059a14296a65,
+        type: 3}
+      propertyPath: offset.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2697771843585626290, guid: 71358b296c7d1654b96e059a14296a65,
         type: 3}
@@ -1629,6 +1644,11 @@ PrefabInstance:
       propertyPath: jsonFile
       value: 
       objectReference: {fileID: 4900000, guid: b74615643915dd543b2982467a5a382a, type: 3}
+    - target: {fileID: 4859731400484394242, guid: 71358b296c7d1654b96e059a14296a65,
+        type: 3}
+      propertyPath: offset.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4906497225830972396, guid: 71358b296c7d1654b96e059a14296a65,
         type: 3}
       propertyPath: m_Intensity
@@ -1643,6 +1663,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5159181309282840303, guid: 71358b296c7d1654b96e059a14296a65,
+        type: 3}
+      propertyPath: offset.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5346413103131981072, guid: 71358b296c7d1654b96e059a14296a65,
         type: 3}
@@ -1674,6 +1699,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 6675786171977511348, guid: 71358b296c7d1654b96e059a14296a65,
+        type: 3}
+      propertyPath: offset.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6760683843678954122, guid: 71358b296c7d1654b96e059a14296a65,
         type: 3}
       propertyPath: speatAbility
@@ -1684,10 +1714,20 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6776858371751211786, guid: 71358b296c7d1654b96e059a14296a65,
+        type: 3}
+      propertyPath: offset.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6797690729939705593, guid: 71358b296c7d1654b96e059a14296a65,
         type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7164445403124548326, guid: 71358b296c7d1654b96e059a14296a65,
+        type: 3}
+      propertyPath: offset.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7177795004387610282, guid: 71358b296c7d1654b96e059a14296a65,
         type: 3}
@@ -1699,6 +1739,11 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 3497990372265996880}
+    - target: {fileID: 7328378712126132076, guid: 71358b296c7d1654b96e059a14296a65,
+        type: 3}
+      propertyPath: offset.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7427583130061404347, guid: 71358b296c7d1654b96e059a14296a65,
         type: 3}
       propertyPath: m_RootOrder
@@ -1784,6 +1829,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 8487092610519725783, guid: 71358b296c7d1654b96e059a14296a65,
+        type: 3}
+      propertyPath: offset.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8535261191421005763, guid: 71358b296c7d1654b96e059a14296a65,
         type: 3}
       propertyPath: speatAbility
@@ -1798,6 +1848,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8861336114141665177, guid: 71358b296c7d1654b96e059a14296a65,
+        type: 3}
+      propertyPath: offset.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9098642683172729310, guid: 71358b296c7d1654b96e059a14296a65,
         type: 3}

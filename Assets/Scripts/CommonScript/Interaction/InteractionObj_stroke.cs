@@ -163,6 +163,7 @@ public class InteractionObj_stroke : MonoBehaviour
     
     private void PushTask(string jsonString)
     {
+        Debug.Log("Push Task");
         TaskData taskData = new TaskData
         {
             tasks = JsontoString.FromJsonArray<Task>(jsonString)
@@ -244,10 +245,14 @@ public class InteractionObj_stroke : MonoBehaviour
     /// <param name="index">선택지 번호, 1번부터 시작</param>
     void ChoiceEvent(int index)
     {
+        Debug.Log(jsonTask);
+        Debug.Log(jsonTask.Count);
         TaskData currentTaskData = jsonTask.Peek();
         var tempTaskIndex = currentTaskData.taskIndex;
         var choiceLen = int.Parse(currentTaskData.tasks[tempTaskIndex].nextFile);
+        Debug.Log(choiceLen);
         currentTaskData.taskIndex += choiceLen;
+        Debug.Log(currentTaskData.taskIndex);
         Task curTask = currentTaskData.tasks[tempTaskIndex + index];
         //변화값
         curTask.increaseVar = curTask.increaseVar.Replace("m", "-");
@@ -264,29 +269,19 @@ public class InteractionObj_stroke : MonoBehaviour
             DataController.instance.currentMap.SetNextMapCode(
                 $"{curTask.order,000000}");
         }
-        switch (curTask.type)
+        switch (curTask.taskContentType)
         {
             case TaskContentType.DIALOGUE:
-                Debug.Log("하이");
-                Debug.Log(curTask.name);
                 var newLen = currentTaskData.tasks.Length + 1;
-                Debug.Log(newLen);
                 Task[] array1 = new Task[newLen];
-                Debug.Log("하이");
-                Debug.Log(array1[newLen - 1]);
-                Array.Copy(currentTaskData.tasks, 0, array1, 0, currentTaskData.taskIndex);
-                Debug.Log("하이");
+                Array.Copy(currentTaskData.tasks, 0, array1, 0, currentTaskData.taskIndex + 1);
                 array1[currentTaskData.taskIndex + 1] = new Task
                 {
-                    type = TaskContentType.TempDialogue,
+                    taskContentType = TaskContentType.TempDialogue,
                     order = array1[tempTaskIndex].order
                 };
-                Debug.Log("하이");
-                Debug.Log(currentTaskData.taskIndex + 2);
-                Debug.Log(currentTaskData.tasks.Length - tempTaskIndex - choiceLen);
-                Debug.Log(array1.Length);
-                Array.Copy(currentTaskData.tasks, currentTaskData.taskIndex, array1, currentTaskData.taskIndex + 1, currentTaskData.tasks.Length - tempTaskIndex - choiceLen);
-                Debug.Log("하이");
+                Debug.Log(currentTaskData.tasks.Length - currentTaskData.taskIndex - 1);
+                Array.Copy(currentTaskData.tasks, currentTaskData.taskIndex + 1, array1, currentTaskData.taskIndex + 2, currentTaskData.tasks.Length - currentTaskData.taskIndex - 1);
                 //dispose gc로 바로 하긴 힘들다
                 currentTaskData.tasks = array1;
                 
@@ -529,8 +524,8 @@ public class InteractionObj_stroke : MonoBehaviour
         {
             DataController.instance.taskData = currentTaskData;
             Task currentTask = currentTaskData.tasks[currentTaskData.taskIndex];
-            Debug.Log("taskIndex - " + currentTaskData.taskIndex + "\nInteractionType - " + currentTask.type);
-            switch (currentTask.type)
+            Debug.Log("taskIndex - " + currentTaskData.taskIndex + "\nInteractionType - " + currentTask.taskContentType);
+            switch (currentTask.taskContentType)
             {
                 case TaskContentType.DIALOGUE:
                     Debug.Log("대화 시작");
@@ -672,15 +667,15 @@ public class InteractionObj_stroke : MonoBehaviour
                     break;
                 default:
                 {
-                    Debug.LogError($"{currentTask.type}은 존재하지 않는 type입니다.");
+                    Debug.LogError($"{currentTask.taskContentType}은 존재하지 않는 type입니다.");
                     break;
                 }
             }
 
-            Debug.Log("Task 종료 대기 중 - " + currentTask.type + ", Index - " + currentTaskData.taskIndex);
+            Debug.Log("Task 종료 대기 중 - " + currentTask.taskContentType + ", Index - " + currentTaskData.taskIndex);
             yield return waitUntil;
             currentTaskData.taskIndex++;
-            Debug.Log("Task 종료 - " + currentTask.type + ", Index - " + currentTaskData.taskIndex);
+            Debug.Log("Task 종료 - " + currentTask.taskContentType + ", Index - " + currentTaskData.taskIndex);
             Debug.Log(currentTaskData.tasks.Length > currentTaskData.taskIndex && currentTaskData.tasks[currentTaskData.taskIndex].order.Equals(currentTaskData.taskOrder) && currentTaskData.isContinue);
         }
         currentTaskData.taskOrder++;
@@ -733,7 +728,7 @@ public class InteractionObj_stroke : MonoBehaviour
             Debug.Log("task 길이" + taskData.tasks.Length);
             for (int i = 0; i < taskData.tasks.Length; i++)
             {
-                if (taskData.tasks[i].type == TaskContentType.NEW || taskData.tasks[i].type == TaskContentType.TEMP)
+                if (taskData.tasks[i].taskContentType == TaskContentType.NEW || taskData.tasks[i].taskContentType == TaskContentType.TEMP)
                 {
                     Debug.Log("디버그 Task 추가");
                     var count = int.Parse(taskData.tasks[i].nextFile);

@@ -75,8 +75,6 @@ public class PimpGuestMoving : MonoBehaviour
             return;
         }
 
-        Debug.Log("하이");
-
         nextDirection = (int) Random.Range(-1, 2);
         if (nextDirection == 1) // 오른쪽으로 움직임
         {
@@ -143,7 +141,7 @@ public class PimpGuestMoving : MonoBehaviour
                 //수정
                 var speat = pimpGameManager.speat;
                 speat.IsMove = false;
-                CanvasControl.instance.SetDialougueEndAction(() => { SetTalking(false); speat.IsMove = true; });
+                CanvasControl.instance.SetDialougueEndAction(() => { SetTalking(false); speat.IsMove = true; DataController.instance.ChangeMap(DataController.instance.mapCode); });
                 if (jsonFile) CanvasControl.instance.StartConversation(jsonFile.text);
             }
 

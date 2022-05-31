@@ -276,6 +276,10 @@ public class MapData : MonoBehaviour
     {
         clearBoxList[0].nextSelectMapcode = nextMapCode;
     }
+    public void MapClear(float waitTime)
+    {
+        Invoke("MapClear", waitTime);
+    }
     public void MapClear()
     {
         if (clearBoxList.Count > 0)
