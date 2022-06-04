@@ -296,6 +296,7 @@ public class DataController : MonoBehaviour
         joyStick.OnPointerUp();
         inputDegree = 0;
         inputDirection = Vector2.zero;
+        joyStick.input = Vector2.zero;
         inputJump = false;
     }
 

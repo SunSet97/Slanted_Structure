@@ -6,8 +6,9 @@ public class Event_TutorialProgress : MonoBehaviour
 {
     public RauTutorialManager rauTutorialManager;
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name == "Rau") rauTutorialManager.isCheckPoint[rauTutorialManager.checkPoint.FindIndex(point => point == this.transform)] = true;
+        rauTutorialManager.Play(rauTutorialManager.checkPoint.FindIndex(point => point == transform));
+        rauTutorialManager.isCheckPoint[rauTutorialManager.checkPoint.FindIndex(point => point == transform)] = true;
     }
 }
