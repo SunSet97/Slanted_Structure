@@ -1,11 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.IO;
 using System;
-using UnityEngine.SceneManagement;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using Data;
 using static Data.CustomEnum;
@@ -55,7 +50,6 @@ public class DataController : MonoBehaviour
     public Transform commandSprite;
     public MapData currentMap;
     public string mapCode;
-    public int mapIndex;//맵 방문횟수>>인게임과 시네마틱 연결하는 스크립트 생성 이후, mapIndex에 관해서 맵데이터와 데이터 컨트롤러 연결해야함.
     public string playMethod; //2D 플랫포머(2D Platformer)=Plt, 쿼터뷰(Quarter view)=Qrt, 라인트레이서(Line tracer)=Line
 
     // 카메라 projecton orthographic에서 perspective로 전환될 때 필요
@@ -74,7 +68,7 @@ public class DataController : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
     }
     #endregion
 
@@ -93,12 +87,14 @@ public class DataController : MonoBehaviour
         
         joyStick = FindObjectOfType<Joystick>();
         cam = Camera.main;
-        //맵 찾아서 저장
-        for (int i = 0; i < 5; i++)
-        {
-            MapData[] temp = Resources.LoadAll<MapData>("StoryMap/ep" + i);
-            storymaps = storymaps.Concat(temp).ToArray();
-        }
+        LoadMap(0);
+    }
+
+    void LoadMap(int idx)
+    {
+        MapData[] temp = Resources.LoadAll<MapData>("StoryMap/ep" + idx);
+        storymaps = temp;
+        Resources.UnloadUnusedAssets();
     }
 
     public CharacterManager GetCharacter(Character characterType)
@@ -130,15 +126,6 @@ public class DataController : MonoBehaviour
         }
         return character;
     }
-    public void Cinematic()//시네마틱 씬 로드
-    {
-        SceneManager.LoadScene("Cinematic");
-    }
-
-    public void IngameScene()//인게임 씬 로드
-    {
-        SceneManager.LoadScene("Ingame_set");
-    }
 
     #region 맵 이동
 
@@ -148,7 +135,7 @@ public class DataController : MonoBehaviour
     /// <param name="mapCodeBeMove">생성되는 맵의 코드</param>
     public void ChangeMap(string mapCodeBeMove)
     {
-        mapCode = $"{mapCodeBeMove:000000}"; // 맵 코드 변경
+        var destMapCode = $"{mapCodeBeMove:000000}"; // 맵 코드 변경
 
         
         //모든 캐릭터 위치 대기실로 이동
@@ -163,9 +150,13 @@ public class DataController : MonoBehaviour
         {
             currentMap.DestroyMap();
         }
-
+        var curEp = int.Parse(mapCode.Substring(0, 1));
+        var desEp = int.Parse(destMapCode.Substring(0, 1));
+        if (curEp != desEp)
+        {
+            LoadMap(desEp);
+        }
         var nextMap = Array.Find(storymaps, mapData => mapData.mapCode.Equals(mapCode));
-        // Debug.Log(nextMap);
         currentMap = Instantiate(nextMap, mapGenerate);
         currentMap.Initialize();
         
@@ -319,7 +310,7 @@ public class DataController : MonoBehaviour
     /// <param name="isStop">Stop여부   true - save, false - load</param>
     public void StopSaveLoadJoyStick(bool isStop)
     {
-        Debug.Log(isStop +  "  " + isAlreadySave);
+        Debug.Log((isStop ? "Save" : "Load") +  ", " + (isAlreadySave ? "저장된 상태" : "저장되지 않은 상태"));
         //처음 실행하는 경우
         if (isStop)
         {
@@ -332,7 +323,7 @@ public class DataController : MonoBehaviour
         // Load하는 경우
         else
         {
-            Debug.Log(wasJoystickUse);
+            Debug.Log("저장된 상태 - " + wasJoystickUse);
             isAlreadySave = false;
             InitializeJoyStick(wasJoystickUse);
         }

@@ -51,7 +51,7 @@ public class Interact_ObjectWithRau : MonoBehaviour
                 if (mark) mark.gameObject.SetActive(false); // 범위 내에 있으면서 인터랙션중일 때 마크 비활성화
             }
 
-            if (CanvasControl.instance.isPossibleCnvs && isIn) GetObjectTouch();
+            // if (CanvasControl.instance.isPossibleCnvs && isIn) GetObjectTouch();
         }
     }
 

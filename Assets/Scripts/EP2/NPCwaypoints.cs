@@ -28,9 +28,8 @@ public class NPCwaypoints : MonoBehaviour
 
         // 처음 위치로
         transform.position = point[0].transform.position;
-
     }
-    public IEnumerator MoveToPoint()
+    private IEnumerator MoveToPoint()
     {
         bool isMoving = SetMoving(true);
         transform.LookAt(point[pointIndex].transform);
