@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using CommonScript;
 using UnityEngine;
 using UnityEngine.UI;
 using static Data.CustomEnum;
@@ -45,6 +46,7 @@ public class SpeatAbility : MonoBehaviour
 
     void Start()
     {
+        ObjectClicker.instance.isCustomUse = true;
         speat = DataController.instance.GetCharacter(Character.Speat_Adult);
     }
 
@@ -91,7 +93,7 @@ public class SpeatAbility : MonoBehaviour
                     wallBwdTmp = wallBwdFace;
                     if (isPassingHor)
                     {
-                        speat.gameObject.layer = 0;
+                        speat.gameObject.layer = LayerMask.NameToLayer("Player");
                         speat.moveHorDir = Vector3.zero;
                         isPassingHor = false;
                         wallNum++;
@@ -258,97 +260,7 @@ public class SpeatAbility : MonoBehaviour
         Gizmos.DrawWireSphere(upPos, 0.1f);
         Gizmos.DrawWireSphere(downPos, 0.1f);
 
-        // 전방 벽 전면 탐지
-        int wallLayerMask = 1 << 11;
-        if (Physics.Raycast(fwdPos, fwdDir, out wallFwdFace, float.MaxValue, wallLayerMask))
-        {
-            // 전방 첫번째 벽 전면 임시 저장
-            if (wallFwdTmp.transform == null)
-            {
-                wallFwdTmp = wallFwdFace;
-            }
-            // 벽이 바뀌면 변수 초기화 후 재탐색
-            else if (wallFwdTmp.transform != wallFwdFace.transform)
-            {
-                fwdCnt = 1;
-                wallFwdTmp = wallFwdFace;
-            }
 
-            Gizmos.DrawLine(fwdPos, wallFwdFace.point);
-            Gizmos.DrawWireSphere(wallFwdFace.point, 0.1f); // 디버깅
-
-            // 전방 벽 후면 탐지
-            if (Physics.Raycast(wallFwdFace.point + fwdDir * 5 + bwdDir * fwdCnt, bwdDir, out wallFwdInverse,
-                float.MaxValue, wallLayerMask))
-            {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawWireSphere(wallFwdInverse.point, 0.1f); // 디버깅
-            }
-        }
-
-        // 후방 벽 탐지
-        if (Physics.Raycast(bwdPos, bwdDir, out wallBwdFace, float.MaxValue, wallLayerMask))
-        {
-            // 후방 첫번째 벽 임시 저장
-            if (wallBwdTmp.transform == null)
-            {
-                wallBwdTmp = wallBwdFace;
-            }
-
-            Gizmos.DrawLine(bwdPos, wallBwdFace.point);
-            Gizmos.DrawWireSphere(wallBwdFace.point, 0.1f); // 디버깅
-
-            // 후방 벽 후면 탐지
-            if (Physics.Raycast(wallBwdFace.point + fwdDir * 5 + bwdDir * bwdCnt, fwdDir, out wallBwdInverse,
-                float.MaxValue, wallLayerMask))
-            {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawWireSphere(wallBwdInverse.point, 0.1f); // 디버깅
-            }
-        }
-
-        // 천장 벽 전면 탐지
-        int floorLayerMask = 1 << 12;
-        if (Physics.Raycast(upPos, upDir, out ceilingFace, float.MaxValue, floorLayerMask))
-        {
-            // 천장 첫번째 벽 전면 임시 저장
-            if (ceilingTmp.transform == null)
-            {
-                ceilingTmp = ceilingFace;
-            }
-
-            Gizmos.DrawLine(upPos, ceilingFace.point);
-            Gizmos.DrawWireSphere(ceilingFace.point, 0.1f); // 디버깅
-
-            // 천장 벽 후면 탐지
-            if (Physics.Raycast(ceilingFace.point + upDir * 5 + downDir * ceilingCnt, downDir, out ceilingInverse,
-                float.MaxValue, floorLayerMask))
-            {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawWireSphere(ceilingInverse.point, 0.1f); // 디버깅
-            }
-        }
-
-        // 바닥 벽 전면 탐지
-        if (Physics.Raycast(downPos, downDir, out floorFace, float.MaxValue, floorLayerMask))
-        {
-            // 바닥 첫번째 벽 전면 임시 저장
-            if (floorTmp.transform == null)
-            {
-                floorTmp = floorFace;
-            }
-
-            Gizmos.DrawLine(upPos, floorFace.point);
-            Gizmos.DrawWireSphere(floorFace.point, 0.1f); // 디버깅
-
-            // 바닥 벽 후면 탐지
-            if (Physics.Raycast(floorFace.point + downDir * 5 + upDir * floorCnt, upDir, out floorInverse,
-                float.MaxValue, floorLayerMask))
-            {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawWireSphere(floorInverse.point, 0.1f); // 디버깅
-            }
-        }
 
         // 스핏 주위에 있는 obj_interaction감지 범위 보여줌
         Gizmos.DrawWireSphere(speat.transform.position, 5);
@@ -389,36 +301,38 @@ public class SpeatAbility : MonoBehaviour
     private void HideBehindDoor()
     {
         if(isHiding) return;
-        if (!Input.GetMouseButtonDown(0)) return;
-        
-        Ray ray = DataController.instance.cam.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(ray.origin, ray.direction * 20f, Color.red, 5f);
-        int layerMask = 1 << 13; // 13 - ClickObject
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask))
+        RaycastHit[] hits;
+        if (ObjectClicker.instance.TouchDisplay(out hits))
         {
-            if (!hit.collider.GetComponent<Outline>().enabled) return;
-            var target = hit.collider.transform.position;
-            if (!isInRoom)
+            foreach (var hit in hits)
             {
-                isInRoom = true;
-                hidedDoor = hit.collider.gameObject;
-                DataController.instance.StopSaveLoadJoyStick(true);
-                StartCoroutine(Hide(target));
-            }
-            else if (hidedDoor.Equals(hit.collider.gameObject))
-            {
-                isInRoom = false;
-                hidedDoor = null;
-                StartCoroutine(Hide(target));
+                if (!hit.collider.GetComponent<Outline>().enabled) return;
+                var target = hit.collider.transform.position;
+                if (!isInRoom)
+                {
+                    isInRoom = true;
+                    hidedDoor = hit.collider.gameObject;
+                    DataController.instance.StopSaveLoadJoyStick(true);
+                    StartCoroutine(Hide(target, hidedDoor));
+                    break;
+                }
+                if (hidedDoor.Equals(hit.collider.gameObject))
+                {
+                    isInRoom = false;
+                    StartCoroutine(Hide(target, hidedDoor));
+                    hidedDoor = null;
+                    break;
+                }                
             }
         }
     }
 
 
-    private IEnumerator Hide(Vector3 targetPos)
+    private IEnumerator Hide(Vector3 targetPos, GameObject door)
     {
         var waitForFixedUpdate = new WaitForFixedUpdate();
         isHiding = true;
+        door.GetComponent<OutlineClickObj>().IsClickEnable = false;
         speat.PickUpCharacter();
         speat.anim.SetFloat("Speed", 1);
         Quaternion rotation;
@@ -451,6 +365,7 @@ public class SpeatAbility : MonoBehaviour
             DataController.instance.StopSaveLoadJoyStick(false);
         }
         speat.anim.SetFloat("Speed", 0f);
+        door.GetComponent<OutlineClickObj>().IsClickEnable = true;
         isHiding = false;
         speat.PutDownCharacter();
     }

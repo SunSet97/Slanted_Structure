@@ -41,17 +41,18 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
         {
             patterns.Add(Resources.LoadAll<GameObject>("Run_Pattern/Pattern" + i));
         }
-        StartCoroutine(StartRungame());
     }
 
     public void Play()
     {
         IsPlay = true;
+        StartCoroutine(StartRungame());
     }
 
     public void EndPlay()
     {
         IsPlay = false;
+        DataController.instance.currentMap.MapClear();
     }
 
     void Update()
@@ -87,7 +88,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
                 }
                 else
                 {
-                    DataController.instance.currentMap.MapClear();
+                    EndPlay();
                 }
             }
             else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1) DataController.instance.ChangeMap(DataController.instance.mapCode);
@@ -99,7 +100,6 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
     float pimpAccelator = 0;
     IEnumerator StartRungame()
     {
-        yield return new WaitUntil(() => { return IsPlay; });
         CharacterManager mainChar = DataController.instance.GetCharacter(Character.Speat_Adult);
         mainChar.jumpForce = 7;
         WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();

@@ -54,13 +54,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1473265647864581087}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -8.6, y: 0.372, z: 10.88}
+  m_LocalRotation: {x: -0, y: -0.56200886, z: -0, w: 0.82713115}
+  m_LocalPosition: {x: -11.83, y: 0.372, z: 10.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2804103812362165567}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -68.39001, z: 0}
 --- !u!95 &316864383797337794
 Animator:
   serializedVersion: 3
@@ -80,7 +80,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!1 &3483611395831600990
+--- !u!1 &4419373444096067085
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8686275292486322292}
+  - component: {fileID: 4010123906130297835}
   m_Layer: 0
   m_Name: ClearBox Setting
   m_TagString: Untagged
@@ -96,13 +96,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8686275292486322292
+--- !u!4 &4010123906130297835
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3483611395831600990}
+  m_GameObject: {fileID: 4419373444096067085}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -475,22 +475,25 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timeline: {fileID: 0}
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
   isLoop: 0
 --- !u!65 &410855844595104578
 BoxCollider:
@@ -529,7 +532,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8679703665006688727}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -11.596, y: 0.372, z: 10.88}
+  m_LocalPosition: {x: -8.6, y: 0.372, z: 10.88}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1700378028372006010}
@@ -565,7 +568,7 @@ Transform:
   m_LocalPosition: {x: 36.5, y: 22.76, z: 0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 8686275292486322292}
+  m_Father: {fileID: 4010123906130297835}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &8679703665204864261
@@ -593,8 +596,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
-  nextSelectMapcode: 000000
+  nextSelectMapcode: 203010
 --- !u!1 &8679703665690156164
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,7 +673,7 @@ GameObject:
   - component: {fileID: 8679703665964732383}
   - component: {fileID: 8679703665964732380}
   m_Layer: 0
-  m_Name: 202230
+  m_Name: 202231
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -688,7 +692,7 @@ Transform:
   m_Children:
   - {fileID: 8679703665770041348}
   - {fileID: 1678648368582325178}
-  - {fileID: 8686275292486322292}
+  - {fileID: 4010123906130297835}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -707,42 +711,36 @@ MonoBehaviour:
   scriptDesription: "Episode2 \uB77C\uC6B0_\uC2A4\uD54F_\uD3EC\uC7A5\uB9C8\uCC28"
   mapCode: 202230
   method: 1
-  endMap: 1
-  director: {fileID: 0}
   nextMapcode: 203010
   map: {fileID: 1678648368582325179}
   ui: {fileID: 0}
   SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
-  isOrthographic: 1
+  isOrthographic: 0
   orthographicSize: 1.5
-  isCameraMoving: 0
   cameraBound: {fileID: 0}
   BGM: {fileID: 0}
   characters: []
-  clearBoxSetting: {fileID: 3483611395831600990}
-  clearBoxList: []
-  positionSetting: {fileID: 8679703665770041349}
+  clearBoxSetting: {fileID: 4419373444096067085}
+  clearBoxList:
+  - {fileID: 8679703665204864266}
   positionSets:
   - index: 0
-    who: 0
-    startPosition: {fileID: 7435682805899636833}
-    clearBox: {fileID: 0}
-    posSet: {fileID: 8679703665690156167}
-    isMain: 0
-  - index: 1
     who: 2
     startPosition: {fileID: 8679703665006688726}
-    clearBox: {fileID: 8679703665204864267}
+    posSet: {fileID: 8679703665690156167}
+    isMain: 1
+  - index: 1
+    who: 0
+    startPosition: {fileID: 7435682805899636833}
     posSet: {fileID: 2804103812362165567}
     isMain: 1
-  posIndex: 0
-  cam: {fileID: 0}
   cameraViewType: 0
-  camDis: {x: 0.82, y: 2.45, z: 25}
-  camRot: {x: 4.763, y: 180, z: 0}
-  isJoystickInputIgnore: 1
-  isJoystickNone: 1
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  camDis: {x: 1.4, y: 2.45, z: 5}
+  camRot: {x: 18, y: 180, z: 0}
+  positionSetting: {fileID: 8679703665770041349}
+  isJoystickInputUse: 0
+  isJoystickNone: 0
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1001 &190875996527668149
 PrefabInstance:
   m_ObjectHideFlags: 0

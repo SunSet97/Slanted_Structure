@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.IO;
 using System;
+using System.Runtime.CompilerServices;
 using System.Text;
+using CommonScript;
 using Data;
 using static Data.CustomEnum;
 
@@ -87,7 +89,8 @@ public class DataController : MonoBehaviour
         
         joyStick = FindObjectOfType<Joystick>();
         cam = Camera.main;
-        LoadMap(0);
+        var startEp = int.Parse(mapCode.Substring(0, 1));
+        LoadMap(startEp);
     }
 
     void LoadMap(int idx)
@@ -135,7 +138,8 @@ public class DataController : MonoBehaviour
     /// <param name="mapCodeBeMove">생성되는 맵의 코드</param>
     public void ChangeMap(string mapCodeBeMove)
     {
-        var destMapCode = $"{mapCodeBeMove:000000}"; // 맵 코드 변경
+        var curMapCode = mapCode;
+        mapCode = $"{mapCodeBeMove:000000}"; // 맵 코드 변경
 
         
         //모든 캐릭터 위치 대기실로 이동
@@ -149,13 +153,19 @@ public class DataController : MonoBehaviour
         if (currentMap != null)
         {
             currentMap.DestroyMap();
+            currentMap.gameObject.SetActive(false);
         }
-        var curEp = int.Parse(mapCode.Substring(0, 1));
-        var desEp = int.Parse(destMapCode.Substring(0, 1));
+        var curEp = int.Parse(curMapCode.Substring(0, 1));
+        var desEp = int.Parse(mapCode.Substring(0, 1));
         if (curEp != desEp)
         {
             LoadMap(desEp);
         }
+
+        ObjectClicker.instance.gameObject.SetActive(false);
+        ObjectClicker.instance.isCustomUse = false;
+        
+        
         var nextMap = Array.Find(storymaps, mapData => mapData.mapCode.Equals(mapCode));
         currentMap = Instantiate(nextMap, mapGenerate);
         currentMap.Initialize();
@@ -178,6 +188,8 @@ public class DataController : MonoBehaviour
         camDis = currentMap.camDis;
         camRot = currentMap.camRot;
 
+        CanvasControl.instance.Initialize();
+
         // 해당되는 캐릭터 초기화
         speat.InitializeCharacter();
         oun.InitializeCharacter();
@@ -194,6 +206,7 @@ public class DataController : MonoBehaviour
                 if (temp[k].isMain)
                     mainChar = speat;
                 speat.SetCharacter(temp[k].startPosition);
+                speat.emotion = Expression.IDLE;
             }
             else if (temp[k].who.Equals(Character.Oun))
             {
@@ -223,7 +236,10 @@ public class DataController : MonoBehaviour
                 speat_Child.SetCharacter(temp[k].startPosition);
             }
         }
+
+        mainChar.gameObject.layer = LayerMask.NameToLayer("Player");
         //조이스틱 초기화
+        isAlreadySave = false;
         InitializeJoyStick(!currentMap.isJoystickNone);
         
 

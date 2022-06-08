@@ -314,30 +314,30 @@ MonoBehaviour:
     dialogues:
     - name: "\uC54C\uBC14\uC0DD"
       expression: 0
-      animName: 
+      anim_name: 
       contents: "\uB124...\uC5B4\uC11C\uC624\uC138\uC694..\uD558\uC554..."
     - name: "\uB77C\uC6B0"
       expression: 0
-      animName: 
+      anim_name: Rau
       contents: " \uC5B4... \uB124... \uD639\uC2DC \uC5EC\uAE30\uC11C \uC81C\uC77C
         \uB9CE\uC774 \uBA39\uB294 \uAC8C \uBB54\uAC00\uC694"
     - name: "\uC54C\uBC14\uC0DD"
       expression: 0
-      animName: 
+      anim_name: 
       contents: "\uC74C...\uADF8\uB0E5 \uBB34\uB09C\uD558\uAC8C \uBA39\uB294\uAC70\uB85C
         \uCD94\uCC9C\uD574\uB4DC\uB9B4\uAED8\uC694..."
     - name: "\uB77C\uC6B0"
       expression: 0
-      animName: 
+      anim_name: Rau
       contents: "\uC557 \uB124 \uAC10\uC0AC\uD569\uB2C8\uB2E4!"
     - name: "\uC54C\uBC14\uC0DD"
       expression: 0
-      animName: 
+      anim_name: 
       contents: "\uC5EC\uAE30 \uBCA0\uC774\uCEE8 '\uC640\uADF8\uC791' \uBC84\uAC70
         \uC138\uD2B8\uC785\uB2C8\uB2E4."
     - name: "\uB77C\uC6B0"
       expression: 7
-      animName: 
+      anim_name: Rau
       contents: "\uC557? \uC774\uB807\uAC8C \uBC14\uB85C \uB098\uC628\uB2E4\uACE0..?\uBD88\uC548\uD55C\uB370.."
   dialogueEndAction: []
   dialogueCameraPos: {x: 0, y: 0, z: 0}
@@ -359,6 +359,20 @@ MonoBehaviour:
   inGames: []
   touchTargetObject: {fileID: 3285353922485866185}
   isLoopDialogue: 0
+--- !u!136 &2565893668991692062
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3451227557676281854}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.1621387
+  m_Height: 2.4718118
+  m_Direction: 1
+  m_Center: {x: 0.0036443472, y: 1.021202, z: 0.050888028}
 --- !u!65 &1295089234569999056
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -435,7 +449,7 @@ MonoBehaviour:
     dialogues:
     - name: "\uB77C\uC6B0"
       expression: 9
-      animName: 
+      anim_name: Rau
       contents: "\uD328\uC2A4\uD2B8 \uD478\uB4DC\uC810\uC5D0 \uB4E4\uC5B4\uC624\uAE34
         \uD588\uB294\uB370 \uBB50\uBA39\uC9C0...?"
   dialogueEndAction: []
@@ -938,13 +952,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2318227472193791578, guid: a6d894731640db04188175c428b46680, type: 3}
+    - {fileID: 4316518116712086113, guid: a6d894731640db04188175c428b46680, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a6d894731640db04188175c428b46680, type: 3}
---- !u!1 &3543910822874225993 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2366523757251650737, guid: a6d894731640db04188175c428b46680,
-    type: 3}
-  m_PrefabInstance: {fileID: 1295089236106902008}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3285353922485866185 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4354698471498954545, guid: a6d894731640db04188175c428b46680,
@@ -993,9 +1002,9 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1295089236106902008}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &548400387797403239 stripped
+--- !u!4 &7623409855692242719 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1613797141452210079, guid: a6d894731640db04188175c428b46680,
+  m_CorrespondingSourceObject: {fileID: 8661229210450921191, guid: a6d894731640db04188175c428b46680,
     type: 3}
   m_PrefabInstance: {fileID: 1295089236106902008}
   m_PrefabAsset: {fileID: 0}
@@ -1017,9 +1026,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1295089236106902008}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &7623409855692242719 stripped
+--- !u!1 &3543910822874225993 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2366523757251650737, guid: a6d894731640db04188175c428b46680,
+    type: 3}
+  m_PrefabInstance: {fileID: 1295089236106902008}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &548400387797403239 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 8661229210450921191, guid: a6d894731640db04188175c428b46680,
+  m_CorrespondingSourceObject: {fileID: 1613797141452210079, guid: a6d894731640db04188175c428b46680,
     type: 3}
   m_PrefabInstance: {fileID: 1295089236106902008}
   m_PrefabAsset: {fileID: 0}

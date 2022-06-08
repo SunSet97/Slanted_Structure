@@ -45,3 +45,15 @@ namespace Play
         public bool isPlay;
     }
 }
+
+
+public interface IClickable
+{
+    bool IsClickEnable { get; set; }
+
+    bool IsClicked { get; set; }
+
+    void ActiveObjectClicker(bool isActive);
+    bool GetIsClicked();
+    void Click();
+}

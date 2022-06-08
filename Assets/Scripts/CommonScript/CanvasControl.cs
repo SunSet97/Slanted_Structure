@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Runtime.Serialization;
 using Data;
 using UnityEngine;
 using UnityEngine.UI;
@@ -83,7 +84,14 @@ public class CanvasControl : MonoBehaviour
         }
 
     }
-    
+
+    public void Initialize()
+    {
+        startDialogueAction = null;
+        endDialogueAction = null;
+        isPossibleCnvs = true;
+        dialoguePanel.SetActive(false);
+    }
     // 씬 로드 시 사용 
     // 새 게임 시작할 때의 씬이름 나중에 넣을 것!! 
     public void OpenScene(string sceneName)
@@ -374,7 +382,15 @@ public class CanvasControl : MonoBehaviour
         {
             dialoguePanel.SetActive(false);
             DataController.instance.StopSaveLoadJoyStick(false);
-
+            foreach (var positionSet in DataController.instance.currentMap.positionSets)
+            {
+                DataController.instance.GetCharacter(positionSet.who).emotion = Expression.IDLE;   
+            }
+            foreach (var positionSet in DataController.instance.currentMap.characters)
+            {
+                // if (Character.TryParse(dialogueData.dialogues[dialogueCnt].anim_name, out Character who))
+                DataController.instance.GetCharacter(positionSet.who).emotion = Expression.IDLE;   
+            }
             isPossibleCnvs = true;
             dialogueCnt = 0;
             if (endDialogueAction != null)
@@ -405,6 +421,11 @@ public class CanvasControl : MonoBehaviour
                         Debug.Log((int) dialogueData.dialogues[dialogueCnt].expression + "  " +
                                   dialogueData.dialogues[dialogueCnt].expression);
                         charDialogueAnimator.SetInteger(Emotion, ((int) dialogueData.dialogues[dialogueCnt].expression));
+
+                        if (Character.TryParse(dialogueData.dialogues[dialogueCnt].anim_name, out Character who))
+                        {
+                            DataController.instance.GetCharacter(who).emotion = dialogueData.dialogues[dialogueCnt].expression;   
+                        }
                     }
                     else
                     {
@@ -431,10 +452,9 @@ public class CanvasControl : MonoBehaviour
             // 대화 시 무슨 캐릭터인지 anim_name으로 Find (who를 사용)
             MapData.AnimationCharacterSet animator = DataController.instance.currentMap.characters.Find(
                 item => item.who.ToString().Equals(dialogueData.dialogues[dialogueCnt].anim_name));
-            animator?.characterAnimator.SetInteger(Emotion, (int) dialogueData.dialogues[dialogueCnt].expression);
-    
-            // 해당 캐릭터에 setEmotion
-            // anim.SetInteger("Emotion", (int)emotion); // 애니메이션실행
+            // DataController.instance.GetCharacter(animator.who).emotion =(int) dialogueData.dialogues[dialogueCnt].expression 
+            animator?.characterAnimator.SetInteger(Emotion, (int)dialogueData.dialogues[dialogueCnt].expression);
+            
             speakerName.text = dialogueData.dialogues[dialogueCnt].name; // 이야기하는 캐릭터 이름
             speakerWord.text = dialogueData.dialogues[dialogueCnt].contents; // 캐릭터의 대사
             dialogueCnt++;

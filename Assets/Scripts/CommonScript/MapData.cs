@@ -290,8 +290,8 @@ public class MapData : MonoBehaviour
     
     public void DestroyMap()
     {
-        DestroyImmediate(ui);
-        DestroyImmediate(gameObject);    
+        Destroy(ui);
+        Destroy(gameObject);    
     }
     
     #region Input 설정

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Data;
 using UnityEngine;
 
 public class Event_DieByWater : MonoBehaviour
@@ -8,16 +7,17 @@ public class Event_DieByWater : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name == "Rau")
+        if (other.TryGetComponent(out CharacterManager character))
         {
-            other.GetComponent<CharacterManager>().PickUpCharacter();
-            other.transform.position = respawnPoint.position; // 리스폰 포인트로 이동
-            other.GetComponent<CharacterManager>().UseJoystickCharacter();
-            this.GetComponentInParent<RauTutorialManager>().isFallInRiver = true;
+            if (character.who != CustomEnum.Character.Rau) return;
+            character.PickUpCharacter();
+            character.transform.position = respawnPoint.position; // 리스폰 포인트로 이동
+            character.UseJoystickCharacter();
+            GetComponentInParent<RauTutorialManager>().isFallInRiver = true;
         }
     }
 
-    private void OnDrawGizmos()
+    void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(respawnPoint.position, 0.5f);

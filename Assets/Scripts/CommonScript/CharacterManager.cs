@@ -60,13 +60,15 @@ public class CharacterManager : MonoBehaviour, IMovable
     }
     public void InitializeCharacter()
     {
-        gameObject.layer = 0;
+        emotion = Expression.IDLE;
+        gameObject.layer = LayerMask.NameToLayer("Default");
         moveHorDir = Vector3.zero;
         moveVerDir = Vector3.zero;
         anim.SetFloat(SpeedHash, 0f);
     }
     public void SetCharacter(Transform mapSettingTransform)
     {
+        gameObject.layer = LayerMask.NameToLayer("Default");
         gameObject.SetActive(true);
         transform.position = mapSettingTransform.position;
         transform.LookAt(transform.position + mapSettingTransform.right);
@@ -95,8 +97,7 @@ public class CharacterManager : MonoBehaviour, IMovable
 
     #region 캐릭터 애니메이션 설정
     // 감정상태
-    public enum Emotion { Idle, Laugh, Sad, Cry, Angry, Surprise, Panic, Suspicion, Fear, Curious };
-    public Emotion emotion = Emotion.Idle;      // 캐릭터 감정
+    public Expression emotion = Expression.IDLE;      // 캐릭터 감정
 
     // 에니메이션 설정
     void AnimationSetting()

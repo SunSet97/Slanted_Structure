@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+using CommonScript;
 using UnityEngine;
 
-public class OutLineCollider : MonoBehaviour
+public class OutlineCollider : MonoBehaviour
 {
+    
     [Header("#Outline setting")]
     public Color outlineColor = Color.red;
 
@@ -15,6 +15,7 @@ public class OutLineCollider : MonoBehaviour
 
     void Start()
     {
+        gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
         if(outline == null)
             outline = gameObject.AddComponent<Outline>();
         outline.OutlineMode = mode;
@@ -25,11 +26,11 @@ public class OutLineCollider : MonoBehaviour
         if (!gameObject.TryGetComponent(out sphereCol)) 
             sphereCol = gameObject.AddComponent<SphereCollider>();  // 콜라이더 없으면 자동 추가
         sphereCol.isTrigger = true;
-        offset /= transform.lossyScale.y;
         radius /= transform.lossyScale.y;
-        sphereCol.center = offset;
+        sphereCol.center = transform.InverseTransformPoint(transform.position + offset);
         sphereCol.radius = radius;
     }
+    
 
     void OnDrawGizmos()
     {
@@ -39,13 +40,11 @@ public class OutLineCollider : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
         outline.enabled = true;
         Debug.Log("키기");
     }
     void OnTriggerExit(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
         outline.enabled = false;
         Debug.Log("끄기");
     }

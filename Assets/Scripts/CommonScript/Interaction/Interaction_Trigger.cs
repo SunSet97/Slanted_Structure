@@ -16,7 +16,7 @@ public class Interaction_Trigger : InteractionObj_stroke
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("트리거");
+        Debug.Log(gameObject.name + "트리거  " + other.transform.gameObject + isLoop);
         if (isLoop) return;
         isLoop = true;
         StartInteraction();

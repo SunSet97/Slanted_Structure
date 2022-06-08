@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4982263586835520790}
   - component: {fileID: 240133258883362122}
   - component: {fileID: 6039280548406544292}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,27 +50,29 @@ MonoBehaviour:
     dialogues:
     - name: "\uB77C\uC6B0"
       expression: 0
-      animName: 
+      anim_name: Rau
       contents: "\uC624! \uC800\uAE30\uC5D0 \uC785\uAD6C\uAC00 \uBCF4\uC774\uB294
         \uAC70 \uAC19\uC544! \uB4DC\uB514\uC5B4!!"
     - name: ???
       expression: 0
-      animName: 
+      anim_name: 
       contents: "\uC774\uBCF4\uC2DC\uAC8C!! \uB3C4\uC640\uC8FC\uAC8C\uB098!! \uB36B\uC5D0
         \uAC78\uB838\uC5B4!! \uC73C\uC544\uC545!"
     - name: "\uB77C\uC6B0"
       expression: 5
-      animName: 
+      anim_name: Rau
       contents: "\uD5C9! \uBAA8\uB974\uB294 \uC0AC\uB78C\uC774\uC9C0\uB9CC \uB3C4\uC640\uC918\uC57C
         \uB420\uAE4C? \uB108\uBB34 \uACE0\uD1B5\uC2A4\uB7EC\uC6CC \uBCF4\uC5EC"
     - name: 
       expression: 0
-      animName: 
+      anim_name: 
       contents: ' '
   dialogueEndAction: []
   dialogueCameraPos: {x: 0, y: 0, z: 0}
   dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
@@ -84,6 +86,7 @@ MonoBehaviour:
   cinematics: []
   inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
   isLoop: 0
 --- !u!65 &6039280548406544292
 BoxCollider:
@@ -116,12 +119,12 @@ MonoBehaviour:
     dialogues:
     - name: ???
       expression: 0
-      animName: 
+      anim_name: 
       contents: "\uC5EC\uAE30 \uC21C\uCC30\uD558\uB2E4\uAC00 \uB36B\uC5D0 \uAC78\uB9AC\uACE0
         \uB9D0\uC558\uB124 \uB098\uC880 \uB3C4\uC640\uC8FC\uC2DC\uAC8C"
     - name: "\uB77C\uC6B0"
       expression: 0
-      animName: 
+      anim_name: Rau
       contents: "\uB531\uBD10\uB3C4 \uD06C\uAC8C \uBB3C\uB9B0 \uAC83 \uAC19\uC544.
         \uC800\uBD84 \uD63C\uC790 \uD798\uC73C\uB85C\uB294 \uBC97\uC5B4\uB098\uAE30
         \uC5B4\uB824\uC6CC \uBCF4\uC5EC. \uC5B4\uB5BB\uAC8C \uD574\uC57C\uB420\uAE4C?"
@@ -137,16 +140,18 @@ MonoBehaviour:
   dialogueCameraPos: {x: 0, y: 0, z: 0}
   dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug:
   - tasks:
     - name: ???
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
@@ -156,7 +161,7 @@ MonoBehaviour:
     isContinue: 1
   color: 0
   interactionMethod: 0
-  radius: 1
+  radius: 2
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
@@ -166,6 +171,7 @@ MonoBehaviour:
   cinematics: []
   inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
 --- !u!114 &7838671512082927193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,50 +187,6 @@ MonoBehaviour:
   isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 101110
---- !u!114 &2116634930570612063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6825801208322466617}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionPlayType: 0
-  jsonFile: {fileID: 4900000, guid: c3cd1485adf0f2f478cfbdbf4ccdb4e9, type: 3}
-  dialogueData:
-    dialogues:
-    - name: ???
-      expression: 0
-      animName: 
-      contents: "\uC5EC\uAE30 \uC21C\uCC30\uD558\uB2E4\uAC00 \uB36B\uC5D0 \uAC78\uB9AC\uACE0
-        \uB9D0\uC558\uB124 \uB098\uC880 \uB3C4\uC640\uC8FC\uC2DC\uAC8C"
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      animName: 
-      contents: "\uB531\uBD10\uB3C4 \uD06C\uAC8C \uBB3C\uB9B0 \uAC83 \uAC19\uC544.
-        \uC800\uBD84 \uD63C\uC790 \uD798\uC73C\uB85C\uB294 \uBC97\uC5B4\uB098\uAE30
-        \uC5B4\uB824\uC6CC \uBCF4\uC5EC. \uC5B4\uB5BB\uAC8C \uD574\uC57C\uB420\uAE4C?"
-  dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
-  taskData_Debug: []
-  color: 2
-  interactionMethod: 0
-  radius: 2
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
-  outline: {fileID: 0}
-  isViewChange: 0
-  timeline: {fileID: 0}
-  cinematics: []
-  inGames: []
-  touchTargetObject: {fileID: 0}
 --- !u!1 &8827356394449258524
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,6 +464,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2240774327780671510, guid: a0fbab29208054241ae6ef287606613f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 2973376008641081861, guid: a0fbab29208054241ae6ef287606613f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -671,16 +638,11 @@ PrefabInstance:
     - target: {fileID: 4509702389007984222, guid: 20805600f5162424bba5e20dc49a4900,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 16
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1190419754171831142, guid: 20805600f5162424bba5e20dc49a4900, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 20805600f5162424bba5e20dc49a4900, type: 3}
---- !u!1 &6825801208322466617 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4509702389007984222, guid: 20805600f5162424bba5e20dc49a4900,
-    type: 3}
-  m_PrefabInstance: {fileID: 6930952299971020135}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8827356394434976146
 PrefabInstance:
   m_ObjectHideFlags: 0

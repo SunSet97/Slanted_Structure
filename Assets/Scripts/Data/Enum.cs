@@ -4,13 +4,6 @@ using UnityEngine.UI;
 
 namespace Data
 {
-
-    public struct Cinematic
-    {
-        private string cinematic_id;
-        
-    }
-
     [Serializable]
     public struct Ending
     {

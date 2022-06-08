@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Data;
 using UnityEngine;
 using static Data.CustomEnum;
 public class Cinematic_Scene : MonoBehaviour
@@ -34,15 +35,15 @@ public class Cinematic_Scene : MonoBehaviour
 
         if (Main_char == "Speat")
         {
-            DataController.instance.GetCharacter(Character.Speat).emotion = (CharacterManager.Emotion)emotion;
+            DataController.instance.GetCharacter(Character.Speat).emotion = (Expression)emotion;
         }
         if (Main_char == "Rau")
         {
-            DataController.instance.GetCharacter(Character.Rau).emotion = (CharacterManager.Emotion)emotion;
+            DataController.instance.GetCharacter(Character.Rau).emotion = (Expression)emotion;
         }
         if (Main_char == "Oun")
         {
-            DataController.instance.GetCharacter(Character.Oun).emotion = (CharacterManager.Emotion)emotion;
+            DataController.instance.GetCharacter(Character.Oun).emotion = (Expression)emotion;
         }
 
     }
