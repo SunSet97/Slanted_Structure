@@ -16,18 +16,25 @@ class DebugMapClear : Editor
     }
 }
 
-
+/// <summary>
+/// 맵 클리어 (이동) 오브젝트
+/// 사용방법 1. isTrigger와 Collider를 사용
+/// 사용방법 2. isTrigger 미체크 및 Mapdata.Clearbox.Clear로 사용 
+/// </summary>
 public class CheckMapClear : MonoBehaviour
 {
     public bool isTrigger;
+    ///클리어 직전 대화 json파일
     public TextAsset jsonFile;
 
-    public string nextSelectMapcode = "000000"; //어디 스토리로 갈 건지.
+    //000000이 아닌 null로 사용하고 싶으나 맵이 많아 보류 
+    public string nextSelectMapcode = "000000"; //이동할 맵, 000000인 경우 MapData의 nextMapCode 사용
 
     public void Clear()
     {
         if (!nextSelectMapcode.Equals("000000"))
             DataController.instance.currentMap.nextMapcode = nextSelectMapcode;
+        
         if (jsonFile != null)
         {
             CanvasControl.instance.StartConversation(jsonFile.text);
@@ -43,7 +50,7 @@ public class CheckMapClear : MonoBehaviour
     // 캐릭터 확인 후 트리거 활성화
     private void OnTriggerEnter(Collider other)
     {
-        if(!isTrigger) return;
+        if(!isTrigger){ Debug.LogError("이상하게 사용하고 있습니다"); return;}
         if (DataController.instance.GetCharacter(Character.Main).name.Equals(other.name))
         {
             Clear();

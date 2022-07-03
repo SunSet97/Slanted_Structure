@@ -14,8 +14,6 @@ public class Waypoint : MonoBehaviour
     }
 
     [Header("#Map Setting")]
-    //[Tooltip("이 맵의 MapData.cs를 넣어주세요.")]
-    private MapData mapData; // auto setting
     private Transform character; // auto setting
     [Tooltip("웨이 포인트의 전진 방향을 설정해주세요.")]
     public MoveDirection moveDirSet; // 웨이포인트 이동방향 세팅용, 코드에서 건들리지 마세요
@@ -41,7 +39,6 @@ public class Waypoint : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            mapData = DataController.instance.currentMap;
             SelectCharacter();
         }
     }
@@ -88,7 +85,7 @@ public class Waypoint : MonoBehaviour
     private void SelectCharacter()
     {
         character = DataController.instance.GetCharacter(Character.Main).transform;
-        mapData.isJoystickInputUse = false;
+        DataController.instance.currentMap.isJoystickInputUse = false;
     }
 
     // 캐릭터가 waypoint를 지나가면 체크

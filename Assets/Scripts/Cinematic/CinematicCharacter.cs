@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Data;
+﻿using Data;
 using UnityEngine;
 
 public class CinematicCharacter : MonoBehaviour

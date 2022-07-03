@@ -53,14 +53,14 @@ public class NPCInteractor : MonoBehaviour
             // ++ getcloset 파라미터로 distance로 
             // ++ 이 스크립트 객체화 시키기 transform.parent....
             // ++ 이중으로 레이캐스트 ㄴㄴ
-            if (!canvasCtrl.isPossibleCnvs)
+            if (canvasCtrl.isInConverstation)
             {
                 canvasCtrl.UpdateWord();
             }
-            if (hit.collider.gameObject.name == closestNPC.gameObject.name && canvasCtrl.isPossibleCnvs == true)
+            if (hit.collider.gameObject.name == closestNPC.gameObject.name && !canvasCtrl.isInConverstation)
             {
                 // 대화가 끝나기 전까지 다시 대화 불가능하도록 설정
-                canvasCtrl.isPossibleCnvs = false;
+                canvasCtrl.isInConverstation = true;
                 canvasCtrl.dialogueCnt = 0;
                 DataController.instance.LoadData(closestNPC.gameObject.name, DataController.instance.charData.story + "_"
                     + DataController.instance.charData.storyBranch + "_" + DataController.instance.charData.storyBranch_scnd + "_"

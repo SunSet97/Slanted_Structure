@@ -1,4 +1,5 @@
-﻿using Move;
+﻿using System.Runtime.CompilerServices;
+using Move;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static Data.CustomEnum;
@@ -116,15 +117,11 @@ public class CharacterManager : MonoBehaviour, IMovable
             skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int)emotion]); // 현재 감정으로 메터리얼 변경
     }
 
-    // public void EmotionAnimationSetting(Emotion inEmotion)
-    // {
-    //     if (SceneManager.GetActiveScene().name == "Cinematic")
-    //     {
-    //         anim.SetInteger("Emotion", (int)inEmotion); // 애니메이션실행
-    //     }
-    //     skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int)inEmotion]); // 현재 감정으로 메터리얼 변경
-    // }
-
+    public void SetEmotion(Expression inEmotion)
+    {
+        emotion = inEmotion;
+    }
+    
     public void SetCinematic()
     {
         faceExpression = Resources.LoadAll<Texture>("Face");

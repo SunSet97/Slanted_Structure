@@ -40,8 +40,6 @@ namespace CommonScript
             {
                 RemoveClick(clickable);
             }
-            Debug.Log(clickable);
-            Debug.Log(clickables.Count);
         }
 
         private void AddClick(IClickable clickable)

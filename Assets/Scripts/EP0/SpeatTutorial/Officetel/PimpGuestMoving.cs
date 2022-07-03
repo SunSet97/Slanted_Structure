@@ -131,10 +131,9 @@ public class PimpGuestMoving : MonoBehaviour
         // 대화시작
         if (transform.parent.name.Equals("Guest"))
         {
-            if (hit.gameObject.name.Equals("Speat_Adult") && pimpGameManager.canvasCtrl.isPossibleCnvs)
+            if (hit.gameObject.name.Equals("Speat_Adult") && !pimpGameManager.canvasCtrl.isInConverstation)
             {
                 print("스핏과 만남");
-                pimpGameManager.canvasCtrl.selectedGuest = gameObject;
 
                 SetTalking(true);
                 //DataController.instance_DataController.LoadData(transform.parent.name, gameObject.name + ".json");

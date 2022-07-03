@@ -330,23 +330,23 @@ public class MapData : MonoBehaviour
     void AllOnDebug() { map.SetActive(true); positionSetting.SetActive(true); ui.SetActive(true); isOnGizmo = true; } // 전부 킴
     void AllOffDebug() { map.SetActive(false); positionSetting.SetActive(false); ui.SetActive(false); isOnGizmo = false; } // 전부 끔
     // 캐릭터별 기즈모 생성
-    private void OnDrawGizmos()
-    {
-        if (isOnGizmo)
-        {
-            Color[] preset = new Color[6] { Color.red, Color.yellow, Color.blue, Color.red, Color.red, Color.red };
-            for (int i = 0; i < positionSets.Count; i++)
-            {
-                Gizmos.color = preset[(int)positionSets[i].who] * 0.8f;
-                Gizmos.DrawCube(positionSets[i].startPosition.position + Vector3.up, new Vector3(0.3f, 0.9f, 0.3f));
-                Gizmos.DrawSphere(positionSets[i].startPosition.position + Vector3.up * 0.2f, 0.2f);
-            }
-
-            for (int i = 0; i < clearBoxList.Count; i++)
-            {
-                Gizmos.DrawCube(clearBoxList[i].gameObject.transform.position, clearBoxList[i].GetComponent<BoxCollider>().size);
-            }
-        }
-    }
+    // private void OnDrawGizmos()
+    // {
+    //     if (isOnGizmo)
+    //     {
+    //         Color[] preset = new Color[6] { Color.red, Color.yellow, Color.blue, Color.red, Color.red, Color.red };
+    //         for (int i = 0; i < positionSets.Count; i++)
+    //         {
+    //             Gizmos.color = preset[(int)positionSets[i].who] * 0.8f;
+    //             Gizmos.DrawCube(positionSets[i].startPosition.position + Vector3.up, new Vector3(0.3f, 0.9f, 0.3f));
+    //             Gizmos.DrawSphere(positionSets[i].startPosition.position + Vector3.up * 0.2f, 0.2f);
+    //         }
+    //
+    //         for (int i = 0; i < clearBoxList.Count; i++)
+    //         {
+    //             Gizmos.DrawCube(clearBoxList[i].gameObject.transform.position, clearBoxList[i].GetComponent<BoxCollider>().size);
+    //         }
+    //     }
+    // }
     #endregion
 }

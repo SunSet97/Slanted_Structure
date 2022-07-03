@@ -9,6 +9,7 @@ public class HamburgerStoreManager : MonoBehaviour
     public TextAsset jsonFile;
     // 스핏
     public GameObject speatPrefab;
+    public CharacterManager speattt;
     private CharacterManager speat;
     private NPCwaypoints _wayPoints;
 
@@ -23,7 +24,6 @@ public class HamburgerStoreManager : MonoBehaviour
         InitialSetting();
     }
 
-    #region 초기세팅
     void InitialSetting()
     {
         curChar = DataController.instance.GetCharacter(Character.Main);
@@ -63,9 +63,7 @@ public class HamburgerStoreManager : MonoBehaviour
                 CanvasControl.instance.StartConversation(jsonFile.text);
             }, 3);
         }
-
     }
-    #endregion
 
     #region 인터랙션
     private void SpeatInteraction(int index)

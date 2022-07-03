@@ -85,7 +85,6 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     public bool isLoopDialogue;
 
     private int playerLayer;
-
     private void PushTask(string jsonString)
     {
         Debug.Log("Push Task");
@@ -129,12 +128,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
             outline.enabled = false; // 우선 outline 끄기
 
             if (useExclamationMark && exclamationMark.gameObject != null) exclamationMark.SetActive(false); // 느낌표 끄기
-
-
-            // if (!touchTargetObject)
-            // {
-            //     touchTargetObject = gameObject;
-            // }
+            
 
             // 아웃라인 색깔 설정
             if (color == OutlineColor.red) outline.OutlineColor = Color.red;
@@ -261,7 +255,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         }
         else if (interactionPlayType == InteractionPlayType.Dialogue)
         {
-            if (!CanvasControl.instance.isPossibleCnvs) return;
+            if (CanvasControl.instance.isInConverstation) return;
             
             if (!isLoopDialogue)
                 isTouched = true;
@@ -581,7 +575,8 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     //     Debug.Log(timeline.GetGenericBinding(playableBinding.sourceObject));
                     // }
 
-                    yield return new WaitUntil(() => timeline.state == PlayState.Paused);
+                    
+                    yield return new WaitUntil(() => timeline.state == PlayState.Paused && !CanvasControl.instance.isInConverstation);
                     DataController.instance.StopSaveLoadJoyStick(false);
                     currentTaskData.isContinue = true;
                     foreach (var cinematic in cinematics)
@@ -724,12 +719,14 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     void OnDisable()
     {
         if (!Application.isPlaying) return;
+        if (!ObjectClicker.instance) return;
         ObjectClicker.instance.UpdateClick(this, false);
     }
 
     void OnDestroy()
     {
         if (!Application.isPlaying) return;
+        if (!ObjectClicker.instance) return;
         ObjectClicker.instance.UpdateClick(this, false);
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Runtime.Serialization;
 using Data;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,7 +21,7 @@ public class CanvasControl : MonoBehaviour
 
     [Header("대화 관련")]
     public GameObject dialoguePanel;
-    public bool isPossibleCnvs = true;
+    public bool isInConverstation;
     public Transform choiceParent;
     private GameObject[] choiceBtn;
     private Text[] choiceText;
@@ -47,9 +46,7 @@ public class CanvasControl : MonoBehaviour
     public GameObject commandPanel;
 
     [Header("디버깅용")]
-    public InputField mapcode; //맵코드
     public Toggle[] selectedCharacter; //선택된 캐릭터
-    public GameObject selectedGuest;
     //인스턴스화
     private static CanvasControl _instance;
     public static CanvasControl instance
@@ -89,7 +86,6 @@ public class CanvasControl : MonoBehaviour
     {
         startDialogueAction = null;
         endDialogueAction = null;
-        isPossibleCnvs = true;
         dialoguePanel.SetActive(false);
     }
     // 씬 로드 시 사용 
@@ -368,7 +364,7 @@ public class CanvasControl : MonoBehaviour
             startDialogueAction();
             startDialogueAction = null;
         }
-        isPossibleCnvs = false;
+        isInConverstation = true;
         dialoguePanel.SetActive(true);
         UpdateWord();
     }
@@ -391,7 +387,7 @@ public class CanvasControl : MonoBehaviour
                 // if (Character.TryParse(dialogueData.dialogues[dialogueCnt].anim_name, out Character who))
                 DataController.instance.GetCharacter(positionSet.who).emotion = Expression.IDLE;   
             }
-            isPossibleCnvs = true;
+            isInConverstation = false;
             dialogueCnt = 0;
             if (endDialogueAction != null)
             {

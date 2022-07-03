@@ -237,7 +237,11 @@ public class DataController : MonoBehaviour
             }
         }
 
-        mainChar.gameObject.layer = LayerMask.NameToLayer("Player");
+        if (mainChar)
+        {
+            mainChar.gameObject.layer = LayerMask.NameToLayer("Player");
+        }
+
         //조이스틱 초기화
         isAlreadySave = false;
         InitializeJoyStick(!currentMap.isJoystickNone);

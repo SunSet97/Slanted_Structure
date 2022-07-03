@@ -1,7 +1,8 @@
-﻿using System;
-using CommonScript;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// 단순 아웃라인 시각화용 스크립트 
+/// </summary>
 public class OutlineCollider : MonoBehaviour
 {
     
@@ -22,8 +23,7 @@ public class OutlineCollider : MonoBehaviour
         outline.OutlineColor = outlineColor;
         outline.OutlineWidth = 8f;
         outline.enabled = false;
-        SphereCollider sphereCol;
-        if (!gameObject.TryGetComponent(out sphereCol)) 
+        if (!gameObject.TryGetComponent(out SphereCollider sphereCol)) 
             sphereCol = gameObject.AddComponent<SphereCollider>();  // 콜라이더 없으면 자동 추가
         sphereCol.isTrigger = true;
         radius /= transform.lossyScale.y;

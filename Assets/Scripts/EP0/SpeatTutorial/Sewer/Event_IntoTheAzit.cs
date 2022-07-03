@@ -22,7 +22,8 @@ public class Event_IntoTheAzit : MonoBehaviour
 
     IEnumerator MoveToAzit(CharacterManager other)
     {
-        GetComponent<Collider>().enabled = false;
+        var collider = GetComponent<Collider>();
+        collider.enabled = false;
         other.transform.position = startPoint.position; // 시작 위치로 이동
         other.transform.LookAt(endPoint);
         // 도착 위치까지 반복
@@ -39,7 +40,7 @@ public class Event_IntoTheAzit : MonoBehaviour
         other.anim.SetFloat(Speed, 0f);
         yield return new WaitForSeconds(0.5f); // 잠시 대기
         DataController.instance.InitializeJoyStick(true);
-        GetComponent<Collider>().enabled = true;
+        collider.enabled = true;
     }
 
     private void OnDrawGizmos()

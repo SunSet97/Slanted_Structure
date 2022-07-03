@@ -55,6 +55,9 @@ public class Interact_ObjectWithRau : MonoBehaviour
                 outline.enabled = false; // 범위 내에 있으면서 인터랙션중일 때 Outline 비활성화
                 if (mark) mark.gameObject.SetActive(false); // 범위 내에 있으면서 인터랙션중일 때 마크 비활성화
             }
+         
+            // 왜 캔버스 체크했던거지 확인 ㄱㄱ
+            // if (!CanvasControl.instance.isInConverstation && isIn) GetObjectTouch();
         }
     }
 
@@ -94,7 +97,7 @@ public class Interact_ObjectWithRau : MonoBehaviour
                         if (mark != null)
                             mark.gameObject.SetActive(false); // 마크 끄기
                     }
-                    if (hit.collider.transform.parent.name == "NPCManager" && CanvasControl.instance.isPossibleCnvs)
+                    if (hit.collider.transform.parent.name == "NPCManager" && !CanvasControl.instance.isInConverstation)
                     {
                         if (hit.collider.transform.parent.TryGetComponent(out NPCInteractor npcInteractor))
                         {

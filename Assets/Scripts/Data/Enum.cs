@@ -42,7 +42,7 @@ namespace Data
         }
         public enum Expression
         {
-            IDLE = 0, LAUGH, SAD, CRY, ANGRY, SURPISE, PANIC, SUSPICION, FEAR, CURIOUS, ANIM_ONE, ANIM_TWO
+            NONE = -1, IDLE = 0, LAUGH, SAD, CRY, ANGRY, SURPISE, PANIC, SUSPICION, FEAR, CURIOUS
         }
     
         public enum TaskContentType
