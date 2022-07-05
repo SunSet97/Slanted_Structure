@@ -946,51 +946,53 @@ MonoBehaviour:
     dialogues:
     - name: 
       expression: 0
-      animName: 
+      anim_name: 
       contents: 
     - name: "\uB77C\uC6B0\uB300\uD6541"
       expression: 0
-      animName: 
+      anim_name: 
       contents: 
   dialogueEndAction: []
   dialogueCameraPos: {x: 0, y: 0, z: 0}
   dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug:
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      type: 0
+      taskContentType: 0
       nextFile: StoryMap/ep1/102010
       order: 1
       condition: 
       increaseVar: 
     - name: 
-      type: 0
+      taskContentType: 0
       nextFile: 3
       order: 1
       condition: 
       increaseVar: 
     - name: "(\uCE74\uBA54\uB77C\uB97C \uCF1C\uB3C4 \uACBD\uCC30\uC5D0 \uC2E0\uACE0\uD55C\uB2E4\uB294
         \uACBD\uACE0\uB97C \uD55C\uB2E4.)"
-      type: 0
+      taskContentType: 0
       nextFile: StoryMap/ep1/Choice1
       order: 0
       condition: 1,1,1,1
       increaseVar: 1,1,1,1
     - name: "(\uB178\uC778\uC744 \uBB34\uC2DC\uD55C\uB2E4.)"
-      type: 0
+      taskContentType: 0
       nextFile: StoryMap/ep1/Choice2
       order: 0
       condition: 2,2,2,2
       increaseVar: 2,2,2,2
     - name: "(\uAC00\uB9CC\uD788 \uC788\uB294\uB2E4.)"
-      type: 0
+      taskContentType: 0
       nextFile: StoryMap/ep1/Choice3
       order: 0
       condition: 3,3,3,3
       increaseVar: 2,2,2,2
     - name: "\uB05D"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 1
       condition: 
@@ -1000,25 +1002,25 @@ MonoBehaviour:
     isContinue: 1
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      type: 0
+      taskContentType: 0
       nextFile: StoryMap/ep1/Song1
       order: 1
       condition: 
       increaseVar: 
     - name: "\uC120\uD0DD\uC784"
-      type: 0
+      taskContentType: 0
       nextFile: 1
       order: 1
       condition: 
       increaseVar: 
     - name: "\uC6D0\uB798\uAEBC"
-      type: 0
+      taskContentType: 0
       nextFile: StoryMap/ep1/Choice2
       order: 0
       condition: 1,1,1,1
       increaseVar: 1,1,1,1
     - name: "\uB05D"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 1
       condition: 
@@ -1028,13 +1030,13 @@ MonoBehaviour:
     isContinue: 1
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6542"
-      type: 0
+      taskContentType: 0
       nextFile: StoryMap/ep1/Song2
       order: 1
       condition: 
       increaseVar: 
     - name: "\uB05D"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 1
       condition: 
@@ -1044,13 +1046,13 @@ MonoBehaviour:
     isContinue: 1
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6543"
-      type: 0
+      taskContentType: 0
       nextFile: StoryMap/ep1/Song3
       order: 1
       condition: 
       increaseVar: 
     - name: "\uB05D"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 1
       condition: 
@@ -1070,6 +1072,7 @@ MonoBehaviour:
   cinematics: []
   inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
   isLoop: 0
 --- !u!1 &2918022534388849636
 GameObject:
@@ -1321,6 +1324,8 @@ MonoBehaviour:
   dialogueCameraPos: {x: 0, y: 0, z: 0}
   dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
@@ -1334,6 +1339,7 @@ MonoBehaviour:
   cinematics: []
   inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
   isLoop: 0
 --- !u!65 &2489386545976285702
 BoxCollider:

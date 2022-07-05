@@ -131,37 +131,31 @@ MonoBehaviour:
     \uC2A4\uD54F\uC5D0\uAC8C \uAC04\uB2E4."
   mapCode: 301020
   method: 0
-  endMap: 0
-  director: {fileID: 0}
   nextMapcode: 301021
   map: {fileID: 7976044237075837516}
   ui: {fileID: 0}
-  SkyboxSetting: {fileID: 0}
+  SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 1
   orthographicSize: 5
-  isCameraMoving: 0
   cameraBound: {fileID: 0}
   BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 7475165068638898431}
   clearBoxList:
   - {fileID: 2268495182861589382}
-  positionSetting: {fileID: 298279036730567171}
   positionSets:
   - index: 0
     who: 2
     startPosition: {fileID: 298279038216090857}
-    clearBox: {fileID: 8879888587250245638}
     posSet: {fileID: 298279038310455053}
     isMain: 1
-  posIndex: 0
-  cam: {fileID: 0}
   cameraViewType: 0
   camDis: {x: 0, y: 2.7, z: 5.12}
   camRot: {x: 8, y: 180, z: 0}
-  isJoystickInputIgnore: 1
+  positionSetting: {fileID: 298279036730567171}
+  isJoystickInputUse: 0
   isJoystickNone: 1
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &298279038216090858
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,6 +406,8 @@ MonoBehaviour:
       contents: "\uC774\uB7F0 \uC81C\uAE38\u2026\uC2A4\uD54F \uC9D1\uC73C\uB85C \uAC00\uBD10\uC57C
         \uACA0\uC5B4.."
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions:
   - eventType: 1
     clearBox: {fileID: 2268495182861589382}
@@ -421,21 +417,22 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timeline: {fileID: 0}
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
   isLoop: 0
 --- !u!114 &1275473885020803989
 MonoBehaviour:
@@ -503,22 +500,25 @@ MonoBehaviour:
       contents: "\uC774\uB7F0 \uC81C\uAE38\u2026\uC2A4\uD54F \uC9D1\uC73C\uB85C \uAC00\uBD10\uC57C
         \uACA0\uC5B4.."
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
   interactionMethod: 0
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timeline: {fileID: 0}
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
 --- !u!1 &7475165068638898431
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,6 +694,24 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5738893206336546903, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
+--- !u!1 &4068541610148066953 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4347642963928065333, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+    type: 3}
+  m_PrefabInstance: {fileID: 298279038301885372}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7976044237075837516 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7679528853820744176, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+    type: 3}
+  m_PrefabInstance: {fileID: 298279038301885372}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9118059275212216089 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8838993412869260453, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+    type: 3}
+  m_PrefabInstance: {fileID: 298279038301885372}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2268495182861589382 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1970574898372511802, guid: b5d6f4e8e25d0d646a2290b24e60c706,
@@ -706,24 +724,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &7976044237075837516 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7679528853820744176, guid: b5d6f4e8e25d0d646a2290b24e60c706,
-    type: 3}
-  m_PrefabInstance: {fileID: 298279038301885372}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4068541610148066953 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4347642963928065333, guid: b5d6f4e8e25d0d646a2290b24e60c706,
-    type: 3}
-  m_PrefabInstance: {fileID: 298279038301885372}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &9118059275212216089 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8838993412869260453, guid: b5d6f4e8e25d0d646a2290b24e60c706,
-    type: 3}
-  m_PrefabInstance: {fileID: 298279038301885372}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6131015936614995302 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5851879844368860890, guid: b5d6f4e8e25d0d646a2290b24e60c706,
@@ -733,12 +733,6 @@ GameObject:
 --- !u!4 &7976044237075837519 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7679528853820744179, guid: b5d6f4e8e25d0d646a2290b24e60c706,
-    type: 3}
-  m_PrefabInstance: {fileID: 298279038301885372}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &8879888587250245638 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9158070577267045306, guid: b5d6f4e8e25d0d646a2290b24e60c706,
     type: 3}
   m_PrefabInstance: {fileID: 298279038301885372}
   m_PrefabAsset: {fileID: 0}

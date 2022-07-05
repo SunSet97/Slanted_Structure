@@ -69,6 +69,8 @@ MonoBehaviour:
       anim_name: 
       contents: 
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions:
   - eventType: 1
     clearBox: {fileID: 8096532742656293649}
@@ -78,34 +80,36 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug:
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      type: 2
+      taskContentType: 0
       nextFile: dialogue_ep3/301010
       order: 1
       condition: 
       increaseVar: 
     - name: 
-      type: 3
+      taskContentType: 0
       nextFile: 2
       order: 1
       condition: 
       increaseVar: 
     - name: "\uAD81\uAE08\uD558\uB2C8 \uBC16\uC73C\uB85C \uD55C\uBC88 \uB098\uAC00\uBCF8\uB2E4."
-      type: 3
+      taskContentType: 0
       nextFile: dialogue_ep3/301010_choice1
       order: 0
       condition: 0,0,0,0
       increaseVar: 0,0,0
     - name: "\uBB34\uC11C\uC6B0\uB2C8 \uADF8\uB0E5 \uC790\uBC84\uB9B0\uB2E4."
-      type: 3
+      taskContentType: 0
       nextFile: dialogue_ep3/301010_choice2
       order: 0
       condition: 0,0,0,0
       increaseVar: 0,0,0
     - name: "\uB05D"
-      type: 5
+      taskContentType: 0
       nextFile: 
       order: 1
       condition: 
@@ -115,25 +119,25 @@ MonoBehaviour:
     isContinue: 1
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      type: 2
+      taskContentType: 0
       nextFile: dialogue_ep2/301010_gameover
       order: 1
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0\uB300\uD6542"
-      type: 2
+      taskContentType: 0
       nextFile: dialogue_ep2/301011_gameover2
       order: 1
       condition: 
       increaseVar: 
     - name: "\uB05D"
-      type: 7
+      taskContentType: 0
       nextFile: 
       order: 1
       condition: 
       increaseVar: 
     - name: 
-      type: 4
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
@@ -143,13 +147,13 @@ MonoBehaviour:
     isContinue: 1
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      type: 2
+      taskContentType: 0
       nextFile: dialogue_ep2/301010_live
       order: 1
       condition: 
       increaseVar: 
     - name: "\uB05D"
-      type: 4
+      taskContentType: 0
       nextFile: 
       order: 1
       condition: 
@@ -159,18 +163,17 @@ MonoBehaviour:
     isContinue: 1
   color: 0
   interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timeline: {fileID: 0}
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
   isLoop: 0
 --- !u!65 &9134467749511542344
 BoxCollider:
@@ -281,37 +284,31 @@ MonoBehaviour:
     \uB098\uC624\uB294 \uC120\uD0DD\uC744 \uD558\uBA74 \uAC8C\uC784 \uC624\uBC84"
   mapCode: 301010
   method: 1
-  endMap: 0
-  director: {fileID: 0}
   nextMapcode: 301011
   map: {fileID: 3399415230558604088}
   ui: {fileID: 0}
-  SkyboxSetting: {fileID: 2100000, guid: 60a35dfd0bcf1404ba332b8f6ab0b5b8, type: 2}
+  SkyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
   isOrthographic: 1
-  orthographicSize: 7
-  isCameraMoving: 0
+  orthographicSize: 3
   cameraBound: {fileID: 0}
   BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 3854271869228353602}
   clearBoxList:
   - {fileID: 8096532742656293649}
-  positionSetting: {fileID: 8096532742479889281}
   positionSets:
   - index: 0
     who: 2
     startPosition: {fileID: 8096532742418028382}
-    clearBox: {fileID: 8096532742656293648}
     posSet: {fileID: 8096532741615645103}
     isMain: 1
-  posIndex: 0
-  cam: {fileID: 0}
   cameraViewType: 0
-  camDis: {x: -24, y: 16.61, z: 16.61}
+  camDis: {x: -24.14, y: 18.1, z: 16.61}
   camRot: {x: 30, y: 126.722, z: 0}
-  isJoystickInputIgnore: 1
+  positionSetting: {fileID: 8096532742479889281}
+  isJoystickInputUse: 0
   isJoystickNone: 1
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &8096532741615645102
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,6 +459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 301020
 --- !u!1001 &8096532742409368062
