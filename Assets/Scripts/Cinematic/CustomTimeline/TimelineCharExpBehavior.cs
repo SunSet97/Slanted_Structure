@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 
 [Serializable]
-public class TimelineCharBehavior : PlayableBehaviour
+public class TimelineCharExpBehavior : PlayableBehaviour
 {
     //[SerializeField] private CustomEnum.Character who;
 
@@ -41,7 +41,7 @@ public class TimelineCharBehavior : PlayableBehaviour
     {
         base.ProcessFrame(playable, info, playerData);
         var cin_character = playerData as CinematicCharacter;
-        cin_character.EmotionAnimationSetting((int)expression);
+        cin_character.ExpressionSetting((int)expression);
     }
     
     #endregion

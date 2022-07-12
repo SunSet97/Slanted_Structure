@@ -27,10 +27,11 @@ public class CinematicCharacter : MonoBehaviour
     public void EmotionAnimationSetting(int emotionInt)
     {
         anim.SetInteger(Emotion, emotionInt); // 애니메이션실행
-        
+    }
+    public void ExpressionSetting(int emotionInt)
+    {
         if (who.Equals(CustomEnum.Character.Speat) || who.Equals(CustomEnum.Character.Oun) || who.Equals(CustomEnum.Character.Rau))
             skinnedMesh.materials[1].SetTexture(MainTex, faceExpression[emotionInt]); // 현재 감정으로 메터리얼 변경
     }
-
 
 }

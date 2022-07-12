@@ -5,10 +5,10 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-[TrackColor(0.3f, 0.3f, 0.7f)]
+[TrackColor(0, 1, 0)]
 
 [TrackBindingType(typeof(CinematicCharacter))]
-[TrackClipType(typeof(TimelineCharClip))]
-public class TimelineCharAsset : TrackAsset
+[TrackClipType(typeof(TimelineCharExpClip))]
+public class TimelineCharExpAsset : TrackAsset
 {
 }
