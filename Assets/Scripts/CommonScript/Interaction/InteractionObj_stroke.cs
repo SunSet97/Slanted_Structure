@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using CommonScript;
 using Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
+using UnityEngine.Timeline;
 using IPlayable = Play.IPlayable;
 using Task = Data.Task;
 using static Data.CustomEnum;
@@ -112,6 +114,15 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         {
             playerLayer = 1 << LayerMask.NameToLayer("Player");
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
+            
+            var timelineAsset = timeline.playableAsset as TimelineAsset;
+            var tracks = timelineAsset.GetOutputTracks();
+            foreach (var temp in tracks)
+            {
+                if (temp is CinemachineTrack)
+                    timeline.SetGenericBinding(temp, DataController.instance.cam.GetComponent<CinemachineBrain>());
+            }
+
             //딱히 필요 없음
             // gameObject.tag = "obj_interaction";
             if (TryGetComponent(out Outline t))
