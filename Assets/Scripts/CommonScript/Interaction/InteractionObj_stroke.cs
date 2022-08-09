@@ -69,6 +69,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     private bool isInteractionObj = false;
 
     public Outline outline;
+    private bool isCharIn;
 
     [Header("카메라 뷰")] public bool isViewChange = false;
 
@@ -125,33 +126,34 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
 
             //딱히 필요 없음
             // gameObject.tag = "obj_interaction";
-            if (TryGetComponent(out Outline t))
-            {
-                outline = t;
-            }
-            else
-            {
-                outline = gameObject.AddComponent<Outline>();
-            }
-
-            outline.OutlineMode = Outline.Mode.OutlineAll;
-            outline.OutlineWidth = 8f; // 아웃라인 두께 설정
-            outline.enabled = false; // 우선 outline 끄기
+            // if (!Application.isPlaying)
+            // {
+            //     Debug.Log("ㅎㅇ");
+            //     if (TryGetComponent(out Outline t))
+            //     {
+            //         outline = t;
+            //     }
+            //     else
+            //     {
+            //         outline = gameObject.AddComponent<Outline>();
+            //     }
+            //
+            //     outline.OutlineMode = Outline.Mode.OutlineAll;
+            //     outline.OutlineWidth = 8f; // 아웃라인 두께 설정
+            //     outline.enabled = false; // 우선 outline 끄기
+            //     // 아웃라인 색깔 설정
+            //     if (color == OutlineColor.red) outline.OutlineColor = Color.red;
+            //     else if (color == OutlineColor.magenta) outline.OutlineColor = Color.magenta;
+            //     else if (color == OutlineColor.yellow) outline.OutlineColor = Color.yellow;
+            //     else if (color == OutlineColor.green) outline.OutlineColor = Color.green;
+            //     else if (color == OutlineColor.blue) outline.OutlineColor = Color.blue;
+            //     else if (color == OutlineColor.grey) outline.OutlineColor = Color.grey;
+            //     else if (color == OutlineColor.black) outline.OutlineColor = Color.black;
+            //     else if (color == OutlineColor.white) outline.OutlineColor = Color.white;
+            // }
 
             if (useExclamationMark && exclamationMark.gameObject != null) exclamationMark.SetActive(false); // 느낌표 끄기
-            
-
-            // 아웃라인 색깔 설정
-            if (color == OutlineColor.red) outline.OutlineColor = Color.red;
-            else if (color == OutlineColor.magenta) outline.OutlineColor = Color.magenta;
-            else if (color == OutlineColor.yellow) outline.OutlineColor = Color.yellow;
-            else if (color == OutlineColor.green) outline.OutlineColor = Color.green;
-            else if (color == OutlineColor.blue) outline.OutlineColor = Color.blue;
-            else if (color == OutlineColor.grey) outline.OutlineColor = Color.grey;
-            else if (color == OutlineColor.black) outline.OutlineColor = Color.black;
-            else if (color == OutlineColor.white) outline.OutlineColor = Color.white;
-
-        }
+            }
     }
 
     /// <summary>
@@ -361,31 +363,23 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         if (Application.isPlaying)
         {
             var cam = DataController.instance.cam;
+            //Update말고 Collider로 체크
             var isAround = CheckAroundCharacter(); // 일정 범위 안에 선택된 캐릭터 있는지 확인
             if (exclamationMark && exclamationMark.activeSelf)
                 exclamationMark.transform.position =
                     (Vector3) markOffset + cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
             if (isAround && !isTouched)
             {
-                // 플레이어의 인터렉션 오브젝트 터치 감지
-                // if (interactionMethod == InteractionMethod.Touch)
-                // {
-                //     if (Input.GetMouseButtonDown(0))
-                //     {
-                //         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                //         if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << 13))
-                //         {
-                //             Debug.Log($"터치된 오브젝트: {hit.transform.gameObject}");
-                //             StartInteraction(); //인터렉션반응 나타남.
-                //         }
-                //     }
-                // }
-                if (!outline.enabled)
+                if (!isCharIn)
                 {
                     ((IClickable) this).ActiveObjectClicker(true);
                     // 아웃라인 켜기
-                    outline.enabled = true;
+                    if (outline)
+                    {
+                        outline.enabled = true;
+                    }
 
+                    isCharIn = true;
                     if (useExclamationMark)
                     {
                         // 느낌표 보이게
@@ -393,11 +387,16 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     }
                 }
             }
-            else if (!isAround && outline.enabled || isTouched) // 범위 밖이면서 아웃라인이 켜져있거나 눌렀을 경우
+            else if (!isAround && isCharIn || isTouched) // 범위 밖이면서 아웃라인이 켜져있거나 눌렀을 경우
             {
-                if (!outline.enabled) return;
+                if (!isCharIn) return;
                 // 아웃라인 끄기
-                outline.enabled = false;
+                isCharIn = false;
+                if (outline)
+                {
+                    outline.enabled = false;
+                }
+
                 ((IClickable) this).ActiveObjectClicker(false);
                 if (useExclamationMark)
                 {

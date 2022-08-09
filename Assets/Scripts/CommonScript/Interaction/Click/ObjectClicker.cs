@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CommonScript
@@ -7,8 +8,14 @@ namespace CommonScript
     {
         public static ObjectClicker instance;
         
+        // 검색하는 layer
         private int layerMask;
 
+        /// <summary>
+        /// true인 경우, 자체적인 Touch 사용
+        /// 맵 초기화마다 변경
+        /// </summary>
+        [NonSerialized]
         public bool isCustomUse;
 
         private readonly List<IClickable> clickables = new List<IClickable>();

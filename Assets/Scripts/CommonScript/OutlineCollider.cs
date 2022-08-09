@@ -32,11 +32,11 @@ public class OutlineCollider : MonoBehaviour
     }
     
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = outlineColor - Color.black * 0.7f;
-        Gizmos.DrawWireSphere(transform.position + offset, radius);
-    }
+    // void OnDrawGizmos()
+    // {
+    //     Gizmos.color = outlineColor - Color.black * 0.7f;
+    //     Gizmos.DrawWireSphere(transform.position + offset, radius * transform.lossyScale.y);
+    // }
 
     void OnTriggerEnter(Collider other)
     {
