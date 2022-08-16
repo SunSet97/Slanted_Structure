@@ -1,16 +1,24 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 using static Data.CustomEnum;
 
 public class JoystickInputManager : MonoBehaviour
 {
     public static JoystickInputManager instance;
 
+    [SerializeField]
+    private Button jumpButton;
     private void Awake()
     {
         instance = this;
+    }
+
+    private void Start()
+    {
+        jumpButton.onClick.AddListener(() =>
+        {
+            // DataController.instance.inputJump = true;
+        });
     }
 
     public void JoystickInputUpdate(JoystickInputMethod method)
