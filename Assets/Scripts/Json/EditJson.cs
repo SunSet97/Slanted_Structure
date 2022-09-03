@@ -1,10 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Data;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(EditJson))]
 public class CustomEditJson : Editor
 {
@@ -36,16 +38,23 @@ public class CustomEditJson : Editor
         base.OnInspectorGUI();
     }
 }
+#endif
 
 [ExecuteInEditMode]
 public class EditJson : MonoBehaviour
 {
-    enum JsonType { NONE, DIALOGUE, TASK }
+    enum JsonType
+    {
+        NONE,
+        DIALOGUE,
+        TASK
+    }
 
     [SerializeField] private TextAsset jsonFile;
     [SerializeField] private JsonType type;
     [SerializeField] private Dialogue[] dialogues;
     [SerializeField] private List<TaskData> taskDatas;
+#if UNITY_EDITOR
     public void LoadJson()
     {
         if (jsonFile)
@@ -111,12 +120,14 @@ public class EditJson : MonoBehaviour
             }
         }
     }
+
     public void ResetData()
     {
         type = JsonType.NONE;
         taskDatas = null;
         dialogues = null;
     }
+
     public void SaveJson()
     {
         string json = default;
@@ -128,8 +139,9 @@ public class EditJson : MonoBehaviour
         else if (type == JsonType.TASK)
         {
             //if (tasks != null && tasks.Length > 0)
-                //json = JsontoString.toJsonArray(tasks);
+            //json = JsontoString.toJsonArray(tasks);
         }
+
         if (json != default)
         {
             File.WriteAllText(AssetDatabase.GetAssetPath(jsonFile), json);
@@ -140,10 +152,12 @@ public class EditJson : MonoBehaviour
             if (type != JsonType.NONE)
             {
                 Debug.Log("Json 파일 편집 실패");
-                Debug.Log($"현재 타입: {type}\n길이: {dialogues.Length}, Dialogue: {dialogues}\n길이: {taskDatas.Count}, TaskDatas: {taskDatas}");
-                foreach(TaskData taskData in taskDatas)
+                Debug.Log(
+                    $"현재 타입: {type}\n길이: {dialogues.Length}, Dialogue: {dialogues}\n길이: {taskDatas.Count}, TaskDatas: {taskDatas}");
+                foreach (TaskData taskData in taskDatas)
                     Debug.Log($"길이: {taskData.tasks.Length}, Tasks: {taskData.tasks}");
             }
         }
     }
+#endif
 }

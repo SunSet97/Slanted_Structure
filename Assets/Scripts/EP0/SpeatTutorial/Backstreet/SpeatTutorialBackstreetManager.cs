@@ -7,6 +7,7 @@ using static Data.CustomEnum;
 public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
 {
     public bool IsPlay { get; set; } = false;
+
     [Header("End Dialogue")]
     [SerializeField] private TextAsset _jsonFile;
 
@@ -33,9 +34,9 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
     public float runSpeed;
     void Start()
     {
-        initRunGame();
+        InitRunGame();
     }
-    private void initRunGame()
+    private void InitRunGame()
     {
         for (int i = 0; i < 3; i++)
         {
@@ -51,13 +52,25 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
 
     public void EndPlay()
     {
-        IsPlay = false;
-        DataController.instance.currentMap.MapClear();
+        if (_jsonFile != null)
+        {
+            DialogueController.instance.SetDialougueEndAction(() =>
+            {
+                IsPlay = false;
+                DataController.instance.currentMap.MapClear();
+            });
+            DialogueController.instance.StartConversation(_jsonFile.text);
+        }
+        else
+        {
+            IsPlay = false;
+            DataController.instance.currentMap.MapClear();
+        }
     }
 
     void Update()
     {
-        if (IsPlay)
+        if (IsPlay && DialogueController.instance.isTalking)
         {
             percentage = 100 / speatSlider.maxValue;
             speatDistance = (speatSlider.maxValue - speatSlider.value) * percentage; // 종료 지점과 스핏의 거리
@@ -73,23 +86,22 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
             }
 
             // 포주와 스핏의 거리 설정
-            if (pimp.activeSelf) pimp.transform.localPosition = new Vector3(20 - pimpDistance * 2, pimp.transform.localPosition.y, pimp.transform.localPosition.z);
+            if (pimp.activeSelf)
+            {
+                Vector3 localPosition = pimp.transform.localPosition;
+                localPosition = new Vector3(20 - pimpDistance * 2, localPosition.y,
+                    localPosition.z);
+                pimp.transform.localPosition = localPosition;
+            }
 
             // 남은 거리, 포주와의 거리 텍스트 입력
-            endText.text = string.Format("{0:0}m", speatDistance); distanceText.text = string.Format("{0:0}m", pimpDistance);
+            endText.text = $"{speatDistance:0}m";
+            distanceText.text = $"{pimpDistance:0}m";
 
             // 게임 끝
             if (speatSlider.value >= speatSlider.maxValue)
             {
-                if (_jsonFile != null)
-                {
-                    CanvasControl.instance.SetDialougueEndAction(() => { DataController.instance.currentMap.MapClear(); });
-                    CanvasControl.instance.StartConversation(_jsonFile.text);
-                }
-                else
-                {
-                    EndPlay();
-                }
+                EndPlay();
             }
             else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1) DataController.instance.ChangeMap(DataController.instance.mapCode);
         }

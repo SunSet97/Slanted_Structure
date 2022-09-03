@@ -49,7 +49,7 @@ public class HamburgerStoreManager : MonoBehaviour
             // 대화 시작이 "포인트에 도착했을 때"이기 때문에 바로 해줘도 됨
             _wayPoints.SetPointEvent(() =>
             {
-                CanvasControl.instance.SetDialougueEndAction(() => { SpeatInteraction(2); });
+                DialogueController.instance.SetDialougueEndAction(() => { SpeatInteraction(2); });
                 //Json 파일
                 //Json 파일
                 //Json 파일
@@ -60,7 +60,7 @@ public class HamburgerStoreManager : MonoBehaviour
                 //Json 파일
                 //Json 파일
                 //Json 파일
-                CanvasControl.instance.StartConversation(jsonFile.text);
+                DialogueController.instance.StartConversation(jsonFile.text);
             }, 3);
         }
     }

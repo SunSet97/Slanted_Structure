@@ -115,13 +115,16 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         {
             playerLayer = 1 << LayerMask.NameToLayer("Player");
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
-            
-            var timelineAsset = timeline.playableAsset as TimelineAsset;
-            var tracks = timelineAsset.GetOutputTracks();
-            foreach (var temp in tracks)
+
+            if (timeline)
             {
-                if (temp is CinemachineTrack)
-                    timeline.SetGenericBinding(temp, DataController.instance.cam.GetComponent<CinemachineBrain>());
+                var timelineAsset = timeline.playableAsset as TimelineAsset;
+                var tracks = timelineAsset.GetOutputTracks();
+                foreach (var temp in tracks)
+                {
+                    if (temp is CinemachineTrack)
+                        timeline.SetGenericBinding(temp, DataController.instance.cam.GetComponent<CinemachineBrain>());
+                }
             }
 
             //딱히 필요 없음
@@ -153,7 +156,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
             // }
 
             if (useExclamationMark && exclamationMark.gameObject != null) exclamationMark.SetActive(false); // 느낌표 끄기
-            }
+        }
     }
 
     /// <summary>
@@ -226,9 +229,8 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                 path = curTask.nextFile;
                 jsonString = (Resources.Load(path) as TextAsset)?.text;
                 // currentTaskData.taskIndex--;    // 현재 taskIndex는 선택지이며 선택지 다음 인덱스가 된다. 그런데 대화 종료시 Index가 1 증가하기에 1을 줄여준다.
-                CanvasControl.instance.StartConversation(jsonString);
-                //다음 인덱스의 타입 
-                Debug.Log("하이");
+                DialogueController.instance.StartConversation(jsonString);
+                //다음 인덱스의 타입
                 break;
             case TaskContentType.TEMP:
                 //새로운 task 실행
@@ -276,12 +278,12 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
             {
                 if (startDialogueAction != null)
                 {
-                    CanvasControl.instance.SetDialougueStartAction(startDialogueAction);
+                    DialogueController.instance.SetDialouguePrevAction(startDialogueAction);
                 }
 
                 if (endDialogueAction != null)
                 {
-                    CanvasControl.instance.SetDialougueEndAction(endDialogueAction);
+                    DialogueController.instance.SetDialougueEndAction(endDialogueAction);
                 }
 
                 foreach (InteractionEvent endAction in dialogueEndAction)
@@ -289,22 +291,22 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     switch (endAction.eventType)
                     {
                         case InteractionEvent.EventType.CLEAR:
-                            CanvasControl.instance.SetDialougueEndAction(() =>
+                            DialogueController.instance.SetDialougueEndAction(() =>
                                 endAction.ClearEvent());
                             break;
                         case InteractionEvent.EventType.ACTIVE:
-                            CanvasControl.instance.SetDialougueEndAction(() => { endAction.ActiveEvent(); });
+                            DialogueController.instance.SetDialougueEndAction(() => { endAction.ActiveEvent(); });
                             break;
                         case InteractionEvent.EventType.MOVE:
-                            CanvasControl.instance.SetDialougueEndAction(() => { endAction.MoveEvent(); });
+                            DialogueController.instance.SetDialougueEndAction(() => { endAction.MoveEvent(); });
                             break;
                         case InteractionEvent.EventType.PLAY:
-                            CanvasControl.instance.SetDialougueEndAction(() => { endAction.PlayEvent(); });
+                            DialogueController.instance.SetDialougueEndAction(() => { endAction.PlayEvent(); });
                             break;
                     }
                 }
 
-                CanvasControl.instance.StartConversation(jsonFile.text);
+                DialogueController.instance.StartConversation(jsonFile.text);
             }
             else
                 Debug.LogError("json 파일 없는 오류");
@@ -334,22 +336,23 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
             timeline.Play();
             timeline.stopped += director =>
             {
+                Debug.Log("타임라인 끝");
                 foreach (var endAction in cinematicEndAction.interactionEvents)
                 {
+                    Debug.Log(endAction.eventType);
                     switch (endAction.eventType)
                     {
                         case InteractionEvent.EventType.CLEAR:
-                            CanvasControl.instance.SetDialougueEndAction(() =>
-                                endAction.ClearEvent());
+                            endAction.ClearEvent();
                             break;
                         case InteractionEvent.EventType.ACTIVE:
-                            CanvasControl.instance.SetDialougueEndAction(() => { endAction.ActiveEvent(); });
+                            endAction.ActiveEvent();
                             break;
                         case InteractionEvent.EventType.MOVE:
-                            CanvasControl.instance.SetDialougueEndAction(() => { endAction.MoveEvent(); });
+                            endAction.MoveEvent();
                             break;
                         case InteractionEvent.EventType.PLAY:
-                            CanvasControl.instance.SetDialougueEndAction(() => { endAction.PlayEvent(); });
+                            endAction.PlayEvent();
                             break;
                     }
                 }
@@ -467,7 +470,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     string path = currentTask.nextFile;
                     string jsonString = (Resources.Load(path) as TextAsset)?.text;
                     Debug.Log($"대화 경로 - {path}");
-                    CanvasControl.instance.StartConversation(jsonString);
+                    DialogueController.instance.StartConversation(jsonString);
                     break;
                 case TaskContentType.ANIMATION:
                     //세팅된 애니메이션 실행
@@ -483,8 +486,8 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                 case TaskContentType.TEMP:
                     Debug.Log("선택지 열기");
                     currentTaskData.isContinue = false;
-                    CanvasControl.instance.SetChoiceAction(ChoiceEvent);
-                    CanvasControl.instance.OpenChoicePanel();
+                    DialogueController.instance.SetChoiceAction(ChoiceEvent);
+                    DialogueController.instance.OpenChoicePanel();
                     break;
                 case TaskContentType.TempDialogue:
                     //선택지에서 대화를 고른 경우
@@ -600,6 +603,9 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     }
 
                     break;
+                case TaskContentType.Clear:
+                    DataController.instance.currentMap.MapClear();
+                    break;
                 default:
                 {
                     Debug.LogError($"{currentTask.taskContentType}은 존재하지 않는 type입니다.");
@@ -610,7 +616,8 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
             Debug.Log("Task 종료 대기 중 - " + currentTask.taskContentType + ", Index - " + currentTaskData.taskIndex);
             yield return waitUntil;
             currentTaskData.taskIndex++;
-            Debug.Log("Task 종료 - " + currentTask.taskContentType + ", Index - " + currentTaskData.taskIndex);
+            // Debug.Log("Task 종료 - " + currentTask.taskContentType + ", Index - " + currentTaskData.taskIndex);
+            Debug.Log(currentTaskData.tasks.Length + " " + currentTaskData.taskIndex);
             Debug.Log(currentTaskData.tasks.Length > currentTaskData.taskIndex &&
                       currentTaskData.tasks[currentTaskData.taskIndex].order.Equals(currentTaskData.taskOrder) &&
                       currentTaskData.isContinue);

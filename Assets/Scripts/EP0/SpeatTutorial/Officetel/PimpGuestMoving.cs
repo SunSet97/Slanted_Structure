@@ -140,8 +140,8 @@ public class PimpGuestMoving : MonoBehaviour
                 //수정
                 var speat = pimpGameManager.speat;
                 speat.IsMove = false;
-                CanvasControl.instance.SetDialougueEndAction(() => { SetTalking(false); speat.IsMove = true; DataController.instance.ChangeMap(DataController.instance.mapCode); });
-                if (jsonFile) CanvasControl.instance.StartConversation(jsonFile.text);
+                DialogueController.instance.SetDialougueEndAction(() => { SetTalking(false); speat.IsMove = true; DataController.instance.ChangeMap(DataController.instance.mapCode); });
+                if (jsonFile) DialogueController.instance.StartConversation(jsonFile.text);
             }
 
         }

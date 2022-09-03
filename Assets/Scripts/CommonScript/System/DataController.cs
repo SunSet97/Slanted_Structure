@@ -47,12 +47,8 @@ public class DataController : MonoBehaviour
     [Header("맵")]
     public MapData[] storymaps;
     public Transform mapGenerate;
-    public Transform[] progressColliders;
-    public Transform currentProgress;
-    public Transform commandSprite;
     public MapData currentMap;
     public string mapCode;
-    public string playMethod; //2D 플랫포머(2D Platformer)=Plt, 쿼터뷰(Quarter view)=Qrt, 라인트레이서(Line tracer)=Line
 
     // 카메라 projecton orthographic에서 perspective로 전환될 때 필요
     float originOrthoSize;
@@ -77,7 +73,6 @@ public class DataController : MonoBehaviour
     void Start()
     {
         ExistsData();
-        LoadData("TutorialCommandData", "RauTutorial");
 
         //초기화
         speat = GameObject.Find("Speat").GetComponent<CharacterManager>();
@@ -92,7 +87,7 @@ public class DataController : MonoBehaviour
         var startEp = int.Parse(mapCode.Substring(0, 1));
         LoadMap(startEp);
     }
-
+    
     void LoadMap(int idx)
     {
         MapData[] temp = Resources.LoadAll<MapData>("StoryMap/ep" + idx);
@@ -188,7 +183,7 @@ public class DataController : MonoBehaviour
         camDis = currentMap.camDis;
         camRot = currentMap.camRot;
 
-        CanvasControl.instance.Initialize();
+        DialogueController.instance.Initialize();
 
         // 해당되는 캐릭터 초기화
         speat.InitializeCharacter();
@@ -265,8 +260,6 @@ public class DataController : MonoBehaviour
             orthgraphic_Size = currentMap.orthographicSize;
         }
 
-        FindProgressCollider();
-
         // 조작 가능한 상태로 변경 (중력 적용)
         speat.UseJoystickCharacter();
         oun.UseJoystickCharacter();
@@ -274,24 +267,6 @@ public class DataController : MonoBehaviour
         speat_Adolescene.UseJoystickCharacter();
         speat_Child.UseJoystickCharacter();
         speat_Adult.UseJoystickCharacter();
-    }
-
-    // 게임 진행에 필요한 콜라이더와 이미지를 획득
-    void FindProgressCollider()
-    {
-        if (currentMap.map.transform.Find("ProgressCollider") != null)
-        {
-            currentProgress = currentMap.map.transform.Find("ProgressCollider");
-            int curProgressCnt = currentProgress.childCount;
-            progressColliders = new Transform[curProgressCnt];
-
-            // 현재 비활성화 된 콜라이더까지 모두 찾음 
-            progressColliders = currentProgress.GetComponentsInChildren<Transform>(true);
-
-            // 지시문과 함께 나오는 이미지를 획득
-            if (currentMap.map.transform.Find("CommandSprites") != null)
-                commandSprite = currentMap.map.transform.Find("CommandSprites");
-        }
     }
     #endregion
 
@@ -309,19 +284,6 @@ public class DataController : MonoBehaviour
         inputDirection = Vector2.zero;
         joyStick.input = Vector2.zero;
         inputJump = false;
-    }
-
-    public void UpdateLikeable(int[] rauLikeables)
-    {
-        charData.selfEstm += rauLikeables[0];
-        charData.intimacy_spRau += rauLikeables[1];
-        charData.intimacy_ounRau += rauLikeables[2];
-    }
-
-    public int[] GetLikeable()
-    {
-        int[] likable = {charData.selfEstm, charData.intimacy_spRau, charData.intimacy_ounRau};
-        return likable;
     }
     /// <summary>
     /// 조이스틱 멈추고 이전 상태에 따라 키거나 끄는 함수
@@ -349,106 +311,53 @@ public class DataController : MonoBehaviour
         }
     }
     
-    void FindTutorialCommand()
+    public void UpdateLikeable(int[] rauLikeables)
     {
-        if (mainChar.name == "Rau")
-            LoadData("TutorialCommandData", "RauTutorial");
-        else
-            LoadData("TutorialCommandData", "SpeatTutorial");
-
+        charData.selfEstm += rauLikeables[0];
+        charData.intimacy_spRau += rauLikeables[1];
+        charData.intimacy_ounRau += rauLikeables[2];
     }
 
-    public CharData _charData;
-    public CharData charData
+    public int[] GetLikeable()
     {
-        get
-        {
-            return _charData;
-        }
+        int[] likable = {charData.selfEstm, charData.intimacy_spRau, charData.intimacy_ounRau};
+        return likable;
     }
+    
+    public CharData charData;
 
     public TaskData taskData;
 
     public DialogueData dialogueData;
 
-    public TutorialCommandData _tutorialCmdData;
-    public TutorialCommandData tutorialCmdData
-    {
-        get
-        {
-            return _tutorialCmdData;
-        }
-    }
-
-    //저장할 데이터의 파일이름 
-    public string DataFileName;
 
     // 세이브 데이터를 불러오는 함수 
     // 저장된 파일이 있을 경우 기존의 파일을 가져오고 없다면 새로 생성  
     public void LoadData(string dataType, string fileName)
     {
-        DataFileName = fileName;
+        string DataFileName = fileName;
 
 
         if (dataType == "Save")
         {
-
             string filePath = Application.persistentDataPath + "/" + DataFileName;
 
             if (File.Exists(filePath))
             {
-
                 Debug.Log("로드 성공");
                 string FromJsonData = File.ReadAllText(filePath);
-                _charData = JsonUtility.FromJson<CharData>(FromJsonData);
+                charData = JsonUtility.FromJson<CharData>(FromJsonData);
             }
             else
             {
                 print(Application.persistentDataPath);
                 Debug.Log("새 파일 생성");
-                _charData = new CharData();
+                charData = new CharData();
             }
         }
-        else if (dataType == "TutorialCommandData") // 튜토리얼 지시문 불러오기 
+        else
         {
-            StringBuilder filePath = new StringBuilder();
-            filePath.AppendFormat("{0}/Resources/DialogueScripts/ProgressCollider/{1}/{2}.json", Application.dataPath, DataFileName, dataType);
-            if (File.Exists(filePath.ToString()))
-            {
-                Debug.Log("로드 성공");
-                string FromJsonData = File.ReadAllText(filePath.ToString());
-                _tutorialCmdData = JsonUtility.FromJson<TutorialCommandData>(FromJsonData);
-
-            }
-            else
-            {
-                print(Application.persistentDataPath);
-                Debug.Log("파일 없음");
-            }
-        }
-        else // 대화파일 불러오기
-        {
-            StringBuilder filePath = new StringBuilder();
-            filePath.AppendFormat("{0}/Resources/DialogueScripts/{1}/{2}", Application.dataPath, dataType, DataFileName);
-            //string filePath = Application.dataPath + "/Resources/DialogueScripts/" + dataType + "/" + DataFileName;
-            print(filePath);
-            if (File.Exists(filePath.ToString()))
-            {
-                Debug.Log("로드 성공");
-                Debug.Log(filePath.ToString());
-                dialogueData.dialogues = JsontoString.FromJsonPath<Dialogue>(filePath.ToString());
-                if (dataType != "ScriptCollider")
-                    instance.charData.dialogue_index++;
-            }
-            else
-            {
-                Debug.Log("기본 대사 파일");
-                filePath.Clear();
-                filePath.AppendFormat("{0}/Resources/DialogueScripts/{1}/Default.json", Application.dataPath, dataType);
-                string FromJsonData = File.ReadAllText(filePath.ToString());
-                Debug.Log(FromJsonData);
-                //_dialogueData = JsonUtility.FromJson<DialogueData>(FromJsonData);
-            }
+            Debug.LogError($"{dataType} 없앤곳");
         }
     }
 

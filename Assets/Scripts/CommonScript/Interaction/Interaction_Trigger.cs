@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Interaction_Trigger : InteractionObj_stroke
 {
-    public bool isLoop;
+    private bool isActivated;
 
     protected override void Start()
     {
@@ -16,9 +16,10 @@ public class Interaction_Trigger : InteractionObj_stroke
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(gameObject.name + "트리거  " + other.transform.gameObject + isLoop);
-        if (isLoop) return;
-        isLoop = true;
+        Debug.Log("ㅎㅇ");
+        Debug.Log(gameObject.name + "트리거  " + other.transform.gameObject + isActivated);
+        if (isActivated) return;
+        isActivated = true;
         StartInteraction();
     }
 }
