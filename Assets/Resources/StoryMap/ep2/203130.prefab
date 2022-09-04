@@ -57,6 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
 --- !u!1 &3070732721964558625
@@ -221,40 +222,35 @@ MonoBehaviour:
     \uBCFC \uB54C:dis(-1.96,0.4,0)\nRot( 10.18, 90 ,0)"
   mapCode: 203130
   method: 1
-  endMap: 0
-  director: {fileID: 0}
   nextMapcode: 204110
   map: {fileID: 7185179039764740770}
-  ui: {fileID: 5086918323669958212}
+  ui: {fileID: 5086918323669958213}
   SkyboxSetting: {fileID: 2100000, guid: 60a35dfd0bcf1404ba332b8f6ab0b5b8, type: 2}
   isOrthographic: 0
   orthographicSize: 0
-  isCameraMoving: 1
   cameraBound: {fileID: 0}
+  BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 4499776922742821817}
   clearBoxList: []
-  positionSetting: {fileID: 5086918325192144251}
   positionSets:
   - index: 0
     who: 2
     startPosition: {fileID: 5086918323900167044}
-    clearBox: {fileID: 5086918325620033182}
     posSet: {fileID: 5086918325696444135}
     isMain: 1
   - index: 1
     who: 0
     startPosition: {fileID: 4931852950572653625}
-    clearBox: {fileID: 2643456595152292092}
     posSet: {fileID: 7147352855898190907}
     isMain: 0
-  posIndex: 0
-  cam: {fileID: 0}
+  cameraViewType: 0
   camDis: {x: -6.91, y: 4.8, z: 4.19}
   camRot: {x: 40.79, y: 130.74, z: 0}
-  isJoystickInputIgnore: 1
+  positionSetting: {fileID: 5086918325192144251}
+  isJoystickInputUse: 0
   isJoystickNone: 1
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &5086918323875659881
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,12 +401,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 301b89eb897a0a64093cd3779ec16176, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: []
-  ring: {fileID: 0}
-  radius: 0
-  segments: 0
-  speed: 100
-  width: 0
+  Circle: {fileID: 0}
+  throwStart: {fileID: 0}
+  throwDest: {fileID: 0}
+  canPrefab: {fileID: 0}
+  can: 0
+  throwCans: []
+  camPlace: {x: 0, y: 0, z: 0}
+  camDirection: {x: 0, y: 0, z: 0}
 --- !u!1 &5086918324309305460
 GameObject:
   m_ObjectHideFlags: 0
@@ -606,6 +604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 204110
 --- !u!1 &5086918325673375781

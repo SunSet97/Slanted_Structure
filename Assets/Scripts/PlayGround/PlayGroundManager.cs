@@ -70,7 +70,7 @@ public class PlayGroundManager : MonoBehaviour, IPlayable
     //원 생성
     public void StartTimingGame()
     {
-        DataController.instance.currentMap.ui.SetActive(true);
+        DataController.instance.currentMap.ui.gameObject.SetActive(true);
         //게임 실행
         CanvasControl.instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
         //CanvasControl.instance_CanvasControl.GetComponent<Canvas>().worldCamera = DataController.instance.cam;
@@ -96,7 +96,7 @@ public class PlayGroundManager : MonoBehaviour, IPlayable
     {
         Circle.SetActive(false);
         CanvasControl.instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
-        DataController.instance.currentMap.ui.SetActive(false);
+        DataController.instance.currentMap.ui.gameObject.SetActive(false);
         StartThrowing(can);
     }
 

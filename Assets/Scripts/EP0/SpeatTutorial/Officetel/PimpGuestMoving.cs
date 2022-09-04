@@ -112,7 +112,7 @@ public class PimpGuestMoving : MonoBehaviour
             for(int j = 0; j < transform.parent.parent.GetChild(i).childCount; j++)
             {
                 pimpGameManager.isTalking = isTalking;
-                DataController.instance.currentMap.ui.SetActive(!isTalking);
+                DataController.instance.currentMap.ui.gameObject.SetActive(!isTalking);
                 speat.IsMove = !isTalking;
                 if (isTalking)
                 {

@@ -25,7 +25,7 @@ public class MapData : MonoBehaviour
     [Tooltip("맵의 이름은 사용자가 원하는 대로 변경하면 되며 맵 구성 어셋들은 이 오브젝트의 자식으로 설정해주면 됩니다.")]
     public GameObject map; // auto setting
     [Tooltip("이 맵의 전용 UI를 넣어주시면 됩니다.")]
-    public GameObject ui; // 맵 전용 UI
+    public RectTransform ui; // 맵 전용 UI
     [Tooltip("이 맵의 전용 SkyBox를 넣어주시면 됩니다.")]
     public Material SkyboxSetting; // 맵 전용 스카이박스
     [Tooltip("카메라의 orthographic 뷰를 제어할 수 있습니다.")]
@@ -264,10 +264,15 @@ public class MapData : MonoBehaviour
         if (name != mapCode) name = mapCode;
 
         // UI의 이름을 맵 이름으로 변경
-        if (ui != null) ui.name = map.name;
-
-        //UI 세팅
-        if (ui != null) ui.transform.SetParent(CanvasControl.instance.transform.Find("UI"));
+        if (ui != null)
+        {
+            ui.name = map.name;
+            
+            ui.SetParent(CanvasControl.instance.transform.Find("UI"));
+            ui.offsetMax = new Vector2(0, 0);
+            ui.offsetMin = new Vector2(0, 0);
+            ui.localScale = new Vector3(1, 1, 1);
+        }
 
         AudioController.instance.PlayBgm(BGM);
     }
@@ -325,10 +330,10 @@ public class MapData : MonoBehaviour
     [SerializeField] private string forDebuging = "인스펙터의 이름을 우클릭해주세요"; // 디버깅 세팅
 
     void MapOnOffDebug() { if (map != null) map.SetActive(!map.activeSelf); } // 맵을 키고 끔
-    void UIOnOffDebug() { if (ui != null) ui.SetActive(!ui.activeSelf); } // 맵 전용 UI가 있을 경우 UI 키고 끔
+    void UIOnOffDebug() { if (ui != null) ui.gameObject.SetActive(!ui.gameObject.activeSelf); } // 맵 전용 UI가 있을 경우 UI 키고 끔
     private bool isOnGizmo = true; void PosOnOffDebug() { isOnGizmo = !isOnGizmo; } // 위치 설정 기즈모를 키고 끔
-    void AllOnDebug() { map.SetActive(true); positionSetting.SetActive(true); ui.SetActive(true); isOnGizmo = true; } // 전부 킴
-    void AllOffDebug() { map.SetActive(false); positionSetting.SetActive(false); ui.SetActive(false); isOnGizmo = false; } // 전부 끔
+    void AllOnDebug() { map.SetActive(true); positionSetting.SetActive(true); ui.gameObject.SetActive(true); isOnGizmo = true; } // 전부 킴
+    void AllOffDebug() { map.SetActive(false); positionSetting.SetActive(false); ui.gameObject.SetActive(false); isOnGizmo = false; } // 전부 끔
     // 캐릭터별 기즈모 생성
     // private void OnDrawGizmos()
     // {
