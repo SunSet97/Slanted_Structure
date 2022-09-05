@@ -8,7 +8,6 @@ public class NPCInteractor : MonoBehaviour
     //캐릭터 오브젝트 받는 변수
     public Transform character;
     
-    private CanvasControl canvasCtrl;
     public float interactableDistance = 2;
 
     public Transform[] NPCArray;
@@ -20,7 +19,6 @@ public class NPCInteractor : MonoBehaviour
 
     private void Start()
     {
-        canvasCtrl = CanvasControl.instance;
         FindNPC();
         character = DataController.instance.GetCharacter(Character.Main).transform;
     }
@@ -53,22 +51,22 @@ public class NPCInteractor : MonoBehaviour
             // ++ getcloset 파라미터로 distance로 
             // ++ 이 스크립트 객체화 시키기 transform.parent....
             // ++ 이중으로 레이캐스트 ㄴㄴ
-            if (canvasCtrl.isInConverstation)
-            {
-                canvasCtrl.UpdateWord();
-            }
-            if (hit.collider.gameObject.name == closestNPC.gameObject.name && !canvasCtrl.isInConverstation)
-            {
-                // 대화가 끝나기 전까지 다시 대화 불가능하도록 설정
-                canvasCtrl.isInConverstation = true;
-                canvasCtrl.dialogueCnt = 0;
-                DataController.instance.LoadData(closestNPC.gameObject.name, DataController.instance.charData.story + "_"
-                    + DataController.instance.charData.storyBranch + "_" + DataController.instance.charData.storyBranch_scnd + "_"
-                    + DataController.instance.charData.dialogue_index + ".json");
-                
-                //수정
-                //canvasCtrl.StartConversation();
-            }
+            // if (canvasCtrl.isInConverstation)
+            // {
+            //     canvasCtrl.UpdateWord();
+            // }
+            // if (hit.collider.gameObject.name == closestNPC.gameObject.name && !canvasCtrl.isInConverstation)
+            // {
+            //     // 대화가 끝나기 전까지 다시 대화 불가능하도록 설정
+            //     canvasCtrl.isInConverstation = true;
+            //     canvasCtrl.dialogueCnt = 0;
+            //     DataController.instance.LoadData(closestNPC.gameObject.name, DataController.instance.charData.story + "_"
+            //         + DataController.instance.charData.storyBranch + "_" + DataController.instance.charData.storyBranch_scnd + "_"
+            //         + DataController.instance.charData.dialogue_index + ".json");
+            //     
+            //     //수정
+            //     //canvasCtrl.StartConversation();
+            // }
 
             /* 수정 전
             if (Input.GetMouseButtonDown(0))

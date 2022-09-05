@@ -112,7 +112,7 @@ public class PimpGuestMoving : MonoBehaviour
             for(int j = 0; j < transform.parent.parent.GetChild(i).childCount; j++)
             {
                 pimpGameManager.isTalking = isTalking;
-                DataController.instance.currentMap.ui.SetActive(!isTalking);
+                DataController.instance.currentMap.ui.gameObject.SetActive(!isTalking);
                 speat.IsMove = !isTalking;
                 if (isTalking)
                 {
@@ -140,8 +140,8 @@ public class PimpGuestMoving : MonoBehaviour
                 //수정
                 var speat = pimpGameManager.speat;
                 speat.IsMove = false;
-                CanvasControl.instance.SetDialougueEndAction(() => { SetTalking(false); speat.IsMove = true; DataController.instance.ChangeMap(DataController.instance.mapCode); });
-                if (jsonFile) CanvasControl.instance.StartConversation(jsonFile.text);
+                DialogueController.instance.SetDialougueEndAction(() => { SetTalking(false); speat.IsMove = true; DataController.instance.ChangeMap(DataController.instance.mapCode); });
+                if (jsonFile) DialogueController.instance.StartConversation(jsonFile.text);
             }
 
         }

@@ -15,7 +15,7 @@ namespace Data
         public CustomEnum.EndingType endingType;
 
     }
-    public static class CustomEnum
+    public class CustomEnum
     {
         public enum EndingType
         {
@@ -47,7 +47,21 @@ namespace Data
     
         public enum TaskContentType
         {
-            NONE = 0, ANIMATION = 1, DIALOGUE = 2, TEMP = 3, TEMPEND = 4, TaskReset = 5, NEW = 6, THEEND = 7, Play = 8, FadeIn = 9, FadeOut = 10, Cinematic = 11, EndingChoice = 12, Clear = 13, TempDialogue = 99
+            NONE = 0, 
+            ANIMATION = 1, 
+            DIALOGUE = 2,
+            TEMP = 3, 
+            TEMPEND = 4, 
+            TaskReset = 5, 
+            NEW = 6, 
+            THEEND = 7,
+            Play = 8,
+            FadeIn = 9, 
+            FadeOut = 10, 
+            Cinematic = 11, 
+            EndingChoice = 12,
+            Clear = 13, 
+            TempDialogue = 99
         }
     
         public enum CameraViewType

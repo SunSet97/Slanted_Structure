@@ -33,7 +33,6 @@ Transform:
   - {fileID: 7378718765164327379}
   - {fileID: 847822560161879266}
   - {fileID: 3674881357327088230}
-  - {fileID: 2272444365603690424}
   - {fileID: 321501457606891842}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -397,7 +396,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1917202998616146062}
-  m_LocalRotation: {x: 0.1740836, y: -0.7625982, z: 0.22915249, w: 0.5793342}
+  m_LocalRotation: {x: 0.17408362, y: -0.7625982, z: 0.22915246, w: 0.5793342}
   m_LocalPosition: {x: 5.5199995, y: 6.7600007, z: 3.3537788}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -489,6 +488,8 @@ PlayableDirector:
   - key: {fileID: 1224503965709186317, guid: f731e036ce346a740b820904d3996c10, type: 2}
     value: {fileID: 5708543127719619815}
   - key: {fileID: -8622449857938748568, guid: f731e036ce346a740b820904d3996c10, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 6603310926629766752, guid: f731e036ce346a740b820904d3996c10, type: 2}
     value: {fileID: 0}
   m_ExposedReferences:
     m_References:
@@ -833,7 +834,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 741192318138526783}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5574376349958392229
 MonoBehaviour:
@@ -856,7 +857,15 @@ MonoBehaviour:
   dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   cinematicEndAction:
-    interactionEvents: []
+    interactionEvents:
+    - eventType: 1
+      clearBox: {fileID: 3244334659787583577}
+      activeObjs:
+        actives: []
+      movables:
+        movables: []
+      playableList:
+        playableObjs: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
@@ -871,7 +880,6 @@ MonoBehaviour:
   inGames: []
   touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
-  isLoop: 0
 --- !u!65 &5356703305898844786
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -957,105 +965,6 @@ Transform:
   m_Father: {fileID: 741192318138526783}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &9109594531017906122
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2272444365603690424}
-  - component: {fileID: 6011842167485813540}
-  - component: {fileID: 6254203041069056904}
-  m_Layer: 16
-  m_Name: Dialogue Trigger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2272444365603690424
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9109594531017906122}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.11, y: -0.43, z: -3.76}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 741192318138526783}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6011842167485813540
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9109594531017906122}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.5233097, y: 1, z: 2}
-  m_Center: {x: 0.76165485, y: 0, z: 0}
---- !u!114 &6254203041069056904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9109594531017906122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionPlayType: 2
-  jsonFile: {fileID: 4900000, guid: d6ac2fbeda7506744af0dd5e5170202f, type: 3}
-  dialogueData:
-    dialogues:
-    - name: ??
-      expression: 2
-      anim_name: Speat_past
-      contents: " ...\uB09C \uC774\uC81C \uC5B4\uB5BB\uAC8C \uC0B4\uC544\uAC00\uC57C
-        \uD558\uC9C0..? \uC5EC\uAE30\uC11C \uC5B4\uB5BB\uAC8C \uC0B4\uC544\uAC00\uC9C0..?"
-    - name: ??
-      expression: 3
-      anim_name: Speat_past
-      contents: "\uC55E\uC73C\uB85C \uB09C \uC5B4\uB5BB\uAC8C \uB418\uB294\uAC78\uAE4C\u2026."
-  dialogueEndAction:
-  - eventType: 1
-    clearBox: {fileID: 3244334659787583577}
-    activeObjs:
-      actives: []
-    movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
-  cinematicEndAction:
-    interactionEvents: []
-  taskData_Debug: []
-  color: 0
-  interactionMethod: 2
-  radius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
-  outline: {fileID: 0}
-  isViewChange: 0
-  timeline: {fileID: 0}
-  cinematics: []
-  inGames: []
-  touchTargetObject: {fileID: 0}
-  isLoopDialogue: 0
-  isLoop: 0
 --- !u!1001 &741192318151274868
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2825,12 +2734,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ecea6a8f3cd88b49b6622b87a5956c3, type: 3}
---- !u!1 &1723061866810045326 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 969063762552734290, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
-    type: 3}
-  m_PrefabInstance: {fileID: 1917202998142120412}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7543386266124402771 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8229264196738806159, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
@@ -2840,6 +2743,12 @@ Transform:
 --- !u!95 &5708543127719619815 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6170938929142471995, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1917202998142120412}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1723061866810045326 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 969063762552734290, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
     type: 3}
   m_PrefabInstance: {fileID: 1917202998142120412}
   m_PrefabAsset: {fileID: 0}

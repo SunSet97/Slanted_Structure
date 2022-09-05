@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System;
-using System.Runtime.CompilerServices;
+
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
 public class ConditionalHideInInspectorAttribute : PropertyAttribute
@@ -14,11 +16,10 @@ public class ConditionalHideInInspectorAttribute : PropertyAttribute
     {
         this.comparedProperty = comparedProperty;
         this.comparedPropertyValue = comparedPropertyValue;
-
-        // Debug.Log(comparedPropertyValue);
     }
 }
 
+#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(ConditionalHideInInspectorAttribute))]
 public class Drawer : PropertyDrawer
 {
@@ -89,3 +90,4 @@ public class Drawer : PropertyDrawer
         return true;
     }
 }
+#endif

@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using static Data.CustomEnum;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(CameraMovingManager))]
 public class CamerMovingManagerEditor : Editor
 {
@@ -17,6 +20,8 @@ public class CamerMovingManagerEditor : Editor
         
     }
 }
+#endif
+
 public class CameraMovingManager : MonoBehaviour
 {
     public Waypoint waypoint;           // 코너 웨이포인트

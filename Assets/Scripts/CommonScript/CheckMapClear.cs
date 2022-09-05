@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using static Data.CustomEnum;
 
-
+#if UNITY_EDITOR
 [CustomEditor(typeof(CheckMapClear))]
 class DebugMapClear : Editor
 {
@@ -15,6 +17,7 @@ class DebugMapClear : Editor
                 checkMapClear.Clear();
     }
 }
+#endif
 
 /// <summary>
 /// 맵 클리어 (이동) 오브젝트
@@ -37,8 +40,8 @@ public class CheckMapClear : MonoBehaviour
         
         if (jsonFile != null)
         {
-            CanvasControl.instance.StartConversation(jsonFile.text);
-            CanvasControl.instance.SetDialougueEndAction(() =>
+            DialogueController.instance.StartConversation(jsonFile.text);
+            DialogueController.instance.SetDialougueEndAction(() =>
                 DataController.instance.ChangeMap(DataController.instance.currentMap.nextMapcode));
         }
         else

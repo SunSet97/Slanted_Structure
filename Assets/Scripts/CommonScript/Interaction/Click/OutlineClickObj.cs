@@ -26,6 +26,10 @@ public class OutlineClickObj : MonoBehaviour, IClickable
 
     public void ActiveObjectClicker(bool isActive)
     {
+        if (!ObjectClicker.instance)
+        {
+            return;
+        }
         ObjectClicker.instance.UpdateClick(this, isActive);
     }
 
