@@ -53,7 +53,7 @@ public class CheckMapClear : MonoBehaviour
     // 캐릭터 확인 후 트리거 활성화
     private void OnTriggerEnter(Collider other)
     {
-        if(!isTrigger){ Debug.LogError("이상하게 사용하고 있습니다"); return;}
+        if(!isTrigger){ return;}
         if (DataController.instance.GetCharacter(Character.Main).name.Equals(other.name))
         {
             Clear();
