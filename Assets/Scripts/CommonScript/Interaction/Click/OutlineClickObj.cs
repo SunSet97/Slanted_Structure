@@ -76,7 +76,7 @@ public class OutlineClickObj : MonoBehaviour, IClickable
 
     void OnTriggerEnter(Collider other)
     {
-        if(!other.CompareTag("Player")) return;
+        if(!other.CompareTag("Player") || !enabled) return;
         IsClickEnable = true;
         Debug.Log("키기 - " + other.gameObject);
     }

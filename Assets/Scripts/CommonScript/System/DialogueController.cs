@@ -88,8 +88,11 @@ public class DialogueController : MonoBehaviour
         // 시작할 때 
         DialogueData dialogueData = DataController.instance.dialogueData;
         int peekIdx = dialogueData.dialogues.Length - 1;
+        Vector3 cameraPos;
+        Vector3 cameraRot;
         if (dialogueData.dialogues[peekIdx].name == "camera")
         {
+            // var cameraPosParsing = dialogueData.dialogues[peekIdx].
             // 여기인듯????????????
         }
         UpdateWord();

@@ -7,6 +7,7 @@ using Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
+using UnityEngine.Serialization;
 using UnityEngine.Timeline;
 using IPlayable = Play.IPlayable;
 using Task = Data.Task;
@@ -73,7 +74,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
 
     [Header("카메라 뷰")] public bool isViewChange = false;
 
-    [Header("타임라인")] public PlayableDirector timeline;
+    [FormerlySerializedAs("timeline")] [Header("타임라인")] public PlayableDirector[] timelines;
 
     public GameObject[] cinematics;
     public GameObject[] inGames;
@@ -116,14 +117,17 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
             playerLayer = 1 << LayerMask.NameToLayer("Player");
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
 
-            if (timeline)
+            if (timelines.Length > 0)
             {
-                var timelineAsset = timeline.playableAsset as TimelineAsset;
-                var tracks = timelineAsset.GetOutputTracks();
-                foreach (var temp in tracks)
+                foreach (var t in timelines)
                 {
-                    if (temp is CinemachineTrack)
-                        timeline.SetGenericBinding(temp, DataController.instance.cam.GetComponent<CinemachineBrain>());
+                    var timelineAsset = t.playableAsset as TimelineAsset;
+                    var tracks = timelineAsset.GetOutputTracks();
+                    foreach (var temp in tracks)
+                    {
+                        if (temp is CinemachineTrack)
+                            t.SetGenericBinding(temp, DataController.instance.cam.GetComponent<CinemachineBrain>());
+                    }   
                 }
             }
 
@@ -333,30 +337,37 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         }
         else if (interactionPlayType == InteractionPlayType.Cinematic)
         {
-            timeline.Play();
-            timeline.stopped += director =>
+            if (timelines.Length == 1)
             {
-                Debug.Log("타임라인 끝");
-                foreach (var endAction in cinematicEndAction.interactionEvents)
+                timelines[0].Play();
+                timelines[0].stopped += director =>
                 {
-                    Debug.Log(endAction.eventType);
-                    switch (endAction.eventType)
+                    Debug.Log("타임라인 끝");
+                    foreach (var endAction in cinematicEndAction.interactionEvents)
                     {
-                        case InteractionEvent.EventType.CLEAR:
-                            endAction.ClearEvent();
-                            break;
-                        case InteractionEvent.EventType.ACTIVE:
-                            endAction.ActiveEvent();
-                            break;
-                        case InteractionEvent.EventType.MOVE:
-                            endAction.MoveEvent();
-                            break;
-                        case InteractionEvent.EventType.PLAY:
-                            endAction.PlayEvent();
-                            break;
+                        Debug.Log(endAction.eventType);
+                        switch (endAction.eventType)
+                        {
+                            case InteractionEvent.EventType.CLEAR:
+                                endAction.ClearEvent();
+                                break;
+                            case InteractionEvent.EventType.ACTIVE:
+                                endAction.ActiveEvent();
+                                break;
+                            case InteractionEvent.EventType.MOVE:
+                                endAction.MoveEvent();
+                                break;
+                            case InteractionEvent.EventType.PLAY:
+                                endAction.PlayEvent();
+                                break;
+                        }
                     }
-                }
-            };
+                };   
+            }
+            else
+            {
+                Debug.LogError("타임라인 세팅 오류");
+            }
         }
     }
 
@@ -560,8 +571,27 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     }
 
                     DataController.instance.StopSaveLoadJoyStick(true);
+
+                    PlayableDirector timeline = null;
+                    foreach (var t in timelines)
+                    {
+                        if (currentTask.name == t.playableAsset.name)
+                        {
+                            timeline = t;
+                        }
+                    }
+
+                    if (timeline == null && timelines.Length == 1)
+                    {
+                        timeline = timelines[0];
+                    }
+                    else
+                    {
+                        Debug.LogError("타임라인 세팅 오류");
+                    }
                     timeline.Pause();
                     timeline.Play();
+
                     // Debug.Log(timeline.);
                     // timeline.playableAsset
                     // var temp = timeline.playableAsset.outputs;
@@ -588,8 +618,9 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     //     Debug.Log(timeline.GetGenericBinding(playableBinding.sourceObject));
                     // }
 
-                    
-                    yield return new WaitUntil(() => timeline.state == PlayState.Paused && !CanvasControl.instance.isInConverstation);
+
+                    yield return new WaitUntil(() =>
+                        timeline.state == PlayState.Paused && !CanvasControl.instance.isInConverstation);
                     DataController.instance.StopSaveLoadJoyStick(false);
                     currentTaskData.isContinue = true;
                     foreach (var cinematic in cinematics)
