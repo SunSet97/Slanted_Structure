@@ -46,12 +46,6 @@ public class CameraMovingManager : MonoBehaviour
         [Header("웨이포인트처럼 뒤, 앞 순서대로 넣으세요")]
         public CamInfo[] camSettings;
     }
-    // 카메라 세팅 구조체
-    [Serializable]
-    public class CamInfo {
-        public Vector3 camDis;
-        public Vector3 camRot;
-    }
 
     private void Start()
     {

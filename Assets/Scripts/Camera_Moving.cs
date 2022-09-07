@@ -42,7 +42,7 @@ public class Camera_Moving : MonoBehaviour
         
         if (viewType.Equals(CameraViewType.FollowCharacter))
         {
-            cam.transform.position = character.position + DataController.instance.camDis;
+            cam.transform.position = character.position + DataController.instance.camDis + DialogueController.instance.dialogueCameraPos;
         }
         Follow_Player(cam.transform.position);
     }
