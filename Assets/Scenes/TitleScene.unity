@@ -266,7 +266,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 556370015}
-  - {fileID: 1724432437}
   - {fileID: 682608741}
   m_Father: {fileID: 891215904}
   m_RootOrder: 2
@@ -1727,6 +1726,7 @@ RectTransform:
   - {fileID: 255671511}
   - {fileID: 309294144}
   - {fileID: 2118740879}
+  - {fileID: 1724432437}
   m_Father: {fileID: 41293579}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2037,7 +2037,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 41293579}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2086,18 +2086,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 682608743}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 41293578}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Diary
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &682608743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2582,7 +2571,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0678022782cfc564faa1ac6ba6f802dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startButton: {fileID: 6884486}
 --- !u!1 &946756216
 GameObject:
   m_ObjectHideFlags: 0
@@ -2594,7 +2582,7 @@ GameObject:
   - component: {fileID: 946756218}
   - component: {fileID: 946756217}
   m_Layer: 0
-  m_Name: LevelManager
+  m_Name: ScenelManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2609,11 +2597,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 946756216}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c23fb1d4bf213f045a78ce5e62bfe404, type: 3}
+  m_Script: {fileID: 11500000, guid: 435a6feb2fd964db3b8835d352dbeb88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _loadingText: {fileID: 243973475}
-  _progressBar: {fileID: 166179009}
+  newStartButton: {fileID: 6884486}
+  diaryButton: {fileID: 0}
+  diaryCloseButton: {fileID: 0}
+  diaryPanel: {fileID: 0}
+  diarySaveParent: {fileID: 0}
 --- !u!4 &946756218
 Transform:
   m_ObjectHideFlags: 0
@@ -3442,18 +3433,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1449813610}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 41293578}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1449813610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3684,18 +3664,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1635244723}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1689090167}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Setting
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1635244723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3958,8 +3927,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 3.7219, z: 1}
   m_Children: []
-  m_Father: {fileID: 41293579}
-  m_RootOrder: 1
+  m_Father: {fileID: 556370015}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

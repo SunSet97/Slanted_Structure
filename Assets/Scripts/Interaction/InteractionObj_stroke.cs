@@ -376,7 +376,10 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     {
         if (Application.isPlaying)
         {
+            // Debug.Log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+            // Debug.Log(timelines[0].state);
             // Debug.Log(timelines[0].time);
+            
             var cam = DataController.instance.cam;
             //Update말고 Collider로 체크
             var isAround = CheckAroundCharacter(); // 일정 범위 안에 선택된 캐릭터 있는지 확인
@@ -618,15 +621,16 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     //     // playableBinding.
                     //     Debug.Log(timeline.GetGenericBinding(playableBinding.sourceObject));
                     // }
-
-                    while (true)
-                    {
-                        if (timeline.duration - timeline.time < 0.04f)
-                        {
-                            break;
-                        }
-                        yield return null;
-                    }
+                    yield return new WaitUntil(() =>
+                        timeline.state == PlayState.Paused && !timeline.playableGraph.IsValid() && !CanvasControl.instance.isInConverstation);
+                    // while (true)
+                    // {
+                    //     if (timeline.duration - timeline.time < 0.04f)
+                    //     {
+                    //         break;
+                    //     }
+                    //     yield return null;
+                    // }
                     DataController.instance.StopSaveLoadJoyStick(false);
                     currentTaskData.isContinue = true;
                     foreach (var cinematic in cinematics)
