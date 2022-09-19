@@ -31,6 +31,9 @@ public class DialogueController : MonoBehaviour
 
     internal bool isTalking;
     
+    internal Vector3 dialogueCameraPos;
+    internal Vector3 dialogueCameraRot;
+    
     private UnityAction<int> chooseAction;
     private UnityAction dialoguePrevAction;
     private UnityAction dialogueEndAction;
@@ -69,42 +72,57 @@ public class DialogueController : MonoBehaviour
 
     public void StartConversation(string jsonString)
     {
-        if(DataController.instance.taskData != null)
+        if (DataController.instance.taskData != null)
             DataController.instance.taskData.isContinue = false;
 
+        Debug.Log("1");
         isTalking = true;
         //Joystick 중지
         DataController.instance.StopSaveLoadJoyStick(true);
-        
+        Debug.Log("2");
         DataController.instance.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
         dialogueIdx = 0;
-        if(dialoguePrevAction != null)
+        Debug.Log("3");
+        if (dialoguePrevAction != null)
         {
             dialoguePrevAction();
             dialoguePrevAction = null;
         }
-        
+        Debug.Log("4");
+        Debug.Log(dialoguePanel.activeSelf);
         dialoguePanel.SetActive(true);
+        Debug.Log(dialoguePanel.activeSelf);
+        Debug.Log("5");
         // 시작할 때 
         DialogueData dialogueData = DataController.instance.dialogueData;
         int peekIdx = dialogueData.dialogues.Length - 1;
-        Vector3 cameraPos;
-        Vector3 cameraRot;
         if (dialogueData.dialogues[peekIdx].name == "camera")
         {
-            // var cameraPosParsing = dialogueData.dialogues[peekIdx].
-            // 여기인듯????????????
+            Debug.Log("111");
+            int[] camPos = Array.ConvertAll(dialogueData.dialogues[peekIdx].anim_name.Split(','), int.Parse);
+            int[] camRot = Array.ConvertAll(dialogueData.dialogues[peekIdx].contents.Split(','), int.Parse);
+            Debug.Log("222");
+            dialogueCameraPos = new Vector3(camPos[0], camPos[1], camPos[2]);
+            dialogueCameraRot = new Vector3(camRot[0], camRot[1], camRot[2]);
+            Debug.Log("333");
         }
+        Debug.Log("6");
+
+        dialogueData.dialogues = Array.FindAll(dialogueData.dialogues, item =>
+            item.name != "camera"
+        );
         UpdateWord();
     }
-    
+
     public void UpdateWord()
     {
         DialogueData dialogueData = DataController.instance.dialogueData;
         int dialogueLen = dialogueData.dialogues.Length;
-        // 대화가 끝나면 선택지 부를 지 여부결정 
+        // 대화가 끝나면 선택지 부를 지 여부결정
         if (dialogueIdx >= dialogueLen)
         {
+            dialogueCameraPos = Vector3.zero;
+            dialogueCameraRot = Vector3.zero;
             isTalking = true;
             dialoguePanel.SetActive(false);
             DataController.instance.StopSaveLoadJoyStick(false);
