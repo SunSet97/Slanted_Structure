@@ -19,5 +19,4 @@ public struct Ending
 
     public Image image;
     public CustomEnum.EndingType endingType;
-
 }
