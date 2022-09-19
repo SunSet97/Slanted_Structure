@@ -17,38 +17,40 @@ public class TitleSceneManager : MonoBehaviour
     
     void Start()
     {
+        // Debug.Log("하이");
+        // var ttestSaveData = SaveManager.GetSaveData();
+        // ttestSaveData.mapCode = "001010";
+        // ttestSaveData.scenario = "몰라용";
+        // SaveManager.Save(0);
         newStartButton.onClick.AddListener(() =>
         {
             SceneLoader.Instance.LoadScene("Ingame_set");
         });
+        
+        diaryButton.onClick.AddListener(() =>
+        {
+            diaryPanel.SetActive(true);
+        });
+        
+        diaryCloseButton.onClick.AddListener(() =>
+        {
+            diaryPanel.SetActive(false);
+        });
         // saveItems = new SaveData[diarySaveParent.childCount];
         for (var idx = 0; idx < diarySaveParent.childCount; idx++)
         {
-            if (SaveManager.Load(idx))
+            if (SaveManager.Load(idx, out SaveData saveData))
             {
-                var saveData = SaveManager.GetSaveData();
                 var button = diarySaveParent.GetComponentInChildren<Button>();
                 button.onClick.AddListener(() =>
                 {
-                    SceneLoader.Instance.LoadScene(saveData.mapCode);
+                    SaveManager.SetSaveData(saveData);
+                    SceneLoader.Instance.LoadScene("Ingame_set");
                 });
                 var text = diarySaveParent.GetComponentInChildren<Text>();
-                text.text = idx + "번입니다";
+                text.text = idx + "번입니다" + "\n" + saveData.mapCode;
             }
         }
-    }
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="idx"> 0 ~ n </param>
-    private void LoadButton(int idx)
-    {
-        if (SaveManager.Load(idx))
-        {
-            var saveData = SaveManager.GetSaveData();
-        }
-        
     }
 
     /// <summary>

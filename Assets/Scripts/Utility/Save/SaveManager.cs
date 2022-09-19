@@ -15,10 +15,14 @@ namespace Utility.Save
 
         private static SaveData _saveData;
 
-        public static readonly byte[] EncryptKey = Encoding.UTF8.GetBytes("abcdefg_abcdefg_");
-        public static readonly byte[] EncryptIv = Encoding.UTF8.GetBytes("abcdefg_");
+        public static readonly byte[] EncryptKey = Encoding.UTF8.GetBytes("SA3*FDN&48SDFhuj34VMK34KV~3gd$");
+        public static readonly byte[] EncryptIv = Encoding.UTF8.GetBytes("N&48SDFhuj34VMK3");
 
-
+        static SaveManager()
+        {
+            Debug.Log("하이요");
+            Init();
+        }
         public static void Init()
         {
             _saveData = new SaveData();
@@ -26,10 +30,16 @@ namespace Utility.Save
         Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
 #endif
         }
-
+        
         public static SaveData GetSaveData()
         {
             return _saveData;
+        }
+
+
+        public static void SetSaveData(SaveData saveData)
+        {
+            _saveData = saveData;
         }
 
         public static void Save(int idx)
@@ -55,12 +65,16 @@ namespace Utility.Save
             rijn.Clear();
         }
 
-        public static bool Load(int idx)
+        public static bool Load(int idx, out SaveData saveData)
         {
             Debug.Log(idx);
             _idx = idx;
             Debug.Log(Savefilename);
-            if (!File.Exists(Savefilename)) return false;
+            if (!File.Exists(Savefilename))
+            {
+                saveData = null;
+                return false;
+            }
             RijndaelManaged rijn = new RijndaelManaged();
             rijn.Mode = CipherMode.ECB;
             rijn.Padding = PaddingMode.Zeros;
@@ -72,13 +86,13 @@ namespace Utility.Save
                 {
                     if (fileStream.Length <= 0)
                     {
+                        saveData = null;
                         return false;
                     }
 
                     using (Stream cryptoStream = new CryptoStream(fileStream, decryptor, CryptoStreamMode.Read))
                     {
-                        _saveData = (SaveData)new BinaryFormatter().Deserialize(cryptoStream);
-
+                        saveData = (SaveData)new BinaryFormatter().Deserialize(cryptoStream);
                     }
 
                     fileStream.Close();
