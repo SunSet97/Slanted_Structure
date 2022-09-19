@@ -11,13 +11,9 @@ public class TimelineDialogueControllerBehaviour : PlayableBehaviour
     public override void OnBehaviourPlay(Playable playable, FrameData info)
     {
         if (dialogueJson == null) return;
-
         playable.GetGraph().Stop();
         DialogueController.instance.StartConversation(dialogueJson.text);
-        DialogueController.instance.SetDialougueEndAction(() =>
-        {
-            playable.GetGraph().Play();
-        });
+        DialogueController.instance.SetDialougueEndAction(() => { playable.GetGraph().Play(); });
         dialogueJson = null;
     }
 }

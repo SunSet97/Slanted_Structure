@@ -7,8 +7,9 @@ using UnityEngine.UI;
 public class FadeEffect : MonoBehaviour
 {
     public static FadeEffect instance { get; private set; }
-    public Image fadeImage;
 
+    public CanvasGroup canvasGroup;
+    public GraphicRaycaster graphicRaycaster;
     public bool isFadeOver;
 
     private void Awake()
@@ -19,21 +20,20 @@ public class FadeEffect : MonoBehaviour
     public IEnumerator FadeIn()
     {
         DataController.instance.StopSaveLoadJoyStick(true);
-        SetImage(true);
         float time = 4;
         
         isFadeOver = false;
-        fadeImage.raycastTarget = true;
+        graphicRaycaster.enabled = true;
         float t = 1;
         while (t > 0)
         {
             t -= Time.deltaTime / time;
-            var c = fadeImage.color;
-            c.a = t;
-            fadeImage.color = c;
+            canvasGroup.alpha = t;
             yield return null;
         }
-        fadeImage.raycastTarget = false;
+
+        canvasGroup.alpha = 0;
+        graphicRaycaster.enabled = false;
         isFadeOver = true;
         DataController.instance.StopSaveLoadJoyStick(false);
     }
@@ -41,28 +41,22 @@ public class FadeEffect : MonoBehaviour
     public IEnumerator FadeOut()
     {
         DataController.instance.StopSaveLoadJoyStick(true);
-        SetImage(true);
+        
         float time = 4;
         isFadeOver = false;
-        fadeImage.raycastTarget = true;
+        var value = LayerMask.GetMask("Default");
+        graphicRaycaster.enabled = true;
         float t = 0;
         while (t < 1)
         {
             t += Time.deltaTime / time;
-            Debug.Log(t);
-            var c = fadeImage.color;
-            c.a = t;
-            fadeImage.color = c;
+            canvasGroup.alpha = t;
             yield return null;
         }
 
-        fadeImage.raycastTarget = false;
+        canvasGroup.alpha = 1;
+        graphicRaycaster.enabled = false;
         isFadeOver = true;
         DataController.instance.StopSaveLoadJoyStick(false);
-    }
-
-    public void SetImage(bool isActive)
-    {
-        gameObject.SetActive(isActive);
     }
 }

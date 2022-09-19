@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using CommonScript;
 using Data;
+using Utility.Save;
 using static Data.CustomEnum;
 
 public class DataController : MonoBehaviour
@@ -73,7 +74,13 @@ public class DataController : MonoBehaviour
     void Start()
     {
         ExistsData();
-
+        mapCode = SaveManager.GetSaveData().mapCode;
+        Debug.Log(mapCode);
+        if (mapCode == null)
+        {
+            mapCode = "001010";
+            Debug.Log("잘못 실행하거나 세이브 데이터 없거나");
+        }
         //초기화
         speat = GameObject.Find("Speat").GetComponent<CharacterManager>();
         oun = GameObject.Find("Oun").GetComponent<CharacterManager>();
@@ -177,8 +184,6 @@ public class DataController : MonoBehaviour
         speat_Adult.PickUpCharacter();
         speat_Child.PickUpCharacter();
 
-        FadeEffect.instance.SetImage(false);
-        
         //카메라 위치와 회전
         camDis = currentMap.camDis;
         camRot = currentMap.camRot;

@@ -4,10 +4,7 @@ using System.Text;
 
 public class JsontoString
 {
-
-
-    //json 데이터 배열로 받기 위해 (문장만 이해함)
-    public class Wrapper<T>
+    private class Wrapper<T>
     {
         public T[] wrapper;
     }
@@ -72,15 +69,7 @@ public class JsontoString
         return t;
     }
 
-    //public static T[] LoadJsonFromClassName<T>(string jsonString)
-    //{
-    //    T[] t = default;
-    //    string type = typeof(T).Name;
-    //    t = JsonUtility.FromJson<Wrapper<T>>("{\"wrapper\":" + jsonString + "}").wrapper;
-    //    return t;
-    //}
-    
-    public static string GetDataFolderPath()
+    private static string GetDataFolderPath()
     {
         string path;
         switch (Application.platform)
