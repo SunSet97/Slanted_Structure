@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using Play;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,8 +21,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
     public Transform startPosition;
     public GameObject pimp;
     public Transform[] trailer;
-    private List<GameObject[]> patterns = new List<GameObject[]>();
-    public Transform patternFolder;
+    private GameObject[][] patterns;
 
     [Header("#Buttons")]
     public Button jumpBtn;
@@ -32,16 +31,30 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
     private float speatDistance;
     float pimpDistance;
     public float runSpeed;
+
+    private AssetBundle _assetBundle;
+    
+    private readonly string PATH = "/AssetBundles/backstreetrun";
     void Start()
     {
         InitRunGame();
     }
     private void InitRunGame()
     {
-        for (int i = 0; i < 3; i++)
+        _assetBundle = AssetBundle.LoadFromFile(Application.dataPath + PATH);
+        
+        Debug.Log(_assetBundle == null ? "Fail to load" : "Success to load");
+        var objs = _assetBundle.LoadAllAssets<GameObject>();
+        
+        patterns = new GameObject[3][];
+        for (var idx = 1; idx < patterns.Length + 1; idx++)
         {
-            patterns.Add(Resources.LoadAll<GameObject>("Run_Pattern/Pattern" + i));
+            GameObject[] t = objs.Where(item => item.name.Substring(7, 1) == idx.ToString()).Distinct().ToArray();
+            patterns[idx] = t;
+
+            Debug.Log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
         }
+        _assetBundle.Unload(false);
     }
 
     public void Play()
@@ -52,6 +65,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
 
     public void EndPlay()
     {
+        _assetBundle.Unload(true);
         if (_jsonFile != null)
         {
             DialogueController.instance.SetDialougueEndAction(() =>

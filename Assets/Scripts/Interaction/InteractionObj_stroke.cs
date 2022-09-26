@@ -443,7 +443,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         Debug.Log("Task Stack 시작");
         jsonTask = new Stack<TaskData>();
         PushTask(jsonFile.text);
-    }
+    }   
 
     private void StackNewTask(string jsonRoute)
     {
