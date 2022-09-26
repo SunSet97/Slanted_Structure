@@ -67,9 +67,8 @@ namespace Utility.Save
 
         public static bool Load(int idx, out SaveData saveData)
         {
-            Debug.Log(idx);
             _idx = idx;
-            Debug.Log(Savefilename);
+            // Debug.Log(Savefilename);
             if (!File.Exists(Savefilename))
             {
                 saveData = null;

@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.IO;
 using System;
-using System.Runtime.CompilerServices;
-using System.Text;
 using CommonScript;
 using Data;
 using Utility.Save;
@@ -54,8 +52,10 @@ public class DataController : MonoBehaviour
     // 카메라 projecton orthographic에서 perspective로 전환될 때 필요
     float originOrthoSize;
     float originCamDis_y;
-    
 
+    private AssetBundle _assetBundle;
+    private AssetBundle _materialDB;
+    private AssetBundle _dialogueDB;
     #region 싱글톤
     //인스턴스화
     private static DataController _instance;
@@ -74,11 +74,12 @@ public class DataController : MonoBehaviour
     void Start()
     {
         ExistsData();
+        var t = mapCode;
         mapCode = SaveManager.GetSaveData().mapCode;
         Debug.Log(mapCode);
         if (mapCode == null)
         {
-            mapCode = "001010";
+            mapCode = t;
             Debug.Log("잘못 실행하거나 세이브 데이터 없거나");
         }
         //초기화
@@ -91,15 +92,65 @@ public class DataController : MonoBehaviour
         
         joyStick = FindObjectOfType<Joystick>();
         cam = Camera.main;
-        var startEp = int.Parse(mapCode.Substring(0, 1));
-        LoadMap(startEp);
+        storymaps = LoadMap(mapCode);
     }
     
-    void LoadMap(int idx)
+    MapData[] LoadMap(string desMapCode)
     {
-        MapData[] temp = Resources.LoadAll<MapData>("StoryMap/ep" + idx);
-        storymaps = temp;
-        Resources.UnloadUnusedAssets();
+        Debug.Log("현재 맵: " + mapCode);
+        Debug.Log("다음 맵: " + desMapCode);
+        var curEp = int.Parse(mapCode.Substring(0, 1));
+        var desEp = int.Parse(desMapCode.Substring(0, 1));
+        
+        var curDay = int.Parse(mapCode.Substring(1, 2));
+        var desDay = int.Parse(desMapCode.Substring(1, 2));
+        
+        mapCode = $"{desMapCode:000000}"; // 맵 코드 변경
+        
+        Debug.Log("Episode:  " + curEp + " : " + desEp);
+        Debug.Log("Day:   " + curDay + " : " + desDay);
+        if (mapCode != desMapCode && curEp == desEp && curDay == desDay)
+        {
+            return null;
+        }
+
+        if (_assetBundle != null)
+        {
+            _assetBundle.Unload(true);
+        }
+        if (_dialogueDB != null)
+        {
+            _dialogueDB.Unload(true);
+        }
+
+        if (_materialDB == null)
+        {
+            _materialDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/modulematerials");
+        }
+        
+        _dialogueDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}");
+        if (_dialogueDB == null)
+        {
+            Debug.LogError("대화 어셋 번들 오류");
+            return null;
+        }
+        
+        Debug.Log(Application.dataPath + $"/AssetBundles/map/ep{desEp}/day{desDay}");
+        _assetBundle = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
+        if (_assetBundle == null)
+        {
+            Debug.LogError("맵 어셋 번들 오류");
+            return null;
+        }
+        var mapDataObjects = _assetBundle.LoadAllAssets<GameObject>();
+        MapData[] mapDatas = new MapData[mapDataObjects.Length];
+        for (int i = 0; i < mapDataObjects.Length; i++)
+        {
+            mapDatas[i] = mapDataObjects[i].GetComponent<MapData>();
+        }
+        
+        _assetBundle.Unload(false);
+        return mapDatas;
     }
 
     public CharacterManager GetCharacter(Character characterType)
@@ -137,13 +188,9 @@ public class DataController : MonoBehaviour
     /// <summary>
     /// 맵 바꾸는 함수
     /// </summary>
-    /// <param name="mapCodeBeMove">생성되는 맵의 코드</param>
-    public void ChangeMap(string mapCodeBeMove)
+    /// <param name="desMapCode">생성되는 맵의 코드</param>
+    public void ChangeMap(string desMapCode)
     {
-        var curMapCode = mapCode;
-        mapCode = $"{mapCodeBeMove:000000}"; // 맵 코드 변경
-
-        
         //모든 캐릭터 위치 대기실로 이동
         speat.WaitInRoom();
         oun.WaitInRoom();
@@ -154,21 +201,21 @@ public class DataController : MonoBehaviour
 
         if (currentMap != null)
         {
-            currentMap.DestroyMap();
             currentMap.gameObject.SetActive(false);
+            currentMap.DestroyMap();
         }
-        var curEp = int.Parse(curMapCode.Substring(0, 1));
-        var desEp = int.Parse(mapCode.Substring(0, 1));
-        if (curEp != desEp)
-        {
-            LoadMap(desEp);
-        }
+        storymaps = LoadMap(desMapCode);
 
         ObjectClicker.instance.gameObject.SetActive(false);
         ObjectClicker.instance.isCustomUse = false;
         
-        
+        foreach (var item in storymaps)
+        {
+            Debug.Log(item);
+        }
         var nextMap = Array.Find(storymaps, mapData => mapData.mapCode.Equals(mapCode));
+        Debug.Log(mapCode);
+        Debug.Log(nextMap);
         currentMap = Instantiate(nextMap, mapGenerate);
         currentMap.Initialize();
         

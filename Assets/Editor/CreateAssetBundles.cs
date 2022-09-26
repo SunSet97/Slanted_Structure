@@ -15,4 +15,17 @@ public class CreateAssetBundles
 
         BuildPipeline.BuildAssetBundles(assetBundleDirectory, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
     }
+    
+    [MenuItem("Assets/Build Android AssetBundles")]
+    static void BuildAllAndriodAssetBundles()
+    {
+        string assetBundleDirectory = "Assets/AssetBundles";
+
+        if (!Directory.Exists(assetBundleDirectory))
+        {
+            Directory.CreateDirectory(assetBundleDirectory);
+        }
+
+        BuildPipeline.BuildAssetBundles(assetBundleDirectory, BuildAssetBundleOptions.None,BuildTarget.Android);
+    }
 }
