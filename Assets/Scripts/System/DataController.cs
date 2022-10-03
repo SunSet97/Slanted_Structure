@@ -96,22 +96,22 @@ public class DataController : MonoBehaviour
         cam = Camera.main;
     }
 
-    public void GameStart()
+    public void GameStart(string mapcode)
     {
         Init();
-        var destMapCode = mapCode;
-        var loadMapCode = SaveManager.GetSaveData().mapCode;
         mapCode = "000000";
-        Debug.Log(loadMapCode);
-        if (loadMapCode == null)
-        {
-            Debug.Log("잘못 실행하거나 세이브 데이터 없거나");
-        }
-        else
-        {
-            destMapCode = loadMapCode;
-        }
-        ChangeMap(destMapCode);
+        // var destMapCode = mapCode;
+        // var loadMapCode = SaveManager.GetSaveData().mapCode;
+        // Debug.Log(loadMapCode);
+        // if (loadMapCode == null)
+        // {
+        //     Debug.Log("잘못 실행하거나 세이브 데이터 없거나");
+        // }
+        // else
+        // {
+        //     destMapCode = loadMapCode;
+        // }
+        ChangeMap(mapcode);
     }
     
     private MapData[] LoadMap(string desMapCode)
