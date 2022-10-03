@@ -7,6 +7,8 @@ using Utility.Save;
 
 public class TitleSceneManager : MonoBehaviour
 {
+    [SerializeField] private string mapCode;
+    
     [SerializeField] private Button newStartButton;
     [SerializeField] private Button diaryButton;
     [SerializeField] private Button diaryCloseButton;
@@ -30,7 +32,7 @@ public class TitleSceneManager : MonoBehaviour
             SceneLoader.Instance.AddListener(() =>
             {
                 Debug.Log("로드!!!");
-                DataController.instance.GameStart();
+                DataController.instance.GameStart(mapCode);
             });
         });
         
