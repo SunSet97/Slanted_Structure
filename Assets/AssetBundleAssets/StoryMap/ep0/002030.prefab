@@ -50,33 +50,36 @@ MonoBehaviour:
     dialogues:
     - name: ??
       expression: 0
-      animName: 
+      anim_name: Speat_past
       contents: "\uC544\uC774\uACE0 \uD5C8\uB9AC\uC57C...\uC5EC\uAE34 \uC5B4\uB514\uC9C0..?
         \uC544\uC624 \uB0C4\uC0C8..."
     - name: ??
       expression: 7
-      animName: 
+      anim_name: Speat_past
       contents: "\uB0C4\uC0C8\uB294 \uB098\uC9C0\uB9CC \uB300\uCDA9 \uD3EC\uC8FC\uB4E4\uC5D0\uAC8C\uC11C
         \uBC97\uC5B4\uB09C \uAC70 \uAC19\uC73C\uB2C8...\uADF8\uB798\uC11C \uC774\uC81C
         \uB098\uB294 \uC5B4\uB514\uB85C \uAC00\uC9C0..?"
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
-  interactionMethod: 2
+  interactionMethod: 3
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
-  timeline: {fileID: 0}
+  timelines:
+  - {fileID: 0}
   cinematics: []
   inGames: []
   touchTargetObject: {fileID: 0}
-  isLoop: 0
+  isLoopDialogue: 0
 --- !u!65 &7996873064597938293
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -153,7 +156,7 @@ MonoBehaviour:
     dialogues:
     - name: ??
       expression: 0
-      animName: 
+      anim_name: Speat_past
       contents: "\uBC84\uB824\uC9C4 \uACF3\uC778\uAC00..? \uC77C\uB2E8 \uB4E4\uC5B4\uAC00\uC11C
         \uC7A0\uC2DC \uC26C\uC790.."
   dialogueEndAction:
@@ -165,6 +168,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions:
   - eventType: 0
     clearBox: {fileID: 5724989132166803283}
@@ -174,6 +179,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
@@ -183,13 +190,12 @@ MonoBehaviour:
   useExclamationMark: 0
   outline: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
-  timeline: {fileID: 0}
+  timelines:
+  - {fileID: 0}
   cinematics: []
   inGames: []
   touchTargetObject: {fileID: 0}
-  isLoop: 0
+  isLoopDialogue: 0
 --- !u!1 &5724989132033950182
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,6 +330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 002031
 --- !u!1 &5724989133188044675

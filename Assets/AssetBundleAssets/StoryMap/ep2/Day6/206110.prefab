@@ -93,6 +93,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions:
   - eventType: 1
     clearBox: {fileID: 8558591690487152949}
@@ -102,22 +104,22 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
-  interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
+  interactionMethod: 3
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timelines: []
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
-  isLoop: 0
+  isLoopDialogue: 0
 --- !u!1 &2354003764107072981
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,6 +299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 206120
 --- !u!1 &5853082869754555329
@@ -473,43 +476,36 @@ MonoBehaviour:
   scriptDesription: "Episode2-Day6_\uC624\uC6B4_\uD559\uAD50 \uC55E"
   mapCode: 206110
   method: 1
-  endMap: 1
-  director: {fileID: 0}
   nextMapcode: 206120
   map: {fileID: 5356483322133288294}
   ui: {fileID: 0}
   SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 0
   orthographicSize: 0
-  isCameraMoving: 0
   cameraBound: {fileID: 0}
   BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 8702950728014630964}
   clearBoxList:
   - {fileID: 8558591690487152949}
-  positionSetting: {fileID: 6005943890414339464}
   positionSets:
   - index: 0
     who: 2
     startPosition: {fileID: 8943134169707400837}
-    clearBox: {fileID: 6389806365216747518}
     posSet: {fileID: 6001385600508940770}
     isMain: 1
   - index: 1
     who: 1
     startPosition: {fileID: 6005943889770735677}
-    clearBox: {fileID: 0}
     posSet: {fileID: 6005943890618038871}
     isMain: 0
-  posIndex: 0
-  cam: {fileID: 0}
   cameraViewType: 0
   camDis: {x: -1.22, y: 1.88, z: 6.22}
   camRot: {x: 5.5, y: 167, z: 0}
-  isJoystickInputIgnore: 1
+  positionSetting: {fileID: 6005943890414339464}
+  isJoystickInputUse: 0
   isJoystickNone: 1
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &8702950728014630964
 GameObject:
   m_ObjectHideFlags: 0

@@ -112,41 +112,36 @@ MonoBehaviour:
     \uCE74\uBA54\uB77C \uBDF0\ndir(2.9,1.13,2.26)\nrot(16.88,218.1)"
   mapCode: 203230
   method: 2
-  endMap: 1
-  director: {fileID: 0}
   nextMapcode: 204210
   map: {fileID: 8162252929205695075}
   ui: {fileID: 0}
   SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 0
   orthographicSize: 5
-  isCameraMoving: 1
   cameraBound: {fileID: 0}
+  BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 2605623699351195845}
   clearBoxList:
   - {fileID: 44233077663622425}
-  positionSetting: {fileID: 132210625347605053}
   positionSets:
   - index: 0
     who: 2
     startPosition: {fileID: 1508624755088979051}
-    clearBox: {fileID: 8762810853419987583}
     posSet: {fileID: 2611587555137135063}
     isMain: 0
   - index: 1
     who: 1
     startPosition: {fileID: 132210624626774840}
-    clearBox: {fileID: 0}
     posSet: {fileID: 132210625226288733}
     isMain: 0
-  posIndex: 0
-  cam: {fileID: 0}
+  cameraViewType: 0
   camDis: {x: -0.2, y: 0.9, z: 2.79}
   camRot: {x: 15.15, y: 180.4, z: 0}
-  isJoystickInputIgnore: 1
+  positionSetting: {fileID: 132210625347605053}
+  isJoystickInputUse: 0
   isJoystickNone: 1
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &132210625347605053
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,6 +350,8 @@ MonoBehaviour:
       anim_name: Rau
       contents: "\uADF8\uB7F4\uAE4C\uC694?"
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions:
   - eventType: 1
     clearBox: {fileID: 44233077663622425}
@@ -364,52 +361,54 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug:
   - tasks:
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uC624\uC6B4"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uC624\uC6B4"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uC624\uC6B4"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uC624\uC6B4"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
@@ -418,20 +417,18 @@ MonoBehaviour:
     taskOrder: 1
     isContinue: 1
   color: 0
-  interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
+  interactionMethod: 3
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timelines: []
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
-  isLoop: 0
+  isLoopDialogue: 0
 --- !u!1 &2605623699351195845
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,6 +517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 204210
 --- !u!1 &6459680923671341419

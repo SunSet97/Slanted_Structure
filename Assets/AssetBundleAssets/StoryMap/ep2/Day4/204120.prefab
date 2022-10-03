@@ -89,23 +89,25 @@ MonoBehaviour:
       contents: "\uBA3C\uC800 \uB9E8 \uC67C\uCABD\uC73C\uB85C \uAC00\uC788\uB294 \uC2A4\uD54F\uC744
         \uB530\uB77C \uC7A5\uC560\uBB3C\uB4E4\uC744 \uB118\uC5B4 \uAC00\uBCF4\uC790"
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
-  interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
+  interactionMethod: 3
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timelines: []
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
-  isLoop: 0
+  isLoopDialogue: 0
 --- !u!1 &6402695762669684866
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,35 +158,31 @@ MonoBehaviour:
   scriptDesription: "Episode2-Day4 \uC2A4\uD54F_\uBD80\uB3C4\uC2EC\uC758 \uB4B7\uACE8\uBAA9"
   mapCode: 204120
   method: 0
-  endMap: 0
-  director: {fileID: 0}
   nextMapcode: 204130
   map: {fileID: 7179274479370777881}
   ui: {fileID: 0}
   SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 0
   orthographicSize: 7
-  isCameraMoving: 1
   cameraBound: {fileID: 0}
+  BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 840397620770398358}
   clearBoxList:
   - {fileID: 6402695764329872773}
-  positionSetting: {fileID: 6402695764158438384}
   positionSets:
   - index: 0
     who: 2
     startPosition: {fileID: 6402695763069972232}
-    clearBox: {fileID: 6402695764329872772}
     posSet: {fileID: 6402695763431204835}
     isMain: 1
-  posIndex: 0
-  cam: {fileID: 0}
+  cameraViewType: 0
   camDis: {x: 0, y: 2, z: 5.97}
   camRot: {x: 0, y: 180, z: 0}
-  isJoystickInputIgnore: 0
+  positionSetting: {fileID: 6402695764158438384}
+  isJoystickInputUse: 0
   isJoystickNone: 0
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &6402695763069972279
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,6 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 204130
 --- !u!65 &4744586326011187698

@@ -98,23 +98,25 @@ MonoBehaviour:
       anim_name: Rau
       contents: "\uD558\uD573\u2026\uB18D\uB2F4\uB3C4 \uC9D3\uAD73\uAE34\u2026\uC54C\uC558\uC5B4."
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
-  interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
+  interactionMethod: 3
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timelines: []
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
-  isLoop: 0
+  isLoopDialogue: 0
 --- !u!65 &2779273615801151865
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -311,6 +313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 205110
 --- !u!1 &1395685093544531159
@@ -428,40 +431,36 @@ MonoBehaviour:
     \uAC83\uCC98\uB7FC \uAD6C\uD604\uD574\uC57C\uD568."
   mapCode: 204130
   method: 2
-  endMap: 0
-  director: {fileID: 0}
   nextMapcode: 205110
   map: {fileID: 4005663992108130986}
   ui: {fileID: 0}
   SkyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
   isOrthographic: 0
   orthographicSize: 0
-  isCameraMoving: 1
   cameraBound: {fileID: 0}
+  BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 2184414181426779005}
   clearBoxList:
   - {fileID: 1395685092987312460}
-  positionSetting: {fileID: 1395685092927965824}
   positionSets:
   - index: 0
     who: 0
     startPosition: {fileID: 3599159114237416866}
-    clearBox: {fileID: 0}
     posSet: {fileID: 4107076885387390388}
     isMain: 0
   - index: 1
     who: 2
     startPosition: {fileID: 1395685093548560312}
-    clearBox: {fileID: 1395685092987312463}
     posSet: {fileID: 1395685093544531156}
     isMain: 1
-  posIndex: 0
-  cam: {fileID: 0}
+  cameraViewType: 0
   camDis: {x: 0, y: 1, z: -3}
   camRot: {x: 0, y: 0, z: 0}
-  isJoystickUse: 0
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  positionSetting: {fileID: 1395685092927965824}
+  isJoystickInputUse: 0
+  isJoystickNone: 0
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &1585814380106605648
 GameObject:
   m_ObjectHideFlags: 0
@@ -611,6 +610,8 @@ MonoBehaviour:
   dialogueData:
     dialogues: []
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions:
   - eventType: 1
     clearBox: {fileID: 1395685092987312460}
@@ -620,36 +621,38 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug:
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      type: 2
+      taskContentType: 0
       nextFile: dialogue_ep2/204130_3
       order: 1
       condition: 
       increaseVar: 
     - name: 
-      type: 3
+      taskContentType: 0
       nextFile: 2
       order: 1
       condition: 
       increaseVar: 
     - name: "\uB108\uB3C4 \uADF8\uB807\uAC8C \uC0B4\uACE0 \uC2F6\uC5C8\uB358 \uAC8C
         \uC544\uB2C8\uC5C8\uC796\uC544."
-      type: 3
+      taskContentType: 0
       nextFile: dialogue_ep2/204130_choice1
       order: 0
       condition: 0,0,0,0
       increaseVar: 3,0,0
     - name: "\uBAA8\uB4E0 \uC120\uD0DD\uC5D0\uB294 \uCC45\uC784\uC744 \uC9C8 \uC218
         \uBC16\uC5D0 \uC5C6\uC5B4."
-      type: 3
+      taskContentType: 0
       nextFile: dialogue_ep2/204130_choice2
       order: 0
       condition: 0,0,0,0
       increaseVar: m3,0,0
     - name: "\uB05D"
-      type: 5
+      taskContentType: 0
       nextFile: 
       order: 1
       condition: 
@@ -659,13 +662,13 @@ MonoBehaviour:
     isContinue: 1
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      type: 2
+      taskContentType: 0
       nextFile: dialogue_ep2/204130_3_1
       order: 1
       condition: 
       increaseVar: 
     - name: "\uB05D"
-      type: 4
+      taskContentType: 0
       nextFile: 
       order: 1
       condition: 
@@ -675,13 +678,13 @@ MonoBehaviour:
     isContinue: 1
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      type: 2
+      taskContentType: 0
       nextFile: dialogue_ep2/204130_3_2
       order: 1
       condition: 
       increaseVar: 
     - name: "\uB05D"
-      type: 4
+      taskContentType: 0
       nextFile: 
       order: 1
       condition: 
@@ -691,19 +694,17 @@ MonoBehaviour:
     isContinue: 1
   color: 0
   interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 2
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timelines: []
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
-  isLoop: 0
+  isLoopDialogue: 0
 --- !u!65 &5232198707942898108
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1007,23 +1008,25 @@ MonoBehaviour:
       anim_name: Speat
       contents: "\uC74C\u2026\uC77C\uB2E8 \uB4E4\uC5B4\uC62C\uB798\u2026?"
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timelines: []
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
-  isLoop: 0
+  isLoopDialogue: 0
 --- !u!65 &5228321217541616883
 BoxCollider:
   m_ObjectHideFlags: 0

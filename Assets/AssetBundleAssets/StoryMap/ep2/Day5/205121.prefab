@@ -43,11 +43,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 0
-  jsonFile: {fileID: 0}
+  interactionPlayType: 2
+  jsonFile: {fileID: 4900000, guid: ac6003c4b19f4dc4c9c287651bb9f408, type: 3}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions:
   - eventType: 1
     clearBox: {fileID: 4435358238560067568}
@@ -57,22 +59,22 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug: []
   color: 0
   interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 1
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timelines: []
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
-  isLoop: 0
+  isLoopDialogue: 0
 --- !u!1 &3483254528495035205
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,17 +153,21 @@ MonoBehaviour:
   dialogueData:
     dialogues: []
   dialogueEndAction: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug:
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      type: 2
+      taskContentType: 0
       nextFile: dialogue_ep2/205121
       order: 1
       condition: 
       increaseVar: 
     - name: 
-      type: 8
+      taskContentType: 0
       nextFile: Coin Game
       order: 1
       condition: dialogue_ep2/205121_success
@@ -170,20 +176,18 @@ MonoBehaviour:
     taskOrder: 1
     isContinue: 1
   color: 0
-  interactionMethod: 2
-  onOutline: 0
-  isCharacterInRange: 0
+  interactionMethod: 3
   radius: 3
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timelines: []
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
-  isLoop: 0
+  isLoopDialogue: 0
 --- !u!1 &4435358238560067470
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,6 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 205130
 --- !u!1 &4435358238841663285
@@ -356,43 +361,36 @@ MonoBehaviour:
   scriptDesription: "Episode2 \uB77C\uC6B0_\uC624\uC6B4_\uB3D9\uC804\uBD84\uC218\uAC8C\uC784"
   mapCode: 205121
   method: 2
-  endMap: 0
-  director: {fileID: 0}
   nextMapcode: 205130
   map: {fileID: 4435358239208619454}
   ui: {fileID: 0}
   SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 1
   orthographicSize: 4.5
-  isCameraMoving: 0
   cameraBound: {fileID: 0}
   BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 5358587154940924653}
   clearBoxList:
   - {fileID: 4435358238560067568}
-  positionSetting: {fileID: 4435358239852833641}
   positionSets:
   - index: 0
     who: 2
     startPosition: {fileID: 4435358238841663284}
-    clearBox: {fileID: 4435358238560067569}
     posSet: {fileID: 4435358240455183055}
     isMain: 1
   - index: 1
     who: 1
     startPosition: {fileID: 7217095652815073448}
-    clearBox: {fileID: 0}
     posSet: {fileID: 2487380911267199023}
     isMain: 0
-  posIndex: 0
-  cam: {fileID: 0}
   cameraViewType: 0
   camDis: {x: 3, y: 2.5, z: -3}
   camRot: {x: 25, y: 0, z: 0}
-  isJoystickInputIgnore: 1
+  positionSetting: {fileID: 4435358239852833641}
+  isJoystickInputUse: 0
   isJoystickNone: 1
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &4435358240455183052
 GameObject:
   m_ObjectHideFlags: 0
