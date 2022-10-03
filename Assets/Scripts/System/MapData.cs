@@ -219,11 +219,12 @@ public class MapData : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            if (DataController.instance.mapCode != mapCode)
-            {
-                DataController.instance.ChangeMap(DataController.instance.mapCode);
-                Destroy(gameObject);
-            }
+            // if (DataController.instance.mapCode != mapCode)
+            // {
+            //     // DataController.instance.ChangeMap(DataController.instance.mapCode);
+            //     Destroy(gameObject);
+            //     return;
+            // }
             characters.RemoveAll(item => item == null);
             foreach (var t in positionSets)
             {

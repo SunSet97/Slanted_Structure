@@ -11,15 +11,13 @@ public class JsontoString
 
     public static T[] FromJsonPath<T>(string path)
     {
-        T[] t = default;
-        t = JsonUtility.FromJson<Wrapper<T>>("{\"wrapper\":" + File.ReadAllText(path)+ "}").wrapper;
+        var t = JsonUtility.FromJson<Wrapper<T>>("{\"wrapper\":" + File.ReadAllText(path)+ "}").wrapper;
         return t;
     }
 
     public static T[] FromJsonArray<T>(string json)
     {
-        T[] t = default;
-        t = JsonUtility.FromJson<Wrapper<T>>("{\"wrapper\":" + json + "}").wrapper;
+        var t = JsonUtility.FromJson<Wrapper<T>>("{\"wrapper\":" + json + "}").wrapper;
         return t;
     }
     public static string ToJsonArray<T>(T[] wrapper)

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -33,7 +34,9 @@ namespace System
         [SerializeField] private CanvasGroup sceneLoaderCanvasGroup;
         [SerializeField] private Image progressBar;
 
-        private string _loadSceneName;
+        private UnityAction<Scene, LoadSceneMode> onSceneLoaded;
+
+        private string loadSceneName;
 
         private static SceneLoader Create()
         {
@@ -45,7 +48,7 @@ namespace System
         {
             gameObject.SetActive(true);
             SceneManager.sceneLoaded += LoadSceneEnd;
-            _loadSceneName = sceneName;
+            loadSceneName = sceneName;
             StartCoroutine(Load(sceneName));
         }
 
@@ -86,11 +89,25 @@ namespace System
 
         private void LoadSceneEnd(Scene scene, LoadSceneMode loadSceneMode)
         {
-            if (scene.name == _loadSceneName)
+            if (scene.name == loadSceneName)
             {
                 SceneManager.sceneLoaded -= LoadSceneEnd;
                 gameObject.SetActive(false);
             }
+        }
+
+        public void AddListener(UnityAction t)
+        {
+            onSceneLoaded += (scene, loadSceneMode) =>
+            {
+                t();
+            };
+            SceneManager.sceneLoaded += onSceneLoaded;
+        }
+        public void RemoveAllListener()
+        {
+            SceneManager.sceneLoaded -= onSceneLoaded;
+            onSceneLoaded = (scene, loadSceneMode) => { };
         }
 
         private IEnumerator Fade(bool isFadeIn)

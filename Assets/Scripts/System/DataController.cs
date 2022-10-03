@@ -53,9 +53,9 @@ public class DataController : MonoBehaviour
     float originOrthoSize;
     float originCamDis_y;
 
-    private AssetBundle _assetBundle;
+    private AssetBundle _mapDB;
     private AssetBundle _materialDB;
-    private AssetBundle _dialogueDB;
+    public AssetBundle dialogueDB;
     #region 싱글톤
     //인스턴스화
     private static DataController _instance;
@@ -71,17 +71,9 @@ public class DataController : MonoBehaviour
     }
     #endregion
 
-    void Start()
+    private void Init()
     {
         ExistsData();
-        var t = mapCode;
-        mapCode = SaveManager.GetSaveData().mapCode;
-        Debug.Log(mapCode);
-        if (mapCode == null)
-        {
-            mapCode = t;
-            Debug.Log("잘못 실행하거나 세이브 데이터 없거나");
-        }
         //초기화
         speat = GameObject.Find("Speat").GetComponent<CharacterManager>();
         oun = GameObject.Find("Oun").GetComponent<CharacterManager>();
@@ -90,12 +82,37 @@ public class DataController : MonoBehaviour
         speat_Adult = GameObject.Find("Speat_Adult").GetComponent<CharacterManager>();
         speat_Child = GameObject.Find("Speat_Child").GetComponent<CharacterManager>();
         
+        speat.Init();
+        oun.Init();
+        rau.Init();
+        speat_Adolescene.Init();
+        speat_Adult.Init();
+        speat_Child.Init();
+        
         joyStick = FindObjectOfType<Joystick>();
         cam = Camera.main;
-        storymaps = LoadMap(mapCode);
+    }
+
+    public void GameStart()
+    {
+        Init();
+        
+        var destMapCode = mapCode;
+        var loadMapCode = SaveManager.GetSaveData().mapCode;
+        mapCode = "000000";
+        Debug.Log(loadMapCode);
+        if (loadMapCode == null)
+        {
+            Debug.Log("잘못 실행하거나 세이브 데이터 없거나");
+        }
+        else
+        {
+            destMapCode = loadMapCode;
+        }
+        ChangeMap(destMapCode);
     }
     
-    MapData[] LoadMap(string desMapCode)
+    private MapData[] LoadMap(string desMapCode)
     {
         Debug.Log("현재 맵: " + mapCode);
         Debug.Log("다음 맵: " + desMapCode);
@@ -109,47 +126,46 @@ public class DataController : MonoBehaviour
         
         Debug.Log("Episode:  " + curEp + " : " + desEp);
         Debug.Log("Day:   " + curDay + " : " + desDay);
-        if (mapCode != desMapCode && curEp == desEp && curDay == desDay)
+        if (curEp == desEp && curDay == desDay)
         {
             return null;
         }
 
-        if (_assetBundle != null)
+        if (_mapDB != null)
         {
-            _assetBundle.Unload(true);
+            _mapDB.Unload(true);
         }
-        if (_dialogueDB != null)
+        if (dialogueDB != null)
         {
-            _dialogueDB.Unload(true);
+            dialogueDB.Unload(true);
         }
 
-        if (_materialDB == null)
+        if (_materialDB != null)
         {
-            _materialDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/modulematerials");
-        }
-        
-        _dialogueDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}");
-        if (_dialogueDB == null)
-        {
-            Debug.LogError("대화 어셋 번들 오류");
-            return null;
+            _materialDB.Unload(true);
         }
         
         Debug.Log(Application.dataPath + $"/AssetBundles/map/ep{desEp}/day{desDay}");
-        _assetBundle = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
-        if (_assetBundle == null)
+        
+        _mapDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
+        if (curDay != desDay)
+        {
+            dialogueDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}");
+            Debug.Log(dialogueDB);
+        }
+        _materialDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/modulematerials");
+        
+        if (_mapDB == null)
         {
             Debug.LogError("맵 어셋 번들 오류");
             return null;
         }
-        var mapDataObjects = _assetBundle.LoadAllAssets<GameObject>();
+        var mapDataObjects = _mapDB.LoadAllAssets<GameObject>();
         MapData[] mapDatas = new MapData[mapDataObjects.Length];
         for (int i = 0; i < mapDataObjects.Length; i++)
         {
             mapDatas[i] = mapDataObjects[i].GetComponent<MapData>();
         }
-        
-        _assetBundle.Unload(false);
         return mapDatas;
     }
 
@@ -253,7 +269,7 @@ public class DataController : MonoBehaviour
                 if (temp[k].isMain)
                     mainChar = speat;
                 speat.SetCharacter(temp[k].startPosition);
-                speat.emotion = Expression.IDLE;
+                speat.Emotion = Expression.IDLE;
             }
             else if (temp[k].who.Equals(Character.Oun))
             {

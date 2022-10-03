@@ -1,12 +1,9 @@
-﻿using System.Runtime.CompilerServices;
-using Move;
+﻿using Move;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using static Data.CustomEnum;
 
 public class CharacterManager : MonoBehaviour, IMovable
 {
-    #region 기본 설정
     [Header("#Default inspector setting(auto)")]
     public Joystick joyStick; // 조이스틱
     public CharacterController ctrl; // 캐릭터컨트롤러
@@ -20,7 +17,7 @@ public class CharacterManager : MonoBehaviour, IMovable
     [Tooltip("캐릭터 Pos을 넣으시오.")]
     [SerializeField] private Transform waitTransform;
 
-    void Start()
+    public void Init()
     {
         ctrl = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
@@ -31,16 +28,9 @@ public class CharacterManager : MonoBehaviour, IMovable
         {
             faceExpression = Resources.LoadAll<Texture>("Face");
             skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
-            skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int) emotion]);
+            skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int) Emotion]);
         }
     }
-
-    void Update()
-    {
-        // 에니메이션 설정
-        AnimationSetting();
-    }
-    #endregion
 
     #region 캐릭터 컨트롤
     
@@ -61,7 +51,7 @@ public class CharacterManager : MonoBehaviour, IMovable
     }
     public void InitializeCharacter()
     {
-        emotion = Expression.IDLE;
+        Emotion = Expression.IDLE;
         gameObject.layer = LayerMask.NameToLayer("Default");
         moveHorDir = Vector3.zero;
         moveVerDir = Vector3.zero;
@@ -98,62 +88,33 @@ public class CharacterManager : MonoBehaviour, IMovable
 
     #region 캐릭터 애니메이션 설정
     // 감정상태
-    public Expression emotion = Expression.IDLE;      // 캐릭터 감정
-
-    // 에니메이션 설정
-    void AnimationSetting()
+    private Expression emotion;
+    public Expression Emotion
     {
-        EmotionAnimationSetting();
-        ActionAnimationSetting();
-    }
-    // 현재 Emotion상태값 넣기
-    void EmotionAnimationSetting()
-    {
-        if (SceneManager.GetActiveScene().name == "Cinematic")
+        get => emotion;
+        set
         {
-            anim.SetInteger("Emotion", (int)emotion); // 애니메이션실행
+            emotion = value;
+            EmotionAnimationSetting();
         }
+    }
+    
+    // 현재 Emotion상태값 넣기
+    private void EmotionAnimationSetting()
+    {
         if (who.Equals(Character.Speat) || who.Equals(Character.Oun) || who.Equals(Character.Rau))
-            skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int)emotion]); // 현재 감정으로 메터리얼 변경
+            skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int)Emotion]); // 현재 감정으로 메터리얼 변경
     }
 
     public void SetEmotion(Expression inEmotion)
     {
-        emotion = inEmotion;
+        Emotion = inEmotion;
     }
     
     public void SetCinematic()
     {
         faceExpression = Resources.LoadAll<Texture>("Face");
         skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
-    }
-    
-    // 액션 관련
-    void ActionAnimationSetting()
-    {
-        if (SceneManager.GetActiveScene().name == "Ingame")
-        {
-            // 대시
-            if (DataController.instance.inputDash == true)
-            {
-                anim.SetTrigger("Dash");
-                DataController.instance.inputDash = false;
-            }
-
-            // 앉기
-            /*  인터렉션 으로 의자 주변에 있을 때, 의자 자체에 트리거가 활성화 되고, /희원이랑 이야기해야될 부분
-            *  터치하면 bool값이 변경되는 것으로 세팅할 필요가 있음!*/
-            if (DataController.instance.inputSeat == true)
-                anim.SetBool("Seat", true);
-            else
-                anim.SetBool("Seat", false);
-
-            // 사망
-            /*죽음 상태를 DataController에 bool값 추가하여
-            플레이어의 상태값을 인지하고 Dead가 true이면 사망 상태의 애니메이션이 활성화되고
-            게임 오버 or 리스폰 할 수 있도록 해야할 듯.*/
-            // anim.SetBool("Dead", true);
-        }
     }
     #endregion
 
