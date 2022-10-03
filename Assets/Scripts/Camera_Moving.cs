@@ -28,8 +28,6 @@ public class Camera_Moving : MonoBehaviour
 
     void Update()
     {
-
-
         if (cam.orthographic) cam.orthographicSize = DataController.instance.orthgraphic_Size;
 
         if (viewType.Equals(CameraViewType.FixedView))

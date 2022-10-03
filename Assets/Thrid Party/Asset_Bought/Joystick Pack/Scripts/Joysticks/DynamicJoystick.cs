@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class DynamicJoystick : Joystick
@@ -18,7 +16,11 @@ public class DynamicJoystick : Joystick
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-        background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
+        // Debug.Log(eventData);
+        // Debug.Log(ScreenPointToAnchoredPosition(eventData.position));
+        // Debug.Log(eventData.position);
+        // background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
+        background.position = eventData.position;
         background.gameObject.SetActive(true);
         base.OnPointerDown(eventData);
     }

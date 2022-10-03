@@ -46,7 +46,6 @@ public class DialogueController : MonoBehaviour
     }
     void Start()
     {
-        
         var childCount = choiceRoot.childCount;
         choiceBtns = new GameObject[childCount];
         choiceTexts = new Text[childCount];
@@ -68,6 +67,14 @@ public class DialogueController : MonoBehaviour
         dialoguePrevAction = null;
         dialogueEndAction = null;
         dialoguePanel.SetActive(false);
+    }
+
+    public string ConvertPathToJson(string path)
+    {
+        Debug.Log("변환 전: " + path);
+        string dialogueName = path.Split('/')[1];
+        Debug.Log("변환 후: " + dialogueName);
+        return DataController.instance.dialogueDB.LoadAsset<TextAsset>(dialogueName).text;
     }
 
     public void StartConversation(string jsonString)
@@ -128,12 +135,12 @@ public class DialogueController : MonoBehaviour
             DataController.instance.StopSaveLoadJoyStick(false);
             foreach (var positionSet in DataController.instance.currentMap.positionSets)
             {
-                DataController.instance.GetCharacter(positionSet.who).emotion = Expression.IDLE;   
+                DataController.instance.GetCharacter(positionSet.who).Emotion = Expression.IDLE;   
             }
             foreach (var positionSet in DataController.instance.currentMap.characters)
             {
                 // if (Character.TryParse(dialogueData.dialogues[dialogueIdx].anim_name, out Character who))
-                DataController.instance.GetCharacter(positionSet.who).emotion = Expression.IDLE;   
+                DataController.instance.GetCharacter(positionSet.who).Emotion = Expression.IDLE;   
             }
             
             dialogueIdx = 0;
@@ -170,7 +177,7 @@ public class DialogueController : MonoBehaviour
 
                         if (Character.TryParse(dialogueData.dialogues[dialogueIdx].anim_name, out Character who))
                         {
-                            DataController.instance.GetCharacter(who).emotion = dialogueData.dialogues[dialogueIdx].expression;   
+                            DataController.instance.GetCharacter(who).Emotion = dialogueData.dialogues[dialogueIdx].expression;   
                         }
                     }
                     else

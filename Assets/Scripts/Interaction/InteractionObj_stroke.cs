@@ -483,8 +483,8 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     Debug.Log("대화 시작");
                     currentTaskData.isContinue = false;
                     string path = currentTask.nextFile;
-                    string jsonString = (Resources.Load(path) as TextAsset)?.text;
                     Debug.Log($"대화 경로 - {path}");
+                    string jsonString = DialogueController.instance.ConvertPathToJson(path);
                     DialogueController.instance.StartConversation(jsonString);
                     break;
                 case TaskContentType.ANIMATION:

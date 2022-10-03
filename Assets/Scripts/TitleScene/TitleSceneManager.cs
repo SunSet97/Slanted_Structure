@@ -1,6 +1,7 @@
 ﻿using System;
 using Data;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utility.Save;
 
@@ -25,6 +26,12 @@ public class TitleSceneManager : MonoBehaviour
         newStartButton.onClick.AddListener(() =>
         {
             SceneLoader.Instance.LoadScene("Ingame_set");
+                    
+            SceneLoader.Instance.AddListener(() =>
+            {
+                Debug.Log("로드!!!");
+                DataController.instance.GameStart();
+            });
         });
         
         diaryButton.onClick.AddListener(() =>
