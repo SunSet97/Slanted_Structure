@@ -55,6 +55,7 @@ public class DataController : MonoBehaviour
 
     private AssetBundle _mapDB;
     private AssetBundle _materialDB;
+    [NonSerialized]
     public AssetBundle dialogueDB;
     #region 싱글톤
     //인스턴스화
@@ -64,6 +65,9 @@ public class DataController : MonoBehaviour
         get => _instance;
     }
 
+    public delegate void OnLoadMap();
+
+    private OnLoadMap onLoadMap;
     private void Awake()
     {
         _instance = this;
@@ -73,7 +77,6 @@ public class DataController : MonoBehaviour
 
     private void Init()
     {
-        ExistsData();
         //초기화
         speat = GameObject.Find("Speat").GetComponent<CharacterManager>();
         oun = GameObject.Find("Oun").GetComponent<CharacterManager>();
@@ -96,7 +99,6 @@ public class DataController : MonoBehaviour
     public void GameStart()
     {
         Init();
-        
         var destMapCode = mapCode;
         var loadMapCode = SaveManager.GetSaveData().mapCode;
         mapCode = "000000";
@@ -234,8 +236,16 @@ public class DataController : MonoBehaviour
         Debug.Log(nextMap);
         currentMap = Instantiate(nextMap, mapGenerate);
         currentMap.Initialize();
-        
         SetByChangedMap();
+        
+        Debug.Log("22222222222222222222222222222222222");
+        onLoadMap?.Invoke();
+        onLoadMap = () => { };
+    }
+
+    public void AddOnLoadMap(OnLoadMap onLoadMap)
+    {
+        this.onLoadMap += onLoadMap;
     }
 
     private void SetByChangedMap()
@@ -335,6 +345,8 @@ public class DataController : MonoBehaviour
         speat_Adolescene.UseJoystickCharacter();
         speat_Child.UseJoystickCharacter();
         speat_Adult.UseJoystickCharacter();
+        
+        Debug.Log("333333333333333333333333333333333333333333");
     }
     #endregion
 
@@ -397,63 +409,4 @@ public class DataController : MonoBehaviour
     public TaskData taskData;
 
     public DialogueData dialogueData;
-
-
-    // 세이브 데이터를 불러오는 함수 
-    // 저장된 파일이 있을 경우 기존의 파일을 가져오고 없다면 새로 생성  
-    public void LoadData(string dataType, string fileName)
-    {
-        string DataFileName = fileName;
-
-
-        if (dataType == "Save")
-        {
-            string filePath = Application.persistentDataPath + "/" + DataFileName;
-
-            if (File.Exists(filePath))
-            {
-                Debug.Log("로드 성공");
-                string FromJsonData = File.ReadAllText(filePath);
-                charData = JsonUtility.FromJson<CharData>(FromJsonData);
-            }
-            else
-            {
-                print(Application.persistentDataPath);
-                Debug.Log("새 파일 생성");
-                charData = new CharData();
-            }
-        }
-        else
-        {
-            Debug.LogError($"{dataType} 없앤곳");
-        }
-    }
-
-    // 캐릭터 데이터 저장
-    public void SaveCharData(string fileName)
-    {
-        string ToJsonData = JsonUtility.ToJson(charData);
-        string filePath = Application.persistentDataPath + "/" + fileName;
-        File.WriteAllText(filePath, ToJsonData);
-        Debug.Log("저장");
-    }
-
-    // 세개의 슬롯에 데이터 파일이 존재하는 지 확인하는 함수
-    public void ExistsData()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            string filePath = Application.persistentDataPath + "/" + "SaveData" + i;
-
-            if (File.Exists(filePath))
-            {
-                isExistdata[i] = true;
-            }
-            else
-            {
-                isExistdata[i] = false;
-            }
-        }
-    }
-
 }
