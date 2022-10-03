@@ -99,6 +99,17 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         jsonTask.Push(taskData);
         DataController.instance.taskData = taskData;
     }
+    
+    void Awake()
+    {
+        if (interactionMethod == InteractionMethod.OnChangeMap)
+        {
+            DataController.instance.AddOnLoadMap(() =>
+            {
+                StartInteraction();
+            });
+        }
+    }
 
     protected virtual void Start()
     {
@@ -231,7 +242,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
 
                 currentTaskData.isContinue = false;
                 path = curTask.nextFile;
-                jsonString = (Resources.Load(path) as TextAsset)?.text;
+                jsonString = DialogueController.instance.ConvertPathToJson(path);
                 // currentTaskData.taskIndex--;    // 현재 taskIndex는 선택지이며 선택지 다음 인덱스가 된다. 그런데 대화 종료시 Index가 1 증가하기에 1을 줄여준다.
                 DialogueController.instance.StartConversation(jsonString);
                 //다음 인덱스의 타입
@@ -239,7 +250,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
             case TaskContentType.TEMP:
                 //새로운 task 실행
                 path = curTask.nextFile;
-                jsonString = (Resources.Load(path) as TextAsset)?.text;
+                jsonString = DialogueController.instance.ConvertPathToJson(path);
                 PushTask(jsonString);
                 StartInteraction();
                 break;
@@ -724,7 +735,8 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     {
                         i++;
                         string path = taskData.tasks[i].nextFile;
-                        string jsonString = (Resources.Load(path) as TextAsset)?.text;
+                        string jsonString = DialogueController.instance.ConvertPathToJson(path);
+                        // string jsonString = (Resources.Load(path) as TextAsset)?.text;
 
                         if (taskData_Debug.Count > 50)
                         {
@@ -747,7 +759,18 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     bool IClickable.IsClickEnable
     {
         get => interactionMethod == InteractionMethod.Touch && !isTouched;
-        set => interactionMethod = InteractionMethod.No;
+        set
+        {
+            if (value)
+            {
+                interactionMethod = InteractionMethod.Touch;
+                isTouched = false;
+            }
+            else
+            {
+                interactionMethod = InteractionMethod.No;
+            }
+        }
     }
 
     bool IClickable.IsClicked

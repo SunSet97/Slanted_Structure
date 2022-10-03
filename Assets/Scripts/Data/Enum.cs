@@ -99,7 +99,8 @@ namespace Data
         {
             Touch,
             Trigger,
-            No
+            No,
+            OnChangeMap
         }
     }
 }
