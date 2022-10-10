@@ -16,7 +16,7 @@ public class Event_IntoTheAzit : MonoBehaviour
         if (!other.TryGetComponent(out CharacterManager character)) return;
 
         character.PickUpCharacter();
-        DataController.instance.InitializeJoyStick(false);
+        JoystickController.instance.InitializeJoyStick(false);
         StartCoroutine(MoveToAzit(character));
     }
 
@@ -39,7 +39,7 @@ public class Event_IntoTheAzit : MonoBehaviour
         other.UseJoystickCharacter(); // 캐릭터 이동활성화
         other.anim.SetFloat(Speed, 0f);
         yield return new WaitForSeconds(0.5f); // 잠시 대기
-        DataController.instance.InitializeJoyStick(true);
+        JoystickController.instance.InitializeJoyStick(true);
         collider.enabled = true;
     }
 

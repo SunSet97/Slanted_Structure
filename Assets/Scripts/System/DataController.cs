@@ -11,15 +11,7 @@ public class DataController : MonoBehaviour
     public bool[] isExistdata = new bool[3];
 
     [Header("조이스틱")]
-    public Joystick joyStick;
-    public Vector2 inputDirection = Vector2.zero; // 조이스틱 입력 방향
-    public float inputDegree = 0f; // 조이스틱 입력 크기
-    public bool inputJump = false; // 조이스틱 입력 점프 판정
-    public bool inputDash = false; // 조이스틱 입력 대쉬 판정
-    public bool inputSeat = false;
-    private bool isAlreadySave;
-    private bool wasJoystickUse;
-
+    [SerializeField] private JoystickController joystickController;
 
     [Header("캐릭터")]
     private CharacterManager mainChar;
@@ -91,8 +83,6 @@ public class DataController : MonoBehaviour
         speat_Adolescene.Init();
         speat_Adult.Init();
         speat_Child.Init();
-        
-        joyStick = FindObjectOfType<Joystick>();
         cam = Camera.main;
     }
 
@@ -316,8 +306,8 @@ public class DataController : MonoBehaviour
         }
 
         //조이스틱 초기화
-        isAlreadySave = false;
-        InitializeJoyStick(!currentMap.isJoystickNone);
+        JoystickController.instance.InitSaveLoad();
+        JoystickController.instance.InitializeJoyStick(!currentMap.isJoystickNone);
         
 
         // CameraMoving 컨트롤
@@ -345,52 +335,9 @@ public class DataController : MonoBehaviour
         speat_Adolescene.UseJoystickCharacter();
         speat_Child.UseJoystickCharacter();
         speat_Adult.UseJoystickCharacter();
-        
-        Debug.Log("333333333333333333333333333333333333333333");
     }
     #endregion
 
-    /// <summary>
-    /// 조이스틱 상태 초기화하는 함수
-    /// </summary>
-    /// <param name="isOn">JoyStick On/Off</param>
-    public void InitializeJoyStick(bool isOn)
-    {
-        joyStick.gameObject.SetActive(isOn);
-        joyStick.transform.GetChild(0).gameObject.SetActive(false);
-        joyStick.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().position = default;
-        joyStick.OnPointerUp();
-        inputDegree = 0;
-        inputDirection = Vector2.zero;
-        joyStick.input = Vector2.zero;
-        inputJump = false;
-    }
-    /// <summary>
-    /// 조이스틱 멈추고 이전 상태에 따라 키거나 끄는 함수
-    /// ex) 대화 이전에 조이스틱을 사용하지 않으면 계속 사용하지 않는다.
-    /// </summary>
-    /// <param name="isStop">Stop여부   true - save, false - load</param>
-    public void StopSaveLoadJoyStick(bool isStop)
-    {
-        Debug.Log((isStop ? "Save" : "Load") +  ", " + (isAlreadySave ? "저장된 상태" : "저장되지 않은 상태"));
-        //처음 실행하는 경우
-        if (isStop)
-        {
-            if(isAlreadySave) return;
-            
-            isAlreadySave = true;
-            wasJoystickUse = joyStick.gameObject.activeSelf;
-            InitializeJoyStick(false);
-        }
-        // Load하는 경우
-        else
-        {
-            Debug.Log("저장된 상태 - " + wasJoystickUse);
-            isAlreadySave = false;
-            InitializeJoyStick(wasJoystickUse);
-        }
-    }
-    
     public void UpdateLikeable(int[] rauLikeables)
     {
         charData.selfEstm += rauLikeables[0];

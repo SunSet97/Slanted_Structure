@@ -82,7 +82,7 @@ public class MiniGameManager : MonoBehaviour
             // 라우 이동
             rau.ctrl.Move(new Vector3(0, 0, 1) * rauSpeed * Time.deltaTime);
 
-            if (DataController.instance.inputDirection == new Vector2(0, 0)) // 조이스틱 인풋 없을 때 forwadDir방향 바라보게하기
+            if (JoystickController.instance.inputDirection == new Vector2(0, 0)) // 조이스틱 인풋 없을 때 forwadDir방향 바라보게하기
             { 
                 rau.gameObject.transform.eulerAngles = forwardDir;
             }
@@ -222,13 +222,13 @@ public class MiniGameManager : MonoBehaviour
     {
         if (isStopping)//isStopping이 참일 때만 활성화.
         {
-            DataController.instance.joyStick.gameObject.SetActive(false); // 조이스틱 없애기
+            JoystickController.instance.joyStick.gameObject.SetActive(false); // 조이스틱 없애기
             float tempAcceleration = acceleration;
             //float tempSpeed = rauSpeed;
             rauSpeed = 0;
             acceleration = 0;
             yield return new WaitForSeconds(time);
-            DataController.instance.joyStick.gameObject.SetActive(true); // 조이스틱 생기게
+            JoystickController.instance.joyStick.gameObject.SetActive(true); // 조이스틱 생기게
             rauSpeed = initialRauSpeed; // 장애물과 충돌하면, 라우 스피트는 다시 초기화!
             acceleration = tempAcceleration; // 장애물과 충돌하면, 라우 가속도 다시 초기화!
             //rau.isCollisionObstacle = false;

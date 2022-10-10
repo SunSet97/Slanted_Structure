@@ -102,5 +102,12 @@ namespace Data
             No,
             OnChangeMap
         }
+
+        public enum JoystickAreaType
+        {
+            DEFAULT,
+            NONE,
+            FULL
+        }
     }
 }

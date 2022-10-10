@@ -84,16 +84,16 @@ public class RauTutorialManager : MonoBehaviour
     void TouchSlide()
     {
         // https://www.youtube.com/watch?v=98dQBWUyy9M 멀티 터치 참고
-        if (DataController.instance.joyStick.Horizontal > 0) swipeDir = Swipe.Right;
-        else if (DataController.instance.joyStick.Horizontal < 0) swipeDir = Swipe.Left;
-        else if (DataController.instance.joyStick.Vertical < 0) swipeDir = Swipe.Down;
+        if (JoystickController.instance.joyStick.Horizontal > 0) swipeDir = Swipe.Right;
+        else if (JoystickController.instance.joyStick.Horizontal < 0) swipeDir = Swipe.Left;
+        else if (JoystickController.instance.joyStick.Vertical < 0) swipeDir = Swipe.Down;
         else swipeDir = Swipe.None;
     }
 
     // 조이스틱 이미지 껐다 끄기
     void OnOffJoystick(bool isOn)
     {
-        foreach (Image image in DataController.instance.joyStick.GetComponentsInChildren(typeof(Image), true))
+        foreach (Image image in JoystickController.instance.joyStick.GetComponentsInChildren(typeof(Image), true))
         {
             if (isOn && !image.name.Equals("Transparent Dynamic Joystick")) image.color = Color.white - Color.black * 0.3f;
             else image.color = Color.clear;
@@ -109,7 +109,7 @@ public class RauTutorialManager : MonoBehaviour
     {
         mapData.method = methodNum;
         OnOffJoystick(methodNum != JoystickInputMethod.Other);
-        DataController.instance.joyStick.AxisOptions = axisNum;
+        JoystickController.instance.joyStick.AxisOptions = axisNum;
     }
 
     // 숲 초입길
@@ -251,8 +251,8 @@ public class RauTutorialManager : MonoBehaviour
         DataController.instance.camRot = view_river.camRot;
         ChangeJoystickSetting(JoystickInputMethod.Other, AxisOptions.Both); // 이동 해제
         rau.PickUpCharacter();
-        DataController.instance.inputDegree = 0;
-        DataController.instance.inputDirection = Vector2.zero;
+        JoystickController.instance.inputDegree = 0;
+        JoystickController.instance.inputDirection = Vector2.zero;
         
         
         yield return new WaitUntil(() => kickIndex >= 3);

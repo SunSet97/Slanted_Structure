@@ -285,7 +285,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         }
         else if (interactionPlayType == InteractionPlayType.Dialogue)
         {
-            if (CanvasControl.instance.isInConverstation) return;
+            if (CanvasControl.Instance.isInConverstation) return;
             
             if (!isLoopDialogue)
                 isTouched = true;
@@ -585,7 +585,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                         inGame.SetActive(false);
                     }
 
-                    DataController.instance.StopSaveLoadJoyStick(true);
+                    JoystickController.instance.StopSaveLoadJoyStick(true);
 
                     PlayableDirector timeline = null;
                     foreach (var t in timelines)
@@ -633,7 +633,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     //     Debug.Log(timeline.GetGenericBinding(playableBinding.sourceObject));
                     // }
                     yield return new WaitUntil(() =>
-                        timeline.state == PlayState.Paused && !timeline.playableGraph.IsValid() && !CanvasControl.instance.isInConverstation);
+                        timeline.state == PlayState.Paused && !timeline.playableGraph.IsValid() && !CanvasControl.Instance.isInConverstation);
                     // while (true)
                     // {
                     //     if (timeline.duration - timeline.time < 0.04f)
@@ -642,7 +642,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     //     }
                     //     yield return null;
                     // }
-                    DataController.instance.StopSaveLoadJoyStick(false);
+                    JoystickController.instance.StopSaveLoadJoyStick(false);
                     currentTaskData.isContinue = true;
                     foreach (var cinematic in cinematics)
                     {
