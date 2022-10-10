@@ -44,7 +44,7 @@ public class PlayGroundManager : MonoBehaviour, IPlayable
 
     private void Start()
     {
-        DataController.instance.InitializeJoyStick(false);
+        JoystickController.instance.InitializeJoyStick(false);
         Circle.SetActive(false);
         Circle.transform.GetComponentInChildren<CreateRing>().enabled = false;
         Debug.Log(Circle.transform.GetComponentInChildren<CreateRing>().enabled);
@@ -72,10 +72,10 @@ public class PlayGroundManager : MonoBehaviour, IPlayable
     {
         DataController.instance.currentMap.ui.gameObject.SetActive(true);
         //게임 실행
-        CanvasControl.instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+        CanvasControl.Instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
         //CanvasControl.instance_CanvasControl.GetComponent<Canvas>().worldCamera = DataController.instance.cam;
-        CanvasControl.instance.GetComponent<Canvas>().worldCamera = Camera.main;
-        CanvasControl.instance.GetComponent<Canvas>().planeDistance = 0.8f;
+        CanvasControl.Instance.GetComponent<Canvas>().worldCamera = Camera.main;
+        CanvasControl.Instance.GetComponent<Canvas>().planeDistance = 0.8f;
 
         //원 이미지 보이게
         Circle.SetActive(true);
@@ -95,7 +95,7 @@ public class PlayGroundManager : MonoBehaviour, IPlayable
     public void EndTimingGame()
     {
         Circle.SetActive(false);
-        CanvasControl.instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+        CanvasControl.Instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
         DataController.instance.currentMap.ui.gameObject.SetActive(false);
         StartThrowing(can);
     }

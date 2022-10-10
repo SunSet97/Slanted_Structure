@@ -19,7 +19,7 @@ public class FadeEffect : MonoBehaviour
 
     public IEnumerator FadeIn()
     {
-        DataController.instance.StopSaveLoadJoyStick(true);
+        JoystickController.instance.StopSaveLoadJoyStick(true);
         float time = 4;
         
         isFadeOver = false;
@@ -35,12 +35,12 @@ public class FadeEffect : MonoBehaviour
         canvasGroup.alpha = 0;
         graphicRaycaster.enabled = false;
         isFadeOver = true;
-        DataController.instance.StopSaveLoadJoyStick(false);
+        JoystickController.instance.StopSaveLoadJoyStick(false);
     }
     
     public IEnumerator FadeOut()
     {
-        DataController.instance.StopSaveLoadJoyStick(true);
+        JoystickController.instance.StopSaveLoadJoyStick(true);
         
         float time = 4;
         isFadeOver = false;
@@ -57,6 +57,6 @@ public class FadeEffect : MonoBehaviour
         canvasGroup.alpha = 1;
         graphicRaycaster.enabled = false;
         isFadeOver = true;
-        DataController.instance.StopSaveLoadJoyStick(false);
+        JoystickController.instance.StopSaveLoadJoyStick(false);
     }
 }

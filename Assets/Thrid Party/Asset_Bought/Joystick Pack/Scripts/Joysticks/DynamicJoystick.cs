@@ -3,7 +3,11 @@ using UnityEngine.EventSystems;
 
 public class DynamicJoystick : Joystick
 {
-    public float MoveThreshold { get { return moveThreshold; } set { moveThreshold = Mathf.Abs(value); } }
+    public float MoveThreshold
+    {
+        get { return moveThreshold; }
+        set { moveThreshold = Mathf.Abs(value); }
+    }
 
     [SerializeField] private float moveThreshold = 1;
 
@@ -33,11 +37,37 @@ public class DynamicJoystick : Joystick
 
     protected override void HandleInput(float magnitude, Vector2 normalised, Vector2 radius, Camera cam)
     {
+        var rectTransform = GetComponent<RectTransform>();
+        float width = rectTransform.rect.width;
+        float height = rectTransform.rect.height;
+
         if (magnitude > moveThreshold)
         {
             Vector2 difference = normalised * (magnitude - moveThreshold) * radius;
             background.anchoredPosition += difference;
+
+            Vector2 position = background.anchoredPosition;
+            if (width < background.anchoredPosition.x)
+            {
+                position.x = width;
+            }
+            else if (0 > background.anchoredPosition.x)
+            {
+                position.x = 0;
+            }
+
+            if (height <= background.anchoredPosition.y)
+            {
+                position.y = height;
+            }
+            else if (0 > background.anchoredPosition.y)
+            {
+                position.y = 0;
+            }
+
+            background.anchoredPosition = position;
         }
+
         base.HandleInput(magnitude, normalised, radius, cam);
     }
 }

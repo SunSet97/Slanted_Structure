@@ -85,7 +85,7 @@ public class DialogueController : MonoBehaviour
         Debug.Log("1");
         isTalking = true;
         //Joystick 중지
-        DataController.instance.StopSaveLoadJoyStick(true);
+        JoystickController.instance.StopSaveLoadJoyStick(true);
         Debug.Log("2");
         DataController.instance.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
         dialogueIdx = 0;
@@ -132,7 +132,7 @@ public class DialogueController : MonoBehaviour
             dialogueCameraRot = Vector3.zero;
             isTalking = true;
             dialoguePanel.SetActive(false);
-            DataController.instance.StopSaveLoadJoyStick(false);
+            JoystickController.instance.StopSaveLoadJoyStick(false);
             foreach (var positionSet in DataController.instance.currentMap.positionSets)
             {
                 DataController.instance.GetCharacter(positionSet.who).Emotion = Expression.IDLE;   
@@ -216,7 +216,7 @@ public class DialogueController : MonoBehaviour
     
     public void OpenChoicePanel()
     {
-        DataController.instance.StopSaveLoadJoyStick(true);
+        JoystickController.instance.StopSaveLoadJoyStick(true);
         TaskData currentTaskData = DataController.instance.taskData;
         int index = currentTaskData.taskIndex;
         int choiceLen = int.Parse(currentTaskData.tasks[index].nextFile);
@@ -288,7 +288,7 @@ public class DialogueController : MonoBehaviour
     public void PressChoice(int index)
     {
         RemoveChoice();
-        DataController.instance.StopSaveLoadJoyStick(false);
+        JoystickController.instance.StopSaveLoadJoyStick(false);
         chooseAction(index);
         
         // currentTaskData.taskIndex += choiceLen + 1;

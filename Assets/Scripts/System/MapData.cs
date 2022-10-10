@@ -269,7 +269,7 @@ public class MapData : MonoBehaviour
         {
             ui.name = map.name;
             
-            ui.SetParent(CanvasControl.instance.transform.Find("UI"));
+            ui.SetParent(CanvasControl.Instance.mapUI);
             ui.offsetMax = new Vector2(0, 0);
             ui.offsetMin = new Vector2(0, 0);
             ui.localScale = new Vector3(1, 1, 1);
@@ -312,7 +312,7 @@ public class MapData : MonoBehaviour
         if(mainChar == null) return;
         if (isJoystickInputUse)
         {
-            JoystickInputManager.instance.JoystickInputUpdate(method);
+            JoystickController.instance.JoystickInputUpdate(method);
         }
 
         if(mainChar.gameObject.activeSelf)

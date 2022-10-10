@@ -72,7 +72,7 @@ public class HamburgerStoreManager : MonoBehaviour
         if (index == 1)
         {
             // 플레이어가 라우 못 움직이게 하기
-            DataController.instance.InitializeJoyStick(false);
+            JoystickController.instance.InitializeJoyStick(false);
 
             // 웨이포인트에 따라 스핏 움직이게 하기.
             _wayPoints.StartMoving();

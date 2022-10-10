@@ -21,7 +21,6 @@ public class CharacterManager : MonoBehaviour, IMovable
     {
         ctrl = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
-        joyStick = DataController.instance.joyStick;
         cam = DataController.instance.cam;
         // 표정 머테리얼 초기화
         if (who.Equals(Character.Speat) || who.Equals(Character.Oun) || who.Equals(Character.Rau))
@@ -166,7 +165,7 @@ public class CharacterManager : MonoBehaviour, IMovable
             Vector3 transformedDir = camRotation * transform.forward;
             Vector2 characterDir = new Vector2(transformedDir.x, transformedDir.z);
             // 조이스틱이 가리키는 방향
-            Vector2 joystickDir = new Vector2(DataController.instance.inputDirection.x, DataController.instance.inputDirection.y);
+            Vector2 joystickDir = new Vector2(JoystickController.instance.inputDirection.x, JoystickController.instance.inputDirection.y);
 
             joyRot = Vector2.SignedAngle(joystickDir, characterDir);
             //사이드뷰 일 때
@@ -183,9 +182,9 @@ public class CharacterManager : MonoBehaviour, IMovable
             {
                 if (Mathf.Abs(joyRot) > 0) { transform.Rotate(Vector3.up, joyRot); } // 임시 회전
             }
-            anim.SetFloat(SpeedHash, DataController.instance.inputDegree);
+            anim.SetFloat(SpeedHash, JoystickController.instance.inputDegree);
             //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
-            if (DataController.instance.inputJump && ctrl.isGrounded)
+            if (JoystickController.instance.inputJump && ctrl.isGrounded)
             {
                 moveVerDir.y = 0;
                 anim.SetBool("Jump", true);  //점프 가능 상태로 변경
@@ -202,7 +201,7 @@ public class CharacterManager : MonoBehaviour, IMovable
             {
                 moveVerDir.y = 0;
                 //캐릭터 점프 가능
-                if (DataController.instance.inputJump && anim.GetBool("Jump"))
+                if (JoystickController.instance.inputJump && anim.GetBool("Jump"))
                 {
                     moveVerDir.y += jumpForce; //점프력 만큼 힘을 가함
                     anim.SetBool("Jump", false); //점프 불가능 상태로 변경하여 연속적인 점프 제한

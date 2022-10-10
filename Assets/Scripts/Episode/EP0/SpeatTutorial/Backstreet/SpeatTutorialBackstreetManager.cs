@@ -129,11 +129,11 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
         CharacterManager mainChar = DataController.instance.GetCharacter(Character.Speat_Adult);
         mainChar.jumpForce = 7;
         WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
-        DataController.instance.InitializeJoyStick(false);
-        Debug.Log("지금");
+        JoystickController.instance.InitializeJoyStick(false);
+        JoystickController.instance.inputDegree = 1;
+        JoystickController.instance.inputDirection.x = 1;
+        
         DataController.instance.currentMap.isJoystickInputUse = false;
-        DataController.instance.inputDegree = 1;
-        DataController.instance.inputDirection.x = 1;
 
         while (speatSlider.value < speatSlider.maxValue)
         {
@@ -203,7 +203,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
     public void JumpBtn(){
         if (jumpBtn.GetComponentsInChildren<Image>()[1].fillAmount == 0)
         {
-            DataController.instance.inputJump = true;
+            JoystickController.instance.inputJump = true;
             StartCoroutine("JumpCooldown");
         }
     }
@@ -214,7 +214,10 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
         while (jumpBtn.GetComponentsInChildren<Image>()[1].fillAmount > 0)
         {
             jumpBtn.GetComponentsInChildren<Image>()[1].fillAmount -= 0.04f;
-            if (jumpBtn.GetComponentsInChildren<Image>()[1].fillAmount < 0.9f) DataController.instance.inputJump = false;
+            if (jumpBtn.GetComponentsInChildren<Image>()[1].fillAmount < 0.9f)
+            {
+                JoystickController.instance.inputJump = false;
+            }
             yield return waitForSeconds;
         }
     }

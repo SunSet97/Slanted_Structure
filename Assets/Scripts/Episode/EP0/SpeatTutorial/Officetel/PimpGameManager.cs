@@ -24,7 +24,7 @@ public class PimpGameManager : MonoBehaviour, IPlayable
             t.pimpGameManager = this;
         }
 
-        canvasCtrl = CanvasControl.instance;
+        canvasCtrl = CanvasControl.Instance;
         speat = DataController.instance.GetCharacter(Character.Main);
     }
 

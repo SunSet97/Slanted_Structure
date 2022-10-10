@@ -661,10 +661,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 204812546}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5c533c6ae283aa4c994cb129be4f68c, type: 3}
+  m_Script: {fileID: 11500000, guid: a49c632e37a14ec082b8eb3accc43702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpButton: {fileID: 934470256}
+  joyStick: {fileID: 1575952660}
+  inputDirection: {x: 0, y: 0}
+  inputDegree: 0
+  inputJump: 0
+  inputDash: 0
+  inputSeat: 0
 --- !u!4 &204812548
 Transform:
   m_ObjectHideFlags: 0
@@ -2163,12 +2168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isExistdata: 000000
-  joyStick: {fileID: 1575952660}
-  inputDirection: {x: 0, y: 0}
-  inputDegree: 0
-  inputJump: 0
-  inputDash: 0
-  inputSeat: 0
+  joystickController: {fileID: 0}
   cam: {fileID: 281788506}
   min_x: -1
   max_x: 5
@@ -2180,8 +2180,7 @@ MonoBehaviour:
   storymaps: []
   mapGenerate: {fileID: 1619982228}
   currentMap: {fileID: 0}
-  mapCode: 001010
-  dialogueDB: {fileID: 0}
+  mapCode: 002010
   charData:
     respawnLocation: {x: 0, y: 0, z: 0}
     curPlayer: Rau
@@ -9462,18 +9461,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24bbb90f78ef2640b590fc2d703ce46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveText:
-  - {fileID: 1536760341}
-  - {fileID: 1183819611}
-  - {fileID: 360356992}
-  savePanel: {fileID: 1388433418}
-  intimacyTextSpeat: {fileID: 0}
-  intimacyTextOun: {fileID: 0}
-  selfEstmText: {fileID: 1220602894}
+  mapUI: {fileID: 950891578}
   isInConverstation: 0
-  commandPanel: {fileID: 0}
-  sprRenderers: []
-  finishFadeIn: 0
 --- !u!114 &2066593001
 MonoBehaviour:
   m_ObjectHideFlags: 0

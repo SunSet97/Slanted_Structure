@@ -312,7 +312,7 @@ public class SpeatAbility : MonoBehaviour
                 {
                     isInRoom = true;
                     hidedDoor = hit.collider.gameObject;
-                    DataController.instance.StopSaveLoadJoyStick(true);
+                    JoystickController.instance.StopSaveLoadJoyStick(true);
                     StartCoroutine(Hide(target, hidedDoor));
                     break;
                 }
@@ -362,7 +362,7 @@ public class SpeatAbility : MonoBehaviour
         }
         if (!isInRoom)
         {
-            DataController.instance.StopSaveLoadJoyStick(false);
+            JoystickController.instance.StopSaveLoadJoyStick(false);
         }
         speat.anim.SetFloat("Speed", 0f);
         door.GetComponent<OutlineClickObj>().IsClickEnable = true;

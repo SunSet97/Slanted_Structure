@@ -90,7 +90,7 @@ public class PlazaManager : MonoBehaviour
 
 
         // 대화를 할 수 없는 상황이 되면(즉, 대화중일때)
-        if (CanvasControl.instance.isInConverstation)
+        if (CanvasControl.Instance.isInConverstation)
         {
             Interact_ObjectWithRau interaction_oldMan = oldMan.GetComponent<Interact_ObjectWithRau>();
             Interact_ObjectWithRau interaction_police = police.GetComponent<Interact_ObjectWithRau>();
