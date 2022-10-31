@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 204240
 --- !u!1 &875278092998423700
@@ -170,40 +171,36 @@ MonoBehaviour:
   scriptDesription: "Episode2_day4_\uC624\uC6B4_\uD559\uAD50 \uAC74\uBB3C \uC548"
   mapCode: 204232
   method: 1
-  endMap: 0
-  director: {fileID: 0}
   nextMapcode: 204240
   map: {fileID: 8054416785398992293}
   ui: {fileID: 0}
   SkyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
   isOrthographic: 1
   orthographicSize: 3
-  isCameraMoving: 1
   cameraBound: {fileID: 0}
+  BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 671686067425313456}
   clearBoxList:
   - {fileID: 875278092598405116}
-  positionSetting: {fileID: 875278093008630499}
   positionSets:
   - index: 0
     who: 2
     startPosition: {fileID: 875278092413723747}
-    clearBox: {fileID: 875278092598405115}
     posSet: {fileID: 875278093176784564}
     isMain: 1
   - index: 1
     who: 1
     startPosition: {fileID: 4722212044423546149}
-    clearBox: {fileID: 0}
     posSet: {fileID: 6596219404093074501}
     isMain: 0
-  posIndex: 0
-  cam: {fileID: 0}
+  cameraViewType: 0
   camDis: {x: -2.95, y: 4.5, z: -2.08}
   camRot: {x: 45, y: 56, z: 0}
-  isJoystickUse: 1
-  ForDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  positionSetting: {fileID: 875278093008630499}
+  isJoystickInputUse: 0
+  isJoystickNone: 0
+  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &875278093008630499
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,13 +314,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4691190674515861694}
-  m_LocalRotation: {x: 0.5242845, y: -0, z: -0, w: 0.8515431}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.47967616, y: -0.043575298, z: -0.04203523, w: 0.8753543}
+  m_LocalPosition: {x: 0, y: 4.06, z: -1.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 875278092998423701}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 63.24, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 56.732002, y: -12.274, z: -12.143001}
 --- !u!108 &1570806506394796902
 Light:
   m_ObjectHideFlags: 0
@@ -335,7 +332,7 @@ Light:
   serializedVersion: 9
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.45
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -411,6 +408,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+  dialogueCameraPos: {x: 0, y: 0, z: 0}
+  dialogueCameraRot: {x: 0, y: 0, z: 0}
   taskEndActions:
   - eventType: 1
     clearBox: {fileID: 875278092598405116}
@@ -420,34 +419,36 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+  cinematicEndAction:
+    interactionEvents: []
   taskData_Debug:
   - tasks:
     - name: "\uB77C\uC6B0\uB300\uD6541"
-      type: 2
+      taskContentType: 0
       nextFile: dialogue_ep2/206132
       order: 1
       condition: 
       increaseVar: 
     - name: 
-      type: 3
+      taskContentType: 0
       nextFile: 2
       order: 1
       condition: 
       increaseVar: 
     - name: 
-      type: 2
+      taskContentType: 0
       nextFile: dialogue_ep2/206132_1
       order: 0
       condition: 0,0,0,0
       increaseVar: 0,0,3
     - name: 
-      type: 2
+      taskContentType: 0
       nextFile: dialogue_ep2/206132_2
       order: 0
       condition: 0,0,0,0
       increaseVar: 0,0,0
     - name: "\uB05D"
-      type: 4
+      taskContentType: 0
       nextFile: 
       order: 1
       condition: 
@@ -457,133 +458,133 @@ MonoBehaviour:
     isContinue: 1
   - tasks:
     - name: 
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: 
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: 
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: 
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uBD88\uB7C9 \uD559\uC0DD1"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: 
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uBD88\uB7C9 \uD559\uC0DD1"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uC624\uC6B4"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: 
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uBD88\uB7C9 \uD559\uC0DD2"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: 
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uC624\uC6B4"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uC624\uC6B4"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
@@ -593,67 +594,67 @@ MonoBehaviour:
     isContinue: 1
   - tasks:
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uC624\uC6B4"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: 
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: 
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uBD88\uB7C9 \uD559\uC0DD 2"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uC624\uC6B4"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uBD88\uB7C9 \uD559\uC0DD1"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: 
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uB77C\uC6B0"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: "\uC624\uC6B4"
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
       increaseVar: 
     - name: 
-      type: 0
+      taskContentType: 0
       nextFile: 
       order: 0
       condition: 
@@ -663,18 +664,17 @@ MonoBehaviour:
     isContinue: 1
   color: 0
   interactionMethod: 0
-  onOutline: 0
-  isCharacterInRange: 0
   radius: 3
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
   outline: {fileID: 0}
-  cam: {fileID: 0}
   isViewChange: 0
-  CameraPos: {x: 0, y: 0, z: 0}
-  CameraRot: {x: 0, y: 0, z: 0}
+  timelines: []
+  cinematics: []
+  inGames: []
   touchTargetObject: {fileID: 0}
+  isLoopDialogue: 0
 --- !u!1 &5369782830842586601
 GameObject:
   m_ObjectHideFlags: 0

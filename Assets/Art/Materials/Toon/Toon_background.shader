@@ -1,4 +1,4 @@
-﻿Shader "Custom/ToonFresnel"
+﻿Shader "Custom/Toon_Background"
 {
     Properties
     {
@@ -44,13 +44,6 @@
             half cel = floor((NdotL * _CelShadingLevels) / (_CelShadingLevels - 0.5));//ramp파일 대신 스냅
             //floor(x):x보다 크지 않은 정수 중 가장 큰 정수를 반환(반내림)
             float rim = abs(dot(s.Normal, viewDir));//외각선 내각을 절대값으로 변경
-            if (rim > 0.3) 
-            {
-            }
-            else//rim이 작으면 노말벡터와 외각선 벡터가 수직에 가까움
-            {
-                cel = -1;//아웃라인
-            }
             float4 final;
             final.rgb = s.Albedo * _LightColor0.rgb *(cel*atten)+_BrightDark;
             final.a = s.Alpha;
