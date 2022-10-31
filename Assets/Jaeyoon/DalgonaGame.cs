@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Play;
-public class DalgonaGame : MonoBehaviour, IPlayable
+public class DalgonaGame : MonoBehaviour, IGamePlayable
 {
     public dragimage[] dalgona;
     private int index;

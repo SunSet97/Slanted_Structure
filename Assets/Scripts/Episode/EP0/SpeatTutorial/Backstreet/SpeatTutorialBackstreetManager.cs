@@ -4,7 +4,7 @@ using Play;
 using UnityEngine;
 using UnityEngine.UI;
 using static Data.CustomEnum;
-public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
+public class SpeatTutorialBackstreetManager : MonoBehaviour, IGamePlayable
 {
     public bool IsPlay { get; set; } = false;
 
@@ -46,10 +46,14 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
         Debug.Log(_assetBundle == null ? "Fail to load" : "Success to load");
         var objs = _assetBundle.LoadAllAssets<GameObject>();
         
-        patterns = new GameObject[3][];
-        for (var idx = 1; idx < patterns.Length + 1; idx++)
+        patterns = new GameObject[4][];
+        for (var idx = 0; idx < patterns.Length; idx++)
         {
             GameObject[] t = objs.Where(item => item.name.Substring(7, 1) == idx.ToString()).Distinct().ToArray();
+            foreach (var tt in t)
+            {
+                Debug.Log(tt);
+            }
             patterns[idx] = t;
 
             Debug.Log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
@@ -157,7 +161,6 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
 
             if (startPosition.position.x < mainChar.transform.position.x)
             {
-                GameObject.Find("Speat Tutorial backstreet");
                 for (int i = 1; i < trailer.Length; i++)
                 {
                     // 트레일러 이동
@@ -171,12 +174,12 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
 
                         if (speatSlider.value < speatSlider.maxValue * 0.8f)
                         {
-                            int index = speatDistance > 66 ? 0 : speatDistance > 33 ? 1 : 2;
+                            int index = speatDistance > 66 ? 1 : speatDistance > 33 ? 2 : 3;
                             Instantiate(patterns[index][Random.Range(0, patterns[index].Length)], trailer[i]).SetActive(true); // 장애물 패턴 랜덤 생성
                         }
                         else
                         {
-                            Instantiate(patterns[0][5], trailer[i]).SetActive(true); // 장애물 없는 길 생성
+                            Instantiate(patterns[0][1], trailer[i]).SetActive(true); // 장애물 없는 길 생성
                         }
                     }
                 }
@@ -186,6 +189,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
         mainChar.jumpForce = 4;
         mainChar.UseJoystickCharacter();
     }
+    
     //private GameObject GetPattern(int index, string tag)
     //{
     //    GameObject pattern = patterns[index].Find(x => (x.name.Equals(tag) && !x.activeSelf));
@@ -196,6 +200,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
     //    }
     //    return pattern;
     //}
+    
     #endregion
 
     #region 액션 버튼
@@ -207,6 +212,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
             StartCoroutine("JumpCooldown");
         }
     }
+    
     IEnumerator JumpCooldown()
     {
         jumpBtn.GetComponentsInChildren<Image>()[1].fillAmount = 1;
@@ -221,6 +227,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IPlayable
             yield return waitForSeconds;
         }
     }
+    
     // 능력 사용 버튼
     public void AbilityBtn()
     {

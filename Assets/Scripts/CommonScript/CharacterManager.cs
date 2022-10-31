@@ -4,8 +4,6 @@ using static Data.CustomEnum;
 
 public class CharacterManager : MonoBehaviour, IMovable
 {
-    [Header("#Default inspector setting(auto)")]
-    public Joystick joyStick; // 조이스틱
     public CharacterController ctrl; // 캐릭터컨트롤러
 
     public Animator anim; // 애니메이션

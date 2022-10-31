@@ -1,6 +1,4 @@
-﻿// 카메라 세팅 구조체
-
-using System;
+﻿using System;
 using Data;
 using UnityEngine;
 using UnityEngine.UI;

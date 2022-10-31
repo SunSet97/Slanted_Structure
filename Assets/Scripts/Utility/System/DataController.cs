@@ -90,17 +90,6 @@ public class DataController : MonoBehaviour
     {
         Init();
         mapCode = "000000";
-        // var destMapCode = mapCode;
-        // var loadMapCode = SaveManager.GetSaveData().mapCode;
-        // Debug.Log(loadMapCode);
-        // if (loadMapCode == null)
-        // {
-        //     Debug.Log("잘못 실행하거나 세이브 데이터 없거나");
-        // }
-        // else
-        // {
-        //     destMapCode = loadMapCode;
-        // }
         ChangeMap(mapcode);
     }
     
@@ -120,7 +109,7 @@ public class DataController : MonoBehaviour
         Debug.Log("Day:   " + curDay + " : " + desDay);
         if (curEp == desEp && curDay == desDay)
         {
-            return null;
+            return storymaps;
         }
 
         if (_mapDB != null)
@@ -143,14 +132,13 @@ public class DataController : MonoBehaviour
         if (curDay != desDay)
         {
             dialogueDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}");
-            Debug.Log(dialogueDB);
         }
         _materialDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/modulematerials");
         
         if (_mapDB == null)
         {
             Debug.LogError("맵 어셋 번들 오류");
-            return null;
+            return storymaps;
         }
         var mapDataObjects = _mapDB.LoadAllAssets<GameObject>();
         MapData[] mapDatas = new MapData[mapDataObjects.Length];
@@ -227,8 +215,10 @@ public class DataController : MonoBehaviour
         currentMap = Instantiate(nextMap, mapGenerate);
         currentMap.Initialize();
         SetByChangedMap();
-        
-        Debug.Log("22222222222222222222222222222222222");
+        if (FadeEffect.instance.isFadeOut)
+        {
+            FadeEffect.instance.FadeIn();
+        }
         onLoadMap?.Invoke();
         onLoadMap = () => { };
     }

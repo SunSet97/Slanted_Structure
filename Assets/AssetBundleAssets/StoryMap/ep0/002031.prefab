@@ -33,7 +33,6 @@ Transform:
   - {fileID: 7378718765164327379}
   - {fileID: 847822560161879266}
   - {fileID: 3674881357327088230}
-  - {fileID: 321501457606891842}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -805,96 +804,6 @@ Transform:
   m_Father: {fileID: 741192318138526783}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2574167559718362173
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 321501457606891842}
-  - component: {fileID: 5574376349958392229}
-  - component: {fileID: 5356703305898844786}
-  m_Layer: 16
-  m_Name: Cinematic Trigger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &321501457606891842
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2574167559718362173}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.86, y: -0.63, z: 0.18}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 741192318138526783}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5574376349958392229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2574167559718362173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionPlayType: 5
-  jsonFile: {fileID: 0}
-  dialogueData:
-    dialogues: []
-  dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
-  cinematicEndAction:
-    interactionEvents:
-    - eventType: 1
-      clearBox: {fileID: 3244334659787583577}
-      activeObjs:
-        actives: []
-      movables:
-        movables: []
-      playableList:
-        playableObjs: []
-  taskData_Debug: []
-  color: 0
-  interactionMethod: 3
-  radius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
-  outline: {fileID: 0}
-  isViewChange: 0
-  timelines:
-  - {fileID: 0}
-  cinematics: []
-  inGames: []
-  touchTargetObject: {fileID: 0}
-  isLoopDialogue: 0
---- !u!65 &5356703305898844786
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2574167559718362173}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3592044600501154553
 GameObject:
   m_ObjectHideFlags: 0
@@ -977,7 +886,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8183066052361565256}
   - component: {fileID: 1161514918674036966}
-  - component: {fileID: 5852711481380953998}
   m_Layer: 0
   m_Name: Dialogue
   m_TagString: Untagged
@@ -1030,6 +938,12 @@ MonoBehaviour:
       condition: 
       increaseVar: 
     - name: 
+      taskContentType: 11
+      nextFile: 
+      order: 1
+      condition: 
+      increaseVar: 
+    - name: 
       taskContentType: 10
       nextFile: 
       order: 1
@@ -1039,7 +953,7 @@ MonoBehaviour:
     taskOrder: 1
     isContinue: 1
   color: 0
-  interactionMethod: 2
+  interactionMethod: 3
   radius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
@@ -1052,19 +966,6 @@ MonoBehaviour:
   inGames: []
   touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
---- !u!65 &5852711481380953998
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8141678364140788477}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &741192318151274868
 PrefabInstance:
   m_ObjectHideFlags: 0

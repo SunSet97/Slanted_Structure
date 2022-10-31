@@ -31,7 +31,6 @@ public class TitleSceneManager : MonoBehaviour
                     
             SceneLoader.Instance.AddListener(() =>
             {
-                Debug.Log("로드!!!");
                 DataController.instance.GameStart(mapCode);
             });
         });

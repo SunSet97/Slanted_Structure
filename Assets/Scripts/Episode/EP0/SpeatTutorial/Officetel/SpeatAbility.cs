@@ -270,25 +270,26 @@ public class SpeatAbility : MonoBehaviour
     {
         if (!isPassingHor && !isPassingVerUp && !isPassingVerDown && isAbility)
         {
-            if (speat.joyStick.Horizontal < -0.7f && Vector3.Distance(cenPos, wallFwdFace.point)< 0.5f)
+            var joyStick = JoystickController.instance.joyStick;
+            if (joyStick.Horizontal < -0.7f && Vector3.Distance(cenPos, wallFwdFace.point)< 0.5f)
             {
                 speat.gameObject.layer = 9; //벽을 통과
                 speat.moveHorDir = Vector3.left * 6;
                 isPassingHor = true;
             }
-            if (speat.joyStick.Horizontal > 0.7f && Vector3.Distance(cenPos, wallFwdFace.point) < 0.5f)
+            if (joyStick.Horizontal > 0.7f && Vector3.Distance(cenPos, wallFwdFace.point) < 0.5f)
             {
                 speat.gameObject.layer = 9; //벽을 통과
                 speat.moveHorDir = Vector3.right * 6;
                 isPassingHor = true;
             }
-            if (speat.joyStick.Vertical < -0.7f)
+            if (joyStick.Vertical < -0.7f)
             {
                 speat.gameObject.layer = 10; //벽을 통과
                 speat.moveVerDir = Vector3.down * 6;
                 isPassingVerDown = true;
             }
-            if (speat.joyStick.Vertical > 0.7f)
+            if (joyStick.Vertical > 0.7f)
             {
                 speat.gameObject.layer = 10; //벽을 통과
                 speat.moveVerDir = Vector3.up * 15;

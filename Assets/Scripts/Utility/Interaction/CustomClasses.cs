@@ -66,7 +66,7 @@ public class InteractionEvent
         foreach (var t in playableList.playableObjs)
         {
             Debug.Log($"Play Event - {t.gameObject}: {t.isPlay} ");
-            t.gameObject.GetComponent<IPlayable>().Play();
+            t.gameObject.GetComponent<IGamePlayable>().Play();
             // t.gameObject.GetComponent<IPlayable>().IsPlay = t.isPlay;
         }
     }

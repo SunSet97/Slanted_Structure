@@ -1,6 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using Move;
+using Data;
 using UnityEngine;
 
 public class PimpGuestMoving : MonoBehaviour
@@ -10,7 +9,7 @@ public class PimpGuestMoving : MonoBehaviour
     [Header("스핏")]
     public SpeatAbility speatAbility; // 스핏ability
     public float changeDirectionCycle;
-    public int speedUPTime;
+    public int speedUpTime;
 
     // 적들
     [Header("적")]
@@ -29,6 +28,9 @@ public class PimpGuestMoving : MonoBehaviour
 
 
     public TextAsset jsonFile;
+    
+    
+    public readonly int speedHash = Animator.StringToHash("Speed");
 
     void Start()
     {
@@ -36,7 +38,7 @@ public class PimpGuestMoving : MonoBehaviour
         animator = GetComponent<Animator>();
         // npc.GetComponent<Collider>().isTrigger = true;
         // cam = DataController.instance_DataController.cam;
-        animator.SetFloat(pimpGameManager.speedHash, 0.0f);
+        animator.SetFloat(speedHash, 0.0f);
         rotVal = 180;
     }
 
@@ -78,24 +80,24 @@ public class PimpGuestMoving : MonoBehaviour
         nextDirection = (int) Random.Range(-1, 2);
         if (nextDirection == 1) // 오른쪽으로 움직임
         {
-            animator.SetFloat(pimpGameManager.speedHash, 1.0f);
+            animator.SetFloat(speedHash, 1.0f);
             rotVal = 90;
         }
         else if (nextDirection == -1) // 왼쪽으로 움직임
         {
-            animator.SetFloat(pimpGameManager.speedHash, 1.0f);
+            animator.SetFloat(speedHash, 1.0f);
             rotVal = -90;
         }
         else if (nextDirection == 0) // 정면 바라보고 정지
         {
-            animator.SetFloat(pimpGameManager.speedHash, 0.0f);
+            animator.SetFloat(speedHash, 0.0f);
             rotVal = 180;
         }
 
         // else
         // {
         //
-        //     animator.SetFloat(pimpGameManager.speedHash, 0.0f);
+        //     animator.SetFloat(speedHash, 0.0f);
         //     rotVal = 180;
         // }
 
@@ -104,9 +106,8 @@ public class PimpGuestMoving : MonoBehaviour
 
     private void SetTalking(bool isTalking)
     {
-        var speat = pimpGameManager.speat;
+        var speat = DataController.instance.GetCharacter(CustomEnum.Character.Speat);
         speat.gameObject.layer = 0;
-        //Debug.Log(NPCtransforms.Length);
         for (int i = 0; i < transform.parent.parent.childCount; i++)
         {
             for(int j = 0; j < transform.parent.parent.GetChild(i).childCount; j++)
@@ -116,11 +117,11 @@ public class PimpGuestMoving : MonoBehaviour
                 speat.IsMove = !isTalking;
                 if (isTalking)
                 {
-                    animator.SetFloat(pimpGameManager.speedHash, 0.0f);
+                    animator.SetFloat(speedHash, 0.0f);
                 }
                 else
                 {
-                    animator.SetFloat(pimpGameManager.speedHash, nextDirection);
+                    animator.SetFloat(speedHash, nextDirection);
                 }
             }
         }
@@ -131,16 +132,20 @@ public class PimpGuestMoving : MonoBehaviour
         // 대화시작
         if (transform.parent.name.Equals("Guest"))
         {
-            if (hit.gameObject.name.Equals("Speat_Adult") && !pimpGameManager.canvasCtrl.isInConverstation)
+            if (hit.gameObject.name.Equals("Speat_Adult") && !CanvasControl.Instance.isInConverstation)
             {
                 print("스핏과 만남");
 
                 SetTalking(true);
-                //DataController.instance_DataController.LoadData(transform.parent.name, gameObject.name + ".json");
-                //수정
-                var speat = pimpGameManager.speat;
+                var speat = DataController.instance.GetCharacter(CustomEnum.Character.Speat);
                 speat.IsMove = false;
-                DialogueController.instance.SetDialougueEndAction(() => { SetTalking(false); speat.IsMove = true; DataController.instance.ChangeMap(DataController.instance.mapCode); });
+                DialogueController.instance.SetDialougueEndAction(() =>
+                {
+                    SetTalking(false);
+                    speat.IsMove = true;
+                    
+                    DataController.instance.ChangeMap(DataController.instance.mapCode);
+                });
                 if (jsonFile) DialogueController.instance.StartConversation(jsonFile.text);
             }
 
@@ -189,7 +194,7 @@ public class PimpGuestMoving : MonoBehaviour
     // pimp나 guest가 같은 층에 있는 지 bool값 반환
     private bool CheckSameFloorWithSpeat()
     {
-        var speat = pimpGameManager.speat;
+        var speat = DataController.instance.GetCharacter(CustomEnum.Character.Speat);
         if (speat.transform.position.y - sameFloorRange <= gameObject.transform.position.y
             && gameObject.transform.position.y <= speat.transform.position.y + sameFloorRange) return true;
         else return false;
@@ -198,12 +203,12 @@ public class PimpGuestMoving : MonoBehaviour
     private IEnumerator SpeedUpFunc()
     {
         //Debug.Log("능력 쓰는거 걸림");
-        int i = speedUPTime;
+        int i = speedUpTime;
         float tempSpeed = speed;
         speed += accVal;
         while (i >= 0)
         {
-            yield return new WaitForSeconds(speedUPTime);
+            yield return new WaitForSeconds(speedUpTime);
             i--;
         }
         speed = tempSpeed;

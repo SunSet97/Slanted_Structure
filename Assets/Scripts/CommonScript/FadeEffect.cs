@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,54 +6,81 @@ public class FadeEffect : MonoBehaviour
 {
     public static FadeEffect instance { get; private set; }
 
-    public CanvasGroup canvasGroup;
+    public Image fadePanel;
     public GraphicRaycaster graphicRaycaster;
     public bool isFadeOver;
+
+    public bool isFadeOut;
 
     private void Awake()
     {
         instance = this;
     }
 
-    public IEnumerator FadeIn()
+    public void FadeIn()
+    {
+        isFadeOut = false;
+        isFadeOver = false;
+        StartCoroutine(FadeInCoroutine());
+    }
+    
+    private IEnumerator FadeInCoroutine()
     {
         JoystickController.instance.StopSaveLoadJoyStick(true);
+        graphicRaycaster.enabled = false;
+        fadePanel.gameObject.SetActive(true);
+
         float time = 4;
         
-        isFadeOver = false;
-        graphicRaycaster.enabled = true;
         float t = 1;
+        Color color;
         while (t > 0)
         {
             t -= Time.deltaTime / time;
-            canvasGroup.alpha = t;
+            color = fadePanel.color;
+            color.a = t;
+            fadePanel.color = color;
             yield return null;
         }
 
-        canvasGroup.alpha = 0;
-        graphicRaycaster.enabled = false;
+        color = fadePanel.color;
+        color.a = 0;
+        fadePanel.color = color;
+        graphicRaycaster.enabled = true;
         isFadeOver = true;
         JoystickController.instance.StopSaveLoadJoyStick(false);
+        fadePanel.gameObject.SetActive(false);
     }
-    
-    public IEnumerator FadeOut()
+
+    public void FadeOut()
+    {
+        isFadeOver = false;
+        isFadeOut = true;
+        StartCoroutine(FadeOutCoroutine());
+    }
+    private IEnumerator FadeOutCoroutine()
     {
         JoystickController.instance.StopSaveLoadJoyStick(true);
+        graphicRaycaster.enabled = false;
+        fadePanel.gameObject.SetActive(true);
         
         float time = 4;
-        isFadeOver = false;
         var value = LayerMask.GetMask("Default");
-        graphicRaycaster.enabled = true;
         float t = 0;
+        Color color;
         while (t < 1)
         {
             t += Time.deltaTime / time;
-            canvasGroup.alpha = t;
+            color = fadePanel.color;
+            color.a = t;
+            fadePanel.color = color;
             yield return null;
         }
 
-        canvasGroup.alpha = 1;
-        graphicRaycaster.enabled = false;
+        color = fadePanel.color;
+        color.a = 1;
+        fadePanel.color = color;
+        graphicRaycaster.enabled = true;
         isFadeOver = true;
         JoystickController.instance.StopSaveLoadJoyStick(false);
     }

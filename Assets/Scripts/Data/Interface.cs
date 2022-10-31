@@ -25,7 +25,7 @@ namespace Move
 
 namespace Play
 {
-    public interface IPlayable
+    public interface IGamePlayable
     {
         bool IsPlay { get; set; }
 

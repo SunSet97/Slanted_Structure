@@ -19,7 +19,7 @@ public class dovesComoponents
 
 }
 
-public class CatchRobberManager : MonoBehaviour, IPlayable
+public class CatchRobberManager : MonoBehaviour, IGamePlayable
 {
     public bool IsPlay { get; set; }
 

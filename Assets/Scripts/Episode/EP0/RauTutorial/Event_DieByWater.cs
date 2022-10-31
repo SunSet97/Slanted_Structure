@@ -7,12 +7,15 @@ public class Event_DieByWater : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.TryGetComponent(out CharacterManager speat)) return;
-        if (speat != DataController.instance.GetCharacter(CustomEnum.Character.Main)) return;
-        
-        speat.PickUpCharacter();
+        if (!other.TryGetComponent(out CharacterManager character) &&
+            character != DataController.instance.GetCharacter(CustomEnum.Character.Main))
+        {
+            return;
+        }
+
+        character.PickUpCharacter();
         other.transform.position = respawnPoint.position; // 리스폰 포인트로 이동
-        speat.UseJoystickCharacter();
+        character.UseJoystickCharacter();
         GetComponentInParent<RauTutorialManager>().isFallInRiver = true;
     }
 

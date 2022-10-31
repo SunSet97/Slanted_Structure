@@ -4,7 +4,7 @@ using Play;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TossCoin : MonoBehaviour, IPlayable
+public class TossCoin : MonoBehaviour, IGamePlayable
 {
     public GameObject coin; // 동전 프리펩
     public Transform arrow; // 화살표

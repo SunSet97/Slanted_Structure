@@ -6,13 +6,13 @@ using UnityEditor;
 using static Data.CustomEnum;
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(CameraMovingManager))]
-public class CamerMovingManagerEditor : Editor
+[CustomEditor(typeof(CameraTracker))]
+public class CameraTrackerEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        CameraMovingManager t = (CameraMovingManager) target;
+        CameraTracker t = (CameraTracker) target;
         if (GUILayout.Button("코너 세팅 버튼"))
         {
             t.SetCorner();
@@ -22,7 +22,7 @@ public class CamerMovingManagerEditor : Editor
 }
 #endif
 
-public class CameraMovingManager : MonoBehaviour
+public class CameraTracker : MonoBehaviour
 {
     public Waypoint waypoint;           // 코너 웨이포인트
     public float cornerRadius;              // 코너 범위

@@ -28,7 +28,6 @@ namespace CommonScript
         void Start()
         {
             layerMask = 1 << LayerMask.NameToLayer("ClickObject") | 1 << LayerMask.NameToLayer("OnlyPlayerCheck");
-            gameObject.SetActive(false);
         }
 
         void Update()
@@ -52,13 +51,21 @@ namespace CommonScript
         private void AddClick(IClickable clickable)
         {
             clickables.Add(clickable);
-            if(!gameObject.activeSelf) gameObject.SetActive(true);
+            if (!gameObject.activeSelf)
+            {
+                gameObject.SetActive(true);
+                Debug.Log("클리커 활성화" + gameObject.activeSelf);
+            }
         }
 
         private void RemoveClick(IClickable clickable)
         {
             clickables.Remove(clickable);
-            if(clickables.Count == 0) gameObject.SetActive(false);
+            if (clickables.Count == 0)
+            {
+                gameObject.SetActive(false);
+                Debug.Log("클리커 비활성화" + gameObject.activeSelf);
+            }
         }
         
         public void OnTouchDisplay()

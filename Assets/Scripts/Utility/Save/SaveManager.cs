@@ -20,7 +20,6 @@ namespace Utility.Save
 
         static SaveManager()
         {
-            Debug.Log("하이요");
             Init();
         }
         public static void Init()

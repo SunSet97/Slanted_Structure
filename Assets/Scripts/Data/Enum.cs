@@ -109,5 +109,13 @@ namespace Data
             NONE,
             FULL
         }
+        
+        public enum Swipe
+        {
+            Left,
+            Right,
+            Down,
+            None
+        }
     }
 }

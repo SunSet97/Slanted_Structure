@@ -69,21 +69,25 @@ public class JoystickController : MonoBehaviour
             InitializeJoyStick(wasJoystickUse);
         }
     }
-    
+
     public void SetJoystickArea(CustomEnum.JoystickAreaType joystickAreaType)
     {
+        var rect = joyStick.GetComponent<RectTransform>();
         if (joystickAreaType == CustomEnum.JoystickAreaType.DEFAULT)
         {
-            
-        }else if (joystickAreaType == CustomEnum.JoystickAreaType.FULL)
-        {
-            
-        }else if (joystickAreaType == CustomEnum.JoystickAreaType.NONE)
-        {
-            
+            rect.anchorMax = new Vector2(.5f, .5f);
         }
+        else if (joystickAreaType == CustomEnum.JoystickAreaType.FULL)
+        {
+            rect.anchorMax = Vector2.one;
+        }
+        else if (joystickAreaType == CustomEnum.JoystickAreaType.NONE)
+        {
+            rect.anchorMax = Vector2.zero;
+        }
+        Debug.Log("조이스틱 영역 조절" + rect.anchorMax);
     }
-    
+
     public void JoystickInputUpdate(CustomEnum.JoystickInputMethod method)
     {
         var joystickController = JoystickController.instance;

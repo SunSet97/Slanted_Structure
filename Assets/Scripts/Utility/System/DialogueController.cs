@@ -71,9 +71,7 @@ public class DialogueController : MonoBehaviour
 
     public string ConvertPathToJson(string path)
     {
-        Debug.Log("변환 전: " + path);
         string dialogueName = path.Split('/')[1];
-        Debug.Log("변환 후: " + dialogueName);
         return DataController.instance.dialogueDB.LoadAsset<TextAsset>(dialogueName).text;
     }
 
@@ -82,38 +80,27 @@ public class DialogueController : MonoBehaviour
         if (DataController.instance.taskData != null)
             DataController.instance.taskData.isContinue = false;
 
-        Debug.Log("1");
         isTalking = true;
         //Joystick 중지
         JoystickController.instance.StopSaveLoadJoyStick(true);
-        Debug.Log("2");
         DataController.instance.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
         dialogueIdx = 0;
-        Debug.Log("3");
         if (dialoguePrevAction != null)
         {
             dialoguePrevAction();
             dialoguePrevAction = null;
         }
-        Debug.Log("4");
-        Debug.Log(dialoguePanel.activeSelf);
         dialoguePanel.SetActive(true);
-        Debug.Log(dialoguePanel.activeSelf);
-        Debug.Log("5");
         // 시작할 때 
         DialogueData dialogueData = DataController.instance.dialogueData;
         int peekIdx = dialogueData.dialogues.Length - 1;
         if (dialogueData.dialogues[peekIdx].name == "camera")
         {
-            Debug.Log("111");
             int[] camPos = Array.ConvertAll(dialogueData.dialogues[peekIdx].anim_name.Split(','), int.Parse);
             int[] camRot = Array.ConvertAll(dialogueData.dialogues[peekIdx].contents.Split(','), int.Parse);
-            Debug.Log("222");
             dialogueCameraPos = new Vector3(camPos[0], camPos[1], camPos[2]);
             dialogueCameraRot = new Vector3(camRot[0], camRot[1], camRot[2]);
-            Debug.Log("333");
         }
-        Debug.Log("6");
 
         dialogueData.dialogues = Array.FindAll(dialogueData.dialogues, item =>
             item.name != "camera"
@@ -164,8 +151,6 @@ public class DialogueController : MonoBehaviour
                 {
                     Debug.Log(dialogueData.dialogues[dialogueIdx].anim_name);
                     string path = "Character_dialogue/" + dialogueData.dialogues[dialogueIdx].anim_name;
-                    // charDialogueAnimator.runtimeAnimatorController =
-                    //     Resources.Load(path) as UnityEditor.Animations.AnimatorController;
                     charEmotionAnimator.runtimeAnimatorController =
                         Resources.Load(path) as RuntimeAnimatorController;
                     if (charEmotionAnimator.runtimeAnimatorController != null)

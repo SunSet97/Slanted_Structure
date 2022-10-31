@@ -1,10 +1,5 @@
-﻿
-using System;
-using Data;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using Utility.Save;
 
 public class PreferenceManager : MonoBehaviour
 {

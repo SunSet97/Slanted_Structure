@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using Cinemachine;
 using CommonScript;
 using Data;
+using Play;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
 using UnityEngine.Serialization;
 using UnityEngine.Timeline;
-using IPlayable = Play.IPlayable;
 using Task = Data.Task;
 using static Data.CustomEnum;
 
@@ -22,7 +22,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     [Header("Continuous 혹은 Dialogue인 경우에만 값을 넣으시오")]
     public TextAsset jsonFile;
 
-    [Header("타입이 Game인 경우 게임 오브젝트를 넣으세요")] public IPlayable playableGame;
+    [Header("타입이 Game인 경우 게임 오브젝트를 넣으세요")] public IGamePlayable GamePlayableGame;
 
     private Stack<TaskData> jsonTask;
 
@@ -35,9 +35,6 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
     public InteractionEvent[] dialogueEndAction;
 
-    // [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
-    // public InteractionEventMedium newDialogueEndAction;
-
     [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
     public Vector3 dialogueCameraPos;
 
@@ -46,9 +43,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
 
     [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Task)]
     public InteractionEvent[] taskEndActions;
-    // [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Task)]
-    // public InteractionEventMedium newTaskEndActions;
-
+    
     [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Cinematic)] [SerializeField]
     public InteractionEventMedium cinematicEndAction;
 
@@ -102,7 +97,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     
     void Awake()
     {
-        if (interactionMethod == InteractionMethod.OnChangeMap)
+        if (Application.isPlaying && interactionMethod == InteractionMethod.OnChangeMap)
         {
             DataController.instance.AddOnLoadMap(() =>
             {
@@ -127,20 +122,6 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         {
             playerLayer = 1 << LayerMask.NameToLayer("Player");
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
-
-            if (timelines.Length > 0)
-            {
-                foreach (var t in timelines)
-                {
-                    var timelineAsset = t.playableAsset as TimelineAsset;
-                    var tracks = timelineAsset.GetOutputTracks();
-                    foreach (var temp in tracks)
-                    {
-                        if (temp is CinemachineTrack)
-                            t.SetGenericBinding(temp, DataController.instance.cam.GetComponent<CinemachineBrain>());
-                    }   
-                }
-            }
 
             //딱히 필요 없음
             // gameObject.tag = "obj_interaction";
@@ -334,6 +315,19 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         //1회성 interaction인 경우 굳이 excel로 할 필요 없이 바로 실행 dialogue도 마찬가지 단순한 잡담이면 typeOfInteraction.dialogue에서 처리
         else if (interactionPlayType == InteractionPlayType.Task)
         {
+            if (timelines.Length > 0)
+            {
+                foreach (var t in timelines)
+                {
+                    var timelineAsset = t.playableAsset as TimelineAsset;
+                    var tracks = timelineAsset.GetOutputTracks();
+                    foreach (var temp in tracks)
+                    {
+                        if (temp is CinemachineTrack)
+                            t.SetGenericBinding(temp, DataController.instance.cam.GetComponent<CinemachineBrain>());
+                    }   
+                }
+            }
             isTouched = true;
             if (jsonTask.Count == 0)
             {
@@ -344,7 +338,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         }
         else if (interactionPlayType == InteractionPlayType.Game)
         {
-            playableGame.Play();
+            GamePlayableGame.Play();
         }
         else if (interactionPlayType == InteractionPlayType.Cinematic)
         {
@@ -486,6 +480,11 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         {
             DataController.instance.taskData = currentTaskData;
             Task currentTask = currentTaskData.tasks[currentTaskData.taskIndex];
+            Debug.Log(currentTaskData.tasks.Length);
+            foreach (var task in currentTaskData.tasks)
+            {
+                Debug.Log(task.taskContentType);
+            }
             Debug.Log("taskIndex - " + currentTaskData.taskIndex + "\nInteractionType - " +
                       currentTask.taskContentType);
             switch (currentTask.taskContentType)
@@ -504,9 +503,9 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     break;
                 case TaskContentType.Play:
                     currentTaskData.isContinue = false;
-                    IPlayable playable = GameObject.Find(currentTask.nextFile).GetComponent<IPlayable>();
-                    playable.Play();
-                    yield return new WaitUntil(() => playable.IsPlay);
+                    IGamePlayable gamePlayable = GameObject.Find(currentTask.nextFile).GetComponent<IGamePlayable>();
+                    gamePlayable.Play();
+                    yield return new WaitUntil(() => gamePlayable.IsPlay);
                     currentTaskData.isContinue = true;
                     break;
                 case TaskContentType.TEMP:
@@ -545,7 +544,6 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                                 break;
                         }
                     }
-
                     yield break;
                 case TaskContentType.NEW:
                 {
@@ -555,7 +553,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                 case TaskContentType.FadeOut:
                 {
                     currentTaskData.isContinue = false;
-                    StartCoroutine(FadeEffect.instance.FadeOut());
+                    FadeEffect.instance.FadeOut();
                     yield return new WaitUntil(() => FadeEffect.instance.isFadeOver);
                     FadeEffect.instance.isFadeOver = false;
                     currentTaskData.isContinue = true;
@@ -564,7 +562,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                 case TaskContentType.FadeIn:
                 {
                     currentTaskData.isContinue = false;
-                    StartCoroutine(FadeEffect.instance.FadeIn());
+                    FadeEffect.instance.FadeIn();
                     yield return new WaitUntil(() => FadeEffect.instance.isFadeOver);
                     FadeEffect.instance.isFadeOver = false;
                     currentTaskData.isContinue = true;
@@ -713,44 +711,55 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     //For Debugging
     private void LoadTaskData()
     {
-        if (taskData_Debug.Count != 0) return;
-        taskData_Debug = new List<TaskData>
+        if (Application.isPlaying)
         {
-            new TaskData
+            if (taskData_Debug.Count != 0) return;
+            taskData_Debug = new List<TaskData>
             {
-                tasks = JsontoString.FromJsonArray<Task>(jsonFile.text)
-            }
-        };
-        foreach (TaskData taskData in taskData_Debug)
-        {
-            Debug.Log("task 길이" + taskData.tasks.Length);
-            for (int i = 0; i < taskData.tasks.Length; i++)
-            {
-                if (taskData.tasks[i].taskContentType == TaskContentType.NEW ||
-                    taskData.tasks[i].taskContentType == TaskContentType.TEMP)
+                new TaskData
                 {
-                    Debug.Log("디버그 Task 추가");
-                    var count = int.Parse(taskData.tasks[i].nextFile);
-                    for (var j = 0; j < count; j++)
+                    tasks = JsontoString.FromJsonArray<Task>(jsonFile.text)
+                }
+            };
+            foreach (TaskData taskData in taskData_Debug)
+            {
+                Debug.Log("task 길이" + taskData.tasks.Length);
+                for (int i = 0; i < taskData.tasks.Length; i++)
+                {
+                    if (taskData.tasks[i].taskContentType == TaskContentType.NEW ||
+                        taskData.tasks[i].taskContentType == TaskContentType.TEMP)
                     {
-                        i++;
-                        string path = taskData.tasks[i].nextFile;
-                        string jsonString = DialogueController.instance.ConvertPathToJson(path);
-                        // string jsonString = (Resources.Load(path) as TextAsset)?.text;
-
-                        if (taskData_Debug.Count > 50)
+                        Debug.Log("디버그 Task 추가");
+                        var count = int.Parse(taskData.tasks[i].nextFile);
+                        for (var j = 0; j < count; j++)
                         {
-                            Debug.Log("무한 task 디버깅");
-                            return;
+                            i++;
+                            string path = taskData.tasks[i].nextFile;
+                            Debug.Log(path);
+
+                            string dialogueName = path.Split('/')[1];
+                            Debug.Log("변환 후: " + dialogueName);
+
+                            var desEp = int.Parse(dialogueName.Substring(0, 1));
+                            var dialogueDB =
+                                AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}");
+
+                            var jsonString = dialogueDB.LoadAsset<TextAsset>(dialogueName).text;
+
+                            if (taskData_Debug.Count > 50)
+                            {
+                                Debug.Log("무한 task 디버깅");
+                                return;
+                            }
+
+                            taskData_Debug.Add(new TaskData
+                            {
+                                tasks = JsontoString.FromJsonArray<Task>(jsonString)
+                            });
                         }
 
-                        taskData_Debug.Add(new TaskData
-                        {
-                            tasks = JsontoString.FromJsonArray<Task>(jsonString)
-                        });
+                        Debug.Log("디버그 Task 추가" + taskData_Debug.Count);
                     }
-
-                    Debug.Log("디버그 Task 추가" + taskData_Debug.Count);
                 }
             }
         }

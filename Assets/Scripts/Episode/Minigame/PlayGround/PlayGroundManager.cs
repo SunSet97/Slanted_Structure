@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class PlayGroundManager : MonoBehaviour, IPlayable
+public class PlayGroundManager : MonoBehaviour, IGamePlayable
 {
 
     public bool IsPlay { get; set; } = false;
