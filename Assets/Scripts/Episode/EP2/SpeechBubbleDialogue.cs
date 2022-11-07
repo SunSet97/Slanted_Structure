@@ -166,7 +166,7 @@ public class SpeechBubbleDialogue : MonoBehaviour
 
         }
 
-        if (speechBubbleDialogueType == SpeechBubbleDialogueType.loop && CanvasControl.Instance.isInConverstation) //!CanvasControl.instance_CanvasControl.isPossibleCnvs한 이유는 npc대화와 말풍선이 겹치치 않게 하기 위함
+        if (speechBubbleDialogueType == SpeechBubbleDialogueType.loop && CanvasControl.instance.isInConverstation) //!CanvasControl.instance_CanvasControl.isPossibleCnvs한 이유는 npc대화와 말풍선이 겹치치 않게 하기 위함
         {  
             speechBubbleObj.SetActive(false);
         }

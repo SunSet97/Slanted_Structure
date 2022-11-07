@@ -334,7 +334,7 @@ public class MapData : MonoBehaviour
         {
             ui.name = map.name;
 
-            ui.SetParent(CanvasControl.Instance.mapUI);
+            ui.SetParent(CanvasControl.instance.mapUI);
             ui.offsetMax = new Vector2(0, 0);
             ui.offsetMin = new Vector2(0, 0);
             ui.localScale = new Vector3(1, 1, 1);

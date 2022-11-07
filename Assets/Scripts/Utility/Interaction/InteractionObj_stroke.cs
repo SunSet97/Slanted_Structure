@@ -266,7 +266,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         }
         else if (interactionPlayType == InteractionPlayType.Dialogue)
         {
-            if (CanvasControl.Instance.isInConverstation) return;
+            if (CanvasControl.instance.isInConverstation) return;
             
             if (!isLoopDialogue)
                 isTouched = true;
@@ -631,7 +631,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     //     Debug.Log(timeline.GetGenericBinding(playableBinding.sourceObject));
                     // }
                     yield return new WaitUntil(() =>
-                        timeline.state == PlayState.Paused && !timeline.playableGraph.IsValid() && !CanvasControl.Instance.isInConverstation);
+                        timeline.state == PlayState.Paused && !timeline.playableGraph.IsValid() && !CanvasControl.instance.isInConverstation);
                     // while (true)
                     // {
                     //     if (timeline.duration - timeline.time < 0.04f)

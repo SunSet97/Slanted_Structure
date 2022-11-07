@@ -132,7 +132,7 @@ public class PimpGuestMoving : MonoBehaviour
         // 대화시작
         if (transform.parent.name.Equals("Guest"))
         {
-            if (hit.gameObject.name.Equals("Speat_Adult") && !CanvasControl.Instance.isInConverstation)
+            if (hit.gameObject.name.Equals("Speat_Adult") && !CanvasControl.instance.isInConverstation)
             {
                 print("스핏과 만남");
 

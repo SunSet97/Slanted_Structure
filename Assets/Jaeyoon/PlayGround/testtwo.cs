@@ -9,9 +9,9 @@ public class testtwo : MonoBehaviour
     void Start()
     {
         //게임 실행 
-        CanvasControl.Instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
-        CanvasControl.Instance.GetComponent<Canvas>().worldCamera = Camera.main;
-        CanvasControl.Instance.GetComponent<Canvas>().planeDistance = 0.8f;
+        CanvasControl.instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+        CanvasControl.instance.GetComponent<Canvas>().worldCamera = Camera.main;
+        CanvasControl.instance.GetComponent<Canvas>().planeDistance = 0.8f;
         // 원 이미지 보이게
         circle.SetActive(true);
         // 움직이는 원 생성
@@ -44,7 +44,7 @@ public class testtwo : MonoBehaviour
         //실행 멈추기
         //카메라 돌려놓기
         circle.SetActive(false);
-        CanvasControl.Instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+        CanvasControl.instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
     }
 
     // Update is called once per frame

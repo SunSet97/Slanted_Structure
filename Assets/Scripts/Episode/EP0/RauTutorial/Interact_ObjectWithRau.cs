@@ -97,7 +97,7 @@ public class Interact_ObjectWithRau : MonoBehaviour
                         if (mark != null)
                             mark.gameObject.SetActive(false); // 마크 끄기
                     }
-                    if (hit.collider.transform.parent.name == "NPCManager" && !CanvasControl.Instance.isInConverstation)
+                    if (hit.collider.transform.parent.name == "NPCManager" && !CanvasControl.instance.isInConverstation)
                     {
                         if (hit.collider.transform.parent.TryGetComponent(out NPCInteractor npcInteractor))
                         {

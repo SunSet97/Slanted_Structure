@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CreateRing : MonoBehaviour
 {
     public int segments;
     public float noteSpeed;
-    [System.NonSerialized]
+    [NonSerialized]
     public float radius;
     private float nodeRadius;
-    [System.NonSerialized]
+    [NonSerialized]
     public float width;
 
 

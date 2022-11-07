@@ -7,13 +7,13 @@ public class CanvasControl : MonoBehaviour
     
     public bool isInConverstation;
 
-    public static CanvasControl Instance { get; private set; }
+    public static CanvasControl instance { get; private set; }
 
     private void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;   
+            instance = this;   
         }
         else
         {
