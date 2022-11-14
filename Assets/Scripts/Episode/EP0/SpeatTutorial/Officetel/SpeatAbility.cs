@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using CommonScript;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,17 +32,22 @@ public class SpeatAbility : MonoBehaviour
     private RaycastHit wallBwdFace, wallBwdInverse, wallBwdTmp;
     private RaycastHit ceilingFace, ceilingInverse, ceilingTmp;
     private RaycastHit floorFace, floorInverse, floorTmp;
-    private int fwdCnt = 1, bwdCnt = 1, ceilingCnt =1, floorCnt = 1; // 탐색 인자
+    private int fwdCnt = 1;
+    private int bwdCnt = 1;
+    private int ceilingCnt = 1;
+    private int floorCnt = 1; // 탐색 인자
     private float force;            // 벽을 통과하는 힘
-    private bool isUp = false, isDown = false;
+    private bool isUp = false;
+    private bool isDown = false;
     
-    public GameObject hidedDoor;
-    public bool isInRoom = false; // 스핏이 방 안이면 true
+    private bool isInRoom = false; // 스핏이 방 안이면 true
+    [NonSerialized]
     public bool isHiding = false; // true면 숨고 있는 중
     float touchRange = 0.5f; // 터치(클릭) 허용 범위
-    Ray touchDown;
-    Ray touchUp;
 
+    
+    private GameObject hidedDoor;
+    private Vector3 originPos;
     private CharacterManager speat;
 
     void Start()
@@ -74,7 +80,10 @@ public class SpeatAbility : MonoBehaviour
                 if (Physics.Raycast(wallFwdFace.point + fwdDir * 5 + bwdDir * fwdCnt, bwdDir, out wallFwdInverse,
                     float.MaxValue, wallLayerMask))
                 {
-                    if (wallFwdFace.transform != wallFwdInverse.transform) fwdCnt++; // 같은 벽을 가리킬때까지 탐색
+                    if (wallFwdFace.transform != wallFwdInverse.transform)
+                    {
+                        fwdCnt++; // 같은 벽을 가리킬때까지 탐색
+                    }
                 }
             }
 
@@ -104,7 +113,10 @@ public class SpeatAbility : MonoBehaviour
                 if (Physics.Raycast(wallBwdFace.point + fwdDir * 5 + bwdDir * bwdCnt, fwdDir, out wallBwdInverse,
                     float.MaxValue, wallLayerMask))
                 {
-                    if (wallBwdFace.transform != wallBwdInverse.transform) bwdCnt++; // 같은 벽을 가리킬때까지 탐색
+                    if (wallBwdFace.transform != wallBwdInverse.transform)
+                    {
+                        bwdCnt++; // 같은 벽을 가리킬때까지 탐색
+                    }
                 }
             }
 
@@ -124,7 +136,7 @@ public class SpeatAbility : MonoBehaviour
                     ceilingTmp = ceilingFace;
                     if (isPassingVerDown)
                     {
-                        speat.gameObject.layer = 0;
+                        speat.gameObject.layer = LayerMask.NameToLayer("Player");
                         speat.moveVerDir = Vector3.zero;
                         isPassingVerDown = false;
                         wallNum++;
@@ -135,7 +147,10 @@ public class SpeatAbility : MonoBehaviour
                 if (Physics.Raycast(ceilingFace.point + upDir * 5 + downDir * ceilingCnt, downDir, out ceilingInverse,
                     float.MaxValue, floorLayerMask))
                 {
-                    if (ceilingFace.transform != ceilingInverse.transform) ceilingCnt++; // 같은 벽을 가리킬때까지 탐색
+                    if (ceilingFace.transform != ceilingInverse.transform)
+                    {
+                        ceilingCnt++; // 같은 벽을 가리킬때까지 탐색
+                    }
                 }
             }
 
@@ -154,7 +169,7 @@ public class SpeatAbility : MonoBehaviour
                     floorTmp = floorFace;
                     if (isPassingVerUp)
                     {
-                        speat.gameObject.layer = 0;
+                        speat.gameObject.layer = LayerMask.NameToLayer("Player");
                         speat.moveVerDir = Vector3.zero;
                         isPassingVerUp = false;
                         wallNum++;
@@ -165,7 +180,10 @@ public class SpeatAbility : MonoBehaviour
                 if (Physics.Raycast(floorFace.point + downDir * 5 + upDir * floorCnt, upDir, out floorInverse,
                     float.MaxValue, floorLayerMask))
                 {
-                    if (floorFace.transform != floorInverse.transform) floorCnt++; // 같은 벽을 가리킬때까지 탐색
+                    if (floorFace.transform != floorInverse.transform)
+                    {
+                        floorCnt++; // 같은 벽을 가리킬때까지 탐색
+                    }
                 }
             }
         }
@@ -195,32 +213,51 @@ public class SpeatAbility : MonoBehaviour
             isPassingHor = false;
             isPassingVerUp = false;
             isPassingVerDown = false;
-            speat.gameObject.layer = 0;
+            speat.gameObject.layer = LayerMask.NameToLayer("Player");
             // 사용 대기 시간 계산
-            if (cooltime > 0) cooltime -= Time.deltaTime;
-            else if (cooltime <= 0) cooltime = 0;
+            if (cooltime > 0)
+            {
+                cooltime -= Time.deltaTime;
+            }
+            else if (cooltime <= 0)
+            {
+                cooltime = 0;
+            }
+
             abilityImage.fillAmount = cooltime / setCooltime; // 쿨타임 시간에 맞춰 UI 변화
             buttonImage.fillAmount = 0;
 
-            abilityText.text = null;// 벽 통과 횟수 숨김
-        }else{
+            abilityText.text = null; // 벽 통과 횟수 숨김
+        }
+        else
+        {
             // 능력 사용중일 때
-            
+
             // 지속 시간 계산
-            if (duration > 0) duration -= Time.deltaTime;
-            else if (duration <= 0) { isAbility = false; duration = 0; } // 지속 시간 초과시 능력 자동 종료 및 0 고정
+            if (duration > 0)
+            {
+                duration -= Time.deltaTime;
+            }
+            else if (duration <= 0)
+            {
+                isAbility = false;
+                duration = 0;
+            } // 지속 시간 초과시 능력 자동 종료 및 0 고정
+
             buttonImage.fillAmount = duration / setDuration; // 지속 시간에 맞춰 UI 변화
             abilityImage.fillAmount = 0;
 
             // 벽 통과 횟수 변화
             if (wallNum < maxWallNum)
+            {
                 abilityText.text = wallNum.ToString();
+            }
             else
             {
                 // 벽 통과 횟수 초과시 능력 자동 종료 및 숨김
                 isAbility = false;
                 abilityText.text = null;
-            } 
+            }
         }
     }
 
@@ -249,21 +286,6 @@ public class SpeatAbility : MonoBehaviour
             abilityImage.fillAmount = 0; // UI 초기화
             buttonImage.fillAmount = 1; // UI 초기화
         }
-    }
-
-    // 디버깅용 기즈모 및 레이캐스트
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(fwdPos, 0.1f);
-        Gizmos.DrawWireSphere(bwdPos, 0.1f);
-        Gizmos.DrawWireSphere(upPos, 0.1f);
-        Gizmos.DrawWireSphere(downPos, 0.1f);
-
-
-
-        // 스핏 주위에 있는 obj_interaction감지 범위 보여줌
-        Gizmos.DrawWireSphere(speat.transform.position, 5);
     }
 
     private void Dash()
@@ -301,29 +323,33 @@ public class SpeatAbility : MonoBehaviour
 
     private void HideBehindDoor()
     {
-        if(isHiding) return;
-        RaycastHit[] hits;
-        if (ObjectClicker.instance.TouchDisplay(out hits))
+        if (isHiding)
+        {
+            return;
+        }
+        
+        if (ObjectClicker.instance.TouchDisplay(out RaycastHit[] hits))
         {
             foreach (var hit in hits)
             {
-                if (!hit.collider.GetComponent<Outline>().enabled) return;
+                if (!hit.collider.GetComponent<Outline>().enabled)
+                {
+                    continue;
+                }
                 var target = hit.collider.transform.position;
                 if (!isInRoom)
                 {
-                    isInRoom = true;
-                    hidedDoor = hit.collider.gameObject;
                     JoystickController.instance.StopSaveLoadJoyStick(true);
+                    hidedDoor = hit.collider.gameObject;
                     StartCoroutine(Hide(target, hidedDoor));
                     break;
                 }
-                if (hidedDoor.Equals(hit.collider.gameObject))
+                else
                 {
-                    isInRoom = false;
                     StartCoroutine(Hide(target, hidedDoor));
-                    hidedDoor = null;
+                    JoystickController.instance.StopSaveLoadJoyStick(false);
                     break;
-                }                
+                }
             }
         }
     }
@@ -335,40 +361,44 @@ public class SpeatAbility : MonoBehaviour
         isHiding = true;
         door.GetComponent<OutlineClickObj>().IsClickEnable = false;
         speat.PickUpCharacter();
-        speat.anim.SetFloat("Speed", 1);
+        
         Quaternion rotation;
-        if (speat.transform.position.z < targetPos.z)
+        if (isInRoom)
         {
-             rotation = Quaternion.Euler(0, 0, 0);
-             targetPos.z += 2f;
-             Debug.Log("뒤");
+            rotation = Quaternion.Euler(0, 180, 0);
+            targetPos.z = originPos.z;
+            Debug.Log("뒤에서 앞으로");
+            hidedDoor = null;
         }
         else
         {
-            rotation = Quaternion.Euler(0, 180, 0);
-            targetPos.z -= 2f;
-            Debug.Log("앞");
+            originPos = speat.transform.position;
+            rotation = Quaternion.Euler(0, 0, 0);
+            targetPos.z += 2f;
+            Debug.Log("앞에서 뒤로");
         }
         speat.transform.rotation = rotation;
         
+        
+        speat.anim.SetFloat("Speed", 1);
+        
         var t = 0f;
+        var speed = 0.5f;
         var charPos = speat.transform.position;
-        while (t < 1)
+        while (t <= 1)
         {
-            var speed = 0.5f;
             t += Time.fixedDeltaTime * speed;
             // speat.transform.position = Vector3.MoveTowards(speat.transform.position, target, 0.1f); // 마지막 파라미터는 숨을 때 속도!
             speat.transform.position = Vector3.Lerp(charPos, targetPos, t); // 마지막 파라미터는 숨을 때 속도!
             yield return waitForFixedUpdate;
         }
-        if (!isInRoom)
-        {
-            JoystickController.instance.StopSaveLoadJoyStick(false);
-        }
         speat.anim.SetFloat("Speed", 0f);
+
+        isInRoom = !isInRoom;
+        
+        
         door.GetComponent<OutlineClickObj>().IsClickEnable = true;
         isHiding = false;
         speat.PutDownCharacter();
     }
-
 }

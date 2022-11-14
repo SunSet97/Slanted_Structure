@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class FadeEffect : MonoBehaviour
@@ -12,9 +13,11 @@ public class FadeEffect : MonoBehaviour
 
     public bool isFadeOut;
 
+    internal UnityEvent onFadeOver;
     private void Awake()
     {
         instance = this;
+        onFadeOver = new UnityEvent();
     }
 
     public void FadeIn()
@@ -50,6 +53,9 @@ public class FadeEffect : MonoBehaviour
         isFadeOver = true;
         JoystickController.instance.StopSaveLoadJoyStick(false);
         fadePanel.gameObject.SetActive(false);
+
+        onFadeOver?.Invoke();
+        onFadeOver?.RemoveAllListeners();
     }
 
     public void FadeOut()
@@ -83,5 +89,8 @@ public class FadeEffect : MonoBehaviour
         graphicRaycaster.enabled = true;
         isFadeOver = true;
         JoystickController.instance.StopSaveLoadJoyStick(false);
+        
+        onFadeOver?.Invoke();
+        onFadeOver?.RemoveAllListeners();
     }
 }

@@ -39,10 +39,18 @@ public class DialogueController : MonoBehaviour
     private UnityAction dialogueEndAction;
 
     private static readonly int Emotion = Animator.StringToHash("Emotion");
+
+    public TaskData taskData;
+    
+    public DialogueData dialogueData;
     
     void Awake()
     {
-        _instance = this;
+        if (!_instance)
+        {
+            _instance = this;
+            DontDestroyOnLoad(_instance);
+        }
     }
     void Start()
     {
@@ -58,7 +66,11 @@ public class DialogueController : MonoBehaviour
         EventTrigger eventTrigger = dialoguePanel.GetComponent<EventTrigger>();
         EventTrigger.Entry entryPointerUp = new EventTrigger.Entry();
         entryPointerUp.eventID = EventTriggerType.PointerUp;
-        entryPointerUp.callback.AddListener(data => { UpdateWord(); });
+        entryPointerUp.callback.AddListener(data =>
+        {
+            UpdateWord(); 
+            
+        });
         eventTrigger.triggers.Add(entryPointerUp);
     }
 
@@ -77,13 +89,17 @@ public class DialogueController : MonoBehaviour
 
     public void StartConversation(string jsonString)
     {
-        if (DataController.instance.taskData != null)
-            DataController.instance.taskData.isContinue = false;
+        Debug.Log("대화 시작");
+        if (taskData != null)
+        {
+            taskData.isContinue = false;
+        }
 
         isTalking = true;
         //Joystick 중지
         JoystickController.instance.StopSaveLoadJoyStick(true);
-        DataController.instance.dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
+        dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonString);
+        Debug.Log("너냐" + dialogueData.dialogues.Length);
         dialogueIdx = 0;
         if (dialoguePrevAction != null)
         {
@@ -92,7 +108,6 @@ public class DialogueController : MonoBehaviour
         }
         dialoguePanel.SetActive(true);
         // 시작할 때 
-        DialogueData dialogueData = DataController.instance.dialogueData;
         int peekIdx = dialogueData.dialogues.Length - 1;
         if (dialogueData.dialogues[peekIdx].name == "camera")
         {
@@ -105,16 +120,18 @@ public class DialogueController : MonoBehaviour
         dialogueData.dialogues = Array.FindAll(dialogueData.dialogues, item =>
             item.name != "camera"
         );
+        Debug.Log("너냐" + dialogueData.dialogues.Length);
         UpdateWord();
     }
 
     public void UpdateWord()
     {
-        DialogueData dialogueData = DataController.instance.dialogueData;
+        Debug.Log(dialogueData.dialogues);
         int dialogueLen = dialogueData.dialogues.Length;
         // 대화가 끝나면 선택지 부를 지 여부결정
         if (dialogueIdx >= dialogueLen)
         {
+            Debug.Log("끝");
             dialogueCameraPos = Vector3.zero;
             dialogueCameraRot = Vector3.zero;
             isTalking = true;
@@ -136,10 +153,11 @@ public class DialogueController : MonoBehaviour
                 dialogueEndAction();
                 dialogueEndAction = null;
             }
-            dialogueData.dialogues = null;
-            if (DataController.instance.taskData != null)
+            Debug.Log("너냐");
+            dialogueData.dialogues = Array.Empty<Dialogue>();
+            if (taskData != null)
             {
-                DataController.instance.taskData.isContinue = true;
+                taskData.isContinue = true;
             }
         }
         else
@@ -160,7 +178,7 @@ public class DialogueController : MonoBehaviour
                                   dialogueData.dialogues[dialogueIdx].expression);
                         charEmotionAnimator.SetInteger(Emotion, ((int) dialogueData.dialogues[dialogueIdx].expression));
 
-                        if (Character.TryParse(dialogueData.dialogues[dialogueIdx].anim_name, out Character who))
+                        if (Enum.TryParse(dialogueData.dialogues[dialogueIdx].anim_name, out Character who))
                         {
                             DataController.instance.GetCharacter(who).Emotion = dialogueData.dialogues[dialogueIdx].expression;   
                         }
@@ -202,14 +220,13 @@ public class DialogueController : MonoBehaviour
     public void OpenChoicePanel()
     {
         JoystickController.instance.StopSaveLoadJoyStick(true);
-        TaskData currentTaskData = DataController.instance.taskData;
-        int index = currentTaskData.taskIndex;
-        int choiceLen = int.Parse(currentTaskData.tasks[index].nextFile);
+        int index = taskData.taskIndex;
+        int choiceLen = int.Parse(taskData.tasks[index].nextFile);
 
         int[] likeable = DataController.instance.GetLikeable();
 
         choiceBtns[0].transform.parent.gameObject.SetActive(true);
-        if (currentTaskData.tasks.Length <= index + choiceLen)
+        if (taskData.tasks.Length <= index + choiceLen)
         {
             Debug.LogError("선택지 개수 오류 - IndexOverFlow");
         }
@@ -223,7 +240,7 @@ public class DialogueController : MonoBehaviour
             }
             // 친밀도와 자존감이 기준보다 낮으면 일부 선택지가 나오지 않을 수 있음
             var choiceIndex = index + i + 1;
-            var choiceTask = currentTaskData.tasks[choiceIndex];
+            var choiceTask = taskData.tasks[choiceIndex];
             
             choiceTask.condition = choiceTask.condition.Replace("m", "-");
             Debug.Log($"{i}번째 선택지 조건 - {choiceTask.condition}");
@@ -275,7 +292,5 @@ public class DialogueController : MonoBehaviour
         RemoveChoice();
         JoystickController.instance.StopSaveLoadJoyStick(false);
         chooseAction(index);
-        
-        // currentTaskData.taskIndex += choiceLen + 1;
     }
 }

@@ -17,12 +17,14 @@ using static Data.CustomEnum;
 [ExecuteInEditMode]
 public class InteractionObj_stroke : MonoBehaviour, IClickable
 {
-    [Header("인터렉션 방식")] public InteractionPlayType interactionPlayType;
+    [Header("인터렉션 방식")] 
+    public InteractionPlayType interactionPlayType;
 
     [Header("Continuous 혹은 Dialogue인 경우에만 값을 넣으시오")]
     public TextAsset jsonFile;
 
-    [Header("타입이 Game인 경우 게임 오브젝트를 넣으세요")] public IGamePlayable GamePlayableGame;
+    [Header("타입이 Game인 경우 게임 오브젝트를 넣으세요")]
+    public IGamePlayable GamePlayableGame;
 
     private Stack<TaskData> jsonTask;
 
@@ -43,11 +45,13 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
 
     [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Task)]
     public InteractionEvent[] taskEndActions;
-    
-    [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Cinematic)] [SerializeField]
+
+    [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Cinematic)] 
+    [SerializeField]
     public InteractionEventMedium cinematicEndAction;
 
-    [ConditionalHideInInspector("InteractionPlayType", InteractionPlayType.Task)] [Header("디버깅 전용 TaskData")]
+    [ConditionalHideInInspector("InteractionPlayType", InteractionPlayType.Task)] 
+    [Header("디버깅 전용 TaskData")]
     public List<TaskData> taskData_Debug;
 
 
@@ -56,34 +60,29 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     [Header("인터렉션 오브젝트 터치 유무 감지 기능 사용할건지 말건지")]
     public InteractionMethod interactionMethod;
 
-    public int radius = 5;
+    public int outlineRadius = 5;
 
     [Header("#Mark setting")] public GameObject exclamationMark;
     public Vector2 markOffset = Vector2.zero;
 
     [Header("느낌표 사용할 때 체크")] public bool useExclamationMark = false;
-    private bool isInteractionObj = false;
-
+    
     public Outline outline;
-    private bool isCharIn;
 
     [Header("카메라 뷰")] public bool isViewChange = false;
 
-    [FormerlySerializedAs("timeline")] [Header("타임라인")] public PlayableDirector[] timelines;
+    [FormerlySerializedAs("timeline")] [Header("시네마틱")]
+    public PlayableDirector[] timelines;
 
     public GameObject[] cinematics;
     public GameObject[] inGames;
 
-    //[Header("터치 여부 확인")]
     private bool isTouched;
     private RaycastHit hit;
 
-    [Header("실제로 터치되는 오브젝트. 만약 스크립트 적용된 오브젝트가 터치될 오브젝트라면 그냥 None인상태로 두기!")]
-    public GameObject touchTargetObject;
-
+    [Header("반복 사용 여부")]
     public bool isLoopDialogue;
 
-    private int playerLayer;
     private void PushTask(string jsonString)
     {
         Debug.Log("Push Task");
@@ -92,17 +91,14 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
             tasks = JsontoString.FromJsonArray<Task>(jsonString)
         };
         jsonTask.Push(taskData);
-        DataController.instance.taskData = taskData;
+        DialogueController.instance.taskData = taskData;
     }
-    
+
     void Awake()
     {
         if (Application.isPlaying && interactionMethod == InteractionMethod.OnChangeMap)
         {
-            DataController.instance.AddOnLoadMap(() =>
-            {
-                StartInteraction();
-            });
+            DataController.instance.AddOnLoadMap(StartInteraction);
         }
     }
 
@@ -113,14 +109,18 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
             if (jsonFile != null)
             {
                 if (interactionPlayType == InteractionPlayType.Dialogue)
+                {
                     dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonFile.text);
+                    Debug.Log("너냐" + dialogueData.dialogues.Length);
+                }
                 else if (interactionPlayType == InteractionPlayType.Task)
+                {
                     LoadTaskData();
+                }
             }
         }
         else
         {
-            playerLayer = 1 << LayerMask.NameToLayer("Player");
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
 
             //딱히 필요 없음
@@ -151,7 +151,10 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
             //     else if (color == OutlineColor.white) outline.OutlineColor = Color.white;
             // }
 
-            if (useExclamationMark && exclamationMark.gameObject != null) exclamationMark.SetActive(false); // 느낌표 끄기
+            if (useExclamationMark && exclamationMark.gameObject != null)
+            {
+                exclamationMark.SetActive(false); // 느낌표 끄기
+            }
         }
     }
 
@@ -266,10 +269,11 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         }
         else if (interactionPlayType == InteractionPlayType.Dialogue)
         {
-            if (CanvasControl.instance.isInConverstation) return;
-            
-            if (!isLoopDialogue)
-                isTouched = true;
+            if (CanvasControl.instance.isInConverstation)
+            {
+                return;
+            }
+                
             if (jsonFile)
             {
                 if (startDialogueAction != null)
@@ -319,16 +323,20 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
             {
                 foreach (var t in timelines)
                 {
+                    if (!t)
+                    {
+                        continue;
+                    }
+
                     var timelineAsset = t.playableAsset as TimelineAsset;
                     var tracks = timelineAsset.GetOutputTracks();
                     foreach (var temp in tracks)
                     {
                         if (temp is CinemachineTrack)
                             t.SetGenericBinding(temp, DataController.instance.cam.GetComponent<CinemachineBrain>());
-                    }   
+                    }
                 }
             }
-            isTouched = true;
             if (jsonTask.Count == 0)
             {
                 Debug.LogError("task파일 없음 오류오류");
@@ -367,7 +375,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                                 break;
                         }
                     }
-                };   
+                };
             }
             else
             {
@@ -376,83 +384,26 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         }
     }
 
-    // private void InteractionEvent
-    void Update()
-    {
-        if (Application.isPlaying)
-        {
-            // Debug.Log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
-            // Debug.Log(timelines[0].state);
-            // Debug.Log(timelines[0].time);
-            
-            var cam = DataController.instance.cam;
-            //Update말고 Collider로 체크
-            var isAround = CheckAroundCharacter(); // 일정 범위 안에 선택된 캐릭터 있는지 확인
-            if (exclamationMark && exclamationMark.activeSelf)
-                exclamationMark.transform.position =
-                    (Vector3) markOffset + cam.WorldToScreenPoint(transform.position); // 마크 위치 설정
-            if (isAround && !isTouched)
-            {
-                if (!isCharIn)
-                {
-                    ((IClickable) this).ActiveObjectClicker(true);
-                    // 아웃라인 켜기
-                    if (outline)
-                    {
-                        outline.enabled = true;
-                    }
-
-                    isCharIn = true;
-                    if (useExclamationMark)
-                    {
-                        // 느낌표 보이게
-                        exclamationMark.gameObject.SetActive(true);
-                    }
-                }
-            }
-            else if (!isAround && isCharIn || isTouched) // 범위 밖이면서 아웃라인이 켜져있거나 눌렀을 경우
-            {
-                if (!isCharIn) return;
-                // 아웃라인 끄기
-                isCharIn = false;
-                if (outline)
-                {
-                    outline.enabled = false;
-                }
-
-                ((IClickable) this).ActiveObjectClicker(false);
-                if (useExclamationMark)
-                {
-                    // 느낌표 안보이게
-                    exclamationMark.gameObject.SetActive(false);
-                }
-            }
-        }
-    }
-
-    private bool CheckAroundCharacter()
-    {
-        return Physics.CheckSphere(transform.position, radius, playerLayer);
-    }
-
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, radius);
+        Gizmos.DrawWireSphere(transform.position, outlineRadius);
     }
 
     private void TaskStart()
     {
-        if (!jsonFile) return;
-        if (interactionPlayType != InteractionPlayType.Task) return;
+        if (!jsonFile || interactionPlayType != InteractionPlayType.Task)
+        {
+            return;
+        }
         Debug.Log("Task Stack 시작");
         jsonTask = new Stack<TaskData>();
         PushTask(jsonFile.text);
-    }   
+    }
 
     private void StackNewTask(string jsonRoute)
     {
-        DataController.instance.taskData = null;
+        DialogueController.instance.taskData = null;
         jsonTask = new Stack<TaskData>();
         GC.Collect();
         PushTask(jsonRoute);
@@ -478,13 +429,14 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                currentTaskData.tasks[currentTaskData.taskIndex].order.Equals(currentTaskData.taskOrder) &&
                currentTaskData.isContinue) //순서 번호 동일한 것 반복
         {
-            DataController.instance.taskData = currentTaskData;
+            DialogueController.instance.taskData = currentTaskData;
             Task currentTask = currentTaskData.tasks[currentTaskData.taskIndex];
             Debug.Log(currentTaskData.tasks.Length);
             foreach (var task in currentTaskData.tasks)
             {
                 Debug.Log(task.taskContentType);
             }
+
             Debug.Log("taskIndex - " + currentTaskData.taskIndex + "\nInteractionType - " +
                       currentTask.taskContentType);
             switch (currentTask.taskContentType)
@@ -523,9 +475,16 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                 // 애매하네
                 //TaskEnd, TaskReset - TaskEnd를 할 때 Task를 재사용 가능하도록 하냐 Task를 재사용하지 못하도록 하냐..
                 case TaskContentType.TaskReset:
-                    isTouched = false;
+                    if (interactionMethod == InteractionMethod.Touch)
+                    {
+                        isTouched = false;
+                    }
+                    
                     jsonTask.Pop();
-                    if (jsonTask.Count > 0) Debug.LogError("Task 엑셀 관련 오류");
+                    if (jsonTask.Count > 0)
+                    {
+                        Debug.LogError("Task 엑셀 관련 오류");
+                    }
                     foreach (var taskEndAction in taskEndActions)
                     {
                         switch (taskEndAction.eventType)
@@ -544,6 +503,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                                 break;
                         }
                     }
+
                     yield break;
                 case TaskContentType.NEW:
                 {
@@ -602,6 +562,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     {
                         Debug.LogError("타임라인 세팅 오류");
                     }
+
                     timeline.Pause();
                     timeline.Play();
 
@@ -631,7 +592,8 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     //     Debug.Log(timeline.GetGenericBinding(playableBinding.sourceObject));
                     // }
                     yield return new WaitUntil(() =>
-                        timeline.state == PlayState.Paused && !timeline.playableGraph.IsValid() && !CanvasControl.instance.isInConverstation);
+                        timeline.state == PlayState.Paused && !timeline.playableGraph.IsValid() &&
+                        !CanvasControl.instance.isInConverstation);
                     // while (true)
                     // {
                     //     if (timeline.duration - timeline.time < 0.04f)
@@ -680,7 +642,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
             if (jsonTask.Count > 1)
             {
                 //선택지인 경우
-                DataController.instance.taskData = null; // null이 아닌 상태에서 모든 task가 끝나면 없어야되는데 남아있음
+                DialogueController.instance.taskData = null; // null이 아닌 상태에서 모든 task가 끝나면 없어야되는데 남아있음
                 jsonTask.Pop();
                 jsonTask.Peek().isContinue = true;
             }
@@ -790,8 +752,10 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
 
     void IClickable.ActiveObjectClicker(bool isActive)
     {
-        if(interactionMethod == InteractionMethod.Touch)
+        if (interactionMethod == InteractionMethod.Touch)
+        {
             ObjectClicker.instance.UpdateClick(this, isActive);
+        }
     }
 
     bool IClickable.GetIsClicked()
@@ -802,21 +766,97 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     void IClickable.Click()
     {
         Debug.Log(((IClickable) this).IsClickEnable);
-        if (!((IClickable) this).IsClickEnable) return;
+        if (!((IClickable) this).IsClickEnable)
+        {
+            return;
+        }
+        
+        isTouched = !isLoopDialogue;
+        
+        
+        if (outline)
+        {
+            outline.enabled = false;
+        }
+        
+        ((IClickable) this).ActiveObjectClicker(false);
+        if (useExclamationMark)
+        {
+            exclamationMark.SetActive(false);
+        }
+
         StartInteraction(); //인터렉션반응 나타남.
     }
 
     void OnDisable()
     {
-        if (!Application.isPlaying) return;
-        if (!ObjectClicker.instance) return;
+        if (!Application.isPlaying || !ObjectClicker.instance)
+        {
+            return;
+        }
+
         ObjectClicker.instance.UpdateClick(this, false);
     }
 
     void OnDestroy()
     {
-        if (!Application.isPlaying) return;
-        if (!ObjectClicker.instance) return;
+        if (!Application.isPlaying || !ObjectClicker.instance)
+        {
+            return;
+        }
+
         ObjectClicker.instance.UpdateClick(this, false);
+    }
+
+
+    void Update()
+    {
+        if (Application.isPlaying)
+        {
+            if (useExclamationMark && exclamationMark.activeSelf)
+            {
+                exclamationMark.transform.position =
+                    (Vector3) markOffset + DataController.instance.cam.WorldToScreenPoint(transform.position);
+            }
+        }
+    }
+    
+    protected virtual void OnTriggerEnter(Collider other)
+    {
+        if (isTouched)
+        {
+            return;
+        }
+
+        ((IClickable) this).ActiveObjectClicker(true);
+
+        if (outline)
+        {
+            outline.enabled = true;
+        }
+
+        if (useExclamationMark)
+        {
+            exclamationMark.SetActive(true);
+        }
+
+    }
+
+    protected virtual void OnTriggerExit(Collider other)
+    {
+        if (outline)
+        {
+            outline.enabled = false;
+        }
+
+        if (interactionMethod == InteractionMethod.Touch && !isTouched)
+        {
+            ((IClickable) this).ActiveObjectClicker(false);
+        }
+
+        if (useExclamationMark)
+        {
+            exclamationMark.SetActive(false);
+        }
     }
 }
