@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class PimpGameManager : MonoBehaviour, IGamePlayable
 {
-
-    public bool isTalking;
-
     public PimpGuestMoving[] pimpGuestMoving;
     void Start()
     {
@@ -35,6 +32,12 @@ public class PimpGameManager : MonoBehaviour, IGamePlayable
 
     public void EndPlay()
     {
-        
+        IsPlay = false;
+        DataController.instance.currentMap.ui.gameObject.SetActive(false);
+        foreach (var t in pimpGuestMoving)
+        {
+            var animator = t.GetComponent<Animator>();
+            animator.SetFloat("Speed", 0.0f);
+        }
     }
 }

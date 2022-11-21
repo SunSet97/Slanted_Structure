@@ -16,7 +16,7 @@ namespace Data
         public Task[] tasks;
 
         //현재 배열 인덱스
-        public int taskIndex = 0;
+        public int taskIndex;
 
         //현재 순서 - 가독성을 위해 1부터 시작
         public int taskOrder = 1;

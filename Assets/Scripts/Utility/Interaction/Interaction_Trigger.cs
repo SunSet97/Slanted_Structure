@@ -1,5 +1,4 @@
 ﻿using Data;
-using UnityEditor.Recorder.Input;
 using UnityEngine;
 
 public class Interaction_Trigger : InteractionObj_stroke

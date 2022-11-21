@@ -62,7 +62,7 @@ public class CharacterManager : MonoBehaviour, IMovable
         transform.LookAt(transform.position + mapSettingTransform.right);
         characterOriginRot = transform.eulerAngles;
 
-        camRotation = Quaternion.Euler(0, -DataController.instance.camRot.y, 0);
+        camRotation = Quaternion.Euler(0, -DataController.instance.camInfo.camRot.y, 0);
         Vector3 transformedDir = camRotation * transform.forward;
 
         if(transformedDir.x < 0)

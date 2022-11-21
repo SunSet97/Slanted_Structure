@@ -24,11 +24,10 @@ public class CameraTrackerEditor : Editor
 
 public class CameraTracker : MonoBehaviour
 {
-    public Waypoint waypoint;           // 코너 웨이포인트
-    public float cornerRadius;              // 코너 범위
+    public Waypoint waypoint;
+    public float cornerRadius;
     
-    private Transform character;   
-    private float camRotDir;    // 카메라 회전 방향 인덱스
+    private float camRotDir;
 
     [SerializeField]
     public CornerCameraSetting[] cornerCameraSettings;
@@ -43,20 +42,17 @@ public class CameraTracker : MonoBehaviour
         public Transform back;
         //왼쪽이 이동방향이면 오른쪽, 왼쪽 순으로
         //오른쪽이 이동방향이면 왼쪽, 오른쪽 순으로
-        [Header("웨이포인트처럼 뒤, 앞 순서대로 넣으세요")]
+        [Header("이동방향 순서대로 넣으세요")]
         public CamInfo[] camSettings;
-    }
-
-    private void Start()
-    {
-        character = DataController.instance.GetCharacter(Character.Main)
-            .transform;
     }
 
     void Update()
     {
         if (CheckDistance(out int cornerIndex))
         {
+            var character = DataController.instance.GetCharacter(Character.Main)
+                .transform;
+            
             CornerCameraSetting corner = cornerCameraSettings[cornerIndex];
             //현재 위치가 앞(1)인지 뒤(-1)인지
             camRotDir = GetDir(corner);
@@ -82,11 +78,11 @@ public class CameraTracker : MonoBehaviour
             Debug.Log(t);
             // t(0 ~ 1)에 따라 Vector3.Lerp(camSetting[0], camSetting[1], t)
             Vector3 camDis = Vector3.Lerp(corner.camSettings[0].camDis, corner.camSettings[1].camDis, t);
-            camDis = Vector3.Lerp(DataController.instance.camDis, camDis, 0.05f);
+            camDis = Vector3.Lerp(DataController.instance.camInfo.camDis, camDis, 0.05f);
             Vector3 camRot = Vector3.Lerp(corner.camSettings[0].camRot, corner.camSettings[1].camRot, t);
-            camRot = Vector3.Lerp(DataController.instance.camRot, camRot, 0.05f);
-            DataController.instance.camDis = camDis;
-            DataController.instance.camRot = camRot;
+            camRot = Vector3.Lerp(DataController.instance.camInfo.camRot, camRot, 0.05f);
+            DataController.instance.camInfo.camDis = camDis;
+            DataController.instance.camInfo.camRot = camRot;
         }
         else
         {
@@ -97,21 +93,21 @@ public class CameraTracker : MonoBehaviour
             Vector3 camRot;
             if (camRotDir == 1)
             {
-                camDis = Vector3.Lerp(DataController.instance.camDis, corner.camSettings[1].camDis,
+                camDis = Vector3.Lerp(DataController.instance.camInfo.camDis, corner.camSettings[1].camDis,
                     0.05f);
-                camRot = Vector3.Lerp(DataController.instance.camRot, corner.camSettings[1].camRot,
+                camRot = Vector3.Lerp(DataController.instance.camInfo.camRot, corner.camSettings[1].camRot,
                     0.05f);
             }
             else
             {
-                camDis = Vector3.Lerp(DataController.instance.camDis, corner.camSettings[0].camDis,
+                camDis = Vector3.Lerp(DataController.instance.camInfo.camDis, corner.camSettings[0].camDis,
                     0.05f);
-                camRot = Vector3.Lerp(DataController.instance.camRot, corner.camSettings[0].camRot,
+                camRot = Vector3.Lerp(DataController.instance.camInfo.camRot, corner.camSettings[0].camRot,
                     0.05f);
             }
 
-            DataController.instance.camDis = camDis;
-            DataController.instance.camRot = camRot;
+            DataController.instance.camInfo.camDis = camDis;
+            DataController.instance.camInfo.camRot = camRot;
             Debug.Log(camDis);
             Debug.Log(corner.corner);
         }
@@ -120,6 +116,8 @@ public class CameraTracker : MonoBehaviour
 
     int GetDir(CornerCameraSetting corner)
     {
+        var character = DataController.instance.GetCharacter(Character.Main)
+            .transform;
         var frontDir = corner.front.position - corner.corner.position;
         var backDir = corner.back.position - corner.corner.position;
         var charDir = corner.corner.position - character.position;
@@ -135,6 +133,8 @@ public class CameraTracker : MonoBehaviour
 
     private bool CheckDistance(out int index)
     {
+        var character = DataController.instance.GetCharacter(Character.Main)
+            .transform;
         Vector3 charVec = character.position;
         charVec.y = 0;
         float min = float.MaxValue;
@@ -188,7 +188,6 @@ public class CameraTracker : MonoBehaviour
     
     private void OnDrawGizmos()
     {
-        // 코너 판단영역 기즈모
         Gizmos.color = Color.yellow - Color.black * 0.4f;
         foreach (var t in cornerCameraSettings)
         {

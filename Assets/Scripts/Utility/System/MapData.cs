@@ -291,19 +291,7 @@ public class MapData : MonoBehaviour
 
     void Start()
     {
-        if (Application.isPlaying)
-        {
-            characters.RemoveAll(item => item == null);
-            foreach (var t in positionSets)
-            {
-                characters.Add(new AnimationCharacterSet
-                {
-                    characterAnimator = DataController.instance.GetCharacter(t.who).anim,
-                    who = t.who
-                });
-            }
-        }
-        else
+        if (!Application.isPlaying)
         {
             CreateDefaultSetting();
         }
@@ -311,7 +299,6 @@ public class MapData : MonoBehaviour
 
     void Update()
     {
-        // Edit mode에서 업데이트
         if (!Application.isPlaying)
         {
             PositionSettingUpdate();
@@ -326,13 +313,11 @@ public class MapData : MonoBehaviour
     {
         DataController.instance.currentMap = this;
 
-        // 오브젝트의 이름을 맵 코드로 변경
         if (name != mapCode)
         {
             name = mapCode;
         }
 
-        // UI의 이름을 맵 이름으로 변경
         if (ui != null)
         {
             ui.name = map.name;
@@ -389,14 +374,19 @@ public class MapData : MonoBehaviour
     private void JoystickInputUpdate()
     {
         var mainChar = DataController.instance.GetCharacter(Character.Main);
-        if (mainChar == null) return;
+        if (mainChar == null)
+        {
+            return;
+        }
         if (isJoystickInputUse)
         {
             JoystickController.instance.JoystickInputUpdate(method);
         }
 
         if (mainChar.gameObject.activeSelf)
+        {
             mainChar.MoveCharacter(method);
+        }
     }
 
     #endregion

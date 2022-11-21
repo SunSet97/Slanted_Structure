@@ -43,8 +43,8 @@ public class AlleyInMarketManager : MonoBehaviour
             index = 4;
         }
 
-        DataController.instance.camDis = Vector3.Lerp(DataController.instance.camDis, camSettings[index].camDis, 0.05f);
-        DataController.instance.camRot = Vector3.Lerp(DataController.instance.camRot, camSettings[index].camRot, 0.05f);
+        DataController.instance.camInfo.camDis = Vector3.Lerp(DataController.instance.camInfo.camDis, camSettings[index].camDis, 0.05f);
+        DataController.instance.camInfo.camRot = Vector3.Lerp(DataController.instance.camInfo.camRot, camSettings[index].camRot, 0.05f);
 
     }
 

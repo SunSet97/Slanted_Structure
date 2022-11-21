@@ -24,12 +24,7 @@ public class DataController : MonoBehaviour
 
     [Header("카메라 경계값")]
     public Camera cam;
-    public float min_x;
-    public float max_x;
-    public float min_y;
-    public float max_y;
-    public Vector3 camDis;
-    public Vector3 camRot;
+    public CamInfo camInfo;
     /// <summary>
     /// 디버깅용
     /// </summary>
@@ -240,8 +235,8 @@ public class DataController : MonoBehaviour
         speat_Child.PickUpCharacter();
 
         //카메라 위치와 회전
-        camDis = currentMap.camDis;
-        camRot = currentMap.camRot;
+        camInfo.camDis = currentMap.camDis;
+        camInfo.camRot = currentMap.camRot;
 
         // 해당되는 캐릭터 초기화
         speat.InitializeCharacter();
@@ -301,7 +296,7 @@ public class DataController : MonoBehaviour
         
 
         // CameraMoving 컨트롤
-        var cameraMoving = cam.GetComponent<Camera_Moving>();
+        var cameraMoving = cam.GetComponent<CameraMoving>();
 
         cameraMoving.Initialize();
 

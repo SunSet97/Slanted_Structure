@@ -4,10 +4,10 @@ using UnityEngine;
 using static Data.CustomEnum;
 public class CameraRestriction : MonoBehaviour
 {
-    Camera_Moving camera_Moving;
+    CameraMoving camera_Moving;
 
     void Start() {
-        camera_Moving = DataController.instance.cam.GetComponent<Camera_Moving>();
+        camera_Moving = DataController.instance.cam.GetComponent<CameraMoving>();
     }
 
     private void OnTriggerEnter(Collider other) {

@@ -90,7 +90,7 @@ public class JoystickController : MonoBehaviour
 
     public void JoystickInputUpdate(CustomEnum.JoystickInputMethod method)
     {
-        var joystickController = JoystickController.instance;
+        var joystickController = instance;
         //사이드뷰 일 때
         if (method.Equals(CustomEnum.JoystickInputMethod.OneDirection))
         {

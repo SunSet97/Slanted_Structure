@@ -28,16 +28,16 @@ public class CheckMapClear : MonoBehaviour
 {
     public bool isTrigger;
 
-    ///클리어 직전 대화 json파일
     public TextAsset jsonFile;
-
-    //000000이 아닌 null로 사용하고 싶으나 맵이 많아 보류 
-    public string nextSelectMapcode = "000000"; //이동할 맵, 000000인 경우 MapData의 nextMapCode 사용
+ 
+    public string nextSelectMapcode = "000000";
 
     public void Clear()
     {
-        if (!nextSelectMapcode.Equals("000000"))
+        if (!nextSelectMapcode.Equals("000000") || !nextSelectMapcode.Equals(""))
+        {
             DataController.instance.currentMap.nextMapcode = nextSelectMapcode;
+        }
 
         if (jsonFile != null)
         {
@@ -51,7 +51,6 @@ public class CheckMapClear : MonoBehaviour
         }
     }
 
-    // 캐릭터 확인 후 트리거 활성화
     private void OnTriggerEnter(Collider other)
     {
         if (!isTrigger)

@@ -23,8 +23,9 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     [Header("Continuous 혹은 Dialogue인 경우에만 값을 넣으시오")]
     public TextAsset jsonFile;
 
+    [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Game)]
     [Header("타입이 Game인 경우 게임 오브젝트를 넣으세요")]
-    public IGamePlayable GamePlayableGame;
+    public GameObject GamePlayableGame;
 
     private Stack<TaskData> jsonTask;
 
@@ -38,10 +39,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     public InteractionEvent[] dialogueEndAction;
 
     [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
-    public Vector3 dialogueCameraPos;
-
-    [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
-    public Vector3 dialogueCameraRot;
+    public CamInfo dialogueCamera;
 
     [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Task)]
     public InteractionEvent[] taskEndActions;
@@ -52,7 +50,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
 
     [ConditionalHideInInspector("InteractionPlayType", InteractionPlayType.Task)] 
     [Header("디버깅 전용 TaskData")]
-    public List<TaskData> taskData_Debug;
+    public List<TaskData> taskDataDebug;
 
 
     [Header("아웃라인 색 설정")] public OutlineColor color;
@@ -111,7 +109,6 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                 if (interactionPlayType == InteractionPlayType.Dialogue)
                 {
                     dialogueData.dialogues = JsontoString.FromJsonArray<Dialogue>(jsonFile.text);
-                    Debug.Log("너냐" + dialogueData.dialogues.Length);
                 }
                 else if (interactionPlayType == InteractionPlayType.Task)
                 {
@@ -123,39 +120,33 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         {
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
 
-            //딱히 필요 없음
-            // gameObject.tag = "obj_interaction";
-            // if (!Application.isPlaying)
-            // {
-            //     Debug.Log("ㅎㅇ");
-            //     if (TryGetComponent(out Outline t))
-            //     {
-            //         outline = t;
-            //     }
-            //     else
-            //     {
-            //         outline = gameObject.AddComponent<Outline>();
-            //     }
-            //
-            //     outline.OutlineMode = Outline.Mode.OutlineAll;
-            //     outline.OutlineWidth = 8f; // 아웃라인 두께 설정
-            //     outline.enabled = false; // 우선 outline 끄기
-            //     // 아웃라인 색깔 설정
-            //     if (color == OutlineColor.red) outline.OutlineColor = Color.red;
-            //     else if (color == OutlineColor.magenta) outline.OutlineColor = Color.magenta;
-            //     else if (color == OutlineColor.yellow) outline.OutlineColor = Color.yellow;
-            //     else if (color == OutlineColor.green) outline.OutlineColor = Color.green;
-            //     else if (color == OutlineColor.blue) outline.OutlineColor = Color.blue;
-            //     else if (color == OutlineColor.grey) outline.OutlineColor = Color.grey;
-            //     else if (color == OutlineColor.black) outline.OutlineColor = Color.black;
-            //     else if (color == OutlineColor.white) outline.OutlineColor = Color.white;
-            // }
-
             if (useExclamationMark && exclamationMark.gameObject != null)
             {
                 exclamationMark.SetActive(false); // 느낌표 끄기
             }
         }
+        
+        if (TryGetComponent(out Outline t))
+        {
+            outline = t;
+        }
+        else
+        {
+            outline = gameObject.AddComponent<Outline>();
+        }
+            
+        outline.OutlineMode = Outline.Mode.OutlineAll;
+        outline.OutlineWidth = 8f; // 아웃라인 두께 설정
+        outline.enabled = false; // 우선 outline 끄기
+        // 아웃라인 색깔 설정
+        if (color == OutlineColor.red) outline.OutlineColor = Color.red;
+        else if (color == OutlineColor.magenta) outline.OutlineColor = Color.magenta;
+        else if (color == OutlineColor.yellow) outline.OutlineColor = Color.yellow;
+        else if (color == OutlineColor.green) outline.OutlineColor = Color.green;
+        else if (color == OutlineColor.blue) outline.OutlineColor = Color.blue;
+        else if (color == OutlineColor.grey) outline.OutlineColor = Color.grey;
+        else if (color == OutlineColor.black) outline.OutlineColor = Color.black;
+        else if (color == OutlineColor.white) outline.OutlineColor = Color.white;
     }
 
     /// <summary>
@@ -346,7 +337,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
         }
         else if (interactionPlayType == InteractionPlayType.Game)
         {
-            GamePlayableGame.Play();
+            GamePlayableGame.GetComponent<IGamePlayable>().Play();
         }
         else if (interactionPlayType == InteractionPlayType.Cinematic)
         {
@@ -675,15 +666,15 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     {
         if (Application.isPlaying)
         {
-            if (taskData_Debug.Count != 0) return;
-            taskData_Debug = new List<TaskData>
+            if (taskDataDebug.Count != 0) return;
+            taskDataDebug = new List<TaskData>
             {
                 new TaskData
                 {
                     tasks = JsontoString.FromJsonArray<Task>(jsonFile.text)
                 }
             };
-            foreach (TaskData taskData in taskData_Debug)
+            foreach (TaskData taskData in taskDataDebug)
             {
                 Debug.Log("task 길이" + taskData.tasks.Length);
                 for (int i = 0; i < taskData.tasks.Length; i++)
@@ -708,19 +699,19 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
 
                             var jsonString = dialogueDB.LoadAsset<TextAsset>(dialogueName).text;
 
-                            if (taskData_Debug.Count > 50)
+                            if (taskDataDebug.Count > 50)
                             {
                                 Debug.Log("무한 task 디버깅");
                                 return;
                             }
 
-                            taskData_Debug.Add(new TaskData
+                            taskDataDebug.Add(new TaskData
                             {
                                 tasks = JsontoString.FromJsonArray<Task>(jsonString)
                             });
                         }
 
-                        Debug.Log("디버그 Task 추가" + taskData_Debug.Count);
+                        Debug.Log("디버그 Task 추가" + taskDataDebug.Count);
                     }
                 }
             }
@@ -823,7 +814,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (isTouched)
+        if (!((IClickable) this).IsClickEnable)
         {
             return;
         }
@@ -849,9 +840,9 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
             outline.enabled = false;
         }
 
-        if (interactionMethod == InteractionMethod.Touch && !isTouched)
+        if (((IClickable) this).IsClickEnable)
         {
-            ((IClickable) this).ActiveObjectClicker(false);
+            ((IClickable) this).ActiveObjectClicker(false);   
         }
 
         if (useExclamationMark)
