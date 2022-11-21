@@ -12,9 +12,14 @@ public class Can : MonoBehaviour
         onCollisionEnter = new UnityEvent();
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (enabled && other.collider.tag == "floor || can" )
+        if (!enabled)
+        {
+            return;
+        }
+        
+        if (other.CompareTag("item") || other.CompareTag("floor"))
         {
             onCollisionEnter?.Invoke();
             enabled = false;
