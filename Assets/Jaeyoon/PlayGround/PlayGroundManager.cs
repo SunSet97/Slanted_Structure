@@ -1,172 +1,159 @@
 ﻿using Play;
 using UnityEngine;
 using System;
+using System.Collections;
+using UnityEngine.UI;
 
 public class PlayGroundManager : MonoBehaviour, IGamePlayable
 {
+    public bool IsPlay { get; set; }
 
-    public bool IsPlay { get; set; } = false;
-
-
-    //public RectTransform[] range;
-    public GameObject Circle;
-    //public float radius;
-    //public int segments;
-    //public float speed;
-    //public float width;
-
-    public Transform throwStart;
-    public Transform throwDest;
     public GameObject canPrefab;
-    public CanState can;
-    public ThrowCan[] throwCans;
-    public Vector3 camPlace;
-    public Vector3 camDirection;
-    private Vector3 BeforeCamDis;
-    private Vector3 BeforeCamRot;
 
-    [System.Serializable]
+    public GameObject rangeParent;
+    public Button clearButton;
+
+    public Transform startPoint;
+    public Transform destPoint;
+
+    public ThrowCan[] throwCans;
+
+    public CamInfo playCam;
+
+    [SerializeField] private CreateRing ring;
+
+    [Serializable]
     public struct ThrowCan
     {
-        public float scalar;
-        [Range(0, 1)]
-        public float plusY;
-        public CanState cans;
+        public float power;
+        [Range(0, 1)] public float plusY;
+        public ResultState resultType;
     }
 
-    public enum CanState
+    public enum ResultState
     {
-        per, good, notgood, bad
+        Perfect,
+        Good,
+        NotBad,
+        Bad
     }
 
     private void Start()
     {
-        JoystickController.instance.InitializeJoyStick(false);
-        Circle.SetActive(false);
-        Circle.transform.GetComponentInChildren<CreateRing>().enabled = false;
+        clearButton.onClick.AddListener(ClearCheck);
     }
+
     public void Play()
     {
-        BeforeCamDis = DataController.instance.camDis;
-        BeforeCamRot = DataController.instance.camRot;
+        JoystickController.instance.InitializeJoyStick(false);
 
-        DataController.instance.camDis = camPlace;
-        DataController.instance.camRot = camDirection;
+        DataController.instance.currentMap.ui.gameObject.SetActive(false);
+        rangeParent.SetActive(false);
+        ring.enabled = false;
+
+        // DataController.instance.camDis = playCam.camDis;
+        // DataController.instance.camRot = playCam.camRot;
         StartTimingGame();
         IsPlay = true;
     }
 
     public void EndPlay()
     {
-        DataController.instance.camDis = BeforeCamDis;
-        DataController.instance.camRot = BeforeCamRot;
+        DataController.instance.camDis = DataController.instance.currentMap.camDis;
+        DataController.instance.camRot = DataController.instance.currentMap.camRot;
         IsPlay = false;
     }
 
-    //원 생성
-    public void StartTimingGame()
+    private void StartTimingGame()
     {
         DataController.instance.currentMap.ui.gameObject.SetActive(true);
-        //게임 실행
-        CanvasControl.instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
-        //CanvasControl.instance_CanvasControl.GetComponent<Canvas>().worldCamera = DataController.instance.cam;
-        CanvasControl.instance.GetComponent<Canvas>().worldCamera = Camera.main;
-        CanvasControl.instance.GetComponent<Canvas>().planeDistance = 0.8f;
 
-        //원 이미지 보이게
-        Circle.SetActive(true);
+        Canvas canvas = CanvasControl.instance.GetComponent<Canvas>();
 
-        //움직이는 원 생성
-        Circle.transform.GetComponentInChildren<CreateRing>().enabled = true;
-        Circle.transform.GetComponentInChildren<LineRenderer>().alignment = LineAlignment.TransformZ;
-        Circle.transform.GetComponentInChildren<CreateRing>().Setup();
-        Circle.transform.GetComponentInChildren<CreateRing>().CreatePoints();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = DataController.instance.cam;
+        canvas.planeDistance = 0.8f;
 
+        rangeParent.SetActive(true);
 
-        //ring.Setup(radius *range[2].localScale.x / 2, CanvasControl.instance_CanvasControl.GetComponent<Canvas>().planeDistance * 0.03f * width, speed, segments);
+        ring.Setup();
+        ring.CreatePoints();
 
-        //DataController.instance.currentMap.ui.SetActive(true);
+        StartCoroutine(PlayTimingGame());
     }
-    //게임 끝날 경우 함수
-    public void EndTimingGame()
+
+    private void EndTimingGame(ResultState result)
     {
-        Circle.SetActive(false);
+        rangeParent.SetActive(false);
+        ring.Remove();
         CanvasControl.instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
         DataController.instance.currentMap.ui.gameObject.SetActive(false);
-        StartThrowing(can);
+        StartThrowing(result);
     }
 
-    public void StartThrowing(CanState type)
+    private void StartThrowing(ResultState type)
     {
-        //canState에 따라 던지기
+        GameObject can = Instantiate(canPrefab);
+        can.GetComponent<Can>().onCollisionEnter.AddListener(() => { Invoke(nameof(EndPlay), 1f); });
+        can.transform.position = startPoint.position;
 
-        //게임오브젝트 생성
-        GameObject myCan = Instantiate(canPrefab);
-        //시작점에 위치
-        myCan.transform.position = throwStart.position;
-        //도착점 방향으로 던지기 //스칼라와 y값 설정
-        Vector3 canDir = (throwDest.position - throwStart.position).normalized;
-        canDir.y = throwCans[0].plusY;
+        int index = Array.FindIndex(throwCans, item => item.resultType == type);
 
-        int index = Array.FindIndex<ThrowCan>(throwCans, (item) => { return item.cans == type; });
+        Vector3 canDir = (destPoint.position - startPoint.position).normalized;
+        canDir.y = throwCans[index].plusY;
 
-        //throwCans[0] 
-        //can = throwCans[0].cans;
-        //can = throwCans[1].cans;
-        //can = throwCans[2].cans;
-        //can = throwCans[3].cans;
-        myCan.GetComponent<CapsuleCollider>().isTrigger = false;
+        can.GetComponent<Collider>().isTrigger = false;
 
-        //AddForce, AddTorque
-        myCan.GetComponent<Rigidbody>().AddForce(canDir.normalized * throwCans[index].scalar, ForceMode.Impulse);
-        myCan.GetComponent<Rigidbody>().AddTorque(canDir.normalized * throwCans[index].scalar, ForceMode.Impulse);
-        //던진후 움직임이 멈춘후 endthrowing 실행 timing 몇초후/ 바닥에 닿은 후
-        Invoke("EndThrowing", 1f);
+        Rigidbody throwRigid = can.GetComponent<Rigidbody>();
+        throwRigid.AddForce(canDir * throwCans[index].power, ForceMode.Impulse);
+        throwRigid.AddTorque(canDir * throwCans[index].power, ForceMode.Impulse);
     }
-   
-    public void EndThrowing()
+    
+    private void ClearCheck()
     {
-        EndPlay();
-    }
-    //원 판정함수
-    public void ClearCheck()
-    {
-        CreateRing circleParent = Circle.transform.GetComponentInChildren<CreateRing>();
-        if (circleParent.radius * 2 < Circle.transform.GetChild(2).localScale.x)
+        if (!IsPlay)
+        {
+            return;
+        }
+        
+        ResultState result;
+        if (ring.radius * 2 <= rangeParent.transform.GetChild(2).localScale.x *
+            rangeParent.transform.GetChild(2).GetComponent<RectTransform>().rect.width)
         {
             Debug.Log("유후! 바로 들어감");
-            can = CanState.per;
+            result = ResultState.Perfect;
         }
-        else if (circleParent.radius * 2 < Circle.transform.GetChild(0).localScale.x)
+        else if (ring.radius * 2 <= rangeParent.transform.GetChild(1).localScale.x *
+            rangeParent.transform.GetChild(1).GetComponent<RectTransform>().rect.width)
         {
             Debug.Log("아싸! 한번 튕기고 들어감");
-            can = CanState.good;
+            result = ResultState.Good;
         }
-        else if (circleParent.radius * 2 < Circle.transform.GetChild(1).localScale.x)
+        else if (ring.radius * 2 <= rangeParent.transform.GetChild(0).localScale.x *
+            rangeParent.transform.GetChild(0).GetComponent<RectTransform>().rect.width)
         {
             Debug.Log("아깝다! 한번 튕기고 안들어감");
-            can = CanState.notgood;
+            result = ResultState.NotBad;
         }
         else
         {
             Debug.Log("앗! 안들어감");
-            can = CanState.bad;
+            result = ResultState.Bad;
         }
-        EndTimingGame();
-        //실행 멈추기
-        //카메라 돌려놓기
-        //if(ring.transform.localScale.x = range[0].)
+
+        StopAllCoroutines();
+        EndTimingGame(result);
     }
 
-    //원 사라짐
-    public void Update()
+    private IEnumerator PlayTimingGame()
     {
-
-        if (Circle.activeSelf && Circle.transform.GetChild(2).localScale.x * 0.3 > Circle.transform.GetComponentInChildren<CreateRing>().radius * 2)
+        while (rangeParent.transform.GetChild(2).localScale.x * 0.3 *
+            rangeParent.transform.GetChild(2).GetComponent<RectTransform>().rect.width <= ring.radius * 2)
         {
-            Debug.Log(Circle.transform.GetChild(2).localScale.x);
-            Debug.Log(Circle.transform.GetComponentInChildren<CreateRing>().radius);
-            can = CanState.bad; EndTimingGame();
+            ring.DisplayUpdate();
+            yield return null;
         }
+
+        EndTimingGame(ResultState.Bad);
     }
 }

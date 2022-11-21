@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Authentication.ExtendedProtection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -15,9 +16,13 @@ public class DalgonaDrager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private Vector2 dragBeginPos;
     private bool isDrag;
 
+    [NonSerialized]
+    public bool isEnd;
+
 
     public void Init()
     {
+        isEnd = false;
         gameObject.SetActive(true);
         dalgonaRaycaster = GetComponentInParent<GraphicRaycaster>();
         for (var idx = 0; idx < transform.childCount; idx++)
@@ -134,16 +139,12 @@ public class DalgonaDrager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         var dalgonaImage = transform.GetComponent<Image>();
         var curIndex = Array.IndexOf(imageChange, dalgonaImage.sprite);
-        if (imageChange.Length <= curIndex)
-        {
-            return;
-        }
 
         var child = transform.GetChild(curIndex);
         child.GetComponent<Image>().raycastTarget = false;
         child.gameObject.tag = "Untagged";
 
-        if (curIndex + 1 < imageChange.Length)
+        if (curIndex + 1 < imageChange.Length && curIndex + 1 < transform.childCount)
         {
             var nextChild = transform.GetChild(curIndex + 1);
             nextChild.GetComponent<Image>().raycastTarget = true;
@@ -152,6 +153,8 @@ public class DalgonaDrager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
         else
         {
+            dalgonaImage.sprite = imageChange[curIndex + 1];
+            isEnd = true;
             gameObject.SetActive(false);
         }
     }
