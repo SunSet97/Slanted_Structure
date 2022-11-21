@@ -32,8 +32,10 @@ namespace CommonScript
 
         void Update()
         {
-            if(!isCustomUse)
+            if (!isCustomUse)
+            {
                 OnTouchDisplay();
+            }
         }
 
         public void UpdateClick(IClickable clickable, bool isActive)
@@ -50,6 +52,10 @@ namespace CommonScript
 
         private void AddClick(IClickable clickable)
         {
+            if (clickables.Contains(clickable))
+            {
+                return;
+            }
             clickables.Add(clickable);
             if (!gameObject.activeSelf)
             {
@@ -60,6 +66,10 @@ namespace CommonScript
 
         private void RemoveClick(IClickable clickable)
         {
+            if (!clickables.Contains(clickable))
+            {
+                return;
+            }
             clickables.Remove(clickable);
             if (clickables.Count == 0)
             {
@@ -70,7 +80,10 @@ namespace CommonScript
         
         public void OnTouchDisplay()
         {
-            if (!Input.GetMouseButtonDown(0)) return;
+            if (!Input.GetMouseButtonDown(0))
+            {
+                return;
+            }
         
             Ray ray = DataController.instance.cam.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 20f, Color.red, 5f);

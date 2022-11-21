@@ -56,7 +56,7 @@ public class CharacterManager : MonoBehaviour, IMovable
     }
     public void SetCharacter(Transform mapSettingTransform)
     {
-        gameObject.layer = LayerMask.NameToLayer("Default");
+        gameObject.layer = LayerMask.NameToLayer("Player");
         gameObject.SetActive(true);
         transform.position = mapSettingTransform.position;
         transform.LookAt(transform.position + mapSettingTransform.right);

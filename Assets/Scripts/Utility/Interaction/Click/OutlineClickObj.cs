@@ -1,5 +1,4 @@
-﻿using System;
-using CommonScript;
+﻿using CommonScript;
 using UnityEngine;
 
 public class OutlineClickObj : MonoBehaviour, IClickable
@@ -52,15 +51,19 @@ public class OutlineClickObj : MonoBehaviour, IClickable
     void Awake()
     {
         gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
-        if(outline == null)
-            outline = gameObject.AddComponent<Outline>();
+        if (outline == null)
+        {
+            outline = gameObject.AddComponent<Outline>();   
+        }            
         outline.OutlineMode = mode;
         outline.OutlineColor = outlineColor;
         outline.OutlineWidth = 8f;
         outline.enabled = false;
-        SphereCollider sphereCol;
-        if (!gameObject.TryGetComponent(out sphereCol)) 
-            sphereCol = gameObject.AddComponent<SphereCollider>();  // 콜라이더 없으면 자동 추가
+        
+        if (!gameObject.TryGetComponent(out SphereCollider sphereCol))
+        {
+            sphereCol = gameObject.AddComponent<SphereCollider>();   
+        }
         sphereCol.isTrigger = true;
         radius /= transform.lossyScale.y;
         sphereCol.center = transform.InverseTransformPoint(transform.position + offset);
@@ -76,25 +79,37 @@ public class OutlineClickObj : MonoBehaviour, IClickable
 
     void OnTriggerEnter(Collider other)
     {
-        if(!other.CompareTag("Player") || !enabled) return;
+        if (!other.CompareTag("Player") || !enabled)
+        {
+            return;
+        }
         IsClickEnable = true;
         Debug.Log("키기 - " + other.gameObject);
     }
     void OnTriggerExit(Collider other)
     {
-        if(!other.CompareTag("Player")) return;
+        if (!other.CompareTag("Player"))
+        {
+            return;
+        }
         IsClickEnable = false;
         Debug.Log("끄기");
     }
 
     private void OnDisable()
     {
-        if (!Application.isPlaying) return;
+        if (!Application.isPlaying)
+        {
+            return;
+        }
         IsClickEnable = false;
     }
     private void OnDestroy()
     {
-        if (!Application.isPlaying) return;
+        if (!Application.isPlaying)
+        {
+            return;
+        }
         IsClickEnable = false;
     }
 }

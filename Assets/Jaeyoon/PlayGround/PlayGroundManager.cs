@@ -21,7 +21,7 @@ public class PlayGroundManager : MonoBehaviour, IGamePlayable
     public CamInfo playCam;
 
     [SerializeField] private CreateRing ring;
-
+    
     [Serializable]
     public struct ThrowCan
     {
@@ -53,6 +53,7 @@ public class PlayGroundManager : MonoBehaviour, IGamePlayable
 
         // DataController.instance.camDis = playCam.camDis;
         // DataController.instance.camRot = playCam.camRot;
+        
         StartTimingGame();
         IsPlay = true;
     }
@@ -63,7 +64,7 @@ public class PlayGroundManager : MonoBehaviour, IGamePlayable
         DataController.instance.camRot = DataController.instance.currentMap.camRot;
         IsPlay = false;
     }
-
+    
     private void StartTimingGame()
     {
         DataController.instance.currentMap.ui.gameObject.SetActive(true);
@@ -153,7 +154,6 @@ public class PlayGroundManager : MonoBehaviour, IGamePlayable
             ring.DisplayUpdate();
             yield return null;
         }
-
         EndTimingGame(ResultState.Bad);
     }
 }

@@ -41,10 +41,6 @@ public class DataController : MonoBehaviour
     public MapData currentMap;
     public string mapCode;
 
-    // 카메라 projecton orthographic에서 perspective로 전환될 때 필요
-    float originOrthoSize;
-    float originCamDis_y;
-
     private AssetBundle _mapDB;
     private AssetBundle _materialDB;
     [NonSerialized]
@@ -205,22 +201,28 @@ public class DataController : MonoBehaviour
         ObjectClicker.instance.gameObject.SetActive(false);
         ObjectClicker.instance.isCustomUse = false;
         
-        foreach (var item in storymaps)
-        {
-            Debug.Log(item);
-        }
         var nextMap = Array.Find(storymaps, mapData => mapData.mapCode.Equals(mapCode));
         Debug.Log(mapCode);
         Debug.Log(nextMap);
         currentMap = Instantiate(nextMap, mapGenerate);
         currentMap.Initialize();
         SetByChangedMap();
+        DialogueController.instance.Initialize();
         if (FadeEffect.instance.isFadeOut)
         {
             FadeEffect.instance.FadeIn();
+            FadeEffect.instance.onFadeOver.AddListener(() =>
+            {
+                onLoadMap?.Invoke();
+                onLoadMap = () => { };       
+            });
         }
-        onLoadMap?.Invoke();
-        onLoadMap = () => { };
+        else
+        {
+            onLoadMap?.Invoke();
+            onLoadMap = () => { };
+        }
+        Debug.Log("실행");
     }
 
     public void AddOnLoadMap(OnLoadMap onLoadMap)
@@ -240,8 +242,6 @@ public class DataController : MonoBehaviour
         //카메라 위치와 회전
         camDis = currentMap.camDis;
         camRot = currentMap.camRot;
-
-        DialogueController.instance.Initialize();
 
         // 해당되는 캐릭터 초기화
         speat.InitializeCharacter();
@@ -342,8 +342,4 @@ public class DataController : MonoBehaviour
     }
     
     public CharData charData;
-
-    public TaskData taskData;
-
-    public DialogueData dialogueData;
 }

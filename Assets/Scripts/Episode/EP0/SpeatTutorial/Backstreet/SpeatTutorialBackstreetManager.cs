@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
+using System.Security.Cryptography;
 using Play;
 using UnityEngine;
 using UnityEngine.UI;
@@ -69,19 +70,23 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IGamePlayable
 
     public void EndPlay()
     {
-        _assetBundle.Unload(true);
+        if (_assetBundle)
+        {
+            _assetBundle.Unload(true);
+        }
+        
+        IsPlay = false;
+
         if (_jsonFile != null)
         {
             DialogueController.instance.SetDialougueEndAction(() =>
             {
-                IsPlay = false;
                 DataController.instance.currentMap.MapClear();
             });
             DialogueController.instance.StartConversation(_jsonFile.text);
         }
         else
         {
-            IsPlay = false;
             DataController.instance.currentMap.MapClear();
         }
     }
@@ -121,7 +126,10 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IGamePlayable
             {
                 EndPlay();
             }
-            else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1) DataController.instance.ChangeMap(DataController.instance.mapCode);
+            else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1)
+            {
+                DataController.instance.ChangeMap(DataController.instance.mapCode);
+            }
         }
     }
 

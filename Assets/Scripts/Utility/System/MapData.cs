@@ -327,13 +327,17 @@ public class MapData : MonoBehaviour
         DataController.instance.currentMap = this;
 
         // 오브젝트의 이름을 맵 코드로 변경
-        if (name != mapCode) name = mapCode;
+        if (name != mapCode)
+        {
+            name = mapCode;
+        }
 
         // UI의 이름을 맵 이름으로 변경
         if (ui != null)
         {
             ui.name = map.name;
 
+            Debug.Log(CanvasControl.instance.mapUI);
             ui.SetParent(CanvasControl.instance.mapUI);
             ui.offsetMax = new Vector2(0, 0);
             ui.offsetMin = new Vector2(0, 0);
