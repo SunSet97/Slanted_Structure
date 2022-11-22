@@ -188,7 +188,7 @@ public class Waypoint : MonoBehaviour
     // 입력 방향 세팅
     private void JoystickInput()
     {
-        float joystickInput = JoystickController.instance.joyStick.Horizontal; // 한 방향 입력은 수평값만 받음
+        float joystickInput = JoystickController.instance.joystick.Horizontal; // 한 방향 입력은 수평값만 받음
 
         if (Mathf.Approximately(joystickInput, 0f))
         {
@@ -196,7 +196,7 @@ public class Waypoint : MonoBehaviour
             return;
         }
 
-        if (JoystickController.instance.joyStick.gameObject.activeSelf && waypoints.Count > 0 &&
+        if (JoystickController.instance.joystick.gameObject.activeSelf && waypoints.Count > 0 &&
             DataController.instance.GetCharacter(Character.Main).IsMove)
         {
             int fwdIndex, bwdIndex;
@@ -266,7 +266,7 @@ public class Waypoint : MonoBehaviour
             Vector2 changedDir = new Vector2(moveDir.x, moveDir.z).normalized;
 
             JoystickController.instance.inputJump =
-                JoystickController.instance.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
+                JoystickController.instance.joystick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
             JoystickController.instance.inputDirection = changedDir; // 조정된 입력 방향 설정
             JoystickController.instance.inputDegree = Mathf.Abs(joystickInput); // 조정된 입력 방향으로 크기 계산
 

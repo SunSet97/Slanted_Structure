@@ -23,18 +23,18 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     public bool SnapX { get { return snapX; } set { snapX = value; } }
     public bool SnapY { get { return snapY; } set { snapY = value; } }
 
-    [SerializeField] private float handleRange = 1;
+    [SerializeField] protected float handleRange = 1;
     [SerializeField] private float deadZone = 0;
     [SerializeField] private AxisOptions axisOptions = AxisOptions.Both;
     [SerializeField] private bool snapX = false;
     [SerializeField] private bool snapY = false;
 
     [SerializeField] protected RectTransform background = null;
-    [SerializeField] private RectTransform handle = null;
+    [SerializeField] protected RectTransform handle = null;
     private RectTransform baseRect = null;
 
-    private Canvas canvas;
-    private Camera cam;
+    protected Canvas canvas;
+    protected Camera cam;
 
     public Vector2 input = Vector2.zero;
 
@@ -60,7 +60,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         OnDrag(eventData);
     }
 
-    public void OnDrag(PointerEventData eventData)
+    public virtual void OnDrag(PointerEventData eventData)
     {
         cam = null;
         if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
@@ -69,6 +69,8 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         Vector2 position = RectTransformUtility.WorldToScreenPoint(cam, background.position);
         Vector2 radius = background.sizeDelta / 2;
         input = (eventData.position - position) / (radius * canvas.scaleFactor);
+        Debug.Log("radius: " + radius * canvas.scaleFactor);
+        Debug.Log("인풋: " + input);
         FormatInput();
         HandleInput(input.magnitude, input.normalized, radius, cam);
         handle.anchoredPosition = input * radius * handleRange;
@@ -85,7 +87,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
             input = Vector2.zero;
     }
 
-    private void FormatInput()
+    protected void FormatInput()
     {
         if (axisOptions == AxisOptions.Horizontal)
             input = new Vector2(input.x, 0f);

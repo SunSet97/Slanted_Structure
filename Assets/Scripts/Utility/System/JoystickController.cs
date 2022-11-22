@@ -1,15 +1,22 @@
 ﻿using System;
 using Data;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class JoystickController : MonoBehaviour
 {
-    [Header("조이스틱")] public Joystick joyStick;
-    public Vector2 inputDirection = Vector2.zero; // 조이스틱 입력 방향
-    public float inputDegree = 0f; // 조이스틱 입력 크기
-    public bool inputJump = false; // 조이스틱 입력 점프 판정
-    public bool inputDash = false; // 조이스틱 입력 대쉬 판정
-    public bool inputSeat = false;
+    [Header("조이스틱")]
+    public Joystick dynamicJoystick;
+    public Joystick fixedJoyStick;
+
+    [SerializeField] private Button jumpButton;
+
+    [NonSerialized] public Joystick joystick;
+    [NonSerialized] public Vector2 inputDirection; // 조이스틱 입력 방향
+    [NonSerialized] public float inputDegree; // 조이스틱 입력 크기
+    [NonSerialized] public bool inputJump; // 조이스틱 입력 점프 판정
+    [NonSerialized] public bool inputDash; // 조이스틱 입력 대쉬 판정
+    [NonSerialized] public bool inputSeat;
     private bool isAlreadySave;
     private bool wasJoystickUse;
 
@@ -20,27 +27,68 @@ public class JoystickController : MonoBehaviour
 
     private void Awake()
     {
-        _instance = this;
+        if (!_instance)
+        {
+            _instance = this;
+            DontDestroyOnLoad(_instance);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    public void InitSaveLoad()
+    private void Start()
+    {
+        jumpButton.onClick.AddListener(() =>
+        {
+            inputJump = true;
+        });
+    }
+
+    public void Init(JoystickType joystickType)
     {
         isAlreadySave = false;
+        if (joystick)
+        {
+            joystick.gameObject.SetActive(false);
+        }
+        jumpButton.gameObject.SetActive(false);
+        
+        if (joystickType == JoystickType.Dynamic)
+        {
+            joystick = dynamicJoystick;
+        }
+        else if (joystickType == JoystickType.Fixed)
+        {
+            joystick = fixedJoyStick;
+        }
     }
-    
+
     /// <summary>
     /// 조이스틱 상태 초기화하는 함수
     /// </summary>
     /// <param name="isOn">JoyStick On/Off</param>
     public void InitializeJoyStick(bool isOn)
     {
-        joyStick.gameObject.SetActive(isOn);
-        joyStick.transform.GetChild(0).gameObject.SetActive(false);
-        joyStick.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().position = default;
-        joyStick.OnPointerUp();
+        if (!joystick)
+        {
+            return;
+        }
+        joystick.gameObject.SetActive(isOn);
+        if (joystick.GetType() == typeof(DynamicJoystick))
+        {
+            joystick.transform.GetChild(0).gameObject.SetActive(false);
+            joystick.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().position = default;   
+        }
+        else if (joystick.GetType() == typeof(FixedJoystick))
+        {
+            jumpButton.gameObject.SetActive(isOn);
+        }
+        joystick.OnPointerUp();
         inputDegree = 0;
         inputDirection = Vector2.zero;
-        joyStick.input = Vector2.zero;
+        joystick.input = Vector2.zero;
         inputJump = false;
     }
     
@@ -58,7 +106,7 @@ public class JoystickController : MonoBehaviour
             if(isAlreadySave) return;
             
             isAlreadySave = true;
-            wasJoystickUse = joyStick.gameObject.activeSelf;
+            wasJoystickUse = joystick.gameObject.activeSelf;
             InitializeJoyStick(false);
         }
         // Load하는 경우
@@ -72,7 +120,7 @@ public class JoystickController : MonoBehaviour
 
     public void SetJoystickArea(CustomEnum.JoystickAreaType joystickAreaType)
     {
-        var rect = joyStick.GetComponent<RectTransform>();
+        var rect = joystick.GetComponent<RectTransform>();
         if (joystickAreaType == CustomEnum.JoystickAreaType.DEFAULT)
         {
             rect.anchorMax = new Vector2(.5f, .5f);
@@ -95,15 +143,15 @@ public class JoystickController : MonoBehaviour
         if (method.Equals(CustomEnum.JoystickInputMethod.OneDirection))
         {
             joystickController.inputDegree =
-                Mathf.Abs(joystickController.joyStick.Horizontal); // 조정된 입력 방향으로 크기 계산
-            joystickController.inputDirection.Set(joystickController.joyStick.Horizontal, 0); // 조정된 입력 방향 설정
+                Mathf.Abs(joystickController.joystick.Horizontal); // 조정된 입력 방향으로 크기 계산
+            joystickController.inputDirection.Set(joystickController.joystick.Horizontal, 0); // 조정된 입력 방향 설정
             joystickController.inputJump =
-                joystickController.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
+                joystickController.joystick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
         }
         else
         {
-            joystickController.inputDirection.Set(joystickController.joyStick.Horizontal,
-                joystickController.joyStick.Vertical); // 조정된 입력 방향 설정
+            joystickController.inputDirection.Set(joystickController.joystick.Horizontal,
+                joystickController.joystick.Vertical); // 조정된 입력 방향 설정
             joystickController.inputDegree =
                 Vector2.Distance(Vector2.zero, joystickController.inputDirection); // 조정된 입력 방향으로 크기 계산
             joystickController.inputJump = false;

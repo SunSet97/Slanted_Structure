@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 865107121813608425}
   - component: {fileID: 3040732221949546546}
+  - component: {fileID: 2445551836438603349}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -76,6 +77,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 875882ff0c1c5e548b0f8be2c25e81e6, type: 3}
+  GamePlayableGame: {fileID: 0}
   dialogueData:
     dialogues:
     - name: "\uC2A4\uD54F"
@@ -97,25 +99,43 @@ MonoBehaviour:
       anim_name: Rau
       contents: "\uD558\uD573\u2026\uB18D\uB2F4\uB3C4 \uC9D3\uAD73\uAE34\u2026\uC54C\uC558\uC5B4."
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  taskDataDebug: []
   color: 0
   interactionMethod: 3
-  radius: 5
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
+  outline: {fileID: 2445551836438603349}
   isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
+--- !u!114 &2445551836438603349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1107724153789977551}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 8
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1205983867081524634
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,6 +466,7 @@ MonoBehaviour:
   positionSetting: {fileID: 1395685092927965824}
   isJoystickInputUse: 0
   isJoystickNone: 0
+  joystickType: 0
   forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &1585814380106605648
 GameObject:
@@ -457,7 +478,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2405929736243134971}
   - component: {fileID: 739731180733706218}
-  - component: {fileID: 4824826307692027591}
   m_Layer: 0
   m_Name: WaypointManager
   m_TagString: Untagged
@@ -508,45 +528,6 @@ MonoBehaviour:
   - {fileID: 3977372962960798820}
   - {fileID: 8409674523444131935}
   checkedWaypoint: {fileID: 7371105613178214492}
---- !u!114 &4824826307692027591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1585814380106605648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d298e17f617eb234bbf3ba9ee7db04f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waypoint: {fileID: 739731180733706218}
-  cornerRadius: 1.5
-  cornerCameraSettings:
-  - corner: {fileID: 6571870908912817177}
-    front: {fileID: 8829529054792161283}
-    back: {fileID: 8984058029007005243}
-    camSettings:
-    - camDis: {x: 0, y: 1, z: -3}
-      camRot: {x: 0, y: 0, z: 0}
-    - camDis: {x: -3, y: 1, z: 0}
-      camRot: {x: 0, y: 90, z: 0}
-  - corner: {fileID: 3835944343086939652}
-    front: {fileID: 340887713216220295}
-    back: {fileID: 227332658957592910}
-    camSettings:
-    - camDis: {x: -3, y: 1, z: 0}
-      camRot: {x: 0, y: 90, z: 0}
-    - camDis: {x: -3, y: 1, z: 2}
-      camRot: {x: 0, y: 120, z: 0}
-  - corner: {fileID: 3977372962960798820}
-    front: {fileID: 8063324371436498449}
-    back: {fileID: 8930176256931363575}
-    camSettings:
-    - camDis: {x: -3, y: 1, z: 2}
-      camRot: {x: 0, y: 120, z: 0}
-    - camDis: {x: 0, y: 3, z: 3}
-      camRot: {x: 45, y: 180, z: 0}
 --- !u!1 &1638902882109068007
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,6 +539,7 @@ GameObject:
   - component: {fileID: 2139845268440692311}
   - component: {fileID: 5051886098085627300}
   - component: {fileID: 5232198707942898108}
+  - component: {fileID: 5081629836678006674}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -593,11 +575,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 5
   jsonFile: {fileID: 4900000, guid: 33e9f9bb387055641b70977d0eaf7b8b, type: 3}
+  GamePlayableGame: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   taskEndActions:
   - eventType: 1
     clearBox: {fileID: 1395685092987312460}
@@ -609,87 +593,18 @@ MonoBehaviour:
       playableObjs: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug:
-  - tasks:
-    - name: "\uB77C\uC6B0\uB300\uD6541"
-      taskContentType: 0
-      nextFile: dialogue_ep2/204130_3
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: 
-      taskContentType: 0
-      nextFile: 2
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: "\uB108\uB3C4 \uADF8\uB807\uAC8C \uC0B4\uACE0 \uC2F6\uC5C8\uB358 \uAC8C
-        \uC544\uB2C8\uC5C8\uC796\uC544."
-      taskContentType: 0
-      nextFile: dialogue_ep2/204130_choice1
-      order: 0
-      condition: 0,0,0,0
-      increaseVar: 3,0,0
-    - name: "\uBAA8\uB4E0 \uC120\uD0DD\uC5D0\uB294 \uCC45\uC784\uC744 \uC9C8 \uC218
-        \uBC16\uC5D0 \uC5C6\uC5B4."
-      taskContentType: 0
-      nextFile: dialogue_ep2/204130_choice2
-      order: 0
-      condition: 0,0,0,0
-      increaseVar: m3,0,0
-    - name: "\uB05D"
-      taskContentType: 0
-      nextFile: 
-      order: 1
-      condition: 
-      increaseVar: 
-    taskIndex: 0
-    taskOrder: 1
-    isContinue: 1
-  - tasks:
-    - name: "\uB77C\uC6B0\uB300\uD6541"
-      taskContentType: 0
-      nextFile: dialogue_ep2/204130_3_1
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: "\uB05D"
-      taskContentType: 0
-      nextFile: 
-      order: 1
-      condition: 
-      increaseVar: 
-    taskIndex: 0
-    taskOrder: 1
-    isContinue: 1
-  - tasks:
-    - name: "\uB77C\uC6B0\uB300\uD6541"
-      taskContentType: 0
-      nextFile: dialogue_ep2/204130_3_2
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: "\uB05D"
-      taskContentType: 0
-      nextFile: 
-      order: 1
-      condition: 
-      increaseVar: 
-    taskIndex: 0
-    taskOrder: 1
-    isContinue: 1
+  taskDataDebug: []
   color: 0
   interactionMethod: 2
-  radius: 2
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
+  outline: {fileID: 5081629836678006674}
   isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
 --- !u!65 &5232198707942898108
 BoxCollider:
@@ -704,6 +619,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5081629836678006674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638902882109068007}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 8
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1764070866265688697
 GameObject:
   m_ObjectHideFlags: 0
@@ -900,6 +833,7 @@ GameObject:
   - component: {fileID: 7608715577886829098}
   - component: {fileID: 4147569093399549122}
   - component: {fileID: 5228321217541616883}
+  - component: {fileID: 4352240898744531744}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -935,6 +869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: c80901b5908f6b940900da31e78325bc, type: 3}
+  GamePlayableGame: {fileID: 0}
   dialogueData:
     dialogues:
     - name: "\uC2A4\uD54F"
@@ -994,24 +929,24 @@ MonoBehaviour:
       anim_name: Speat
       contents: "\uC74C\u2026\uC77C\uB2E8 \uB4E4\uC5B4\uC62C\uB798\u2026?"
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  taskDataDebug: []
   color: 0
   interactionMethod: 2
-  radius: 5
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
+  outline: {fileID: 4352240898744531744}
   isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
 --- !u!65 &5228321217541616883
 BoxCollider:
@@ -1026,6 +961,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4352240898744531744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4277378228585697422}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 8
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &4573086005887105987
 GameObject:
   m_ObjectHideFlags: 0

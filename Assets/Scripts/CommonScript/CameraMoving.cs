@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using static Data.CustomEnum;
+
 public class CameraMoving : MonoBehaviour
 {
     //캐릭터 오브젝트 받는 변수
@@ -7,7 +8,7 @@ public class CameraMoving : MonoBehaviour
 
     private CameraViewType viewType;
     private Camera cam;
-    
+
     // 카메라 무빙 경계
     private BoxCollider bound;
     private Vector3 minBound;
@@ -36,9 +37,10 @@ public class CameraMoving : MonoBehaviour
         {
             return;
         }
+
         if (cam.orthographic)
         {
-            cam.orthographicSize = DataController.instance.orthgraphic_Size;
+            cam.orthographicSize = DataController.instance.camOrthgraphicSize;
         }
 
         if (viewType.Equals(CameraViewType.FixedView))
@@ -74,7 +76,8 @@ public class CameraMoving : MonoBehaviour
             halfHeight = cam.orthographicSize;
             halfWidth = halfHeight * Screen.width / Screen.height;
             float clampedX = Mathf.Clamp(transform.position.x, minBound.x + halfWidth, maxBound.x - halfWidth);
-            float clampedY = Mathf.Clamp(transform.position.y, minBound.y + halfHeight, maxBound.y - halfHeight); ;
+            float clampedY = Mathf.Clamp(transform.position.y, minBound.y + halfHeight, maxBound.y - halfHeight);
+            ;
             //float clampedZ;
             transform.position = new Vector3(clampedX, clampedY, transform.position.z);
 
@@ -92,5 +95,4 @@ public class CameraMoving : MonoBehaviour
         //    Camera.main.transform.position = position;
         //}
     }
-
 }

@@ -64,16 +64,16 @@ public class RauTutorialManager : MonoBehaviour
     void TouchSlide()
     {
         // https://www.youtube.com/watch?v=98dQBWUyy9M 멀티 터치 참고
-        if (JoystickController.instance.joyStick.Horizontal > 0) swipeDir = Swipe.Right;
-        else if (JoystickController.instance.joyStick.Horizontal < 0) swipeDir = Swipe.Left;
-        else if (JoystickController.instance.joyStick.Vertical < 0) swipeDir = Swipe.Down;
+        if (JoystickController.instance.joystick.Horizontal > 0) swipeDir = Swipe.Right;
+        else if (JoystickController.instance.joystick.Horizontal < 0) swipeDir = Swipe.Left;
+        else if (JoystickController.instance.joystick.Vertical < 0) swipeDir = Swipe.Down;
         else swipeDir = Swipe.None;
     }
 
     // 조이스틱 이미지 껐다 끄기
     void OnOffJoystick(bool isOn)
     {
-        foreach (var component in JoystickController.instance.joyStick.GetComponentsInChildren(typeof(Image), true))
+        foreach (var component in JoystickController.instance.joystick.GetComponentsInChildren(typeof(Image), true))
         {
             var image = (Image) component;
             if (isOn && !image.name.Equals("Transparent Dynamic Joystick"))
@@ -97,7 +97,7 @@ public class RauTutorialManager : MonoBehaviour
         var mapData = DataController.instance.currentMap;
         mapData.method = methodNum;
         OnOffJoystick(methodNum != JoystickInputMethod.Other);
-        JoystickController.instance.joyStick.AxisOptions = axisNum;
+        JoystickController.instance.joystick.AxisOptions = axisNum;
     }
 
     // 숲 초입길

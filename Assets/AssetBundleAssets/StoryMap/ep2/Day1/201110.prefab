@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1295089234482046498}
   m_Layer: 0
-  m_Name: Position Setting (1)
+  m_Name: Position Setting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -137,6 +137,7 @@ MonoBehaviour:
   positionSetting: {fileID: 1295089234482046501}
   isJoystickInputUse: 1
   isJoystickNone: 0
+  joystickType: 0
   forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &1295089235837433860
 GameObject:
@@ -370,13 +371,31 @@ MonoBehaviour:
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
+  outline: {fileID: 5094666217415788784}
   isViewChange: 0
   timelines:
   - {fileID: 0}
   cinematics: []
   inGames: []
   isLoopDialogue: 0
+--- !u!114 &5094666217415788784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3451227557676281854}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  outlineWidth: 8
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!65 &1295089234569999056
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -400,6 +419,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5381451930135607006}
   - component: {fileID: 3947402992013597257}
+  - component: {fileID: 8956513718955266536}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -457,12 +477,30 @@ MonoBehaviour:
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
+  outline: {fileID: 8956513718955266536}
   isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
   isLoopDialogue: 0
+--- !u!114 &8956513718955266536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7429269497000686336}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 8
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1001 &1295089236106902008
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1140,12 +1178,6 @@ PrefabInstance:
     - {fileID: 3966852475525968817, guid: a6d894731640db04188175c428b46680, type: 3}
     - {fileID: 502182416093836142, guid: a6d894731640db04188175c428b46680, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a6d894731640db04188175c428b46680, type: 3}
---- !u!1 &3451227557676281854 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4475502577458353670, guid: a6d894731640db04188175c428b46680,
-    type: 3}
-  m_PrefabInstance: {fileID: 1295089236106902008}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1907020673888627421 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 832618368247812901, guid: a6d894731640db04188175c428b46680,
@@ -1209,6 +1241,12 @@ Transform:
 --- !u!1 &3543910822874225993 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2366523757251650737, guid: a6d894731640db04188175c428b46680,
+    type: 3}
+  m_PrefabInstance: {fileID: 1295089236106902008}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3451227557676281854 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4475502577458353670, guid: a6d894731640db04188175c428b46680,
     type: 3}
   m_PrefabInstance: {fileID: 1295089236106902008}
   m_PrefabAsset: {fileID: 0}

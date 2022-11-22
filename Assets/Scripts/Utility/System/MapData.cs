@@ -370,6 +370,7 @@ public class MapData : MonoBehaviour
     public bool isJoystickInputUse;
 
     [Header("조이스틱 존재 유무")] public bool isJoystickNone;
+    public JoystickType joystickType;
 
     private void JoystickInputUpdate()
     {

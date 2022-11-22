@@ -26,24 +26,23 @@ public class CameraTracker : MonoBehaviour
 {
     public Waypoint waypoint;
     public float cornerRadius;
-    
+
     private float camRotDir;
 
-    [SerializeField]
-    public CornerCameraSetting[] cornerCameraSettings;
-    
+    [SerializeField] public CornerCameraSetting[] cornerCameraSettings;
+
     [Serializable]
     public struct CornerCameraSetting
     {
-        [Header("코너 Waypoint 개체를 넣으세요")]
-        public Transform corner;
-        
+        [Header("코너 Waypoint 개체를 넣으세요")] public Transform corner;
+
         public Transform front;
+
         public Transform back;
+
         //왼쪽이 이동방향이면 오른쪽, 왼쪽 순으로
         //오른쪽이 이동방향이면 왼쪽, 오른쪽 순으로
-        [Header("이동방향 순서대로 넣으세요")]
-        public CamInfo[] camSettings;
+        [Header("이동방향 순서대로 넣으세요")] public CamInfo[] camSettings;
     }
 
     void Update()
@@ -52,7 +51,7 @@ public class CameraTracker : MonoBehaviour
         {
             var character = DataController.instance.GetCharacter(Character.Main)
                 .transform;
-            
+
             CornerCameraSetting corner = cornerCameraSettings[cornerIndex];
             //현재 위치가 앞(1)인지 뒤(-1)인지
             camRotDir = GetDir(corner);
@@ -128,6 +127,7 @@ public class CameraTracker : MonoBehaviour
         {
             return 1;
         }
+
         return -1;
     }
 
@@ -139,7 +139,7 @@ public class CameraTracker : MonoBehaviour
         charVec.y = 0;
         float min = float.MaxValue;
         index = default;
-        for(int i = 0; i < cornerCameraSettings.Length; i++)
+        for (int i = 0; i < cornerCameraSettings.Length; i++)
         {
             Vector3 cornerVec = cornerCameraSettings[i].corner.position;
             cornerVec.y = 0;
@@ -154,6 +154,7 @@ public class CameraTracker : MonoBehaviour
                 }
             }
         }
+
         return false;
     }
 
@@ -185,13 +186,13 @@ public class CameraTracker : MonoBehaviour
             }
         }
     }
-    
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow - Color.black * 0.4f;
         foreach (var t in cornerCameraSettings)
         {
-            Gizmos.DrawSphere(t.corner.position, cornerRadius);    
+            Gizmos.DrawSphere(t.corner.position, cornerRadius);
         }
     }
 }

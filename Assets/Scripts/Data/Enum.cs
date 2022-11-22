@@ -1,8 +1,4 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.UI;
-
-namespace Data
+﻿namespace Data
 {
     public class CustomEnum
     {
@@ -109,7 +105,7 @@ namespace Data
             NONE,
             FULL
         }
-        
+
         public enum Swipe
         {
             Left,

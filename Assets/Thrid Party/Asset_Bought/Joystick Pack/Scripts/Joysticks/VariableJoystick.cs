@@ -60,4 +60,4 @@ public class VariableJoystick : Joystick
     }
 }
 
-public enum JoystickType { Fixed, Floating, Dynamic }
+public enum JoystickType { Dynamic, Fixed, Floating }
