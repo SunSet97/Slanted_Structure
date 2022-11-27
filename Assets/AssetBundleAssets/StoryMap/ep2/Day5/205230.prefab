@@ -273,6 +273,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5812378544764230101}
   - component: {fileID: 4467277639508027484}
+  - component: {fileID: 1312751790160051615}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -312,24 +313,43 @@ MonoBehaviour:
   dialogueData:
     dialogues: []
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  taskDataDebug: []
   color: 0
   interactionMethod: 3
   outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
+  outline: {fileID: 1312751790160051615}
   isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
   isLoopDialogue: 0
+--- !u!114 &1312751790160051615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4300699877613144010}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 8
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &4398956748753103539
 GameObject:
   m_ObjectHideFlags: 0
@@ -524,6 +544,7 @@ MonoBehaviour:
   positionSetting: {fileID: 5086918325192144251}
   isJoystickInputUse: 0
   isJoystickNone: 1
+  joystickType: 0
   forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &5086918323900167047
 GameObject:
@@ -605,17 +626,17 @@ MonoBehaviour:
   startPoint: {fileID: 3380666450121870122}
   destPoint: {fileID: 48485071564805786}
   throwCans:
-  - power: 10
-    plusY: 0.484
+  - power: 3.8
+    plusY: 0.5
     resultType: 0
-  - power: 10
-    plusY: 0.508
+  - power: 3.5
+    plusY: 0.55
     resultType: 1
-  - power: 10
-    plusY: 0.489
+  - power: 4.1
+    plusY: 0.6
     resultType: 2
-  - power: 10
-    plusY: 0.518
+  - power: 5
+    plusY: 0.5
     resultType: 3
   playCam:
     camDis: {x: 0, y: 0, z: 0}
@@ -1077,10 +1098,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segments: 360
   noteSpeed: 0.1
-  radius: 0
   ring: {fileID: 6152074733736607096}
-  nodeRadius: 0
-  line: {fileID: 0}
 --- !u!120 &6785103593810799808
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1119,9 +1137,7 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 1, y: 0, z: 1}
+  m_Positions: []
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -1234,6 +1250,17 @@ PrefabInstance:
       propertyPath: m_TagString
       value: floor
       objectReference: {fileID: 0}
+    - target: {fileID: 2942746347731687783, guid: f8522679e7eb86a43bad69af3e9b33ea,
+        type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2942746347731687783, guid: f8522679e7eb86a43bad69af3e9b33ea,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 9f5652971f566634aa71af12f49c85cf,
+        type: 2}
     - target: {fileID: 3784180125770154756, guid: f8522679e7eb86a43bad69af3e9b33ea,
         type: 3}
       propertyPath: m_Center.y

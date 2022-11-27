@@ -53,8 +53,18 @@ public class PlayGroundManager : MonoBehaviour, IGamePlayable
 
         // DataController.instance.camDis = playCam.camDis;
         // DataController.instance.camRot = playCam.camRot;
-        StartTimingGame();
+        // StartTimingGame();
+        StartCoroutine(StartTestThrow());
         IsPlay = true;
+    }
+
+    IEnumerator StartTestThrow()
+    {
+        while (true)
+        {
+            StartThrowing(ResultState.Bad);
+            yield return new WaitForSeconds(2);
+        }
     }
 
     public void EndPlay()
@@ -98,7 +108,7 @@ public class PlayGroundManager : MonoBehaviour, IGamePlayable
         can.transform.position = startPoint.position;
 
         int index = Array.FindIndex(throwCans, item => item.resultType == type);
-
+        
         Vector3 canDir = (destPoint.position - startPoint.position).normalized;
         canDir.y = throwCans[index].plusY;
 
