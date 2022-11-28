@@ -496,7 +496,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7954799403533903570}
-  - component: {fileID: 2504467905782234336}
   m_Layer: 13
   m_Name: doveGroup2
   m_TagString: obj_interaction
@@ -520,28 +519,6 @@ Transform:
   m_Father: {fileID: 7743296227146635284}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2504467905782234336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 365849169874214269}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9b8dfc49f5b8864bb414b4069d50f36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isTouched: 0
-  outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  offset: {x: 0, y: 0, z: 0}
-  radius: 3
-  mode: 0
-  outline: {fileID: 0}
-  isInteracting: 0
-  mark: {fileID: 3884610950756403009}
-  markOffset: {x: -20, y: 40}
-  isIn: 0
 --- !u!1 &696964731331895009
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,9 +826,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionBenchParent: {fileID: 7087378947693994336}
   doves:
-  - {fileID: 8330934505133155768}
-  - {fileID: 2504467905782234336}
-  - {fileID: 3056747095656372838}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   interactionStudentParent: {fileID: 1854289201056702565}
   interactionCoupleParent: {fileID: 3363331314996271089}
   oldMan: {fileID: 0}
@@ -2024,6 +2001,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3023909716821634382}
   - component: {fileID: 4767468622116236850}
+  - component: {fileID: 5844760810777963918}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -2059,6 +2037,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 5b992a13ca09b9b4b81c2b0899fddb83, type: 3}
+  GamePlayableGame: {fileID: 0}
   dialogueData:
     dialogues:
     - name: "\uB77C\uC6B0"
@@ -2101,25 +2080,43 @@ MonoBehaviour:
       anim_name: Rau
       contents: "\uB0B4\uAC00 \uB3C4\uB451\uC744 \uC7A1\uC544\uC918\uC57C \uACA0\uC5B4\u2026!"
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  taskDataDebug: []
   color: 0
   interactionMethod: 3
-  radius: 5
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
+  outline: {fileID: 5844760810777963918}
   isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
+--- !u!114 &5844760810777963918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3533473470804750918}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 8
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &3588254344651428088
 GameObject:
   m_ObjectHideFlags: 0
@@ -2231,28 +2228,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2634868442022326679
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3667300317044893646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9b8dfc49f5b8864bb414b4069d50f36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isTouched: 0
-  outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  offset: {x: 0, y: 0, z: 0}
-  radius: 3
-  mode: 0
-  outline: {fileID: 0}
-  isInteracting: 0
-  mark: {fileID: 4801221914303015445}
-  markOffset: {x: 0, y: 100}
-  isIn: 0
 --- !u!1 &3825578674794285982
 GameObject:
   m_ObjectHideFlags: 0
@@ -4293,28 +4268,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5601126918284209707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6613588553725384152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9b8dfc49f5b8864bb414b4069d50f36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isTouched: 0
-  outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  offset: {x: 0, y: 0, z: 0}
-  radius: 3
-  mode: 0
-  outline: {fileID: 0}
-  isInteracting: 0
-  mark: {fileID: 7621626781442133458}
-  markOffset: {x: 0, y: 100}
-  isIn: 0
 --- !u!1 &6627734759756794394
 GameObject:
   m_ObjectHideFlags: 0
@@ -4593,6 +4546,7 @@ MonoBehaviour:
   positionSetting: {fileID: 6636765975079231585}
   isJoystickInputUse: 1
   isJoystickNone: 0
+  joystickType: 0
   forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &6636765975987800643
 GameObject:
@@ -4709,18 +4663,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: -1
   jsonFile: {fileID: 0}
+  GamePlayableGame: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  taskDataDebug: []
   color: 0
   interactionMethod: 0
-  radius: 5
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
@@ -4729,7 +4685,6 @@ MonoBehaviour:
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
 --- !u!1 &6813734961563690677
 GameObject:
@@ -5104,7 +5059,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 72147285352258049}
-  - component: {fileID: 3056747095656372838}
   m_Layer: 13
   m_Name: doveGroup3
   m_TagString: obj_interaction
@@ -5128,28 +5082,6 @@ Transform:
   m_Father: {fileID: 7743296227146635284}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3056747095656372838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7366593622352880323}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9b8dfc49f5b8864bb414b4069d50f36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isTouched: 0
-  outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  offset: {x: 0, y: 0, z: 0}
-  radius: 3
-  mode: 0
-  outline: {fileID: 0}
-  isInteracting: 0
-  mark: {fileID: 4069550560318557718}
-  markOffset: {x: 20, y: 40}
-  isIn: 0
 --- !u!1 &7431381750050273201
 GameObject:
   m_ObjectHideFlags: 0
@@ -5300,28 +5232,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8190780214150510627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7871775196922089307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9b8dfc49f5b8864bb414b4069d50f36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isTouched: 0
-  outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  offset: {x: 0, y: 0, z: 0}
-  radius: 3
-  mode: 0
-  outline: {fileID: 0}
-  isInteracting: 0
-  mark: {fileID: 1425408951688775686}
-  markOffset: {x: 0, y: 100}
-  isIn: 0
 --- !u!1 &7894386558207448313
 GameObject:
   m_ObjectHideFlags: 0
@@ -5360,28 +5270,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3044291929209963146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7983774708660326366}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9b8dfc49f5b8864bb414b4069d50f36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isTouched: 0
-  outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  offset: {x: 0, y: 0, z: 0}
-  radius: 3
-  mode: 0
-  outline: {fileID: 0}
-  isInteracting: 0
-  mark: {fileID: 4793294024031318076}
-  markOffset: {x: 0, y: 100}
-  isIn: 0
 --- !u!1 &8095960088097226050
 GameObject:
   m_ObjectHideFlags: 0
@@ -6034,7 +5922,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8188712866740197841}
-  - component: {fileID: 8330934505133155768}
   m_Layer: 13
   m_Name: doveGroup1
   m_TagString: obj_interaction
@@ -6057,28 +5944,6 @@ Transform:
   m_Father: {fileID: 7743296227146635284}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8330934505133155768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8836656222554300183}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9b8dfc49f5b8864bb414b4069d50f36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isTouched: 0
-  outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  offset: {x: 0, y: 0, z: 0}
-  radius: 3
-  mode: 0
-  outline: {fileID: 0}
-  isInteracting: 0
-  mark: {fileID: 8293264241624574583}
-  markOffset: {x: 0, y: 40}
-  isIn: 0
 --- !u!1 &9061244268504622581
 GameObject:
   m_ObjectHideFlags: 0
@@ -6165,7 +6030,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4923721508663810395}
-  - component: {fileID: 9185987892544205263}
   m_Layer: 0
   m_Name: NPCManager
   m_TagString: Untagged
@@ -6189,22 +6053,6 @@ Transform:
   m_Father: {fileID: 7377226997098355410}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9185987892544205263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9157657217985511543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2833a54900e9164d87f030195bba5e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  character: {fileID: 0}
-  interactableDistance: 2
-  NPCArray: []
-  NPCInteractComponentList: []
 --- !u!1001 &107154103631246718
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7480,12 +7328,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4681ec4fd359d9749b16847ff9cc4ae1, type: 3}
---- !u!1 &3667300317044893646 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2702246162957042726, guid: 4681ec4fd359d9749b16847ff9cc4ae1,
-    type: 3}
-  m_PrefabInstance: {fileID: 1685631195206181864}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &342141551460586973 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1430762911086769717, guid: 4681ec4fd359d9749b16847ff9cc4ae1,
@@ -13275,12 +13117,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4681ec4fd359d9749b16847ff9cc4ae1, type: 3}
---- !u!1 &7871775196922089307 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2702246162957042726, guid: 4681ec4fd359d9749b16847ff9cc4ae1,
-    type: 3}
-  m_PrefabInstance: {fileID: 5241740560795044733}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6585793231837166920 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1430762911086769717, guid: 4681ec4fd359d9749b16847ff9cc4ae1,
@@ -13521,12 +13357,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4681ec4fd359d9749b16847ff9cc4ae1, type: 3}
---- !u!1 &7983774708660326366 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2702246162957042726, guid: 4681ec4fd359d9749b16847ff9cc4ae1,
-    type: 3}
-  m_PrefabInstance: {fileID: 5425815406122486776}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6383651350758342093 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1430762911086769717, guid: 4681ec4fd359d9749b16847ff9cc4ae1,
@@ -19271,15 +19101,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecbf24d003c22ad4a90d020c85199e64, type: 3}
---- !u!1 &6725725274633343978 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2763333424109298985, guid: ecbf24d003c22ad4a90d020c85199e64,
-    type: 3}
-  m_PrefabInstance: {fileID: 8867524562361562819}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7714044217486860793 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1153498486963525434, guid: ecbf24d003c22ad4a90d020c85199e64,
+    type: 3}
+  m_PrefabInstance: {fileID: 8867524562361562819}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6725725274633343978 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2763333424109298985, guid: ecbf24d003c22ad4a90d020c85199e64,
     type: 3}
   m_PrefabInstance: {fileID: 8867524562361562819}
   m_PrefabAsset: {fileID: 0}
@@ -19893,12 +19723,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4681ec4fd359d9749b16847ff9cc4ae1, type: 3}
---- !u!1 &6613588553725384152 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2702246162957042726, guid: 4681ec4fd359d9749b16847ff9cc4ae1,
-    type: 3}
-  m_PrefabInstance: {fileID: 9099629900483236350}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7895784757486872523 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1430762911086769717, guid: 4681ec4fd359d9749b16847ff9cc4ae1,

@@ -149,7 +149,7 @@ public class MiniGameManager : MonoBehaviour
 
     private void SetDataController()
     {   // 카메라 설정
-        DataController.instance.camDis = new Vector3(0,1.3f,-2.5f);
+        DataController.instance.camInfo.camDis = new Vector3(0,1.3f,-2.5f);
     }
 
     private void SetPickPocket()
@@ -222,13 +222,13 @@ public class MiniGameManager : MonoBehaviour
     {
         if (isStopping)//isStopping이 참일 때만 활성화.
         {
-            JoystickController.instance.joyStick.gameObject.SetActive(false); // 조이스틱 없애기
+            JoystickController.instance.joystick.gameObject.SetActive(false); // 조이스틱 없애기
             float tempAcceleration = acceleration;
             //float tempSpeed = rauSpeed;
             rauSpeed = 0;
             acceleration = 0;
             yield return new WaitForSeconds(time);
-            JoystickController.instance.joyStick.gameObject.SetActive(true); // 조이스틱 생기게
+            JoystickController.instance.joystick.gameObject.SetActive(true); // 조이스틱 생기게
             rauSpeed = initialRauSpeed; // 장애물과 충돌하면, 라우 스피트는 다시 초기화!
             acceleration = tempAcceleration; // 장애물과 충돌하면, 라우 가속도 다시 초기화!
             //rau.isCollisionObstacle = false;

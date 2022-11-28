@@ -292,7 +292,7 @@ public class SpeatAbility : MonoBehaviour
     {
         if (!isPassingHor && !isPassingVerUp && !isPassingVerDown && isAbility)
         {
-            var joyStick = JoystickController.instance.joyStick;
+            var joyStick = JoystickController.instance.joystick;
             if (joyStick.Horizontal < -0.7f && Vector3.Distance(cenPos, wallFwdFace.point)< 0.5f)
             {
                 speat.gameObject.layer = 9; //벽을 통과

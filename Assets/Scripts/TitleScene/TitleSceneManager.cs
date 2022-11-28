@@ -16,15 +16,9 @@ public class TitleSceneManager : MonoBehaviour
     [SerializeField] private GameObject diaryPanel;
     
     [SerializeField] private Transform diarySaveParent;
-    // private SaveData[] saveItems;
     
     void Start()
     {
-        // Debug.Log("하이");
-        // var ttestSaveData = SaveManager.GetSaveData();
-        // ttestSaveData.mapCode = "001010";
-        // ttestSaveData.scenario = "몰라용";
-        // SaveManager.Save(0);
         newStartButton.onClick.AddListener(() =>
         {
             SceneLoader.Instance.LoadScene("Ingame_set");
@@ -32,6 +26,7 @@ public class TitleSceneManager : MonoBehaviour
             SceneLoader.Instance.AddListener(() =>
             {
                 DataController.instance.GameStart(mapCode);
+                SceneLoader.Instance.RemoveAllListener();
             });
         });
         
@@ -44,19 +39,29 @@ public class TitleSceneManager : MonoBehaviour
         {
             diaryPanel.SetActive(false);
         });
-        // saveItems = new SaveData[diarySaveParent.childCount];
         for (var idx = 0; idx < diarySaveParent.childCount; idx++)
         {
             if (SaveManager.Load(idx, out SaveData saveData))
             {
-                var button = diarySaveParent.GetComponentInChildren<Button>();
+                var button = diarySaveParent.GetChild(idx).GetComponentInChildren<Button>();
                 button.onClick.AddListener(() =>
                 {
-                    SaveManager.SetSaveData(saveData);
                     SceneLoader.Instance.LoadScene("Ingame_set");
+                    SceneLoader.Instance.AddListener(() =>
+                    {
+                        DataController.instance.GameStart(mapCode);
+                        SceneLoader.Instance.RemoveAllListener();
+                    });
                 });
-                var text = diarySaveParent.GetComponentInChildren<Text>();
+                var text = diarySaveParent.GetChild(idx).GetComponentInChildren<Text>();
                 text.text = idx + "번입니다" + "\n" + saveData.mapCode;
+                Debug.Log(text.text);
+            }
+            else
+            {
+                saveData = new SaveData();
+                saveData.mapCode = "임시";
+                SaveManager.Save(idx, saveData);
             }
         }
     }

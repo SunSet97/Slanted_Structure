@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Linq;
-using System.Security.Cryptography;
 using Play;
 using UnityEngine;
 using UnityEngine.UI;
 using static Data.CustomEnum;
+
 public class SpeatTutorialBackstreetManager : MonoBehaviour, IGamePlayable
 {
     public bool IsPlay { get; set; } = false;

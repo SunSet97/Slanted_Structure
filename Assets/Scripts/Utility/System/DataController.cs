@@ -1,89 +1,73 @@
 ﻿using UnityEngine;
-using System.IO;
 using System;
 using CommonScript;
 using Data;
-using Utility.Save;
+using UnityEngine.Events;
 using static Data.CustomEnum;
 
 public class DataController : MonoBehaviour
 {
-    public bool[] isExistdata = new bool[3];
-
-    [Header("조이스틱")]
-    [SerializeField] private JoystickController joystickController;
+    private static DataController _instance;
+    
+    public static DataController instance => _instance;
 
     [Header("캐릭터")]
     private CharacterManager mainChar;
-    private CharacterManager rau;
-    private CharacterManager oun;
-    private CharacterManager speat;
-    private CharacterManager speat_Adult;
-    private CharacterManager speat_Child;
-    private CharacterManager speat_Adolescene;
-
+    [SerializeField] private CharacterManager rau;
+    [SerializeField] private CharacterManager oun;
+    [SerializeField] private CharacterManager speat;
+    [SerializeField] private CharacterManager speat_Adult;
+    [SerializeField] private CharacterManager speat_Child;
+    [SerializeField] private CharacterManager speat_Adolescene;
+    
+    [NonSerialized] public Camera cam;
     [Header("카메라 경계값")]
-    public Camera cam;
-    public float min_x;
-    public float max_x;
-    public float min_y;
-    public float max_y;
-    public Vector3 camDis;
-    public Vector3 camRot;
+    public CamInfo camInfo;
     /// <summary>
     /// 디버깅용
     /// </summary>
-    public float orthgraphic_Size;
+    public float camOrthgraphicSize;
 
     [Header("맵")]
-    public MapData[] storymaps;
+    [NonSerialized] public MapData[] storymaps;
     public Transform mapGenerate;
-    public MapData currentMap;
+    [NonSerialized] public MapData currentMap;
     public string mapCode;
 
     private AssetBundle _mapDB;
     private AssetBundle _materialDB;
     [NonSerialized]
     public AssetBundle dialogueDB;
-    #region 싱글톤
-    //인스턴스화
-    private static DataController _instance;
-    public static DataController instance
-    {
-        get => _instance;
-    }
-
-    public delegate void OnLoadMap();
-
-    private OnLoadMap onLoadMap;
+    
+    private UnityAction onLoadMap;
+    
     private void Awake()
     {
-        _instance = this;
-        DontDestroyOnLoad(gameObject);
+        if (!_instance)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
-    #endregion
 
     private void Init()
     {
-        //초기화
-        speat = GameObject.Find("Speat").GetComponent<CharacterManager>();
-        oun = GameObject.Find("Oun").GetComponent<CharacterManager>();
-        rau = GameObject.Find("Rau").GetComponent<CharacterManager>();
-        speat_Adolescene = GameObject.Find("Speat_Adolescene").GetComponent<CharacterManager>();
-        speat_Adult = GameObject.Find("Speat_Adult").GetComponent<CharacterManager>();
-        speat_Child = GameObject.Find("Speat_Child").GetComponent<CharacterManager>();
-        
+        cam = Camera.main;
         speat.Init();
         oun.Init();
         rau.Init();
         speat_Adolescene.Init();
         speat_Adult.Init();
         speat_Child.Init();
-        cam = Camera.main;
     }
 
     public void GameStart(string mapcode)
     {
+        Debug.Log("게임 시작");
         Init();
         mapCode = "000000";
         ChangeMap(mapcode);
@@ -225,7 +209,7 @@ public class DataController : MonoBehaviour
         Debug.Log("실행");
     }
 
-    public void AddOnLoadMap(OnLoadMap onLoadMap)
+    public void AddOnLoadMap(UnityAction onLoadMap)
     {
         this.onLoadMap += onLoadMap;
     }
@@ -240,8 +224,8 @@ public class DataController : MonoBehaviour
         speat_Child.PickUpCharacter();
 
         //카메라 위치와 회전
-        camDis = currentMap.camDis;
-        camRot = currentMap.camRot;
+        camInfo.camDis = currentMap.camDis;
+        camInfo.camRot = currentMap.camRot;
 
         // 해당되는 캐릭터 초기화
         speat.InitializeCharacter();
@@ -296,12 +280,12 @@ public class DataController : MonoBehaviour
         }
 
         //조이스틱 초기화
-        JoystickController.instance.InitSaveLoad();
+        JoystickController.instance.Init(currentMap.joystickType);
         JoystickController.instance.InitializeJoyStick(!currentMap.isJoystickNone);
         
 
         // CameraMoving 컨트롤
-        var cameraMoving = cam.GetComponent<Camera_Moving>();
+        var cameraMoving = cam.GetComponent<CameraMoving>();
 
         cameraMoving.Initialize();
 
@@ -315,7 +299,7 @@ public class DataController : MonoBehaviour
         cam.orthographic = currentMap.isOrthographic;
         if (currentMap.isOrthographic)
         {
-            orthgraphic_Size = currentMap.orthographicSize;
+            camOrthgraphicSize = currentMap.orthographicSize;
         }
 
         // 조작 가능한 상태로 변경 (중력 적용)

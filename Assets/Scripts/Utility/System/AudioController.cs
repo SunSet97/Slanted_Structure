@@ -2,18 +2,33 @@
 
 public class AudioController : MonoBehaviour
 {
-    public static AudioController instance { get; private set; }
+    private static AudioController _instance;
+    public static AudioController instance
+    {
+        get
+        {
+            if (!_instance)
+            {
+                var obj = FindObjectOfType<AudioController>();
+                if (obj)
+                {
+                    _instance = obj;
+                }
+                else
+                {
+                    _instance = Resources.Load<AudioController>("AudioController");   
+                }
+                DontDestroyOnLoad(_instance);
+            }
+            return _instance;
+        }
+    }
 
     [SerializeField]
     private AudioSource bgmSource;
     [SerializeField]
     private AudioSource sfxSource;
 
-    void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-        instance = this;
-    }
     public void PlayBgm(AudioClip audioClip)
     {
         if (audioClip == null)

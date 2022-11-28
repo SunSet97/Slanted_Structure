@@ -13,7 +13,7 @@ public class Waypoint : MonoBehaviour
         Left
     }
 
-    [Header("#Map Setting")] private Transform character; // auto setting
+    [Header("#Map Setting")] private Transform character;
     [Tooltip("웨이 포인트의 전진 방향을 설정해주세요.")] public MoveDirection moveDirSet; // 웨이포인트 이동방향 세팅용, 코드에서 건들리지 마세요
     internal MoveDirection movingDir; // 이전에 이동 입력한 방향
     internal MoveDirection outMoveDir; // 체크 포인트에서 밖으로 나갈때 오른쪽으로 가는지 왼쪽으로 가는지
@@ -27,8 +27,6 @@ public class Waypoint : MonoBehaviour
     private Transform nearestPoint; // 최단 포인트
 
     public Transform checkedWaypoint; //check된 포인트
-    // public bool isInit = false; // check된 포인트에 처음 접한것 판단
-    //public bool isCheck = false;
 
     // Right인 경우 fwd으로 Left인 경우 bwd으로 이동
 
@@ -42,10 +40,8 @@ public class Waypoint : MonoBehaviour
 
     void Update()
     {
-        // Edit / Play mode에서 업데이트
         EditSettingUpdate();
 
-        // Play mode에서만 업데이트
         if (Application.isPlaying)
         {
             PlaySettingUpdate();
@@ -105,7 +101,11 @@ public class Waypoint : MonoBehaviour
     // 캐릭터가 waypoint를 지나가면 체크
     private void WaypointCheck()
     {
-        if (waypoints.Count == 0) return;
+        if (waypoints.Count == 0)
+        {
+            return;
+        }
+        
         if (waypoints.Count == 1)
         {
             nearestPoint = waypoints[0];
@@ -114,7 +114,10 @@ public class Waypoint : MonoBehaviour
         }
 
         if (checkedWaypoint == null)
+        {
             checkedWaypoint = waypoints[0]; // 캐릭터와 waypoint의 거리가 check 가능한게 없으면 1번째 포인트를 check해줌
+        }
+
         currentIndex = waypoints.FindIndex(item => item == checkedWaypoint); // 현재 check된 포인트의 인덱스 반환
         nearestPoint = waypoints[currentIndex];
         float minDist =
@@ -153,7 +156,9 @@ public class Waypoint : MonoBehaviour
 
 
         if (DistanceIgnoreY(character.position, nearestPoint.position) <= checkingDist)
-            checkedWaypoint = nearestPoint; // 캐릭터와 waypoint의 거리가 check 가능한 거리가 되면 해당 포인트를 check해줌
+        {
+            checkedWaypoint = nearestPoint; // 캐릭터와 waypoint의 거리가 check 가능한 거리가 되면 해당 포인트를 check해줌   
+        }
     }
 
     public float DistanceIgnoreY(Vector3 vec1, Vector3 vec2)
@@ -183,7 +188,7 @@ public class Waypoint : MonoBehaviour
     // 입력 방향 세팅
     private void JoystickInput()
     {
-        float joystickInput = JoystickController.instance.joyStick.Horizontal; // 한 방향 입력은 수평값만 받음
+        float joystickInput = JoystickController.instance.joystick.Horizontal; // 한 방향 입력은 수평값만 받음
 
         if (Mathf.Approximately(joystickInput, 0f))
         {
@@ -191,7 +196,7 @@ public class Waypoint : MonoBehaviour
             return;
         }
 
-        if (JoystickController.instance.joyStick.gameObject.activeSelf && waypoints.Count > 0 &&
+        if (JoystickController.instance.joystick.gameObject.activeSelf && waypoints.Count > 0 &&
             DataController.instance.GetCharacter(Character.Main).IsMove)
         {
             int fwdIndex, bwdIndex;
@@ -261,7 +266,7 @@ public class Waypoint : MonoBehaviour
             Vector2 changedDir = new Vector2(moveDir.x, moveDir.z).normalized;
 
             JoystickController.instance.inputJump =
-                JoystickController.instance.joyStick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
+                JoystickController.instance.joystick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
             JoystickController.instance.inputDirection = changedDir; // 조정된 입력 방향 설정
             JoystickController.instance.inputDegree = Mathf.Abs(joystickInput); // 조정된 입력 방향으로 크기 계산
 
@@ -274,7 +279,6 @@ public class Waypoint : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        // 각각의 포인트 표시(체크는 녹색, 이외 적색)
         for (int i = 0; i < waypoints.Count; i++)
         {
             if (checkedWaypoint == waypoints[i])
@@ -297,7 +301,6 @@ public class Waypoint : MonoBehaviour
             }
         }
 
-        // 가장 가까운 포인트 표시
         if (nearestPoint != null)
         {
             Gizmos.color = Color.blue * 0.7f;

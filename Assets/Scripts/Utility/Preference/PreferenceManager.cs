@@ -3,6 +3,11 @@ using UnityEngine.UI;
 
 public class PreferenceManager : MonoBehaviour
 {
+    private enum PreferencePanelType
+    {
+        Audio, Info
+    }
+    
     [SerializeField] private Button preferenceButton;
     [SerializeField] private Button exitButton;
     
@@ -20,7 +25,7 @@ public class PreferenceManager : MonoBehaviour
     
     [Header("사운드 패널")]
     [Space(10)]
-    [SerializeField] private Slider slider;
+    [SerializeField] private Slider soundSlider;
     [SerializeField] private Button vibeToggle;
     
     [SerializeField] private Image mute;
@@ -33,11 +38,12 @@ public class PreferenceManager : MonoBehaviour
     [SerializeField] private Sprite vibeToggleOnSprite;
     [SerializeField] private Sprite vibeToggleOffSprite;
 
-    
+    private PreferencePanelType preferencePanelType;
     void Start()
     {
         preferenceButton.onClick.AddListener(() =>
         {
+            UpdatePanelFocus(PreferencePanelType.Audio);
             preferencePanel.SetActive(true);
         });
         
@@ -48,15 +54,11 @@ public class PreferenceManager : MonoBehaviour
         
         soundButton.onClick.AddListener(() =>
         {
-            soundPanel.SetActive(true);
-            infoPanel.SetActive(false);
-            UpdateButtonFocus(soundButton);
+            UpdatePanelFocus(PreferencePanelType.Audio);
         });
         infoButton.onClick.AddListener(() =>
         {
-            soundPanel.SetActive(false);
-            infoPanel.SetActive(true);
-            UpdateButtonFocus(infoButton);
+            UpdatePanelFocus(PreferencePanelType.Info);
         });
         
         vibeToggle.onClick.AddListener(() =>
@@ -75,7 +77,7 @@ public class PreferenceManager : MonoBehaviour
             }
         });
         
-        slider.onValueChanged.AddListener((value =>
+        soundSlider.onValueChanged.AddListener(value =>
         {
             if (Mathf.Approximately(value, 0))
             {
@@ -85,12 +87,11 @@ public class PreferenceManager : MonoBehaviour
             {
                 mute.sprite = muteOnSprite;
             }
-        }));
-
-        UpdateButtonFocus(soundButton);
+        });
+        UpdateUI();
     }
 
-    void UpdateButtonFocus(Button button)
+    private void UpdatePanelFocus(PreferencePanelType preferencePanelType)
     {
         for (var i = 0; i < focusTransform.childCount; i++)
         {
@@ -98,7 +99,47 @@ public class PreferenceManager : MonoBehaviour
             focusTransform.GetChild(i).SetParent(backgroundTransform);   
         }
 
-        button.interactable = false;
-        button.transform.SetParent(focusTransform);
+        Button button = null;
+        if (preferencePanelType == PreferencePanelType.Audio)
+        {
+            button = soundButton;
+            soundPanel.SetActive(true);
+            infoPanel.SetActive(false);
+        }
+        else if (preferencePanelType == PreferencePanelType.Info)
+        {
+            button = infoButton;
+            infoPanel.SetActive(true);
+            soundPanel.SetActive(false);
+        }
+
+        if (button != null)
+        {
+            button.interactable = false;
+            button.transform.SetParent(focusTransform);
+        }
+    }
+
+    private void UpdateUI()
+    {
+        if (vibeToggle.image.sprite == vibeToggleOnSprite)
+        {
+            vibeToggle.image.sprite = vibeToggleOnSprite;
+            vibe.sprite = vibeOnSprite;
+        }
+        else
+        {
+            vibeToggle.image.sprite = vibeToggleOffSprite;
+            vibe.sprite = vibeOffSprite;
+        }
+
+        if (Mathf.Approximately(soundSlider.value, 0))
+        {
+            mute.sprite = muteOffSprite;
+        }
+        else
+        {
+            mute.sprite = muteOnSprite;
+        }
     }
 }

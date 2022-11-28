@@ -30,18 +30,18 @@ namespace Utility.Save
 #endif
         }
         
-        public static SaveData GetSaveData()
-        {
-            return _saveData;
-        }
+        // public static SaveData GetSaveData()
+        // {
+        //     return _saveData;
+        // }
+        //
+        //
+        // public static void SetSaveData(SaveData saveData)
+        // {
+        //     _saveData = saveData;
+        // }
 
-
-        public static void SetSaveData(SaveData saveData)
-        {
-            _saveData = saveData;
-        }
-
-        public static void Save(int idx)
+        public static void Save(int idx, SaveData saveData)
         {
             _idx = idx;
             RijndaelManaged rijn = new RijndaelManaged();
@@ -54,7 +54,7 @@ namespace Utility.Save
                 {
                     using (Stream cryptoStream = new CryptoStream(fileStream, encryptor, CryptoStreamMode.Write))
                     {
-                        new BinaryFormatter().Serialize(cryptoStream, _saveData);
+                        new BinaryFormatter().Serialize(cryptoStream, saveData);
                     }
 
                     fileStream.Close();
