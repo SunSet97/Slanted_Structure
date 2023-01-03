@@ -135,6 +135,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2950935438617211143}
   - component: {fileID: 4935334905155174166}
+  - component: {fileID: 7170833689775692782}
   m_Layer: 5
   m_Name: Speat Tutorial Officetel
   m_TagString: Untagged
@@ -184,6 +185,18 @@ MonoBehaviour:
   isPassingHor: 0
   isPassingVerUp: 0
   isPassingVerDown: 0
+--- !u!225 &7170833689775692782
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2038639325761473504}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2148563954227612181
 GameObject:
   m_ObjectHideFlags: 0
@@ -1278,6 +1291,7 @@ MonoBehaviour:
   positionSetting: {fileID: 3907199436726552317}
   isJoystickInputUse: 1
   isJoystickNone: 0
+  joystickType: 0
   forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!114 &8748941776874350044
 MonoBehaviour:
@@ -1358,6 +1372,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 3
   jsonFile: {fileID: 4900000, guid: 840a343b111da4a4aa109c30eef7d635, type: 3}
+  GamePlayableGame: {fileID: 0}
   dialogueData:
     dialogues:
     - name: ???
@@ -1382,8 +1397,9 @@ MonoBehaviour:
         \uD1B5\uACFC\uD560 \uC218 \uC788\uACE0, \uBB38 \uB4A4\uB85C \uC228\uC744 \uC218
         \uC788\uC2B5\uB2C8\uB2E4. ??\uC758 \uD0C8\uCD9C\uC744 \uB3C4\uC640\uC8FC\uC138\uC694."
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   taskEndActions:
   - eventType: 4
     clearBox: {fileID: 0}
@@ -1409,30 +1425,15 @@ MonoBehaviour:
         isPlay: 1
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug:
-  - tasks:
-    - name: 
-      taskContentType: 9
-      nextFile: 
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: "\uC2A4\uD54F\uB300\uD6541"
-      taskContentType: 2
-      nextFile: dialogue_ep0/002011
-      order: 1
-      condition: 
-      increaseVar: 
-    taskIndex: 0
-    taskOrder: 1
-    isContinue: 1
+  taskDataDebug: []
   color: 0
+  outline: {fileID: 0}
+  useOutline: 0
   interactionMethod: 3
   outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
   isViewChange: 0
   timelines: []
   cinematics: []
@@ -1515,7 +1516,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deb16415df8b5d448bc731ea043c967d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTalking: 0
   pimpGuestMoving:
   - {fileID: 4276517811549876808}
   - {fileID: 7228687594958272198}
@@ -2345,6 +2345,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5560371719280803211}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &9198345538693743362 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3642706306734751369, guid: 71358b296c7d1654b96e059a14296a65,
+    type: 3}
+  m_PrefabInstance: {fileID: 5560371719280803211}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8835441874088604197 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4014856868390604718, guid: 71358b296c7d1654b96e059a14296a65,
@@ -2393,9 +2399,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e50a90a1969bf4d40b51a335e0ad78f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &9198345538693743362 stripped
+--- !u!1 &4032028695875341558 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 3642706306734751369, guid: 71358b296c7d1654b96e059a14296a65,
+  m_CorrespondingSourceObject: {fileID: 8853738364512825725, guid: 71358b296c7d1654b96e059a14296a65,
     type: 3}
   m_PrefabInstance: {fileID: 5560371719280803211}
   m_PrefabAsset: {fileID: 0}
@@ -2411,12 +2417,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e50a90a1969bf4d40b51a335e0ad78f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &4032028695875341558 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8853738364512825725, guid: 71358b296c7d1654b96e059a14296a65,
-    type: 3}
-  m_PrefabInstance: {fileID: 5560371719280803211}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8815696594576017299 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3998578294555359768, guid: 71358b296c7d1654b96e059a14296a65,

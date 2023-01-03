@@ -366,7 +366,7 @@ public class MapData : MonoBehaviour
 
     #region Input 설정
 
-    [Header("조이스틱 인풋 사용 유무, 조이스틱 존재 유무가 아님")]
+    [Header("조이스틱 인풋 사용 유무")]
     public bool isJoystickInputUse;
 
     [Header("조이스틱 존재 유무")] public bool isJoystickNone;

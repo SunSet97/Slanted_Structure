@@ -126,7 +126,6 @@ public class DialogueController : MonoBehaviour
 
     public void UpdateWord()
     {
-        Debug.Log(dialogueData.dialogues);
         int dialogueLen = dialogueData.dialogues.Length;
         // 대화가 끝나면 선택지 부를 지 여부결정
         if (dialogueIdx >= dialogueLen)
@@ -153,7 +152,6 @@ public class DialogueController : MonoBehaviour
                 dialogueEndAction();
                 dialogueEndAction = null;
             }
-            Debug.Log("너냐");
             dialogueData.dialogues = Array.Empty<Dialogue>();
             if (taskData != null)
             {
