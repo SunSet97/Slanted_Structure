@@ -44,7 +44,7 @@ public class JoystickController : MonoBehaviour
 
     public void Init(JoystickType joystickType)
     {
-        Debug.Log("조이스틱 초기화");
+        Debug.Log("조이스틱 초기화 - " + joystickType);
         isAlreadySave = false;
         if (joystick)
         {

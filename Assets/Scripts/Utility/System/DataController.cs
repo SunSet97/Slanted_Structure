@@ -34,10 +34,11 @@ public class DataController : MonoBehaviour
     [NonSerialized] public MapData currentMap;
     public string mapCode;
 
+    public CharData charData;
+    
     private AssetBundle _mapDB;
     private AssetBundle _materialDB;
-    [NonSerialized]
-    public AssetBundle dialogueDB;
+    internal AssetBundle dialogueDB;
     
     private UnityAction onLoadMap;
     
@@ -324,6 +325,4 @@ public class DataController : MonoBehaviour
         int[] likable = {charData.selfEstm, charData.intimacy_spRau, charData.intimacy_ounRau};
         return likable;
     }
-    
-    public CharData charData;
 }

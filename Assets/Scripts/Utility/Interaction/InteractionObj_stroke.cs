@@ -54,6 +54,8 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
 
 
     [Header("아웃라인 색 설정")] public OutlineColor color;
+    public Outline outline;
+    [SerializeField] private bool useOutline;
 
     [Header("인터렉션 오브젝트 터치 유무 감지 기능 사용할건지 말건지")]
     public InteractionMethod interactionMethod;
@@ -64,8 +66,6 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
     public Vector2 markOffset = Vector2.zero;
 
     [Header("느낌표 사용할 때 체크")] public bool useExclamationMark = false;
-    
-    public Outline outline;
 
     [Header("카메라 뷰")] public bool isViewChange = false;
 
@@ -125,28 +125,31 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                 exclamationMark.SetActive(false); // 느낌표 끄기
             }
         }
-        
-        if (TryGetComponent(out Outline t))
+
+        if (useOutline)
         {
-            outline = t;
-        }
-        else
-        {
-            outline = gameObject.AddComponent<Outline>();
-        }
+            if (TryGetComponent(out Outline t))
+            {
+                outline = t;
+            }
+            else
+            {
+                outline = gameObject.AddComponent<Outline>();
+            }
             
-        outline.OutlineMode = Outline.Mode.OutlineAll;
-        outline.OutlineWidth = 8f; // 아웃라인 두께 설정
-        outline.enabled = false; // 우선 outline 끄기
-        // 아웃라인 색깔 설정
-        if (color == OutlineColor.red) outline.OutlineColor = Color.red;
-        else if (color == OutlineColor.magenta) outline.OutlineColor = Color.magenta;
-        else if (color == OutlineColor.yellow) outline.OutlineColor = Color.yellow;
-        else if (color == OutlineColor.green) outline.OutlineColor = Color.green;
-        else if (color == OutlineColor.blue) outline.OutlineColor = Color.blue;
-        else if (color == OutlineColor.grey) outline.OutlineColor = Color.grey;
-        else if (color == OutlineColor.black) outline.OutlineColor = Color.black;
-        else if (color == OutlineColor.white) outline.OutlineColor = Color.white;
+            outline.OutlineMode = Outline.Mode.OutlineAll;
+            outline.OutlineWidth = 8f; // 아웃라인 두께 설정
+            outline.enabled = false; // 우선 outline 끄기
+            // 아웃라인 색깔 설정
+            if (color == OutlineColor.red) outline.OutlineColor = Color.red;
+            else if (color == OutlineColor.magenta) outline.OutlineColor = Color.magenta;
+            else if (color == OutlineColor.yellow) outline.OutlineColor = Color.yellow;
+            else if (color == OutlineColor.green) outline.OutlineColor = Color.green;
+            else if (color == OutlineColor.blue) outline.OutlineColor = Color.blue;
+            else if (color == OutlineColor.grey) outline.OutlineColor = Color.grey;
+            else if (color == OutlineColor.black) outline.OutlineColor = Color.black;
+            else if (color == OutlineColor.white) outline.OutlineColor = Color.white;   
+        }
     }
 
     /// <summary>
@@ -377,6 +380,11 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
 
     void OnDrawGizmos()
     {
+        if (useOutline)
+        {
+            return;
+        }
+
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, outlineRadius);
     }

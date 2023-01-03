@@ -113,7 +113,7 @@ public class CameraTracker : MonoBehaviour
     }
 
 
-    int GetDir(CornerCameraSetting corner)
+    private int GetDir(CornerCameraSetting corner)
     {
         var character = DataController.instance.GetCharacter(Character.Main)
             .transform;
@@ -171,7 +171,15 @@ public class CameraTracker : MonoBehaviour
             GameObject temp;
             if (cornerCameraSettings[i].front == null)
             {
-                temp = new GameObject(waypoint.waypoints[index].name + " front");
+                var tempTrans = waypoint.waypoints[index].Find(cornerCameraSettings[i].corner.name + " front");
+                if (!tempTrans)
+                {
+                    temp = new GameObject(waypoint.waypoints[index].gameObject.name + " front");
+                }
+                else
+                {
+                    temp = tempTrans.gameObject;
+                }
                 cornerCameraSettings[i].front = Instantiate(temp).transform;
                 cornerCameraSettings[i].front.parent = waypoint.waypoints[index];
                 cornerCameraSettings[i].front.position = cornerPos + frontDir;
@@ -179,7 +187,15 @@ public class CameraTracker : MonoBehaviour
 
             if (cornerCameraSettings[i].back == null)
             {
-                temp = new GameObject(waypoint.waypoints[index].name + " back");
+                var tempTrans = waypoint.waypoints[index].Find(cornerCameraSettings[i].corner.name + " back");
+                if (!tempTrans)
+                {
+                    temp = new GameObject(waypoint.waypoints[index].gameObject.name + " back");
+                }
+                else
+                {
+                    temp = tempTrans.gameObject;
+                }
                 cornerCameraSettings[i].back = Instantiate(temp).transform;
                 cornerCameraSettings[i].back.parent = waypoint.waypoints[index];
                 cornerCameraSettings[i].back.position = cornerPos + backDir;

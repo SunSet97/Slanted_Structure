@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class PreferenceManager : MonoBehaviour
+public class TitlePreferenceController : MonoBehaviour
 {
     private enum PreferencePanelType
     {
@@ -75,6 +75,8 @@ public class PreferenceManager : MonoBehaviour
                 vibeToggle.image.sprite = vibeToggleOnSprite;
                 vibe.sprite = vibeOnSprite;
             }
+
+            SavePreference();
         });
         
         soundSlider.onValueChanged.AddListener(value =>
@@ -87,8 +89,11 @@ public class PreferenceManager : MonoBehaviour
             {
                 mute.sprite = muteOnSprite;
             }
+
+            SavePreference();
         });
-        UpdateUI();
+        
+        LoadPreference();
     }
 
     private void UpdatePanelFocus(PreferencePanelType preferencePanelType)
@@ -141,5 +146,39 @@ public class PreferenceManager : MonoBehaviour
         {
             mute.sprite = muteOnSprite;
         }
+    }
+    
+    private void SavePreference()
+    {
+        string vibeState;
+        if (vibeToggle.image.sprite == vibeToggleOnSprite)
+        {
+            vibeState = "on";
+        }
+        else
+        {
+            vibeState = "off";
+        }
+        AudioLoader.SavePreference(vibeState, soundSlider.value);
+    }
+    
+    private void LoadPreference()
+    {
+        if (AudioLoader.LoadPreference(out float soundValue, out bool isVibe))
+        {
+            if (isVibe)
+            {
+                vibeToggle.image.sprite = vibeToggleOnSprite;
+                vibe.sprite = vibeOnSprite;
+            }
+            else
+            {
+                vibeToggle.image.sprite = vibeToggleOffSprite;
+                vibe.sprite = vibeOffSprite;
+            }
+            soundSlider.value = soundValue;
+        }
+
+        UpdateUI();
     }
 }
