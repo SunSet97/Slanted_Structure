@@ -511,20 +511,27 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                 }
                 case TaskContentType.FadeOut:
                 {
-                    currentTaskData.isContinue = false;
-                    FadeEffect.instance.FadeOut();
-                    yield return new WaitUntil(() => FadeEffect.instance.isFadeOver);
-                    FadeEffect.instance.isFadeOver = false;
-                    currentTaskData.isContinue = true;
+                    if (!FadeEffect.instance.isFaded)
+                    {
+                        currentTaskData.isContinue = false;
+                        FadeEffect.instance.FadeOut();
+                        yield return new WaitUntil(() => FadeEffect.instance.isFadeOver);
+                        FadeEffect.instance.isFadeOver = false;
+                        currentTaskData.isContinue = true;
+                    }
                     break;
                 }
                 case TaskContentType.FadeIn:
                 {
-                    currentTaskData.isContinue = false;
-                    FadeEffect.instance.FadeIn();
-                    yield return new WaitUntil(() => FadeEffect.instance.isFadeOver);
-                    FadeEffect.instance.isFadeOver = false;
-                    currentTaskData.isContinue = true;
+                    if (!FadeEffect.instance.isFaded)
+                    {
+                        currentTaskData.isContinue = false;
+                        FadeEffect.instance.FadeIn();
+                        yield return new WaitUntil(() => FadeEffect.instance.isFadeOver);
+                        FadeEffect.instance.isFadeOver = false;
+                        currentTaskData.isContinue = true;
+                    }
+
                     break;
                 }
                 case TaskContentType.THEEND:

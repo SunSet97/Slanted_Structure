@@ -14,6 +14,8 @@ public class FadeEffect : MonoBehaviour
     public bool isFadeOut;
 
     internal UnityEvent onFadeOver;
+
+    public bool isFaded;
     private void Awake()
     {
         instance = this;
@@ -26,7 +28,7 @@ public class FadeEffect : MonoBehaviour
         isFadeOver = false;
         StartCoroutine(FadeInCoroutine());
     }
-    
+
     private IEnumerator FadeInCoroutine()
     {
         JoystickController.instance.StopSaveLoadJoyStick(true);
@@ -53,17 +55,23 @@ public class FadeEffect : MonoBehaviour
         isFadeOver = true;
         JoystickController.instance.StopSaveLoadJoyStick(false);
         fadePanel.gameObject.SetActive(false);
+        isFaded = true;
 
         onFadeOver?.Invoke();
         onFadeOver?.RemoveAllListeners();
+        isFaded = false;
     }
 
     public void FadeOut()
     {
-        isFadeOver = false;
-        isFadeOut = true;
-        StartCoroutine(FadeOutCoroutine());
+        if (!isFadeOut)
+        {
+            isFadeOver = false;
+            isFadeOut = true;
+            StartCoroutine(FadeOutCoroutine());
+        }
     }
+
     private IEnumerator FadeOutCoroutine()
     {
         JoystickController.instance.StopSaveLoadJoyStick(true);
@@ -90,7 +98,9 @@ public class FadeEffect : MonoBehaviour
         isFadeOver = true;
         JoystickController.instance.StopSaveLoadJoyStick(false);
         
+        isFaded = true;
         onFadeOver?.Invoke();
         onFadeOver?.RemoveAllListeners();
+        isFaded = false;
     }
 }
