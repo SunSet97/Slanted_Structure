@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Data.CustomEnum;
 
+[Serializable]
 [ExecuteInEditMode]
 public class MapData : MonoBehaviour
 {

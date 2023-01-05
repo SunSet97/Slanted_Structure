@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Utility.Json;
 using static Data.CustomEnum;
 
 public class DialogueController : MonoBehaviour
