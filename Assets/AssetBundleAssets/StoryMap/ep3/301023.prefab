@@ -445,6 +445,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 4b90c9cfa0c117f46a18482001d1bee7, type: 3}
+  GamePlayableGame: {fileID: 0}
   dialogueData:
     dialogues:
     - name: 
@@ -586,8 +587,9 @@ MonoBehaviour:
       anim_name: Speat
       contents: "\uC5B4\uB838\uC744 \uB54C \uC800\uB294\u2026.."
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   taskEndActions:
   - eventType: 1
     clearBox: {fileID: 2969624124137231978}
@@ -599,19 +601,19 @@ MonoBehaviour:
       playableObjs: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  taskDataDebug: []
   color: 0
+  outline: {fileID: 0}
+  useOutline: 0
   interactionMethod: 3
-  radius: 5
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
   isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
 --- !u!1 &8036454116046862127
 GameObject:
@@ -749,11 +751,14 @@ MonoBehaviour:
     \uB0AE\uC744 \uC2DC: \uC9C0\uB098\uAC00\uB294 \uB098\uADF8\uB124 \uC5D4\uB529\n-\uAD00\uACC4
     \uAD1C\uCC2E\uC744 \uC2DC: \uC624\uC6B4\uC774 \uB3C4\uC6C0\uC744 \uC90C"
   mapCode: 301023
+  location: "\uB3D9\uC544\uB9AC\uBC29"
+  date: DAY08
+  time: 17:00
   method: 1
   nextMapcode: 201020
   map: {fileID: 7414616737578747697, guid: 075f88a49c3ebd14dbb49a94a5aeb4b0, type: 3}
   ui: {fileID: 0}
-  SkyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
+  skyboxSetting: {fileID: 0}
   isOrthographic: 1
   orthographicSize: 5
   cameraBound: {fileID: 0}
@@ -785,6 +790,7 @@ MonoBehaviour:
     type: 3}
   isJoystickInputUse: 0
   isJoystickNone: 0
+  joystickType: 0
   forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &8036454117521233986
 GameObject:

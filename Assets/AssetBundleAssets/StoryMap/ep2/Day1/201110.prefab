@@ -110,11 +110,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scriptDesription: "Episode2 \uB77C\uC6B0_\uC2A4\uD54F_\uD584\uBC84\uAC70\uAC00\uAC8C"
   mapCode: 201110
+  location: "\uD584\uBC84\uAC70 \uAC00\uAC8C"
+  date: DAY02
+  time: 10:30
   method: 1
   nextMapcode: 201120
   map: {fileID: 2145268177353536149}
   ui: {fileID: 0}
-  SkyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
+  skyboxSetting: {fileID: 0}
   isOrthographic: 1
   orthographicSize: 5
   cameraBound: {fileID: 0}
@@ -256,12 +259,13 @@ MonoBehaviour:
     interactionEvents: []
   taskDataDebug: []
   color: 2
+  outline: {fileID: 0}
+  useOutline: 0
   interactionMethod: 0
   outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
   isViewChange: 0
   timelines:
   - {fileID: 0}
@@ -313,6 +317,24 @@ CapsuleCollider:
   m_Height: 2.4718118
   m_Direction: 1
   m_Center: {x: 0.0036443472, y: 1.021202, z: 0.050888028}
+--- !u!114 &5094666217415788784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3451227557676281854}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  outlineWidth: 8
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!114 &5840225068213764482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,36 +388,19 @@ MonoBehaviour:
     interactionEvents: []
   taskDataDebug: []
   color: 2
+  outline: {fileID: 5094666217415788784}
+  useOutline: 0
   interactionMethod: 0
   outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 5094666217415788784}
   isViewChange: 0
   timelines:
   - {fileID: 0}
   cinematics: []
   inGames: []
   isLoopDialogue: 0
---- !u!114 &5094666217415788784
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3451227557676281854}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  outlineWidth: 8
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!65 &1295089234569999056
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -472,12 +477,13 @@ MonoBehaviour:
     interactionEvents: []
   taskDataDebug: []
   color: 0
+  outline: {fileID: 8956513718955266536}
+  useOutline: 0
   interactionMethod: 3
   outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 8956513718955266536}
   isViewChange: 0
   timelines: []
   cinematics: []

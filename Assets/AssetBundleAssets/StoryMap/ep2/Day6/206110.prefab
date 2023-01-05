@@ -45,6 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 4d66200b4826bb2478b3c8c47929d27a, type: 3}
+  GamePlayableGame: {fileID: 0}
   dialogueData:
     dialogues:
     - name: 
@@ -93,8 +94,9 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   taskEndActions:
   - eventType: 1
     clearBox: {fileID: 8558591690487152949}
@@ -106,19 +108,19 @@ MonoBehaviour:
       playableObjs: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  taskDataDebug: []
   color: 0
+  outline: {fileID: 0}
+  useOutline: 0
   interactionMethod: 3
-  radius: 5
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
   isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
 --- !u!1 &2354003764107072981
 GameObject:
@@ -475,11 +477,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scriptDesription: "Episode2-Day6_\uC624\uC6B4_\uD559\uAD50 \uC55E"
   mapCode: 206110
+  location: "\uD559\uAD50 \uC55E"
+  date: DAY07
+  time: 11:00
   method: 1
   nextMapcode: 206120
   map: {fileID: 5356483322133288294}
   ui: {fileID: 0}
-  SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
+  skyboxSetting: {fileID: 0}
   isOrthographic: 0
   orthographicSize: 0
   cameraBound: {fileID: 0}
@@ -505,6 +510,7 @@ MonoBehaviour:
   positionSetting: {fileID: 6005943890414339464}
   isJoystickInputUse: 0
   isJoystickNone: 1
+  joystickType: 0
   forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &8702950728014630964
 GameObject:

@@ -292,7 +292,7 @@ public class DataController : MonoBehaviour
 
 
         //스카이박스 세팅
-        RenderSettings.skybox = currentMap.SkyboxSetting;
+        RenderSettings.skybox = currentMap.skyboxSetting;
         DynamicGI.UpdateEnvironment();
         //현재 맵에서 카메라 세팅
 

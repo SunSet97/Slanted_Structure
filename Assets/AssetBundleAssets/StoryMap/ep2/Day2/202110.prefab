@@ -45,28 +45,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: -1
   jsonFile: {fileID: 0}
+  GamePlayableGame: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  taskDataDebug: []
   color: 0
+  outline: {fileID: 0}
+  useOutline: 0
   interactionMethod: 2
-  radius: 5
+  outlineRadius: 5
   exclamationMark: {fileID: 8586199308916290736}
   markOffset: {x: 0, y: 0.5}
   useExclamationMark: 0
-  outline: {fileID: 0}
   isViewChange: 0
   timelines:
   - {fileID: 0}
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
 --- !u!1 &3533473470804750918
 GameObject:
@@ -113,6 +115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 5b992a13ca09b9b4b81c2b0899fddb83, type: 3}
+  GamePlayableGame: {fileID: 0}
   dialogueData:
     dialogues:
     - name: "\uB77C\uC6B0"
@@ -155,24 +158,25 @@ MonoBehaviour:
       anim_name: Rau
       contents: "\uB0B4\uAC00 \uB3C4\uB451\uC744 \uC7A1\uC544\uC918\uC57C \uACA0\uC5B4\u2026!"
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  taskDataDebug: []
   color: 0
+  outline: {fileID: 0}
+  useOutline: 0
   interactionMethod: 3
-  radius: 5
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
   isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
 --- !u!1 &6036227679186992963
 GameObject:
@@ -376,11 +380,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scriptDesription: "Episode2 \uB77C\uC6B0_\uC624\uC6B4_\uAD11\uC7A5"
   mapCode: 202110
+  location: "\uB3C4\uC2EC \uC18D \uAD11\uC7A5"
+  date: DAY03
+  time: 10:30
   method: 1
   nextMapcode: 202111
   map: {fileID: 2740671252619167947}
   ui: {fileID: 5755865751236496247}
-  SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
+  skyboxSetting: {fileID: 0}
   isOrthographic: 0
   orthographicSize: 5
   cameraBound: {fileID: 0}
@@ -406,6 +413,7 @@ MonoBehaviour:
   positionSetting: {fileID: 6636765975079231585}
   isJoystickInputUse: 1
   isJoystickNone: 0
+  joystickType: 0
   forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &6636765975987800643
 GameObject:
