@@ -45,6 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: ac6003c4b19f4dc4c9c287651bb9f408, type: 3}
+  GamePlayableGame: {fileID: 0}
   dialogueData:
     dialogues:
     - name: "\uB77C\uC6B0"
@@ -112,8 +113,9 @@ MonoBehaviour:
       anim_name: Rau
       contents: "\uD558\uD558\uD558, \uB18D\uB2F4\uC774\uC5D0\uC694 \uB18D\uB2F4!"
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   taskEndActions:
   - eventType: 1
     clearBox: {fileID: 4435358238560067568}
@@ -125,19 +127,19 @@ MonoBehaviour:
       playableObjs: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  taskDataDebug: []
   color: 0
+  outline: {fileID: 0}
+  useOutline: 0
   interactionMethod: 2
-  radius: 1
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
   isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
 --- !u!1 &3483254528495035205
 GameObject:
@@ -214,43 +216,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 5
   jsonFile: {fileID: 4900000, guid: 56180d1b793089f479d7683cd0e2b2dc, type: 3}
+  GamePlayableGame: {fileID: 0}
   dialogueData:
     dialogues: []
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug:
-  - tasks:
-    - name: "\uB77C\uC6B0\uB300\uD6541"
-      taskContentType: 0
-      nextFile: dialogue_ep2/205121
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: 
-      taskContentType: 0
-      nextFile: Coin Game
-      order: 1
-      condition: dialogue_ep2/205121_success
-      increaseVar: dialogue_ep2/205121_fail
-    taskIndex: 0
-    taskOrder: 1
-    isContinue: 1
+  taskDataDebug: []
   color: 0
+  outline: {fileID: 0}
+  useOutline: 0
   interactionMethod: 3
-  radius: 3
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
   isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
 --- !u!1 &4435358238560067470
 GameObject:
@@ -424,11 +412,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scriptDesription: "Episode2 \uB77C\uC6B0_\uC624\uC6B4_\uB3D9\uC804\uBD84\uC218\uAC8C\uC784"
   mapCode: 205121
+  location: "\uBD84\uC218\uB300"
+  date: DAY06
+  time: 20:00
   method: 2
   nextMapcode: 205130
   map: {fileID: 4435358239208619454}
   ui: {fileID: 0}
-  SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
+  skyboxSetting: {fileID: 0}
   isOrthographic: 1
   orthographicSize: 4.5
   cameraBound: {fileID: 0}
@@ -454,6 +445,7 @@ MonoBehaviour:
   positionSetting: {fileID: 4435358239852833641}
   isJoystickInputUse: 0
   isJoystickNone: 1
+  joystickType: 0
   forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &4435358240455183052
 GameObject:

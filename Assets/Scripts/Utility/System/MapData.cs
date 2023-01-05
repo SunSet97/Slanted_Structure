@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Data.CustomEnum;
 
+[Serializable]
 [ExecuteInEditMode]
 public class MapData : MonoBehaviour
 {
@@ -15,10 +16,16 @@ public class MapData : MonoBehaviour
     #endregion
 
     #region 맵 설정
-
-    [Header("#Map Setting")] [Tooltip("맵의 코드이며 변경시 오브젝트의 이름도 같이 변경 됩니다.(코드는 반드시 6자리)")]
+    [Header("#Map Setting")]
+    [Tooltip("맵의 코드이며 변경시 오브젝트의 이름도 같이 변경 됩니다.(코드는 반드시 6자리)")]
     public string mapCode = "000000"; // auto setting
 
+    public string location;
+    public string date;
+    public string time;
+    
+    [Space(15)]
+    
     [Tooltip("이 맵의 조이스틱 입력 방식입니다.")] public JoystickInputMethod method; // 맵의 조이스틱 입력 방식
     [Tooltip("클리어시 넘어갈 다음 맵의 맵 코드입니다.")] public string nextMapcode = "000000"; // 클리어시 넘어갈 다음 맵의 코드
 
@@ -28,7 +35,7 @@ public class MapData : MonoBehaviour
     [Tooltip("이 맵의 전용 UI를 넣어주시면 됩니다.")] public RectTransform ui; // 맵 전용 UI
 
     [Tooltip("이 맵의 전용 SkyBox를 넣어주시면 됩니다.")]
-    public Material SkyboxSetting; // 맵 전용 스카이박스
+    public Material skyboxSetting; // 맵 전용 스카이박스
 
     [Tooltip("카메라의 orthographic 뷰를 제어할 수 있습니다.")]
     public bool isOrthographic = false;

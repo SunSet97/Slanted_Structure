@@ -107,6 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 92c9e1143246e4844897187b79816b41, type: 3}
+  GamePlayableGame: {fileID: 0}
   dialogueData:
     dialogues:
     - name: 
@@ -160,8 +161,9 @@ MonoBehaviour:
       contents: "\uADF8\uB807\uAC8C \uBA40\uC9C4 \uC54A\uC544. \uB2E4\uB9CC \uAC00\uB294
         \uAE38\uC774 \uC880 \uD5D8\uD560 \uC218\uB294 \uC788\uC5B4. \uC790 \uB530\uB77C\uC640."
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   taskEndActions:
   - eventType: 1
     clearBox: {fileID: 9107930612388474131}
@@ -173,19 +175,19 @@ MonoBehaviour:
       playableObjs: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  taskDataDebug: []
   color: 0
+  outline: {fileID: 0}
+  useOutline: 0
   interactionMethod: 3
-  radius: 5
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
   isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
 --- !u!1 &3354733514365999497
 GameObject:
@@ -395,11 +397,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scriptDesription: "Episode2-Day4 \uC2A4\uD54F\uC758 \uC9D1"
   mapCode: 206210
+  location: "\uC2A4\uD54F\uC758 \uC790\uCDE8\uBC29"
+  date: DAY07
+  time: 15:00
   method: 1
   nextMapcode: 206220
   map: {fileID: 7106531121665678538}
   ui: {fileID: 0}
-  SkyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
+  skyboxSetting: {fileID: 0}
   isOrthographic: 1
   orthographicSize: 5
   cameraBound: {fileID: 0}
@@ -425,6 +430,7 @@ MonoBehaviour:
   positionSetting: {fileID: 5037974275918713662}
   isJoystickInputUse: 0
   isJoystickNone: 0
+  joystickType: 0
   forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &5037974275918713662
 GameObject:

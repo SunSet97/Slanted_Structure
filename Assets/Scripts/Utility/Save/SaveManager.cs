@@ -19,6 +19,7 @@ namespace Utility.Save
 
         static SaveManager()
         {
+            Debug.Log(Savefilename);
             Init();
         }
         public static void Init()
@@ -60,7 +61,6 @@ namespace Utility.Save
         public static bool Load(int idx, out SaveData saveData)
         {
             _idx = idx;
-            // Debug.Log(Savefilename);
             if (!File.Exists(Savefilename))
             {
                 saveData = null;
@@ -78,6 +78,7 @@ namespace Utility.Save
                     if (fileStream.Length <= 0)
                     {
                         saveData = null;
+                        Debug.Log("Load 오류 발생");
                         return false;
                     }
 
@@ -93,6 +94,21 @@ namespace Utility.Save
             rijn.Clear();
 
             return true;
+        }
+
+        public static void Delete(int idx)
+        {
+            _idx = idx;
+            if (File.Exists(Savefilename))
+            {
+                File.Delete(Savefilename);
+            }
+        }
+
+        public static bool Has(int idx)
+        {
+            _idx = idx;
+            return File.Exists(Savefilename);
         }
     }
 }

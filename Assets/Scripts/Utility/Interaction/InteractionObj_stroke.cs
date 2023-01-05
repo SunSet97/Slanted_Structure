@@ -10,6 +10,7 @@ using UnityEngine.Events;
 using UnityEngine.Playables;
 using UnityEngine.Serialization;
 using UnityEngine.Timeline;
+using Utility.Json;
 using Task = Data.Task;
 using static Data.CustomEnum;
 
@@ -569,7 +570,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                         Debug.LogError("타임라인 세팅 오류");
                     }
 
-                    timeline.Pause();
+                    // timeline.Pause();
                     timeline.Play();
 
                     // Debug.Log(timeline.);

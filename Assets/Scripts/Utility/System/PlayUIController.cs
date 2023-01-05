@@ -19,8 +19,6 @@ public class PlayUIController : MonoBehaviour
     private Button preferenceButton;
     [SerializeField]
     private Button preferenceExitButton;
-    [SerializeField]
-    private Button diaryExitButton;
     
     [Header("사운드 패널")]
     [Space(10)]
@@ -54,6 +52,7 @@ public class PlayUIController : MonoBehaviour
         preferenceButton.onClick.AddListener(() =>
         {
             preferencePanel.SetActive(!preferencePanel.activeSelf);
+            diaryPanel.SetActive(false);
         });
         
         preferenceExitButton.onClick.AddListener(() =>
@@ -63,10 +62,7 @@ public class PlayUIController : MonoBehaviour
         
         diaryButton.onClick.AddListener(() =>
         {
-            diaryPanel.SetActive(!diaryPanel.activeSelf);
-        });
-        diaryExitButton.onClick.AddListener(() =>
-        {
+            preferencePanel.SetActive(false);
             diaryPanel.SetActive(!diaryPanel.activeSelf);
         });
         

@@ -14,5 +14,7 @@ namespace Data
         public int selfEstm;
         public int intimacySpRau;
         public int intimacyOunRau;
+
+        // public MapData mapData;
     }
 }

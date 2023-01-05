@@ -1,27 +1,29 @@
-﻿using System.IO;
+﻿using System.Text;
 using UnityEngine;
-using System.Text;
 
-public class JsontoString
+namespace Utility.Json
 {
-    private class Wrapper<T>
+    public static class JsontoString
     {
-        public T[] wrapper;
-    }
-
-    public static T[] FromJsonArray<T>(string json)
-    {
-        var t = JsonUtility.FromJson<Wrapper<T>>("{\"wrapper\":" + json + "}").wrapper;
-        return t;
-    }
-    public static string ToJsonArray<T>(T[] wrapper)
-    {
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < wrapper.Length - 1; i++)
+        private class Wrapper<T>
         {
-            sb.Append(JsonUtility.ToJson(wrapper[i])).Append(",");
+            public T[] wrapper;
         }
-        sb.Append(JsonUtility.ToJson(wrapper[wrapper.Length - 1])).Append("]");
-        return sb.ToString();
+
+        public static T[] FromJsonArray<T>(string json)
+        {
+            var t = JsonUtility.FromJson<Wrapper<T>>("{\"wrapper\":" + json + "}").wrapper;
+            return t;
+        }
+        public static string ToJsonArray<T>(T[] wrapper)
+        {
+            StringBuilder sb = new StringBuilder("[");
+            for (int i = 0; i < wrapper.Length - 1; i++)
+            {
+                sb.Append(JsonUtility.ToJson(wrapper[i])).Append(",");
+            }
+            sb.Append(JsonUtility.ToJson(wrapper[wrapper.Length - 1])).Append("]");
+            return sb.ToString();
+        }
     }
 }

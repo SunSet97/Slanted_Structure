@@ -5088,11 +5088,14 @@ MonoBehaviour:
   scriptDesription: "\uC624\uC6B4\uC758 \uC9C0\uAC11\uC744 \uBE8F\uC740 \uC18C\uB9E4\uCE58\uAE30
     \uC7A1\uAE30"
   mapCode: 202111
+  location: "\uB3C4\uC2EC \uC18D \uAD11\uC7A5"
+  date: DAY03
+  time: 10:40
   method: 2
   nextMapcode: 202112
   map: {fileID: 5904017121465098054}
   ui: {fileID: 0}
-  SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
+  skyboxSetting: {fileID: 0}
   isOrthographic: 0
   orthographicSize: 0
   cameraBound: {fileID: 0}
@@ -5116,6 +5119,7 @@ MonoBehaviour:
   positionSetting: {fileID: 5904017122754811915}
   isJoystickInputUse: 1
   isJoystickNone: 0
+  joystickType: 0
   forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &5904017122693950161
 GameObject:
@@ -5572,6 +5576,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 097b7681a8e218c45b9d2377e1e9ff8f, type: 3}
+  GamePlayableGame: {fileID: 0}
   dialogueData:
     dialogues:
     - name: 
@@ -5596,24 +5601,25 @@ MonoBehaviour:
       playableObjs:
       - gameObject: {fileID: 4779759114892132419}
         isPlay: 1
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   taskEndActions: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  taskDataDebug: []
   color: 0
+  outline: {fileID: 0}
+  useOutline: 0
   interactionMethod: 3
-  radius: 5
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  outline: {fileID: 0}
   isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
 --- !u!1 &8436066032721928015
 GameObject:
@@ -6442,7 +6448,7 @@ PrefabInstance:
     - target: {fileID: 2575438293834865833, guid: 965313c7e1aebe44a92c3f57c628d128,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2608799762590253680, guid: 965313c7e1aebe44a92c3f57c628d128,
         type: 3}
@@ -6472,7 +6478,7 @@ PrefabInstance:
     - target: {fileID: 4174777004740040734, guid: 965313c7e1aebe44a92c3f57c628d128,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4941723681026256653, guid: 965313c7e1aebe44a92c3f57c628d128,
         type: 3}
