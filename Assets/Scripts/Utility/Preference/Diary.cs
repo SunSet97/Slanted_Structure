@@ -10,7 +10,6 @@ public class Diary : MonoBehaviour
         Save, Load, Delete
     }
     
-
     [SerializeField] private ButtonType defaultButtonType;
     
     [SerializeField] private GameObject diaryPanel;
@@ -20,6 +19,14 @@ public class Diary : MonoBehaviour
     [SerializeField] private Button saveButton;
     [SerializeField] private Button loadButton;
     [SerializeField] private Button deleteButton;
+    
+    [Space(15)]
+    [Header("덮어쓰기")]
+    [SerializeField] private GameObject coverPanel;
+    [SerializeField] private Button coverYesButton;
+    [SerializeField] private Button coverNoButton;
+
+    private int coverIdx;
     
     private RectMask2D saveMask;
     private RectMask2D loadMask;
@@ -50,6 +57,22 @@ public class Diary : MonoBehaviour
         {
             diaryPanel.SetActive(false);
         });
+        
+        coverYesButton.onClick.AddListener(() =>
+        {
+            SaveData saveData = new SaveData();
+            saveData.mapCode = "임시";
+            SaveManager.Save(coverIdx, saveData);
+            Debug.Log(coverIdx + "저장");
+            UpdateDiary();
+            
+            coverPanel.SetActive(false);
+        });
+        
+        coverNoButton.onClick.AddListener(() =>
+        {
+            coverPanel.SetActive(false);
+        });
 
         for (var idx = 0; idx < diarySaveParent.childCount; idx++)
         {
@@ -62,7 +85,8 @@ public class Diary : MonoBehaviour
                 {
                     if (SaveManager.Has(t))
                     {
-                        //다시한번 묻기
+                        coverIdx = t;
+                        coverPanel.SetActive(true);
                     }
                     else
                     {
