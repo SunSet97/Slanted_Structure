@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Playables;
+using Utility.System;
 
 [Serializable]
 public class TimelineDialogueControllerBehaviour : PlayableBehaviour

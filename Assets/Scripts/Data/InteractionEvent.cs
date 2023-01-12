@@ -4,7 +4,7 @@ using Play;
 using UnityEngine;
 
 [Serializable]
-public class InteractionEventMedium
+public class InteractionEvents
 {
     [SerializeField]
     public InteractionEvent[] interactionEvents;
@@ -12,7 +12,7 @@ public class InteractionEventMedium
 [Serializable]
 public class InteractionEvent
 {
-    public enum EventType { NONE, CLEAR, ACTIVE, MOVE, PLAY }
+    public enum EventType { None, Clear, Active, Move, Play, Interactable }
     public EventType eventType;
     [Serializable]
     public struct Act
@@ -25,25 +25,65 @@ public class InteractionEvent
     {
         public Act[] actives;
     }
-    [ConditionalHideInInspector("eventType", EventType.CLEAR)]
+    
+    [Serializable]
+    public struct Interact
+    {
+        public InteractionObj_stroke interactObj;
+        public bool interactable;
+    }
+    [Serializable]
+    public struct InteractList
+    {
+        public Interact[] interacts;
+    }
+    
+    [ConditionalHideInInspector("eventType", EventType.Clear)]
     public CheckMapClear clearBox;
 
-    [ConditionalHideInInspector("eventType", EventType.ACTIVE)]
+    [ConditionalHideInInspector("eventType", EventType.Active)]
     public Active activeObjs;
 
-    [ConditionalHideInInspector("eventType", EventType.MOVE)]
+    [ConditionalHideInInspector("eventType", EventType.Move)]
     public MovableList movables;
         
-    [ConditionalHideInInspector("eventType", EventType.PLAY)]
+    [ConditionalHideInInspector("eventType", EventType.Play)]
     public PlayableList playableList;
 
-    public void ClearEvent()
+    [ConditionalHideInInspector("eventType", EventType.Interactable)]
+    public InteractList interactObjs;
+
+    public void Action()
+    {
+        switch (eventType)
+        {
+            case EventType.Clear:
+                ClearEvent();
+                break;
+            case EventType.Active:
+                ActiveEvent();
+                break;
+            case EventType.Move:
+                MoveEvent();
+                break;
+            case EventType.Play:
+                PlayEvent();
+                break;
+            case EventType.Interactable:
+                InteractEvent();
+                break;
+        }
+    }
+    
+    
+
+    private void ClearEvent()
     {
         Debug.Log($"Clear Event - {clearBox.gameObject}");
         clearBox.Clear();
     }
     
-    public void ActiveEvent()
+    private void ActiveEvent()
     {
         foreach (var t in activeObjs.actives)
         {
@@ -52,7 +92,7 @@ public class InteractionEvent
         }
     }
 
-    public void MoveEvent()
+    private void MoveEvent()
     {
         foreach (MovableObj t in movables.movables)
         {
@@ -61,13 +101,21 @@ public class InteractionEvent
         }
     }
 
-    public void PlayEvent()
+    private void PlayEvent()
     {
         foreach (var t in playableList.playableObjs)
         {
             Debug.Log($"Play Event - {t.gameObject}: {t.isPlay} ");
             t.gameObject.GetComponent<IGamePlayable>().Play();
             // t.gameObject.GetComponent<IPlayable>().IsPlay = t.isPlay;
+        }
+    }
+
+    private void InteractEvent()
+    {
+        foreach (var t in interactObjs.interacts)
+        {
+            t.interactObj.enabled = t.interactable;
         }
     }
 }

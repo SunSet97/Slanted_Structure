@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Utility.System;
 using static Data.CustomEnum;
 
 public class HamburgerStoreManager : MonoBehaviour
