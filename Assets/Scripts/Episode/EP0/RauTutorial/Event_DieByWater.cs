@@ -1,5 +1,6 @@
 ﻿using Data;
 using UnityEngine;
+using Utility.System;
 
 public class Event_DieByWater : MonoBehaviour
 {

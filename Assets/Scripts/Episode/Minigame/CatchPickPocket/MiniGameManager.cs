@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Utility.System;
 using static Data.CustomEnum;
 public class MiniGameManager : MonoBehaviour
 {

@@ -4,7 +4,7 @@ namespace Utility.Interaction
 {
     public class InteractableCollider : MonoBehaviour
     {
-        [SerializeField] private InteractionObj_stroke interactionObjStroke;
+        [SerializeField] private InteractionObject interactionObject;
     
         private void OnTriggerEnter(Collider other)
         {

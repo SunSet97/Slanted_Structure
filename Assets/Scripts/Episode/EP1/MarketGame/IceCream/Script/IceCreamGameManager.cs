@@ -2,6 +2,7 @@
 using Play;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility.System;
 
 public class IceCreamGameManager : MonoBehaviour, IGamePlayable
 {
