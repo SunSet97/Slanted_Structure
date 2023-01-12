@@ -9,13 +9,20 @@ using System;
 public class ConditionalHideInInspectorAttribute : PropertyAttribute
 {
    
-    public string comparedProperty { get; private set; }
-    public object comparedPropertyValue { get; private set; }
+    public string ComparedProperty { get; private set; }
+    public object ComparedPropertyValue { get; private set; }
+    public bool IsNegative { get; private set; }
 
-    public ConditionalHideInInspectorAttribute(string comparedProperty, object comparedPropertyValue)
+    public ConditionalHideInInspectorAttribute(string comparedProperty, object comparedPropertyValue, bool isNegative = false)
     {
-        this.comparedProperty = comparedProperty;
-        this.comparedPropertyValue = comparedPropertyValue;
+        ComparedProperty = comparedProperty;
+        ComparedPropertyValue = comparedPropertyValue;
+        IsNegative = isNegative;
+    }
+    
+    public ConditionalHideInInspectorAttribute(string useExclamationMark)
+    {
+        ComparedProperty = useExclamationMark;
     }
 }
 
@@ -37,13 +44,14 @@ public class Drawer : PropertyDrawer
     }
     private bool CanDraw(SerializedProperty property)
     {
-        var Attribute = (ConditionalHideInInspectorAttribute)attribute;
+        var conditionalAttribute = (ConditionalHideInInspectorAttribute)attribute;
+
 
         // Debug.Log(property.propertyPath);
         // Debug.Log(Attribute.comparedProperty);
         // Debug.Log(Attribute.comparedPropertyValue);
         // Debug.Log(property.propertyPath.Contains("."));
-        string path = property.propertyPath.Contains(".") ? System.IO.Path.ChangeExtension(property.propertyPath, Attribute.comparedProperty) : Attribute.comparedProperty;
+        string path = property.propertyPath.Contains(".") ? System.IO.Path.ChangeExtension(property.propertyPath, conditionalAttribute.ComparedProperty) : conditionalAttribute.ComparedProperty;
 
         var ComparedField = property.serializedObject.FindProperty(path);
         // Debug.Log(ComparedField);
@@ -56,7 +64,7 @@ public class Drawer : PropertyDrawer
                 return true;
             }
 
-            path = System.IO.Path.ChangeExtension(property.propertyPath.Substring(0, LastIndex), Attribute.comparedProperty);
+            path = System.IO.Path.ChangeExtension(property.propertyPath.Substring(0, LastIndex), conditionalAttribute.ComparedProperty);
 
             ComparedField = property.serializedObject.FindProperty(path);
             // Debug.Log(ComparedField);
@@ -69,12 +77,12 @@ public class Drawer : PropertyDrawer
         switch (ComparedField.type)
         {
             case "bool":
-                return ComparedField.boolValue.Equals(Attribute.comparedPropertyValue);
+                return conditionalAttribute.IsNegative ? !ComparedField.boolValue : ComparedField.boolValue;
             case "Enum":
                 {
                     // Debug.Log(ComparedField.intValue);
                     // Debug.Log((int)Attribute.comparedPropertyValue);
-                    if (ComparedField.intValue.Equals((int)Attribute.comparedPropertyValue))
+                    if (conditionalAttribute.IsNegative ? !ComparedField.intValue.Equals((int)conditionalAttribute.ComparedPropertyValue) : ComparedField.intValue.Equals((int)conditionalAttribute.ComparedPropertyValue))
                     {
                         return true;
                     }

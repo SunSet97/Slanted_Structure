@@ -11,6 +11,7 @@ using UnityEngine.Playables;
 using UnityEngine.Serialization;
 using UnityEngine.Timeline;
 using Utility.Json;
+using Utility.System;
 using Task = Data.Task;
 using static Data.CustomEnum;
 
@@ -38,39 +39,43 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
 
     [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
     public InteractionEvent[] dialogueEndAction;
-
     [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
-    public CamInfo dialogueCamera;
+    public InteractionEvents dialogueEndActions;
 
     [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Task)]
-    public InteractionEvent[] taskEndActions;
+    public InteractionEvents taskEndActions;
 
     [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Cinematic)] 
     [SerializeField]
-    public InteractionEventMedium cinematicEndAction;
+    public InteractionEvents cinematicEndAction;
 
-    [ConditionalHideInInspector("InteractionPlayType", InteractionPlayType.Task)] 
-    [Header("디버깅 전용 TaskData")]
-    public List<TaskData> taskDataDebug;
-
-
-    [Header("아웃라인 색 설정")] public OutlineColor color;
-    public Outline outline;
+    [Header("아웃라인 설정")]
     [SerializeField] private bool useOutline;
+    [ConditionalHideInInspector("useOutline")]
+    [SerializeField] private OutlineColor color;
+    [ConditionalHideInInspector("useOutline")]
+    [SerializeField] private Outline outline;
 
-    [Header("인터렉션 오브젝트 터치 유무 감지 기능 사용할건지 말건지")]
+    [Header("인터랙션 방법")]
     public InteractionMethod interactionMethod;
 
-    public int outlineRadius = 5;
+    [ConditionalHideInInspector("interactionMethod", InteractionMethod.No, true)] [SerializeField]
+    private int outlineRadius = 5;
 
-    [Header("#Mark setting")] public GameObject exclamationMark;
+    [Header("#Mark setting")]
+    public bool useExclamationMark;
+    
+    [ConditionalHideInInspector("useExclamationMark")]
+    public GameObject exclamationMark;
+    [ConditionalHideInInspector("useExclamationMark")]
     public Vector2 markOffset = Vector2.zero;
 
-    [Header("느낌표 사용할 때 체크")] public bool useExclamationMark = false;
+    [Header("카메라 뷰")] [SerializeField] private bool isViewChange;
+    [ConditionalHideInInspector("isViewChange")]
+    [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
+    public CamInfo dialogueCamera;
 
-    [Header("카메라 뷰")] public bool isViewChange = false;
-
-    [FormerlySerializedAs("timeline")] [Header("시네마틱")]
+    [Header("시네마틱")]
     public PlayableDirector[] timelines;
 
     public GameObject[] cinematics;
@@ -81,6 +86,9 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
 
     [Header("반복 사용 여부")]
     public bool isLoopDialogue;
+    
+    [Header("디버깅 전용 TaskData")]
+    public List<TaskData> taskDataDebug;
 
     private void PushTask(string jsonString)
     {
@@ -283,22 +291,11 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
 
                 foreach (InteractionEvent endAction in dialogueEndAction)
                 {
-                    switch (endAction.eventType)
-                    {
-                        case InteractionEvent.EventType.CLEAR:
-                            DialogueController.instance.SetDialougueEndAction(() =>
-                                endAction.ClearEvent());
-                            break;
-                        case InteractionEvent.EventType.ACTIVE:
-                            DialogueController.instance.SetDialougueEndAction(() => { endAction.ActiveEvent(); });
-                            break;
-                        case InteractionEvent.EventType.MOVE:
-                            DialogueController.instance.SetDialougueEndAction(() => { endAction.MoveEvent(); });
-                            break;
-                        case InteractionEvent.EventType.PLAY:
-                            DialogueController.instance.SetDialougueEndAction(() => { endAction.PlayEvent(); });
-                            break;
-                    }
+                    DialogueController.instance.SetDialougueEndAction(endAction.Action);
+                }
+                foreach (InteractionEvent endAction in dialogueEndActions.interactionEvents)
+                {
+                    DialogueController.instance.SetDialougueEndAction(endAction.Action);
                 }
 
                 DialogueController.instance.StartConversation(jsonFile.text);
@@ -354,21 +351,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     foreach (var endAction in cinematicEndAction.interactionEvents)
                     {
                         Debug.Log(endAction.eventType);
-                        switch (endAction.eventType)
-                        {
-                            case InteractionEvent.EventType.CLEAR:
-                                endAction.ClearEvent();
-                                break;
-                            case InteractionEvent.EventType.ACTIVE:
-                                endAction.ActiveEvent();
-                                break;
-                            case InteractionEvent.EventType.MOVE:
-                                endAction.MoveEvent();
-                                break;
-                            case InteractionEvent.EventType.PLAY:
-                                endAction.PlayEvent();
-                                break;
-                        }
+                        endAction.Action();
                     }
                 };
             }
@@ -485,23 +468,9 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
                     {
                         Debug.LogError("Task 엑셀 관련 오류");
                     }
-                    foreach (var taskEndAction in taskEndActions)
+                    foreach (var taskEndAction in taskEndActions.interactionEvents)
                     {
-                        switch (taskEndAction.eventType)
-                        {
-                            case InteractionEvent.EventType.CLEAR:
-                                taskEndAction.ClearEvent();
-                                break;
-                            case InteractionEvent.EventType.ACTIVE:
-                                taskEndAction.ActiveEvent();
-                                break;
-                            case InteractionEvent.EventType.MOVE:
-                                taskEndAction.MoveEvent();
-                                break;
-                            case InteractionEvent.EventType.PLAY:
-                                taskEndAction.PlayEvent();
-                                break;
-                        }
+                        taskEndAction.Action();
                     }
 
                     yield break;
@@ -655,23 +624,9 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
             }
             else
             {
-                foreach (var taskEndAction in taskEndActions)
+                foreach (var taskEndAction in taskEndActions.interactionEvents)
                 {
-                    switch (taskEndAction.eventType)
-                    {
-                        case InteractionEvent.EventType.CLEAR:
-                            taskEndAction.ClearEvent();
-                            break;
-                        case InteractionEvent.EventType.ACTIVE:
-                            taskEndAction.ActiveEvent();
-                            break;
-                        case InteractionEvent.EventType.MOVE:
-                            taskEndAction.MoveEvent();
-                            break;
-                        case InteractionEvent.EventType.PLAY:
-                            taskEndAction.PlayEvent();
-                            break;
-                    }
+                    taskEndAction.Action();
                 }
             }
         }
@@ -736,7 +691,7 @@ public class InteractionObj_stroke : MonoBehaviour, IClickable
 
     bool IClickable.IsClickEnable
     {
-        get => interactionMethod == InteractionMethod.Touch && !isTouched;
+        get =>  enabled && interactionMethod == InteractionMethod.Touch && !isTouched;
         set
         {
             if (value)

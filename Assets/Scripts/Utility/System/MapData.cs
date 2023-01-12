@@ -63,7 +63,7 @@ public class MapData : MonoBehaviour
     public Vector3 camRot; // 캐릭터와 카메라와의 거리 
 
     // 초기 세팅 설정
-    void CreateDefaultSetting()
+    private void CreateDefaultSetting()
     {
         GameObject temp = new GameObject(); // 임시 오브젝트 생성
         if (map == null) // 맵 생성 및 이름 설정
@@ -199,8 +199,8 @@ public class MapData : MonoBehaviour
         temp.who = createWho;
         // 시작 위치 설정
         temp.startPosition =
-            Instantiate(instant, positionSetting.transform.position, Quaternion.identity, temp.posSet) as Transform;
-        temp.startPosition.name = createWho.ToString() + " Start Position";
+            Instantiate(instant, positionSetting.transform.position, Quaternion.identity, temp.posSet);
+        temp.startPosition.name = createWho + " Start Position";
         // 클리어 박스 설정
         // temp.clearBox = Instantiate(instant, positionSetting.transform.position, Quaternion.identity, temp.posSet) as Transform;
         // temp.clearBox.name = createWho.ToString() + " Clear Box";
@@ -396,73 +396,6 @@ public class MapData : MonoBehaviour
             mainChar.MoveCharacter(method);
         }
     }
-
-    #endregion
-
-    #region 디버깅용
-
-    [Space(40)]
-    [ContextMenuItem("All Off", "AllOffDebug")]
-    [ContextMenuItem("All On", "AllOnDebug")]
-    [ContextMenuItem("On&Off/Position Setting", "PosOnOffDebug")]
-    [ContextMenuItem("On&Off/UI", "UIOnOffDebug")]
-    [ContextMenuItem("On&Off/Map", "MapOnOffDebug")]
-    [Tooltip("Edit mode에서 편리한 기능을 사용할 수 있습니다.")]
-    [SerializeField]
-    private string forDebuging = "인스펙터의 이름을 우클릭해주세요"; // 디버깅 세팅
-
-    void MapOnOffDebug()
-    {
-        if (map != null) map.SetActive(!map.activeSelf);
-    } // 맵을 키고 끔
-
-    void UIOnOffDebug()
-    {
-        if (ui != null) ui.gameObject.SetActive(!ui.gameObject.activeSelf);
-    } // 맵 전용 UI가 있을 경우 UI 키고 끔
-
-    private bool isOnGizmo = true;
-
-    void PosOnOffDebug()
-    {
-        isOnGizmo = !isOnGizmo;
-    } // 위치 설정 기즈모를 키고 끔
-
-    void AllOnDebug()
-    {
-        map.SetActive(true);
-        positionSetting.SetActive(true);
-        ui.gameObject.SetActive(true);
-        isOnGizmo = true;
-    } // 전부 킴
-
-    void AllOffDebug()
-    {
-        map.SetActive(false);
-        positionSetting.SetActive(false);
-        ui.gameObject.SetActive(false);
-        isOnGizmo = false;
-    } // 전부 끔
-
-    // 캐릭터별 기즈모 생성
-    // private void OnDrawGizmos()
-    // {
-    //     if (isOnGizmo)
-    //     {
-    //         Color[] preset = new Color[6] { Color.red, Color.yellow, Color.blue, Color.red, Color.red, Color.red };
-    //         for (int i = 0; i < positionSets.Count; i++)
-    //         {
-    //             Gizmos.color = preset[(int)positionSets[i].who] * 0.8f;
-    //             Gizmos.DrawCube(positionSets[i].startPosition.position + Vector3.up, new Vector3(0.3f, 0.9f, 0.3f));
-    //             Gizmos.DrawSphere(positionSets[i].startPosition.position + Vector3.up * 0.2f, 0.2f);
-    //         }
-    //
-    //         for (int i = 0; i < clearBoxList.Count; i++)
-    //         {
-    //             Gizmos.DrawCube(clearBoxList[i].gameObject.transform.position, clearBoxList[i].GetComponent<BoxCollider>().size);
-    //         }
-    //     }
-    // }
 
     #endregion
 }

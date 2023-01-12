@@ -3,6 +3,7 @@ using System;
 using CommonScript;
 using Data;
 using UnityEngine.Events;
+using Utility.System;
 using static Data.CustomEnum;
 
 public class DataController : MonoBehaviour
@@ -316,13 +317,13 @@ public class DataController : MonoBehaviour
     public void UpdateLikeable(int[] rauLikeables)
     {
         charData.selfEstm += rauLikeables[0];
-        charData.intimacy_spRau += rauLikeables[1];
-        charData.intimacy_ounRau += rauLikeables[2];
+        charData.intimacySpRau += rauLikeables[1];
+        charData.intimacyOunRau += rauLikeables[2];
     }
 
     public int[] GetLikeable()
     {
-        int[] likable = {charData.selfEstm, charData.intimacy_spRau, charData.intimacy_ounRau};
+        int[] likable = {charData.selfEstm, charData.intimacySpRau, charData.intimacyOunRau};
         return likable;
     }
 }
