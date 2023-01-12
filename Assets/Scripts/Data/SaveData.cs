@@ -15,6 +15,6 @@ namespace Data
         public int intimacySpRau;
         public int intimacyOunRau;
 
-        // public MapData mapData;
+        public DialogueData dialogueData;
     }
 }

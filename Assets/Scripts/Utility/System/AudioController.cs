@@ -1,58 +1,61 @@
 ﻿using UnityEngine;
 
-public class AudioController : MonoBehaviour
+namespace Utility.System
 {
-    private static AudioController _instance;
-    public static AudioController instance
+    public class AudioController : MonoBehaviour
     {
-        get
+        private static AudioController _instance;
+        public static AudioController instance
         {
-            if (!_instance)
+            get
             {
-                var obj = FindObjectOfType<AudioController>();
-                if (obj)
+                if (!_instance)
                 {
-                    _instance = obj;
+                    var obj = FindObjectOfType<AudioController>();
+                    if (obj)
+                    {
+                        _instance = obj;
+                    }
+                    else
+                    {
+                        _instance = Resources.Load<AudioController>("AudioController");   
+                    }
+                    DontDestroyOnLoad(_instance);
                 }
-                else
-                {
-                    _instance = Resources.Load<AudioController>("AudioController");   
-                }
-                DontDestroyOnLoad(_instance);
+                return _instance;
             }
-            return _instance;
         }
-    }
 
-    [SerializeField]
-    private AudioSource bgmSource;
-    [SerializeField]
-    private AudioSource sfxSource;
+        [SerializeField]
+        private AudioSource bgmSource;
+        [SerializeField]
+        private AudioSource sfxSource;
 
-    public void PlayBgm(AudioClip audioClip)
-    {
-        if (audioClip == null)
+        public void PlayBgm(AudioClip audioClip)
+        {
+            if (audioClip == null)
+            {
+                bgmSource.clip = null;
+                bgmSource.Stop();
+                return;
+            }
+        
+            if (!audioClip.Equals(bgmSource.clip))
+            {
+                bgmSource.clip = audioClip;
+                bgmSource.Play();   
+            }
+        }
+
+        public void StopBgm()
         {
             bgmSource.clip = null;
             bgmSource.Stop();
-            return;
         }
-        
-        if (!audioClip.Equals(bgmSource.clip))
-        {
-            bgmSource.clip = audioClip;
-            bgmSource.Play();   
-        }
-    }
-
-    public void StopBgm()
-    {
-        bgmSource.clip = null;
-        bgmSource.Stop();
-    }
     
-    public void PlayOneShot(AudioClip audioClip)
-    {
-        sfxSource.PlayOneShot(audioClip);
+        public void PlayOneShot(AudioClip audioClip)
+        {
+            sfxSource.PlayOneShot(audioClip);
+        }
     }
 }

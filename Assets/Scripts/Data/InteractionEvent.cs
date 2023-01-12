@@ -2,6 +2,8 @@
 using Move;
 using Play;
 using UnityEngine;
+using Utility.Interaction;
+using Utility.Property;
 
 [Serializable]
 public class InteractionEvents
@@ -29,7 +31,7 @@ public class InteractionEvent
     [Serializable]
     public struct Interact
     {
-        public InteractionObj_stroke interactObj;
+        public InteractionObject interactObj;
         public bool interactable;
     }
     [Serializable]

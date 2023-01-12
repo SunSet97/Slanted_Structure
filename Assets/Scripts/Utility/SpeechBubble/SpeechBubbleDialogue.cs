@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using Utility.Property;
+using Utility.System;
 using Random = UnityEngine.Random;
 
 namespace Utility.SpeechBubble

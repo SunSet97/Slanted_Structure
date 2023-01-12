@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utility.Save;
 using Utility.SceneLoader;
+using Utility.System;
 
 public class Diary : MonoBehaviour
 {

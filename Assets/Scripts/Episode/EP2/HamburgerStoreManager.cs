@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Utility.Interaction;
 using Utility.System;
 using static Data.CustomEnum;
 
@@ -11,8 +12,8 @@ public class HamburgerStoreManager : MonoBehaviour
 
     [Range(0, 1f)] public float rauAniSpeed;
 
-    public InteractionObj_stroke partTimeJob;
-    public InteractionObj_stroke sofa;
+    public InteractionObject partTimeJob;
+    public InteractionObject sofa;
 
     void Start()
     {
