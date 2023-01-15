@@ -8,12 +8,12 @@ namespace Utility.Interaction
     
         private void OnTriggerEnter(Collider other)
         {
-        
+            interactionObject.OnEnter();
         }
 
         private void OnTriggerExit(Collider other)
         {
-        
+            interactionObject.OnExit();
         }
     }
 }
