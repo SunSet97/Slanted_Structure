@@ -6,7 +6,9 @@ using Utility.System;
 
 public class FadeEffect : MonoBehaviour
 {
-    public static FadeEffect instance { get; private set; }
+    private static FadeEffect _instance;
+
+    public static FadeEffect instance => _instance;
 
     public Image fadePanel;
     public GraphicRaycaster graphicRaycaster;
@@ -19,7 +21,15 @@ public class FadeEffect : MonoBehaviour
     public bool isFaded;
     private void Awake()
     {
-        instance = this;
+        if (_instance)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            _instance = this;
+            Destroy(_instance);
+        }
         onFadeOver = new UnityEvent();
     }
 
