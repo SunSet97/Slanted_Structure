@@ -6,8 +6,6 @@ namespace Utility.System
     public class CanvasControl : MonoBehaviour
     {
         public Transform mapUI;
-    
-        public bool isInConverstation;
 
         private static CanvasControl _instance;
 
@@ -15,13 +13,14 @@ namespace Utility.System
 
         private void Awake()
         {
-            if (_instance == null)
+            if (_instance)
             {
-                _instance = this;   
+                Destroy(gameObject);
             }
             else
             {
-                Destroy(this);
+                _instance = this;
+                DontDestroyOnLoad(_instance);   
             }
         }
 
