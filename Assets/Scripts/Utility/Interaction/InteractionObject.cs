@@ -62,14 +62,6 @@ namespace Utility.Interaction
         [Header("인터랙션 방법")]
         public InteractionMethod interactionMethod;
 
-        [Header("#Mark setting")]
-        public bool useExclamationMark;
-    
-        [ConditionalHideInInspector("useExclamationMark")]
-        public GameObject exclamationMark;
-        [ConditionalHideInInspector("useExclamationMark")]
-        public Vector2 markOffset = Vector2.zero;
-
         [Header("카메라 뷰")] [SerializeField] private bool isViewChange;
         [ConditionalHideInInspector("isViewChange")]
         [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
@@ -86,7 +78,9 @@ namespace Utility.Interaction
     
         [Header("디버깅 전용 TaskData")]
         public List<TaskData> taskDataDebug;
-        
+
+        [NonSerialized]
+        public GameObject ExclamationMark;
         private bool isInteracted;
 
         private void PushTask(string jsonString)
@@ -104,6 +98,7 @@ namespace Utility.Interaction
         {
             if (Application.isPlaying && interactionMethod == InteractionMethod.OnChangeMap)
             {
+                Debug.Log("하이요");
                 DataController.instance.AddOnLoadMap(StartInteraction);
             }
         }
@@ -127,11 +122,6 @@ namespace Utility.Interaction
             else
             {
                 gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
-
-                if (useExclamationMark && exclamationMark.gameObject != null)
-                {
-                    exclamationMark.SetActive(false); // 느낌표 끄기
-                }
             }
 
             if (useOutline)
@@ -269,7 +259,7 @@ namespace Utility.Interaction
             }
             else if (interactionPlayType == InteractionPlayType.Dialogue)
             {
-                if (CanvasControl.instance.isInConverstation)
+                if (DialogueController.instance.IsTalking)
                 {
                     return;
                 }
@@ -568,7 +558,7 @@ namespace Utility.Interaction
                         // }
                         yield return new WaitUntil(() =>
                             timeline.state == PlayState.Paused && !timeline.playableGraph.IsValid() &&
-                            !CanvasControl.instance.isInConverstation);
+                            !DialogueController.instance.IsTalking);
                         // while (true)
                         // {
                         //     if (timeline.duration - timeline.time < 0.04f)
@@ -718,9 +708,9 @@ namespace Utility.Interaction
                 outline.enabled = isActive;
             }
             
-            if (useExclamationMark)
+            if (ExclamationMark)
             {
-                exclamationMark.SetActive(isActive);
+                ExclamationMark.SetActive(isActive);
             }
             
             if (interactionMethod == InteractionMethod.Touch)
@@ -768,19 +758,6 @@ namespace Utility.Interaction
             ObjectClicker.instance.UpdateClick(this, false);
         }
 
-
-        private void Update()
-        {
-            if (Application.isPlaying)
-            {
-                if (useExclamationMark && exclamationMark.activeSelf)
-                {
-                    exclamationMark.transform.position =
-                        (Vector3) markOffset + DataController.instance.cam.WorldToScreenPoint(transform.position);
-                }
-            }
-        }
-    
         public void OnEnter()
         {
             if (((IClickable) this).IsClickEnable)
