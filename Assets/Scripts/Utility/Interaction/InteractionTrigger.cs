@@ -7,7 +7,7 @@ namespace Utility.Interaction
     {
         private bool isActivated;
 
-        protected override void OnTriggerEnter(Collider other)
+        public void OnTriggerEnter(Collider other)
         {
             if (isActivated || interactionMethod != CustomEnum.InteractionMethod.Trigger)
             {

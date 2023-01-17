@@ -56,20 +56,11 @@ namespace Utility.Interaction
         [SerializeField] private OutlineColor color;
         [ConditionalHideInInspector("useOutline")]
         [SerializeField] private Outline outline;
-
+        [ConditionalHideInInspector("useOutline")] 
+        [SerializeField] private int outlineRadius = 5;
+        
         [Header("인터랙션 방법")]
         public InteractionMethod interactionMethod;
-
-        [ConditionalHideInInspector("interactionMethod", InteractionMethod.No, true)] [SerializeField]
-        private int outlineRadius = 5;
-
-        [Header("#Mark setting")]
-        public bool useExclamationMark;
-    
-        [ConditionalHideInInspector("useExclamationMark")]
-        public GameObject exclamationMark;
-        [ConditionalHideInInspector("useExclamationMark")]
-        public Vector2 markOffset = Vector2.zero;
 
         [Header("카메라 뷰")] [SerializeField] private bool isViewChange;
         [ConditionalHideInInspector("isViewChange")]
@@ -82,14 +73,15 @@ namespace Utility.Interaction
         public GameObject[] cinematics;
         public GameObject[] inGames;
 
-        private bool isTouched;
-        private RaycastHit hit;
-
         [Header("반복 사용 여부")]
         public bool isLoopDialogue;
     
         [Header("디버깅 전용 TaskData")]
         public List<TaskData> taskDataDebug;
+
+        [NonSerialized]
+        public GameObject ExclamationMark;
+        private bool isInteracted;
 
         private void PushTask(string jsonString)
         {
@@ -102,10 +94,11 @@ namespace Utility.Interaction
             DialogueController.instance.taskData = taskData;
         }
 
-        void Awake()
+        private void Awake()
         {
             if (Application.isPlaying && interactionMethod == InteractionMethod.OnChangeMap)
             {
+                Debug.Log("하이요");
                 DataController.instance.AddOnLoadMap(StartInteraction);
             }
         }
@@ -129,11 +122,6 @@ namespace Utility.Interaction
             else
             {
                 gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
-
-                if (useExclamationMark && exclamationMark.gameObject != null)
-                {
-                    exclamationMark.SetActive(false); // 느낌표 끄기
-                }
             }
 
             if (useOutline)
@@ -184,7 +172,7 @@ namespace Utility.Interaction
         /// 선택지를 눌렀을 때 부르는 함수, Task에서는 실행이 된다
         /// </summary>
         /// <param name="index">선택지 번호, 1번부터 시작</param>
-        void ChoiceEvent(int index)
+        private void ChoiceEvent(int index)
         {
             Debug.Log(jsonTask);
             Debug.Log(jsonTask.Count);
@@ -263,9 +251,7 @@ namespace Utility.Interaction
                 TaskStart();
             }
 
-            //3가지 1)애니메이션 2)대사 3)카메라 변환(확대라든지) 4)맵포탈
-            if (interactionPlayType == InteractionPlayType.Animation &&
-                gameObject.GetComponent<Animator>() != null) //애니메이터가 존재한다면 
+            if (interactionPlayType == InteractionPlayType.Animation && gameObject.GetComponent<Animator>())
             {
                 //세팅된 애니메이터 시작
                 gameObject.GetComponent<Animator>().Play("Start", 0);
@@ -273,7 +259,7 @@ namespace Utility.Interaction
             }
             else if (interactionPlayType == InteractionPlayType.Dialogue)
             {
-                if (CanvasControl.instance.isInConverstation)
+                if (DialogueController.instance.IsTalking)
                 {
                     return;
                 }
@@ -302,7 +288,9 @@ namespace Utility.Interaction
                     DialogueController.instance.StartConversation(jsonFile.text);
                 }
                 else
+                {
                     Debug.LogError("json 파일 없는 오류");
+                }
             }
             else if (interactionPlayType == InteractionPlayType.Potal &&
                      gameObject.TryGetComponent(out CheckMapClear mapClear))
@@ -363,9 +351,9 @@ namespace Utility.Interaction
             }
         }
 
-        void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
-            if (useOutline)
+            if (!useOutline)
             {
                 return;
             }
@@ -461,7 +449,7 @@ namespace Utility.Interaction
                     case TaskContentType.TaskReset:
                         if (interactionMethod == InteractionMethod.Touch)
                         {
-                            isTouched = false;
+                            isInteracted = false;
                         }
                     
                         jsonTask.Pop();
@@ -570,7 +558,7 @@ namespace Utility.Interaction
                         // }
                         yield return new WaitUntil(() =>
                             timeline.state == PlayState.Paused && !timeline.playableGraph.IsValid() &&
-                            !CanvasControl.instance.isInConverstation);
+                            !DialogueController.instance.IsTalking);
                         // while (true)
                         // {
                         //     if (timeline.duration - timeline.time < 0.04f)
@@ -692,13 +680,13 @@ namespace Utility.Interaction
 
         bool IClickable.IsClickEnable
         {
-            get =>  enabled && interactionMethod == InteractionMethod.Touch && !isTouched;
+            get =>  enabled && interactionMethod == InteractionMethod.Touch && !isInteracted;
             set
             {
                 if (value)
                 {
                     interactionMethod = InteractionMethod.Touch;
-                    isTouched = false;
+                    isInteracted = false;
                 }
                 else
                 {
@@ -709,12 +697,22 @@ namespace Utility.Interaction
 
         bool IClickable.IsClicked
         {
-            get => isTouched;
-            set => isTouched = value;
+            get => isInteracted;
+            set => isInteracted = value;
         }
 
         void IClickable.ActiveObjectClicker(bool isActive)
         {
+            if (outline)
+            {
+                outline.enabled = isActive;
+            }
+            
+            if (ExclamationMark)
+            {
+                ExclamationMark.SetActive(isActive);
+            }
+            
             if (interactionMethod == InteractionMethod.Touch)
             {
                 ObjectClicker.instance.UpdateClick(this, isActive);
@@ -723,35 +721,24 @@ namespace Utility.Interaction
 
         bool IClickable.GetIsClicked()
         {
-            return isTouched;
+            return isInteracted;
         }
 
         void IClickable.Click()
         {
-            Debug.Log(((IClickable) this).IsClickEnable);
             if (!((IClickable) this).IsClickEnable)
             {
                 return;
             }
         
-            isTouched = !isLoopDialogue;
-        
-        
-            if (outline)
-            {
-                outline.enabled = false;
-            }
-        
+            isInteracted = !isLoopDialogue;
+
             ((IClickable) this).ActiveObjectClicker(false);
-            if (useExclamationMark)
-            {
-                exclamationMark.SetActive(false);
-            }
 
-            StartInteraction(); //인터렉션반응 나타남.
+            StartInteraction();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (!Application.isPlaying || !ObjectClicker.instance)
             {
@@ -761,7 +748,7 @@ namespace Utility.Interaction
             ObjectClicker.instance.UpdateClick(this, false);
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             if (!Application.isPlaying || !ObjectClicker.instance)
             {
@@ -771,55 +758,19 @@ namespace Utility.Interaction
             ObjectClicker.instance.UpdateClick(this, false);
         }
 
-
-        void Update()
+        public void OnEnter()
         {
-            if (Application.isPlaying)
+            if (((IClickable) this).IsClickEnable)
             {
-                if (useExclamationMark && exclamationMark.activeSelf)
-                {
-                    exclamationMark.transform.position =
-                        (Vector3) markOffset + DataController.instance.cam.WorldToScreenPoint(transform.position);
-                }
+                ((IClickable) this).ActiveObjectClicker(true);
             }
         }
-    
-        protected virtual void OnTriggerEnter(Collider other)
+
+        public void OnExit()
         {
-            if (!((IClickable) this).IsClickEnable)
-            {
-                return;
-            }
-
-            ((IClickable) this).ActiveObjectClicker(true);
-
-            if (outline)
-            {
-                outline.enabled = true;
-            }
-
-            if (useExclamationMark)
-            {
-                exclamationMark.SetActive(true);
-            }
-
-        }
-
-        protected virtual void OnTriggerExit(Collider other)
-        {
-            if (outline)
-            {
-                outline.enabled = false;
-            }
-
             if (((IClickable) this).IsClickEnable)
             {
                 ((IClickable) this).ActiveObjectClicker(false);   
-            }
-
-            if (useExclamationMark)
-            {
-                exclamationMark.SetActive(false);
             }
         }
     }

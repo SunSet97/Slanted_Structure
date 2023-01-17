@@ -10,55 +10,62 @@ namespace Utility.System
     public class DataController : MonoBehaviour
     {
         private static DataController _instance;
-    
+
         public static DataController instance => _instance;
 
-        [Header("캐릭터")]
-        private CharacterManager mainChar;
+        [Header("캐릭터")] private CharacterManager mainChar;
         [SerializeField] private CharacterManager rau;
         [SerializeField] private CharacterManager oun;
         [SerializeField] private CharacterManager speat;
         [SerializeField] private CharacterManager speat_Adult;
         [SerializeField] private CharacterManager speat_Child;
         [SerializeField] private CharacterManager speat_Adolescene;
-    
+
         [NonSerialized] public Camera cam;
-        [Header("카메라 경계값")]
-        public CamInfo camInfo;
+        [Header("카메라 경계값")] public CamInfo camInfo;
+
         /// <summary>
         /// 디버깅용
         /// </summary>
         public float camOrthgraphicSize;
 
-        [Header("맵")]
-        [NonSerialized] public MapData[] storymaps;
+        [Header("맵")] [NonSerialized] public MapData[] storymaps;
         public Transform mapGenerate;
         [NonSerialized] public MapData currentMap;
         public string mapCode;
 
         public CharData charData;
-    
+
         private AssetBundle _mapDB;
         private AssetBundle _materialDB;
         internal AssetBundle dialogueDB;
-    
+
         private UnityAction onLoadMap;
-    
+
         private void Awake()
         {
-            if (!_instance)
+            if (_instance)
             {
-                _instance = this;
-                DontDestroyOnLoad(gameObject);
+                Destroy(gameObject);
             }
             else
             {
-                Destroy(gameObject);
+                _instance = this;
+                DontDestroyOnLoad(_instance);
             }
         }
 
         private void Init()
         {
+            speat = GameObject.Find("Speat").GetComponent<CharacterManager>();
+            oun = GameObject.Find("Oun").GetComponent<CharacterManager>();
+            rau = GameObject.Find("Rau").GetComponent<CharacterManager>();
+            speat_Adolescene = GameObject.Find("Speat_Adolescene").GetComponent<CharacterManager>();
+            speat_Adult = GameObject.Find("Speat_Adult").GetComponent<CharacterManager>();
+            speat_Child = GameObject.Find("Speat_Child").GetComponent<CharacterManager>();
+
+            mapGenerate = GameObject.Find("MapGenerate").transform;
+
             cam = Camera.main;
             speat.Init();
             oun.Init();
@@ -72,22 +79,21 @@ namespace Utility.System
         {
             Debug.Log("게임 시작");
             Init();
-            mapCode = "000000";
             ChangeMap(mapcode);
         }
-    
+
         private MapData[] LoadMap(string desMapCode)
         {
             Debug.Log("현재 맵: " + mapCode);
             Debug.Log("다음 맵: " + desMapCode);
             var curEp = int.Parse(mapCode.Substring(0, 1));
             var desEp = int.Parse(desMapCode.Substring(0, 1));
-        
+
             var curDay = int.Parse(mapCode.Substring(1, 2));
             var desDay = int.Parse(desMapCode.Substring(1, 2));
-        
+
             mapCode = $"{desMapCode:000000}"; // 맵 코드 변경
-        
+
             Debug.Log("Episode:  " + curEp + " : " + desEp);
             Debug.Log("Day:   " + curDay + " : " + desDay);
             if (curEp == desEp && curDay == desDay)
@@ -99,6 +105,7 @@ namespace Utility.System
             {
                 _mapDB.Unload(true);
             }
+
             if (dialogueDB != null)
             {
                 dialogueDB.Unload(true);
@@ -108,27 +115,29 @@ namespace Utility.System
             {
                 _materialDB.Unload(true);
             }
-        
+
             Debug.Log(Application.dataPath + $"/AssetBundles/map/ep{desEp}/day{desDay}");
-        
+
             _mapDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
             if (curDay != desDay)
             {
                 dialogueDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}");
             }
+
             _materialDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/modulematerials");
-        
+
             if (_mapDB == null)
             {
                 Debug.LogError("맵 어셋 번들 오류");
-                return storymaps;
             }
+
             var mapDataObjects = _mapDB.LoadAllAssets<GameObject>();
             MapData[] mapDatas = new MapData[mapDataObjects.Length];
             for (int i = 0; i < mapDataObjects.Length; i++)
             {
                 mapDatas[i] = mapDataObjects[i].GetComponent<MapData>();
             }
+
             return mapDatas;
         }
 
@@ -159,6 +168,7 @@ namespace Utility.System
                     character = speat_Adolescene;
                     break;
             }
+
             return character;
         }
 
@@ -183,11 +193,12 @@ namespace Utility.System
                 currentMap.gameObject.SetActive(false);
                 currentMap.DestroyMap();
             }
+
             storymaps = LoadMap(desMapCode);
 
             ObjectClicker.instance.gameObject.SetActive(false);
             ObjectClicker.instance.isCustomUse = false;
-        
+
             var nextMap = Array.Find(storymaps, mapData => mapData.mapCode.Equals(mapCode));
             Debug.Log(mapCode);
             Debug.Log(nextMap);
@@ -195,13 +206,15 @@ namespace Utility.System
             currentMap.Initialize();
             SetByChangedMap();
             DialogueController.instance.Initialize();
+
+            Debug.Log("OnChangeMap");
             if (FadeEffect.instance.isFadeOut)
             {
                 FadeEffect.instance.FadeIn();
                 FadeEffect.instance.onFadeOver.AddListener(() =>
                 {
                     onLoadMap?.Invoke();
-                    onLoadMap = () => { };       
+                    onLoadMap = () => { };
                 });
             }
             else
@@ -209,7 +222,6 @@ namespace Utility.System
                 onLoadMap?.Invoke();
                 onLoadMap = () => { };
             }
-            Debug.Log("실행");
         }
 
         public void AddOnLoadMap(UnityAction onLoadMap)
@@ -259,17 +271,20 @@ namespace Utility.System
                     if (temp[k].isMain)
                         mainChar = rau;
                     rau.SetCharacter(temp[k].startPosition);
-                }else if (temp[k].who.Equals(Character.Speat_Adolescene))
+                }
+                else if (temp[k].who.Equals(Character.Speat_Adolescene))
                 {
                     if (temp[k].isMain)
                         mainChar = speat_Adolescene;
                     speat_Adolescene.SetCharacter(temp[k].startPosition);
-                }else if (temp[k].who.Equals(Character.Speat_Adult))
+                }
+                else if (temp[k].who.Equals(Character.Speat_Adult))
                 {
                     if (temp[k].isMain)
                         mainChar = speat_Adult;
                     speat_Adult.SetCharacter(temp[k].startPosition);
-                }else if (temp[k].who.Equals(Character.Speat_Child))
+                }
+                else if (temp[k].who.Equals(Character.Speat_Child))
                 {
                     if (temp[k].isMain)
                         mainChar = speat_Child;
@@ -285,7 +300,7 @@ namespace Utility.System
             //조이스틱 초기화
             JoystickController.instance.Init(currentMap.joystickType);
             JoystickController.instance.InitializeJoyStick(!currentMap.isJoystickNone);
-        
+
 
             // CameraMoving 컨트롤
             var cameraMoving = cam.GetComponent<CameraMoving>();
@@ -313,6 +328,7 @@ namespace Utility.System
             speat_Child.UseJoystickCharacter();
             speat_Adult.UseJoystickCharacter();
         }
+
         #endregion
 
         public void UpdateLikeable(int[] rauLikeables)

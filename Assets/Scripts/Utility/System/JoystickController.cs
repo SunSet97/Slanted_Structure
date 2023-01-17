@@ -28,14 +28,14 @@ namespace Utility.System
 
         private void Awake()
         {
-            if (!_instance)
+            if (_instance)
             {
-                _instance = this;
-                DontDestroyOnLoad(_instance);
+                Destroy(gameObject);   
             }
             else
             {
-                Destroy(gameObject);
+                _instance = this;
+                DontDestroyOnLoad(_instance);
             }
         }
 
@@ -76,8 +76,8 @@ namespace Utility.System
                 return;
             }
 
-            Debug.Log(joystick.GetType());
-            Debug.Log(isOn);
+            //Debug.Log(joystick.GetType());
+            //Debug.Log(isOn);
             joystick.gameObject.SetActive(isOn);
             if (joystick.GetType() == typeof(DynamicJoystick))
             {

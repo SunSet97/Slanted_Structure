@@ -2,18 +2,11 @@
 using Data;
 using UnityEngine;
 using UnityEngine.UI;
-using Utility.Serialize;
 
 [Serializable]
 public class CamInfo {
     public Vector3 camDis;
     public Vector3 camRot;
-}
-
-[Serializable]
-public class SerializableCamInfo {
-    public SerializableVector3 camDis;
-    public SerializableVector3 camRot;
 }
 
 [Serializable]
