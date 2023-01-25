@@ -15,6 +15,7 @@ namespace Utility.Interaction
 
         private void Start()
         {
+            gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
             if (useExclamationMark)
             {
                 interactionObject.ExclamationMark = Instantiate(Resources.Load<GameObject>("Exclamation Mark"), DataController.instance.currentMap.ui);

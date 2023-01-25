@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using Utility.Property;
 using Utility.System;
 using Random = UnityEngine.Random;
 
@@ -13,6 +12,7 @@ namespace Utility.SpeechBubble
         public string speaker;
         public float appearSec;
         public float disappearSec;
+        public float randomRange;
         [TextArea] public string dialogue;
     }
 
@@ -36,17 +36,9 @@ namespace Utility.SpeechBubble
         [Header("말풍선 보이는, 안보이는 시간 타입 선택")] [SerializeField]
         private RandomSecond randomSecond;
 
-        [ConditionalHideInInspector("randomSecond", RandomSecond.Custom)] [SerializeField]
-        private float visibleSecond = 5;
+        private SpeechBubble _speechBubble;
 
-        [ConditionalHideInInspector("randomSecond", RandomSecond.Custom)] [SerializeField]
-        private float invisibleSecond = 5;
-
-        [ConditionalHideInInspector("randomSecond", RandomSecond.Random)] [SerializeField]
-        private float randomRange = 5;
-
-        [Header("말풍선")] [SerializeField] private SpeechBubble speechBubble;
-
+        [Header("말풍선")]
         [Header("말풍선 대사 입력")] [SerializeField] public Script[] bubbleScripts;
 
         [Header("말풍선 위치 조절")] [SerializeField] private Vector2 speechPos;
@@ -59,7 +51,7 @@ namespace Utility.SpeechBubble
         private void Start()
         {
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
-            speechBubble.gameObject.SetActive(false);
+            _speechBubble = Instantiate(Resources.Load<GameObject>("SpeechBubble")).GetComponent<SpeechBubble>();
         }
 
         private void Update()
@@ -72,35 +64,38 @@ namespace Utility.SpeechBubble
 
         private void UpdateDialogue()
         {
-            speechBubble.SetSpeaker(bubbleScripts[bubbleIndex].speaker);
-            speechBubble.SetContext(bubbleScripts[bubbleIndex].dialogue);
+            _speechBubble.SetSpeaker(bubbleScripts[bubbleIndex].speaker);
+            _speechBubble.SetContext(bubbleScripts[bubbleIndex].dialogue);
+
+            if (randomSecond == RandomSecond.Random)
+            {
+                bubbleScripts[bubbleIndex].appearSec = Random.Range(1, bubbleScripts[bubbleIndex].randomRange);
+                bubbleScripts[bubbleIndex].disappearSec = Random.Range(1, bubbleScripts[bubbleIndex].randomRange);
+            }
+            
             bubbleIndex = (bubbleIndex + 1) % bubbleScripts.Length;
         }
 
         private void SetSpeechBubblePosition()
         {
             Vector3 screenPoint = DataController.instance.cam.WorldToScreenPoint(transform.position);
-            speechBubble.transform.position = screenPoint + new Vector3(speechPos.x, speechPos.y, 0);
+            _speechBubble.transform.position = screenPoint + new Vector3(speechPos.x, speechPos.y, 0);
         }
 
         private IEnumerator StartSpeechBubble()
         {
             isBubble = true;
-            speechBubble.gameObject.SetActive(true);
+            _speechBubble.gameObject.SetActive(true);
 
             UpdateDialogue();
-            if (randomSecond == RandomSecond.Random)
-            {
-                visibleSecond = Random.Range(1, randomRange);
-                invisibleSecond = Random.Range(1, randomRange);
-            }
+            
 
-            yield return new WaitForSeconds(visibleSecond);
-            speechBubble.gameObject.SetActive(false);
+            yield return new WaitForSeconds(bubbleScripts[bubbleIndex].appearSec);
+            _speechBubble.gameObject.SetActive(false);
             
             isBubble = false;
             
-            yield return new WaitForSeconds(invisibleSecond);
+            yield return new WaitForSeconds(bubbleScripts[bubbleIndex].disappearSec);
 
             yield return new WaitWhile(() => DialogueController.instance.IsTalking);
 
