@@ -1,44 +1,47 @@
 ﻿using UnityEngine;
 
-public class AudioLoader : MonoBehaviour
+namespace Utility.Preference
 {
-    public static void SavePreference(string viveState, float soundValue)
+    public class AudioLoader : MonoBehaviour
     {
-        PlayerPrefs.SetString("vibe", viveState);
-
-        PlayerPrefs.SetFloat("sound", soundValue);
-    }
-
-    public static bool LoadPreference(out float soundValue, out bool isVibe)
-    {
-        isVibe = true;
-        soundValue = 0.5f;
-        if (PlayerPrefs.HasKey("vibe"))
+        public static void SavePreference(string viveState, float soundValue)
         {
-            var vibeString = PlayerPrefs.GetString("vibe");
-            if (vibeString == "on")
+            PlayerPrefs.SetString("vibe", viveState);
+
+            PlayerPrefs.SetFloat("sound", soundValue);
+        }
+
+        public static bool LoadPreference(out float soundValue, out bool isVibe)
+        {
+            isVibe = true;
+            soundValue = 0.5f;
+            if (PlayerPrefs.HasKey("vibe"))
             {
-                isVibe = true;
+                var vibeString = PlayerPrefs.GetString("vibe");
+                if (vibeString.Equals("on"))
+                {
+                    isVibe = true;
+                }
+                else if (vibeString.Equals("off"))
+                {
+                    isVibe = false;
+                }
             }
-            else if (vibeString == "off")
+            else
             {
-                isVibe = false;
+                return false;
             }
-        }
-        else
-        {
-            return false;
-        }
 
-        if (PlayerPrefs.HasKey("sound"))
-        {
-            soundValue = PlayerPrefs.GetFloat("sound");
-        }
-        else
-        {
-            return false;
-        }
+            if (PlayerPrefs.HasKey("sound"))
+            {
+                soundValue = PlayerPrefs.GetFloat("sound");
+            }
+            else
+            {
+                return false;
+            }
 
-        return true;
+            return true;
+        }
     }
 }

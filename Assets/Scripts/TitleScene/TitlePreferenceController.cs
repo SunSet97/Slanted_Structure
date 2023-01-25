@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Utility.Preference;
 
 public class TitlePreferenceController : MonoBehaviour
 {
