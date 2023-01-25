@@ -51,7 +51,7 @@ namespace Utility.SpeechBubble
         private void Start()
         {
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
-            _speechBubble = Instantiate(Resources.Load<GameObject>("SpeechBubble")).GetComponent<SpeechBubble>();
+            _speechBubble = Instantiate(Resources.Load<GameObject>("SpeechBubble"), DataController.instance.currentMap.ui).GetComponent<SpeechBubble>();
         }
 
         private void Update()
