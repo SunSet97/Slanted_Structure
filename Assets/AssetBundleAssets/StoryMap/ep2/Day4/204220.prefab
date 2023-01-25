@@ -45,8 +45,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: ef7a1644e945c894ab766a5aac04d3e8, type: 3}
-  GamePlayableGame: {fileID: 0}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues:
     - name: "\uB77C\uC6B0"
       expression: 5
@@ -307,26 +308,28 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
+  dialogueEndActions:
+    interactionEvents: []
+  taskEndActions:
+    interactionEvents: []
+  cinematicEndAction:
+    interactionEvents: []
+  useOutline: 0
+  color: 0
+  outline: {fileID: 0}
+  outlineRadius: 5
+  interactionMethod: 3
+  isViewChange: 0
   dialogueCamera:
     camDis: {x: 0, y: 0, z: 0}
     camRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
-  cinematicEndAction:
-    interactionEvents: []
-  taskDataDebug: []
-  color: 0
-  outline: {fileID: 0}
-  useOutline: 0
-  interactionMethod: 3
-  outlineRadius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
-  isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!1 &2590591682607356419
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,7 +695,7 @@ MonoBehaviour:
   nextMapcode: 204231
   map: {fileID: 6528086692106546011}
   ui: {fileID: 0}
-  skyboxSetting: {fileID: 0}
+  skyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
   isOrthographic: 1
   orthographicSize: 5
   cameraBound: {fileID: 0}
@@ -719,7 +722,6 @@ MonoBehaviour:
   isJoystickInputUse: 0
   isJoystickNone: 1
   joystickType: 0
-  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &8243696506338593329
 GameObject:
   m_ObjectHideFlags: 0

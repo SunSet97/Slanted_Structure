@@ -106,8 +106,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 7240acbb96fb9664cad411742f7a1ea5, type: 3}
-  GamePlayableGame: {fileID: 0}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues:
     - name: "\uB77C\uC6B0"
       expression: 4
@@ -194,35 +195,37 @@ MonoBehaviour:
       anim_name: Oun
       contents: "\uBC30\uACE0\uD504\uC2E0 \uAC83 \uAC19\uC740\uB370 \uAC19\uC774 \uBC25\uC774\uB098
         \uAC19\uC774 \uBA39\uC73C\uBA74\uC11C \uC774\uC57C\uAE30 \uB098\uB220\uC694"
-  dialogueEndAction:
-  - eventType: 1
-    clearBox: {fileID: 8020672506640408403}
-    activeObjs:
-      actives: []
-    movables:
-      movables: []
-    playableList:
-      playableObjs: []
+  dialogueEndAction: []
+  dialogueEndActions:
+    interactionEvents:
+    - eventType: 1
+      clearBox: {fileID: 8020672506640408403}
+      activeObjs:
+        actives: []
+      movables:
+        movables: []
+      playableList:
+        playableObjs: []
+      interactObjs:
+        interacts: []
+  taskEndActions:
+    interactionEvents: []
+  cinematicEndAction:
+    interactionEvents: []
+  useOutline: 0
+  color: 0
+  outline: {fileID: 0}
+  outlineRadius: 5
+  interactionMethod: 3
+  isViewChange: 0
   dialogueCamera:
     camDis: {x: 0, y: 0, z: 0}
     camRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
-  cinematicEndAction:
-    interactionEvents: []
-  taskDataDebug: []
-  color: 0
-  outline: {fileID: 0}
-  useOutline: 0
-  interactionMethod: 3
-  outlineRadius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
-  isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!1 &7237970781096729530
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,7 +431,6 @@ MonoBehaviour:
   isJoystickInputUse: 0
   isJoystickNone: 1
   joystickType: 0
-  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &8020672506947753037
 GameObject:
   m_ObjectHideFlags: 0
