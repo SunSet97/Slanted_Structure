@@ -26,6 +26,8 @@ namespace Utility.System
         public TaskData taskData;
         public DialogueData dialogueData;
         
+        //public Action OnDialogue;
+        
         [NonSerialized]
         public bool IsTalking;
     

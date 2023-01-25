@@ -31,9 +31,7 @@ namespace Utility.Save
         {
             SaveData saveData = new SaveData();
             saveData.mapCode = DataController.instance.mapCode;
-            saveData.selfEstm = DataController.instance.charData.selfEstm;
-            saveData.intimacySpRau = DataController.instance.charData.intimacySpRau;
-            saveData.intimacyOunRau = DataController.instance.charData.intimacyOunRau;
+            saveData.charData = DataController.instance.charData;
             
             return saveData;
         }

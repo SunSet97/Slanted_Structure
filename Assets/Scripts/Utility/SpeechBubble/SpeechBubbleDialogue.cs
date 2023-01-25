@@ -11,6 +11,8 @@ namespace Utility.SpeechBubble
     public struct Script
     {
         public string speaker;
+        public float appearSec;
+        public float disappearSec;
         [TextArea] public string dialogue;
     }
 
@@ -99,6 +101,8 @@ namespace Utility.SpeechBubble
             isBubble = false;
             
             yield return new WaitForSeconds(invisibleSecond);
+
+            yield return new WaitWhile(() => DialogueController.instance.IsTalking);
 
             if (isCharacterInRange)
             {
