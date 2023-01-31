@@ -1,32 +1,68 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpFence : MonoBehaviour
+public class JumpFence : JumpInTotal
 {
-    public PlatformerGame platformer;
-    //  public GameObject[] outlines;
-    public PlatformerGame.ButtonType moveType;
-    
-    //가까워졌을 때
-    private void OnTriggerEnter(Collider other)
+    public Transform obstacleTransform;
+    [Range(0, 1)]
+    public float slerp_radius;
+    protected override void ButtonPressed()
     {
-        //버튼 activeButton() 
-        //platformer.ActiveButton();
-
-        //platformer.btnType = moveType;
+        StartCoroutine(FramePerParameter());
+        gameManager.ActiveButton(false);
     }
 
-
-    // Start is called before the first frame update
-    void Start()
+    protected override void OnTriggerEnter(Collider other)
     {
-        
+        base.OnTriggerEnter(other);
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void OnTriggerExit(Collider other)
     {
-        
+        base.OnTriggerExit(other);
+    }
+
+    private IEnumerator FramePerParameter()
+    {
+        var waitForFixedUpdate = new WaitForFixedUpdate();
+        CharacterManager platformer_char = DataController.instance.GetCharacter(Data.CustomEnum.Character.Main);
+        platformer_char.PickUpCharacter();
+        Vector3 startposition = platformer_char.transform.position;
+        Vector3 middle_position = (startposition + obstacleTransform.position) / 2;
+
+        float d = 1f;
+        float t = 0f;
+        while (t <= .9f)
+        {
+            t = ((platformer_char.transform.position - startposition).magnitude / (obstacleTransform.position - startposition).magnitude);
+            Vector3 slerp_position = Vector3.Slerp(transform.position, obstacleTransform.position, t);
+            var direction = Vector3.Lerp(middle_position, slerp_position, slerp_radius) - platformer_char.transform.position;
+
+            var characterController = platformer_char.GetComponent<CharacterController>();
+            characterController.Move(direction * Time.fixedDeltaTime * d);
+            if (t < 0.4f)
+            {
+                d += Time.fixedDeltaTime * 20f;
+            }
+            else if (t >= 0.5f)
+            {
+                d += Time.fixedDeltaTime * 30f;
+            }
+            yield return waitForFixedUpdate;
+        }
+
+        platformer_char.PutDownCharacter();
     }
 }
+
+        //float t = 0;
+        //while (t <= 1)
+        //{
+        //    Vector3 slerp_position = Vector3.Slerp(startposition, obstacleTransform.position, t);
+        //    var direction = Vector3.Lerp(middle_position, slerp_position, slerp_radius) - platformer_char.transform.position;
+
+        //    var characterController = platformer_char.GetComponent<CharacterController>();
+        //    characterController.Move(direction.normalized * Time.fixedDeltaTime);
+        //    t += Time.fixedDeltaTime;
+        //    yield return waitForFixedUpdate;
+        //}

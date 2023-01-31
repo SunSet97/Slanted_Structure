@@ -372,14 +372,15 @@ MonoBehaviour:
   - {fileID: 6137615742195973136}
   - {fileID: 1586122253365454885}
   destTransform: {fileID: 1300002531846679182}
+  clickMissCheckButton: {fileID: 6743479786356559911}
   sellerImage: {fileID: 3184936690136471544}
   sellerSprites:
   - {fileID: 21300000, guid: 9a9af9b0955701d4b81732967004aab4, type: 3}
   - {fileID: 21300000, guid: b029d2327ad2c2343866b4e517cd77a2, type: 3}
   - {fileID: 21300000, guid: bb3ae5a2309e44f4a95c0cb531ac31ae, type: 3}
   - {fileID: 21300000, guid: c755c287db2c282459500e610410cae8, type: 3}
-  horizontalSpeed: 6
-  verticalSpeed: 6
+  horizontalSpeed: 12.19
+  verticalSpeed: 6.13
 --- !u!1 &1166939719420790953
 GameObject:
   m_ObjectHideFlags: 0
@@ -1130,7 +1131,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4013654704708317607
 GameObject:
@@ -1600,7 +1601,7 @@ RectTransform:
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_Children: []
   m_Father: {fileID: 4632987522945764591}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1654,6 +1655,7 @@ GameObject:
   - component: {fileID: 4632987522945764591}
   - component: {fileID: 7646566218455838104}
   - component: {fileID: 9202458395847856266}
+  - component: {fileID: 6743479786356559911}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -1675,8 +1677,8 @@ RectTransform:
   - {fileID: 6137615742195973136}
   - {fileID: 1586122253365454885}
   - {fileID: 1300002531846679182}
-  - {fileID: 8489486787055330158}
   - {fileID: 8985658368687353901}
+  - {fileID: 8489486787055330158}
   m_Father: {fileID: 7008254095694835878}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1721,6 +1723,49 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6743479786356559911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4757263485932383963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 0
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 9202458395847856266}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5048928379062444731
 GameObject:
   m_ObjectHideFlags: 0
@@ -2203,6 +2248,7 @@ MonoBehaviour:
   positionSetting: {fileID: 5679713698888438023}
   isJoystickInputUse: 1
   isJoystickNone: 0
+  joystickType: 0
   forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &5679713699259848833
 GameObject:
@@ -2544,7 +2590,7 @@ RectTransform:
   m_Children:
   - {fileID: 2178020936416388986}
   m_Father: {fileID: 4632987522945764591}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
