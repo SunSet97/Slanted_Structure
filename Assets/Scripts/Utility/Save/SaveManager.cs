@@ -13,18 +13,17 @@ namespace Utility.Save
 
         private static string Savefilename => $"{Application.persistentDataPath}/saveData{_idx}.save";
 
-        private static SaveData _saveData;
 
         public static readonly byte[] EncryptKey = Encoding.UTF8.GetBytes("SA3*FDN&48SDFhuj34VMK34KV~3gd$");
         public static readonly byte[] EncryptIv = Encoding.UTF8.GetBytes("N&48SDFhuj34VMK3");
 
         static SaveManager()
         {
+            Debug.Log(Savefilename);
             Init();
         }
         public static void Init()
         {
-            _saveData = new SaveData();
 #if UNITY_IPHONE
         Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
 #endif
@@ -34,12 +33,7 @@ namespace Utility.Save
         // {
         //     return _saveData;
         // }
-        //
-        //
-        // public static void SetSaveData(SaveData saveData)
-        // {
-        //     _saveData = saveData;
-        // }
+        
 
         public static void Save(int idx, SaveData saveData)
         {
@@ -67,7 +61,6 @@ namespace Utility.Save
         public static bool Load(int idx, out SaveData saveData)
         {
             _idx = idx;
-            // Debug.Log(Savefilename);
             if (!File.Exists(Savefilename))
             {
                 saveData = null;
@@ -85,6 +78,7 @@ namespace Utility.Save
                     if (fileStream.Length <= 0)
                     {
                         saveData = null;
+                        Debug.Log("Load 오류 발생");
                         return false;
                     }
 
@@ -100,6 +94,21 @@ namespace Utility.Save
             rijn.Clear();
 
             return true;
+        }
+
+        public static void Delete(int idx)
+        {
+            _idx = idx;
+            if (File.Exists(Savefilename))
+            {
+                File.Delete(Savefilename);
+            }
+        }
+
+        public static bool Has(int idx)
+        {
+            _idx = idx;
+            return File.Exists(Savefilename);
         }
     }
 }

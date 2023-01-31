@@ -8,6 +8,7 @@ public class CamInfo {
     public Vector3 camDis;
     public Vector3 camRot;
 }
+
 [Serializable]
 public struct Ending
 {

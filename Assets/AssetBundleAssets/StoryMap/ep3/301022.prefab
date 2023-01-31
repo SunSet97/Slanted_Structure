@@ -48,7 +48,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 0
   jsonFile: {fileID: 0}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues: []
   dialogueEndAction:
   - eventType: 0
@@ -59,6 +61,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
   - eventType: 0
     clearBox: {fileID: 0}
     activeObjs:
@@ -67,6 +71,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
   - eventType: 0
     clearBox: {fileID: 0}
     activeObjs:
@@ -75,6 +81,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
   - eventType: 0
     clearBox: {fileID: 0}
     activeObjs:
@@ -83,26 +91,29 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
+    interactObjs:
+      interacts: []
+  dialogueEndActions:
+    interactionEvents: []
+  taskEndActions:
+    interactionEvents: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  useOutline: 0
   color: 0
-  interactionMethod: 0
-  radius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
   outline: {fileID: 0}
+  outlineRadius: 5
+  interactionMethod: 0
   isViewChange: 0
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   timelines:
   - {fileID: 0}
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!114 &8860030223656668607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,7 +190,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 0
   jsonFile: {fileID: 0}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues: []
   dialogueEndAction:
   - eventType: 0
@@ -190,6 +203,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
   - eventType: 0
     clearBox: {fileID: 0}
     activeObjs:
@@ -198,6 +213,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
   - eventType: 0
     clearBox: {fileID: 0}
     activeObjs:
@@ -206,6 +223,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
   - eventType: 0
     clearBox: {fileID: 0}
     activeObjs:
@@ -214,26 +233,29 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
+    interactObjs:
+      interacts: []
+  dialogueEndActions:
+    interactionEvents: []
+  taskEndActions:
+    interactionEvents: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  useOutline: 0
   color: 0
-  interactionMethod: 0
-  radius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
   outline: {fileID: 0}
+  outlineRadius: 5
+  interactionMethod: 0
   isViewChange: 0
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   timelines:
   - {fileID: 0}
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!114 &1579489717606808885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -415,120 +437,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 3
   jsonFile: {fileID: 4900000, guid: 316a903d3410ea64a815193095c77cd6, type: 3}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues: []
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
+  dialogueEndActions:
+    interactionEvents: []
+  taskEndActions:
+    interactionEvents: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug:
-  - tasks:
-    - name: "\uB77C\uC6B0\uB300\uD6541"
-      taskContentType: 0
-      nextFile: dialogue_ep3/301021
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: 
-      taskContentType: 0
-      nextFile: 2
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: "\uB2E4\uB978 \uC0AC\uB78C\uC774\uB2C8 \uB108\uB294 \uAD1C\uCC2E\uC744
-        \uAC83\uC774\uB77C\uACE0 \uD574\uC900\uB2E4"
-      taskContentType: 0
-      nextFile: dialogue_ep3/301021_1
-      order: 0
-      condition: 0,0,0
-      increaseVar: m3,0,0
-    - name: "\uB611\uAC19\uC774 \uB418\uC9C0 \uC54A\uB3C4\uB85D \uB3C4\uC640\uC8FC\uACA0\uB2E4\uACE0
-        \uB9D0\uD55C\uB2E4"
-      taskContentType: 0
-      nextFile: dialogue_ep3/301021_2
-      order: 0
-      condition: 0,0,0
-      increaseVar: 3,0,0
-    taskIndex: 0
-    taskOrder: 1
-    isContinue: 1
-  - tasks:
-    - name: "\uB77C\uC6B0\uB300\uD6541"
-      taskContentType: 0
-      nextFile: dialogue_ep3/301021_1_
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: "\uC704\uB85C\uC2E4\uD328/\uC120\uD0DD\uC9C0 \uC81C\uC2DC"
-      taskContentType: 0
-      nextFile: dialogue_ep3/301021_fail
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: 
-      taskContentType: 0
-      nextFile: 2
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: "\uC624\uC6B4\uC5D0\uAC8C \uC804\uD654\uB97C \uD55C\uB2E4"
-      taskContentType: 0
-      nextFile: dialogue_ep3/301021_3
-      order: 1
-      condition: m3,0,0
-      increaseVar: 0,0,0
-    - name: "\uC2E0\uACBD\uC4F0\uC9C0 \uB9D0\uACE0 \uAC08 \uAE38\uC744 \uAC04\uB2E4"
-      taskContentType: 0
-      nextFile: dialogue_ep3/301021_4
-      order: -1
-      condition: m3,0,0
-      increaseVar: 0,0,0
-    - name: "\uB05D"
-      taskContentType: 0
-      nextFile: 
-      order: 0
-      condition: 
-      increaseVar: 
-    taskIndex: 0
-    taskOrder: 1
-    isContinue: 1
-  - tasks:
-    - name: "\uB77C\uC6B0\uB300\uD6541"
-      taskContentType: 0
-      nextFile: dialogue_ep3/301021_2_
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: "\uB77C\uC6B0\uB300\uD6541"
-      taskContentType: 0
-      nextFile: dialogue_ep3/301022
-      order: 1
-      condition: 
-      increaseVar: 
-    - name: "\uB05D"
-      taskContentType: 0
-      nextFile: 
-      order: 1
-      condition: 
-      increaseVar: 
-    taskIndex: 0
-    taskOrder: 1
-    isContinue: 1
+  useOutline: 0
   color: 0
-  interactionMethod: 3
-  radius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
   outline: {fileID: 0}
+  outlineRadius: 5
+  interactionMethod: 3
   isViewChange: 0
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!1 &2561697861367354705
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,7 +540,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 0
   jsonFile: {fileID: 0}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues: []
   dialogueEndAction:
   - eventType: 0
@@ -618,6 +553,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
   - eventType: 0
     clearBox: {fileID: 0}
     activeObjs:
@@ -626,6 +563,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
   - eventType: 0
     clearBox: {fileID: 0}
     activeObjs:
@@ -634,6 +573,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
   - eventType: 0
     clearBox: {fileID: 0}
     activeObjs:
@@ -642,26 +583,29 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
+    interactObjs:
+      interacts: []
+  dialogueEndActions:
+    interactionEvents: []
+  taskEndActions:
+    interactionEvents: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  useOutline: 0
   color: 0
-  interactionMethod: 0
-  radius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
   outline: {fileID: 0}
+  outlineRadius: 5
+  interactionMethod: 0
   isViewChange: 0
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   timelines:
   - {fileID: 0}
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!114 &2814796989702828068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -738,7 +682,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 0
   jsonFile: {fileID: 0}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues: []
   dialogueEndAction:
   - eventType: 0
@@ -749,6 +695,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
   - eventType: 0
     clearBox: {fileID: 0}
     activeObjs:
@@ -757,6 +705,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
   - eventType: 0
     clearBox: {fileID: 0}
     activeObjs:
@@ -765,6 +715,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
   - eventType: 0
     clearBox: {fileID: 0}
     activeObjs:
@@ -773,26 +725,29 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
+    interactObjs:
+      interacts: []
+  dialogueEndActions:
+    interactionEvents: []
+  taskEndActions:
+    interactionEvents: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  useOutline: 0
   color: 0
-  interactionMethod: 0
-  radius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
   outline: {fileID: 0}
+  outlineRadius: 5
+  interactionMethod: 0
   isViewChange: 0
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   timelines:
   - {fileID: 0}
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!114 &8678368748814558483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1974,11 +1929,14 @@ MonoBehaviour:
     \uB0AE\uC744 \uC2DC: \uC9C0\uB098\uAC00\uB294 \uB098\uADF8\uB124 \uC5D4\uB529\n-\uAD00\uACC4
     \uAD1C\uCC2E\uC744 \uC2DC: \uC624\uC6B4\uC774 \uB3C4\uC6C0\uC744 \uC90C"
   mapCode: 301022
+  location: "\uB9C8\uC744 \uBCC0\uB450\uB9AC \uAD11\uC7A5"
+  date: DAY08
+  time: 13:00
   method: 1
   nextMapcode: 301023
   map: {fileID: 2561697861367354705}
   ui: {fileID: 0}
-  SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
+  skyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 1
   orthographicSize: 5
   cameraBound: {fileID: 0}
@@ -1999,7 +1957,7 @@ MonoBehaviour:
   positionSetting: {fileID: 5253707418536335396}
   isJoystickInputUse: 0
   isJoystickNone: 1
-  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  joystickType: 0
 --- !u!1 &6914974736281788910
 GameObject:
   m_ObjectHideFlags: 0
@@ -2347,7 +2305,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 0
   jsonFile: {fileID: 0}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues: []
   dialogueEndAction:
   - eventType: 0
@@ -2358,6 +2318,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
   - eventType: 0
     clearBox: {fileID: 0}
     activeObjs:
@@ -2366,6 +2328,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
   - eventType: 0
     clearBox: {fileID: 0}
     activeObjs:
@@ -2374,6 +2338,8 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
+    interactObjs:
+      interacts: []
   - eventType: 0
     clearBox: {fileID: 0}
     activeObjs:
@@ -2382,26 +2348,29 @@ MonoBehaviour:
       movables: []
     playableList:
       playableObjs: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
+    interactObjs:
+      interacts: []
+  dialogueEndActions:
+    interactionEvents: []
+  taskEndActions:
+    interactionEvents: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  useOutline: 0
   color: 0
-  interactionMethod: 0
-  radius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
   outline: {fileID: 0}
+  outlineRadius: 5
+  interactionMethod: 0
   isViewChange: 0
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   timelines:
   - {fileID: 0}
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!114 &8359541533570970881
 MonoBehaviour:
   m_ObjectHideFlags: 0

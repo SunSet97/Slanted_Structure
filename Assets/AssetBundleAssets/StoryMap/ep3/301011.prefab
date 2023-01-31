@@ -77,7 +77,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 02df7d03249958b428206aac70bfd02d, type: 3}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues:
     - name: "\uB77C\uC6B0"
       expression: 0
@@ -95,25 +97,26 @@ MonoBehaviour:
       contents: "\uC74C? \uBB54 \uC598\uAE30\uAE38\uB798 \uC800\uB807\uAC8C \uB5A0\uB4E4\uACE0
         \uC788\uB2F4?"
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
+  dialogueEndActions:
+    interactionEvents: []
+  taskEndActions:
+    interactionEvents: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  useOutline: 0
   color: 0
-  interactionMethod: 3
-  radius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
   outline: {fileID: 0}
+  outlineRadius: 5
+  interactionMethod: 3
   isViewChange: 0
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!1 &1547541507408587616
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +163,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 115b8f62d201da2439fcf30eb590bf42, type: 3}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues:
     - name: "\uC5EC\uC7901"
       expression: 0
@@ -200,25 +205,26 @@ MonoBehaviour:
       anim_name: Rau
       contents: "\uC5BC\uB978 \uB098\uAC00\uBD10\uC57C\uACA0\uC5B4\u2026!"
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
+  dialogueEndActions:
+    interactionEvents: []
+  taskEndActions:
+    interactionEvents: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  useOutline: 0
   color: 0
-  interactionMethod: 1
-  radius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
   outline: {fileID: 0}
+  outlineRadius: 5
+  interactionMethod: 1
   isViewChange: 0
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!65 &8197133470357646649
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -334,11 +340,14 @@ MonoBehaviour:
     \uC218\uADFC\uB300\uACE0 \uC788\uACE0 \uADF8\uAC78 \uB4E4\uC740 \uB77C\uC6B0\uB294
     \uBC16\uC73C\uB85C \uB098\uAC04\uB2E4"
   mapCode: 301011
+  location: "\uB77C\uC6B0 \uC219\uC18C"
+  date: DAY08
+  time: 10:00
   method: 1
   nextMapcode: 301020
   map: {fileID: 3399415230558604088}
   ui: {fileID: 0}
-  SkyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
+  skyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
   isOrthographic: 1
   orthographicSize: 3
   cameraBound: {fileID: 0}
@@ -359,7 +368,7 @@ MonoBehaviour:
   positionSetting: {fileID: 8096532742479889281}
   isJoystickInputUse: 0
   isJoystickNone: 0
-  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  joystickType: 0
 --- !u!1 &8096532741615645102
 GameObject:
   m_ObjectHideFlags: 0

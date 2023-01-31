@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Utility.System;
 using static Data.CustomEnum;
 
 public class CameraMoving : MonoBehaviour
@@ -46,7 +47,8 @@ public class CameraMoving : MonoBehaviour
         if (viewType.Equals(CameraViewType.FixedView))
         {
             cam.transform.position = DataController.instance.currentMap.transform.position +
-                                     DataController.instance.camInfo.camDis;
+                                     DataController.instance.camInfo.camDis +
+                                     DialogueController.instance.dialogueData.CamInfo.camDis;
         }
 
         if (mainCharacter != null)
@@ -54,7 +56,7 @@ public class CameraMoving : MonoBehaviour
             if (viewType.Equals(CameraViewType.FollowCharacter))
             {
                 cam.transform.position = mainCharacter.position + DataController.instance.camInfo.camDis +
-                                         DialogueController.instance.dialogueCameraPos;
+                                         DialogueController.instance.dialogueData.CamInfo.camDis;
             }
 
             Follow_Player(cam.transform.position);

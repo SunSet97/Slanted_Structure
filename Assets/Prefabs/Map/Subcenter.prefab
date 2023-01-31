@@ -133,6 +133,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 724718785381947174}
+  - {fileID: 8137041691711613552}
   m_Father: {fileID: 9158070577267045306}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -337,6 +338,7 @@ Transform:
   m_LocalScale: {x: 28.701345, y: 8.576872, z: 20.570358}
   m_Children:
   - {fileID: 2724060099882828623}
+  - {fileID: 6632161178614486348}
   m_Father: {fileID: 4057049217494386782}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -352,27 +354,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  interactionPlayType: 0
   jsonFile: {fileID: 0}
+  GamePlayableGame: {fileID: 0}
+  dialogueData:
+    dialogues: []
   dialogueEndAction:
-    type: 0
-    ClearBox: {fileID: 0}
-    ActiveObject: {fileID: 0}
-    Active: 0
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
+  taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
+  taskDataDebug: []
   color: 0
-  touchOrNot: 0
-  onOutline: 0
-  isCharacterInRange: 0
-  radius: 5
+  outline: {fileID: 0}
+  useOutline: 0
+  interactionMethod: 0
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  x: 0
-  y: 0
-  outline: {fileID: 0}
-  cam: {fileID: 0}
-  isTouched: 0
-  touchTargetObject: {fileID: 0}
+  isViewChange: 0
+  timelines: []
+  cinematics: []
+  inGames: []
+  isLoopDialogue: 0
 --- !u!114 &4910907089392082189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,9 +424,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
-  who: {fileID: 0}
 --- !u!65 &7604010332265168975
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -447,27 +486,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  interactionPlayType: 0
   jsonFile: {fileID: 0}
+  GamePlayableGame: {fileID: 0}
+  dialogueData:
+    dialogues: []
   dialogueEndAction:
-    type: 0
-    ClearBox: {fileID: 0}
-    ActiveObject: {fileID: 0}
-    Active: 0
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
+  taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
+  taskDataDebug: []
   color: 0
-  touchOrNot: 0
-  onOutline: 0
-  isCharacterInRange: 0
-  radius: 5
+  outline: {fileID: 0}
+  useOutline: 0
+  interactionMethod: 0
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  x: 0
-  y: 0
-  outline: {fileID: 0}
-  cam: {fileID: 0}
-  isTouched: 0
-  touchTargetObject: {fileID: 0}
+  isViewChange: 0
+  timelines: []
+  cinematics: []
+  inGames: []
+  isLoopDialogue: 0
 --- !u!114 &1970574898372511802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -480,9 +556,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
-  who: {fileID: 0}
 --- !u!65 &2006227514933912774
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -631,7 +707,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4546348484383136713}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.63, y: 0, z: -5}
+  m_LocalPosition: {x: -17.63, y: 0, z: -8.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6462067621372318736}
@@ -650,27 +726,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  interactionPlayType: 0
   jsonFile: {fileID: 0}
+  GamePlayableGame: {fileID: 0}
+  dialogueData:
+    dialogues: []
   dialogueEndAction:
-    type: 0
-    ClearBox: {fileID: 0}
-    ActiveObject: {fileID: 0}
-    Active: 0
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
+  taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
+  taskDataDebug: []
   color: 0
-  touchOrNot: 0
-  onOutline: 0
-  isCharacterInRange: 0
-  radius: 5
+  outline: {fileID: 0}
+  useOutline: 0
+  interactionMethod: 0
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  x: 0
-  y: 0
-  outline: {fileID: 0}
-  cam: {fileID: 0}
-  isTouched: 0
-  touchTargetObject: {fileID: 0}
+  isViewChange: 0
+  timelines: []
+  cinematics: []
+  inGames: []
+  isLoopDialogue: 0
 --- !u!114 &5097493226435065249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -683,9 +796,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
-  who: {fileID: 0}
 --- !u!65 &2126143353559508351
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -745,27 +858,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  interactionPlayType: 0
   jsonFile: {fileID: 0}
+  GamePlayableGame: {fileID: 0}
+  dialogueData:
+    dialogues: []
   dialogueEndAction:
-    type: 0
-    ClearBox: {fileID: 0}
-    ActiveObject: {fileID: 0}
-    Active: 0
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
+  taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
+  taskDataDebug: []
   color: 0
-  touchOrNot: 0
-  onOutline: 0
-  isCharacterInRange: 0
-  radius: 5
+  outline: {fileID: 0}
+  useOutline: 0
+  interactionMethod: 0
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  x: 0
-  y: 0
-  outline: {fileID: 0}
-  cam: {fileID: 0}
-  isTouched: 0
-  touchTargetObject: {fileID: 0}
+  isViewChange: 0
+  timelines: []
+  cinematics: []
+  inGames: []
+  isLoopDialogue: 0
 --- !u!114 &3000435396880172331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -778,9 +928,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
-  who: {fileID: 0}
 --- !u!65 &2422644220783674614
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1305,27 +1455,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  interactionPlayType: 0
   jsonFile: {fileID: 0}
+  GamePlayableGame: {fileID: 0}
+  dialogueData:
+    dialogues: []
   dialogueEndAction:
-    type: 0
-    ClearBox: {fileID: 0}
-    ActiveObject: {fileID: 0}
-    Active: 0
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
+  taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
+  taskDataDebug: []
   color: 0
-  touchOrNot: 0
-  onOutline: 0
-  isCharacterInRange: 0
-  radius: 5
+  outline: {fileID: 0}
+  useOutline: 0
+  interactionMethod: 0
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  x: 0
-  y: 0
-  outline: {fileID: 0}
-  cam: {fileID: 0}
-  isTouched: 0
-  touchTargetObject: {fileID: 0}
+  isViewChange: 0
+  timelines: []
+  cinematics: []
+  inGames: []
+  isLoopDialogue: 0
 --- !u!114 &5209476354693123359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1338,9 +1525,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
-  who: {fileID: 0}
 --- !u!65 &608012451485628335
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1961,27 +2148,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  interactionPlayType: 0
   jsonFile: {fileID: 0}
+  GamePlayableGame: {fileID: 0}
+  dialogueData:
+    dialogues: []
   dialogueEndAction:
-    type: 0
-    ClearBox: {fileID: 0}
-    ActiveObject: {fileID: 0}
-    Active: 0
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  - eventType: 0
+    clearBox: {fileID: 0}
+    activeObjs:
+      actives: []
+    movables:
+      movables: []
+    playableList:
+      playableObjs: []
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
+  taskEndActions: []
+  cinematicEndAction:
+    interactionEvents: []
+  taskDataDebug: []
   color: 0
-  touchOrNot: 0
-  onOutline: 0
-  isCharacterInRange: 0
-  radius: 5
+  outline: {fileID: 0}
+  useOutline: 0
+  interactionMethod: 0
+  outlineRadius: 5
   exclamationMark: {fileID: 0}
   markOffset: {x: 0, y: 0}
   useExclamationMark: 0
-  x: 0
-  y: 0
-  outline: {fileID: 0}
-  cam: {fileID: 0}
-  isTouched: 0
-  touchTargetObject: {fileID: 0}
+  isViewChange: 0
+  timelines: []
+  cinematics: []
+  inGames: []
+  isLoopDialogue: 0
 --- !u!114 &4637799194539734198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1994,9 +2218,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTrigger: 0
   jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
-  who: {fileID: 0}
 --- !u!65 &5240016531254668240
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8438,15 +8662,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d3ee2b8d2838594e84359e0ce580f24, type: 3}
---- !u!4 &336393957744055124 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1044773972228912839, guid: 0d3ee2b8d2838594e84359e0ce580f24,
-    type: 3}
-  m_PrefabInstance: {fileID: 780482702010426771}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3670509963592786247 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4045518604120212692, guid: 0d3ee2b8d2838594e84359e0ce580f24,
+    type: 3}
+  m_PrefabInstance: {fileID: 780482702010426771}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &336393957744055124 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1044773972228912839, guid: 0d3ee2b8d2838594e84359e0ce580f24,
     type: 3}
   m_PrefabInstance: {fileID: 780482702010426771}
   m_PrefabAsset: {fileID: 0}
@@ -8989,15 +9213,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d3ee2b8d2838594e84359e0ce580f24, type: 3}
---- !u!4 &336393957200004801 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1044773972228912839, guid: 0d3ee2b8d2838594e84359e0ce580f24,
-    type: 3}
-  m_PrefabInstance: {fileID: 780482702539862022}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3670509964136838354 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4045518604120212692, guid: 0d3ee2b8d2838594e84359e0ce580f24,
+    type: 3}
+  m_PrefabInstance: {fileID: 780482702539862022}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &336393957200004801 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1044773972228912839, guid: 0d3ee2b8d2838594e84359e0ce580f24,
     type: 3}
   m_PrefabInstance: {fileID: 780482702539862022}
   m_PrefabAsset: {fileID: 0}
@@ -39901,6 +40125,96 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7704636415034192790}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7712379718539961731
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 468225877287719163}
+    m_Modifications:
+    - target: {fileID: 96425868907594460, guid: 9e684597738302a40a89656f5f156452,
+        type: 3}
+      propertyPath: m_Name
+      value: fbx_marketSign_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967050090340921551, guid: 9e684597738302a40a89656f5f156452,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.16979313
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967050090340921551, guid: 9e684597738302a40a89656f5f156452,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.14280434
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967050090340921551, guid: 9e684597738302a40a89656f5f156452,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.23854995
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967050090340921551, guid: 9e684597738302a40a89656f5f156452,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967050090340921551, guid: 9e684597738302a40a89656f5f156452,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967050090340921551, guid: 9e684597738302a40a89656f5f156452,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967050090340921551, guid: 9e684597738302a40a89656f5f156452,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967050090340921551, guid: 9e684597738302a40a89656f5f156452,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967050090340921551, guid: 9e684597738302a40a89656f5f156452,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967050090340921551, guid: 9e684597738302a40a89656f5f156452,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967050090340921551, guid: 9e684597738302a40a89656f5f156452,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967050090340921551, guid: 9e684597738302a40a89656f5f156452,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.00034841575
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967050090340921551, guid: 9e684597738302a40a89656f5f156452,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.0011659262
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967050090340921551, guid: 9e684597738302a40a89656f5f156452,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.0004861364
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9e684597738302a40a89656f5f156452, type: 3}
+--- !u!4 &6632161178614486348 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3967050090340921551, guid: 9e684597738302a40a89656f5f156452,
+    type: 3}
+  m_PrefabInstance: {fileID: 7712379718539961731}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7717179381905092192
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41480,6 +41794,81 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5972128600764617613, guid: 24bfa2d193a3d294c987ba3e6ea9a7a4,
     type: 3}
   m_PrefabInstance: {fileID: 8548872874414199602}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8566830080150290924
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1388594653654365773}
+    m_Modifications:
+    - target: {fileID: 436825933039463324, guid: 21127fa60f5076b46822733d5fc7fb99,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -29.625183
+      objectReference: {fileID: 0}
+    - target: {fileID: 436825933039463324, guid: 21127fa60f5076b46822733d5fc7fb99,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.296484
+      objectReference: {fileID: 0}
+    - target: {fileID: 436825933039463324, guid: 21127fa60f5076b46822733d5fc7fb99,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 9.54386
+      objectReference: {fileID: 0}
+    - target: {fileID: 436825933039463324, guid: 21127fa60f5076b46822733d5fc7fb99,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 436825933039463324, guid: 21127fa60f5076b46822733d5fc7fb99,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 436825933039463324, guid: 21127fa60f5076b46822733d5fc7fb99,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 436825933039463324, guid: 21127fa60f5076b46822733d5fc7fb99,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 436825933039463324, guid: 21127fa60f5076b46822733d5fc7fb99,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 436825933039463324, guid: 21127fa60f5076b46822733d5fc7fb99,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 436825933039463324, guid: 21127fa60f5076b46822733d5fc7fb99,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 436825933039463324, guid: 21127fa60f5076b46822733d5fc7fb99,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3482605257881033103, guid: 21127fa60f5076b46822733d5fc7fb99,
+        type: 3}
+      propertyPath: m_Name
+      value: fbx_hamburgerSign_01
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 21127fa60f5076b46822733d5fc7fb99, type: 3}
+--- !u!4 &8137041691711613552 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 436825933039463324, guid: 21127fa60f5076b46822733d5fc7fb99,
+    type: 3}
+  m_PrefabInstance: {fileID: 8566830080150290924}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8719021406398710393
 PrefabInstance:

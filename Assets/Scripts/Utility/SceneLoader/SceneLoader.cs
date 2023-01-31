@@ -4,20 +4,21 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace System
+namespace Utility.SceneLoader
 {
     public class SceneLoader : MonoBehaviour
     {
-    
+
         private static SceneLoader _instance;
+
         public static SceneLoader Instance
         {
             get
             {
-                if(_instance == null)
+                if (_instance == null)
                 {
                     var obj = FindObjectOfType<SceneLoader>();
-                    if(obj != null)
+                    if (obj != null)
                     {
                         _instance = obj;
                     }
@@ -25,12 +26,14 @@ namespace System
                     {
                         _instance = Create();
                     }
+
                     DontDestroyOnLoad(_instance);
                 }
+
                 return _instance;
             }
         }
-    
+
         [SerializeField] private CanvasGroup sceneLoaderCanvasGroup;
         [SerializeField] private Image progressBar;
 
@@ -43,7 +46,7 @@ namespace System
             var sceneLoaderPrefab = UnityEngine.Resources.Load<SceneLoader>("SceneLoader");
             return Instantiate(sceneLoaderPrefab);
         }
-    
+
         public void LoadScene(string sceneName)
         {
             gameObject.SetActive(true);
@@ -98,12 +101,10 @@ namespace System
 
         public void AddListener(UnityAction t)
         {
-            onSceneLoaded += (scene, loadSceneMode) =>
-            {
-                t();
-            };
+            onSceneLoaded += (scene, loadSceneMode) => { t(); };
             SceneManager.sceneLoaded += onSceneLoaded;
         }
+
         public void RemoveAllListener()
         {
             SceneManager.sceneLoaded -= onSceneLoaded;

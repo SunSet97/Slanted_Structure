@@ -45,7 +45,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: ef7800a8f521e9043971584dc11e7f7a, type: 3}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues:
     - name: "\uB77C\uC6B0"
       expression: 0
@@ -66,25 +68,26 @@ MonoBehaviour:
       contents: "\uC5B4\uC81C\uB791 \uB2E4\uB978 \uACF3\uC73C\uB85C \uD55C\uBC88 \uAC00\uBD10\uC57C
         \uACA0\uB2E4!"
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
+  dialogueEndActions:
+    interactionEvents: []
+  taskEndActions:
+    interactionEvents: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  useOutline: 0
   color: 0
-  interactionMethod: 3
-  radius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
   outline: {fileID: 0}
+  outlineRadius: 5
+  interactionMethod: 3
   isViewChange: 0
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!1 &3226681529246450578
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,11 +181,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scriptDesription: "Episode2-Day2 2\uBC88\uC9F8 \uC120\uD0DD"
   mapCode: 202011
+  location: "\uB77C\uC6B0 \uC219\uC18C"
+  date: DAY03
+  time: 9:00
   method: 1
   nextMapcode: 202210
   map: {fileID: 3399415230558604088}
   ui: {fileID: 0}
-  SkyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
+  skyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
   isOrthographic: 1
   orthographicSize: 3
   cameraBound: {fileID: 0}
@@ -203,7 +209,7 @@ MonoBehaviour:
   positionSetting: {fileID: 8096532742479889281}
   isJoystickInputUse: 1
   isJoystickNone: 0
-  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  joystickType: 0
 --- !u!1 &8096532741615645102
 GameObject:
   m_ObjectHideFlags: 0

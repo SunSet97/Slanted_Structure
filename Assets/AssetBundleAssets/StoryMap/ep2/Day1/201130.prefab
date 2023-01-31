@@ -156,7 +156,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 2af38cac14dc3374981afad5b62afdc7, type: 3}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues:
     - name: "\uC2A4\uD54F"
       expression: 1
@@ -465,34 +467,37 @@ MonoBehaviour:
       anim_name: Rau
       contents: "(\uC2A4\uD54F\uC774 \uB9D0\uD55C \uACF3\uB4E4\uC744 \uB3CC\uC544\uB2E4\uB2C8\uBA70
         \uD558\uB8E8\uB97C \uC54C\uCC28\uAC8C \uBCF4\uB0BC \uC218 \uC788\uC5C8\uB2E4!)"
-  dialogueEndAction:
-  - eventType: 1
-    clearBox: {fileID: 8679703665204864266}
-    activeObjs:
-      actives: []
-    movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
+  dialogueEndAction: []
+  dialogueEndActions:
+    interactionEvents:
+    - eventType: 1
+      clearBox: {fileID: 8679703665204864266}
+      activeObjs:
+        actives: []
+      movables:
+        movables: []
+      playableList:
+        playableObjs: []
+      interactObjs:
+        interacts: []
+  taskEndActions:
+    interactionEvents: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  useOutline: 0
   color: 0
-  interactionMethod: 3
-  radius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
   outline: {fileID: 0}
+  outlineRadius: 5
+  interactionMethod: 3
   isViewChange: 0
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!1 &8679703665006688727
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,11 +700,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scriptDesription: "Episode2 \uB77C\uC6B0_\uC2A4\uD54F_\uD3EC\uC7A5\uB9C8\uCC28"
   mapCode: 201130
+  location: "\uD3EC\uC7A5\uB9C8\uCC28"
+  date: DAY02
+  time: 11:30
   method: 1
   nextMapcode: 202010
   map: {fileID: 1678648368582325179}
   ui: {fileID: 0}
-  SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
+  skyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 0
   orthographicSize: 1.5
   cameraBound: {fileID: 0}
@@ -725,7 +733,7 @@ MonoBehaviour:
   positionSetting: {fileID: 8679703665770041349}
   isJoystickInputUse: 0
   isJoystickNone: 0
-  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  joystickType: 0
 --- !u!1001 &190875996527668149
 PrefabInstance:
   m_ObjectHideFlags: 0

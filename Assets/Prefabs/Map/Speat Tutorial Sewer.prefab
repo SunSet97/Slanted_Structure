@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4175555072089680965}
-  - component: {fileID: 6510885461815029417}
   m_Layer: 0
   m_Name: Speat Tutorial Sewer
   m_TagString: Untagged
@@ -40,29 +39,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6510885461815029417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4175555072089680964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d298e17f617eb234bbf3ba9ee7db04f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waypoint: {fileID: 6510885461536220903}
-  cornerRadius: 3
-  cornerCameraSettings:
-  - corner: {fileID: 6510885461591647828}
-    front: {fileID: 338274601481261571}
-    back: {fileID: 7896408347195057458}
-    camSettings:
-    - camDis: {x: 0, y: 2, z: -8}
-      camRot: {x: 10, y: 0, z: 0}
-    - camDis: {x: -8, y: 2, z: 0}
-      camRot: {x: 10, y: 90, z: 0}
 --- !u!1 &4175555072487592707
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,9 +384,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8401981469748175471}
-  - {fileID: 6336076951383048922}
   - {fileID: 6617775246869225618}
+  - {fileID: 6336076951383048922}
+  - {fileID: 8401981469748175471}
   - {fileID: 7200706335774873985}
   m_Father: {fileID: 4175555073425828411}
   m_RootOrder: 1
@@ -1892,6 +1868,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6510885461536220900}
   - component: {fileID: 6510885461536220903}
+  - component: {fileID: 4732667643591935278}
   m_Layer: 0
   m_Name: WaypointManager
   m_TagString: Untagged
@@ -1936,6 +1913,29 @@ MonoBehaviour:
   - {fileID: 6510885461591647828}
   - {fileID: 6510885462082586627}
   checkedWaypoint: {fileID: 6510885460637814335}
+--- !u!114 &4732667643591935278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6510885461536220901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab6571a6eca3d04fa7b217aa559408a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoint: {fileID: 6510885461536220903}
+  cornerRadius: 3
+  cornerCameraSettings:
+  - corner: {fileID: 6510885461591647828}
+    front: {fileID: 338274601481261571}
+    back: {fileID: 7896408347195057458}
+    camSettings:
+    - camDis: {x: 0, y: 2, z: -8}
+      camRot: {x: 10, y: 0, z: 0}
+    - camDis: {x: -8, y: 2, z: 0}
+      camRot: {x: 10, y: 90, z: 0}
 --- !u!1 &6510885461591647829
 GameObject:
   m_ObjectHideFlags: 0
@@ -2495,7 +2495,7 @@ PrefabInstance:
     - target: {fileID: 7072202487971214795, guid: 302b2dc54941bf640b95b5ca7a183273,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7072202487971214795, guid: 302b2dc54941bf640b95b5ca7a183273,
         type: 3}
@@ -2842,15 +2842,15 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 374467a8ced5690499204f39d40992d9, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef547f707cc56ef43a3ab40730b4afbc, type: 3}
---- !u!1 &6031936571500872058 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7658146236144390702, guid: ef547f707cc56ef43a3ab40730b4afbc,
-    type: 3}
-  m_PrefabInstance: {fileID: 4175555072704303956}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7345062590041142121 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6637297279495004221, guid: ef547f707cc56ef43a3ab40730b4afbc,
+    type: 3}
+  m_PrefabInstance: {fileID: 4175555072704303956}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6031936571500872058 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7658146236144390702, guid: ef547f707cc56ef43a3ab40730b4afbc,
     type: 3}
   m_PrefabInstance: {fileID: 4175555072704303956}
   m_PrefabAsset: {fileID: 0}
@@ -2974,7 +2974,7 @@ PrefabInstance:
     - target: {fileID: 5578649967584226694, guid: 32f22e31e0a9e9b439527d5b5e36ccc7,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5578649967584226694, guid: 32f22e31e0a9e9b439527d5b5e36ccc7,
         type: 3}

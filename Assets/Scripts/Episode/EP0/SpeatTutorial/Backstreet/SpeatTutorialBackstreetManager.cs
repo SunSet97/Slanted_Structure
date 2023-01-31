@@ -3,6 +3,7 @@ using System.Linq;
 using Play;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility.System;
 using static Data.CustomEnum;
 
 public class SpeatTutorialBackstreetManager : MonoBehaviour, IGamePlayable
@@ -93,7 +94,7 @@ public class SpeatTutorialBackstreetManager : MonoBehaviour, IGamePlayable
 
     void Update()
     {
-        if (IsPlay && DialogueController.instance.isTalking)
+        if (IsPlay && DialogueController.instance.IsTalking)
         {
             percentage = 100 / speatSlider.maxValue;
             speatDistance = (speatSlider.maxValue - speatSlider.value) * percentage; // 종료 지점과 스핏의 거리

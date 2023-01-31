@@ -4,6 +4,7 @@ using Data;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
+using Utility.Cinematic;
 
 [TrackColor(0, 1, 0)]
 

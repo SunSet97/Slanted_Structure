@@ -2,6 +2,7 @@
 using Data;
 using UnityEngine;
 using UnityEngine.Playables;
+using Utility.Cinematic;
 
 [Serializable]
 public class TimelineCharExpBehavior : PlayableBehaviour

@@ -77,8 +77,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 875882ff0c1c5e548b0f8be2c25e81e6, type: 3}
-  GamePlayableGame: {fileID: 0}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues:
     - name: "\uC2A4\uD54F"
       expression: 0
@@ -99,25 +100,26 @@ MonoBehaviour:
       anim_name: Rau
       contents: "\uD558\uD573\u2026\uB18D\uB2F4\uB3C4 \uC9D3\uAD73\uAE34\u2026\uC54C\uC558\uC5B4."
   dialogueEndAction: []
+  dialogueEndActions:
+    interactionEvents: []
+  taskEndActions:
+    interactionEvents: []
+  cinematicEndAction:
+    interactionEvents: []
+  useOutline: 0
+  color: 0
+  outline: {fileID: 2445551836438603349}
+  outlineRadius: 5
+  interactionMethod: 3
+  isViewChange: 0
   dialogueCamera:
     camDis: {x: 0, y: 0, z: 0}
     camRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
-  cinematicEndAction:
-    interactionEvents: []
-  taskDataDebug: []
-  color: 0
-  interactionMethod: 3
-  outlineRadius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
-  outline: {fileID: 2445551836438603349}
-  isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!114 &2445551836438603349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,7 +212,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8063324371436498449}
   m_Layer: 0
-  m_Name: Waypoint (8) front (1)
+  m_Name: Waypoint (8) front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -436,11 +438,14 @@ MonoBehaviour:
     \uCE74\uBA54\uB77C\uAC00 \uC774\uB3D9\uC5D0\uB530\uB77C \uD68C\uC804\uD588\uB358
     \uAC83\uCC98\uB7FC \uAD6C\uD604\uD574\uC57C\uD568."
   mapCode: 206230
+  location: "\uD558\uC218\uAD6C"
+  date: DAY07
+  time: 13:00
   method: 2
   nextMapcode: 301010
   map: {fileID: 4005663992108130986}
   ui: {fileID: 0}
-  SkyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
+  skyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
   isOrthographic: 0
   orthographicSize: 0
   cameraBound: {fileID: 0}
@@ -467,7 +472,6 @@ MonoBehaviour:
   isJoystickInputUse: 0
   isJoystickNone: 0
   joystickType: 0
-  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &1585814380106605648
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,6 +482,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2405929736243134971}
   - component: {fileID: 739731180733706218}
+  - component: {fileID: 4037882202811974717}
   m_Layer: 0
   m_Name: WaypointManager
   m_TagString: Untagged
@@ -528,6 +533,33 @@ MonoBehaviour:
   - {fileID: 3977372962960798820}
   - {fileID: 8409674523444131935}
   checkedWaypoint: {fileID: 7371105613178214492}
+--- !u!114 &4037882202811974717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585814380106605648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab6571a6eca3d04fa7b217aa559408a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoint: {fileID: 739731180733706218}
+  cornerRadius: 0
+  cornerCameraSettings:
+  - corner: {fileID: 6571870908912817177}
+    front: {fileID: 8829529054792161283}
+    back: {fileID: 8984058029007005243}
+    camSettings: []
+  - corner: {fileID: 3835944343086939652}
+    front: {fileID: 340887713216220295}
+    back: {fileID: 227332658957592910}
+    camSettings: []
+  - corner: {fileID: 3977372962960798820}
+    front: {fileID: 8063324371436498449}
+    back: {fileID: 8930176256931363575}
+    camSettings: []
 --- !u!1 &1638902882109068007
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,37 +607,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 5
   jsonFile: {fileID: 4900000, guid: 33e9f9bb387055641b70977d0eaf7b8b, type: 3}
-  GamePlayableGame: {fileID: 0}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues: []
   dialogueEndAction: []
+  dialogueEndActions:
+    interactionEvents: []
+  taskEndActions:
+    interactionEvents: []
+  cinematicEndAction:
+    interactionEvents: []
+  useOutline: 0
+  color: 0
+  outline: {fileID: 5081629836678006674}
+  outlineRadius: 5
+  interactionMethod: 2
+  isViewChange: 0
   dialogueCamera:
     camDis: {x: 0, y: 0, z: 0}
     camRot: {x: 0, y: 0, z: 0}
-  taskEndActions:
-  - eventType: 1
-    clearBox: {fileID: 1395685092987312460}
-    activeObjs:
-      actives: []
-    movables:
-      movables: []
-    playableList:
-      playableObjs: []
-  cinematicEndAction:
-    interactionEvents: []
-  taskDataDebug: []
-  color: 0
-  interactionMethod: 2
-  outlineRadius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
-  outline: {fileID: 5081629836678006674}
-  isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!65 &5232198707942898108
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -647,7 +673,7 @@ GameObject:
   m_Component:
   - component: {fileID: 340887713216220295}
   m_Layer: 0
-  m_Name: Waypoint (6) front (1)
+  m_Name: Waypoint (6) front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -739,7 +765,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8930176256931363575}
   m_Layer: 0
-  m_Name: Waypoint (8) back (1)
+  m_Name: Waypoint (8) back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -769,7 +795,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8829529054792161283}
   m_Layer: 0
-  m_Name: Waypoint (4) front (1)
+  m_Name: Waypoint (4) front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -869,8 +895,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: c80901b5908f6b940900da31e78325bc, type: 3}
-  GamePlayableGame: {fileID: 0}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues:
     - name: "\uC2A4\uD54F"
       expression: 0
@@ -929,25 +956,26 @@ MonoBehaviour:
       anim_name: Speat
       contents: "\uC74C\u2026\uC77C\uB2E8 \uB4E4\uC5B4\uC62C\uB798\u2026?"
   dialogueEndAction: []
+  dialogueEndActions:
+    interactionEvents: []
+  taskEndActions:
+    interactionEvents: []
+  cinematicEndAction:
+    interactionEvents: []
+  useOutline: 0
+  color: 0
+  outline: {fileID: 4352240898744531744}
+  outlineRadius: 5
+  interactionMethod: 2
+  isViewChange: 0
   dialogueCamera:
     camDis: {x: 0, y: 0, z: 0}
     camRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
-  cinematicEndAction:
-    interactionEvents: []
-  taskDataDebug: []
-  color: 0
-  interactionMethod: 2
-  outlineRadius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
-  outline: {fileID: 4352240898744531744}
-  isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!65 &5228321217541616883
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1110,7 +1138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8984058029007005243}
   m_Layer: 0
-  m_Name: Waypoint (4) back (1)
+  m_Name: Waypoint (4) back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1170,7 +1198,7 @@ GameObject:
   m_Component:
   - component: {fileID: 227332658957592910}
   m_Layer: 0
-  m_Name: Waypoint (6) back (1)
+  m_Name: Waypoint (6) back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -227,7 +227,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 4bdcf390158a58a458413c0a970f5338, type: 3}
+  gamePlayableGame: {fileID: 0}
   dialogueData:
+    dialogueIdx: 0
     dialogues:
     - name: 
       expression: 0
@@ -288,33 +290,26 @@ MonoBehaviour:
       anim_name: Oun
       contents: "\uB2E4\uD589\uC774\uB2E4! \uADF8\uB7FC \uD55C\uBC88 \uAC00\uBD10\uC694!"
   dialogueEndAction: []
-  dialogueCameraPos: {x: 0, y: 0, z: 0}
-  dialogueCameraRot: {x: 0, y: 0, z: 0}
+  dialogueEndActions:
+    interactionEvents: []
   taskEndActions:
-  - eventType: 1
-    clearBox: {fileID: 6362254535734482516}
-    activeObjs:
-      actives: []
-    movables:
-      movables: []
-    playableList:
-      playableObjs: []
+    interactionEvents: []
   cinematicEndAction:
     interactionEvents: []
-  taskData_Debug: []
+  useOutline: 0
   color: 0
-  interactionMethod: 3
-  radius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
   outline: {fileID: 0}
+  outlineRadius: 5
+  interactionMethod: 3
   isViewChange: 0
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
   timelines: []
   cinematics: []
   inGames: []
-  touchTargetObject: {fileID: 0}
   isLoopDialogue: 0
+  taskDataDebug: []
 --- !u!1 &6362254535141502772
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,11 +483,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scriptDesription: "Episode2-Day3_\uC624\uC6B4_\uD559\uAD50 \uC55E"
   mapCode: 205110
+  location: "\uD559\uAD50 \uC55E"
+  date: DAY06
+  time: 13:00
   method: 1
   nextMapcode: 205120
   map: {fileID: 1451924006629376565}
   ui: {fileID: 0}
-  SkyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
+  skyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 1
   orthographicSize: 6
   cameraBound: {fileID: 0}
@@ -518,7 +516,7 @@ MonoBehaviour:
   positionSetting: {fileID: 179141934288582893}
   isJoystickInputUse: 0
   isJoystickNone: 1
-  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
+  joystickType: 0
 --- !u!1 &6362254536310298726
 GameObject:
   m_ObjectHideFlags: 0

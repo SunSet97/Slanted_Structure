@@ -1,31 +1,33 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class CanvasControl : MonoBehaviour
+namespace Utility.System
 {
-    public Transform mapUI;
-    
-    public bool isInConverstation;
-
-    private static CanvasControl _instance;
-
-    public static CanvasControl instance => _instance;
-
-    private void Awake()
+    public class CanvasControl : MonoBehaviour
     {
-        if (_instance == null)
-        {
-            _instance = this;   
-        }
-        else
-        {
-            Destroy(this);
-        }
-    }
+        public Transform mapUI;
 
-    void Start()
-    {
-        var canvasScaler = GetComponent<CanvasScaler>();
-        canvasScaler.referenceResolution = new Vector2(Screen.width, canvasScaler.referenceResolution.y);
+        private static CanvasControl _instance;
+
+        public static CanvasControl instance => _instance;
+
+        private void Awake()
+        {
+            if (_instance)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                _instance = this;
+                DontDestroyOnLoad(_instance);   
+            }
+        }
+
+        void Start()
+        {
+            var canvasScaler = GetComponent<CanvasScaler>();
+            canvasScaler.referenceResolution = new Vector2(Screen.width, canvasScaler.referenceResolution.y);
+        }
     }
 }

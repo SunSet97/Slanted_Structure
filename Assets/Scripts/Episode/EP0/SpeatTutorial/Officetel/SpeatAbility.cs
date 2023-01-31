@@ -3,21 +3,23 @@ using System.Collections;
 using CommonScript;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility.System;
 using static Data.CustomEnum;
+
 public class SpeatAbility : MonoBehaviour
 {
     [Header("-UI")]
-    public Image abilityImage;  // 능력 시간 UI 이미지
-    public Text abilityText;    // 통과한 벽 UI 텍스트
-    public Image buttonImage;   // 능력 사용 버튼 UI 이미지
+    public Image abilityImage; // 능력 시간 UI 이미지
+    public Text abilityText; // 통과한 벽 UI 텍스트
+    public Image buttonImage; // 능력 사용 버튼 UI 이미지
 
-    [Header("-Variable")]
+    [Header("-Variable")] 
     public float setDuration = 10; // 능력 지속 시간 설정값
-    private float duration = 10;   // 능력 지속 시간
-    public float setCooltime = 3;  // 능력 사용 대기 시간 설정값
-    private float cooltime = 0;    // 능력 사용 대기 시간
-    public int maxWallNum = 5;     // 최대 벽 통과 갯수
-    private int wallNum = 0;       // 벽 통과 횟수
+    private float duration = 10; // 능력 지속 시간
+    public float setCooltime = 3; // 능력 사용 대기 시간 설정값
+    private float cooltime = 0; // 능력 사용 대기 시간
+    public int maxWallNum = 5; // 최대 벽 통과 갯수
+    private int wallNum = 0; // 벽 통과 횟수
     public bool isAbility = false; // 현재 능력 사용 여부
     public bool isPassingHor = false; // 벽을 통과중인지 여부
     public bool isPassingVerUp = false; // 벽을 통과중인지 여부
@@ -25,7 +27,7 @@ public class SpeatAbility : MonoBehaviour
 
     private Vector3 fwdDir, bwdDir; // 전후방 방향 벡터
     private Vector3 upDir, downDir; // 위아래 방향 벡터
-    private Vector3 cenPos;         // 스핏 중앙 위치
+    private Vector3 cenPos; // 스핏 중앙 위치
     private Vector3 fwdPos, bwdPos; // 스핏 전후방 위치
     private Vector3 upPos, downPos; // 스핏 위아래 위치
     private RaycastHit wallFwdFace, wallFwdInverse, wallFwdTmp;
@@ -36,16 +38,16 @@ public class SpeatAbility : MonoBehaviour
     private int bwdCnt = 1;
     private int ceilingCnt = 1;
     private int floorCnt = 1; // 탐색 인자
-    private float force;            // 벽을 통과하는 힘
+    private float force; // 벽을 통과하는 힘
     private bool isUp = false;
     private bool isDown = false;
-    
-    private bool isInRoom = false; // 스핏이 방 안이면 true
+
+    private bool isInRoom;
     [NonSerialized]
-    public bool isHiding = false; // true면 숨고 있는 중
+    public bool isHiding;
     float touchRange = 0.5f; // 터치(클릭) 허용 범위
 
-    
+
     private GameObject hidedDoor;
     private Vector3 originPos;
     private CharacterManager speat;
@@ -293,24 +295,27 @@ public class SpeatAbility : MonoBehaviour
         if (!isPassingHor && !isPassingVerUp && !isPassingVerDown && isAbility)
         {
             var joyStick = JoystickController.instance.joystick;
-            if (joyStick.Horizontal < -0.7f && Vector3.Distance(cenPos, wallFwdFace.point)< 0.5f)
+            if (joyStick.Horizontal < -0.7f && Vector3.Distance(cenPos, wallFwdFace.point) < 0.5f)
             {
                 speat.gameObject.layer = 9; //벽을 통과
                 speat.moveHorDir = Vector3.left * 6;
                 isPassingHor = true;
             }
+
             if (joyStick.Horizontal > 0.7f && Vector3.Distance(cenPos, wallFwdFace.point) < 0.5f)
             {
                 speat.gameObject.layer = 9; //벽을 통과
                 speat.moveHorDir = Vector3.right * 6;
                 isPassingHor = true;
             }
+
             if (joyStick.Vertical < -0.7f)
             {
                 speat.gameObject.layer = 10; //벽을 통과
                 speat.moveVerDir = Vector3.down * 6;
                 isPassingVerDown = true;
             }
+
             if (joyStick.Vertical > 0.7f)
             {
                 speat.gameObject.layer = 10; //벽을 통과
@@ -327,7 +332,7 @@ public class SpeatAbility : MonoBehaviour
         {
             return;
         }
-        
+
         if (ObjectClicker.instance.TouchDisplay(out RaycastHit[] hits))
         {
             foreach (var hit in hits)
@@ -336,6 +341,7 @@ public class SpeatAbility : MonoBehaviour
                 {
                     continue;
                 }
+
                 var target = hit.collider.transform.position;
                 if (!isInRoom)
                 {
@@ -357,11 +363,18 @@ public class SpeatAbility : MonoBehaviour
 
     private IEnumerator Hide(Vector3 targetPos, GameObject door)
     {
+        if (!isInRoom)
+        {
+            var canvasGroup = GetComponent<CanvasGroup>();
+            canvasGroup.alpha = 0.6f;
+            canvasGroup.interactable = false;
+        }
+
         var waitForFixedUpdate = new WaitForFixedUpdate();
         isHiding = true;
         door.GetComponent<OutlineClickObj>().IsClickEnable = false;
         speat.PickUpCharacter();
-        
+
         Quaternion rotation;
         if (isInRoom)
         {
@@ -377,11 +390,12 @@ public class SpeatAbility : MonoBehaviour
             targetPos.z += 2f;
             Debug.Log("앞에서 뒤로");
         }
+
         speat.transform.rotation = rotation;
-        
-        
+
+
         speat.anim.SetFloat("Speed", 1);
-        
+
         var t = 0f;
         var speed = 0.5f;
         var charPos = speat.transform.position;
@@ -392,11 +406,18 @@ public class SpeatAbility : MonoBehaviour
             speat.transform.position = Vector3.Lerp(charPos, targetPos, t); // 마지막 파라미터는 숨을 때 속도!
             yield return waitForFixedUpdate;
         }
+
         speat.anim.SetFloat("Speed", 0f);
 
+        if(isInRoom)
+        {
+            var canvasGroup = GetComponent<CanvasGroup>();
+            canvasGroup.alpha = 1f;
+            canvasGroup.interactable = true;
+        }
+        
         isInRoom = !isInRoom;
-        
-        
+
         door.GetComponent<OutlineClickObj>().IsClickEnable = true;
         isHiding = false;
         speat.PutDownCharacter();
