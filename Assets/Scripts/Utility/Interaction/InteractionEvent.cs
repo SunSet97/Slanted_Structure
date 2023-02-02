@@ -36,7 +36,6 @@ namespace Utility.Interaction
             Move,
             Play,
             Interactable,
-            InteractableList,
             Custom
         }
 
@@ -58,6 +57,7 @@ namespace Utility.Interaction
         {
             public InteractionObject interactObj;
             public bool interactable;
+            public int index;
         }
         [Serializable]
         public struct InteractList
@@ -146,8 +146,8 @@ namespace Utility.Interaction
         {
             foreach (var t in interactObjs.interacts)
             {
-                t.interactObj.enabled = t.interactable;
-                // t.interactObj.
+                var interaction = t.interactObj.GetInteraction(t.index);
+                interaction.isInteractable = t.interactable;
             }
         }
     }
