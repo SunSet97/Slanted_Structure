@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using CommonScript;
 using Data;
 using UnityEngine;
 using UnityEngine.Events;
+using Utility.Interaction;
 using static Data.CustomEnum;
 
 namespace Utility.System
@@ -41,6 +43,8 @@ namespace Utility.System
         internal AssetBundle dialogueDB;
 
         private UnityAction onLoadMap;
+        
+        private List<InteractionObject> _interactionObjects;
 
         private void Awake()
         {
@@ -66,6 +70,8 @@ namespace Utility.System
 
             mapGenerate = GameObject.Find("MapGenerate").transform;
 
+            _interactionObjects = new List<InteractionObject>();
+            
             cam = Camera.main;
             speat.Init();
             oun.Init();
@@ -202,6 +208,7 @@ namespace Utility.System
             var nextMap = Array.Find(storymaps, mapData => mapData.mapCode.Equals(mapCode));
             Debug.Log(mapCode);
             Debug.Log(nextMap);
+            _interactionObjects.Clear();
             currentMap = Instantiate(nextMap, mapGenerate);
             currentMap.Initialize();
             SetByChangedMap();
@@ -227,6 +234,11 @@ namespace Utility.System
         public void AddOnLoadMap(UnityAction onLoadMap)
         {
             this.onLoadMap += onLoadMap;
+        }
+
+        public void AddInteractor(InteractionObject interactionObject)
+        {
+            _interactionObjects.Add(interactionObject);
         }
 
         private void SetByChangedMap()
