@@ -7,7 +7,18 @@ namespace Data
 {
     [Serializable]
     public class DialogueData
-    {
+    { 
+        public int dialogueIdx;
+        
+        public Dialogue[] dialogues;
+        
+        [NonSerialized]
+        public CamInfo CamInfo;
+        
+        public UnityAction<int> ChooseAction;
+        public UnityAction DialoguePrevAction;
+        public UnityAction DialogueEndAction;
+        
         public DialogueData()
         {
             dialogues = Array.Empty<Dialogue>();
@@ -51,17 +62,6 @@ namespace Data
             DialoguePrevAction = null;
             DialogueEndAction = null;
         }
-
-        public int dialogueIdx;
-        
-        public Dialogue[] dialogues;
-        
-        [NonSerialized]
-        public CamInfo CamInfo;
-        
-        public UnityAction<int> ChooseAction;
-        public UnityAction DialoguePrevAction;
-        public UnityAction DialogueEndAction;
     }
 
     [Serializable]

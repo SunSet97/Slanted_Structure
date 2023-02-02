@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using Data;
 using UnityEngine;
-using Utility.System;
+using Utility.Core;
 
 public class PimpGuestMoving : MonoBehaviour
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
-using Utility.System;
+using Utility.Core;
 
 public class Event_IntoTheAzit : MonoBehaviour
 {

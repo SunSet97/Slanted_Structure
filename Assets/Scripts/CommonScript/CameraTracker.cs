@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-using Utility.System;
+using Utility.Core;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif

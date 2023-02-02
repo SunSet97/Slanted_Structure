@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
+using Utility.Core;
 using Utility.Property;
-using Utility.System;
 
 namespace Utility.Interaction
 {

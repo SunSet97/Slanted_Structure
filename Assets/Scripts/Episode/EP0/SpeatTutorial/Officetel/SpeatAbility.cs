@@ -3,7 +3,7 @@ using System.Collections;
 using CommonScript;
 using UnityEngine;
 using UnityEngine.UI;
-using Utility.System;
+using Utility.Core;
 using static Data.CustomEnum;
 
 public class SpeatAbility : MonoBehaviour
