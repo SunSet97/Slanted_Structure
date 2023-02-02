@@ -25,15 +25,13 @@ namespace Utility.Interaction
 
         [Header("Continuous 혹은 Dialogue인 경우에만 값을 넣으시오")]
         public TextAsset jsonFile;
-
+        
+        // Stack<TaskData>, pos, rot
+        // public InteractionEvents taskEndActions;
+        // public InteractionEvents dialogueEndActions;
+        
         [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Game)]
-        [Header("타입이 Game인 경우 게임 오브젝트를 넣으세요")]
         public GameObject gamePlayableGame;
-
-        private Stack<TaskData> jsonTask;
-
-        private UnityAction endDialogueAction;
-        private UnityAction startDialogueAction;
 
         [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
         public DialogueData dialogueData;
@@ -73,7 +71,7 @@ namespace Utility.Interaction
         public GameObject[] cinematics;
         public GameObject[] inGames;
 
-        [Header("반복 사용 여부")]
+        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
         public bool isLoopDialogue;
     
         [Header("디버깅 전용 TaskData")]
@@ -81,7 +79,12 @@ namespace Utility.Interaction
 
         [NonSerialized]
         public GameObject ExclamationMark;
-        private bool isInteracted;
+        
+        private Stack<TaskData> _jsonTask;
+
+        private UnityAction _endDialogueAction;
+        private UnityAction _startDialogueAction;
+        private bool _isInteracted;
 
         private void PushTask(string jsonString)
         {
@@ -90,15 +93,21 @@ namespace Utility.Interaction
             {
                 tasks = JsontoString.FromJsonArray<Task>(jsonString)
             };
-            jsonTask.Push(taskData);
+            _jsonTask.Push(taskData);
             DialogueController.instance.taskData = taskData;
         }
 
         private void Awake()
         {
-            if (Application.isPlaying && interactionMethod == InteractionMethod.OnChangeMap)
+            if (!Application.isPlaying)
             {
-                Debug.Log("하이요");
+                return;
+            }
+            
+            DataController.instance.AddInteractor(this);
+            
+            if (interactionMethod == InteractionMethod.OnChangeMap)
+            {
                 DataController.instance.AddOnLoadMap(StartInteraction);
             }
         }
@@ -156,7 +165,7 @@ namespace Utility.Interaction
         /// <param name="unityAction">사용할 함수를 만들어서 넣으세요</param>
         public void SetDialogueStartEvent(UnityAction unityAction)
         {
-            startDialogueAction += unityAction;
+            _startDialogueAction += unityAction;
         }
 
         /// <summary>
@@ -165,7 +174,7 @@ namespace Utility.Interaction
         /// <param name="unityAction">사용할 함수를 만들어서 넣으세요</param>
         public void SetDialogueEndEvent(UnityAction unityAction)
         {
-            endDialogueAction += unityAction;
+            _endDialogueAction += unityAction;
         }
 
         /// <summary>
@@ -174,9 +183,9 @@ namespace Utility.Interaction
         /// <param name="index">선택지 번호, 1번부터 시작</param>
         private void ChoiceEvent(int index)
         {
-            Debug.Log(jsonTask);
-            Debug.Log(jsonTask.Count);
-            TaskData currentTaskData = jsonTask.Peek();
+            Debug.Log(_jsonTask);
+            Debug.Log(_jsonTask.Count);
+            TaskData currentTaskData = _jsonTask.Peek();
             var tempTaskIndex = currentTaskData.taskIndex;
             var choiceLen = int.Parse(currentTaskData.tasks[tempTaskIndex].nextFile);
             Debug.Log(choiceLen);
@@ -246,7 +255,7 @@ namespace Utility.Interaction
         /// </summary>
         protected void StartInteraction()
         {
-            if (jsonTask == null)
+            if (_jsonTask == null)
             {
                 TaskStart();
             }
@@ -266,14 +275,14 @@ namespace Utility.Interaction
                 
                 if (jsonFile)
                 {
-                    if (startDialogueAction != null)
+                    if (_startDialogueAction != null)
                     {
-                        DialogueController.instance.SetDialouguePrevAction(startDialogueAction);
+                        DialogueController.instance.SetDialouguePrevAction(_startDialogueAction);
                     }
 
-                    if (endDialogueAction != null)
+                    if (_endDialogueAction != null)
                     {
-                        DialogueController.instance.SetDialougueEndAction(endDialogueAction);
+                        DialogueController.instance.SetDialougueEndAction(_endDialogueAction);
                     }
 
                     foreach (InteractionEvent endAction in dialogueEndAction)
@@ -318,7 +327,7 @@ namespace Utility.Interaction
                         }
                     }
                 }
-                if (jsonTask.Count == 0)
+                if (_jsonTask.Count == 0)
                 {
                     Debug.LogError("task파일 없음 오류오류");
                 }
@@ -369,14 +378,14 @@ namespace Utility.Interaction
                 return;
             }
             Debug.Log("Task Stack 시작");
-            jsonTask = new Stack<TaskData>();
+            _jsonTask = new Stack<TaskData>();
             PushTask(jsonFile.text);
         }
 
         private void StackNewTask(string jsonRoute)
         {
             DialogueController.instance.taskData = null;
-            jsonTask = new Stack<TaskData>();
+            _jsonTask = new Stack<TaskData>();
             GC.Collect();
             PushTask(jsonRoute);
             StopAllCoroutines();
@@ -385,7 +394,7 @@ namespace Utility.Interaction
 
         private IEnumerator TaskCoroutine()
         {
-            TaskData currentTaskData = jsonTask.Peek();
+            TaskData currentTaskData = _jsonTask.Peek();
             if (!currentTaskData.isContinue)
             {
                 Debug.LogError("멈춘 상태에서 실행 시도함");
@@ -441,7 +450,7 @@ namespace Utility.Interaction
                     case TaskContentType.TempDialogue:
                         //선택지에서 대화를 고른 경우
                         Debug.Log("선택지 선택 - 단순 대화");
-                        jsonTask.Peek().isContinue = true;
+                        _jsonTask.Peek().isContinue = true;
                         yield break;
                     // TaskEnd 보다는 TaskReset이라는 말이 어울린다
                     // 애매하네
@@ -449,11 +458,11 @@ namespace Utility.Interaction
                     case TaskContentType.TaskReset:
                         if (interactionMethod == InteractionMethod.Touch)
                         {
-                            isInteracted = false;
+                            _isInteracted = false;
                         }
                     
-                        jsonTask.Pop();
-                        if (jsonTask.Count > 0)
+                        _jsonTask.Pop();
+                        if (_jsonTask.Count > 0)
                         {
                             Debug.LogError("Task 엑셀 관련 오류");
                         }
@@ -604,12 +613,12 @@ namespace Utility.Interaction
 
             if (currentTaskData.tasks.Length == currentTaskData.taskIndex)
             {
-                if (jsonTask.Count > 1)
+                if (_jsonTask.Count > 1)
                 {
                     //선택지인 경우
                     DialogueController.instance.taskData = null; // null이 아닌 상태에서 모든 task가 끝나면 없어야되는데 남아있음
-                    jsonTask.Pop();
-                    jsonTask.Peek().isContinue = true;
+                    _jsonTask.Pop();
+                    _jsonTask.Peek().isContinue = true;
                 }
                 else
                 {
@@ -680,13 +689,13 @@ namespace Utility.Interaction
 
         bool IClickable.IsClickEnable
         {
-            get =>  enabled && interactionMethod == InteractionMethod.Touch && !isInteracted;
+            get =>  enabled && interactionMethod == InteractionMethod.Touch && !_isInteracted;
             set
             {
                 if (value)
                 {
                     interactionMethod = InteractionMethod.Touch;
-                    isInteracted = false;
+                    _isInteracted = false;
                 }
                 else
                 {
@@ -697,8 +706,8 @@ namespace Utility.Interaction
 
         bool IClickable.IsClicked
         {
-            get => isInteracted;
-            set => isInteracted = value;
+            get => _isInteracted;
+            set => _isInteracted = value;
         }
 
         void IClickable.ActiveObjectClicker(bool isActive)
@@ -721,7 +730,7 @@ namespace Utility.Interaction
 
         bool IClickable.GetIsClicked()
         {
-            return isInteracted;
+            return _isInteracted;
         }
 
         void IClickable.Click()
@@ -731,7 +740,7 @@ namespace Utility.Interaction
                 return;
             }
         
-            isInteracted = !isLoopDialogue;
+            _isInteracted = !isLoopDialogue;
 
             ((IClickable) this).ActiveObjectClicker(false);
 

@@ -305,7 +305,7 @@ namespace Utility.System
             }
         }
 
-        void Update()
+        private void Update()
         {
             if (!Application.isPlaying)
             {
@@ -319,8 +319,6 @@ namespace Utility.System
 
         public void Initialize()
         {
-            DataController.instance.currentMap = this;
-
             if (name != mapCode)
             {
                 name = mapCode;
@@ -330,7 +328,6 @@ namespace Utility.System
             {
                 ui.name = map.name;
 
-                Debug.Log(CanvasControl.instance.mapUI);
                 ui.SetParent(CanvasControl.instance.mapUI);
                 ui.offsetMax = new Vector2(0, 0);
                 ui.offsetMin = new Vector2(0, 0);
