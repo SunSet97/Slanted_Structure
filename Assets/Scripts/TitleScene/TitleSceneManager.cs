@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Utility.Core;
 using Utility.SceneLoader;
-using Utility.System;
 
 public class TitleSceneManager : MonoBehaviour
 {

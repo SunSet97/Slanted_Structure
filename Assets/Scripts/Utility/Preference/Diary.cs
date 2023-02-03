@@ -2,8 +2,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Utility.Core;
 using Utility.Save;
-using Utility.System;
 
 namespace Utility.Preference
 {

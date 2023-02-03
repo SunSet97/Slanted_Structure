@@ -1,6 +1,6 @@
 ﻿using Play;
 using UnityEngine;
-using Utility.System;
+using Utility.Core;
 
 public class PimpGameManager : MonoBehaviour, IGamePlayable
 {

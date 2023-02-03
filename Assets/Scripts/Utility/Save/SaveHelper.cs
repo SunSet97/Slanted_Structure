@@ -1,6 +1,7 @@
-﻿using Data;
+﻿using System.Collections.Generic;
+using Data;
 using UnityEngine;
-using Utility.System;
+using Utility.Core;
 
 namespace Utility.Save
 {
@@ -32,6 +33,15 @@ namespace Utility.Save
             SaveData saveData = new SaveData();
             saveData.mapCode = DataController.instance.mapCode;
             saveData.charData = DataController.instance.charData;
+
+            saveData.InteractionDatas = new List<InteractionData>();
+            // foreach (var interactor in DataController.instance.currentMap.interactionObjects)
+            // {
+            //     saveData.InteractionDatas.Add(new InteractionData
+            //     {
+            //     
+            //     });
+            // }
             
             return saveData;
         }

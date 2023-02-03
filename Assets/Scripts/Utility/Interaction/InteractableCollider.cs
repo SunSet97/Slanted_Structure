@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
+using Utility.Core;
 using Utility.Property;
-using Utility.System;
 
 namespace Utility.Interaction
 {
@@ -33,7 +33,7 @@ namespace Utility.Interaction
 
         private void Update()
         {
-            if (useExclamationMark && interactionObject.ExclamationMark.activeSelf)
+            if (interactionObject.GetInteraction().isInteractable && useExclamationMark && interactionObject.ExclamationMark.activeSelf)
             {
                 interactionObject.ExclamationMark.transform.position =
                     (Vector3) markOffset + DataController.instance.cam.WorldToScreenPoint(interactionObject.transform.position);

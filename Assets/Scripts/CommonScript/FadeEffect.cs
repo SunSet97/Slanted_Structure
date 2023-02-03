@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using Utility.System;
+using Utility.Core;
 
 public class FadeEffect : MonoBehaviour
 {

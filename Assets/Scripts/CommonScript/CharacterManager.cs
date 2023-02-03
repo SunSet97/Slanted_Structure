@@ -1,6 +1,6 @@
 ﻿using Move;
 using UnityEngine;
-using Utility.System;
+using Utility.Core;
 using static Data.CustomEnum;
 
 public class CharacterManager : MonoBehaviour, IMovable

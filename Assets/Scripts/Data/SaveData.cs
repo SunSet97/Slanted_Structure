@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Data
 {
@@ -8,5 +9,7 @@ namespace Data
         public string mapCode;
 
         public CharData charData;
+
+        public List<InteractionData> InteractionDatas;
     }
 }
