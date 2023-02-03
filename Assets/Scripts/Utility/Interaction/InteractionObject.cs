@@ -470,8 +470,8 @@ namespace Utility.Interaction
 
         private IEnumerator TaskCoroutine(int index = 0)
         {
-            var tInteractor = GetInteraction(index);
-            TaskData currentTaskData = tInteractor.JsonTask.Peek();
+            var tInteraction = GetInteraction(index);
+            TaskData currentTaskData = tInteraction.JsonTask.Peek();
             if (!currentTaskData.isContinue)
             {
                 Debug.LogError("멈춘 상태에서 실행 시도함");
@@ -528,24 +528,24 @@ namespace Utility.Interaction
                     case TaskContentType.TempDialogue:
                         //선택지에서 대화를 고른 경우
                         Debug.Log("선택지 선택 - 단순 대화");
-                        tInteractor.JsonTask.Peek().isContinue = true;
+                        tInteraction.JsonTask.Peek().isContinue = true;
                         yield break;
                     // TaskEnd 보다는 TaskReset이라는 말이 어울린다
                     // 애매하네
                     //TaskEnd, TaskReset - TaskEnd를 할 때 Task를 재사용 가능하도록 하냐 Task를 재사용하지 못하도록 하냐..
                     case TaskContentType.TaskReset:
-                        if (tInteractor.interactionMethod == InteractionMethod.Touch)
+                        if (tInteraction.interactionMethod == InteractionMethod.Touch)
                         {
-                            tInteractor.IsInteracted = false;
+                            tInteraction.IsInteracted = false;
                         }
 
-                        tInteractor.JsonTask.Pop();
-                        if (tInteractor.JsonTask.Count > 0)
+                        tInteraction.JsonTask.Pop();
+                        if (tInteraction.JsonTask.Count > 0)
                         {
                             Debug.LogError("Task 엑셀 관련 오류");
                         }
 
-                        foreach (var taskEndAction in tInteractor.taskEndActions.interactionEvents)
+                        foreach (var taskEndAction in tInteraction.taskEndActions.interactionEvents)
                         {
                             taskEndAction.Action();
                         }
@@ -587,12 +587,12 @@ namespace Utility.Interaction
                         break;
                     case TaskContentType.Cinematic:
                         currentTaskData.isContinue = false;
-                        foreach (var cinematic in tInteractor.cinematics)
+                        foreach (var cinematic in tInteraction.cinematics)
                         {
                             cinematic.SetActive(true);
                         }
 
-                        foreach (var inGame in tInteractor.inGames)
+                        foreach (var inGame in tInteraction.inGames)
                         {
                             inGame.SetActive(false);
                         }
@@ -600,7 +600,7 @@ namespace Utility.Interaction
                         JoystickController.instance.StopSaveLoadJoyStick(true);
 
                         PlayableDirector timeline = null;
-                        foreach (var t in tInteractor.timelines)
+                        foreach (var t in tInteraction.timelines)
                         {
                             if (currentTask.name == t.playableAsset.name)
                             {
@@ -608,9 +608,9 @@ namespace Utility.Interaction
                             }
                         }
 
-                        if (timeline == null && tInteractor.timelines.Length == 1)
+                        if (timeline == null && tInteraction.timelines.Length == 1)
                         {
-                            timeline = tInteractor.timelines[0];
+                            timeline = tInteraction.timelines[0];
                         }
                         else
                         {
@@ -658,12 +658,12 @@ namespace Utility.Interaction
                         // }
                         JoystickController.instance.StopSaveLoadJoyStick(false);
                         currentTaskData.isContinue = true;
-                        foreach (var cinematic in tInteractor.cinematics)
+                        foreach (var cinematic in tInteraction.cinematics)
                         {
                             cinematic.SetActive(false);
                         }
 
-                        foreach (var inGame in tInteractor.inGames)
+                        foreach (var inGame in tInteraction.inGames)
                         {
                             inGame.SetActive(true);
                         }
@@ -693,16 +693,16 @@ namespace Utility.Interaction
 
             if (currentTaskData.tasks.Length == currentTaskData.taskIndex)
             {
-                if (tInteractor.JsonTask.Count > 1)
+                if (tInteraction.JsonTask.Count > 1)
                 {
                     //선택지인 경우
                     DialogueController.instance.taskData = null; // null이 아닌 상태에서 모든 task가 끝나면 없어야되는데 남아있음
-                    tInteractor.JsonTask.Pop();
-                    tInteractor.JsonTask.Peek().isContinue = true;
+                    tInteraction.JsonTask.Pop();
+                    tInteraction.JsonTask.Peek().isContinue = true;
                 }
                 else
                 {
-                    foreach (var taskEndAction in tInteractor.taskEndActions.interactionEvents)
+                    foreach (var taskEndAction in tInteraction.taskEndActions.interactionEvents)
                     {
                         taskEndAction.Action();
                     }
@@ -813,11 +813,11 @@ namespace Utility.Interaction
         {
             get
             {
-                var tInteractor = GetInteraction();
-                if (tInteractor.jsonFile)
+                var tInteraction = GetInteraction();
+                if (tInteraction.jsonFile)
                 {
-                    return tInteractor.isInteractable && enabled &&
-                           tInteractor.interactionMethod == InteractionMethod.Touch && !tInteractor.IsInteracted;
+                    return tInteraction.isInteractable && enabled &&
+                           tInteraction.interactionMethod == InteractionMethod.Touch && !tInteraction.IsInteracted;
                 }
 
                 return false;
@@ -826,20 +826,20 @@ namespace Utility.Interaction
             {
                 if (value)
                 {
-                    var tInteractor = GetInteraction();
-                    if (tInteractor.jsonFile)
+                    var tInteraction = GetInteraction();
+                    if (tInteraction.jsonFile)
                     {
-                        tInteractor.interactionMethod = InteractionMethod.Touch;
-                        tInteractor.IsInteracted = false;
-                        tInteractor.isInteractable = true;
+                        tInteraction.interactionMethod = InteractionMethod.Touch;
+                        tInteraction.IsInteracted = false;
+                        tInteraction.isInteractable = true;
                     }
                 }
                 else
                 {
-                    var tInteractor = GetInteraction();
-                    if (tInteractor.jsonFile)
+                    var tInteraction = GetInteraction();
+                    if (tInteraction.jsonFile)
                     {
-                        tInteractor.interactionMethod = InteractionMethod.No;
+                        tInteraction.interactionMethod = InteractionMethod.No;
                     }
                 }
             }
@@ -849,20 +849,20 @@ namespace Utility.Interaction
         {
             get
             {
-                var tInteractor = GetInteraction();
-                if (tInteractor.jsonFile)
+                var tInteraction = GetInteraction();
+                if (tInteraction.jsonFile)
                 {
-                    return tInteractor.IsInteracted;
+                    return tInteraction.IsInteracted;
                 }
 
                 return false;
             }
             set
             {
-                var tInteractor = GetInteraction();
-                if (tInteractor.jsonFile)
+                var tInteraction = GetInteraction();
+                if (tInteraction.jsonFile)
                 {
-                    tInteractor.IsInteracted = value;
+                    tInteraction.IsInteracted = value;
                 }
             }
         }
@@ -887,10 +887,10 @@ namespace Utility.Interaction
 
         bool IClickable.GetIsClicked()
         {
-            var tInteractor = GetInteraction();
-            if (tInteractor.jsonFile)
+            var tInteraction = GetInteraction();
+            if (tInteraction.jsonFile)
             {
-                return tInteractor.IsInteracted;
+                return tInteraction.IsInteracted;
             }
 
             return false;
@@ -903,10 +903,10 @@ namespace Utility.Interaction
                 return;
             }
 
-            var tInteractor = GetInteraction();
-            if (tInteractor.jsonFile)
+            var tInteraction = GetInteraction();
+            if (tInteraction.jsonFile)
             {
-                tInteractor.IsInteracted = !tInteractor.isLoopDialogue;
+                tInteraction.IsInteracted = !tInteraction.isLoopDialogue;
             }
 
             ((IClickable) this).ActiveObjectClicker(false);
