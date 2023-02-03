@@ -805,6 +805,7 @@ namespace Utility.Interaction
                 interaction = GetInteraction(),
                 interactIndex = interactIndex
             };
+            
             return interactionData;
         }
 
