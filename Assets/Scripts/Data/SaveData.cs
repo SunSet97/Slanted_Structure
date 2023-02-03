@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utility.Interaction;
 
 namespace Data
 {
@@ -10,6 +11,6 @@ namespace Data
 
         public CharData charData;
 
-        public List<InteractionData> InteractionDatas;
+        public List<InteractionData> interactionDatas;
     }
 }

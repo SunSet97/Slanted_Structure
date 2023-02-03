@@ -13,7 +13,7 @@ namespace Utility.Interaction
             {
                 return;
             }
-        
+
             Debug.Log(gameObject.name + "트리거  " + other.transform.gameObject + isActivated);
             isActivated = true;
             StartInteraction();
