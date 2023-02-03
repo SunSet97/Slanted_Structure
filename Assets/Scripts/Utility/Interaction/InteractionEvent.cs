@@ -12,8 +12,7 @@ namespace Utility.Interaction
     [Serializable]
     public class InteractionEvents
     {
-        [SerializeField]
-        public List<InteractionEvent> interactionEvents;
+        [SerializeField] public List<InteractionEvent> interactionEvents;
 
         public void AddInteraction(UnityAction unityAction)
         {
@@ -24,7 +23,7 @@ namespace Utility.Interaction
             });
         }
     }
-    
+
     [Serializable]
     public class InteractionEvent
     {
@@ -40,18 +39,20 @@ namespace Utility.Interaction
         }
 
         public EventType eventType;
+
         [Serializable]
         public struct Act
         {
             public GameObject activeObject;
             public bool activeSelf;
         }
+
         [Serializable]
         public struct Active
         {
             public Act[] actives;
         }
-    
+
         [Serializable]
         public struct Interact
         {
@@ -59,12 +60,13 @@ namespace Utility.Interaction
             public bool interactable;
             public int index;
         }
+
         [Serializable]
         public struct InteractList
         {
             public Interact[] interacts;
         }
-    
+
         [ConditionalHideInInspector("eventType", EventType.Clear)]
         public CheckMapClear clearBox;
 
@@ -73,13 +75,13 @@ namespace Utility.Interaction
 
         [ConditionalHideInInspector("eventType", EventType.Move)]
         public MovableList movables;
-        
+
         [ConditionalHideInInspector("eventType", EventType.Play)]
         public PlayableList playableList;
 
         [ConditionalHideInInspector("eventType", EventType.Interactable)]
         public InteractList interactObjs;
-        
+
         [NonSerialized] public UnityAction UnityAction;
 
         public void Action()
@@ -106,15 +108,15 @@ namespace Utility.Interaction
                     break;
             }
         }
-    
-    
+
+
 
         private void ClearEvent()
         {
             Debug.Log($"Clear Event - {clearBox.gameObject}");
             clearBox.Clear();
         }
-    
+
         private void ActiveEvent()
         {
             foreach (var t in activeObjs.actives)

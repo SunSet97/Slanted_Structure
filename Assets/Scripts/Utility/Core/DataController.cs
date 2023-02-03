@@ -44,7 +44,7 @@ namespace Utility.Core
 
         private UnityAction onLoadMap;
         
-        private List<InteractionObject> _interactionObjects;
+        [NonSerialized] public List<InteractionObject> InteractionObjects;
 
         private void Awake()
         {
@@ -70,7 +70,7 @@ namespace Utility.Core
 
             mapGenerate = GameObject.Find("MapGenerate").transform;
 
-            _interactionObjects = new List<InteractionObject>();
+            InteractionObjects = new List<InteractionObject>();
             
             cam = Camera.main;
             speat.Init();
@@ -208,7 +208,7 @@ namespace Utility.Core
             var nextMap = Array.Find(storymaps, mapData => mapData.mapCode.Equals(mapCode));
             Debug.Log(mapCode);
             Debug.Log(nextMap);
-            _interactionObjects.Clear();
+            InteractionObjects.Clear();
             currentMap = Instantiate(nextMap, mapGenerate);
             currentMap.Initialize();
             SetByChangedMap();
@@ -238,7 +238,7 @@ namespace Utility.Core
 
         public void AddInteractor(InteractionObject interactionObject)
         {
-            _interactionObjects.Add(interactionObject);
+            InteractionObjects.Add(interactionObject);
         }
 
         private void SetByChangedMap()

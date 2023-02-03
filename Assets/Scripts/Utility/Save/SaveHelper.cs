@@ -2,13 +2,14 @@
 using Data;
 using UnityEngine;
 using Utility.Core;
+using Utility.Interaction;
 
 namespace Utility.Save
 {
     public class SaveHelper : MonoBehaviour
     {
         private static SaveHelper _instance;
-        public static SaveHelper instance
+        public static SaveHelper Instance
         {
             get
             {
@@ -30,18 +31,18 @@ namespace Utility.Save
         }
         public SaveData GetSaveData()
         {
-            SaveData saveData = new SaveData();
-            saveData.mapCode = DataController.instance.mapCode;
-            saveData.charData = DataController.instance.charData;
+            SaveData saveData = new SaveData
+            {
+                mapCode = DataController.instance.mapCode,
+                charData = DataController.instance.charData,
+                interactionDatas = new List<InteractionData>()
+            };
 
-            saveData.InteractionDatas = new List<InteractionData>();
-            // foreach (var interactor in DataController.instance.currentMap.interactionObjects)
-            // {
-            //     saveData.InteractionDatas.Add(new InteractionData
-            //     {
-            //     
-            //     });
-            // }
+            foreach (var interaction in DataController.instance.InteractionObjects)
+            {
+                var interactionData = interaction.GetInteractionData();
+                saveData.interactionDatas.Add(interactionData);
+            }
             
             return saveData;
         }
