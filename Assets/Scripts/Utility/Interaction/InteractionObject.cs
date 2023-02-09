@@ -19,12 +19,23 @@ using static Data.CustomEnum;
 namespace Utility.Interaction
 {
     [Serializable]
+    public class SerializedInteractionData
+    {
+        public bool isInteractable = true;
+
+        [NonSerialized] public Stack<TaskData> JsonTask;
+
+        [Header("디버깅용")]
+        [SerializeField] internal bool isInteracted;
+    }
+    
+    [Serializable]
     public class Interaction
     {
-        [Header("인터렉션 방식")] public InteractionPlayType interactionPlayType;
-
         [Header("Continuous 혹은 Dialogue인 경우에만 값을 넣으시오")]
         public TextAsset jsonFile;
+        
+        [Header("인터렉션 방식")] public InteractionPlayType interactionPlayType;
 
         [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Game)]
         public GameObject gamePlayableGame;
@@ -49,7 +60,6 @@ namespace Utility.Interaction
         [Header("카메라 뷰")] public bool isViewChange;
 
         [ConditionalHideInInspector("isViewChange")]
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
         public CamInfo dialogueCamera;
 
         [Header("시네마틱")] public PlayableDirector[] timelines;
@@ -57,23 +67,41 @@ namespace Utility.Interaction
         public GameObject[] cinematics;
         public GameObject[] inGames;
 
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
+        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)] [Space(10)]
         public bool isLoopDialogue;
+        
+        [Space(10)] public bool isContinue;
+        
+        [Space(10)] public SerializedInteractionData serializedInteractionData;
 
-        public bool isInteractable = true;
-
-        [Header("디버깅 전용 TaskData")] public List<TaskData> debugTaskData;
-
-        [NonSerialized] public Stack<TaskData> JsonTask;
-
-        [NonSerialized] public bool IsInteracted;
+        [Header("디버깅 전용 TaskData")] [Space(10)]
+        public List<TaskData> debugTaskData;
+        
+        public Interaction()
+        {
+            dialogueStartActions = new InteractionEvents
+            {
+                interactionEvents = new List<InteractionEvent>()
+            };
+            dialogueEndActions = new InteractionEvents
+            {
+                interactionEvents = new List<InteractionEvent>()
+            };
+            taskEndActions = new InteractionEvents
+            {
+                interactionEvents = new List<InteractionEvent>()
+            };
+            cinematicEndAction = new InteractionEvents
+            {
+                interactionEvents = new List<InteractionEvent>()
+            };
+        }
     }
 
     [ExecuteInEditMode]
     public class InteractionObject : MonoBehaviour, IClickable
     {
-        public Interaction[] interactions;
-        public Interaction interaction;
+        public List<Interaction> interactions;
 
         [Header("인터렉션 방식")] [Space(40)] public InteractionPlayType interactionPlayType;
 
@@ -110,10 +138,11 @@ namespace Utility.Interaction
 
         [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
         public bool isLoopDialogue;
+        
+        [SerializeField] private bool isInteractable = true;
 
-        [Header("디버깅 전용 TaskData")] public List<TaskData> debugTaskData;
-
-        [Header("아웃라인 설정")] [SerializeField] private bool useOutline;
+        [Header("아웃라인 설정")] [Space(20)] [SerializeField]
+        private bool useOutline;
 
         [ConditionalHideInInspector("useOutline")] [SerializeField]
         private OutlineColor color;
@@ -135,42 +164,54 @@ namespace Utility.Interaction
             {
                 tasks = JsontoString.FromJsonArray<Task>(jsonString)
             };
-            var tInteraction = GetInteraction();
-            tInteraction.JsonTask.Push(taskData);
+            var interaction = GetInteraction();
+            interaction.serializedInteractionData.JsonTask.Push(taskData);
             DialogueController.instance.taskData = taskData;
         }
 
         private void Awake()
         {
-            interaction.interactionPlayType = interactionPlayType;
-            interaction.jsonFile = jsonFile;
-
-            interaction.isLoopDialogue = isLoopDialogue;
-
-            interaction.interactionMethod = interactionMethod;
-
-            if (dialogueEndActions.interactionEvents.Count > 0)
+            Interaction interaction;
+            if (interactions.Count == 0)
             {
-                interaction.dialogueEndActions = dialogueEndActions;
-            }
-            else
-            {
-                interaction.dialogueEndActions = new InteractionEvents
+                interaction = new Interaction
                 {
-                    interactionEvents = dialogueEndAction.ToList()
+                    interactionPlayType = interactionPlayType,
+                    jsonFile = jsonFile,
+                    isLoopDialogue = isLoopDialogue,
+                    interactionMethod = interactionMethod,
+                    gamePlayableGame = gamePlayableGame,
+                    taskEndActions = taskEndActions,
+                    cinematicEndAction = cinematicEndAction,
+                    isViewChange = isViewChange,
+                    dialogueCamera = dialogueCamera,
+                    cinematics = cinematics,
+                    timelines = timelines,
+                    inGames = inGames
                 };
+                
+                interaction.jsonFile = jsonFile;
+
+                interaction.serializedInteractionData = new SerializedInteractionData
+                {
+                    isInteractable = isInteractable,
+                    isInteracted = false
+                };
+                    
+                if (dialogueEndActions.interactionEvents.Count > 0)
+                {
+                    interaction.dialogueEndActions = dialogueEndActions;
+                }
+                else
+                {
+                    interaction.dialogueEndActions = new InteractionEvents
+                    {
+                        interactionEvents = dialogueEndAction.ToList()
+                    };
+                }
+                
+                interactions.Add(interaction);
             }
-
-            interaction.gamePlayableGame = gamePlayableGame;
-            interaction.taskEndActions = taskEndActions;
-            interaction.cinematicEndAction = cinematicEndAction;
-
-            interaction.isViewChange = isViewChange;
-            interaction.dialogueCamera = dialogueCamera;
-
-            interaction.cinematics = cinematics;
-            interaction.timelines = timelines;
-            interaction.inGames = inGames;
 
             if (!Application.isPlaying)
             {
@@ -179,10 +220,11 @@ namespace Utility.Interaction
 
             DataController.instance.AddInteractor(this);
 
-            var tIteraction = GetInteraction();
-            if (tIteraction.jsonFile)
+            interaction = GetInteraction();
+            
+            if (interaction.jsonFile)
             {
-                if (tIteraction.interactionMethod == InteractionMethod.OnChangeMap)
+                if (interaction.interactionMethod == InteractionMethod.OnChangeMap)
                 {
                     DataController.instance.AddOnLoadMap(StartInteraction);
                 }
@@ -193,18 +235,18 @@ namespace Utility.Interaction
         {
             if (!Application.isPlaying)
             {
-                var tInteraction = GetInteraction();
-                if (tInteraction.interactionPlayType == InteractionPlayType.Dialogue)
+                var interaction = GetInteraction();
+                if (interaction.interactionPlayType == InteractionPlayType.Dialogue)
                 {
-                    tInteraction.dialogueData = new DialogueData
+                    interaction.dialogueData = new DialogueData
                     {
                         dialogues =
-                            JsontoString.FromJsonArray<Dialogue>(tInteraction.jsonFile.text)
+                            JsontoString.FromJsonArray<Dialogue>(interaction.jsonFile.text)
                     };
                 }
-                else if (tInteraction.interactionPlayType == InteractionPlayType.Task)
+                else if (interaction.interactionPlayType == InteractionPlayType.Task)
                 {
-                    tInteraction.debugTaskData = LoadTaskData();
+                    interaction.debugTaskData = LoadTaskData();
                 }
             }
             else
@@ -262,7 +304,7 @@ namespace Utility.Interaction
         /// <param name="index">선택지 번호, 1번부터 시작</param>
         private void ChoiceEvent(int index)
         {
-            TaskData currentTaskData = GetInteraction().JsonTask.Peek();
+            TaskData currentTaskData = GetInteraction().serializedInteractionData.JsonTask.Peek();
             var tempTaskIndex = currentTaskData.taskIndex;
             var choiceLen = int.Parse(currentTaskData.tasks[tempTaskIndex].nextFile);
             Debug.Log(choiceLen);
@@ -333,47 +375,50 @@ namespace Utility.Interaction
         /// </summary>
         protected void StartInteraction()
         {
-            Interaction tInteraction = GetInteraction();
+            var interaction = GetInteraction();
 
-            if (tInteraction.JsonTask == null)
+            if (interaction.serializedInteractionData.JsonTask == null)
             {
-                TaskStart(tInteraction.jsonFile.text);
+                TaskStart(interaction.jsonFile.text);
             }
 
-            if (tInteraction.interactionPlayType == InteractionPlayType.Animation &&
+            if (interaction.interactionPlayType == InteractionPlayType.Animation &&
                 gameObject.GetComponent<Animator>())
             {
                 gameObject.GetComponent<Animator>().Play("Start", 0);
             }
-            else if (tInteraction.interactionPlayType == InteractionPlayType.Dialogue)
+            else if (interaction.interactionPlayType == InteractionPlayType.Dialogue)
             {
                 if (DialogueController.instance.IsTalking)
                 {
                     return;
                 }
+                
+                Debug.Log(interaction.dialogueStartActions);
+                Debug.Log(interaction.dialogueStartActions.interactionEvents);
 
-                foreach (var interactionEvent in tInteraction.dialogueStartActions.interactionEvents)
+                foreach (var interactionEvent in interaction.dialogueStartActions.interactionEvents)
                 {
                     DialogueController.instance.SetDialouguePrevAction(interactionEvent.Action);
                 }
 
-                foreach (var interactionEvent in tInteraction.dialogueEndActions.interactionEvents)
+                foreach (var interactionEvent in interaction.dialogueEndActions.interactionEvents)
                 {
                     DialogueController.instance.SetDialougueEndAction(interactionEvent.Action);
                 }
 
-                DialogueController.instance.StartConversation(tInteraction.jsonFile.text);
+                DialogueController.instance.StartConversation(interaction.jsonFile.text);
             }
-            else if (tInteraction.interactionPlayType == InteractionPlayType.Potal &&
+            else if (interaction.interactionPlayType == InteractionPlayType.Potal &&
                      gameObject.TryGetComponent(out CheckMapClear mapClear))
             {
                 mapClear.Clear();
             }
-            else if (tInteraction.interactionPlayType == InteractionPlayType.Task)
+            else if (interaction.interactionPlayType == InteractionPlayType.Task)
             {
-                if (tInteraction.timelines.Length > 0)
+                if (interaction.timelines.Length > 0)
                 {
-                    foreach (var playableDirector in tInteraction.timelines)
+                    foreach (var playableDirector in interaction.timelines)
                     {
                         if (!playableDirector)
                         {
@@ -398,26 +443,26 @@ namespace Utility.Interaction
                     }
                 }
 
-                if (tInteraction.JsonTask != null && tInteraction.JsonTask.Count == 0)
+                if (interaction.serializedInteractionData.JsonTask != null && interaction.serializedInteractionData.JsonTask.Count == 0)
                 {
                     Debug.LogError("task파일 없음 오류오류");
                 }
 
                 StartCoroutine(TaskCoroutine(interactIndex));
             }
-            else if (tInteraction.interactionPlayType == InteractionPlayType.Game)
+            else if (interaction.interactionPlayType == InteractionPlayType.Game)
             {
-                tInteraction.gamePlayableGame.GetComponent<IGamePlayable>().Play();
+                interaction.gamePlayableGame.GetComponent<IGamePlayable>().Play();
             }
-            else if (tInteraction.interactionPlayType == InteractionPlayType.Cinematic)
+            else if (interaction.interactionPlayType == InteractionPlayType.Cinematic)
             {
-                if (tInteraction.timelines.Length == 1)
+                if (interaction.timelines.Length == 1)
                 {
-                    tInteraction.timelines[0].Play();
-                    tInteraction.timelines[0].stopped += director =>
+                    interaction.timelines[0].Play();
+                    interaction.timelines[0].stopped += director =>
                     {
                         Debug.Log("타임라인 끝");
-                        foreach (var endAction in tInteraction.cinematicEndAction.interactionEvents)
+                        foreach (var endAction in interaction.cinematicEndAction.interactionEvents)
                         {
                             Debug.Log(endAction.eventType);
                             endAction.Action();
@@ -431,7 +476,10 @@ namespace Utility.Interaction
             }
 
 
-            interactIndex = (interactIndex + 1) % interactions.Length;
+            if (interactions.Count > 0)
+            {
+                interactIndex = (interactIndex + 1) % interactions.Count;
+            }
         }
 
         private void OnDrawGizmos()
@@ -447,21 +495,21 @@ namespace Utility.Interaction
 
         private void TaskStart(string json)
         {
-            var tInteraction = GetInteraction();
-            if (tInteraction.jsonFile && tInteraction.interactionPlayType != InteractionPlayType.Task)
+            var interaction = GetInteraction();
+            if (interaction.jsonFile && interaction.interactionPlayType != InteractionPlayType.Task)
             {
                 return;
             }
 
             Debug.Log("Task Stack 시작");
-            tInteraction.JsonTask = new Stack<TaskData>();
+            interaction.serializedInteractionData.JsonTask = new Stack<TaskData>();
             PushTask(json);
         }
 
         private void StackNewTask(string jsonRoute)
         {
             DialogueController.instance.taskData = null;
-            GetInteraction().JsonTask = new Stack<TaskData>();
+            GetInteraction().serializedInteractionData.JsonTask = new Stack<TaskData>();
             GC.Collect();
             PushTask(jsonRoute);
             StopAllCoroutines();
@@ -470,8 +518,8 @@ namespace Utility.Interaction
 
         private IEnumerator TaskCoroutine(int index = 0)
         {
-            var tInteraction = GetInteraction(index);
-            TaskData currentTaskData = tInteraction.JsonTask.Peek();
+            var interaction = GetInteraction(index);
+            TaskData currentTaskData = interaction.serializedInteractionData.JsonTask.Peek();
             if (!currentTaskData.isContinue)
             {
                 Debug.LogError("멈춘 상태에서 실행 시도함");
@@ -528,24 +576,24 @@ namespace Utility.Interaction
                     case TaskContentType.TempDialogue:
                         //선택지에서 대화를 고른 경우
                         Debug.Log("선택지 선택 - 단순 대화");
-                        tInteraction.JsonTask.Peek().isContinue = true;
+                        interaction.serializedInteractionData.JsonTask.Peek().isContinue = true;
                         yield break;
                     // TaskEnd 보다는 TaskReset이라는 말이 어울린다
                     // 애매하네
                     //TaskEnd, TaskReset - TaskEnd를 할 때 Task를 재사용 가능하도록 하냐 Task를 재사용하지 못하도록 하냐..
                     case TaskContentType.TaskReset:
-                        if (tInteraction.interactionMethod == InteractionMethod.Touch)
+                        if (interaction.interactionMethod == InteractionMethod.Touch)
                         {
-                            tInteraction.IsInteracted = false;
+                            interaction.serializedInteractionData.isInteracted = false;
                         }
 
-                        tInteraction.JsonTask.Pop();
-                        if (tInteraction.JsonTask.Count > 0)
+                        interaction.serializedInteractionData.JsonTask.Pop();
+                        if (interaction.serializedInteractionData.JsonTask.Count > 0)
                         {
                             Debug.LogError("Task 엑셀 관련 오류");
                         }
 
-                        foreach (var taskEndAction in tInteraction.taskEndActions.interactionEvents)
+                        foreach (var taskEndAction in interaction.taskEndActions.interactionEvents)
                         {
                             taskEndAction.Action();
                         }
@@ -587,12 +635,12 @@ namespace Utility.Interaction
                         break;
                     case TaskContentType.Cinematic:
                         currentTaskData.isContinue = false;
-                        foreach (var cinematic in tInteraction.cinematics)
+                        foreach (var cinematic in interaction.cinematics)
                         {
                             cinematic.SetActive(true);
                         }
 
-                        foreach (var inGame in tInteraction.inGames)
+                        foreach (var inGame in interaction.inGames)
                         {
                             inGame.SetActive(false);
                         }
@@ -600,7 +648,7 @@ namespace Utility.Interaction
                         JoystickController.instance.StopSaveLoadJoyStick(true);
 
                         PlayableDirector timeline = null;
-                        foreach (var t in tInteraction.timelines)
+                        foreach (var t in interaction.timelines)
                         {
                             if (currentTask.name == t.playableAsset.name)
                             {
@@ -608,9 +656,9 @@ namespace Utility.Interaction
                             }
                         }
 
-                        if (timeline == null && tInteraction.timelines.Length == 1)
+                        if (timeline == null && interaction.timelines.Length == 1)
                         {
-                            timeline = tInteraction.timelines[0];
+                            timeline = interaction.timelines[0];
                         }
                         else
                         {
@@ -658,12 +706,12 @@ namespace Utility.Interaction
                         // }
                         JoystickController.instance.StopSaveLoadJoyStick(false);
                         currentTaskData.isContinue = true;
-                        foreach (var cinematic in tInteraction.cinematics)
+                        foreach (var cinematic in interaction.cinematics)
                         {
                             cinematic.SetActive(false);
                         }
 
-                        foreach (var inGame in tInteraction.inGames)
+                        foreach (var inGame in interaction.inGames)
                         {
                             inGame.SetActive(true);
                         }
@@ -693,16 +741,16 @@ namespace Utility.Interaction
 
             if (currentTaskData.tasks.Length == currentTaskData.taskIndex)
             {
-                if (tInteraction.JsonTask.Count > 1)
+                if (interaction.serializedInteractionData.JsonTask.Count > 1)
                 {
                     //선택지인 경우
                     DialogueController.instance.taskData = null; // null이 아닌 상태에서 모든 task가 끝나면 없어야되는데 남아있음
-                    tInteraction.JsonTask.Pop();
-                    tInteraction.JsonTask.Peek().isContinue = true;
+                    interaction.serializedInteractionData.JsonTask.Pop();
+                    interaction.serializedInteractionData.JsonTask.Peek().isContinue = true;
                 }
                 else
                 {
-                    foreach (var taskEndAction in tInteraction.taskEndActions.interactionEvents)
+                    foreach (var taskEndAction in interaction.taskEndActions.interactionEvents)
                     {
                         taskEndAction.Action();
                     }
@@ -766,14 +814,9 @@ namespace Utility.Interaction
 
         public Interaction GetInteraction(int index)
         {
-            if (interactions?.Length > index)
+            if (interactions?.Count > index)
             {
                 return interactions[index];
-            }
-
-            if (interaction.jsonFile)
-            {
-                return interaction;
             }
 
             Debug.LogError("인터랙션 데이터 설정 오류");
@@ -782,42 +825,37 @@ namespace Utility.Interaction
 
         public Interaction GetInteraction()
         {
-            if (interactions?.Length > 0 && interactions.Length > interactIndex)
+            if (interactions?.Count > 0 && interactions.Count > interactIndex)
             {
                 return interactions[interactIndex];
-            }
-
-            if (interaction.jsonFile)
-            {
-                return interaction;
             }
 
             Debug.LogError("인터랙션 데이터 설정 오류");
             return null;
         }
         
-        public InteractionData GetInteractionData()
+        public InteractionSaveData GetInteractionSaveData()
         {
-            var interactionData = new InteractionData
+            var interactionSaveData = new InteractionSaveData
             {
                 pos = transform.position,
                 rot = transform.rotation,
-                interaction = GetInteraction(),
+                serializedInteractionData = GetInteraction().serializedInteractionData,
                 interactIndex = interactIndex
             };
             
-            return interactionData;
+            return interactionSaveData;
         }
 
         bool IClickable.IsClickEnable
         {
             get
             {
-                var tInteraction = GetInteraction();
-                if (tInteraction.jsonFile)
+                var interaction = GetInteraction();
+                if (interaction.jsonFile)
                 {
-                    return tInteraction.isInteractable && enabled &&
-                           tInteraction.interactionMethod == InteractionMethod.Touch && !tInteraction.IsInteracted;
+                    return interaction.serializedInteractionData.isInteractable && enabled &&
+                           interaction.interactionMethod == InteractionMethod.Touch && !interaction.serializedInteractionData.isInteracted;
                 }
 
                 return false;
@@ -826,20 +864,20 @@ namespace Utility.Interaction
             {
                 if (value)
                 {
-                    var tInteraction = GetInteraction();
-                    if (tInteraction.jsonFile)
+                    var interaction = GetInteraction();
+                    if (interaction.jsonFile)
                     {
-                        tInteraction.interactionMethod = InteractionMethod.Touch;
-                        tInteraction.IsInteracted = false;
-                        tInteraction.isInteractable = true;
+                        interaction.interactionMethod = InteractionMethod.Touch;
+                        interaction.serializedInteractionData.isInteracted = false;
+                        interaction.serializedInteractionData.isInteractable = true;
                     }
                 }
                 else
                 {
-                    var tInteraction = GetInteraction();
-                    if (tInteraction.jsonFile)
+                    var interaction = GetInteraction();
+                    if (interaction.jsonFile)
                     {
-                        tInteraction.interactionMethod = InteractionMethod.No;
+                        interaction.interactionMethod = InteractionMethod.No;
                     }
                 }
             }
@@ -849,20 +887,20 @@ namespace Utility.Interaction
         {
             get
             {
-                var tInteraction = GetInteraction();
-                if (tInteraction.jsonFile)
+                var interaction = GetInteraction();
+                if (interaction.jsonFile)
                 {
-                    return tInteraction.IsInteracted;
+                    return interaction.serializedInteractionData.isInteracted;
                 }
 
                 return false;
             }
             set
             {
-                var tInteraction = GetInteraction();
-                if (tInteraction.jsonFile)
+                var interaction = GetInteraction();
+                if (interaction.jsonFile)
                 {
-                    tInteraction.IsInteracted = value;
+                    interaction.serializedInteractionData.isInteracted = value;
                 }
             }
         }
@@ -887,10 +925,10 @@ namespace Utility.Interaction
 
         bool IClickable.GetIsClicked()
         {
-            var tInteraction = GetInteraction();
-            if (tInteraction.jsonFile)
+            var interaction = GetInteraction();
+            if (interaction.jsonFile)
             {
-                return tInteraction.IsInteracted;
+                return interaction.serializedInteractionData.isInteracted;
             }
 
             return false;
@@ -903,10 +941,10 @@ namespace Utility.Interaction
                 return;
             }
 
-            var tInteraction = GetInteraction();
-            if (tInteraction.jsonFile)
+            var interaction = GetInteraction();
+            if (interaction.jsonFile)
             {
-                tInteraction.IsInteracted = !tInteraction.isLoopDialogue;
+                interaction.serializedInteractionData.isInteracted = !interaction.isLoopDialogue;
             }
 
             ((IClickable) this).ActiveObjectClicker(false);
