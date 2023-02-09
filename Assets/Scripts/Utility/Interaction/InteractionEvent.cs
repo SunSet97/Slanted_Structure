@@ -35,6 +35,7 @@ namespace Utility.Interaction
             Move,
             Play,
             Interactable,
+            Interaction,
             Custom
         }
 

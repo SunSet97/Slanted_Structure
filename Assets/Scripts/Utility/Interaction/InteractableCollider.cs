@@ -39,7 +39,7 @@ namespace Utility.Interaction
             if (interactionObject.GetInteraction().serializedInteractionData.isInteractable && useMark && interactionObject.ExclamationMark.activeSelf)
             {
                 interactionObject.ExclamationMark.transform.position =
-                    (Vector3) markOffset + DataController.instance.cam.WorldToScreenPoint(interactionObject.transform.position);
+                    DataController.instance.cam.WorldToScreenPoint((Vector3) markOffset + interactionObject.transform.position);
             }
         }
 

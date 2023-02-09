@@ -348,7 +348,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8460400619129785676}
-  - component: {fileID: 2414833790719054237}
+  - component: {fileID: 6809406041833102002}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -370,7 +370,7 @@ Transform:
   m_Father: {fileID: 3345937350515191303}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2414833790719054237
+--- !u!114 &6809406041833102002
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -379,73 +379,70 @@ MonoBehaviour:
   m_GameObject: {fileID: 3115571527098618384}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
+  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 2
-  jsonFile: {fileID: 4900000, guid: a364bbb1d3686a543a80121aea97658c, type: 3}
-  GamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogues:
-    - name: "\uD3EC\uC8FC\uB4E4"
-      expression: 0
-      anim_name: 
-      contents: "\uC800\uAE44\uB2E4!! \uC7A1\uC544!!!"
-    - name: ??
-      expression: 4
-      anim_name: Speat_past
-      contents: "\uC820\uC7A5...! \uBE68\uB9AC \uC228\uC744 \uACF3\uC744 \uCC3E\uC544\uC57C
-        \uB3C4\uB9DD\uCCD0\uC57C\uACA0\uC5B4..!"
-    - name: 
-      expression: 0
-      anim_name: 
-      contents: "\uAC8C\uC784 \uC18D\uC5D0\uB294 \uB2E4\uC591\uD55C \uBBF8\uB2C8 \uAC8C\uC784\uC774
-        \uC874\uC7AC\uD569\uB2C8\uB2E4. ??\uC774 \uB3C4\uB9DD\uCE60 \uC218 \uC788\uB3C4\uB85D
-        \uCD08\uB2A5\uB825\uACFC \uC810\uD50C\uB97C \uC798 \uD65C\uC6A9\uD574\uC11C
-        \uC7A5\uC560\uBB3C\uC5D0 \uBD80\uB52A\uD788\uC9C0 \uC54A\uB3C4\uB85D \uD569\uC2DC\uB2E4."
-  dialogueEndAction:
-  - eventType: 4
-    clearBox: {fileID: 0}
-    activeObjs:
-      actives: []
-    movables:
-      movables: []
-    playableList:
-      playableObjs:
-      - gameObject: {fileID: 3345937348623267755}
-        isPlay: 1
-  - eventType: 2
-    clearBox: {fileID: 0}
-    activeObjs:
-      actives:
-      - activeObject: {fileID: 3727060294897509859}
-        activeSelf: 1
-    movables:
-      movables: []
-    playableList:
-      playableObjs:
-      - gameObject: {fileID: 3345937348623267755}
-        isPlay: 1
+  interactions:
+  - jsonFile: {fileID: 4900000, guid: a364bbb1d3686a543a80121aea97658c, type: 3}
+    interactionPlayType: 2
+    gamePlayableGame: {fileID: 3345937348623267755}
+    dialogueData:
+      dialogueIdx: 0
+      dialogues: []
+    interactionStartActions:
+      interactionEvents: []
+    interactionEndActions:
+      interactionEvents:
+      - eventType: 4
+        clearBox: {fileID: 0}
+        activeObjs:
+          actives: []
+        movables:
+          movables: []
+        playableList:
+          playableObjs:
+          - gameObject: {fileID: 3345937348623267755}
+            isPlay: 1
+        interactObjs:
+          interacts: []
+    interactionMethod: 3
+    isViewChange: 0
+    dialogueCamera:
+      camDis: {x: 0, y: 0, z: 0}
+      camRot: {x: 0, y: 0, z: 0}
+    timelines: []
+    cinematics: []
+    inGames: []
+    isLoopDialogue: 0
+    isContinue: 0
+    serializedInteractionData:
+      isInteractable: 1
+      isInteracted: 0
+    debugTaskData: []
+  interactionPlayType: 0
+  jsonFile: {fileID: 0}
+  gamePlayableGame: {fileID: 0}
+  dialogueEndAction: []
+  dialogueEndActions:
+    interactionEvents: []
+  taskEndActions:
+    interactionEvents: []
+  cinematicEndAction:
+    interactionEvents: []
+  interactionMethod: 0
+  isViewChange: 0
   dialogueCamera:
     camDis: {x: 0, y: 0, z: 0}
     camRot: {x: 0, y: 0, z: 0}
-  taskEndActions: []
-  cinematicEndAction:
-    interactionEvents: []
-  taskDataDebug: []
-  color: 0
-  outline: {fileID: 0}
-  useOutline: 0
-  interactionMethod: 3
-  outlineRadius: 5
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
-  useExclamationMark: 0
-  isViewChange: 0
   timelines: []
   cinematics: []
   inGames: []
   isLoopDialogue: 0
+  isInteractable: 1
+  useOutline: 0
+  color: 0
+  outline: {fileID: 0}
+  outlineRadius: 5
 --- !u!1 &3262681840937483465
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,7 +573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTrigger: 0
+  isTrigger: 1
   jsonFile: {fileID: 0}
   nextSelectMapcode: 000000
 --- !u!1 &3345937349244790311
@@ -641,26 +638,22 @@ MonoBehaviour:
   skyboxSetting: {fileID: 0}
   isOrthographic: 1
   orthographicSize: 8
-  cameraBound: {fileID: 0}
-  BGM: {fileID: 0}
+  bgm: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 2584970956351160312}
   clearBoxList:
   - {fileID: 3345937348758904124}
+  positionSetting: {fileID: 3345937350307993779}
   positionSets:
-  - index: 0
-    who: 4
+  - who: 4
     startPosition: {fileID: 3345937350515191303}
-    posSet: {fileID: 3345937349917665855}
     isMain: 1
   cameraViewType: 0
   camDis: {x: 3, y: 3, z: -20}
   camRot: {x: 0, y: 0, z: 0}
-  positionSetting: {fileID: 3345937350307993779}
   isJoystickInputUse: 0
   isJoystickNone: 1
   joystickType: 0
-  forDebuging: "\uC778\uC2A4\uD399\uD130\uC758 \uC774\uB984\uC744 \uC6B0\uD074\uB9AD\uD574\uC8FC\uC138\uC694"
 --- !u!1 &3345937349917665854
 GameObject:
   m_ObjectHideFlags: 0

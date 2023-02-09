@@ -135,23 +135,20 @@ MonoBehaviour:
   skyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 1
   orthographicSize: 5
-  cameraBound: {fileID: 0}
-  BGM: {fileID: 0}
+  bgm: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 7257005211097897996}
   clearBoxList:
   - {fileID: 2268495182861589382}
   - {fileID: 4800375547873125917}
+  positionSetting: {fileID: 298279036730567171}
   positionSets:
-  - index: 0
-    who: 2
+  - who: 2
     startPosition: {fileID: 298279038216090857}
-    posSet: {fileID: 298279038310455053}
     isMain: 1
   cameraViewType: 0
   camDis: {x: 0, y: 5, z: 5.12}
   camRot: {x: 8, y: 180, z: 0}
-  positionSetting: {fileID: 298279036730567171}
   isJoystickInputUse: 1
   isJoystickNone: 0
   joystickType: 0
@@ -217,6 +214,67 @@ Transform:
   m_Father: {fileID: 298279036730567170}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &129873657191875171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4266154523416266869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactions:
+  - jsonFile: {fileID: 0}
+    interactionPlayType: 0
+    gamePlayableGame: {fileID: 0}
+    dialogueData:
+      dialogueIdx: 0
+      dialogues: []
+    interactionStartActions:
+      interactionEvents: []
+    interactionEndActions:
+      interactionEvents: []
+    interactionMethod: 1
+    isViewChange: 0
+    dialogueCamera:
+      camDis: {x: 0, y: 0, z: 0}
+      camRot: {x: 0, y: 0, z: 0}
+    timelines: []
+    cinematics: []
+    inGames: []
+    isLoopDialogue: 0
+    isContinue: 0
+    serializedInteractionData:
+      isInteractable: 1
+      isInteracted: 0
+    debugTaskData: []
+  interactionPlayType: 0
+  jsonFile: {fileID: 0}
+  gamePlayableGame: {fileID: 0}
+  dialogueEndAction: []
+  dialogueEndActions:
+    interactionEvents: []
+  taskEndActions:
+    interactionEvents: []
+  cinematicEndAction:
+    interactionEvents: []
+  interactionMethod: 0
+  isViewChange: 0
+  dialogueCamera:
+    camDis: {x: 0, y: 0, z: 0}
+    camRot: {x: 0, y: 0, z: 0}
+  timelines: []
+  cinematics: []
+  inGames: []
+  isLoopDialogue: 0
+  isInteractable: 1
+  useOutline: 0
+  color: 0
+  outline: {fileID: 0}
+  outlineRadius: 5
 --- !u!1 &6351919820635261786
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,31 +318,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactions:
+  - jsonFile: {fileID: 4900000, guid: 21df0d475e32421498f70bc81d38c727, type: 3}
+    interactionPlayType: 2
+    gamePlayableGame: {fileID: 0}
+    dialogueData:
+      dialogueIdx: 0
+      dialogues:
+      - name: "\uB77C\uC6B0"
+        expression: 9
+        anim_name: Rau
+        contents: "\uD760...\uBB50\uBA39\uC9C0? \uBC14\uB85C \uADFC\uCC98\uC5D0\uB294
+          \uD328\uC2A4\uD2B8 \uD478\uB4DC\uC810\uC774 \uC788\uACE0 \uC880\uB9CC \uAC78\uC5B4\uAC00\uBA74
+          \uB3C4\uC2EC\uC774 \uC788\uB294\uB370.."
+      - name: "\uB77C\uC6B0"
+        expression: 9
+        anim_name: Rau
+        contents: "\uD328\uC2A4\uD2B8 \uD478\uB4DC\uC810\uC5D0\uC11C \uAC04\uB2E8\uD558\uAC8C
+          \uBA39\uC744\uC9C0, \uB3C4\uC2EC\uAC00\uC11C \uC81C\uB300\uB85C \uBA39\uACE0
+          \uC8FC\uBCC0\uC744 \uAD6C\uACBD\uD560\uC9C0 \uACE0\uBBFC\uC774\uB124. \uC5B4\uB514\uB85C
+          \uAC08\uAE4C?"
+      - name: 
+        expression: 0
+        anim_name: 
+        contents: "\uB2F9\uC2E0\uC758 \uC120\uD0DD\uC5D0 \uB530\uB77C \uC774\uC57C\uAE30\uC758
+          \uC21C\uC11C\uAC00 \uBC14\uB00C\uAE30\uB3C4, \uB54C\uB85C\uB294 \uC804\uD600
+          \uB2E4\uB978 \uC804\uAC1C\uAC00 \uC774\uC5B4\uC9C0\uAE30\uB3C4 \uD569\uB2C8\uB2E4."
+    interactionStartActions:
+      interactionEvents: []
+    interactionEndActions:
+      interactionEvents: []
+    interactionMethod: 3
+    isViewChange: 0
+    dialogueCamera:
+      camDis: {x: 0, y: 0, z: 0}
+      camRot: {x: 0, y: 0, z: 0}
+    timelines: []
+    cinematics: []
+    inGames: []
+    isLoopDialogue: 0
+    isContinue: 0
+    serializedInteractionData:
+      isInteractable: 1
+      isInteracted: 0
+    debugTaskData: []
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 21df0d475e32421498f70bc81d38c727, type: 3}
   gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues:
-    - name: "\uB77C\uC6B0"
-      expression: 9
-      anim_name: Rau
-      contents: "\uD760...\uBB50\uBA39\uC9C0? \uBC14\uB85C \uADFC\uCC98\uC5D0\uB294
-        \uD328\uC2A4\uD2B8 \uD478\uB4DC\uC810\uC774 \uC788\uACE0 \uC880\uB9CC \uAC78\uC5B4\uAC00\uBA74
-        \uB3C4\uC2EC\uC774 \uC788\uB294\uB370.."
-    - name: "\uB77C\uC6B0"
-      expression: 9
-      anim_name: Rau
-      contents: "\uD328\uC2A4\uD2B8 \uD478\uB4DC\uC810\uC5D0\uC11C \uAC04\uB2E8\uD558\uAC8C
-        \uBA39\uC744\uC9C0, \uB3C4\uC2EC\uAC00\uC11C \uC81C\uB300\uB85C \uBA39\uACE0
-        \uC8FC\uBCC0\uC744 \uAD6C\uACBD\uD560\uC9C0 \uACE0\uBBFC\uC774\uB124. \uC5B4\uB514\uB85C
-        \uAC08\uAE4C?"
-    - name: 
-      expression: 0
-      anim_name: 
-      contents: "\uB2F9\uC2E0\uC758 \uC120\uD0DD\uC5D0 \uB530\uB77C \uC774\uC57C\uAE30\uC758
-        \uC21C\uC11C\uAC00 \uBC14\uB00C\uAE30\uB3C4, \uB54C\uB85C\uB294 \uC804\uD600
-        \uB2E4\uB978 \uC804\uAC1C\uAC00 \uC774\uC5B4\uC9C0\uAE30\uB3C4 \uD569\uB2C8\uB2E4."
   dialogueEndAction: []
   dialogueEndActions:
     interactionEvents: []
@@ -292,10 +372,6 @@ MonoBehaviour:
     interactionEvents: []
   cinematicEndAction:
     interactionEvents: []
-  useOutline: 0
-  color: 0
-  outline: {fileID: 0}
-  outlineRadius: 5
   interactionMethod: 3
   isViewChange: 0
   dialogueCamera:
@@ -305,7 +381,11 @@ MonoBehaviour:
   cinematics: []
   inGames: []
   isLoopDialogue: 0
-  taskDataDebug: []
+  isInteractable: 1
+  useOutline: 0
+  color: 0
+  outline: {fileID: 0}
+  outlineRadius: 5
 --- !u!1 &7257005211097897996
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,6 +448,11 @@ PrefabInstance:
       propertyPath: nextSelectMapcode
       value: 201110
       objectReference: {fileID: 0}
+    - target: {fileID: 1970574898372511802, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: isTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2006227514933912774, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
       propertyPath: m_Enabled
@@ -381,12 +466,12 @@ PrefabInstance:
     - target: {fileID: 2006227514933912774, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
       propertyPath: m_Size.z
-      value: 15.4667225
+      value: 2.8010988
       objectReference: {fileID: 0}
     - target: {fileID: 2006227514933912774, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
       propertyPath: m_Center.z
-      value: -0.5566387
+      value: -6.8894506
       objectReference: {fileID: 0}
     - target: {fileID: 2126143353559508351, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
@@ -405,6 +490,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2491228757351992403, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
+      propertyPath: interactions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2491228757351992403, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
       propertyPath: outlineObject
       value: 
       objectReference: {fileID: 9118059275212216089}
@@ -416,6 +506,16 @@ PrefabInstance:
     - target: {fileID: 2491228757351992403, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
       propertyPath: interactionMethod
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2491228757351992403, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: interactions.Array.data[0].interactionMethod
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2491228757351992403, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: interactions.Array.data[0].serializedInteractionData.isInteractable
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4546348484383136713, guid: b5d6f4e8e25d0d646a2290b24e60c706,
@@ -432,6 +532,11 @@ PrefabInstance:
         type: 3}
       propertyPath: nextSelectMapcode
       value: 201210
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097493226435065249, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: isTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5674130351654371135, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
@@ -535,6 +640,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826406548415856755, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
+      propertyPath: interactions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826406548415856755, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: interactions.Array.data[0].interactionEndActions.interactionEvents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826406548415856755, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
       propertyPath: outlineObject
       value: 
       objectReference: {fileID: 4068541610148066953}
@@ -563,6 +678,21 @@ PrefabInstance:
       propertyPath: interactionPlayType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8826406548415856755, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: interactions.Array.data[0].serializedInteractionData.isInteractable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826406548415856755, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: interactions.Array.data[0].interactionEndActions.interactionEvents.Array.data[0].eventType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826406548415856755, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: interactions.Array.data[0].interactionEndActions.interactionEvents.Array.data[0].clearBox
+      value: 
+      objectReference: {fileID: 2268495182861589382}
     m_RemovedComponents:
     - {fileID: 5738893206336546903, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
     - {fileID: 6833819731772867256, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
@@ -576,6 +706,7 @@ PrefabInstance:
     - {fileID: 608012451485628335, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
     - {fileID: 2422644220783674614, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
     - {fileID: 7604010332265168975, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
+    - {fileID: 2491228757351992403, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
 --- !u!1 &7976044237075837516 stripped
 GameObject:
@@ -631,6 +762,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 298279038301885372}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4266154523416266869 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4546348484383136713, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+    type: 3}
+  m_PrefabInstance: {fileID: 298279038301885372}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &470084240778176068 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 190734567596520952, guid: b5d6f4e8e25d0d646a2290b24e60c706,
@@ -643,7 +780,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 298279038301885372}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 4266154523416266869}
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
@@ -722,6 +859,17 @@ PrefabInstance:
       propertyPath: interactionObject
       value: 
       objectReference: {fileID: 9105718561727288271}
+    - target: {fileID: 5385500836903059132, guid: f68897aeae0c05a4f8edb73c385bc8bd,
+        type: 3}
+      propertyPath: useMark
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5385500836903059132, guid: f68897aeae0c05a4f8edb73c385bc8bd,
+        type: 3}
+      propertyPath: markPrefab
+      value: 
+      objectReference: {fileID: 8118846739660662010, guid: 7ea3927c43f39da4b96c20c72566d15d,
+        type: 3}
     - target: {fileID: 6149318734316858801, guid: f68897aeae0c05a4f8edb73c385bc8bd,
         type: 3}
       propertyPath: m_Name
@@ -800,7 +948,18 @@ PrefabInstance:
         type: 3}
       propertyPath: interactionObject
       value: 
-      objectReference: {fileID: 9105718561727288271}
+      objectReference: {fileID: 129873657191875171}
+    - target: {fileID: 5385500836903059132, guid: f68897aeae0c05a4f8edb73c385bc8bd,
+        type: 3}
+      propertyPath: useMark
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5385500836903059132, guid: f68897aeae0c05a4f8edb73c385bc8bd,
+        type: 3}
+      propertyPath: markPrefab
+      value: 
+      objectReference: {fileID: 1027083536361050831, guid: 79a2926865a62c342bf85e16567f0158,
+        type: 3}
     - target: {fileID: 6149318734316858801, guid: f68897aeae0c05a4f8edb73c385bc8bd,
         type: 3}
       propertyPath: m_Name

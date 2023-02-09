@@ -2807,13 +2807,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5679713699117899517}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.02, z: 15.95}
+  m_LocalRotation: {x: -0, y: 0.711743, z: -0, w: 0.70244}
+  m_LocalPosition: {x: -1.86, y: 1.02, z: 16.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5679713697842561505}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90.754005, z: 0}
 --- !u!1 &5679713699132621521
 GameObject:
   m_ObjectHideFlags: 0
@@ -2873,22 +2873,19 @@ MonoBehaviour:
   skyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 1
   orthographicSize: 5
-  cameraBound: {fileID: 0}
-  BGM: {fileID: 0}
+  bgm: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 364162799213658732}
   clearBoxList:
   - {fileID: 5679713699259848835}
+  positionSetting: {fileID: 5679713698888438023}
   positionSets:
-  - index: 0
-    who: 2
+  - who: 2
     startPosition: {fileID: 5679713699117899516}
-    posSet: {fileID: 5679713697842561505}
     isMain: 1
   cameraViewType: 0
   camDis: {x: -15.4, y: 10, z: 14.09}
   camRot: {x: 24.2, y: 135, z: 0}
-  positionSetting: {fileID: 5679713698888438023}
   isJoystickInputUse: 1
   isJoystickNone: 0
   joystickType: 0
@@ -3110,76 +3107,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactions:
+  - jsonFile: {fileID: 4900000, guid: 39411f39e7fe74e4290385e00d6ac2f4, type: 3}
+    interactionPlayType: 2
+    gamePlayableGame: {fileID: 0}
+    dialogueData:
+      dialogueIdx: 0
+      dialogues: []
+    interactionStartActions:
+      interactionEvents: []
+    interactionEndActions:
+      interactionEvents:
+      - eventType: 2
+        clearBox: {fileID: 0}
+        activeObjs:
+          actives:
+          - activeObject: {fileID: 5679713699259848833}
+            activeSelf: 1
+        movables:
+          movables: []
+        playableList:
+          playableObjs: []
+        interactObjs:
+          interacts: []
+      - eventType: 1
+        clearBox: {fileID: 5679713699259848835}
+        activeObjs:
+          actives: []
+        movables:
+          movables: []
+        playableList:
+          playableObjs: []
+        interactObjs:
+          interacts: []
+    interactionMethod: 0
+    isViewChange: 0
+    dialogueCamera:
+      camDis: {x: 0, y: 0, z: 0}
+      camRot: {x: 0, y: 0, z: 0}
+    timelines: []
+    cinematics: []
+    inGames: []
+    isLoopDialogue: 0
+    isContinue: 0
+    serializedInteractionData:
+      isInteractable: 1
+      isInteracted: 0
+    debugTaskData: []
   interactionPlayType: 2
   jsonFile: {fileID: 4900000, guid: 39411f39e7fe74e4290385e00d6ac2f4, type: 3}
   gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues:
-    - name: "\uC7A1\uC0C1\uC778"
-      expression: 0
-      anim_name: 
-      contents: "\uC5C6\uB294 \uAC83 \uBE7C\uACE0 \uB2E4 \uD31D\uB2C8\uB2E4~"
-    - name: "\uC7A1\uC0C1\uC778"
-      expression: 0
-      anim_name: 
-      contents: "\uBB34\uC5C7\uC774 \uD544\uC694\uD558\uC2E0\uAC00\uC694? \uB531 \uBCF4\uB2C8
-        \uCC98\uC74C\uC628 \uC5EC\uD589\uAC1D \uAC19\uC740\uB370 \uC5B4\uB5A4\uAC8C
-        \uD544\uC694\uD558\uC2E0\uAC00\uC694?"
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: Rau
-      contents: "\uC557, \uC81C\uAC00 \uC9C0\uAE08 \uC5F0\uB77D\uC774  \uC548\uB418\uC11C
-        \uC5EC\uAE30\uC11C \uC4F8 \uC218 \uC788\uB294 \uC720\uC2EC\uCE69\uC774 \uC788\uC744\uAE4C\uC694?"
-    - name: "\uC7A1\uC0C1\uC778"
-      expression: 0
-      anim_name: 
-      contents: "\uC544\uC774\uACE0 \uADF8\uAC70\uB77C\uBA74 \uB531 \uC5EC\uAE30 \uC788\uC9C0\uC694.
-        \uC7A0\uC2DC\uB9CC\uC694~"
-    - name: "\uC7A1\uC0C1\uC778"
-      expression: 0
-      anim_name: 
-      contents: "\uC5EC\uAE30 \uC788\uC2B5\uB2C8\uB2E4. \uD63C\uC790\uC624\uC2E0 \uAC83\uC774\uC8E0?"
-    - name: "\uB77C\uC6B0"
-      expression: 1
-      anim_name: Rau
-      contents: "\uB124\uB124! \uAC10\uC0AC\uD569\uB2C8\uB2E4."
-    - name: "\uC7A1\uC0C1\uC778"
-      expression: 0
-      anim_name: 
-      contents: "\uC5EC\uAE30 \uB9C8\uC744\uC740 \uD06C\uAC8C \uBD80\uB3C4\uC2EC\uACFC
-        \uB3C4\uC2EC\uC73C\uB85C \uC774\uB904\uC838\uC788\uACE0, \uC5EC\uAE30\uB294
-        \uC678\uAC00\uAE30\uC5ED\uC778 \uBD80\uB3C4\uC2EC\uC774\uC5D0\uC694."
-    - name: "\uC7A1\uC0C1\uC778"
-      expression: 0
-      anim_name: 
-      contents: "\uBD80\uB3C4\uC2EC \uC548\uC5D0\uB294 \uC5EC\uB7EC \uC7A5\uC18C\uAC00
-        \uC788\uC73C\uB2C8 \uC870\uC2EC\uD788 \uC798 \uB2E4\uB2C8\uC2DC\uACE0\uC694."
-    - name: "\uB77C\uC6B0"
-      expression: 9
-      anim_name: Rau
-      contents: "\uB124? \uC870\uC2EC\uD788 \uB2E4\uB2C8\uB77C\uB1E8?"
-    - name: "\uC7A1\uC0C1\uC778"
-      expression: 0
-      anim_name: 
-      contents: "\uBC24\uC5D0 \uC5EC\uC790 \uD63C\uC790 \uB2E4\uB2C8\uAE30 \uC704\uD5D8\uD574\uC11C
-        \uB9D0\uD558\uB294 \uAC70\uC5D0\uC694. \uADF8\uB798\uB3C4 \uB0AE\uC5D0 \uB3C4\uC2EC\uCABD\uC73C\uB85C
-        \uAC00\uBA74 \uBCFC \uAC83\uB3C4 \uB9CE\uC544\uC694~"
-    - name: "\uC7A1\uC0C1\uC778"
-      expression: 0
-      anim_name: 
-      contents: "\uBD80\uB3C4\uC2EC\uC740 \uBB50 \uB098\uAC19\uC740 \uB098\uBD80\uB7AD\uC774\uB4E4\uC774
-        \uB3CC\uC544\uB2E4\uB140\uC11C \uBCFC \uAC83\uB3C4 \uC5C6\uACE0 \uAEC4\uAEC4~"
-    - name: "\uB77C\uC6B0"
-      expression: 9
-      anim_name: Rau
-      contents: "\uB124...(\uC65C \uBC24\uC5D0 \uC704\uD5D8\uD55C \uAC70\uC9C0...?
-        \uCE58\uC548\uC774 \uC548\uC88B\uC740 \uAC70\uBA74 \uB0A8\uC790\uB3C4 \uC704\uD5D8\uD574\uC57C
-        \uB418\uB294\uAC70 \uC544\uB2CC\uAC00)"
-    serializableCamInfo:
-      x: 0
-      y: 0
-      z: 0
   dialogueEndAction:
   - eventType: 2
     clearBox: {fileID: 0}
@@ -3199,14 +3176,7 @@ MonoBehaviour:
     interactionEvents: []
   cinematicEndAction:
     interactionEvents: []
-  useOutline: 0
-  color: 0
-  outline: {fileID: 6312285016937163460}
   interactionMethod: 0
-  outlineRadius: 5
-  useExclamationMark: 1
-  exclamationMark: {fileID: 5720161968964794779}
-  markOffset: {x: 0, y: 250}
   isViewChange: 0
   dialogueCamera:
     camDis: {x: 0, y: 0, z: 0}
@@ -3216,7 +3186,11 @@ MonoBehaviour:
   cinematics: []
   inGames: []
   isLoopDialogue: 0
-  taskDataDebug: []
+  isInteractable: 1
+  useOutline: 0
+  color: 0
+  outline: {fileID: 6312285016937163460}
+  outlineRadius: 5
 --- !u!114 &6312285016937163460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3235,6 +3209,19 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!135 &1473715028331847137
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7086955885419216414}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1000
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7205057656390105497
 GameObject:
   m_ObjectHideFlags: 0
@@ -3352,21 +3339,39 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7322878181509288377}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactions:
+  - jsonFile: {fileID: 0}
+    interactionPlayType: 2
+    gamePlayableGame: {fileID: 0}
+    dialogueData:
+      dialogueIdx: 0
+      dialogues: []
+    interactionStartActions:
+      interactionEvents: []
+    interactionEndActions:
+      interactionEvents: []
+    interactionMethod: 0
+    isViewChange: 0
+    dialogueCamera:
+      camDis: {x: 0, y: 0, z: 0}
+      camRot: {x: 0, y: 0, z: 0}
+    timelines: []
+    cinematics: []
+    inGames: []
+    isLoopDialogue: 1
+    isContinue: 0
+    serializedInteractionData:
+      isInteractable: 1
+      isInteracted: 0
+    debugTaskData: []
   interactionPlayType: 2
   jsonFile: {fileID: 0}
   gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues: []
-    serializableCamInfo:
-      x: 0
-      y: 0
-      z: 0
   dialogueEndAction: []
   dialogueEndActions:
     interactionEvents: []
@@ -3374,14 +3379,7 @@ MonoBehaviour:
     interactionEvents: []
   cinematicEndAction:
     interactionEvents: []
-  useOutline: 0
-  color: 0
-  outline: {fileID: 8122208411890183864}
   interactionMethod: 0
-  outlineRadius: 5
-  useExclamationMark: 0
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
   isViewChange: 0
   dialogueCamera:
     camDis: {x: 0, y: 0, z: 0}
@@ -3390,7 +3388,11 @@ MonoBehaviour:
   cinematics: []
   inGames: []
   isLoopDialogue: 1
-  taskDataDebug: []
+  isInteractable: 1
+  useOutline: 0
+  color: 0
+  outline: {fileID: 8122208411890183864}
+  outlineRadius: 5
 --- !u!114 &8122208411890183864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3474,21 +3476,39 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8607534617447410741}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactions:
+  - jsonFile: {fileID: 0}
+    interactionPlayType: 2
+    gamePlayableGame: {fileID: 0}
+    dialogueData:
+      dialogueIdx: 0
+      dialogues: []
+    interactionStartActions:
+      interactionEvents: []
+    interactionEndActions:
+      interactionEvents: []
+    interactionMethod: 0
+    isViewChange: 0
+    dialogueCamera:
+      camDis: {x: 0, y: 0, z: 0}
+      camRot: {x: 0, y: 0, z: 0}
+    timelines: []
+    cinematics: []
+    inGames: []
+    isLoopDialogue: 1
+    isContinue: 0
+    serializedInteractionData:
+      isInteractable: 1
+      isInteracted: 0
+    debugTaskData: []
   interactionPlayType: 2
   jsonFile: {fileID: 0}
   gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues: []
-    serializableCamInfo:
-      x: 0
-      y: 0
-      z: 0
   dialogueEndAction: []
   dialogueEndActions:
     interactionEvents: []
@@ -3496,14 +3516,7 @@ MonoBehaviour:
     interactionEvents: []
   cinematicEndAction:
     interactionEvents: []
-  useOutline: 0
-  color: 0
-  outline: {fileID: 8361655320971512889}
   interactionMethod: 0
-  outlineRadius: 5
-  useExclamationMark: 0
-  exclamationMark: {fileID: 0}
-  markOffset: {x: 0, y: 0}
   isViewChange: 0
   dialogueCamera:
     camDis: {x: 0, y: 0, z: 0}
@@ -3512,7 +3525,11 @@ MonoBehaviour:
   cinematics: []
   inGames: []
   isLoopDialogue: 1
-  taskDataDebug: []
+  isInteractable: 1
+  useOutline: 0
+  color: 0
+  outline: {fileID: 8361655320971512889}
+  outlineRadius: 5
 --- !u!114 &8361655320971512889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23952,15 +23969,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29f0c02b40dfe3d408de049a498a1d09, type: 3}
---- !u!1 &8607534617447410741 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4804077893147247051, guid: 29f0c02b40dfe3d408de049a498a1d09,
-    type: 3}
-  m_PrefabInstance: {fileID: 3881988827120528894}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4697046576525368870 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8426475407721608152, guid: 29f0c02b40dfe3d408de049a498a1d09,
+    type: 3}
+  m_PrefabInstance: {fileID: 3881988827120528894}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8607534617447410741 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4804077893147247051, guid: 29f0c02b40dfe3d408de049a498a1d09,
     type: 3}
   m_PrefabInstance: {fileID: 3881988827120528894}
   m_PrefabAsset: {fileID: 0}
@@ -24361,6 +24378,17 @@ PrefabInstance:
       propertyPath: interactionObject
       value: 
       objectReference: {fileID: 2611440465060189591}
+    - target: {fileID: 5385500836903059132, guid: f68897aeae0c05a4f8edb73c385bc8bd,
+        type: 3}
+      propertyPath: useMark
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5385500836903059132, guid: f68897aeae0c05a4f8edb73c385bc8bd,
+        type: 3}
+      propertyPath: markPrefab
+      value: 
+      objectReference: {fileID: 3272743960733024790, guid: cdc85a3c7bf6b294c9fcca40d2ff00de,
+        type: 3}
     - target: {fileID: 6149318734316858801, guid: f68897aeae0c05a4f8edb73c385bc8bd,
         type: 3}
       propertyPath: m_Name
@@ -24369,7 +24397,7 @@ PrefabInstance:
     - target: {fileID: 7506875957148119002, guid: f68897aeae0c05a4f8edb73c385bc8bd,
         type: 3}
       propertyPath: m_Radius
-      value: 500
+      value: 1000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f68897aeae0c05a4f8edb73c385bc8bd, type: 3}
@@ -24765,6 +24793,11 @@ PrefabInstance:
       propertyPath: interactionObject
       value: 
       objectReference: {fileID: 6604564112281949836}
+    - target: {fileID: 5385500836903059132, guid: f68897aeae0c05a4f8edb73c385bc8bd,
+        type: 3}
+      propertyPath: useExclamationMark
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6149318734316858801, guid: f68897aeae0c05a4f8edb73c385bc8bd,
         type: 3}
       propertyPath: m_Name
@@ -25150,6 +25183,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Interactable Collider
       objectReference: {fileID: 0}
+    - target: {fileID: 6149318734316858801, guid: f68897aeae0c05a4f8edb73c385bc8bd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7506875957148119002, guid: f68897aeae0c05a4f8edb73c385bc8bd,
         type: 3}
       propertyPath: m_Radius
@@ -25476,15 +25514,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e22d0ad1adf77754ba379aca262cad98, type: 3}
---- !u!4 &6051517594190947242 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3202286720826080079, guid: e22d0ad1adf77754ba379aca262cad98,
-    type: 3}
-  m_PrefabInstance: {fileID: 9190582396092602597}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7322878181509288377 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1885766992688777564, guid: e22d0ad1adf77754ba379aca262cad98,
+    type: 3}
+  m_PrefabInstance: {fileID: 9190582396092602597}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6051517594190947242 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3202286720826080079, guid: e22d0ad1adf77754ba379aca262cad98,
     type: 3}
   m_PrefabInstance: {fileID: 9190582396092602597}
   m_PrefabAsset: {fileID: 0}
