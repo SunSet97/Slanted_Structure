@@ -16,7 +16,6 @@ namespace Data
         public CamInfo CamInfo;
         
         public UnityAction<int> ChooseAction;
-        public UnityAction DialoguePrevAction;
         public UnityAction DialogueEndAction;
         
         public DialogueData()
@@ -26,7 +25,6 @@ namespace Data
             CamInfo = new CamInfo();
 
             ChooseAction = null;
-            DialoguePrevAction = null;
             DialogueEndAction = null;
         }
 
@@ -47,7 +45,6 @@ namespace Data
             );
             
             dialogueIdx = 0;
-            DialoguePrevAction?.Invoke();
         }
 
         public void Reset()
@@ -59,7 +56,6 @@ namespace Data
             CamInfo = new CamInfo();
             
             ChooseAction = null;
-            DialoguePrevAction = null;
             DialogueEndAction = null;
         }
     }

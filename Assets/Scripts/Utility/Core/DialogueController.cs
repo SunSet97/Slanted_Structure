@@ -236,10 +236,7 @@ namespace Utility.Core
         {
             dialogueData.ChooseAction += choiceAction;
         }
-        public void SetDialouguePrevAction(UnityAction prevAction)
-        {
-            dialogueData.DialoguePrevAction += prevAction;
-        }
+        
         public void SetDialougueEndAction(UnityAction endAction)
         {
             dialogueData.DialogueEndAction += endAction;
