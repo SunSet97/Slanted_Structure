@@ -22,9 +22,9 @@ public class HamburgerStoreManager : MonoBehaviour
 
     private void InitialSetting()
     {
-        partTimeJob.SetDialogueEndEvent(() => { sofa.enabled = true; });
+        partTimeJob.SetInteractionEndEvent(() => { sofa.enabled = true; });
 
-        sofa.SetDialogueStartEvent(() =>
+        sofa.SetInteractionStartEvent(() =>
         {
             CharacterManager character = DataController.instance.GetCharacter(Character.Main);
             character.PickUpCharacter();
@@ -33,7 +33,7 @@ public class HamburgerStoreManager : MonoBehaviour
             character.anim.SetBool("Seat", true);
         });
 
-        sofa.SetDialogueEndEvent(() =>
+        sofa.SetInteractionEndEvent(() =>
         {
             JoystickController.instance.InitializeJoyStick(false);
             speat.StartMoving();

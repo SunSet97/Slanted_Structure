@@ -42,18 +42,12 @@ namespace Utility.Interaction
 
         [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
         public DialogueData dialogueData;
-
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
-        public InteractionEvents dialogueStartActions;
-
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
-        public InteractionEvents dialogueEndActions;
-
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Task)]
-        public InteractionEvents taskEndActions;
-
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Cinematic)] [SerializeField]
-        public InteractionEvents cinematicEndAction;
+        
+        [Space(10)]
+        
+        public InteractionEvents interactionStartActions;
+        
+        public InteractionEvents interactionEndActions;
 
         [Header("인터랙션 방법")] public InteractionMethod interactionMethod;
 
@@ -79,19 +73,11 @@ namespace Utility.Interaction
         
         public Interaction()
         {
-            dialogueStartActions = new InteractionEvents
+            interactionStartActions = new InteractionEvents
             {
                 interactionEvents = new List<InteractionEvent>()
             };
-            dialogueEndActions = new InteractionEvents
-            {
-                interactionEvents = new List<InteractionEvent>()
-            };
-            taskEndActions = new InteractionEvents
-            {
-                interactionEvents = new List<InteractionEvent>()
-            };
-            cinematicEndAction = new InteractionEvents
+            interactionEndActions = new InteractionEvents
             {
                 interactionEvents = new List<InteractionEvent>()
             };
@@ -181,8 +167,6 @@ namespace Utility.Interaction
                     isLoopDialogue = isLoopDialogue,
                     interactionMethod = interactionMethod,
                     gamePlayableGame = gamePlayableGame,
-                    taskEndActions = taskEndActions,
-                    cinematicEndAction = cinematicEndAction,
                     isViewChange = isViewChange,
                     dialogueCamera = dialogueCamera,
                     cinematics = cinematics,
@@ -197,18 +181,6 @@ namespace Utility.Interaction
                     isInteractable = isInteractable,
                     isInteracted = false
                 };
-                    
-                if (dialogueEndActions.interactionEvents.Count > 0)
-                {
-                    interaction.dialogueEndActions = dialogueEndActions;
-                }
-                else
-                {
-                    interaction.dialogueEndActions = new InteractionEvents
-                    {
-                        interactionEvents = dialogueEndAction.ToList()
-                    };
-                }
                 
                 interactions.Add(interaction);
             }
@@ -284,18 +256,32 @@ namespace Utility.Interaction
         /// Dialogue가 시작할 때 사용하는 1회성 Event, Task - Dialogue인 경우에 실행되지 않는다.
         /// </summary>
         /// <param name="unityAction">사용할 함수를 만들어서 넣으세요</param>
-        public void SetDialogueStartEvent(UnityAction unityAction, int index = -1)
+        public void SetInteractionStartEvent(UnityAction unityAction, int index = -1)
         {
-            GetInteraction().dialogueStartActions.AddInteraction(unityAction);
+            if (index != -1)
+            {
+                GetInteraction(index).interactionStartActions.AddInteraction(unityAction);    
+            }
+            else
+            {
+                GetInteraction().interactionStartActions.AddInteraction(unityAction);
+            }
         }
 
         /// <summary>
         /// Dialogue가 끝날 때 사용하는 1회성 Event, Task - Dialogue인 경우에 실행되지 않는다.
         /// </summary>
         /// <param name="unityAction">사용할 함수를 만들어서 넣으세요</param>
-        public void SetDialogueEndEvent(UnityAction unityAction, int index = 0)
+        public void SetInteractionEndEvent(UnityAction unityAction, int index = -1)
         {
-            GetInteraction().dialogueEndActions.AddInteraction(unityAction);
+            if (index != -1)
+            {
+                GetInteraction(index).interactionEndActions.AddInteraction(unityAction);
+            }
+            else
+            {
+                GetInteraction().interactionEndActions.AddInteraction(unityAction);
+            }
         }
 
         /// <summary>
@@ -376,6 +362,12 @@ namespace Utility.Interaction
         protected void StartInteraction()
         {
             var interaction = GetInteraction();
+            
+            foreach (var interactionEvent in interaction.interactionStartActions.interactionEvents)
+            {
+                interactionEvent.Action();
+            }
+            
 
             if (interaction.serializedInteractionData.JsonTask == null)
             {
@@ -386,6 +378,12 @@ namespace Utility.Interaction
                 gameObject.GetComponent<Animator>())
             {
                 gameObject.GetComponent<Animator>().Play("Start", 0);
+                
+                // End Action
+                // foreach (var interactionEvent in interaction.interactionEndActions.interactionEvents)
+                // {
+                    // interactionEvent.Action();
+                // }
             }
             else if (interaction.interactionPlayType == InteractionPlayType.Dialogue)
             {
@@ -393,16 +391,8 @@ namespace Utility.Interaction
                 {
                     return;
                 }
-                
-                Debug.Log(interaction.dialogueStartActions);
-                Debug.Log(interaction.dialogueStartActions.interactionEvents);
 
-                foreach (var interactionEvent in interaction.dialogueStartActions.interactionEvents)
-                {
-                    DialogueController.instance.SetDialouguePrevAction(interactionEvent.Action);
-                }
-
-                foreach (var interactionEvent in interaction.dialogueEndActions.interactionEvents)
+                foreach (var interactionEvent in interaction.interactionEndActions.interactionEvents)
                 {
                     DialogueController.instance.SetDialougueEndAction(interactionEvent.Action);
                 }
@@ -412,6 +402,10 @@ namespace Utility.Interaction
             else if (interaction.interactionPlayType == InteractionPlayType.Potal &&
                      gameObject.TryGetComponent(out CheckMapClear mapClear))
             {
+                foreach (var interactionEvent in interaction.interactionEndActions.interactionEvents)
+                {
+                    interactionEvent.Action();
+                }
                 mapClear.Clear();
             }
             else if (interaction.interactionPlayType == InteractionPlayType.Task)
@@ -453,6 +447,10 @@ namespace Utility.Interaction
             else if (interaction.interactionPlayType == InteractionPlayType.Game)
             {
                 interaction.gamePlayableGame.GetComponent<IGamePlayable>().Play();
+                //foreach (var interactionEvent in interaction.interactionEndActions.interactionEvents)
+                // {
+                    // interactionEvent.Action();
+                // }
             }
             else if (interaction.interactionPlayType == InteractionPlayType.Cinematic)
             {
@@ -462,9 +460,8 @@ namespace Utility.Interaction
                     interaction.timelines[0].stopped += director =>
                     {
                         Debug.Log("타임라인 끝");
-                        foreach (var endAction in interaction.cinematicEndAction.interactionEvents)
+                        foreach (var endAction in interaction.interactionEndActions.interactionEvents)
                         {
-                            Debug.Log(endAction.eventType);
                             endAction.Action();
                         }
                     };
@@ -476,7 +473,7 @@ namespace Utility.Interaction
             }
 
 
-            if (interactions.Count > 0)
+            if (interactions.Count > 0 && interaction.isContinue)
             {
                 interactIndex = (interactIndex + 1) % interactions.Count;
             }
@@ -591,11 +588,6 @@ namespace Utility.Interaction
                         if (interaction.serializedInteractionData.JsonTask.Count > 0)
                         {
                             Debug.LogError("Task 엑셀 관련 오류");
-                        }
-
-                        foreach (var taskEndAction in interaction.taskEndActions.interactionEvents)
-                        {
-                            taskEndAction.Action();
                         }
 
                         yield break;
@@ -750,7 +742,7 @@ namespace Utility.Interaction
                 }
                 else
                 {
-                    foreach (var taskEndAction in interaction.taskEndActions.interactionEvents)
+                    foreach (var taskEndAction in interaction.interactionEndActions.interactionEvents)
                     {
                         taskEndAction.Action();
                     }
