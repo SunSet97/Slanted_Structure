@@ -2,8 +2,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Utility.Core;
 using Utility.Save;
-using Utility.System;
 
 namespace Utility.Preference
 {
@@ -63,7 +63,7 @@ namespace Utility.Preference
         
             coverYesButton.onClick.AddListener(() =>
             {
-                SaveData saveData = SaveHelper.instance.GetSaveData();
+                SaveData saveData = SaveHelper.Instance.GetSaveData();
                 SaveManager.Save(coverIdx, saveData);
                 Debug.Log(coverIdx + "저장");
                 UpdateDiary();
@@ -92,7 +92,7 @@ namespace Utility.Preference
                         }
                         else
                         {
-                            SaveData saveData = SaveHelper.instance.GetSaveData();
+                            SaveData saveData = SaveHelper.Instance.GetSaveData();
                             SaveManager.Save(t, saveData);
                             Debug.Log(t + "저장");
                             UpdateDiary();

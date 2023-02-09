@@ -1,13 +1,16 @@
-﻿using Data;
+﻿using System.Collections.Generic;
+using Data;
 using UnityEngine;
-using Utility.System;
+using Utility.Core;
+using Utility.Interaction;
 
 namespace Utility.Save
 {
     public class SaveHelper : MonoBehaviour
     {
         private static SaveHelper _instance;
-        public static SaveHelper instance
+
+        public static SaveHelper Instance
         {
             get
             {
@@ -20,19 +23,31 @@ namespace Utility.Save
                     }
                     else
                     {
-                        _instance = Resources.Load<SaveHelper>("SaveHelper");   
+                        _instance = Resources.Load<SaveHelper>("SaveHelper");
                     }
+
                     DontDestroyOnLoad(_instance);
                 }
+
                 return _instance;
             }
         }
+
         public SaveData GetSaveData()
         {
-            SaveData saveData = new SaveData();
-            saveData.mapCode = DataController.instance.mapCode;
-            saveData.charData = DataController.instance.charData;
-            
+            SaveData saveData = new SaveData
+            {
+                mapCode = DataController.instance.mapCode,
+                charData = DataController.instance.charData,
+                interactionDatas = new List<InteractionSaveData>()
+            };
+
+            foreach (var interaction in DataController.instance.InteractionObjects)
+            {
+                var interactionData = interaction.GetInteractionSaveData();
+                saveData.interactionDatas.Add(interactionData);
+            }
+
             return saveData;
         }
     }

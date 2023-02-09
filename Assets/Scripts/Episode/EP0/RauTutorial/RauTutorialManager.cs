@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Utility.System;
+using Utility.Core;
 using static Data.CustomEnum;
 
 public class RauTutorialManager : MonoBehaviour

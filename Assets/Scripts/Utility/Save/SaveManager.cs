@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
@@ -22,18 +23,14 @@ namespace Utility.Save
             Debug.Log(Savefilename);
             Init();
         }
-        public static void Init()
+
+        private static void Init()
         {
 #if UNITY_IPHONE
         Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
 #endif
         }
-        
-        // public static SaveData GetSaveData()
-        // {
-        //     return _saveData;
-        // }
-        
+
 
         public static void Save(int idx, SaveData saveData)
         {
@@ -46,16 +43,25 @@ namespace Utility.Save
             {
                 using (var fileStream = File.Create(Savefilename))
                 {
-                    using (Stream cryptoStream = new CryptoStream(fileStream, encryptor, CryptoStreamMode.Write))
+                    try
                     {
+                        Stream cryptoStream = new CryptoStream(fileStream, encryptor, CryptoStreamMode.Write);
                         new BinaryFormatter().Serialize(cryptoStream, saveData);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log(e);
+                        fileStream.Close();
+                        rijn.Clear();
+                        Delete(idx);
+                        return;
                     }
 
                     fileStream.Close();
                 }
-            }
 
-            rijn.Clear();
+                rijn.Clear();
+            }
         }
 
         public static bool Load(int idx, out SaveData saveData)
@@ -66,6 +72,7 @@ namespace Utility.Save
                 saveData = null;
                 return false;
             }
+
             RijndaelManaged rijn = new RijndaelManaged();
             rijn.Mode = CipherMode.ECB;
             rijn.Padding = PaddingMode.Zeros;
@@ -82,16 +89,26 @@ namespace Utility.Save
                         return false;
                     }
 
-                    using (Stream cryptoStream = new CryptoStream(fileStream, decryptor, CryptoStreamMode.Read))
+                    try
                     {
-                        saveData = (SaveData)new BinaryFormatter().Deserialize(cryptoStream);
+                        Stream cryptoStream = new CryptoStream(fileStream, decryptor, CryptoStreamMode.Read);
+                        saveData = (SaveData) new BinaryFormatter().Deserialize(cryptoStream);
+                        // 불러오는데 걸리는 시간 오류 발생, SaveData를 이중으로 보관하는 방법은 어떤지 (Diary 시각화 용도, 실제 데이터)
                     }
-
+                    catch (Exception e)
+                    {
+                        Debug.Log(e);
+                        saveData = new SaveData
+                        {
+                            mapCode = "불러오기에 실패"
+                        };
+                    }
+                    
                     fileStream.Close();
                 }
-            }
 
-            rijn.Clear();
+                rijn.Clear();
+            }
 
             return true;
         }

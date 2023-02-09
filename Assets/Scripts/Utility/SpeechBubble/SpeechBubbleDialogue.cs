@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
-using Utility.System;
+using Utility.Core;
 using Random = UnityEngine.Random;
 
 namespace Utility.SpeechBubble
