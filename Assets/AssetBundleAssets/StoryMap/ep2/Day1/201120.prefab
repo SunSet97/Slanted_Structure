@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &2385773430310315978
+--- !u!114 &3277699353412575445
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 170596963279478061}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactionPlayType: 2
@@ -281,20 +281,22 @@ MonoBehaviour:
   skyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 0
   orthographicSize: 0
-  bgm: {fileID: 0}
+  cameraBound: {fileID: 0}
+  BGM: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 601651777780013674}
   clearBoxList:
   - {fileID: 586399222419395053}
-  positionSetting: {fileID: 586399220801641128}
   positionSets:
-  - who: 2
+  - index: 0
+    who: 2
     startPosition: {fileID: 586399221686276720}
+    posSet: {fileID: 586399222547527601}
     isMain: 1
   cameraViewType: 0
   camDis: {x: 2, y: 1, z: -5}
   camRot: {x: 0, y: 0, z: 0}
-  interactionObjects: []
+  positionSetting: {fileID: 586399220801641128}
   isJoystickInputUse: 0
   isJoystickNone: 0
   joystickType: 0
@@ -518,7 +520,7 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
---- !u!114 &4335613919284433938
+--- !u!114 &4646990779114196798
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -527,7 +529,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2371652101052140131}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactionPlayType: 2
@@ -648,7 +650,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &3801629556388871795
+--- !u!114 &8236209207284597605
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -657,7 +659,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2747224374276488882}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactionPlayType: 2
@@ -733,14 +735,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speechBubbleType: 1
-  randomSecond: 1
+  randomSecond: 0
   bubbleScripts:
   - speaker: "\uC5B4\uB9B0 \uC544\uC774"
-    appearSec: 0
-    disappearSec: 0
+    appearSec: 1
+    disappearSec: 1
     randomRange: 0
     dialogue: "\uC544\uBE60, \uC800 \uC0AC\uB78C\uC740 \uC65C \uB3D9\uADF8\uB798???"
-  speechPos: {x: 0, y: 2}
+  speechPos: {x: 1.5, y: 4}
+  _bubbleIndex: 0
 --- !u!114 &5272759167275692523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -753,7 +756,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd5b5e448332ce84fb73dd63ba7df826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionObject: {fileID: 3801629556388871795}
+  interactionObject: {fileID: 8236209207284597605}
   useExclamationMark: 0
   markOffset: {x: 0, y: 0}
 --- !u!135 &4723516963112061299
@@ -768,7 +771,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 8
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 1.68, y: 0, z: 0}
 --- !u!1 &4022788331332014600
 GameObject:
   m_ObjectHideFlags: 0
@@ -818,12 +821,13 @@ MonoBehaviour:
   randomSecond: 0
   bubbleScripts:
   - speaker: "\uC138\uBAA8 \uB0A8\uC7902"
-    appearSec: 0
-    disappearSec: 0
+    appearSec: 5
+    disappearSec: 2
     randomRange: 0
     dialogue: "\uC57C\u314B\u314B\uC6D0\uC778\uC774\uB2E4 \uC2E0\uAE30\uD558\uB2E4.
       \uC644\uC804 \uB3D9\uADF8\uB798!"
-  speechPos: {x: 50, y: 400}
+  speechPos: {x: 0, y: 6}
+  _bubbleIndex: 0
 --- !u!114 &4757946020175191615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -836,7 +840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd5b5e448332ce84fb73dd63ba7df826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionObject: {fileID: 4335613919284433938}
+  interactionObject: {fileID: 4646990779114196798}
   useExclamationMark: 0
   markOffset: {x: 0, y: 0}
 --- !u!135 &8766002444128759758
@@ -851,7 +855,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 8
-  m_Center: {x: -6.66, y: 0, z: -1.74}
+  m_Center: {x: -10, y: 0, z: -1.74}
 --- !u!135 &2692846869079000619
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -864,7 +868,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 8
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -5.33, y: 0, z: 0}
 --- !u!114 &3261920745784968089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -991,15 +995,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speechBubbleType: 1
-  randomSecond: 1
+  randomSecond: 0
   bubbleScripts:
   - speaker: "\uC544\uC774 \uC544\uBE60"
-    appearSec: 0
-    disappearSec: 0
+    appearSec: 5
+    disappearSec: 5
     randomRange: 0
     dialogue: "\uC800 \uC0AC\uB78C\uC740 \uB2E4\uB978 \uB9C8\uC744 \uC0AC\uB78C\uC774\uC57C.\n\uAD1C\uD788
       \uAC00\uAE4C\uC774 \uAC00\uC9C0 \uB9C8\uB834."
-  speechPos: {x: 0, y: 2}
+  speechPos: {x: 0, y: 6}
+  _bubbleIndex: 0
 --- !u!114 &7950093701240950616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1012,7 +1017,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd5b5e448332ce84fb73dd63ba7df826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionObject: {fileID: 2385773430310315978}
+  interactionObject: {fileID: 3277699353412575445}
   useExclamationMark: 0
   markOffset: {x: 0, y: 0}
 --- !u!135 &8800326775684144029
@@ -1027,8 +1032,8 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 8
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6683716071521639119
+  m_Center: {x: -6.92, y: 0, z: 0}
+--- !u!114 &534798881309161252
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1037,7 +1042,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8422276328201326592}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactionPlayType: 2
@@ -1207,17 +1212,18 @@ MonoBehaviour:
   randomSecond: 0
   bubbleScripts:
   - speaker: "\uC138\uBAA8\uC778 \uB0A8\uC1311"
-    appearSec: 0
+    appearSec: 1
     disappearSec: 0
     randomRange: 0
     dialogue: "\uC73C\uC544~\uC5ED\uC2DC \uC220\uBA39\uC740 \uB2E4\uC74C\uB0A0 \uAD6D\uBC25\uC774
       \uCD5C\uACE0\uC9C0!"
   - speaker: "\uC138\uBAA8\uC778 \uB0A8\uC1311"
-    appearSec: 0
-    disappearSec: 0
+    appearSec: 3
+    disappearSec: 3
     randomRange: 0
     dialogue: "\uD5D0, \uC6D0\uC778\uC774\uB2E4. \uB098 \uCC98\uC74C\uBD04"
-  speechPos: {x: -150, y: 400}
+  speechPos: {x: 3, y: 5}
+  _bubbleIndex: 0
 --- !u!114 &8894011037063452822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1230,7 +1236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd5b5e448332ce84fb73dd63ba7df826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionObject: {fileID: 6683716071521639119}
+  interactionObject: {fileID: 534798881309161252}
   useExclamationMark: 0
   markOffset: {x: 0, y: 0}
 --- !u!135 &2478579085552616580
@@ -1245,7 +1251,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 8
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 4.4, y: 0, z: 0}
 --- !u!1001 &586399221350616211
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1744,11 +1750,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7594233830574839165, guid: bf43b3b0bfb904f4f8c96920d82b7301,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7667542354674702434, guid: bf43b3b0bfb904f4f8c96920d82b7301,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -1804,11 +1805,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.59
       objectReference: {fileID: 0}
-    - target: {fileID: 9174155159800329684, guid: bf43b3b0bfb904f4f8c96920d82b7301,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -1828,6 +1824,24 @@ PrefabInstance:
     - {fileID: 2314799671188072220, guid: bf43b3b0bfb904f4f8c96920d82b7301, type: 3}
     - {fileID: 5549365963257205283, guid: bf43b3b0bfb904f4f8c96920d82b7301, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: bf43b3b0bfb904f4f8c96920d82b7301, type: 3}
+--- !u!4 &4808356120316469779 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5375600954649521792, guid: bf43b3b0bfb904f4f8c96920d82b7301,
+    type: 3}
+  m_PrefabInstance: {fileID: 586399221350616211}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8422276328201326592 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8989925165310958739, guid: bf43b3b0bfb904f4f8c96920d82b7301,
+    type: 3}
+  m_PrefabInstance: {fileID: 586399221350616211}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &6074580095302620769 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6660384686881151730, guid: bf43b3b0bfb904f4f8c96920d82b7301,
+    type: 3}
+  m_PrefabInstance: {fileID: 586399221350616211}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4623067931162276402 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5191279512163597985, guid: bf43b3b0bfb904f4f8c96920d82b7301,
@@ -1846,36 +1860,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 586399221350616211}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &6074580095302620769 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6660384686881151730, guid: bf43b3b0bfb904f4f8c96920d82b7301,
-    type: 3}
-  m_PrefabInstance: {fileID: 586399221350616211}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1635533295247915120 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2202781532269589731, guid: bf43b3b0bfb904f4f8c96920d82b7301,
-    type: 3}
-  m_PrefabInstance: {fileID: 586399221350616211}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2371652101052140131 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2939306812604598000, guid: bf43b3b0bfb904f4f8c96920d82b7301,
-    type: 3}
-  m_PrefabInstance: {fileID: 586399221350616211}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &4808356120316469779 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5375600954649521792, guid: bf43b3b0bfb904f4f8c96920d82b7301,
-    type: 3}
-  m_PrefabInstance: {fileID: 586399221350616211}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8422276328201326592 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8989925165310958739, guid: bf43b3b0bfb904f4f8c96920d82b7301,
-    type: 3}
-  m_PrefabInstance: {fileID: 586399221350616211}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1187617537783598241 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1754166518594584626, guid: bf43b3b0bfb904f4f8c96920d82b7301,
@@ -1885,6 +1869,30 @@ Transform:
 --- !u!1 &2747224374276488882 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3315587206850032161, guid: bf43b3b0bfb904f4f8c96920d82b7301,
+    type: 3}
+  m_PrefabInstance: {fileID: 586399221350616211}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5368723130412494121 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4801619789447668154, guid: bf43b3b0bfb904f4f8c96920d82b7301,
+    type: 3}
+  m_PrefabInstance: {fileID: 586399221350616211}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2371652101052140131 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2939306812604598000, guid: bf43b3b0bfb904f4f8c96920d82b7301,
+    type: 3}
+  m_PrefabInstance: {fileID: 586399221350616211}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1635533295247915120 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2202781532269589731, guid: bf43b3b0bfb904f4f8c96920d82b7301,
+    type: 3}
+  m_PrefabInstance: {fileID: 586399221350616211}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5089735150138470773 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5656822240020921830, guid: bf43b3b0bfb904f4f8c96920d82b7301,
     type: 3}
   m_PrefabInstance: {fileID: 586399221350616211}
   m_PrefabAsset: {fileID: 0}
@@ -1900,21 +1908,9 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 586399221350616211}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &5368723130412494121 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4801619789447668154, guid: bf43b3b0bfb904f4f8c96920d82b7301,
-    type: 3}
-  m_PrefabInstance: {fileID: 586399221350616211}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5368723130412494120 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4801619789447668155, guid: bf43b3b0bfb904f4f8c96920d82b7301,
-    type: 3}
-  m_PrefabInstance: {fileID: 586399221350616211}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5089735150138470773 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5656822240020921830, guid: bf43b3b0bfb904f4f8c96920d82b7301,
     type: 3}
   m_PrefabInstance: {fileID: 586399221350616211}
   m_PrefabAsset: {fileID: 0}
