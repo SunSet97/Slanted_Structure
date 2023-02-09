@@ -11,6 +11,6 @@ namespace Data
 
         public CharData charData;
 
-        public List<InteractionData> interactionDatas;
+        public List<InteractionSaveData> interactionDatas;
     }
 }

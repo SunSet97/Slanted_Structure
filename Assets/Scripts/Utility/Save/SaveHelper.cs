@@ -9,6 +9,7 @@ namespace Utility.Save
     public class SaveHelper : MonoBehaviour
     {
         private static SaveHelper _instance;
+
         public static SaveHelper Instance
         {
             get
@@ -22,28 +23,31 @@ namespace Utility.Save
                     }
                     else
                     {
-                        _instance = Resources.Load<SaveHelper>("SaveHelper");   
+                        _instance = Resources.Load<SaveHelper>("SaveHelper");
                     }
+
                     DontDestroyOnLoad(_instance);
                 }
+
                 return _instance;
             }
         }
+
         public SaveData GetSaveData()
         {
             SaveData saveData = new SaveData
             {
                 mapCode = DataController.instance.mapCode,
                 charData = DataController.instance.charData,
-                interactionDatas = new List<InteractionData>()
+                interactionDatas = new List<InteractionSaveData>()
             };
 
             foreach (var interaction in DataController.instance.InteractionObjects)
             {
-                var interactionData = interaction.GetInteractionData();
+                var interactionData = interaction.GetInteractionSaveData();
                 saveData.interactionDatas.Add(interactionData);
             }
-            
+
             return saveData;
         }
     }

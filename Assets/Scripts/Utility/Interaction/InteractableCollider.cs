@@ -33,7 +33,7 @@ namespace Utility.Interaction
 
         private void Update()
         {
-            if (interactionObject.GetInteraction().isInteractable && useExclamationMark && interactionObject.ExclamationMark.activeSelf)
+            if (interactionObject.GetInteraction().serializedInteractionData.isInteractable && useExclamationMark && interactionObject.ExclamationMark.activeSelf)
             {
                 interactionObject.ExclamationMark.transform.position =
                     (Vector3) markOffset + DataController.instance.cam.WorldToScreenPoint(interactionObject.transform.position);

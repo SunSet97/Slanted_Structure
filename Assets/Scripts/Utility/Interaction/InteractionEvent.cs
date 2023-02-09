@@ -149,7 +149,7 @@ namespace Utility.Interaction
             foreach (var t in interactObjs.interacts)
             {
                 var interaction = t.interactObj.GetInteraction(t.index);
-                interaction.isInteractable = t.interactable;
+                interaction.serializedInteractionData.isInteractable = t.interactable;
             }
         }
     }
