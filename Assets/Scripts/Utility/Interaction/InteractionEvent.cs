@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Move;
 using Play;
 using UnityEngine;
@@ -35,6 +34,8 @@ namespace Utility.Interaction
             Move,
             Play,
             Interactable,
+            Interaction,
+            FadeOut,
             Custom
         }
 
@@ -66,6 +67,21 @@ namespace Utility.Interaction
         {
             public Interact[] interacts;
         }
+        
+        [Serializable]
+        public struct Interaction
+        {
+            public InteractionObject interactObj;
+            public int index;
+            public int waitSeconds;
+            public bool useFadeOut;
+        }
+        
+        [Serializable]
+        public struct InteractionList
+        {
+            public Interaction[] interactions;
+        }
 
         [ConditionalHideInInspector("eventType", EventType.Clear)]
         public CheckMapClear clearBox;
@@ -81,6 +97,12 @@ namespace Utility.Interaction
 
         [ConditionalHideInInspector("eventType", EventType.Interactable)]
         public InteractList interactObjs;
+        
+        [ConditionalHideInInspector("eventType", EventType.Interaction)]
+        public InteractionList interactionObjs;
+        
+        [ConditionalHideInInspector("eventType", EventType.FadeOut)]
+        public float fadeSec;
 
         [NonSerialized] public UnityAction UnityAction;
 
@@ -101,7 +123,13 @@ namespace Utility.Interaction
                     PlayEvent();
                     break;
                 case EventType.Interactable:
+                    InteractableEvent();
+                    break;
+                case EventType.Interaction:
                     InteractEvent();
+                    break;
+                case EventType.FadeOut:
+                    FadeOut();
                     break;
                 case EventType.Custom:
                     UnityAction?.Invoke();
@@ -144,13 +172,28 @@ namespace Utility.Interaction
             }
         }
 
-        private void InteractEvent()
+        private void InteractableEvent()
         {
             foreach (var t in interactObjs.interacts)
             {
                 var interaction = t.interactObj.GetInteraction(t.index);
                 interaction.serializedInteractionData.isInteractable = t.interactable;
             }
+        }
+        
+        private void InteractEvent()
+        {
+            foreach (var t in interactionObjs.interactions)
+            {
+                t.interactObj.InteractIndex = t.index;
+                t.interactObj.GetInteraction().serializedInteractionData.isInteractable = true;
+                t.interactObj.Invoke(nameof(InteractionObject.StartInteraction), t.waitSeconds);
+            }
+        }
+
+        private void FadeOut()
+        {
+            // fadeSec
         }
     }
 }

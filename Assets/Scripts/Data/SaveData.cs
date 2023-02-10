@@ -7,10 +7,16 @@ namespace Data
     [Serializable]
     public class SaveData
     {
-        public string mapCode;
+        public SaveCoverData saveCoverData;
 
         public CharData charData;
 
         public List<InteractionSaveData> interactionDatas;
+    }
+    
+    [Serializable]
+    public class SaveCoverData
+    {
+        public string mapCode;
     }
 }

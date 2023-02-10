@@ -64,11 +64,12 @@ namespace Utility.Preference
             coverYesButton.onClick.AddListener(() =>
             {
                 SaveData saveData = SaveHelper.Instance.GetSaveData();
-                SaveManager.Save(coverIdx, saveData);
-                Debug.Log(coverIdx + "저장");
-                UpdateDiary();
-            
-                coverPanel.SetActive(false);
+                SaveManager.Save(coverIdx, saveData, () =>
+                {
+                    Debug.Log(coverIdx + "저장");
+                    UpdateDiary();
+                    coverPanel.SetActive(false);
+                });
             });
         
             coverNoButton.onClick.AddListener(() =>
@@ -93,27 +94,36 @@ namespace Utility.Preference
                         else
                         {
                             SaveData saveData = SaveHelper.Instance.GetSaveData();
-                            SaveManager.Save(t, saveData);
-                            Debug.Log(t + "저장");
-                            UpdateDiary();
+                            SaveManager.Save(t, saveData, () =>
+                            {
+                                Debug.Log(t + "저장");
+                                UpdateDiary();
+                            });
                         }
                     }
                     else if (focusedButton == ButtonType.Load)
                     {
-                        if (SaveManager.Load(t, out SaveData save))
+                        if (SaveManager.Has(t))
                         {
-                            SceneLoader.SceneLoader.Instance.LoadScene("Ingame_set");
-                            var sceneName = SceneManager.GetActiveScene().name;
-                            SceneLoader.SceneLoader.Instance.AddListener(() =>
+                            if (SaveManager.LoadCover(t, out SaveCoverData saveCover))
                             {
-                                if (sceneName.Equals("Ingame_set"))
+                                SceneLoader.SceneLoader.Instance.LoadScene("Ingame_set");
+                                var sceneName = SceneManager.GetActiveScene().name;
+                                SceneLoader.SceneLoader.Instance.AddListener(() =>
                                 {
-                                    diaryPanel.SetActive(false);
-                                }
+                                    if (sceneName.Equals("Ingame_set"))
+                                    {
+                                        diaryPanel.SetActive(false);
+                                    }
+                                    if(SaveManager.Load(t, out SaveData saveData))
+                                    {
+                                        
+                                    }
+                                    DataController.instance.GameStart(saveCover.mapCode);
 
-                                DataController.instance.GameStart(save.mapCode);
-                                SceneLoader.SceneLoader.Instance.RemoveAllListener();
-                            });
+                                    SceneLoader.SceneLoader.Instance.RemoveAllListener();
+                                });
+                            }
                         }
                     }
                     else if (focusedButton == ButtonType.Delete)
@@ -200,10 +210,10 @@ namespace Utility.Preference
         {
             for (var idx = 0; idx < diarySaveParent.childCount; idx++)
             {
-                if (SaveManager.Load(idx, out SaveData saveData))
+                if (SaveManager.Has(idx) && SaveManager.LoadCover(idx, out SaveCoverData saveCoverData))
                 {
                     var text = diarySaveParent.GetChild(idx).GetComponentInChildren<Text>();
-                    text.text = idx + "번입니다" + "\n" + saveData.mapCode;
+                    text.text = idx + "번입니다" + "\n" + saveCoverData.mapCode;
                     Debug.Log(text.text);
                 }
                 else

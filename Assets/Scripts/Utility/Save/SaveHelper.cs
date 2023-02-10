@@ -37,7 +37,10 @@ namespace Utility.Save
         {
             SaveData saveData = new SaveData
             {
-                mapCode = DataController.instance.mapCode,
+                saveCoverData = new SaveCoverData
+                {
+                    mapCode = DataController.instance.mapCode
+                },
                 charData = DataController.instance.charData,
                 interactionDatas = new List<InteractionSaveData>()
             };
