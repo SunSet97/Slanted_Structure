@@ -823,8 +823,9 @@ namespace Utility.Interaction
         {
             var interactionSaveData = new InteractionSaveData
             {
-                // pos = transform.position,
-                // rot = transform.rotation,
+                name = gameObject.name,
+                pos = transform.position,
+                rot = transform.rotation,
                 // serializedInteractionData = GetInteraction().serializedInteractionData,
                 interactIndex = InteractIndex
             };
