@@ -50,7 +50,7 @@
             }
             
             float4 final;
-            final.rgb = s.Albedo*Ramp.rgb;
+            final.rgb = s.Albedo*Ramp.rgb* _BrightDark;
             final.a = s.Alpha;
             return final;
         }
