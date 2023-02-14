@@ -45,6 +45,8 @@ namespace Utility.Core
         private UnityAction onLoadMap;
         
         [NonSerialized] public List<InteractionObject> InteractionObjects;
+        
+        public SaveData saveData;
 
         private void Awake()
         {
@@ -81,12 +83,14 @@ namespace Utility.Core
             speat_Child.Init();
         }
 
-        public void GameStart(string mapcode)
+        public void GameStart(string mapCode, SaveData save = null)
         {
+            saveData = save;
             Debug.Log("게임 시작");
             Init();
-            ChangeMap(mapcode);
+            ChangeMap(mapCode);
         }
+        
 
         private MapData[] LoadMap(string desMapCode)
         {
@@ -178,12 +182,6 @@ namespace Utility.Core
             return character;
         }
 
-        #region 맵 이동
-
-        /// <summary>
-        /// 맵 바꾸는 함수
-        /// </summary>
-        /// <param name="desMapCode">생성되는 맵의 코드</param>
         public void ChangeMap(string desMapCode)
         {
             //모든 캐릭터 위치 대기실로 이동
@@ -211,6 +209,9 @@ namespace Utility.Core
             InteractionObjects.Clear();
             currentMap = Instantiate(nextMap, mapGenerate);
             currentMap.Initialize();
+
+            LoadData();
+
             SetByChangedMap();
             DialogueController.instance.Initialize();
 
@@ -340,9 +341,7 @@ namespace Utility.Core
             speat_Child.UseJoystickCharacter();
             speat_Adult.UseJoystickCharacter();
         }
-
-        #endregion
-
+        
         public void UpdateLikeable(int[] rauLikeables)
         {
             charData.selfEstm += rauLikeables[0];
@@ -354,6 +353,18 @@ namespace Utility.Core
         {
             int[] likable = {charData.selfEstm, charData.intimacySpRau, charData.intimacyOunRau};
             return likable;
+        }
+
+        private void LoadData()
+        {
+            if (saveData != null)
+            {
+                charData = saveData.charData;
+                foreach (var interactionObject in InteractionObjects)
+                {
+                    interactionObject.GetInteraction().serializedInteractionData
+                }
+            }
         }
     }
 }

@@ -35,8 +35,8 @@ namespace Utility.Save
 #if UNITY_IPHONE
         Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
 #endif
-            _saveDatas = new Dictionary<int, SaveData>(6);
-            _saveCoverDatas = new Dictionary<int, SaveCoverData>(6);
+            _saveDatas = new Dictionary<int, SaveData>();
+            _saveCoverDatas = new Dictionary<int, SaveCoverData>();
         }
 
         public static async Task SaveAsync(int idx, SaveData saveData, Action saveEndAction = null)
@@ -68,7 +68,6 @@ namespace Utility.Save
                     {
                         fileStream.Close();
                         rijn.Clear();
-                        Delete(idx);
                         saveEndAction?.Invoke();
                         return;
                     }
@@ -94,7 +93,6 @@ namespace Utility.Save
                     {
                         fileStream.Close();
                         rijn.Clear();
-                        Delete(idx);
                         saveEndAction?.Invoke();
                         return;
                     }
@@ -253,7 +251,6 @@ namespace Utility.Save
                     {
                         fileStream.Close();
                         rijn.Clear();
-                        Delete(idx);
                         saveEndAction?.Invoke();
                         return;
                     }
@@ -274,7 +271,6 @@ namespace Utility.Save
                     {
                         fileStream.Close();
                         rijn.Clear();
-                        Delete(idx);
                         saveEndAction?.Invoke();
                         return;
                     }

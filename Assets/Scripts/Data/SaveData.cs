@@ -22,7 +22,7 @@ namespace Data
             UnityEngine.Debug.Log($"MapCode: {saveCoverData.mapCode}");
             foreach (var saveDataInteractionData in interactionDatas)
             {
-                UnityEngine.Debug.Log($"인터랙션 이름: {saveDataInteractionData.name}\n" +
+                UnityEngine.Debug.Log($"인터랙션 이름: {saveDataInteractionData.id}\n" +
                                       $"Pos: {(Vector3)saveDataInteractionData.pos}\n" +
                                       $"Rot: {(Quaternion)saveDataInteractionData.rot}\n" +
                                       $"Interaction Index: {saveDataInteractionData.interactIndex}");

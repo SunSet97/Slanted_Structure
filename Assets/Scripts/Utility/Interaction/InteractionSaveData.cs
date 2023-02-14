@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Utility.Serialize;
 
 namespace Utility.Interaction
@@ -6,13 +7,14 @@ namespace Utility.Interaction
     [Serializable]
     public struct InteractionSaveData
     {
-        public string name;
+        public string id;
         
         public SerializableVector3 pos;
 
         public SerializableQuaternion rot;
 
-        // public SerializedInteractionData serializedInteractionData;
+        public List<SerializedInteractionData> serializedInteractionData;
+        
         public int interactIndex;
     }
 }

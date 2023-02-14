@@ -109,7 +109,7 @@ namespace Utility.Preference
                             {
                                 var saveData = SaveManager.GetSaveData(t);
                                 saveData.Debug();
-                                DataController.instance.GameStart(saveData.saveCoverData.mapCode);
+                                DataController.instance.GameStart(saveData.saveCoverData.mapCode, saveData);
 
                                 SceneLoader.SceneLoader.Instance.RemoveAllListener();
                             });

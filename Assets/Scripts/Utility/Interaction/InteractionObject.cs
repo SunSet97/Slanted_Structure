@@ -12,6 +12,7 @@ using UnityEngine.Timeline;
 using Utility.Core;
 using Utility.Json;
 using Utility.Property;
+using Utility.Save;
 using Task = Data.Task;
 using static Data.CustomEnum;
 
@@ -369,11 +370,15 @@ namespace Utility.Interaction
         public void StartInteraction()
         {
             var interaction = GetInteraction();
-            if (interaction.jsonFile)
+
+            if (!interaction.serializedInteractionData.isInteractable || interaction.serializedInteractionData.isInteracted && !interaction.isLoopDialogue)
             {
-                interaction.serializedInteractionData.isInteracted = !interaction.isLoopDialogue;
+                Debug.Log($"인터랙션 시작 전 중지 {interaction.serializedInteractionData.isInteractable} {interaction.serializedInteractionData.isInteracted} {interaction.isLoopDialogue}");
+                return;
             }
             
+            interaction.serializedInteractionData.isInteracted = true;
+
             foreach (var interactionEvent in interaction.interactionStartActions.interactionEvents)
             {
                 interactionEvent.Action();
@@ -823,13 +828,16 @@ namespace Utility.Interaction
         {
             var interactionSaveData = new InteractionSaveData
             {
-                name = gameObject.name,
+                id = gameObject.name,
                 pos = transform.position,
                 rot = transform.rotation,
-                // serializedInteractionData = GetInteraction().serializedInteractionData,
                 interactIndex = InteractIndex
             };
             
+            foreach (var interaction in interactions)
+            {
+                interactionSaveData.serializedInteractionData.Add(interaction.serializedInteractionData);
+            }
             return interactionSaveData;
         }
 
