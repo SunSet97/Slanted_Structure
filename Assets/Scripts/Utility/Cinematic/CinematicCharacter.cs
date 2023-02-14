@@ -16,13 +16,21 @@ namespace Utility.Cinematic
 
         void Start()
         {
-            if(anim == null)
+            if (anim == null)
                 anim = GetComponent<Animator>();
-            if(skinnedMesh == null)
-                if (who.Equals(CustomEnum.Character.Speat) || who.Equals(CustomEnum.Character.Oun) || who.Equals(CustomEnum.Character.Rau))
-                    skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
+            if (skinnedMesh == null)
+                skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
             if (faceExpression == null)
-                faceExpression = Resources.LoadAll<Texture>("Face");
+            {
+                if (who.Equals(CustomEnum.Character.Speat) || who.Equals(CustomEnum.Character.Oun) || who.Equals(CustomEnum.Character.Rau))
+                {
+                    faceExpression = Resources.LoadAll<Texture>("Face");
+                }
+                else if (who.Equals(CustomEnum.Character.Speat_Adolescene) || who.Equals(CustomEnum.Character.Speat_Adult) || who.Equals(CustomEnum.Character.Speat_Child))
+                {
+                    faceExpression = Resources.LoadAll<Texture>("Speat_Face");
+                }
+            }
         }
 
 
@@ -32,8 +40,12 @@ namespace Utility.Cinematic
         }
         public void ExpressionSetting(int emotionInt)
         {
-            if (who.Equals(CustomEnum.Character.Speat) || who.Equals(CustomEnum.Character.Oun) || who.Equals(CustomEnum.Character.Rau))
-                skinnedMesh.materials[1].SetTexture(MainTex, faceExpression[emotionInt]); // 현재 감정으로 메터리얼 변경
+            if(faceExpression.Length > emotionInt)
+            {
+                return;
+            }
+
+            skinnedMesh.materials[1].SetTexture(MainTex, faceExpression[emotionInt]); // 현재 감정으로 메터리얼 변경
         }
 
     }

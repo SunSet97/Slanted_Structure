@@ -15,6 +15,7 @@ public class CharacterManager : MonoBehaviour, IMovable
 
     [SerializeField] private Transform waitTransform;
 
+
     public void Init()
     {
         anim.SetFloat(SpeedHash, 0);
@@ -24,6 +25,13 @@ public class CharacterManager : MonoBehaviour, IMovable
             faceExpression = Resources.LoadAll<Texture>("Face");
             skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
             skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int) Emotion]);
+        }
+        //스핏 표정 머테리얼 초기화
+        if (who.Equals(Character.Speat_Adolescene) || who.Equals(Character.Speat_Adult) || who.Equals(Character.Speat_Child))
+        {
+            faceExpression = Resources.LoadAll<Texture>($"Speat_Face/{who}");
+            skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
+            skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int)Emotion]);
         }
     }
 
