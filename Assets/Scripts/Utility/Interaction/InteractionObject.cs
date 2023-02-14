@@ -12,7 +12,6 @@ using UnityEngine.Timeline;
 using Utility.Core;
 using Utility.Json;
 using Utility.Property;
-using Utility.Save;
 using Task = Data.Task;
 using static Data.CustomEnum;
 
@@ -21,6 +20,7 @@ namespace Utility.Interaction
     [Serializable]
     public class SerializedInteractionData
     {
+        public int id;
         public bool isInteractable = true;
 
         [NonSerialized] public Stack<TaskData> JsonTask;
@@ -43,11 +43,8 @@ namespace Utility.Interaction
         [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
         public DialogueData dialogueData;
 
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Cinematic)]
-        public PlayableDirector playableDirector;
-        
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.FadeOut)]
-        public float fadeSec;
+        // [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.FadeOut)]
+        // public float fadeSec;
         
         [Space(10)]
         
@@ -61,8 +58,8 @@ namespace Utility.Interaction
 
         [ConditionalHideInInspector("isViewChange")]
         public CamInfo dialogueCamera;
-
-        [Header("시네마틱")]
+        
+        [Header("시네마틱")] public PlayableDirector[] timelines;
         public GameObject[] cinematics;
         public GameObject[] inGames;
 
@@ -92,49 +89,12 @@ namespace Utility.Interaction
     [ExecuteInEditMode]
     public class InteractionObject : MonoBehaviour, IClickable
     {
+        public string id;
         public List<Interaction> interactions;
-
-        [Header("인터렉션 방식")] [Space(40)] public InteractionPlayType interactionPlayType;
-
-        [Header("Continuous 혹은 Dialogue인 경우에만 값을 넣으시오")]
-        public TextAsset jsonFile;
-
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Game)]
-        public GameObject gamePlayableGame;
-
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
-        public InteractionEvent[] dialogueEndAction;
-
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
-        public InteractionEvents dialogueEndActions;
-
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Task)]
-        public InteractionEvents taskEndActions;
-
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Cinematic)] [SerializeField]
-        public InteractionEvents cinematicEndAction;
-
-        [Header("인터랙션 방법")] public InteractionMethod interactionMethod;
-
-        [Header("카메라 뷰")] [SerializeField] private bool isViewChange;
-
-        [ConditionalHideInInspector("isViewChange")]
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
-        public CamInfo dialogueCamera;
-
-        [Header("시네마틱")] public PlayableDirector[] timelines;
-
-        public GameObject[] cinematics;
-        public GameObject[] inGames;
-
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
-        public bool isLoopDialogue;
         
-        [SerializeField] private bool isInteractable = true;
-
         [Header("아웃라인 설정")] [Space(20)] [SerializeField]
         private bool useOutline;
-
+        
         [ConditionalHideInInspector("useOutline")] [SerializeField]
         private OutlineColor color;
 
@@ -162,52 +122,16 @@ namespace Utility.Interaction
 
         private void Awake()
         {
-            Interaction interaction;
-            if (interactions.Count == 0)
-            {
-                interaction = new Interaction
-                {
-                    interactionPlayType = interactionPlayType,
-                    jsonFile = jsonFile,
-                    isLoopDialogue = isLoopDialogue,
-                    interactionMethod = interactionMethod,
-                    gamePlayableGame = gamePlayableGame,
-                    isViewChange = isViewChange,
-                    dialogueCamera = dialogueCamera,
-                    cinematics = cinematics,
-                    inGames = inGames
-                };
-                if (timelines != null && timelines.Length > 0)
-                {
-                    interaction.playableDirector = timelines[0];
-                }
-
-                interaction.jsonFile = jsonFile;
-
-                interaction.serializedInteractionData = new SerializedInteractionData
-                {
-                    isInteractable = isInteractable,
-                    isInteracted = false
-                };
-                
-                interactions.Add(interaction);
-            }
-
             if (!Application.isPlaying)
             {
                 return;
             }
 
-            DataController.instance.AddInteractor(this);
-
-            interaction = GetInteraction();
+            DataController.Instance.AddInteractor(this);
             
-            if (interaction.jsonFile)
+            if (GetInteraction().interactionMethod == InteractionMethod.OnChangeMap)
             {
-                if (interaction.interactionMethod == InteractionMethod.OnChangeMap)
-                {
-                    DataController.instance.AddOnLoadMap(StartInteraction);
-                }
+                DataController.Instance.AddOnLoadMap(StartInteraction);
             }
         }
 
@@ -310,14 +234,14 @@ namespace Utility.Interaction
             int[] changeVal =
                 Array.ConvertAll(curTask.increaseVar.Split(','),
                     int.Parse);
-            DataController.instance.UpdateLikeable(changeVal);
+            DataController.Instance.UpdateLikeable(changeVal);
 
             string path, jsonString;
 
             //다음 맵 코드 변경
             if (curTask.order != 0)
             {
-                DataController.instance.currentMap.SetNextMapCode(
+                DataController.Instance.CurrentMap.SetNextMapCode(
                     $"{curTask.order,000000}");
             }
 
@@ -385,7 +309,7 @@ namespace Utility.Interaction
             }
             
 
-            if (interaction.serializedInteractionData.JsonTask == null)
+            if (interaction.jsonFile && interaction.serializedInteractionData.JsonTask == null)
             {
                 TaskStart(interaction.jsonFile.text);
             }
@@ -404,6 +328,10 @@ namespace Utility.Interaction
             }
             else if (interaction.interactionPlayType == InteractionPlayType.Dialogue)
             {
+                if (!interaction.jsonFile)
+                {
+                    Debug.LogError("오류");
+                }
                 if (DialogueController.instance.IsTalking)
                 {
                     return;
@@ -427,17 +355,17 @@ namespace Utility.Interaction
             }
             else if (interaction.interactionPlayType == InteractionPlayType.Task)
             {
-                if (interaction.playableDirector)
+                if (interaction.timelines != null && interaction.timelines.Length > 0)
                 {
-                    var timelineAsset = interaction.playableDirector.playableAsset as TimelineAsset;
+                    var timelineAsset = interaction.timelines[0].playableAsset as TimelineAsset;
                     if (timelineAsset != null)
                     {
                         var tracks = timelineAsset.GetOutputTracks();
                         foreach (var temp in tracks)
                         {
                             if (temp is CinemachineTrack)
-                                interaction.playableDirector.SetGenericBinding(temp,
-                                    DataController.instance.cam.GetComponent<CinemachineBrain>());
+                                interaction.timelines[0].SetGenericBinding(temp,
+                                    DataController.Instance.Cam.GetComponent<CinemachineBrain>());
                         }
                     }
                     else
@@ -463,10 +391,10 @@ namespace Utility.Interaction
             }
             else if (interaction.interactionPlayType == InteractionPlayType.Cinematic)
             {
-                if (interaction.playableDirector)
+                if (interaction.timelines[0])
                 {
-                    interaction.playableDirector.Play();
-                    interaction.playableDirector.stopped += director =>
+                    interaction.timelines[0].Play();
+                    interaction.timelines[0].stopped += director =>
                     {
                         Debug.Log("타임라인 끝");
                         foreach (var endAction in interaction.interactionEndActions.interactionEvents)
@@ -607,12 +535,12 @@ namespace Utility.Interaction
                     }
                     case TaskContentType.FadeOut:
                     {
-                        if (!FadeEffect.instance.isFaded)
+                        if (!FadeEffect.Instance.IsFaded)
                         {
                             currentTaskData.isContinue = false;
-                            FadeEffect.instance.FadeOut();
-                            yield return new WaitUntil(() => FadeEffect.instance.isFadeOver);
-                            FadeEffect.instance.isFadeOver = false;
+                            FadeEffect.Instance.FadeOut();
+                            yield return new WaitUntil(() => FadeEffect.Instance.IsFadeOver);
+                            FadeEffect.Instance.IsFadeOver = false;
                             currentTaskData.isContinue = true;
                         }
 
@@ -620,12 +548,12 @@ namespace Utility.Interaction
                     }
                     case TaskContentType.FadeIn:
                     {
-                        if (!FadeEffect.instance.isFaded)
+                        if (!FadeEffect.Instance.IsFaded)
                         {
                             currentTaskData.isContinue = false;
-                            FadeEffect.instance.FadeIn();
-                            yield return new WaitUntil(() => FadeEffect.instance.isFadeOver);
-                            FadeEffect.instance.isFadeOver = false;
+                            FadeEffect.Instance.FadeIn();
+                            yield return new WaitUntil(() => FadeEffect.Instance.IsFadeOver);
+                            FadeEffect.Instance.IsFadeOver = false;
                             currentTaskData.isContinue = true;
                         }
 
@@ -635,6 +563,10 @@ namespace Utility.Interaction
                         //게임 엔딩
                         break;
                     case TaskContentType.Cinematic:
+                        if (interaction.timelines.Length == 0)
+                        {
+                            Debug.LogError("타임라인 오류");
+                        }
                         currentTaskData.isContinue = false;
                         foreach (var cinematic in interaction.cinematics)
                         {
@@ -649,9 +581,9 @@ namespace Utility.Interaction
                         JoystickController.instance.StopSaveLoadJoyStick(true);
 
 
-                        if (interaction.playableDirector)
+                        if (interaction.timelines[0])
                         {
-                            interaction.playableDirector.Play();
+                            interaction.timelines[0].Play();
                         }
                         else
                         {
@@ -684,7 +616,7 @@ namespace Utility.Interaction
                         //     Debug.Log(timeline.GetGenericBinding(playableBinding.sourceObject));
                         // }
                         yield return new WaitUntil(() =>
-                            interaction.playableDirector.state == PlayState.Paused && !interaction.playableDirector.playableGraph.IsValid() &&
+                            interaction.timelines[0].state == PlayState.Paused && !interaction.timelines[0].playableGraph.IsValid() &&
                             !DialogueController.instance.IsTalking);
                         // while (true)
                         // {
@@ -708,7 +640,7 @@ namespace Utility.Interaction
 
                         break;
                     case TaskContentType.Clear:
-                        DataController.instance.currentMap.MapClear();
+                        DataController.Instance.CurrentMap.MapClear();
                         break;
                     default:
                     {
@@ -802,6 +734,22 @@ namespace Utility.Interaction
             // }
         }
 
+        public void Load(InteractionSaveData saveData)
+        {
+            Debug.Log(saveData);
+            transform.position = saveData.pos;
+            transform.rotation = saveData.rot;
+            InteractIndex = saveData.interactIndex;
+            
+            foreach (var interaction in interactions)
+            {
+                var serializedData = saveData.serializedInteractionDatas.Find(item =>
+                    item.id == interaction.serializedInteractionData.id);
+
+                interaction.serializedInteractionData = serializedData;
+            }
+        }
+
         public Interaction GetInteraction(int index)
         {
             if (interactions?.Count > index)
@@ -828,16 +776,19 @@ namespace Utility.Interaction
         {
             var interactionSaveData = new InteractionSaveData
             {
-                id = gameObject.name,
+                id = id,
                 pos = transform.position,
                 rot = transform.rotation,
                 interactIndex = InteractIndex
             };
-            
-            foreach (var interaction in interactions)
+            interactionSaveData.serializedInteractionDatas = new List<SerializedInteractionData>();
+            for (var index = 0; index < interactions.Count; index++)
             {
-                interactionSaveData.serializedInteractionData.Add(interaction.serializedInteractionData);
+                var interaction = interactions[index];
+                interaction.serializedInteractionData.id = index;
+                interactionSaveData.serializedInteractionDatas.Add(interaction.serializedInteractionData);
             }
+
             return interactionSaveData;
         }
 
@@ -965,6 +916,11 @@ namespace Utility.Interaction
             if (((IClickable) this).IsClickEnable)
             {
                 ((IClickable) this).ActiveObjectClicker(true);
+            }
+
+            if (GetInteraction().interactionMethod == InteractionMethod.Trigger)
+            {
+                StartInteraction();
             }
         }
 

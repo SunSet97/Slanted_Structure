@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Data;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Utility.Property;
@@ -24,6 +23,7 @@ namespace Utility.Core
             public Character who;
             public Transform startPosition;
             public bool isMain;
+            public bool isFollow;
         }
         #region Default
 
@@ -59,6 +59,13 @@ namespace Utility.Core
         public bool isOrthographic;
         [ConditionalHideInInspector("isOrthographic")]
         public float orthographicSize;
+        
+        [Header("FadeOut")] [Space(10)]
+        public bool useFadeOut;
+        [ConditionalHideInInspector("useFadeOut")]
+        public float fadeOutSec = 1f;
+        
+        public float fadeInSec = 1f;
 
         [FormerlySerializedAs("BGM")] [Header("BGM입니다")] public AudioClip bgm;
         [Header("애니메이션 실행되는 캐릭터 넣으세요")] public List<AnimationCharacterSet> characters;
@@ -246,7 +253,8 @@ namespace Utility.Core
         }
 
         #endregion
-
+        
+        [Space(10)]
         public CameraViewType cameraViewType;
         public Vector3 camDis;
         public Vector3 camRot;
@@ -301,11 +309,28 @@ namespace Utility.Core
             Invoke("MapClear", waitTime);
         }
 
-        public void MapClear()
+        public void MapClear(CheckMapClear checkMapClear = null)
+        {
+            var index = clearBoxList.FindIndex(item => item == checkMapClear);
+            if (useFadeOut)
+            {
+                FadeEffect.Instance.OnFadeOver.AddListener(() =>
+                {
+                    ClearMapImmediately(index);
+                });
+                FadeEffect.Instance.FadeOut(fadeOutSec);
+            }
+            else
+            {
+                ClearMapImmediately(index);
+            }
+        }
+
+        private void ClearMapImmediately(int index = 0)
         {
             if (clearBoxList.Count > 0)
             {
-                clearBoxList[0].Clear();
+                clearBoxList[index].Clear();
             }
             else
             {
@@ -331,7 +356,7 @@ namespace Utility.Core
 
         private void JoystickInputUpdate()
         {
-            var mainChar = DataController.instance.GetCharacter(Character.Main);
+            var mainChar = DataController.Instance.GetCharacter(Character.Main);
             if (mainChar == null)
             {
                 return;

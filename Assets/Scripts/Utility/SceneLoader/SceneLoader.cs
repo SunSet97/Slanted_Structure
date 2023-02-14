@@ -81,10 +81,21 @@ namespace Utility.SceneLoader
                 else
                 {
                     progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 1f, timer);
-                    if (Mathf.Approximately(progressBar.fillAmount, 1.0f) && idx != -1 && SaveManager.IsLoaded(idx))
+                    if (idx == -1)
                     {
-                        op.allowSceneActivation = true;
-                        yield break;
+                        if (Mathf.Approximately(progressBar.fillAmount, 1.0f))
+                        {
+                            op.allowSceneActivation = true;
+                            yield break;
+                        }
+                    }
+                    else
+                    {
+                        if (Mathf.Approximately(progressBar.fillAmount, 1.0f) && SaveManager.IsLoaded(idx))
+                        {
+                            op.allowSceneActivation = true;
+                            yield break;
+                        }   
                     }
                 }
             }

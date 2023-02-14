@@ -33,7 +33,7 @@ namespace Utility.Save
         private static void Init()
         {
 #if UNITY_IPHONE
-        Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
+            Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
 #endif
             _saveDatas = new Dictionary<int, SaveData>();
             _saveCoverDatas = new Dictionary<int, SaveCoverData>();

@@ -79,7 +79,7 @@ namespace Utility.Core
         public string ConvertPathToJson(string path)
         {
             string dialogueName = path.Split('/')[1];
-            return DataController.instance.dialogueDB.LoadAsset<TextAsset>(dialogueName).text;
+            return DataController.Instance.DialogueDB.LoadAsset<TextAsset>(dialogueName).text;
         }
 
         public void StartConversation(string jsonString)
@@ -110,14 +110,14 @@ namespace Utility.Core
                 IsTalking = false;
                 dialoguePanel.SetActive(false);
                 JoystickController.instance.StopSaveLoadJoyStick(false);
-                foreach (var positionSet in DataController.instance.currentMap.positionSets)
+                foreach (var positionSet in DataController.Instance.CurrentMap.positionSets)
                 {
-                    DataController.instance.GetCharacter(positionSet.who).Emotion = Expression.IDLE;   
+                    DataController.Instance.GetCharacter(positionSet.who).Emotion = Expression.IDLE;   
                 }
-                foreach (var positionSet in DataController.instance.currentMap.characters)
+                foreach (var positionSet in DataController.Instance.CurrentMap.characters)
                 {
                     // if (Character.TryParse(dialogueData.dialogues[dialogueIdx].anim_name, out Character who))
-                    DataController.instance.GetCharacter(positionSet.who).Emotion = Expression.IDLE;   
+                    DataController.Instance.GetCharacter(positionSet.who).Emotion = Expression.IDLE;   
                 }
                 dialogueData.Reset();
                 
@@ -146,7 +146,7 @@ namespace Utility.Core
 
                             if (Enum.TryParse(dialogueData.dialogues[dialogueData.dialogueIdx].anim_name, out Character who))
                             {
-                                DataController.instance.GetCharacter(who).Emotion = dialogueData.dialogues[dialogueData.dialogueIdx].expression;   
+                                DataController.Instance.GetCharacter(who).Emotion = dialogueData.dialogues[dialogueData.dialogueIdx].expression;   
                             }
                         }
                         else
@@ -172,7 +172,7 @@ namespace Utility.Core
                 // 현재 맵에 기준???    햄버거 집 스핏의 경우 임시로 존재하는 거니까
                 // MapData에 inspector window에서 setting, position setting되어있는 캐릭터들도 추가
                 // 대화 시 무슨 캐릭터인지 anim_name으로 Find (who를 사용)
-                MapData.AnimationCharacterSet animator = DataController.instance.currentMap.characters.Find(
+                MapData.AnimationCharacterSet animator = DataController.Instance.CurrentMap.characters.Find(
                     item => item.who.ToString().Equals(dialogueData.dialogues[dialogueData.dialogueIdx].anim_name));
                 // DataController.instance.GetCharacter(animator.who).emotion =(int) dialogueData.dialogues[dialogueIdx].expression 
                 animator?.characterAnimator.SetInteger(Emotion, (int)dialogueData.dialogues[dialogueData.dialogueIdx].expression);
@@ -189,7 +189,7 @@ namespace Utility.Core
             int index = taskData.taskIndex;
             int choiceLen = int.Parse(taskData.tasks[index].nextFile);
 
-            int[] likeable = DataController.instance.GetLikeable();
+            int[] likeable = DataController.Instance.GetLikeable();
 
             choiceBtns[0].transform.parent.gameObject.SetActive(true);
             if (taskData.tasks.Length <= index + choiceLen)

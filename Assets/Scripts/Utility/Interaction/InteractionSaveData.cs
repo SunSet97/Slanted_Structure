@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 using Utility.Serialize;
 
 namespace Utility.Interaction
@@ -13,8 +14,10 @@ namespace Utility.Interaction
 
         public SerializableQuaternion rot;
 
-        public List<SerializedInteractionData> serializedInteractionData;
+        [FormerlySerializedAs("serializedInteractionData")] public List<SerializedInteractionData> serializedInteractionDatas;
         
         public int interactIndex;
+        
+        
     }
 }

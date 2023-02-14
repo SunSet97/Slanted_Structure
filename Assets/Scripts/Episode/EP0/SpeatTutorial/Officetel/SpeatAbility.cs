@@ -55,7 +55,7 @@ public class SpeatAbility : MonoBehaviour
     void Start()
     {
         ObjectClicker.instance.isCustomUse = true;
-        speat = DataController.instance.GetCharacter(Character.Speat_Adult);
+        speat = DataController.Instance.GetCharacter(Character.Speat_Adult);
     }
 
     void Update()

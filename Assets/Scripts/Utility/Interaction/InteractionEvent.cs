@@ -35,7 +35,7 @@ namespace Utility.Interaction
             Play,
             Interactable,
             Interaction,
-            FadeOut,
+            // FadeOut,
             Custom
         }
 
@@ -101,8 +101,8 @@ namespace Utility.Interaction
         [ConditionalHideInInspector("eventType", EventType.Interaction)]
         public InteractionList interactionObjs;
         
-        [ConditionalHideInInspector("eventType", EventType.FadeOut)]
-        public float fadeSec;
+        // [ConditionalHideInInspector("eventType", EventType.FadeOut)]
+        // public float fadeSec;
 
         [NonSerialized] public UnityAction UnityAction;
 
@@ -128,9 +128,9 @@ namespace Utility.Interaction
                 case EventType.Interaction:
                     InteractEvent();
                     break;
-                case EventType.FadeOut:
-                    FadeOut();
-                    break;
+                // case EventType.FadeOut:
+                //     FadeOut();
+                //     break;
                 case EventType.Custom:
                     UnityAction?.Invoke();
                     break;
@@ -191,9 +191,9 @@ namespace Utility.Interaction
             }
         }
 
-        private void FadeOut()
-        {
-            // fadeSec
-        }
+        // private void FadeOut()
+        // {
+        //     fadeSec
+        // }
     }
 }

@@ -1,58 +1,54 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utility.Core;
 
 public class FadeEffect : MonoBehaviour
 {
-    private static FadeEffect _instance;
-
-    public static FadeEffect instance => _instance;
+    public static FadeEffect Instance { get; private set; }
 
     public Image fadePanel;
     public GraphicRaycaster graphicRaycaster;
-    public bool isFadeOver;
+    [NonSerialized] public bool IsFadeOver;
+    [NonSerialized] public bool IsFaded;
+    [NonSerialized] public bool IsFadeOut;
+    internal UnityEvent OnFadeOver;
 
-    public bool isFadeOut;
-
-    internal UnityEvent onFadeOver;
-
-    public bool isFaded;
     private void Awake()
     {
-        if (_instance)
+        if (Instance)
         {
             Destroy(gameObject);
         }
         else
         {
-            _instance = this;
-            Destroy(_instance);
+            Instance = this;
+            Destroy(Instance);
         }
-        onFadeOver = new UnityEvent();
+        OnFadeOver = new UnityEvent();
     }
 
-    public void FadeIn()
+    public void FadeIn(float fadeInSec = 2f)
     {
-        isFadeOut = false;
-        isFadeOver = false;
-        StartCoroutine(FadeInCoroutine());
+        IsFadeOut = false;
+        IsFadeOver = false;
+        StartCoroutine(FadeInCoroutine(fadeInSec));
     }
 
-    private IEnumerator FadeInCoroutine()
+    private IEnumerator FadeInCoroutine(float fadeInSec)
     {
         JoystickController.instance.StopSaveLoadJoyStick(true);
         graphicRaycaster.enabled = false;
         fadePanel.gameObject.SetActive(true);
 
-        float time = 4;
-        
         float t = 1;
         Color color;
         while (t > 0)
         {
-            t -= Time.deltaTime / time;
+            t -= Time.deltaTime / fadeInSec;
             color = fadePanel.color;
             color.a = t;
             fadePanel.color = color;
@@ -63,39 +59,38 @@ public class FadeEffect : MonoBehaviour
         color.a = 0;
         fadePanel.color = color;
         graphicRaycaster.enabled = true;
-        isFadeOver = true;
+        IsFadeOver = true;
         JoystickController.instance.StopSaveLoadJoyStick(false);
         fadePanel.gameObject.SetActive(false);
-        isFaded = true;
+        IsFaded = true;
 
-        onFadeOver?.Invoke();
-        onFadeOver?.RemoveAllListeners();
-        isFaded = false;
+        OnFadeOver?.Invoke();
+        OnFadeOver?.RemoveAllListeners();
+        IsFaded = false;
     }
 
-    public void FadeOut()
+    public void FadeOut(float fadeOutSec = 2f)
     {
-        if (!isFadeOut)
+        if (!IsFadeOut)
         {
-            isFadeOver = false;
-            isFadeOut = true;
-            StartCoroutine(FadeOutCoroutine());
+            IsFadeOver = false;
+            IsFadeOut = true;
+            StartCoroutine(FadeOutCoroutine(fadeOutSec));
         }
     }
 
-    private IEnumerator FadeOutCoroutine()
+    private IEnumerator FadeOutCoroutine(float fadeOutSec)
     {
         JoystickController.instance.StopSaveLoadJoyStick(true);
         graphicRaycaster.enabled = false;
         fadePanel.gameObject.SetActive(true);
         
-        float time = 4;
         var value = LayerMask.GetMask("Default");
         float t = 0;
         Color color;
         while (t < 1)
         {
-            t += Time.deltaTime / time;
+            t += Time.deltaTime / fadeOutSec;
             color = fadePanel.color;
             color.a = t;
             fadePanel.color = color;
@@ -106,12 +101,12 @@ public class FadeEffect : MonoBehaviour
         color.a = 1;
         fadePanel.color = color;
         graphicRaycaster.enabled = true;
-        isFadeOver = true;
+        IsFadeOver = true;
         JoystickController.instance.StopSaveLoadJoyStick(false);
         
-        isFaded = true;
-        onFadeOver?.Invoke();
-        onFadeOver?.RemoveAllListeners();
-        isFaded = false;
+        IsFaded = true;
+        OnFadeOver?.Invoke();
+        OnFadeOver?.RemoveAllListeners();
+        IsFaded = false;
     }
 }
