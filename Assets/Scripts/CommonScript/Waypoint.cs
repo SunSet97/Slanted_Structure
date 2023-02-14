@@ -95,8 +95,8 @@ public class Waypoint : MonoBehaviour
     // waypoint를 따라 움직일 캐릭터 설정
     private void SelectCharacter()
     {
-        character = DataController.instance.GetCharacter(Character.Main).transform;
-        DataController.instance.currentMap.isJoystickInputUse = false;
+        character = DataController.Instance.GetCharacter(Character.Main).transform;
+        DataController.Instance.CurrentMap.isJoystickInputUse = false;
     }
 
     // 캐릭터가 waypoint를 지나가면 체크
@@ -198,7 +198,7 @@ public class Waypoint : MonoBehaviour
         }
 
         if (JoystickController.instance.joystick.gameObject.activeSelf && waypoints.Count > 0 &&
-            DataController.instance.GetCharacter(Character.Main).IsMove)
+            DataController.Instance.GetCharacter(Character.Main).IsMove)
         {
             int fwdIndex, bwdIndex;
             SetBackFrontIndex(out fwdIndex, out bwdIndex);

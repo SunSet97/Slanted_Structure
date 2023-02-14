@@ -21,7 +21,7 @@ namespace Utility.Interaction
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
             if (useMark)
             {
-                interactionObject.ExclamationMark = Instantiate(markPrefab, DataController.instance.currentMap.ui);
+                interactionObject.ExclamationMark = Instantiate(markPrefab, DataController.Instance.CurrentMap.ui);
                 interactionObject.ExclamationMark.SetActive(false);
             }
         }
@@ -39,7 +39,7 @@ namespace Utility.Interaction
             if (interactionObject.GetInteraction().serializedInteractionData.isInteractable && useMark && interactionObject.ExclamationMark.activeSelf)
             {
                 interactionObject.ExclamationMark.transform.position =
-                    DataController.instance.cam.WorldToScreenPoint((Vector3) markOffset + interactionObject.transform.position);
+                    DataController.Instance.Cam.WorldToScreenPoint((Vector3) markOffset + interactionObject.transform.position);
             }
         }
 

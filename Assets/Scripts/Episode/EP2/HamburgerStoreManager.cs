@@ -26,7 +26,7 @@ public class HamburgerStoreManager : MonoBehaviour
 
         sofa.SetInteractionStartEvent(() =>
         {
-            CharacterManager character = DataController.instance.GetCharacter(Character.Main);
+            CharacterManager character = DataController.Instance.GetCharacter(Character.Main);
             character.PickUpCharacter();
             character.transform.position = sofa.transform.GetChild(0).position;
             character.transform.rotation = sofa.transform.GetChild(0).rotation;
@@ -52,7 +52,7 @@ public class HamburgerStoreManager : MonoBehaviour
 
     private IEnumerator StartRauMoving()
     {
-        CharacterManager character = DataController.instance.GetCharacter(Character.Main);
+        CharacterManager character = DataController.Instance.GetCharacter(Character.Main);
         character.PickUpCharacter();
         int index = speat.pointIndex;
         PointData desPoint = speat.point[index];

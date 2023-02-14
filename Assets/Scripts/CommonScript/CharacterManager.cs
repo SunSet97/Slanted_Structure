@@ -70,7 +70,7 @@ public class CharacterManager : MonoBehaviour, IMovable
         transform.LookAt(transform.position + mapSettingTransform.right);
         characterOriginRot = transform.eulerAngles;
 
-        camRotation = Quaternion.Euler(0, -DataController.instance.camInfo.camRot.y, 0);
+        camRotation = Quaternion.Euler(0, -DataController.Instance.camInfo.camRot.y, 0);
         Vector3 transformedDir = camRotation * transform.forward;
 
         if (transformedDir.x < 0)
@@ -177,7 +177,7 @@ public class CharacterManager : MonoBehaviour, IMovable
         if (IsMove)
         {
             // 메인 카메라 기준으로 캐릭터가 바라보는 방향 계산
-            camRotation = Quaternion.Euler(0, -DataController.instance.cam.transform.rotation.eulerAngles.y, 0);
+            camRotation = Quaternion.Euler(0, -DataController.Instance.Cam.transform.rotation.eulerAngles.y, 0);
             Vector3 transformedDir = camRotation * transform.forward;
             Vector2 characterDir = new Vector2(transformedDir.x, transformedDir.z);
             // 조이스틱이 가리키는 방향

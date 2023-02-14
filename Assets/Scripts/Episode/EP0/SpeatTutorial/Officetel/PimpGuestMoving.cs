@@ -103,7 +103,7 @@ public class PimpGuestMoving : MonoBehaviour
         }
         if (hit.collider.TryGetComponent(out CharacterManager characterManager) && characterManager.who.Equals(CustomEnum.Character.Speat_Adult))
         {
-            var speat = DataController.instance.GetCharacter(CustomEnum.Character.Speat_Adult);
+            var speat = DataController.Instance.GetCharacter(CustomEnum.Character.Speat_Adult);
             speat.gameObject.layer = LayerMask.NameToLayer("Player");
             
             if (jsonFile)
@@ -115,13 +115,13 @@ public class PimpGuestMoving : MonoBehaviour
                 DialogueController.instance.SetDialougueEndAction(() =>
                 {
                     speat.IsMove = true;
-                    DataController.instance.ChangeMap(DataController.instance.mapCode);
+                    DataController.Instance.ChangeMap(DataController.Instance.mapCode);
                 });
                 DialogueController.instance.StartConversation(jsonFile.text);
             }
             else
             {
-                DataController.instance.ChangeMap(DataController.instance.mapCode);
+                DataController.Instance.ChangeMap(DataController.Instance.mapCode);
             }
         }
         else if (hit.gameObject.CompareTag("NPC"))
@@ -143,7 +143,7 @@ public class PimpGuestMoving : MonoBehaviour
     // pimp나 guest가 카메라에 걸리는지 확인하는 함수
     private bool CheckCamera()
     {
-        var cam = DataController.instance.cam;
+        var cam = DataController.Instance.Cam;
         Vector3 screenPoint = cam.WorldToViewportPoint(gameObject.transform.position);
         bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 &&
                         screenPoint.y < 1;
@@ -154,7 +154,7 @@ public class PimpGuestMoving : MonoBehaviour
     // pimp나 guest가 같은 층에 있는 지 bool값 반환
     private bool CheckSameFloorWithSpeat()
     {
-        var speat = DataController.instance.GetCharacter(CustomEnum.Character.Speat_Adult);
+        var speat = DataController.Instance.GetCharacter(CustomEnum.Character.Speat_Adult);
         if (speat.transform.position.y - sameFloorRange <= gameObject.transform.position.y
             && gameObject.transform.position.y <= speat.transform.position.y + sameFloorRange)
         {

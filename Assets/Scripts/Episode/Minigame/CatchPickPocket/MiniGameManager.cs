@@ -62,7 +62,7 @@ public class MiniGameManager : MonoBehaviour
         //DataController.instance_DataController.isMapChanged = true;
         particle.Play();
         initialRauSpeed = rauSpeed;
-        rau = DataController.instance.GetCharacter(Character.Rau);
+        rau = DataController.Instance.GetCharacter(Character.Rau);
     }
 
     void Update()
@@ -150,7 +150,7 @@ public class MiniGameManager : MonoBehaviour
 
     private void SetDataController()
     {   // 카메라 설정
-        DataController.instance.camInfo.camDis = new Vector3(0,1.3f,-2.5f);
+        DataController.Instance.camInfo.camDis = new Vector3(0,1.3f,-2.5f);
     }
 
     private void SetPickPocket()
@@ -251,7 +251,7 @@ public class MiniGameManager : MonoBehaviour
     {
         while (true)
         {
-            if (DataController.instance.mapCode != "010001") break;
+            if (DataController.Instance.mapCode != "010001") break;
             //kickboard.SetActive(true);
             //kickboardSpeat.SetActive(true);
             kickboardParent.SetActive(true);
@@ -268,7 +268,7 @@ public class MiniGameManager : MonoBehaviour
     IEnumerator Wait(float waitingtime)
     {
         yield return new WaitForSeconds(waitingtime);
-        forwardDir = rau.transform.position - DataController.instance.cam.transform.position;
+        forwardDir = rau.transform.position - DataController.Instance.Cam.transform.position;
         forwardDir = forwardDir.normalized;
         rau.gameObject.transform.eulerAngles = forwardDir;
         InitialSetting();

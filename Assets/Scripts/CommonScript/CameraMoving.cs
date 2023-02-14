@@ -19,9 +19,9 @@ public class CameraMoving : MonoBehaviour
 
     public void Initialize()
     {
-        viewType = DataController.instance.currentMap.cameraViewType;
+        viewType = DataController.Instance.CurrentMap.cameraViewType;
         cam = Camera.main;
-        var mainChar = DataController.instance.GetCharacter(Character.Main);
+        var mainChar = DataController.Instance.GetCharacter(Character.Main);
         if (mainChar != null)
         {
             mainCharacter = mainChar.transform;
@@ -41,13 +41,13 @@ public class CameraMoving : MonoBehaviour
 
         if (cam.orthographic)
         {
-            cam.orthographicSize = DataController.instance.camOrthgraphicSize;
+            cam.orthographicSize = DataController.Instance.camOrthgraphicSize;
         }
 
         if (viewType.Equals(CameraViewType.FixedView))
         {
-            cam.transform.position = DataController.instance.currentMap.transform.position +
-                                     DataController.instance.camInfo.camDis +
+            cam.transform.position = DataController.Instance.CurrentMap.transform.position +
+                                     DataController.Instance.camInfo.camDis +
                                      DialogueController.instance.dialogueData.CamInfo.camDis;
         }
 
@@ -55,7 +55,7 @@ public class CameraMoving : MonoBehaviour
         {
             if (viewType.Equals(CameraViewType.FollowCharacter))
             {
-                cam.transform.position = mainCharacter.position + DataController.instance.camInfo.camDis +
+                cam.transform.position = mainCharacter.position + DataController.Instance.camInfo.camDis +
                                          DialogueController.instance.dialogueData.CamInfo.camDis;
             }
 
@@ -66,6 +66,6 @@ public class CameraMoving : MonoBehaviour
 
     void Follow_Player(Vector3 position)
     {
-        cam.transform.rotation = Quaternion.Euler(DataController.instance.camInfo.camRot);
+        cam.transform.rotation = Quaternion.Euler(DataController.Instance.camInfo.camRot);
     }
 }

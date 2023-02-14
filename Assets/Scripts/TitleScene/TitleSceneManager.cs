@@ -20,8 +20,7 @@ public class TitleSceneManager : MonoBehaviour
                     
             SceneLoader.Instance.AddListener(() =>
             {
-                DataController.instance.GameStart(mapCode);
-                SceneLoader.Instance.RemoveAllListener();
+                DataController.Instance.GameStart(mapCode);
             });
         });
         

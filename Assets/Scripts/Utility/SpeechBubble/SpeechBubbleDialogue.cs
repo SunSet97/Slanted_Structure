@@ -52,7 +52,7 @@ namespace Utility.SpeechBubble
         {
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
             _speechBubble =
-                Instantiate(Resources.Load<GameObject>("SpeechBubble"), DataController.instance.currentMap.ui)
+                Instantiate(Resources.Load<GameObject>("SpeechBubble"), DataController.Instance.CurrentMap.ui)
                     .GetComponent<SpeechBubble>();
             _speechBubble.gameObject.SetActive(false);
         }
@@ -81,7 +81,7 @@ namespace Utility.SpeechBubble
             transform.localPosition += (Vector3)speechPos;
 
             Vector3 screenPoint =
-                DataController.instance.cam.WorldToScreenPoint(transform.position);
+                DataController.Instance.Cam.WorldToScreenPoint(transform.position);
             _speechBubble.transform.position = screenPoint;
 
 

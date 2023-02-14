@@ -9,7 +9,7 @@ namespace Utility.Interaction
 
         public void OnTriggerEnter(Collider other)
         {
-            if (_isActivated || interactionMethod != CustomEnum.InteractionMethod.Trigger)
+            if (_isActivated || GetInteraction().interactionMethod != CustomEnum.InteractionMethod.Trigger)
             {
                 return;
             }
