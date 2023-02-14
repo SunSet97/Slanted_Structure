@@ -37,18 +37,18 @@ public class CheckMapClear : MonoBehaviour
     {
         if (!nextSelectMapcode.Equals("000000") || !nextSelectMapcode.Equals(""))
         {
-            DataController.instance.currentMap.nextMapcode = nextSelectMapcode;
+            DataController.Instance.CurrentMap.nextMapcode = nextSelectMapcode;
         }
 
         if (jsonFile != null)
         {
             DialogueController.instance.StartConversation(jsonFile.text);
             DialogueController.instance.SetDialougueEndAction(() =>
-                DataController.instance.ChangeMap(DataController.instance.currentMap.nextMapcode));
+                DataController.Instance.CurrentMap.MapClear(this));
         }
         else
         {
-            DataController.instance.ChangeMap(DataController.instance.currentMap.nextMapcode);
+            DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.nextMapcode);
         }
     }
 
@@ -59,7 +59,7 @@ public class CheckMapClear : MonoBehaviour
             return;
         }
 
-        if (DataController.instance.GetCharacter(Character.Main).name.Equals(other.name))
+        if (DataController.Instance.GetCharacter(Character.Main).name.Equals(other.name))
         {
             Clear();
         }

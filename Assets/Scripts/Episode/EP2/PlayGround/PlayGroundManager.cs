@@ -48,7 +48,7 @@ public class PlayGroundManager : MonoBehaviour, IGamePlayable
     {
         JoystickController.instance.InitializeJoyStick(false);
 
-        DataController.instance.currentMap.ui.gameObject.SetActive(false);
+        DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
         rangeParent.SetActive(false);
         ring.enabled = false;
 
@@ -70,19 +70,19 @@ public class PlayGroundManager : MonoBehaviour, IGamePlayable
 
     public void EndPlay()
     {
-        DataController.instance.camInfo.camDis = DataController.instance.currentMap.camDis;
-        DataController.instance.camInfo.camRot = DataController.instance.currentMap.camRot;
+        DataController.Instance.camInfo.camDis = DataController.Instance.CurrentMap.camDis;
+        DataController.Instance.camInfo.camRot = DataController.Instance.CurrentMap.camRot;
         IsPlay = false;
     }
 
     private void StartTimingGame()
     {
-        DataController.instance.currentMap.ui.gameObject.SetActive(true);
+        DataController.Instance.CurrentMap.ui.gameObject.SetActive(true);
 
         Canvas canvas = CanvasControl.instance.GetComponent<Canvas>();
 
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        canvas.worldCamera = DataController.instance.cam;
+        canvas.worldCamera = DataController.Instance.Cam;
         canvas.planeDistance = 0.8f;
 
         rangeParent.SetActive(true);
@@ -98,7 +98,7 @@ public class PlayGroundManager : MonoBehaviour, IGamePlayable
         rangeParent.SetActive(false);
         ring.Remove();
         CanvasControl.instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
-        DataController.instance.currentMap.ui.gameObject.SetActive(false);
+        DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
         StartThrowing(result);
     }
 
