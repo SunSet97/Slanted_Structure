@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Utility.Core;
 
 namespace Utility.Preference
 {
@@ -12,6 +13,8 @@ namespace Utility.Preference
         [SerializeField] private Button menuButton;
 
         [SerializeField] private Button diaryButton;
+        [SerializeField] private Button diaryExitButton;
+        
         [SerializeField] private Button preferenceButton;
         [SerializeField] private Button preferenceExitButton;
 
@@ -43,19 +46,31 @@ namespace Utility.Preference
                     menuAnimator.SetBool("IsOpen", true);
                 }
             });
+            
+            diaryButton.onClick.AddListener(() =>
+            {
+                JoystickController.instance.StopSaveLoadJoyStick(true);
+                diaryPanel.SetActive(!diaryPanel.activeSelf);
+                preferencePanel.SetActive(false);
+            });
+            
+            diaryExitButton.onClick.AddListener(() =>
+            {
+                JoystickController.instance.StopSaveLoadJoyStick(false);
+                diaryPanel.SetActive(false);
+            });
 
             preferenceButton.onClick.AddListener(() =>
             {
+                JoystickController.instance.StopSaveLoadJoyStick(true);
                 preferencePanel.SetActive(!preferencePanel.activeSelf);
                 diaryPanel.SetActive(false);
             });
 
-            preferenceExitButton.onClick.AddListener(() => { preferencePanel.SetActive(!preferencePanel.activeSelf); });
-
-            diaryButton.onClick.AddListener(() =>
+            preferenceExitButton.onClick.AddListener(() =>
             {
+                JoystickController.instance.StopSaveLoadJoyStick(false);
                 preferencePanel.SetActive(false);
-                diaryPanel.SetActive(!diaryPanel.activeSelf);
             });
 
             vibeToggle.onClick.AddListener(() =>

@@ -21,14 +21,13 @@ namespace Utility.Preference
         [SerializeField] private ButtonType defaultButtonType;
 
         [SerializeField] private GameObject diaryPanel;
-        [SerializeField] private Button diaryCloseButton;
         [SerializeField] private Transform diarySaveParent;
 
         [SerializeField] private Button saveButton;
         [SerializeField] private Button loadButton;
         [SerializeField] private Button deleteButton;
 
-        [Space(15)] [Header("덮어쓰기")] [SerializeField]
+        [Header("덮어쓰기")] [Space(15)] [SerializeField]
         private GameObject coverPanel;
 
         [SerializeField] private Button coverYesButton;
@@ -51,8 +50,6 @@ namespace Utility.Preference
             saveButton.onClick.AddListener(() => { FocusButton(ButtonType.Save); });
             loadButton.onClick.AddListener(() => { FocusButton(ButtonType.Load); });
             deleteButton.onClick.AddListener(() => { FocusButton(ButtonType.Delete); });
-
-            diaryCloseButton.onClick.AddListener(() => { diaryPanel.SetActive(false); });
 
             coverYesButton.onClick.AddListener(() =>
             {

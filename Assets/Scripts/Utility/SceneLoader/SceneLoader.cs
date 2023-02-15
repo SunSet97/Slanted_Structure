@@ -66,7 +66,7 @@ namespace Utility.SceneLoader
             op.allowSceneActivation = false;
 
             float timer = 0.0f;
-            while (!op.isDone || idx != -1 && !SaveManager.IsLoaded(idx))
+            while (!op.isDone)
             {
                 yield return null;
                 timer += Time.unscaledDeltaTime;

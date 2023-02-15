@@ -29,8 +29,6 @@ public class CheckMapClear : MonoBehaviour
 {
     public bool isTrigger;
 
-    public TextAsset jsonFile;
- 
     public string nextSelectMapcode = "000000";
 
     public void Clear()
@@ -39,12 +37,15 @@ public class CheckMapClear : MonoBehaviour
         {
             DataController.Instance.CurrentMap.nextMapcode = nextSelectMapcode;
         }
-
-        if (jsonFile != null)
+        
+        if (DataController.Instance.CurrentMap.useFadeOut)
         {
-            DialogueController.instance.StartConversation(jsonFile.text);
-            DialogueController.instance.SetDialougueEndAction(() =>
-                DataController.Instance.CurrentMap.MapClear(this));
+            FadeEffect.Instance.OnFadeOver.AddListener(() =>
+            {
+                FadeEffect.Instance.OnFadeOver.RemoveAllListeners();
+                DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.nextMapcode);
+            });
+            FadeEffect.Instance.FadeOut(DataController.Instance.CurrentMap.fadeOutSec);
         }
         else
         {

@@ -86,7 +86,7 @@ namespace Utility.Core
             speat_Child.Init();
         }
 
-        public void GameStart(string mapCode, SaveData save = null)
+        public void GameStart(string mapCode = "001010", SaveData save = null)
         {
             Debug.Log("게임 시작");
             Init();
@@ -186,7 +186,8 @@ namespace Utility.Core
 
         public void ChangeMap(string desMapCode, SaveData saveData = null)
         {
-            //모든 캐릭터 위치 대기실로 이동
+            Debug.Log("Change Map");
+            
             speat.WaitInRoom();
             oun.WaitInRoom();
             rau.WaitInRoom();
@@ -218,15 +219,17 @@ namespace Utility.Core
             
             DialogueController.instance.Initialize();
 
-            Debug.Log("OnChangeMap");
-            if (FadeEffect.Instance.IsFadeOut)
+            if (FadeEffect.Instance.IsAlreadyFadeOut)
             {
-                FadeEffect.Instance.FadeIn(CurrentMap.fadeInSec);
                 FadeEffect.Instance.OnFadeOver.AddListener(() =>
                 {
+                    FadeEffect.Instance.OnFadeOver.RemoveAllListeners();
+                    Debug.Log("??");
                     _onLoadMap?.Invoke();
                     _onLoadMap = () => { };
                 });
+
+                FadeEffect.Instance.FadeIn(CurrentMap.fadeInSec);
             }
             else
             {
@@ -237,7 +240,7 @@ namespace Utility.Core
 
         public void AddOnLoadMap(UnityAction onLoadMap)
         {
-            this._onLoadMap += onLoadMap;
+            _onLoadMap += onLoadMap;
         }
 
         public void AddInteractor(InteractionObject interactionObject)
