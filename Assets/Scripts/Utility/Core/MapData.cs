@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Utility.Property;
@@ -303,38 +304,21 @@ namespace Utility.Core
         {
             clearBoxList[0].nextSelectMapcode = nextMapCode;
         }
-
+        
         public void MapClear(float waitTime)
         {
             Invoke("MapClear", waitTime);
         }
 
-        public void MapClear(CheckMapClear checkMapClear = null)
+        public void MapClear()
         {
-            var index = clearBoxList.FindIndex(item => item == checkMapClear);
-            if (useFadeOut)
+            if (clearBoxList?.Count > 0)
             {
-                FadeEffect.Instance.OnFadeOver.AddListener(() =>
-                {
-                    ClearMapImmediately(index);
-                });
-                FadeEffect.Instance.FadeOut(fadeOutSec);
+                clearBoxList[0].Clear();
             }
             else
             {
-                ClearMapImmediately(index);
-            }
-        }
-
-        private void ClearMapImmediately(int index = 0)
-        {
-            if (clearBoxList.Count > 0)
-            {
-                clearBoxList[index].Clear();
-            }
-            else
-            {
-                Debug.LogError("클리어 박스 세팅 오류");
+                Debug.LogError("클리어 박스 오류");
             }
         }
 

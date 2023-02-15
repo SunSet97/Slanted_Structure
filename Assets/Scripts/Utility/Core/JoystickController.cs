@@ -76,8 +76,6 @@ namespace Utility.Core
                 return;
             }
 
-            //Debug.Log(joystick.GetType());
-            //Debug.Log(isOn);
             joystick.gameObject.SetActive(isOn);
             if (joystick.GetType() == typeof(DynamicJoystick))
             {
@@ -104,8 +102,8 @@ namespace Utility.Core
         /// <param name="isStop">Save여부   true - save, false - load</param>
         public void StopSaveLoadJoyStick(bool isSave)
         {
-            Debug.Log((isSave ? "Save" : "Load") + ", " + (isAlreadySave ? "저장된 상태" : "저장되지 않은 상태"));
-            //처음 실행하는 경우
+            Debug.Log((isSave ? "Save" : "Load") + ", " + (isAlreadySave ? "저장된 상태" : "저장되지 않은 상태") + ", 이전 상태" + wasJoystickUse);
+            
             if (isSave)
             {
                 if (isAlreadySave) return;
@@ -114,10 +112,8 @@ namespace Utility.Core
                 wasJoystickUse = joystick.gameObject.activeSelf;
                 InitializeJoyStick(false);
             }
-            // Load하는 경우
             else
             {
-                Debug.Log("저장된 상태 - " + wasJoystickUse);
                 isAlreadySave = false;
                 InitializeJoyStick(wasJoystickUse);
             }
@@ -144,17 +140,16 @@ namespace Utility.Core
 
         public void JoystickInputUpdate(CustomEnum.JoystickInputMethod method)
         {
-            //사이드뷰 일 때
             if (method.Equals(CustomEnum.JoystickInputMethod.OneDirection))
             {
-                inputDegree = Mathf.Abs(joystick.Horizontal); // 조정된 입력 방향으로 크기 계산
-                inputDirection.Set(joystick.Horizontal, 0); // 조정된 입력 방향 설정
-                inputJump = joystick.Vertical > 0.5f; // 수직 입력이 일정 수치 이상 올라가면 점프 판정
+                inputDegree = Mathf.Abs(joystick.Horizontal);
+                inputDirection.Set(joystick.Horizontal, 0);
+                inputJump = joystick.Vertical > 0.5f;
             }
             else
             {
-                inputDirection.Set(joystick.Horizontal, joystick.Vertical); // 조정된 입력 방향 설정
-                inputDegree = Vector2.Distance(Vector2.zero, inputDirection); // 조정된 입력 방향으로 크기 계산
+                inputDirection.Set(joystick.Horizontal, joystick.Vertical);
+                inputDegree = Vector2.Distance(Vector2.zero, inputDirection);
                 inputJump = false;
             }
         }

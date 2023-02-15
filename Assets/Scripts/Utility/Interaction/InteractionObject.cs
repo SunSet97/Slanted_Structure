@@ -131,6 +131,7 @@ namespace Utility.Interaction
             
             if (GetInteraction().interactionMethod == InteractionMethod.OnChangeMap)
             {
+                Debug.Log("Add OnChange Map");
                 DataController.Instance.AddOnLoadMap(StartInteraction);
             }
         }
@@ -293,6 +294,7 @@ namespace Utility.Interaction
         /// </summary>
         public void StartInteraction()
         {
+            Debug.Log("Start Interaction");
             var interaction = GetInteraction();
 
             if (!interaction.serializedInteractionData.isInteractable || interaction.serializedInteractionData.isInteracted && !interaction.isLoopDialogue)
@@ -535,27 +537,18 @@ namespace Utility.Interaction
                     }
                     case TaskContentType.FadeOut:
                     {
-                        if (!FadeEffect.Instance.IsFaded)
-                        {
                             currentTaskData.isContinue = false;
                             FadeEffect.Instance.FadeOut();
                             yield return new WaitUntil(() => FadeEffect.Instance.IsFadeOver);
-                            FadeEffect.Instance.IsFadeOver = false;
                             currentTaskData.isContinue = true;
-                        }
-
                         break;
                     }
                     case TaskContentType.FadeIn:
                     {
-                        if (!FadeEffect.Instance.IsFaded)
-                        {
-                            currentTaskData.isContinue = false;
-                            FadeEffect.Instance.FadeIn();
-                            yield return new WaitUntil(() => FadeEffect.Instance.IsFadeOver);
-                            FadeEffect.Instance.IsFadeOver = false;
-                            currentTaskData.isContinue = true;
-                        }
+                        currentTaskData.isContinue = false;
+                        FadeEffect.Instance.FadeIn();
+                        yield return new WaitUntil(() => FadeEffect.Instance.IsFadeOver);
+                        currentTaskData.isContinue = true;
 
                         break;
                     }

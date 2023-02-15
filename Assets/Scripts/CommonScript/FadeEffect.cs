@@ -2,39 +2,49 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utility.Core;
 
 public class FadeEffect : MonoBehaviour
 {
-    public static FadeEffect Instance { get; private set; }
+    private static FadeEffect _instance;
+    public static FadeEffect Instance => _instance;
 
     public Image fadePanel;
     public GraphicRaycaster graphicRaycaster;
     [NonSerialized] public bool IsFadeOver;
-    [NonSerialized] public bool IsFaded;
-    [NonSerialized] public bool IsFadeOut;
+    [NonSerialized] public bool IsAlreadyFadeOut;
     internal UnityEvent OnFadeOver;
 
     private void Awake()
     {
-        if (Instance)
+        if (_instance)
         {
+            Debug.Log("FadeEffect 파괴");
             Destroy(gameObject);
         }
         else
         {
-            Instance = this;
-            Destroy(Instance);
+            Debug.Log("FadeEffect 생성");
+            _instance = this;
+            OnFadeOver = new UnityEvent();
         }
-        OnFadeOver = new UnityEvent();
     }
 
     public void FadeIn(float fadeInSec = 2f)
     {
-        IsFadeOut = false;
+        if (!IsAlreadyFadeOut)
+        {
+            Debug.LogWarning("경고경고, FadeOut이 아닌 상태에서 FadeIn 실행");
+            
+            // IsFadeOver = true;
+            // OnFadeOver?.Invoke();
+            // return;
+        }
+        
         IsFadeOver = false;
+        Debug.Log("Fade In");
+        StopAllCoroutines();
         StartCoroutine(FadeInCoroutine(fadeInSec));
     }
 
@@ -58,25 +68,34 @@ public class FadeEffect : MonoBehaviour
         color = fadePanel.color;
         color.a = 0;
         fadePanel.color = color;
-        graphicRaycaster.enabled = true;
-        IsFadeOver = true;
+        
         JoystickController.instance.StopSaveLoadJoyStick(false);
+        
+        graphicRaycaster.enabled = true;
+        IsAlreadyFadeOut = false;
+        IsFadeOver = true;
+        
         fadePanel.gameObject.SetActive(false);
-        IsFaded = true;
 
+        Debug.Log("Fade In 종료");
         OnFadeOver?.Invoke();
-        OnFadeOver?.RemoveAllListeners();
-        IsFaded = false;
     }
 
     public void FadeOut(float fadeOutSec = 2f)
     {
-        if (!IsFadeOut)
+        if (IsAlreadyFadeOut)
         {
-            IsFadeOver = false;
-            IsFadeOut = true;
-            StartCoroutine(FadeOutCoroutine(fadeOutSec));
+            Debug.LogWarning("이미 FadeOut임, 오류");
+            IsFadeOver = true;
+            OnFadeOver?.Invoke();
+            return;
         }
+        
+        IsFadeOver = false;
+        IsAlreadyFadeOut = true;
+        Debug.Log("Fade Out");
+        StopAllCoroutines();
+        StartCoroutine(FadeOutCoroutine(fadeOutSec));
     }
 
     private IEnumerator FadeOutCoroutine(float fadeOutSec)
@@ -85,10 +104,9 @@ public class FadeEffect : MonoBehaviour
         graphicRaycaster.enabled = false;
         fadePanel.gameObject.SetActive(true);
         
-        var value = LayerMask.GetMask("Default");
-        float t = 0;
+        float t = 0f;
         Color color;
-        while (t < 1)
+        while (t < 1f)
         {
             t += Time.deltaTime / fadeOutSec;
             color = fadePanel.color;
@@ -96,17 +114,19 @@ public class FadeEffect : MonoBehaviour
             fadePanel.color = color;
             yield return null;
         }
-
+        
         color = fadePanel.color;
         color.a = 1;
         fadePanel.color = color;
-        graphicRaycaster.enabled = true;
-        IsFadeOver = true;
+        
         JoystickController.instance.StopSaveLoadJoyStick(false);
         
-        IsFaded = true;
+        graphicRaycaster.enabled = true;
+
+        IsFadeOver = true;
+        
+        Debug.Log("Fade Out 종료");
+        
         OnFadeOver?.Invoke();
-        OnFadeOver?.RemoveAllListeners();
-        IsFaded = false;
     }
 }

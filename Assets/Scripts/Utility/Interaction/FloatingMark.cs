@@ -10,46 +10,46 @@ namespace Utility.Interaction
         [SerializeField] private GameObject markPrefab;
         [SerializeField] private Vector2 markOffset;
 
-        private GameObject _floatingMark;
+        private GameObject floatingMark;
 
         private void Start()
         {
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
 
-            _floatingMark = Instantiate(markPrefab, DataController.instance.currentMap.ui);
-            _floatingMark.SetActive(false);
+            floatingMark = Instantiate(markPrefab, DataController.Instance.CurrentMap.ui);
+            floatingMark.SetActive(false);
         }
 
         private void OnDestroy()
         {
-            if (_floatingMark)
+            if (floatingMark)
             {
-                Destroy(_floatingMark);
+                Destroy(floatingMark);
             }
         }
 
         private void Update()
         {
-            if (_floatingMark.activeSelf)
+            if (floatingMark.activeSelf)
             {
-                _floatingMark.transform.position =
-                    DataController.instance.cam.WorldToScreenPoint((Vector3)markOffset + transform.position);
+                floatingMark.transform.position =
+                    DataController.Instance.Cam.WorldToScreenPoint((Vector3)markOffset + transform.position);
             }
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_floatingMark)
+            if (floatingMark)
             {
-                _floatingMark.SetActive(true);
+                floatingMark.SetActive(true);
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (_floatingMark)
+            if (floatingMark)
             {
-                _floatingMark.SetActive(false);
+                floatingMark.SetActive(false);
             }
         }
     }
