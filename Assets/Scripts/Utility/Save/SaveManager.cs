@@ -89,7 +89,7 @@ namespace Utility.Save
                         Debug.Log("일단 세이브 ");
                         cryptoStream.Close();
                     }
-                    catch (Exception e)
+                    catch (CryptographicException e)
                     {
                         fileStream.Close();
                         rijn.Clear();

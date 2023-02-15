@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &78124210
 RectTransform:
   m_ObjectHideFlags: 0
@@ -149,9 +149,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1656279053}
-  - {fileID: 926916977}
-  - {fileID: 1860116538}
+  - {fileID: 85562018}
   m_Father: {fileID: 2071725145}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -181,8 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultButtonType: 0
-  diaryPanel: {fileID: 78124209}
-  diaryCloseButton: {fileID: 926916978}
+  diaryPanel: {fileID: 85562017}
   diarySaveParent: {fileID: 1888054135}
   saveButton: {fileID: 1786240339}
   loadButton: {fileID: 1342816352}
@@ -190,6 +187,44 @@ MonoBehaviour:
   coverPanel: {fileID: 1860116537}
   coverYesButton: {fileID: 1478758935}
   coverNoButton: {fileID: 1453170997}
+--- !u!1 &85562017
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 85562018}
+  m_Layer: 5
+  m_Name: DiaryPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &85562018
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85562017}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1656279053}
+  - {fileID: 926916977}
+  - {fileID: 1860116538}
+  m_Father: {fileID: 78124210}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &89800663
 GameObject:
   m_ObjectHideFlags: 0
@@ -2817,7 +2852,7 @@ MonoBehaviour:
   camOrthgraphicSize: 0
   mapGenerate: {fileID: 1619982228}
   mapCode: 000000
-  charData:
+  charRelationshipData:
     selfEstm: 0
     intimacySpRau: 0
     intimacyOunRau: 0
@@ -3024,7 +3059,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 78124210}
+  m_Father: {fileID: 85562018}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -4539,10 +4574,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   preferencePanel: {fileID: 1856334786}
-  diaryPanel: {fileID: 78124209}
+  diaryPanel: {fileID: 85562017}
   menuAnimator: {fileID: 1753089399}
   menuButton: {fileID: 365265264}
   diaryButton: {fileID: 1554461156}
+  diaryExitButton: {fileID: 926916978}
   preferenceButton: {fileID: 1864751079}
   preferenceExitButton: {fileID: 1844126883}
   soundSlider: {fileID: 1595368116}
@@ -7316,9 +7352,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadePanel: {fileID: 612119676}
   graphicRaycaster: {fileID: 2066593001}
-  isFadeOver: 0
-  isFadeOut: 0
-  isFaded: 0
 --- !u!1 &1619982227
 GameObject:
   m_ObjectHideFlags: 0
@@ -8324,7 +8357,7 @@ RectTransform:
   - {fileID: 1888054135}
   - {fileID: 2004198871}
   - {fileID: 1576767835}
-  m_Father: {fileID: 78124210}
+  m_Father: {fileID: 85562018}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -10026,12 +10059,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1860116537}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 592518421}
-  m_Father: {fileID: 78124210}
+  m_Father: {fileID: 85562018}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
