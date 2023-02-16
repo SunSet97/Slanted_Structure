@@ -111,19 +111,7 @@ public class CharacterManager : MonoBehaviour, IMovable
     // 현재 Emotion상태값 넣기
     private void EmotionAnimationSetting()
     {
-        if (who.Equals(Character.Speat) || who.Equals(Character.Oun) || who.Equals(Character.Rau))
-            skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int) Emotion]); // 현재 감정으로 메터리얼 변경
-    }
-
-    public void SetEmotion(Expression inEmotion)
-    {
-        Emotion = inEmotion;
-    }
-
-    public void SetCinematic()
-    {
-        faceExpression = Resources.LoadAll<Texture>("Face");
-        skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
+        skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int) Emotion]);
     }
 
     #endregion

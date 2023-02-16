@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 0
-  jsonFile: {fileID: 0}
   nextSelectMapcode: 002011
 --- !u!1 &660646936843566564
 GameObject:
@@ -70,12 +69,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 660646936843566564}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 8287203138418169446}
-  m_RootOrder: 0
+  m_Father: {fileID: 1547722528846873599}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3242153437849805334
 MonoBehaviour:
@@ -89,6 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 
   interactions:
   - jsonFile: {fileID: 4900000, guid: 8843c6237d15d5b4caef01b39fef5856, type: 3}
     interactionPlayType: 3
@@ -113,6 +113,7 @@ MonoBehaviour:
     isLoopDialogue: 0
     isContinue: 0
     serializedInteractionData:
+      id: 0
       isInteractable: 1
       isInteracted: 0
     debugTaskData:
@@ -132,26 +133,6 @@ MonoBehaviour:
       taskIndex: 0
       taskOrder: 1
       isContinue: 1
-  interactionPlayType: 0
-  jsonFile: {fileID: 0}
-  gamePlayableGame: {fileID: 0}
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
-  interactionMethod: 0
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines: []
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  isInteractable: 1
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -186,6 +167,7 @@ Transform:
   m_Children:
   - {fileID: 3567333064310455447}
   - {fileID: 2985279657375515629}
+  - {fileID: 2032211749741426773}
   - {fileID: 8287203138418169446}
   - {fileID: 1768895376222357248}
   - {fileID: 5726004021087108152}
@@ -221,6 +203,9 @@ MonoBehaviour:
   skyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
   isOrthographic: 0
   orthographicSize: 0
+  useFadeOut: 1
+  fadeOutSec: 1
+  fadeInSec: 1
   bgm: {fileID: 0}
   characters:
   - characterAnimator: {fileID: 1591489102440861731}
@@ -265,7 +250,7 @@ Transform:
   m_Children:
   - {fileID: 1857200121433143258}
   m_Father: {fileID: 1547722528846873599}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2999755017061852483
 GameObject:
@@ -294,14 +279,13 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2032211749741426773}
   - {fileID: 4878962634566299631}
   - {fileID: 5866101431117715060}
   - {fileID: 4878962636408948709}
   - {fileID: 4878962634865542713}
   - {fileID: 4878962634877198869}
   m_Father: {fileID: 1547722528846873599}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4027758850991802394
 GameObject:
@@ -331,7 +315,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1547722528846873599}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4878962634428894145
 GameObject:
@@ -456,7 +440,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8287203138418169446}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!320 &4878962634566299628
 PlayableDirector:
@@ -517,7 +501,7 @@ Transform:
   m_Children:
   - {fileID: 4878962635393157879}
   m_Father: {fileID: 8287203138418169446}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 20.19, y: -174.3, z: -0.003}
 --- !u!114 &4878962634865542710
 MonoBehaviour:
@@ -584,7 +568,7 @@ Transform:
   m_Children:
   - {fileID: 4878962634428894174}
   m_Father: {fileID: 8287203138418169446}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4878962634877198866
 MonoBehaviour:
@@ -839,7 +823,7 @@ Transform:
   m_Children:
   - {fileID: 4878962636297517526}
   m_Father: {fileID: 8287203138418169446}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4878962636408948706
 MonoBehaviour:
@@ -904,7 +888,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1547722528846873599}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &5167682068412744288
 Rigidbody:
@@ -1106,7 +1090,7 @@ Transform:
   - {fileID: 5715477753505643308}
   - {fileID: 2099837830071306556}
   m_Father: {fileID: 8287203138418169446}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1547722528613872286
 PrefabInstance:
@@ -4317,9 +4301,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ecea6a8f3cd88b49b6622b87a5956c3, type: 3}
---- !u!95 &1591489102440861731 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 6170938929142471995, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
+--- !u!1 &5676577260621451082 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 969063762552734290, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
     type: 3}
   m_PrefabInstance: {fileID: 4878962635423223064}
   m_PrefabAsset: {fileID: 0}
@@ -4329,9 +4313,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4878962635423223064}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5676577260621451082 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 969063762552734290, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
+--- !u!95 &1591489102440861731 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6170938929142471995, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
     type: 3}
   m_PrefabInstance: {fileID: 4878962635423223064}
   m_PrefabAsset: {fileID: 0}

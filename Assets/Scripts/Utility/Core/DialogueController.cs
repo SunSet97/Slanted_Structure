@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Utility.Cinematic;
 using static Data.CustomEnum;
 
 namespace Utility.Core
@@ -174,11 +175,20 @@ namespace Utility.Core
                 // 대화 시 무슨 캐릭터인지 anim_name으로 Find (who를 사용)
                 MapData.AnimationCharacterSet animator = DataController.Instance.CurrentMap.characters.Find(
                     item => item.who.ToString().Equals(dialogueData.dialogues[dialogueData.dialogueIdx].anim_name));
-                // DataController.instance.GetCharacter(animator.who).emotion =(int) dialogueData.dialogues[dialogueIdx].expression 
-                animator?.characterAnimator.SetInteger(Emotion, (int)dialogueData.dialogues[dialogueData.dialogueIdx].expression);
-            
+                // DataController.instance.GetCharacter(animator.who).emotion =(int) dialogueData.dialogues[dialogueIdx].expression
+                if (animator != null)
+                {
+                    animator.characterAnimator.SetInteger(Emotion,
+                        (int)dialogueData.dialogues[dialogueData.dialogueIdx].expression);
+                    if (animator.characterAnimator.TryGetComponent(out CinematicCharacter cinematicCharacter))
+                    {
+                        cinematicCharacter.ExpressionSetting(dialogueData.dialogues[dialogueData.dialogueIdx].expression);
+                    }
+                }
+
                 dialogueNameText.text = dialogueData.dialogues[dialogueData.dialogueIdx].name;
                 dialogueContentText.text = dialogueData.dialogues[dialogueData.dialogueIdx].contents;
+                AudioController.Instance.PlayOneShot(dialogueData.dialogues[dialogueData.dialogueIdx].sfx);
                 dialogueData.dialogueIdx++;
             }
         }

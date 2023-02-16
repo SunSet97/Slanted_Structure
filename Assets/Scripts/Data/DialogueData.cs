@@ -90,5 +90,6 @@ namespace Data
         public CustomEnum.Expression expression;
         public string anim_name;
         public string contents;
+        public string sfx;
     }
 }

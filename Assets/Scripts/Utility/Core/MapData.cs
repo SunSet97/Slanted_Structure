@@ -297,7 +297,7 @@ namespace Utility.Core
                 ui.localScale = new Vector3(1, 1, 1);
             }
 
-            AudioController.instance.PlayBgm(bgm);
+            AudioController.Instance.PlayBgm(bgm);
         }
 
         public void SetNextMapCode(string nextMapCode)
