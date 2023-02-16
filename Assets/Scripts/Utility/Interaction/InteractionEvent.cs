@@ -37,7 +37,7 @@ namespace Utility.Interaction
             Interactable,
             Interaction,
             // FadeOut,
-            PlayAudio,
+            // PlayAudio,
             Custom
         }
 
@@ -114,8 +114,8 @@ namespace Utility.Interaction
         // [ConditionalHideInInspector("eventType", EventType.FadeOut)]
         // public float fadeSec;
         
-        [ConditionalHideInInspector("eventType", EventType.PlayAudio)]
-        public Audio audio;
+        // [ConditionalHideInInspector("eventType", EventType.PlayAudio)]
+        // public Audio audio;
 
         [NonSerialized] public UnityAction UnityAction;
 
@@ -144,9 +144,9 @@ namespace Utility.Interaction
                 // case EventType.FadeOut:
                 //     FadeOut();
                 //     break;
-                case EventType.PlayAudio:
-                    PlayAudio();
-                    break;
+                // case EventType.PlayAudio:
+                //     PlayAudio();
+                //     break;
                 case EventType.Custom:
                     UnityAction?.Invoke();
                     break;
@@ -207,18 +207,18 @@ namespace Utility.Interaction
             }
         }
         
-        private void PlayAudio()
-        {
-            if (audio.isSfx)
-            {
-                AudioController.instance.PlayOneShot(audio.audioClip);
-            }
-            else if (audio.isBgm)
-            {
-                // AudioController.instance.PlayBgm(audio.audioClip);
-                // 이전 Bgm 이어서 Play 되도록? - 기획과 협상
-            }
-        }
+        // private void PlayAudio()
+        // {
+        //     if (audio.isSfx)
+        //     {
+        //         AudioController.instance.PlayOneShot(audio.audioClip);
+        //     }
+        //     else if (audio.isBgm)
+        //     {
+        //         // AudioController.instance.PlayBgm(audio.audioClip);
+        //         // 이전 Bgm 이어서 Play 되도록? - 기획과 협상
+        //     }
+        // }
 
         // private void FadeOut()
         // {

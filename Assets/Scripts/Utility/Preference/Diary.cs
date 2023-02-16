@@ -1,11 +1,9 @@
-﻿using System.Runtime.CompilerServices;
-using Data;
+﻿using Data;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utility.Core;
 using Utility.Save;
-using Task = System.Threading.Tasks.Task;
 
 namespace Utility.Preference
 {
@@ -33,19 +31,19 @@ namespace Utility.Preference
         [SerializeField] private Button coverYesButton;
         [SerializeField] private Button coverNoButton;
 
-        private int coverIdx;
+        private int _coverIdx;
 
-        private RectMask2D saveMask;
-        private RectMask2D loadMask;
-        private RectMask2D deleteMask;
+        private RectMask2D _saveMask;
+        private RectMask2D _loadMask;
+        private RectMask2D _deleteMask;
 
-        private ButtonType focusedButton;
+        private ButtonType _focusedButton;
 
         private void Awake()
         {
-            saveMask = saveButton.transform.parent.GetComponent<RectMask2D>();
-            loadMask = loadButton.transform.parent.GetComponent<RectMask2D>();
-            deleteMask = deleteButton.transform.parent.GetComponent<RectMask2D>();
+            _saveMask = saveButton.transform.parent.GetComponent<RectMask2D>();
+            _loadMask = loadButton.transform.parent.GetComponent<RectMask2D>();
+            _deleteMask = deleteButton.transform.parent.GetComponent<RectMask2D>();
 
             saveButton.onClick.AddListener(() => { FocusButton(ButtonType.Save); });
             loadButton.onClick.AddListener(() => { FocusButton(ButtonType.Load); });
@@ -54,9 +52,9 @@ namespace Utility.Preference
             coverYesButton.onClick.AddListener(() =>
             {
                 SaveData saveData = SaveHelper.Instance.GetSaveData();
-                SaveManager.Save(coverIdx, saveData, () =>
+                SaveManager.Save(_coverIdx, saveData, () =>
                 {
-                    Debug.Log(coverIdx + "저장");
+                    Debug.Log(_coverIdx + "저장");
                     UpdateDiary();
                     coverPanel.SetActive(false);
                 });
@@ -71,11 +69,11 @@ namespace Utility.Preference
                 button.onClick.RemoveAllListeners();
                 button.onClick.AddListener(() =>
                 {
-                    if (focusedButton == ButtonType.Save)
+                    if (_focusedButton == ButtonType.Save)
                     {
                         if (SaveManager.Has(t))
                         {
-                            coverIdx = t;
+                            _coverIdx = t;
                             coverPanel.SetActive(true);
                         }
                         else
@@ -88,7 +86,7 @@ namespace Utility.Preference
                             });
                         }
                     }
-                    else if (focusedButton == ButtonType.Load)
+                    else if (_focusedButton == ButtonType.Load)
                     {
                         if (SaveManager.Has(t) && SaveManager.IsCoverLoaded(t))
                         {
@@ -112,7 +110,7 @@ namespace Utility.Preference
                             });
                         }
                     }
-                    else if (focusedButton == ButtonType.Delete)
+                    else if (_focusedButton == ButtonType.Delete)
                     {
                         if (SaveManager.Has(t))
                         {
@@ -126,17 +124,17 @@ namespace Utility.Preference
 
         private void FocusButton(ButtonType buttonType)
         {
-            focusedButton = buttonType;
+            _focusedButton = buttonType;
             if (buttonType == ButtonType.Save)
             {
-                saveMask.rectTransform.anchoredPosition = new Vector2(120, saveMask.rectTransform.anchoredPosition.y);
-                loadMask.rectTransform.anchoredPosition = new Vector2(167, loadMask.rectTransform.anchoredPosition.y);
-                deleteMask.rectTransform.anchoredPosition =
-                    new Vector2(179, deleteMask.rectTransform.anchoredPosition.y);
+                _saveMask.rectTransform.anchoredPosition = new Vector2(120, _saveMask.rectTransform.anchoredPosition.y);
+                _loadMask.rectTransform.anchoredPosition = new Vector2(167, _loadMask.rectTransform.anchoredPosition.y);
+                _deleteMask.rectTransform.anchoredPosition =
+                    new Vector2(179, _deleteMask.rectTransform.anchoredPosition.y);
 
-                saveMask.enabled = false;
-                loadMask.enabled = true;
-                deleteMask.enabled = true;
+                _saveMask.enabled = false;
+                _loadMask.enabled = true;
+                _deleteMask.enabled = true;
 
                 for (var idx = 0; idx < diarySaveParent.childCount; idx++)
                 {
@@ -149,14 +147,14 @@ namespace Utility.Preference
             }
             else if (buttonType == ButtonType.Load)
             {
-                saveMask.rectTransform.anchoredPosition = new Vector2(167, saveMask.rectTransform.anchoredPosition.y);
-                loadMask.rectTransform.anchoredPosition = new Vector2(120, loadMask.rectTransform.anchoredPosition.y);
-                deleteMask.rectTransform.anchoredPosition =
-                    new Vector2(179, deleteMask.rectTransform.anchoredPosition.y);
+                _saveMask.rectTransform.anchoredPosition = new Vector2(167, _saveMask.rectTransform.anchoredPosition.y);
+                _loadMask.rectTransform.anchoredPosition = new Vector2(120, _loadMask.rectTransform.anchoredPosition.y);
+                _deleteMask.rectTransform.anchoredPosition =
+                    new Vector2(179, _deleteMask.rectTransform.anchoredPosition.y);
 
-                saveMask.enabled = true;
-                loadMask.enabled = false;
-                deleteMask.enabled = true;
+                _saveMask.enabled = true;
+                _loadMask.enabled = false;
+                _deleteMask.enabled = true;
 
                 for (var idx = 0; idx < diarySaveParent.childCount; idx++)
                 {
@@ -169,14 +167,14 @@ namespace Utility.Preference
             }
             else if (buttonType == ButtonType.Delete)
             {
-                saveMask.rectTransform.anchoredPosition = new Vector2(179, saveMask.rectTransform.anchoredPosition.y);
-                loadMask.rectTransform.anchoredPosition = new Vector2(167, loadMask.rectTransform.anchoredPosition.y);
-                deleteMask.rectTransform.anchoredPosition =
-                    new Vector2(120, deleteMask.rectTransform.anchoredPosition.y);
+                _saveMask.rectTransform.anchoredPosition = new Vector2(179, _saveMask.rectTransform.anchoredPosition.y);
+                _loadMask.rectTransform.anchoredPosition = new Vector2(167, _loadMask.rectTransform.anchoredPosition.y);
+                _deleteMask.rectTransform.anchoredPosition =
+                    new Vector2(120, _deleteMask.rectTransform.anchoredPosition.y);
 
-                saveMask.enabled = true;
-                loadMask.enabled = true;
-                deleteMask.enabled = false;
+                _saveMask.enabled = true;
+                _loadMask.enabled = true;
+                _deleteMask.enabled = false;
 
                 for (var idx = 0; idx < diarySaveParent.childCount; idx++)
                 {

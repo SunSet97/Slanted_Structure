@@ -44,7 +44,6 @@ namespace Utility.Core
         private CharacterManager _mainChar;
 
         private AssetBundle _mapDB;
-        private AssetBundle _materialDB;
         internal AssetBundle DialogueDB;
 
         private UnityAction _onLoadMap;
@@ -76,8 +75,11 @@ namespace Utility.Core
             mapGenerate = GameObject.Find("MapGenerate").transform;
 
             InteractionObjects = new List<InteractionObject>();
-            
+
+            AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/modulematerials");
+
             Cam = Camera.main;
+            
             speat.Init();
             oun.Init();
             rau.Init();
@@ -112,31 +114,27 @@ namespace Utility.Core
             {
                 return Storymaps;
             }
+            
+            Debug.Log(Application.dataPath + $"/AssetBundles/map/ep{desEp}/day{desDay}");
 
             if (_mapDB != null)
             {
                 _mapDB.Unload(true);
+                Debug.Log(_mapDB);
+                _mapDB = null;
             }
-
-            if (DialogueDB != null)
-            {
-                DialogueDB.Unload(true);
-            }
-
-            if (_materialDB != null)
-            {
-                _materialDB.Unload(true);
-            }
-
-            Debug.Log(Application.dataPath + $"/AssetBundles/map/ep{desEp}/day{desDay}");
 
             _mapDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
             if (curDay != desDay)
             {
+                if (DialogueDB != null)
+                {
+                    DialogueDB.Unload(true);
+                    Debug.Log(DialogueDB);
+                    DialogueDB = null;
+                }
                 DialogueDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}");
             }
-
-            _materialDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/modulematerials");
 
             if (_mapDB == null)
             {

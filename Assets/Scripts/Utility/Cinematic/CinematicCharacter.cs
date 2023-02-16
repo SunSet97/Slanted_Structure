@@ -28,7 +28,7 @@ namespace Utility.Cinematic
                 }
                 else if (who.Equals(CustomEnum.Character.Speat_Adolescene) || who.Equals(CustomEnum.Character.Speat_Adult) || who.Equals(CustomEnum.Character.Speat_Child))
                 {
-                    faceExpression = Resources.LoadAll<Texture>("Speat_Face");
+                    faceExpression = Resources.LoadAll<Texture>($"Speat_Face/{who}");
                 }
             }
         }
@@ -38,14 +38,14 @@ namespace Utility.Cinematic
         {
             anim.SetInteger(Emotion, emotionInt); // 애니메이션실행
         }
-        public void ExpressionSetting(int emotionInt)
+        public void ExpressionSetting(CustomEnum.Expression emotion)
         {
-            if(faceExpression.Length > emotionInt)
+            if(faceExpression.Length < (int)emotion)
             {
                 return;
             }
 
-            skinnedMesh.materials[1].SetTexture(MainTex, faceExpression[emotionInt]); // 현재 감정으로 메터리얼 변경
+            skinnedMesh.materials[1].SetTexture(MainTex, faceExpression[(int)emotion]); // 현재 감정으로 메터리얼 변경
         }
 
     }

@@ -608,9 +608,12 @@ namespace Utility.Interaction
                         //     // playableBinding.
                         //     Debug.Log(timeline.GetGenericBinding(playableBinding.sourceObject));
                         // }
-                        yield return new WaitUntil(() =>
-                            interaction.timelines[0].state == PlayState.Paused && !interaction.timelines[0].playableGraph.IsValid() &&
-                            !DialogueController.instance.IsTalking);
+                        yield return new WaitUntil(() => Math.Abs(interaction.timelines[0].time - interaction.timelines[0].duration) <=
+                                                         1 / ((TimelineAsset)interaction.timelines[0].playableAsset)
+                                                         .editorSettings.fps ||
+                                                         interaction.timelines[0].state == PlayState.Paused &&
+                                                         !interaction.timelines[0].playableGraph.IsValid() &&
+                                                         !DialogueController.instance.IsTalking);
                         // while (true)
                         // {
                         //     if (timeline.duration - timeline.time < 0.04f)

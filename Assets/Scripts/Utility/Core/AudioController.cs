@@ -1,11 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Utility.Core
 {
     public class AudioController : MonoBehaviour
     {
         private static AudioController _instance;
-        public static AudioController instance
+        public static AudioController Instance
         {
             get
             {
@@ -21,10 +23,13 @@ namespace Utility.Core
                         _instance = Resources.Load<AudioController>("AudioController");   
                     }
                     DontDestroyOnLoad(_instance);
+                    _instance.audioClips = new List<AudioClip>();
                 }
                 return _instance;
             }
         }
+
+        private List<AudioClip> audioClips;
 
         [SerializeField]
         private AudioSource bgmSource;
@@ -52,10 +57,29 @@ namespace Utility.Core
             bgmSource.clip = null;
             bgmSource.Stop();
         }
-    
-        public void PlayOneShot(AudioClip audioClip)
+
+        private void PlayOneShot(AudioClip audioClip)
         {
+            if (!audioClips.Contains(audioClip))
+            {
+                audioClips.Add(audioClip);
+            }
             sfxSource.PlayOneShot(audioClip);
+        }
+        
+        public void PlayOneShot(string audioClipName)
+        {
+            if (String.IsNullOrEmpty(audioClipName))
+            {
+                return;
+            }
+            var audioClip = audioClips.Find(item => item.name == audioClipName);
+            if (!audioClip)
+            {
+                audioClip = Resources.Load<AudioClip>(audioClipName);
+                audioClips.Add(audioClip);
+            }
+            PlayOneShot(audioClip);
         }
     }
 }
