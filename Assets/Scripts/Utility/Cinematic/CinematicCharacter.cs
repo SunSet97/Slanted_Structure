@@ -43,7 +43,7 @@ namespace Utility.Cinematic
 
         public void ExpressionSetting(CustomEnum.Expression emotion)
         {
-            if (faceExpression.Length < (int) emotion)
+            if (faceExpression.Length <= (int) emotion)
             {
                 return;
             }

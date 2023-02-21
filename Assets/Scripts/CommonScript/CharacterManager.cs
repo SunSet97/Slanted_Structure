@@ -28,7 +28,7 @@ namespace CommonScript
             {
                 faceExpression = Resources.LoadAll<Texture>("Face");
                 skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
-                if (faceExpression.Length < (int)Emotion)
+                if (faceExpression.Length <= (int)Emotion)
                 {
                     return;
                 }
@@ -39,7 +39,7 @@ namespace CommonScript
             {
                 faceExpression = Resources.LoadAll<Texture>($"Speat_Face/{who}");
                 skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
-                if (faceExpression.Length < (int)Emotion)
+                if (faceExpression.Length <= (int)Emotion)
                 {
                     return;
                 }
@@ -156,7 +156,7 @@ namespace CommonScript
         // 현재 Emotion상태값 넣기
         private void EmotionAnimationSetting()
         {
-            if (faceExpression.Length < (int)Emotion || Emotion == Expression.NONE)
+            if (faceExpression.Length <= (int)Emotion || Emotion == Expression.NONE)
             {
                 return;
             }

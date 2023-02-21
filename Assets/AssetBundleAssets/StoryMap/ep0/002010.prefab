@@ -90,8 +90,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   interactions:
-  - jsonFile: {fileID: 4900000, guid: 8843c6237d15d5b4caef01b39fef5856, type: 3}
-    interactionPlayType: 3
+  - jsonFile: {fileID: 0}
+    interactionPlayType: 5
     gamePlayableGame: {fileID: 0}
     dialogueData:
       dialogueIdx: 0
@@ -99,7 +99,19 @@ MonoBehaviour:
     interactionStartActions:
       interactionEvents: []
     interactionEndActions:
-      interactionEvents: []
+      interactionEvents:
+      - eventType: 1
+        clearBox: {fileID: 3657249771106411439}
+        activeObjs:
+          actives: []
+        movables:
+          movables: []
+        playableList:
+          playableObjs: []
+        interactObjs:
+          interacts: []
+        interactionObjs:
+          interactions: []
     interactionMethod: 3
     isViewChange: 0
     dialogueCamera:
@@ -115,23 +127,7 @@ MonoBehaviour:
       id: 0
       isInteractable: 1
       isInteracted: 0
-    debugTaskData:
-    - tasks:
-      - name: 
-        taskContentType: 11
-        nextFile: 
-        order: 1
-        condition: 
-        increaseVar: 
-      - name: 
-        taskContentType: 13
-        nextFile: 
-        order: 1
-        condition: 
-        increaseVar: 
-      taskIndex: 0
-      taskOrder: 1
-      isContinue: 1
+    debugTaskData: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}

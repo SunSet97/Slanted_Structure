@@ -48,6 +48,7 @@ namespace Utility.Core
         {
             Debug.Log("조이스틱 초기화 - " + joystickType);
             isAlreadySave = false;
+
             if (joystick)
             {
                 joystick.gameObject.SetActive(false);

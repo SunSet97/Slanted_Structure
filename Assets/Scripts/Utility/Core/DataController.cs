@@ -106,8 +106,6 @@ namespace Utility.Core
             if (_mapDB != null)
             {
                 _mapDB.Unload(true);
-                Debug.Log(_mapDB);
-                _mapDB = null;
             }
 
             _mapDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
@@ -116,8 +114,6 @@ namespace Utility.Core
                 if (DialogueDB != null)
                 {
                     DialogueDB.Unload(true);
-                    Debug.Log(DialogueDB);
-                    DialogueDB = null;
                 }
                 DialogueDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}");
             }
@@ -231,9 +227,16 @@ namespace Utility.Core
                 character.InitializeCharacter();
             }
 
-            var mainPosSet = CurrentMap.positionSets.Find(item => item.isMain);
-            _mainChar = Array.Find(characters, item => item.who == mainPosSet.who);
-            
+            var mainPosSetIndex = CurrentMap.positionSets.FindIndex(item => item.isMain);
+            if (mainPosSetIndex != -1)
+            {
+                _mainChar = Array.Find(characters, item => item.who == CurrentMap.positionSets[mainPosSetIndex].who);
+            }
+            else
+            {
+                _mainChar = null;
+            }
+
             foreach (var posSet in CurrentMap.positionSets)
             {
                 var character = Array.Find(characters, item => item.who == posSet.who);

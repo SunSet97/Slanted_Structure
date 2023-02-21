@@ -437,7 +437,14 @@ namespace Utility.Interaction
                     }
 
                     interaction.timelines[0].Play();
-                    interaction.timelines[0].stopped += director =>
+
+                    var waitUntil = new WaitUntil(() => Math.Abs(interaction.timelines[0].time - interaction.timelines[0].duration) <=
+                                                        1 / ((TimelineAsset)interaction.timelines[0].playableAsset)
+                                                        .editorSettings.fps ||
+                                                        interaction.timelines[0].state == PlayState.Paused &&
+                                                        !interaction.timelines[0].playableGraph.IsValid() &&
+                                                        !DialogueController.instance.IsTalking);
+                    StartCoroutine(WaitTimeline(waitUntil, () =>
                     {
                         PlayUIController.Instance.menuPanel.SetActive(true);
                         Debug.Log("타임라인 끝");
@@ -445,15 +452,24 @@ namespace Utility.Interaction
                         {
                             endAction.Action();
                         }
+
                         foreach (var interactionInGame in interaction.inGames)
                         {
                             interactionInGame.SetActive(true);
                         }
+
                         foreach (var interactionCinematic in interaction.cinematics)
                         {
                             interactionCinematic.SetActive(false);
                         }
-                    };
+
+                        if (interactions.Count > 0 && interaction.isContinue)
+                        {
+                            InteractIndex = (InteractIndex + 1) % interactions.Count;
+                        }
+                    }));
+                    
+                    return;
                 }
                 else
                 {
@@ -785,6 +801,12 @@ namespace Utility.Interaction
             //         }
             //     }
             // }
+        }
+
+        private IEnumerator WaitTimeline(WaitUntil waitUntil, Action action)
+        {
+            yield return waitUntil;
+            action?.Invoke();
         }
 
         public void Load(InteractionSaveData saveData)

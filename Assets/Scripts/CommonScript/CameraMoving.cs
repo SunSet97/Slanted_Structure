@@ -30,21 +30,17 @@ namespace CommonScript
             else
             {
                 mainCharacter = null;
-                Debug.LogWarning("오류오류 메인캐릭터 없음");
             }
         }
 
-        void Update()
+        private void Update()
         {
-            if (!mainCharacter)
-            {
-                return;
-            }
-
             if (cam.orthographic)
             {
                 cam.orthographicSize = DataController.Instance.camOrthgraphicSize;
             }
+            
+            cam.transform.rotation = Quaternion.Euler(DataController.Instance.camInfo.camRot);
 
             if (viewType.Equals(CameraViewType.FixedView))
             {
@@ -52,14 +48,13 @@ namespace CommonScript
                                          DataController.Instance.camInfo.camDis +
                                          DialogueController.instance.dialogueData.CamInfo.camDis;
             }
-
-            if (viewType.Equals(CameraViewType.FollowCharacter))
+            
+            if (mainCharacter && viewType.Equals(CameraViewType.FollowCharacter))
             {
                 cam.transform.position = mainCharacter.position + DataController.Instance.camInfo.camDis +
                                          DialogueController.instance.dialogueData.CamInfo.camDis;
             }
 
-            cam.transform.rotation = Quaternion.Euler(DataController.Instance.camInfo.camRot);
         }
     }
 }

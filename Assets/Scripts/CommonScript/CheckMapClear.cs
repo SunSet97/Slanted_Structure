@@ -27,7 +27,7 @@ namespace CommonScript
     /// </summary>
     public class CheckMapClear : MonoBehaviour
     {
-        public bool isTrigger;
+        [SerializeField] private bool isTrigger;
 
         public string nextSelectMapcode = "000000";
 
