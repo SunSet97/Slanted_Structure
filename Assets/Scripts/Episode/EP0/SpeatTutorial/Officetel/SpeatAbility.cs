@@ -20,10 +20,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
 
         [SerializeField] private float hideSpeed = 0.5f;
 
-        private Vector2 passVector2;
-
-        private Transform lastForward, lastBack, lastUpFloor, lastDownFloor;
-        private RaycastHit wallPassTemp;
+        [SerializeField] private float passTime = .7f;
 
         [NonSerialized] public bool IsUsingAbilityTimer;
         [NonSerialized] public bool IsPassing;
@@ -31,62 +28,26 @@ namespace Episode.EP0.SpeatTutorial.Officetel
         private float abilityDuration;
         private float cooldown;
         private int passedWallCount;
+        private Vector2 passVector2;
+        private Coroutine abilityTimerCoroutine;
 
         private bool isHiding;
         private OutlineClickObj hidingDoor;
         private float originPosZ;
-        private Coroutine abilityTimerCoroutine;
-        
+
         private static readonly int Speed = Animator.StringToHash("Speed");
 
         private void Start()
         {
             ObjectClicker.Instance.IsCustomUse = true;
             abilityButton.onClick.AddListener(UseAbility);
-            Debug.Log("ㅎㅇ");
-
-            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
-
-            var mainCharacterCenterPos = mainCharacter.CharacterController.center + mainCharacter.transform.position;
-
-            var fwdDir = mainCharacter.transform.forward;
-            var upDir = mainCharacter.transform.up;
-
-            var fwdPos = mainCharacterCenterPos + fwdDir * 0.3f;
-            var bwdPos = mainCharacterCenterPos + -fwdDir * 0.3f;
-            var upPos = mainCharacterCenterPos + upDir * 0.5f;
-            var downPos = mainCharacterCenterPos + -upDir * 0.2f;
-
-            var wallLayerMask = 1 << LayerMask.NameToLayer("Wall");
-            var floorLayerMask = 1 << LayerMask.NameToLayer("Floor");
-
-            // Forward
-            if (Physics.Raycast(fwdPos, fwdDir, out var wallFwdFace, float.MaxValue, wallLayerMask))
-            {
-                lastForward = wallFwdFace.transform;
-            }
-            // Back
-            if (Physics.Raycast(bwdPos, -fwdDir, out var wallBwdFace, float.MaxValue, wallLayerMask))
-            {
-                lastBack = wallBwdFace.transform;
-            }
-            // Up
-            if (Physics.Raycast(upPos, upDir, out var upFloor, float.MaxValue, floorLayerMask))
-            {
-                lastUpFloor = upFloor.transform;
-            }
-            // Down
-            if (Physics.Raycast(downPos, -upDir, out var downFloor, float.MaxValue, floorLayerMask))
-            {
-                lastDownFloor = downFloor.transform;
-            }
         }
 
         private void Update()
         {
             PassDoor();
         }
-        
+
         private void UseAbility()
         {
             if (IsPassing || isHiding || IsUsingAbilityTimer || cooldown > 0f)
@@ -113,6 +74,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
 
                 yield return null;
             }
+
             AbilityCooldown();
         }
 
@@ -122,7 +84,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
             IsUsingAbilityTimer = false;
             abilityButton.image.fillAmount = 0f;
             passVector2 = Vector2.zero;
-            
+
             if (abilityTimerCoroutine != null)
             {
                 StopCoroutine(abilityTimerCoroutine);
@@ -135,7 +97,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
         {
             var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
             mainCharacter.gameObject.layer = LayerMask.NameToLayer("Player");
-            
+
             cooldown = setCooldown;
             abilityCooldownImage.fillAmount = 1f;
 
@@ -147,226 +109,84 @@ namespace Episode.EP0.SpeatTutorial.Officetel
             }
         }
 
-        private IEnumerator CheckPass()
+        private IEnumerator CheckPass(Vector3 targetPos)
         {
             var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
-            
-            if (passVector2 == Vector2.left)
-            {
-                mainCharacter.gameObject.layer = LayerMask.NameToLayer("SpeatWallPass");
-                mainCharacter.moveHorDir = Vector3.left * 6f;
-            }
-            else if (passVector2 == Vector2.right)
-            {
-                mainCharacter.gameObject.layer = LayerMask.NameToLayer("SpeatWallPass");
-                mainCharacter.moveHorDir = Vector3.right * 6f;
-            }
-            else if (passVector2 == Vector2.down)
-            {
-                mainCharacter.gameObject.layer = LayerMask.NameToLayer("SpeatFloorPass");
-                mainCharacter.moveVerDir = Vector3.down * 6f;
-            }
-            else if (passVector2 == Vector2.up)
-            {
-                mainCharacter.gameObject.layer = LayerMask.NameToLayer("SpeatFloorPass");
-                mainCharacter.moveVerDir = Vector3.up * 15f;
-            }
-            
-            var mainCharacterCenterPos = mainCharacter.CharacterController.center + mainCharacter.transform.position;
-            
-            var fwdDir = mainCharacter.transform.forward;
-            var upDir = mainCharacter.transform.up;
 
-            var wallLayerMask = 1 << LayerMask.NameToLayer("Wall");
-            var floorLayerMask = 1 << LayerMask.NameToLayer("Floor");
+            mainCharacter.PickUpCharacter();
+
+            Debug.Log("목표: " + targetPos);
 
             var waitForFixedUpdate = new WaitForFixedUpdate();
-            while (true)
+            var t = 0f;
+            var delta = (targetPos - mainCharacter.transform.position) * Time.fixedDeltaTime / passTime;
+            while (t <= 1f)
             {
-                if (passVector2 == Vector2.up)
-                {
-                    Debug.Log("Check Up");
-                    var upPos = mainCharacterCenterPos + upDir * .5f;
-                    var downPos = mainCharacterCenterPos + -upDir * .2f;
-                    if (Physics.Raycast(downPos, -upDir, out var downFloor, float.MaxValue, floorLayerMask))
-                    {
-                        if (lastUpFloor == downFloor.transform)
-                        {
-                            lastDownFloor = downFloor.transform;
-                            mainCharacter.gameObject.layer = LayerMask.NameToLayer("Player");
-                            mainCharacter.moveVerDir = Vector3.zero;
-                            passVector2 = Vector2.zero;
-                            passedWallCount++;
-                            
-                            if (Physics.Raycast(upPos, upDir, out var upFloor, float.MaxValue, floorLayerMask))
-                            {
-                                if (lastUpFloor != upFloor.transform)
-                                {
-                                    lastUpFloor = upFloor.transform;
-                                }
-                                else
-                                {
-                                    Debug.LogWarning("오류 코드 고쳐야됨");
-                                }
-                            }
-                            else
-                            {
-                                lastUpFloor = null;
-                            }
-                            break;
-                        }
-                    }
-                }
-                else if (passVector2 == Vector2.down)
-                {
-                    Debug.Log("Check Down");
-                    var upPos = mainCharacterCenterPos + upDir * .5f;
-                    var downPos = mainCharacterCenterPos + -upDir * .2f;
-                    if (Physics.Raycast(upPos, upDir, out var upFloor, float.MaxValue, floorLayerMask))
-                    {
-                        if (lastDownFloor == upFloor.transform)
-                        {
-                            lastUpFloor = upFloor.transform;
-                            mainCharacter.gameObject.layer = LayerMask.NameToLayer("Player");
-                            mainCharacter.moveVerDir = Vector3.zero;
-                            passVector2 = Vector2.zero;
-                            passedWallCount++;
-                            
-                            if (Physics.Raycast(downPos, -upDir, out var downFloor, float.MaxValue, floorLayerMask))
-                            {
-                                if (lastDownFloor != downFloor.transform)
-                                {
-                                    lastDownFloor = downFloor.transform;
-                                }
-                                else
-                                {
-                                    Debug.LogWarning("오류 코드 고쳐야됨");
-                                }
-                            }
-                            else
-                            {
-                                lastDownFloor = null;
-                            }
-                            break;
-                        }
-                    }
-                }
-                else if (passVector2 == Vector2.right || passVector2 == Vector2.left)
-                {
-                    var fwdPos = mainCharacterCenterPos + fwdDir * .3f;
-                    var bwdPos = mainCharacterCenterPos + -fwdDir * .3f;
-                    
-                    if (Physics.Raycast(bwdPos, -fwdDir, out var backWall, float.MaxValue, wallLayerMask))
-                    {
-                        if (lastForward == backWall.transform)
-                        {
-                            lastBack = backWall.transform;
-                            mainCharacter.gameObject.layer = LayerMask.NameToLayer("Player");
-                            mainCharacter.moveVerDir = Vector3.zero;
-                            passVector2 = Vector2.zero;
-                            passedWallCount++;
+                mainCharacter.transform.position += delta;
 
-                            if (Physics.Raycast(fwdPos, fwdDir, out var forwardWall, float.MaxValue, wallLayerMask))
-                            {
-                                if (lastForward != forwardWall.transform)
-                                {
-                                    lastForward = forwardWall.transform;
-                                }
-                                else
-                                {
-                                    Debug.LogWarning("오류 코드 고쳐야됨");
-                                }
-                            }
-                            else
-                            {
-                                lastForward = null;
-                            }
-                            break;
-                        }
-                        if (lastBack == backWall.transform)
-                        {
-                            lastForward = backWall.transform;
-                            mainCharacter.gameObject.layer = LayerMask.NameToLayer("Player");
-                            mainCharacter.moveVerDir = Vector3.zero;
-                            passVector2 = Vector2.zero;
-                            passedWallCount++;
-
-                            if (Physics.Raycast(bwdPos, -fwdDir, out var forwardWall, float.MaxValue, wallLayerMask))
-                            {
-                                if (lastBack != forwardWall.transform)
-                                {
-                                    lastBack = forwardWall.transform;
-                                }
-                                else
-                                {
-                                    Debug.LogWarning("오류 코드 고쳐야됨");
-                                }
-                            }
-                            else
-                            {
-                                lastBack = null;
-                            }
-                            break;
-                        }
-                    }
-                }
-
+                t += Time.fixedDeltaTime / passTime;
                 yield return waitForFixedUpdate;
             }
-            
+
+            mainCharacter.PutDownCharacter();
+            passedWallCount++;
+            passVector2 = Vector2.zero;
+
             if (passedWallCount < maxWallCount)
             {
-                abilityText.text = passedWallCount.ToString();
+                abilityText.text = (maxWallCount - passedWallCount).ToString();
             }
             else
             {
                 AbilityCooldown();
             }
         }
-        
+
         private void Dash()
         {
+            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+
             if (passVector2 != Vector2.zero || !IsUsingAbilityTimer)
             {
                 return;
             }
 
-            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
             var joyStick = JoystickController.instance.joystick;
 
-            var mainCharacterCenterPos = mainCharacter.CharacterController.center + mainCharacter.transform.position;
-            
             var fwdDir = mainCharacter.transform.forward;
             var upDir = mainCharacter.transform.up;
-            
-            var fwdPos = mainCharacterCenterPos + fwdDir * .3f;
-            var upPos = mainCharacterCenterPos + upDir * 0.5f;
-            var downPos = mainCharacterCenterPos + -upDir * 0.2f;
-            
+
             var wallLayerMask = 1 << LayerMask.NameToLayer("Wall");
             var floorLayerMask = 1 << LayerMask.NameToLayer("Floor");
-            
-            var isForwardRaycast = Physics.Raycast(fwdPos, fwdDir, out var wallFwdFace, float.MaxValue, wallLayerMask);
-            
-            if (isForwardRaycast && joyStick.Horizontal < -.7f && Vector3.Distance(mainCharacterCenterPos, wallFwdFace.point) < .5f)
+
+            var isForwardRaycast = Physics.Raycast(mainCharacter.transform.position, fwdDir,
+                out var forwardWall, float.MaxValue,
+                wallLayerMask);
+
+
+            if (isForwardRaycast && joyStick.Horizontal < -.7f &&
+                Vector3.Distance(mainCharacter.transform.position, forwardWall.point) < .5f)
             {
                 passVector2 = Vector2.left;
-                StartCoroutine(CheckPass());
+                StartCoroutine(CheckPass(forwardWall.point + fwdDir));
             }
-            else if (isForwardRaycast && joyStick.Horizontal > .7f && Vector3.Distance(mainCharacterCenterPos, wallFwdFace.point) < .5f)
+            else if (isForwardRaycast && joyStick.Horizontal > .7f &&
+                     Vector3.Distance(mainCharacter.transform.position, forwardWall.point) < .5f)
             {
                 passVector2 = Vector2.right;
-                StartCoroutine(CheckPass());
+                StartCoroutine(CheckPass(forwardWall.point + fwdDir));
             }
-            else if (joyStick.Vertical < -.7f && Physics.Raycast(downPos, -upDir, float.MaxValue, floorLayerMask))
-            {
-                passVector2 = Vector2.down;
-                StartCoroutine(CheckPass());
-            }
-            else if (joyStick.Vertical > .7f && Physics.Raycast(upPos, upDir, float.MaxValue, floorLayerMask))
+            else if (joyStick.Vertical > .7f && Physics.Raycast(mainCharacter.transform.position, upDir,
+                         out var upFloor, float.MaxValue, floorLayerMask))
             {
                 passVector2 = Vector2.up;
-                StartCoroutine(CheckPass());
+                StartCoroutine(CheckPass(upFloor.point + Vector3.up));
+            }
+            else if (joyStick.Vertical < -.7f && Physics.Raycast(mainCharacter.transform.position, -upDir,
+                         out var downFloor, float.MaxValue, floorLayerMask))
+            {
+                passVector2 = Vector2.down;
+                StartCoroutine(CheckPass(downFloor.point + Vector3.down));
             }
         }
 
