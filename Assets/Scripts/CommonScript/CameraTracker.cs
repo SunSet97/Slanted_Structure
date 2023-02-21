@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-using Utility.System;
+using Utility.Core;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -50,7 +50,7 @@ public class CameraTracker : MonoBehaviour
     {
         if (CheckDistance(out int cornerIndex))
         {
-            var character = DataController.instance.GetCharacter(Character.Main)
+            var character = DataController.Instance.GetCharacter(Character.Main)
                 .transform;
 
             CornerCameraSetting corner = cornerCameraSettings[cornerIndex];
@@ -78,11 +78,11 @@ public class CameraTracker : MonoBehaviour
             Debug.Log(t);
             // t(0 ~ 1)에 따라 Vector3.Lerp(camSetting[0], camSetting[1], t)
             Vector3 camDis = Vector3.Lerp(corner.camSettings[0].camDis, corner.camSettings[1].camDis, t);
-            camDis = Vector3.Lerp(DataController.instance.camInfo.camDis, camDis, 0.05f);
+            camDis = Vector3.Lerp(DataController.Instance.camInfo.camDis, camDis, 0.05f);
             Vector3 camRot = Vector3.Lerp(corner.camSettings[0].camRot, corner.camSettings[1].camRot, t);
-            camRot = Vector3.Lerp(DataController.instance.camInfo.camRot, camRot, 0.05f);
-            DataController.instance.camInfo.camDis = camDis;
-            DataController.instance.camInfo.camRot = camRot;
+            camRot = Vector3.Lerp(DataController.Instance.camInfo.camRot, camRot, 0.05f);
+            DataController.Instance.camInfo.camDis = camDis;
+            DataController.Instance.camInfo.camRot = camRot;
         }
         else
         {
@@ -93,21 +93,21 @@ public class CameraTracker : MonoBehaviour
             Vector3 camRot;
             if (camRotDir == 1)
             {
-                camDis = Vector3.Lerp(DataController.instance.camInfo.camDis, corner.camSettings[1].camDis,
+                camDis = Vector3.Lerp(DataController.Instance.camInfo.camDis, corner.camSettings[1].camDis,
                     0.05f);
-                camRot = Vector3.Lerp(DataController.instance.camInfo.camRot, corner.camSettings[1].camRot,
+                camRot = Vector3.Lerp(DataController.Instance.camInfo.camRot, corner.camSettings[1].camRot,
                     0.05f);
             }
             else
             {
-                camDis = Vector3.Lerp(DataController.instance.camInfo.camDis, corner.camSettings[0].camDis,
+                camDis = Vector3.Lerp(DataController.Instance.camInfo.camDis, corner.camSettings[0].camDis,
                     0.05f);
-                camRot = Vector3.Lerp(DataController.instance.camInfo.camRot, corner.camSettings[0].camRot,
+                camRot = Vector3.Lerp(DataController.Instance.camInfo.camRot, corner.camSettings[0].camRot,
                     0.05f);
             }
 
-            DataController.instance.camInfo.camDis = camDis;
-            DataController.instance.camInfo.camRot = camRot;
+            DataController.Instance.camInfo.camDis = camDis;
+            DataController.Instance.camInfo.camRot = camRot;
             Debug.Log(camDis);
             Debug.Log(corner.corner);
         }
@@ -116,7 +116,7 @@ public class CameraTracker : MonoBehaviour
 
     private int GetDir(CornerCameraSetting corner)
     {
-        var character = DataController.instance.GetCharacter(Character.Main)
+        var character = DataController.Instance.GetCharacter(Character.Main)
             .transform;
         var frontDir = corner.front.position - corner.corner.position;
         var backDir = corner.back.position - corner.corner.position;
@@ -134,7 +134,7 @@ public class CameraTracker : MonoBehaviour
 
     private bool CheckDistance(out int index)
     {
-        var character = DataController.instance.GetCharacter(Character.Main)
+        var character = DataController.Instance.GetCharacter(Character.Main)
             .transform;
         Vector3 charVec = character.position;
         charVec.y = 0;

@@ -42,7 +42,7 @@ public class TimelineCharExpBehavior : PlayableBehaviour
     {
         base.ProcessFrame(playable, info, playerData);
         var cin_character = playerData as CinematicCharacter;
-        cin_character.ExpressionSetting((int)expression);
+        cin_character.ExpressionSetting(expression);
     }
     
     #endregion

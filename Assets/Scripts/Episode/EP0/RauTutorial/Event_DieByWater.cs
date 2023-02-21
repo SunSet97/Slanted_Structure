@@ -1,6 +1,6 @@
 ﻿using Data;
 using UnityEngine;
-using Utility.System;
+using Utility.Core;
 
 public class Event_DieByWater : MonoBehaviour
 {
@@ -9,7 +9,7 @@ public class Event_DieByWater : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.TryGetComponent(out CharacterManager character) &&
-            character != DataController.instance.GetCharacter(CustomEnum.Character.Main))
+            character != DataController.Instance.GetCharacter(CustomEnum.Character.Main))
         {
             return;
         }

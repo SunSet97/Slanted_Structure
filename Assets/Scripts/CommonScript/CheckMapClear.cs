@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Utility.System;
+using Utility.Core;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -29,26 +29,27 @@ public class CheckMapClear : MonoBehaviour
 {
     public bool isTrigger;
 
-    public TextAsset jsonFile;
- 
     public string nextSelectMapcode = "000000";
 
     public void Clear()
     {
         if (!nextSelectMapcode.Equals("000000") || !nextSelectMapcode.Equals(""))
         {
-            DataController.instance.currentMap.nextMapcode = nextSelectMapcode;
+            DataController.Instance.CurrentMap.nextMapcode = nextSelectMapcode;
         }
-
-        if (jsonFile != null)
+        
+        if (DataController.Instance.CurrentMap.useFadeOut)
         {
-            DialogueController.instance.StartConversation(jsonFile.text);
-            DialogueController.instance.SetDialougueEndAction(() =>
-                DataController.instance.ChangeMap(DataController.instance.currentMap.nextMapcode));
+            FadeEffect.Instance.OnFadeOver.AddListener(() =>
+            {
+                FadeEffect.Instance.OnFadeOver.RemoveAllListeners();
+                DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.nextMapcode);
+            });
+            FadeEffect.Instance.FadeOut(DataController.Instance.CurrentMap.fadeOutSec);
         }
         else
         {
-            DataController.instance.ChangeMap(DataController.instance.currentMap.nextMapcode);
+            DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.nextMapcode);
         }
     }
 
@@ -59,7 +60,7 @@ public class CheckMapClear : MonoBehaviour
             return;
         }
 
-        if (DataController.instance.GetCharacter(Character.Main).name.Equals(other.name))
+        if (DataController.Instance.GetCharacter(Character.Main).name.Equals(other.name))
         {
             Clear();
         }

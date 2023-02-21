@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Utility.System;
+using Utility.Core;
 using static Data.CustomEnum;
 
 public class RauTutorialManager : MonoBehaviour
@@ -95,7 +95,7 @@ public class RauTutorialManager : MonoBehaviour
     /// <param name="axisNum">0 = both, 1 = hor, 2 = ver</param>
     void ChangeJoystickSetting(JoystickInputMethod methodNum, AxisOptions axisNum)
     {
-        var mapData = DataController.instance.currentMap;
+        var mapData = DataController.Instance.CurrentMap;
         mapData.method = methodNum;
         OnOffJoystick(methodNum != JoystickInputMethod.Other);
         JoystickController.instance.joystick.AxisOptions = axisNum;
@@ -104,10 +104,10 @@ public class RauTutorialManager : MonoBehaviour
     // 숲 초입길
     private void ForestIntro()
     {
-        var mapData = DataController.instance.currentMap;
+        var mapData = DataController.Instance.CurrentMap;
         // 카메라 방향 side
-        DataController.instance.camInfo.camDis = mapData.camDis;
-        DataController.instance.camInfo.camRot = mapData.camRot;
+        DataController.Instance.camInfo.camDis = mapData.camDis;
+        DataController.Instance.camInfo.camRot = mapData.camRot;
         // side 이동 및 점프 튜토리얼
         ChangeJoystickSetting(JoystickInputMethod.OneDirection, AxisOptions.Both); // 2D side view 이동
     }
@@ -118,10 +118,10 @@ public class RauTutorialManager : MonoBehaviour
     // 수풀길
     private IEnumerator GrassSwipe()
     {
-        var rau = DataController.instance.GetCharacter(Character.Rau);
+        var rau = DataController.Instance.GetCharacter(Character.Rau);
         // 카메라 방향 앞, 어깨 뒤 방향
-        DataController.instance.camInfo.camDis = view_forward.camDis;
-        DataController.instance.camInfo.camRot = view_forward.camRot;
+        DataController.Instance.camInfo.camDis = view_forward.camDis;
+        DataController.Instance.camInfo.camRot = view_forward.camRot;
         // 수풀길 헤쳐가기
         ChangeJoystickSetting(JoystickInputMethod.Other, AxisOptions.Horizontal); // 이동 해제, 좌우 스와이프만 가능하도록 변경
         rau.PickUpCharacter();
@@ -199,7 +199,7 @@ public class RauTutorialManager : MonoBehaviour
     }
     IEnumerator MoveForward(Vector3 character,Vector3 grass)
     {
-        var rau = DataController.instance.GetCharacter(Character.Rau);
+        var rau = DataController.Instance.GetCharacter(Character.Rau);
         var t = .0f;
         var fixedUpdate = new WaitForFixedUpdate();
         var moveVec = new Vector3(grass.x - character.x, 0, 0) * Time.fixedDeltaTime * 3;
@@ -215,14 +215,14 @@ public class RauTutorialManager : MonoBehaviour
     // 물가
     private IEnumerator River()
     {
-        var rau = DataController.instance.GetCharacter(Character.Rau);
-        var mapData = DataController.instance.currentMap;
+        var rau = DataController.Instance.GetCharacter(Character.Rau);
+        var mapData = DataController.Instance.CurrentMap;
         yield return new WaitUntil(() => !isSwipe);
         
         rau.UseJoystickCharacter();
         // 카메라 방향 side
-        DataController.instance.camInfo.camDis = mapData.camDis;
-        DataController.instance.camInfo.camRot = mapData.camRot;
+        DataController.Instance.camInfo.camDis = mapData.camDis;
+        DataController.Instance.camInfo.camRot = mapData.camRot;
         ChangeJoystickSetting(JoystickInputMethod.OneDirection, AxisOptions.Both); // 2D side view 이동
 
         
@@ -249,8 +249,8 @@ public class RauTutorialManager : MonoBehaviour
         // 아웃라인 끄기
         
         ui[4].SetActive(true);
-        DataController.instance.camInfo.camDis = view_river.camDis;
-        DataController.instance.camInfo.camRot = view_river.camRot;
+        DataController.Instance.camInfo.camDis = view_river.camDis;
+        DataController.Instance.camInfo.camRot = view_river.camRot;
         ChangeJoystickSetting(JoystickInputMethod.Other, AxisOptions.Both); // 이동 해제
         rau.PickUpCharacter();
         JoystickController.instance.inputDegree = 0;
@@ -261,8 +261,8 @@ public class RauTutorialManager : MonoBehaviour
         
         ui[4].SetActive(false);
         // 카메라 방향 side
-        DataController.instance.camInfo.camDis = view_river.camDis;
-        DataController.instance.camInfo.camRot = view_river.camRot;
+        DataController.Instance.camInfo.camDis = view_river.camDis;
+        DataController.Instance.camInfo.camRot = view_river.camRot;
         ChangeJoystickSetting(0, 0); // 2D side view 이동
         rau.UseJoystickCharacter();
         riverTrees[0].SetActive(false);
@@ -284,8 +284,8 @@ public class RauTutorialManager : MonoBehaviour
     private void Forest()
     {
         // 카메라 방향 앞, 쿼터뷰
-        DataController.instance.camInfo.camDis = view_quarter.camDis;
-        DataController.instance.camInfo.camRot = view_quarter.camRot;
+        DataController.Instance.camInfo.camDis = view_quarter.camDis;
+        DataController.Instance.camInfo.camRot = view_quarter.camRot;
         // 둘러보기, 전방향 이동 튜토리얼
         ChangeJoystickSetting(JoystickInputMethod.AllDirection, AxisOptions.Both); // 전방향 이동
         ui[5].SetActive(true);
@@ -295,11 +295,11 @@ public class RauTutorialManager : MonoBehaviour
 
     private IEnumerator KnockDownTree()
     {
-        var rau = DataController.instance.GetCharacter(Character.Rau);
+        var rau = DataController.Instance.GetCharacter(Character.Rau);
         forestTree.GetComponent<Animation>().Play();
         ui[6].SetActive(true);
-        DataController.instance.camInfo.camDis = view_forward.camDis;
-        DataController.instance.camInfo.camRot = view_forward.camRot;
+        DataController.Instance.camInfo.camDis = view_forward.camDis;
+        DataController.Instance.camInfo.camRot = view_forward.camRot;
         ChangeJoystickSetting(JoystickInputMethod.Other, AxisOptions.Vertical); // 이동 해제, 위아래 스와이프만 가능하도록 변경
         rau.PickUpCharacter();
         JoystickController.instance.SetJoystickArea(JoystickAreaType.FULL);
@@ -316,8 +316,8 @@ public class RauTutorialManager : MonoBehaviour
             if (woodSwipeIndex >= movePoint.Length && !isMoveUp)
             {
                 ui[6].SetActive(false);
-                DataController.instance.camInfo.camDis = view_quarter.camDis;
-                DataController.instance.camInfo.camRot = view_quarter.camRot;
+                DataController.Instance.camInfo.camDis = view_quarter.camDis;
+                DataController.Instance.camInfo.camRot = view_quarter.camRot;
                 // 둘러보기, 전방향 이동 튜토리얼
                 ChangeJoystickSetting(JoystickInputMethod.AllDirection, 0); // 전방향 이동
                 rau.UseJoystickCharacter();
@@ -330,7 +330,7 @@ public class RauTutorialManager : MonoBehaviour
     
     IEnumerator MoveUp(Vector3 point)
     {
-        var rau = DataController.instance.GetCharacter(Character.Rau);
+        var rau = DataController.Instance.GetCharacter(Character.Rau);
         var fixedUpdate = new WaitForFixedUpdate();
         var t = .0f;
         var charPos = rau.transform.position;

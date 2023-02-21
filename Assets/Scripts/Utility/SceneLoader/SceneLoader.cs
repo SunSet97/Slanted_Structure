@@ -1,8 +1,10 @@
 ﻿using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Utility.Save;
 
 namespace Utility.SceneLoader
 {
@@ -43,19 +45,19 @@ namespace Utility.SceneLoader
 
         private static SceneLoader Create()
         {
-            var sceneLoaderPrefab = UnityEngine.Resources.Load<SceneLoader>("SceneLoader");
+            var sceneLoaderPrefab = Resources.Load<SceneLoader>("SceneLoader");
             return Instantiate(sceneLoaderPrefab);
         }
 
-        public void LoadScene(string sceneName)
+        public void LoadScene(string sceneName, int idx = -1)
         {
             gameObject.SetActive(true);
             SceneManager.sceneLoaded += LoadSceneEnd;
             loadSceneName = sceneName;
-            StartCoroutine(Load(sceneName));
+            StartCoroutine(Load(sceneName, idx));
         }
 
-        private IEnumerator Load(string sceneName)
+        private IEnumerator Load(string sceneName, int idx)
         {
             progressBar.fillAmount = 0f;
             yield return StartCoroutine(Fade(true));
@@ -68,7 +70,6 @@ namespace Utility.SceneLoader
             {
                 yield return null;
                 timer += Time.unscaledDeltaTime;
-
                 if (op.progress < 0.9f)
                 {
                     progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, op.progress, timer);
@@ -80,11 +81,21 @@ namespace Utility.SceneLoader
                 else
                 {
                     progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 1f, timer);
-
-                    if (Mathf.Approximately(progressBar.fillAmount, 1.0f))
+                    if (idx == -1)
                     {
-                        op.allowSceneActivation = true;
-                        yield break;
+                        if (Mathf.Approximately(progressBar.fillAmount, 1.0f))
+                        {
+                            op.allowSceneActivation = true;
+                            yield break;
+                        }
+                    }
+                    else
+                    {
+                        if (Mathf.Approximately(progressBar.fillAmount, 1.0f) && SaveManager.IsLoaded(idx))
+                        {
+                            op.allowSceneActivation = true;
+                            yield break;
+                        }   
                     }
                 }
             }

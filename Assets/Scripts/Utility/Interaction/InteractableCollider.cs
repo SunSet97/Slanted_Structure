@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
+using Utility.Core;
 using Utility.Property;
-using Utility.System;
 
 namespace Utility.Interaction
 {
@@ -8,24 +9,26 @@ namespace Utility.Interaction
     {
         [SerializeField] private InteractionObject interactionObject;
     
-        [Header("#Mark setting")]
-        public bool useExclamationMark;
-        [ConditionalHideInInspector("useExclamationMark")]
+        [FormerlySerializedAs("useExclamationMark")] [Header("#Mark setting")]
+        public bool useMark;
+        [ConditionalHideInInspector("useMark")]
+        [SerializeField] private GameObject markPrefab;
+        [ConditionalHideInInspector("useMark")]
         [SerializeField] private Vector2 markOffset;
 
         private void Start()
         {
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
-            if (useExclamationMark)
+            if (useMark)
             {
-                interactionObject.ExclamationMark = Instantiate(Resources.Load<GameObject>("Exclamation Mark"), DataController.instance.currentMap.ui);
+                interactionObject.ExclamationMark = Instantiate(markPrefab, DataController.Instance.CurrentMap.ui);
                 interactionObject.ExclamationMark.SetActive(false);
             }
         }
 
         private void OnDestroy()
         {
-            if (useExclamationMark)
+            if (useMark)
             {
                 Destroy(interactionObject.ExclamationMark);
             }
@@ -33,10 +36,10 @@ namespace Utility.Interaction
 
         private void Update()
         {
-            if (useExclamationMark && interactionObject.ExclamationMark.activeSelf)
+            if (interactionObject.GetInteraction().serializedInteractionData.isInteractable && useMark && interactionObject.ExclamationMark.activeSelf)
             {
                 interactionObject.ExclamationMark.transform.position =
-                    (Vector3) markOffset + DataController.instance.cam.WorldToScreenPoint(interactionObject.transform.position);
+                    DataController.Instance.Cam.WorldToScreenPoint((Vector3) markOffset + interactionObject.transform.position);
             }
         }
 

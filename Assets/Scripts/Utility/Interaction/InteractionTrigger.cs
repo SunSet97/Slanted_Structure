@@ -5,17 +5,17 @@ namespace Utility.Interaction
 {
     public class InteractionTrigger : InteractionObject
     {
-        private bool isActivated;
+        private bool _isActivated;
 
         public void OnTriggerEnter(Collider other)
         {
-            if (isActivated || interactionMethod != CustomEnum.InteractionMethod.Trigger)
+            if (_isActivated || GetInteraction().interactionMethod != CustomEnum.InteractionMethod.Trigger)
             {
                 return;
             }
-        
-            Debug.Log(gameObject.name + "트리거  " + other.transform.gameObject + isActivated);
-            isActivated = true;
+
+            Debug.Log(gameObject.name + "트리거  " + other.transform.gameObject + _isActivated);
+            _isActivated = true;
             StartInteraction();
         }
     }

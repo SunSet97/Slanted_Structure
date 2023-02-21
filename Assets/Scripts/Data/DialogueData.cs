@@ -7,7 +7,17 @@ namespace Data
 {
     [Serializable]
     public class DialogueData
-    {
+    { 
+        public int dialogueIdx;
+        
+        public Dialogue[] dialogues;
+        
+        [NonSerialized]
+        public CamInfo CamInfo;
+        
+        public UnityAction<int> ChooseAction;
+        public UnityAction DialogueEndAction;
+        
         public DialogueData()
         {
             dialogues = Array.Empty<Dialogue>();
@@ -15,7 +25,6 @@ namespace Data
             CamInfo = new CamInfo();
 
             ChooseAction = null;
-            DialoguePrevAction = null;
             DialogueEndAction = null;
         }
 
@@ -36,7 +45,6 @@ namespace Data
             );
             
             dialogueIdx = 0;
-            DialoguePrevAction?.Invoke();
         }
 
         public void Reset()
@@ -48,20 +56,8 @@ namespace Data
             CamInfo = new CamInfo();
             
             ChooseAction = null;
-            DialoguePrevAction = null;
             DialogueEndAction = null;
         }
-
-        public int dialogueIdx;
-        
-        public Dialogue[] dialogues;
-        
-        [NonSerialized]
-        public CamInfo CamInfo;
-        
-        public UnityAction<int> ChooseAction;
-        public UnityAction DialoguePrevAction;
-        public UnityAction DialogueEndAction;
     }
 
     [Serializable]
@@ -94,5 +90,6 @@ namespace Data
         public CustomEnum.Expression expression;
         public string anim_name;
         public string contents;
+        public string sfx;
     }
 }

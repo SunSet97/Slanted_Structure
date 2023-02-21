@@ -88,7 +88,8 @@
             Dialogue,
             Task,
             Game,
-            Cinematic
+            Cinematic,
+            // FadeOut
         }
 
         public enum InteractionMethod // 인터렉션 오브젝트 터치했는지 안했는지 감지 기능 필요

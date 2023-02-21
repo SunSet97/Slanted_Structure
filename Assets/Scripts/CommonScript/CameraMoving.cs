@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Utility.System;
+using Utility.Core;
 using static Data.CustomEnum;
 
 public class CameraMoving : MonoBehaviour
@@ -19,9 +19,9 @@ public class CameraMoving : MonoBehaviour
 
     public void Initialize()
     {
-        viewType = DataController.instance.currentMap.cameraViewType;
+        viewType = DataController.Instance.CurrentMap.cameraViewType;
         cam = Camera.main;
-        var mainChar = DataController.instance.GetCharacter(Character.Main);
+        var mainChar = DataController.Instance.GetCharacter(Character.Main);
         if (mainChar != null)
         {
             mainCharacter = mainChar.transform;
@@ -41,13 +41,13 @@ public class CameraMoving : MonoBehaviour
 
         if (cam.orthographic)
         {
-            cam.orthographicSize = DataController.instance.camOrthgraphicSize;
+            cam.orthographicSize = DataController.Instance.camOrthgraphicSize;
         }
 
         if (viewType.Equals(CameraViewType.FixedView))
         {
-            cam.transform.position = DataController.instance.currentMap.transform.position +
-                                     DataController.instance.camInfo.camDis +
+            cam.transform.position = DataController.Instance.CurrentMap.transform.position +
+                                     DataController.Instance.camInfo.camDis +
                                      DialogueController.instance.dialogueData.CamInfo.camDis;
         }
 
@@ -55,7 +55,7 @@ public class CameraMoving : MonoBehaviour
         {
             if (viewType.Equals(CameraViewType.FollowCharacter))
             {
-                cam.transform.position = mainCharacter.position + DataController.instance.camInfo.camDis +
+                cam.transform.position = mainCharacter.position + DataController.Instance.camInfo.camDis +
                                          DialogueController.instance.dialogueData.CamInfo.camDis;
             }
 
@@ -66,35 +66,6 @@ public class CameraMoving : MonoBehaviour
 
     void Follow_Player(Vector3 position)
     {
-        //카메라 위치 제한 설정
-        //position.x = Mathf.Clamp(position.x,min_x,max_x);
-        //position.y= Mathf.Clamp(position.y, min_y, max_y);
-
-        if (DataController.instance.currentMap.cameraBound) // 카메라 경계 설정 시
-        {
-            bound = DataController.instance.currentMap.cameraBound;
-            minBound = bound.bounds.min;
-            maxBound = bound.bounds.max;
-            halfHeight = cam.orthographicSize;
-            halfWidth = halfHeight * Screen.width / Screen.height;
-            float clampedX = Mathf.Clamp(transform.position.x, minBound.x + halfWidth, maxBound.x - halfWidth);
-            float clampedY = Mathf.Clamp(transform.position.y, minBound.y + halfHeight, maxBound.y - halfHeight);
-            ;
-            //float clampedZ;
-            transform.position = new Vector3(clampedX, clampedY, transform.position.z);
-
-        }
-
-        //입력 된 카메라 각도 설정
-        cam.transform.rotation = Quaternion.Euler(DataController.instance.camInfo.camRot);
-
-        ////카메라의 Z값 고정을 위한 If문
-        ////if (position.z != Z)
-        //if (charPos.z - position.z != Z)
-        //{
-        //    position_storage = charPos.z - Z;
-        //    position.z = position_storage;
-        //    Camera.main.transform.position = position;
-        //}
+        cam.transform.rotation = Quaternion.Euler(DataController.Instance.camInfo.camRot);
     }
 }

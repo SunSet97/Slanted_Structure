@@ -1,6 +1,6 @@
 ﻿using Play;
 using UnityEngine;
-using Utility.System;
+using Utility.Core;
 
 public class PimpGameManager : MonoBehaviour, IGamePlayable
 {
@@ -34,7 +34,7 @@ public class PimpGameManager : MonoBehaviour, IGamePlayable
     public void EndPlay()
     {
         IsPlay = false;
-        DataController.instance.currentMap.ui.gameObject.SetActive(false);
+        DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
         foreach (var t in pimpGuestMoving)
         {
             var animator = t.GetComponent<Animator>();

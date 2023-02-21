@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Utility.System;
+using Utility.Core;
 
 public class AlleyInMarketManager : MonoBehaviour
 {
@@ -44,8 +44,8 @@ public class AlleyInMarketManager : MonoBehaviour
             index = 4;
         }
 
-        DataController.instance.camInfo.camDis = Vector3.Lerp(DataController.instance.camInfo.camDis, camSettings[index].camDis, 0.05f);
-        DataController.instance.camInfo.camRot = Vector3.Lerp(DataController.instance.camInfo.camRot, camSettings[index].camRot, 0.05f);
+        DataController.Instance.camInfo.camDis = Vector3.Lerp(DataController.Instance.camInfo.camDis, camSettings[index].camDis, 0.05f);
+        DataController.Instance.camInfo.camRot = Vector3.Lerp(DataController.Instance.camInfo.camRot, camSettings[index].camRot, 0.05f);
 
     }
 

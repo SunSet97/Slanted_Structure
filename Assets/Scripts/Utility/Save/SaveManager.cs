@@ -1,9 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
 using Data;
 using UnityEngine;
+using Task = System.Threading.Tasks.Task;
 
 namespace Utility.Save
 {
@@ -11,31 +14,32 @@ namespace Utility.Save
     {
         private static int _idx;
 
-        private static string Savefilename => $"{Application.persistentDataPath}/saveData{_idx}.save";
+        private static string SaveFilePath => $"{Application.persistentDataPath}/saveData{_idx}.save";
+        private static string SaveCoverFilePath => $"{Application.persistentDataPath}/saveCoverData{_idx}.save";
 
 
-        public static readonly byte[] EncryptKey = Encoding.UTF8.GetBytes("SA3*FDN&48SDFhuj34VMK34KV~3gd$");
-        public static readonly byte[] EncryptIv = Encoding.UTF8.GetBytes("N&48SDFhuj34VMK3");
+        private static readonly byte[] EncryptKey = Encoding.UTF8.GetBytes("SA3*FDN&48SDFhuj34VMK34KV~3gd$");
+        private static readonly byte[] EncryptIv = Encoding.UTF8.GetBytes("N&48SDFhuj34VMK3");
+
+        private static Dictionary<int, SaveData> _saveDatas;
+        private static Dictionary<int, SaveCoverData> _saveCoverDatas;
 
         static SaveManager()
         {
-            Debug.Log(Savefilename);
+            Debug.Log(SaveFilePath);
             Init();
         }
-        public static void Init()
+
+        private static void Init()
         {
 #if UNITY_IPHONE
-        Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
+            Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
 #endif
+            _saveDatas = new Dictionary<int, SaveData>();
+            _saveCoverDatas = new Dictionary<int, SaveCoverData>();
         }
-        
-        // public static SaveData GetSaveData()
-        // {
-        //     return _saveData;
-        // }
-        
 
-        public static void Save(int idx, SaveData saveData)
+        public static async Task SaveAsync(int idx, SaveData saveData, Action saveEndAction = null)
         {
             _idx = idx;
             RijndaelManaged rijn = new RijndaelManaged();
@@ -44,28 +48,72 @@ namespace Utility.Save
             rijn.BlockSize = 256;
             using (ICryptoTransform encryptor = rijn.CreateEncryptor(EncryptKey, EncryptIv))
             {
-                using (var fileStream = File.Create(Savefilename))
+                using (var fileStream = File.Open(SaveCoverFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
-                    using (Stream cryptoStream = new CryptoStream(fileStream, encryptor, CryptoStreamMode.Write))
+                    try
                     {
-                        new BinaryFormatter().Serialize(cryptoStream, saveData);
+                        Stream cryptoStream = new CryptoStream(fileStream, encryptor, CryptoStreamMode.Write);
+                        var binaryFormatter = new BinaryFormatter();
+                        await Task.Run(() =>
+                        {
+                            binaryFormatter.Serialize(cryptoStream, saveData.saveCoverData);
+                            AddSaveCoverData(idx, saveData.saveCoverData);
+                        });
+
+                        Debug.Log("Save Cover Async");
+
+                        cryptoStream.Close();
+                    }
+                    catch (CryptographicException e)
+                    {
+                        fileStream.Close();
+                        rijn.Clear();
+                        saveEndAction?.Invoke();
+                        return;
                     }
 
                     fileStream.Close();
                 }
+
+                using (var fileStream = File.Open(SaveFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                {
+                    try
+                    {
+                        Stream cryptoStream = new CryptoStream(fileStream, encryptor, CryptoStreamMode.Write);
+                        var binaryFormatter = new BinaryFormatter();
+                        await Task.Run(() =>
+                        {
+                            binaryFormatter.Serialize(cryptoStream, saveData);
+                            AddSaveData(idx, saveData);
+                        });
+                        Debug.Log("일단 세이브 ");
+                        cryptoStream.Close();
+                    }
+                    catch (CryptographicException e)
+                    {
+                        fileStream.Close();
+                        rijn.Clear();
+                        saveEndAction?.Invoke();
+                        return;
+                    }
+
+                    fileStream.Close();
+                }
+
+                rijn.Clear();
             }
 
-            rijn.Clear();
+            saveEndAction?.Invoke();
         }
 
-        public static bool Load(int idx, out SaveData saveData)
+        public static async Task LoadAsync(int idx)
         {
             _idx = idx;
-            if (!File.Exists(Savefilename))
+            if (!File.Exists(SaveFilePath) || IsLoaded(idx))
             {
-                saveData = null;
-                return false;
+                return;
             }
+
             RijndaelManaged rijn = new RijndaelManaged();
             rijn.Mode = CipherMode.ECB;
             rijn.Padding = PaddingMode.Zeros;
@@ -73,42 +121,344 @@ namespace Utility.Save
 
             using (ICryptoTransform decryptor = rijn.CreateDecryptor(EncryptKey, EncryptIv))
             {
-                using (var fileStream = File.Open(Savefilename, FileMode.Open))
+                using (var fileStream = File.Open(SaveFilePath, FileMode.Open))
                 {
                     if (fileStream.Length <= 0)
                     {
-                        saveData = null;
                         Debug.Log("Load 오류 발생");
-                        return false;
+                        return;
                     }
 
-                    using (Stream cryptoStream = new CryptoStream(fileStream, decryptor, CryptoStreamMode.Read))
+                    try
                     {
-                        saveData = (SaveData)new BinaryFormatter().Deserialize(cryptoStream);
+                        Stream cryptoStream = new CryptoStream(fileStream, decryptor, CryptoStreamMode.Read);
+                        var binaryFormatter = new BinaryFormatter();
+                        await Task.Run(() =>
+                        {
+                            for (int i = 0; i < 300000; i++)
+                            {
+                                Mathf.Pow(i, 3);
+                            }
+
+                            var saveData = (SaveData) binaryFormatter.Deserialize(cryptoStream);
+                            AddSaveData(idx, saveData);
+                            Debug.Log("원본 데이터 로드 111");
+                        });
+                        Debug.Log("원본 데이터 로드 22");
+                        // 불러오는데 걸리는 시간 오류 발생, SaveData를 이중으로 보관하는 방법은 어떤지 (Diary 시각화 용도, 실제 데이터)
+                        cryptoStream.Close();
+                    }
+                    catch (CryptographicException e)
+                    {
+                        Debug.Log(e);
+                        var saveData = new SaveData
+                        {
+                            saveCoverData = new SaveCoverData
+                            {
+                                mapCode = "불러오기에 실패"
+                            }
+                        };
+                        AddSaveData(idx, saveData);
                     }
 
                     fileStream.Close();
                 }
+
+                rijn.Clear();
+            }
+        }
+
+        public static async Task LoadCoverAsync(int idx)
+        {
+            _idx = idx;
+            if (!File.Exists(SaveFilePath) || IsCoverLoaded(idx))
+            {
+                return;
             }
 
-            rijn.Clear();
+            RijndaelManaged rijn = new RijndaelManaged();
+            rijn.Mode = CipherMode.ECB;
+            rijn.Padding = PaddingMode.Zeros;
+            rijn.BlockSize = 256;
 
-            return true;
+            using (ICryptoTransform decryptor = rijn.CreateDecryptor(EncryptKey, EncryptIv))
+            {
+                using (var fileStream = File.Open(SaveCoverFilePath, FileMode.Open))
+                {
+                    if (fileStream.Length <= 0)
+                    {
+                        Debug.Log("Load 오류 발생");
+                        return;
+                    }
+
+                    try
+                    {
+                        Stream cryptoStream = new CryptoStream(fileStream, decryptor, CryptoStreamMode.Read);
+                        // Debug.Log(Time.time);
+                        await Task.Run(() =>
+                        {
+                            var saveCoverData = (SaveCoverData) new BinaryFormatter().Deserialize(cryptoStream);
+                            AddSaveCoverData(idx, saveCoverData);
+                            // Debug.Log("111");
+                            // for (int i = 0; i < 300000; i++)
+                            // {
+                            //     Mathf.Pow(i, 3);
+                            // }
+                            // Debug.Log("하이111");
+                        });
+                        // Debug.Log(Time.time + "하이222");
+                        // 불러오는데 걸리는 시간 오류 발생, SaveData를 이중으로 보관하는 방법은 어떤지 (Diary 시각화 용도, 실제 데이터)
+                        cryptoStream.Close();
+                    }
+                    catch (CryptographicException e)
+                    {
+                        Debug.Log(e);
+
+                        var saveCoverData = new SaveCoverData
+                        {
+                            mapCode = "불러오기에 실패"
+                        };
+                        AddSaveCoverData(idx, saveCoverData);
+                    }
+
+                    fileStream.Close();
+                }
+
+                rijn.Clear();
+            }
+        }
+
+        public static void Save(int idx, SaveData saveData, Action saveEndAction = null)
+        {
+            _idx = idx;
+            RijndaelManaged rijn = new RijndaelManaged();
+            rijn.Mode = CipherMode.ECB;
+            rijn.Padding = PaddingMode.Zeros;
+            rijn.BlockSize = 256;
+            using (ICryptoTransform encryptor = rijn.CreateEncryptor(EncryptKey, EncryptIv))
+            {
+                using (var fileStream = File.Open(SaveCoverFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                {
+                    try
+                    {
+                        Stream cryptoStream = new CryptoStream(fileStream, encryptor, CryptoStreamMode.Write);
+                        new BinaryFormatter().Serialize(cryptoStream, saveData.saveCoverData);
+                        AddSaveCoverData(idx, saveData.saveCoverData);
+
+                        cryptoStream.Close();
+                    }
+                    catch (CryptographicException e)
+                    {
+                        fileStream.Close();
+                        rijn.Clear();
+                        saveEndAction?.Invoke();
+                        return;
+                    }
+
+                    fileStream.Close();
+                }
+
+                using (var fileStream = File.Open(SaveFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                {
+                    try
+                    {
+                        Stream cryptoStream = new CryptoStream(fileStream, encryptor, CryptoStreamMode.Write);
+                        new BinaryFormatter().Serialize(cryptoStream, saveData);
+                        AddSaveData(idx, saveData);
+                        cryptoStream.Close();
+                    }
+                    catch (CryptographicException e)
+                    {
+                        fileStream.Close();
+                        rijn.Clear();
+                        saveEndAction?.Invoke();
+                        return;
+                    }
+
+                    fileStream.Close();
+                }
+
+                rijn.Clear();
+            }
+
+            saveEndAction?.Invoke();
+        }
+
+        public static void Load(int idx)
+        {
+            _idx = idx;
+            if (!File.Exists(SaveFilePath) || IsLoaded(idx))
+            {
+                return;
+            }
+
+            RijndaelManaged rijn = new RijndaelManaged();
+            rijn.Mode = CipherMode.ECB;
+            rijn.Padding = PaddingMode.Zeros;
+            rijn.BlockSize = 256;
+
+            using (ICryptoTransform decryptor = rijn.CreateDecryptor(EncryptKey, EncryptIv))
+            {
+                using (var fileStream = File.Open(SaveFilePath, FileMode.Open))
+                {
+                    if (fileStream.Length <= 0)
+                    {
+                        Debug.Log("Load 오류 발생");
+                        return;
+                    }
+
+                    try
+                    {
+                        Stream cryptoStream = new CryptoStream(fileStream, decryptor, CryptoStreamMode.Read);
+                        var saveData = (SaveData) new BinaryFormatter().Deserialize(cryptoStream);
+
+                        AddSaveData(idx, saveData);
+
+                        // 불러오는데 걸리는 시간 오류 발생, SaveData를 이중으로 보관하는 방법은 어떤지 (Diary 시각화 용도, 실제 데이터)
+                        cryptoStream.Close();
+                    }
+                    catch (CryptographicException e)
+                    {
+                        Debug.Log(e);
+                        var saveData = new SaveData
+                        {
+                            saveCoverData = new SaveCoverData
+                            {
+                                mapCode = "불러오기에 실패"
+                            }
+                        };
+                        AddSaveData(idx, saveData);
+                    }
+
+                    fileStream.Close();
+                }
+
+                rijn.Clear();
+            }
+        }
+
+        public static void LoadCover(int idx)
+        {
+            _idx = idx;
+            if (!File.Exists(SaveFilePath) || IsCoverLoaded(idx))
+            {
+                return;
+            }
+
+            RijndaelManaged rijn = new RijndaelManaged();
+            rijn.Mode = CipherMode.ECB;
+            rijn.Padding = PaddingMode.Zeros;
+            rijn.BlockSize = 256;
+
+            using (ICryptoTransform decryptor = rijn.CreateDecryptor(EncryptKey, EncryptIv))
+            {
+                using (var fileStream = File.Open(SaveCoverFilePath, FileMode.Open))
+                {
+                    if (fileStream.Length <= 0)
+                    {
+                        Debug.Log("Load 오류 발생");
+                        return;
+                    }
+
+                    try
+                    {
+                        Stream cryptoStream = new CryptoStream(fileStream, decryptor, CryptoStreamMode.Read);
+                        var saveCoverData = (SaveCoverData) new BinaryFormatter().Deserialize(cryptoStream);
+                        AddSaveCoverData(idx, saveCoverData);
+                        // 불러오는데 걸리는 시간 오류 발생, SaveData를 이중으로 보관하는 방법은 어떤지 (Diary 시각화 용도, 실제 데이터)
+                        cryptoStream.Close();
+                    }
+                    catch (CryptographicException e)
+                    {
+                        Debug.Log(e);
+
+                        var saveCoverData = new SaveCoverData
+                        {
+                            mapCode = "불러오기에 실패"
+                        };
+                        AddSaveCoverData(idx, saveCoverData);
+                    }
+
+                    fileStream.Close();
+                }
+
+                rijn.Clear();
+            }
         }
 
         public static void Delete(int idx)
         {
             _idx = idx;
-            if (File.Exists(Savefilename))
+            if (File.Exists(SaveFilePath))
             {
-                File.Delete(Savefilename);
+                File.Delete(SaveFilePath);
             }
+
+            if (File.Exists(SaveCoverFilePath))
+            {
+                File.Delete(SaveCoverFilePath);
+            }
+
+            if (IsCoverLoaded(idx))
+            {
+                _saveCoverDatas.Remove(idx);
+            }
+
+            if (IsLoaded(idx))
+            {
+                _saveDatas.Remove(idx);
+            }
+        }
+
+        public static SaveData GetSaveData(int idx)
+        {
+            return _saveDatas[idx];
+        }
+
+        public static SaveCoverData GetCoverData(int idx)
+        {
+            return _saveCoverDatas[idx];
         }
 
         public static bool Has(int idx)
         {
             _idx = idx;
-            return File.Exists(Savefilename);
+            return File.Exists(SaveFilePath) && File.Exists(SaveCoverFilePath);
+        }
+
+        public static bool IsLoaded(int idx)
+        {
+            return _saveDatas.ContainsKey(idx);
+        }
+
+        public static bool IsCoverLoaded(int idx)
+        {
+            return _saveCoverDatas.ContainsKey(idx);
+        }
+
+        private static void AddSaveCoverData(int idx, SaveCoverData saveCoverData)
+        {
+            if (IsCoverLoaded(idx))
+            {
+                _saveCoverDatas[idx] = saveCoverData;
+            }
+            else
+            {
+                _saveCoverDatas.Add(idx, saveCoverData);
+            }
+        }
+
+        private static void AddSaveData(int idx, SaveData saveData)
+        {
+            Debug.Log($"{idx} index Load");
+            if (IsLoaded(idx))
+            {
+                _saveDatas[idx] = saveData;
+            }
+            else
+            {
+                _saveDatas.Add(idx, saveData);
+            }
         }
     }
 }

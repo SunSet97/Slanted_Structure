@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Utility.System;
+using Utility.Core;
 
 namespace CommonScript
 {
@@ -86,7 +86,7 @@ namespace CommonScript
                 return;
             }
         
-            Ray ray = DataController.instance.cam.ScreenPointToRay(Input.mousePosition);
+            Ray ray = DataController.Instance.Cam.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 20f, Color.red, 5f);
             RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
             foreach (var hit in hits)
@@ -103,7 +103,7 @@ namespace CommonScript
                 return false;
             }
 
-            Ray ray = DataController.instance.cam.ScreenPointToRay(Input.mousePosition);
+            Ray ray = DataController.Instance.Cam.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 20f, Color.red, 5f);
             hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
             return true;

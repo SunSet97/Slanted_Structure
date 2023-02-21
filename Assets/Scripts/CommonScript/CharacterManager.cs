@@ -1,6 +1,6 @@
 ﻿using Move;
 using UnityEngine;
-using Utility.System;
+using Utility.Core;
 using static Data.CustomEnum;
 
 public class CharacterManager : MonoBehaviour, IMovable
@@ -26,6 +26,13 @@ public class CharacterManager : MonoBehaviour, IMovable
             faceExpression = Resources.LoadAll<Texture>("Face");
             skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
             skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int) Emotion]);
+        }
+        //스핏 표정 머테리얼 초기화
+        if (who.Equals(Character.Speat_Adolescene) || who.Equals(Character.Speat_Adult) || who.Equals(Character.Speat_Child))
+        {
+            faceExpression = Resources.LoadAll<Texture>($"Speat_Face/{who}");
+            skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
+            skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int)Emotion]);
         }
     }
 
@@ -66,7 +73,7 @@ public class CharacterManager : MonoBehaviour, IMovable
         transform.LookAt(transform.position + mapSettingTransform.right);
         characterOriginRot = transform.eulerAngles;
 
-        camRotation = Quaternion.Euler(0, -DataController.instance.camInfo.camRot.y, 0);
+        camRotation = Quaternion.Euler(0, -DataController.Instance.camInfo.camRot.y, 0);
         Vector3 transformedDir = camRotation * transform.forward;
 
         if (transformedDir.x < 0)
@@ -107,19 +114,7 @@ public class CharacterManager : MonoBehaviour, IMovable
     // 현재 Emotion상태값 넣기
     private void EmotionAnimationSetting()
     {
-        if (who.Equals(Character.Speat) || who.Equals(Character.Oun) || who.Equals(Character.Rau))
-            skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int) Emotion]); // 현재 감정으로 메터리얼 변경
-    }
-
-    public void SetEmotion(Expression inEmotion)
-    {
-        Emotion = inEmotion;
-    }
-
-    public void SetCinematic()
-    {
-        faceExpression = Resources.LoadAll<Texture>("Face");
-        skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
+        skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int) Emotion]);
     }
 
     #endregion
@@ -178,7 +173,7 @@ public class CharacterManager : MonoBehaviour, IMovable
         if (IsMove)
         {
             // 메인 카메라 기준으로 캐릭터가 바라보는 방향 계산
-            camRotation = Quaternion.Euler(0, -DataController.instance.cam.transform.rotation.eulerAngles.y, 0);
+            camRotation = Quaternion.Euler(0, -DataController.Instance.Cam.transform.rotation.eulerAngles.y, 0);
             Vector3 transformedDir = camRotation * transform.forward;
             Vector2 characterDir = new Vector2(transformedDir.x, transformedDir.z);
             // 조이스틱이 가리키는 방향

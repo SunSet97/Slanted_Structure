@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Play;
 using UnityEngine;
 using UnityEngine.UI;
-using Utility.System;
+using Utility.Core;
 using static Data.CustomEnum;
 
 [System.Serializable]
@@ -181,10 +181,10 @@ public class CatchRobberManager : MonoBehaviour, IGamePlayable
     #region 초기 세팅
     IEnumerator InitialSetting()
     {
-        yield return new WaitUntil(() => DataController.instance.GetCharacter(Character.Main) != null);
+        yield return new WaitUntil(() => DataController.Instance.GetCharacter(Character.Main) != null);
 
         // 현재 캐릭터
-        rau = DataController.instance.GetCharacter(Character.Main);
+        rau = DataController.Instance.GetCharacter(Character.Main);
         rau.IsMove = false;
         rau.anim.applyRootMotion = false;
         rau.anim.SetFloat(Speed, 0.7f);
@@ -332,7 +332,7 @@ public class CatchRobberManager : MonoBehaviour, IGamePlayable
             {
                 Debug.Log("성공.");
                 StopAllCoroutines();
-                DataController.instance.currentMap.MapClear(Time.deltaTime);
+                DataController.Instance.CurrentMap.MapClear(Time.deltaTime);
 
             }
             else
@@ -347,7 +347,7 @@ public class CatchRobberManager : MonoBehaviour, IGamePlayable
             {
                 Debug.Log("성공");
                 StopAllCoroutines();
-                DataController.instance.currentMap.MapClear(Time.deltaTime);
+                DataController.Instance.CurrentMap.MapClear(Time.deltaTime);
             }
 
         }

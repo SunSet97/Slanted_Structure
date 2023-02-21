@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Play;
-using Utility.System;
+using Utility.Core;
 
 public class DalgonaGame : MonoBehaviour, IGamePlayable
 {

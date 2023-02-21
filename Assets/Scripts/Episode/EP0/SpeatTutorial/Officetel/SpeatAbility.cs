@@ -3,7 +3,7 @@ using System.Collections;
 using CommonScript;
 using UnityEngine;
 using UnityEngine.UI;
-using Utility.System;
+using Utility.Core;
 using static Data.CustomEnum;
 
 public class SpeatAbility : MonoBehaviour
@@ -55,7 +55,7 @@ public class SpeatAbility : MonoBehaviour
     void Start()
     {
         ObjectClicker.instance.isCustomUse = true;
-        speat = DataController.instance.GetCharacter(Character.Speat_Adult);
+        speat = DataController.Instance.GetCharacter(Character.Speat_Adult);
     }
 
     void Update()
