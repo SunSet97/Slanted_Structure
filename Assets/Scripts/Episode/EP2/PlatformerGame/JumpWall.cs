@@ -1,58 +1,76 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Utility.System;
 
 public class JumpWall : JumpInTotal
 {
-    public Transform obstacleTransform;
-    [Range(0, 1)]
-    public float slerp_radius;
+    public Transform firstPos;
+    public Transform secondPos;
+    public Transform thirdPos;
+    public float speed;
+    public AnimationCurve jumpCurve;
+    public float sec1;
+    public float sec2;
     protected override void ButtonPressed()
     {
-        StartCoroutine(FramePerParameter());
+        StartCoroutine(FrameForParameter());
         gameManager.ActiveButton(false);
     }
 
     protected override void OnTriggerEnter(Collider other)
     {
-        //if (isActivated)
-        //{
-        //    return;
-        //}
         base.OnTriggerEnter(other);
     }
 
     protected override void OnTriggerExit(Collider other)
     {
-        //if (isActivated)
-        //{
-        //    return;
-        //}
         base.OnTriggerExit(other);
     }
 
-    private IEnumerator FramePerParameter()
+    private IEnumerator FrameForParameter()
     {
         var waitForFixedUpdate = new WaitForFixedUpdate();
-        CharacterManager platformer_char = DataController.instance.GetCharacter(Data.CustomEnum.Character.Main);
-        platformer_char.PickUpCharacter();
-        Vector3 startposition = platformer_char.transform.position;
-        Vector3 middle_position = (startposition + obstacleTransform.position) / 2;
+        CharacterManager platformerCharacter = DataController.instance.GetCharacter(Data.CustomEnum.Character.Main);
+        var characterController = platformerCharacter.GetComponent<CharacterController>();
+        platformerCharacter.useGravity = false;
+        platformerCharacter.PickUpCharacter();
 
-        float d = 1f;
+        platformerCharacter.RotateCharacter2D(-1f);
+
+        var moveY = (firstPos.transform.position - platformerCharacter.transform.position).normalized;
+        characterController.Move(moveY);
+
+
+        platformerCharacter.anim.SetTrigger("Climb");
         float t = 0f;
+        var direction = (secondPos.position - firstPos.position).normalized;
         while (t <= 1f)
         {
-            t = ((platformer_char.transform.position - startposition).magnitude / (obstacleTransform.position - startposition).magnitude);
-            Vector3 slerp_position = Vector3.Slerp(transform.position, obstacleTransform.position, t);
-            var direction = Vector3.Lerp(middle_position, slerp_position, slerp_radius) - platformer_char.transform.position;
+            yield return waitForFixedUpdate;
+            characterController.Move(direction * Time.fixedDeltaTime * speed);
 
-            var characterController = platformer_char.GetComponent<CharacterController>();
-            characterController.Move(direction * Time.fixedDeltaTime * d);
+            t += Time.fixedDeltaTime / sec1;
+        }
 
-            d += Time.fixedDeltaTime * 20f;
+        var startPosition = platformerCharacter.transform.position;
+        platformerCharacter.anim.SetTrigger("Jump_fence");
+        t = 0f;
+        while (t <= 1f)
+        {
+            t += Time.fixedDeltaTime / sec2;
+
+            float curvepercent = jumpCurve.Evaluate(t);
+            var destPosition = Vector3.LerpUnclamped(startPosition, thirdPos.position, t) - platformerCharacter.transform.position;
+            destPosition.y = Mathf.LerpUnclamped(startPosition.y, thirdPos.position.y, curvepercent) - platformerCharacter.transform.position.y;
+
+            characterController.Move(destPosition * Time.fixedDeltaTime);
+
             yield return waitForFixedUpdate;
         }
 
-        platformer_char.PutDownCharacter();
+        platformerCharacter.useGravity = true;
+        platformerCharacter.anim.SetBool("2DSide", false);
+        platformerCharacter.PutDownCharacter();
+
     }
 }

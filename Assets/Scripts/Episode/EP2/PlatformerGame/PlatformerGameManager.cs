@@ -4,11 +4,6 @@ using UnityEngine.UI;
 
 public class PlatformerGameManager : MonoBehaviour
 {
-    public enum ButtonType
-    {
-        jumpObstacle, jumpFence, jumpWall, slideWall, jumpWallClimbing
-    }
-
     [SerializeField]
     private Button InteractableButton;
 

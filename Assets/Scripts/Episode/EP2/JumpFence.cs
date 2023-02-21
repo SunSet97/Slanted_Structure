@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Utility.System;
 
 public class JumpFence : JumpInTotal
 {
     public Transform obstacleTransform;
-    [Range(0, 1)]
-    public float slerp_radius;
+    public float speed;
+    public AnimationCurve jumpCurve;
+    public float sec;
     protected override void ButtonPressed()
     {
         StartCoroutine(FramePerParameter());
@@ -27,42 +29,30 @@ public class JumpFence : JumpInTotal
         var waitForFixedUpdate = new WaitForFixedUpdate();
         CharacterManager platformer_char = DataController.instance.GetCharacter(Data.CustomEnum.Character.Main);
         platformer_char.PickUpCharacter();
-        Vector3 startposition = platformer_char.transform.position;
-        Vector3 middle_position = (startposition + obstacleTransform.position) / 2;
 
-        float d = 1f;
+        platformer_char.RotateCharacter2D(-1f);
+
+        platformer_char.anim.SetBool("2DSide", false);
+        platformer_char.anim.SetTrigger("Jump_fence");
+        Vector3 startposition = platformer_char.transform.position;
+
         float t = 0f;
-        while (t <= .9f)
+        while (t <= 1f)
         {
-            t = ((platformer_char.transform.position - startposition).magnitude / (obstacleTransform.position - startposition).magnitude);
-            Vector3 slerp_position = Vector3.Slerp(transform.position, obstacleTransform.position, t);
-            var direction = Vector3.Lerp(middle_position, slerp_position, slerp_radius) - platformer_char.transform.position;
+            t += Time.fixedDeltaTime / sec;
+
+            float curvepercent = jumpCurve.Evaluate(t);
+            var dest_position = Vector3.LerpUnclamped(startposition, obstacleTransform.position, t);
+            dest_position.y = Mathf.LerpUnclamped(startposition.y, obstacleTransform.position.y, curvepercent);
 
             var characterController = platformer_char.GetComponent<CharacterController>();
-            characterController.Move(direction * Time.fixedDeltaTime * d);
-            if (t < 0.4f)
-            {
-                d += Time.fixedDeltaTime * 20f;
-            }
-            else if (t >= 0.5f)
-            {
-                d += Time.fixedDeltaTime * 30f;
-            }
+            characterController.transform.position = dest_position;
+
             yield return waitForFixedUpdate;
         }
 
+        platformer_char.anim.SetBool("2DSide", true);
         platformer_char.PutDownCharacter();
+
     }
 }
-
-        //float t = 0;
-        //while (t <= 1)
-        //{
-        //    Vector3 slerp_position = Vector3.Slerp(startposition, obstacleTransform.position, t);
-        //    var direction = Vector3.Lerp(middle_position, slerp_position, slerp_radius) - platformer_char.transform.position;
-
-        //    var characterController = platformer_char.GetComponent<CharacterController>();
-        //    characterController.Move(direction.normalized * Time.fixedDeltaTime);
-        //    t += Time.fixedDeltaTime;
-        //    yield return waitForFixedUpdate;
-        //}

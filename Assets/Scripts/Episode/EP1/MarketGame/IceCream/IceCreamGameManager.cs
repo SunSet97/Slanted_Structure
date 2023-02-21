@@ -2,6 +2,7 @@
 using Play;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility.System;
 
 public class IceCreamGameManager : MonoBehaviour, IGamePlayable
 {
@@ -139,7 +140,6 @@ public class IceCreamGameManager : MonoBehaviour, IGamePlayable
 
         while (position_counting != count)
         {
-            //Debug.Log(position_counting);
             float tarPosX;
             while (true)
             {
