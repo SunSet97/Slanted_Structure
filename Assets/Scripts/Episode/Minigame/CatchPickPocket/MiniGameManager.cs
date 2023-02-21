@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using CommonScript;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -81,7 +82,7 @@ public class MiniGameManager : MonoBehaviour
             particle.transform.position = rau.transform.position + new Vector3(0, 1.5f, 10);
 
             // 라우 이동
-            rau.ctrl.Move(new Vector3(0, 0, 1) * rauSpeed * Time.deltaTime);
+            rau.CharacterController.Move(new Vector3(0, 0, 1) * rauSpeed * Time.deltaTime);
 
             if (JoystickController.instance.inputDirection == new Vector2(0, 0)) // 조이스틱 인풋 없을 때 forwadDir방향 바라보게하기
             { 

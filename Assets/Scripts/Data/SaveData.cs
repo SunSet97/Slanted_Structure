@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utility.Interaction;
 
 namespace Data
@@ -43,5 +42,8 @@ namespace Data
     public class SaveCoverData
     {
         public string mapCode;
+        public string location;
+        public string date;
+        public string time;
     }
 }

@@ -1,20 +1,29 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
+using Utility.Audio;
 using Utility.Core;
 
 namespace Utility.Preference
 {
     public class PlayUIController : MonoBehaviour
     {
-        [SerializeField] private GameObject preferencePanel;
-        [SerializeField] private GameObject diaryPanel;
+        public static PlayUIController Instance { get; private set; }
 
+        public Transform mapUi;
+        
+        [Header("메뉴")] [Space(10)]
+        public GameObject menuPanel;
         [SerializeField] private Animator menuAnimator;
         [SerializeField] private Button menuButton;
 
+        [Header("일기장")] [Space(10)]
+        [SerializeField] private GameObject diaryPanel;
         [SerializeField] private Button diaryButton;
         [SerializeField] private Button diaryExitButton;
         
+        [Header("설정")] [Space(10)]
+        [SerializeField] private GameObject preferencePanel;
         [SerializeField] private Button preferenceButton;
         [SerializeField] private Button preferenceExitButton;
 
@@ -32,9 +41,28 @@ namespace Utility.Preference
         [SerializeField] private Sprite vibeOffSprite;
         [SerializeField] private Sprite vibeToggleOnSprite;
         [SerializeField] private Sprite vibeToggleOffSprite;
-
+        
+        [NonSerialized] public Canvas Canvas;
+        
+        private void Awake()
+        {
+            if (Instance)
+            {
+                Destroy(gameObject.GetComponentInParent<Canvas>().gameObject);
+            }
+            else
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject.GetComponentInParent<Canvas>().gameObject);
+            }
+        }
+        
         private void Start()
         {
+            Canvas = GetComponentInParent<Canvas>();
+            var canvasScaler = GetComponentInParent<CanvasScaler>();
+            canvasScaler.referenceResolution = new Vector2(Screen.width, canvasScaler.referenceResolution.y);
+            
             menuButton.onClick.AddListener(() =>
             {
                 if (menuAnimator.GetBool("IsOpen"))
@@ -170,7 +198,6 @@ namespace Utility.Preference
 
         private void OnDialogue()
         {
-            
             menuAnimator.SetBool("IsOpen", false);
         }
     }

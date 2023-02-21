@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Play;
 using UnityEngine;
@@ -96,6 +97,8 @@ public class TossCoin : MonoBehaviour, IGamePlayable
     }
 
     public bool IsPlay { get; set; }
+    public Action ONEndPlay { get; set; }
+
     public void Play()
     {
         IsPlay = true;
@@ -103,6 +106,7 @@ public class TossCoin : MonoBehaviour, IGamePlayable
 
     public void EndPlay()
     {
+        ONEndPlay?.Invoke();
         IsPlay = false;
     }
 }

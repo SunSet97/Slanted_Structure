@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using CommonScript;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Utility.Audio;
+using Utility.Preference;
 using Utility.Property;
 using static Data.CustomEnum;
 
@@ -268,7 +270,7 @@ namespace Utility.Core
             }
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (!Application.isPlaying)
             {
@@ -291,13 +293,16 @@ namespace Utility.Core
             {
                 ui.name = map.name;
 
-                ui.SetParent(CanvasControl.instance.mapUI);
+                ui.SetParent(PlayUIController.Instance.mapUi);
                 ui.offsetMax = new Vector2(0, 0);
                 ui.offsetMin = new Vector2(0, 0);
                 ui.localScale = new Vector3(1, 1, 1);
             }
 
             AudioController.Instance.PlayBgm(bgm);
+
+            mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            followCharacters = DataController.Instance.GetFollowCharacters();
         }
 
         public void SetNextMapCode(string nextMapCode)
@@ -338,21 +343,43 @@ namespace Utility.Core
         [Header("조이스틱 존재 유무")] public bool isJoystickNone;
         public JoystickType joystickType;
 
+        private CharacterManager mainCharacter;
+        private CharacterManager[] followCharacters;
+
         private void JoystickInputUpdate()
         {
-            var mainChar = DataController.Instance.GetCharacter(Character.Main);
-            if (mainChar == null)
+            if (mainCharacter == null)
             {
                 return;
             }
+
             if (isJoystickInputUse)
             {
                 JoystickController.instance.JoystickInputUpdate(method);
             }
 
-            if (mainChar.gameObject.activeSelf)
+            mainCharacter.MoveCharacter(method);
+            
+            if (followCharacters != null)
             {
-                mainChar.MoveCharacter(method);
+                foreach (var followCharacter in followCharacters)
+                {
+                    followCharacter.FollowMainCharacter(method);
+                }
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (!Application.isEditor || Application.isPlaying)
+            {
+                return;
+            }
+
+            Gizmos.color = Color.red;
+            foreach (var posSet in positionSets)
+            {
+                Gizmos.DrawSphere(posSet.startPosition.position, 1f);
             }
         }
     }

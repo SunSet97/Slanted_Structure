@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using Play;
 using Utility.Core;
@@ -11,6 +12,7 @@ public class DalgonaGame : MonoBehaviour, IGamePlayable
     private int index = 0;
 
     public bool IsPlay { get; set; }
+    public Action ONEndPlay { get; set; }
 
     public void Play()
     {
@@ -31,6 +33,7 @@ public class DalgonaGame : MonoBehaviour, IGamePlayable
     {
         JoystickController.instance.StopSaveLoadJoyStick(false);
         IsPlay = false;
+        ONEndPlay?.Invoke();
         dalgonaPanel.SetActive(false);
     }
 

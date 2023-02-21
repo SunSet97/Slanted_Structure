@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using CommonScript;
 using UnityEngine;
 using Utility.Core;
 using Utility.Interaction;
@@ -30,7 +31,7 @@ public class HamburgerStoreManager : MonoBehaviour
             character.PickUpCharacter();
             character.transform.position = sofa.transform.GetChild(0).position;
             character.transform.rotation = sofa.transform.GetChild(0).rotation;
-            character.anim.SetBool("Seat", true);
+            character.Animator.SetBool("Seat", true);
         });
 
         sofa.SetInteractionEndEvent(() =>
@@ -57,9 +58,9 @@ public class HamburgerStoreManager : MonoBehaviour
         int index = speat.pointIndex;
         PointData desPoint = speat.point[index];
 
-        character.anim.SetBool("Seat", false);
+        character.Animator.SetBool("Seat", false);
         yield return new WaitForSeconds(2f);
-        character.anim.SetFloat("Speed", rauAniSpeed);
+        character.Animator.SetFloat("Speed", rauAniSpeed);
 
         character.transform.LookAt(desPoint.transform);
 

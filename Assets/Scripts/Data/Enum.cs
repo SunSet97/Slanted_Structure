@@ -1,6 +1,6 @@
 ﻿namespace Data
 {
-    public class CustomEnum
+    public static class CustomEnum
     {
         public enum EndingType
         {

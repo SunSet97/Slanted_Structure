@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using CommonScript;
 using Play;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +25,7 @@ public class dovesComoponents
 public class CatchRobberManager : MonoBehaviour, IGamePlayable
 {
     public bool IsPlay { get; set; }
+    public Action ONEndPlay { get; set; }
 
     private readonly int SpeedHash = Animator.StringToHash("Speed");
 
@@ -78,6 +81,7 @@ public class CatchRobberManager : MonoBehaviour, IGamePlayable
 
     public void EndPlay()
     {
+        ONEndPlay?.Invoke();
         IsPlay = false;
     }
 
@@ -186,8 +190,8 @@ public class CatchRobberManager : MonoBehaviour, IGamePlayable
         // 현재 캐릭터
         rau = DataController.Instance.GetCharacter(Character.Main);
         rau.IsMove = false;
-        rau.anim.applyRootMotion = false;
-        rau.anim.SetFloat(Speed, 0.7f);
+        rau.Animator.applyRootMotion = false;
+        rau.Animator.SetFloat(Speed, 0.7f);
         // 라우 위치시키기
         robber.transform.position = rau.transform.position + new Vector3(0, 0, 10);
         if (robber) characterController_robber = robber.GetComponent<CharacterController>();
@@ -245,8 +249,8 @@ public class CatchRobberManager : MonoBehaviour, IGamePlayable
 
             moveLeftAndRight.position = followZofRau;
             // rau.ctrl.Move(rau.transform.position-threeWay[0].position);
-            rau.ctrl.Move(new Vector3(0, -1, Time.deltaTime) * rauSpeed);
-            rau.anim.SetFloat(SpeedHash, rauSpeed * Time.deltaTime);
+            rau.CharacterController.Move(new Vector3(0, -1, Time.deltaTime) * rauSpeed);
+            rau.Animator.SetFloat(SpeedHash, rauSpeed * Time.deltaTime);
             rauSpeed += acceleration * Time.deltaTime;
         }
         // 캐릭터매니저랑 라우랑 위치 일치시키기 => 충돌 감지때문

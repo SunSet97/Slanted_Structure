@@ -6,27 +6,29 @@ namespace Utility.Cinematic
     public class CinematicCharacter : MonoBehaviour
     {
         public CustomEnum.Character who;
-    
-        private Animator anim; // 애니메이션
-        private SkinnedMeshRenderer skinnedMesh; // 캐릭터 머테리얼
-        private Texture[] faceExpression;//표정 메터리얼
-        //Resources/Face/다 넣업
+
+        private Animator animator;
+        private SkinnedMeshRenderer skinnedMesh;
+        private Texture[] faceExpression;
+
         private static readonly int Emotion = Animator.StringToHash("Emotion");
         private static readonly int MainTex = Shader.PropertyToID("_MainTex");
 
-        void Start()
+        private void Start()
         {
-            if (anim == null)
-                anim = GetComponent<Animator>();
+            if (animator == null)
+                animator = GetComponent<Animator>();
             if (skinnedMesh == null)
                 skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
             if (faceExpression == null)
             {
-                if (who.Equals(CustomEnum.Character.Speat) || who.Equals(CustomEnum.Character.Oun) || who.Equals(CustomEnum.Character.Rau))
+                if (who.Equals(CustomEnum.Character.Speat) || who.Equals(CustomEnum.Character.Oun) ||
+                    who.Equals(CustomEnum.Character.Rau))
                 {
                     faceExpression = Resources.LoadAll<Texture>("Face");
                 }
-                else if (who.Equals(CustomEnum.Character.Speat_Adolescene) || who.Equals(CustomEnum.Character.Speat_Adult) || who.Equals(CustomEnum.Character.Speat_Child))
+                else if (who.Equals(CustomEnum.Character.Speat_Adolescene) ||
+                         who.Equals(CustomEnum.Character.Speat_Adult) || who.Equals(CustomEnum.Character.Speat_Child))
                 {
                     faceExpression = Resources.LoadAll<Texture>($"Speat_Face/{who}");
                 }
@@ -36,17 +38,17 @@ namespace Utility.Cinematic
 
         public void EmotionAnimationSetting(int emotionInt)
         {
-            anim.SetInteger(Emotion, emotionInt); // 애니메이션실행
+            animator.SetInteger(Emotion, emotionInt); // 애니메이션실행
         }
+
         public void ExpressionSetting(CustomEnum.Expression emotion)
         {
-            if(faceExpression.Length < (int)emotion)
+            if (faceExpression.Length < (int) emotion)
             {
                 return;
             }
 
-            skinnedMesh.materials[1].SetTexture(MainTex, faceExpression[(int)emotion]); // 현재 감정으로 메터리얼 변경
+            skinnedMesh.materials[1].SetTexture(MainTex, faceExpression[(int) emotion]); // 현재 감정으로 메터리얼 변경
         }
-
     }
 }

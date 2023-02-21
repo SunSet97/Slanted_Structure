@@ -18,7 +18,6 @@ namespace Utility.Preference
 
         [SerializeField] private ButtonType defaultButtonType;
 
-        [SerializeField] private GameObject diaryPanel;
         [SerializeField] private Transform diarySaveParent;
 
         [SerializeField] private Button saveButton;
@@ -38,7 +37,7 @@ namespace Utility.Preference
         private RectMask2D _deleteMask;
 
         private ButtonType _focusedButton;
-
+        
         private void Awake()
         {
             _saveMask = saveButton.transform.parent.GetComponent<RectMask2D>();
@@ -94,7 +93,7 @@ namespace Utility.Preference
 
                             if (sceneName.Equals("Ingame_set"))
                             {
-                                diaryPanel.SetActive(false);
+                                gameObject.SetActive(false);
                             }
 
                             SaveManager.Load(t);
@@ -199,17 +198,17 @@ namespace Utility.Preference
             {
                 if (SaveManager.Has(idx))
                 {
+                    var diaryContentText = diarySaveParent.GetChild(idx).GetComponentInChildren<Text>();
+                    diaryContentText.text = "";
                     if (!SaveManager.IsCoverLoaded(idx))
                     {
                         var task = SaveManager.LoadCoverAsync(idx);
-                        // Debug.Log(Time.time + "Task 대기");
                         await task;
                     }
 
                     var saveCoverData = SaveManager.GetCoverData(idx);
-                    var text = diarySaveParent.GetChild(idx).GetComponentInChildren<Text>();
-                    text.text = idx + "번입니다" + "\n" + saveCoverData.mapCode;
-                    Debug.Log(text.text);
+                    diaryContentText.text = saveCoverData.location;
+                    Debug.Log(diaryContentText.text);
                 }
                 else
                 {

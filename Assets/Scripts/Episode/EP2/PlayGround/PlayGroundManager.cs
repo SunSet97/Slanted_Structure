@@ -2,12 +2,15 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using Data;
 using UnityEngine.UI;
 using Utility.Core;
+using Utility.Preference;
 
 public class PlayGroundManager : MonoBehaviour, IGamePlayable
 {
     public bool IsPlay { get; set; }
+    public Action ONEndPlay { get; set; }
 
     public GameObject canPrefab;
 
@@ -70,6 +73,8 @@ public class PlayGroundManager : MonoBehaviour, IGamePlayable
 
     public void EndPlay()
     {
+        ONEndPlay?.Invoke();
+        
         DataController.Instance.camInfo.camDis = DataController.Instance.CurrentMap.camDis;
         DataController.Instance.camInfo.camRot = DataController.Instance.CurrentMap.camRot;
         IsPlay = false;
@@ -79,7 +84,7 @@ public class PlayGroundManager : MonoBehaviour, IGamePlayable
     {
         DataController.Instance.CurrentMap.ui.gameObject.SetActive(true);
 
-        Canvas canvas = CanvasControl.instance.GetComponent<Canvas>();
+        Canvas canvas = PlayUIController.Instance.Canvas;
 
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         canvas.worldCamera = DataController.Instance.Cam;
@@ -97,7 +102,7 @@ public class PlayGroundManager : MonoBehaviour, IGamePlayable
     {
         rangeParent.SetActive(false);
         ring.Remove();
-        CanvasControl.instance.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+        PlayUIController.Instance.Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
         StartThrowing(result);
     }

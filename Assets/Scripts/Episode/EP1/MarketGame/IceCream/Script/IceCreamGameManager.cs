@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Play;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility.Core;
+using Random = UnityEngine.Random;
 
 public class IceCreamGameManager : MonoBehaviour, IGamePlayable
 {
@@ -13,6 +15,7 @@ public class IceCreamGameManager : MonoBehaviour, IGamePlayable
     }
 
     public bool IsPlay { get; set; }
+    public Action ONEndPlay { get; set; }
 
     [SerializeField] private GameObject iceCreamPanel;
     
@@ -78,6 +81,7 @@ public class IceCreamGameManager : MonoBehaviour, IGamePlayable
     public void EndPlay()
     {
         IsPlay = false;
+        ONEndPlay?.Invoke();
         iceCreamPanel.SetActive(false);
         JoystickController.instance.StopSaveLoadJoyStick(false);
     }

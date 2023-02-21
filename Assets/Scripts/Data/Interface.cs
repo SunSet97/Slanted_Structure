@@ -28,6 +28,7 @@ namespace Play
     public interface IGamePlayable
     {
         bool IsPlay { get; set; }
+        Action ONEndPlay { get; set; }
 
         void Play();
         void EndPlay();

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Utility.Preference
+namespace Utility.Audio
 {
     public class AudioLoader : MonoBehaviour
     {

@@ -1,44 +1,53 @@
-﻿using Play;
+﻿using System;
+using Play;
 using UnityEngine;
 using Utility.Core;
 
-public class PimpGameManager : MonoBehaviour, IGamePlayable
+namespace Episode.EP0.SpeatTutorial.Officetel
 {
-    public PimpGuestMoving[] pimpGuestMoving;
-    void Start()
+    public class PimpGameManager : MonoBehaviour, IGamePlayable
     {
-        foreach (var t in pimpGuestMoving)
-        {
-            t.pimpGameManager = this;
-        }
-    }
+        public PimpGuest[] pimpGuests;
 
-    void Update()
-    {
-        foreach (var t in pimpGuestMoving)
+        private void Start()
         {
-            t.Move(IsPlay);
+            foreach (var t in pimpGuests)
+            {
+                t.Init(this);
+            }
         }
-    }
 
-    public bool IsPlay { get; set; }
-    public void Play()
-    {
-        IsPlay = true;
-        foreach (var t in pimpGuestMoving)
+        private void FixedUpdate()
         {
-            t.Think();
+            foreach (var t in pimpGuests)
+            {
+                t.Move(IsPlay);
+            }
         }
-    }
 
-    public void EndPlay()
-    {
-        IsPlay = false;
-        DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
-        foreach (var t in pimpGuestMoving)
+        public bool IsPlay { get; set; }
+        public Action ONEndPlay { get; set; }
+
+        public void Play()
         {
-            var animator = t.GetComponent<Animator>();
-            animator.SetFloat("Speed", 0.0f);
+            DataController.Instance.CurrentMap.ui.gameObject.SetActive(true);
+            IsPlay = true;
+            foreach (var t in pimpGuests)
+            {
+                t.Think();
+            }
+        }
+
+        public void EndPlay()
+        {
+            IsPlay = false;
+            ONEndPlay?.Invoke();
+            DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
+            foreach (var t in pimpGuests)
+            {
+                var animator = t.GetComponent<Animator>();
+                animator.SetFloat("Speed", 0.0f);
+            }
         }
     }
 }
