@@ -8,8 +8,7 @@ namespace Utility.Core
 {
     public class FadeEffect : MonoBehaviour
     {
-        private static FadeEffect _instance;
-        public static FadeEffect Instance => _instance;
+        public static FadeEffect Instance { get; private set; }
 
         public Image fadePanel;
         public GraphicRaycaster graphicRaycaster;
@@ -19,13 +18,13 @@ namespace Utility.Core
 
         private void Awake()
         {
-            if (_instance)
+            if (Instance)
             {
                 Destroy(gameObject);
             }
             else
             {
-                _instance = this;
+                Instance = this;
                 OnFadeOver = new UnityEvent();
             }
         }
@@ -49,7 +48,7 @@ namespace Utility.Core
 
         private IEnumerator FadeInCoroutine(float fadeInSec)
         {
-            JoystickController.instance.StopSaveLoadJoyStick(true);
+            JoystickController.Instance.StopSaveLoadJoyStick(true);
             graphicRaycaster.enabled = false;
             fadePanel.gameObject.SetActive(true);
 
@@ -68,7 +67,7 @@ namespace Utility.Core
             color.a = 0;
             fadePanel.color = color;
         
-            JoystickController.instance.StopSaveLoadJoyStick(false);
+            JoystickController.Instance.StopSaveLoadJoyStick(false);
         
             graphicRaycaster.enabled = true;
             IsAlreadyFadeOut = false;
@@ -99,7 +98,7 @@ namespace Utility.Core
 
         private IEnumerator FadeOutCoroutine(float fadeOutSec)
         {
-            JoystickController.instance.StopSaveLoadJoyStick(true);
+            JoystickController.Instance.StopSaveLoadJoyStick(true);
             graphicRaycaster.enabled = false;
             fadePanel.gameObject.SetActive(true);
         
@@ -118,7 +117,7 @@ namespace Utility.Core
             color.a = 1;
             fadePanel.color = color;
         
-            JoystickController.instance.StopSaveLoadJoyStick(false);
+            JoystickController.Instance.StopSaveLoadJoyStick(false);
         
             graphicRaycaster.enabled = true;
 

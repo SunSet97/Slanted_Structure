@@ -125,7 +125,7 @@ namespace Utility.Interaction
             };
             var interaction = GetInteraction();
             interaction.serializedInteractionData.JsonTask.Push(taskData);
-            DialogueController.instance.taskData = taskData;
+            DialogueController.Instance.taskData = taskData;
         }
 
         private void Awake()
@@ -184,14 +184,14 @@ namespace Utility.Interaction
                 outline.OutlineWidth = 8f;
                 outline.enabled = false;
 
-                if (color == OutlineColor.red) outline.OutlineColor = Color.red;
-                else if (color == OutlineColor.magenta) outline.OutlineColor = Color.magenta;
-                else if (color == OutlineColor.yellow) outline.OutlineColor = Color.yellow;
-                else if (color == OutlineColor.green) outline.OutlineColor = Color.green;
-                else if (color == OutlineColor.blue) outline.OutlineColor = Color.blue;
-                else if (color == OutlineColor.grey) outline.OutlineColor = Color.grey;
-                else if (color == OutlineColor.black) outline.OutlineColor = Color.black;
-                else if (color == OutlineColor.white) outline.OutlineColor = Color.white;
+                if (color == OutlineColor.Red) outline.OutlineColor = Color.red;
+                else if (color == OutlineColor.Magenta) outline.OutlineColor = Color.magenta;
+                else if (color == OutlineColor.Yellow) outline.OutlineColor = Color.yellow;
+                else if (color == OutlineColor.Green) outline.OutlineColor = Color.green;
+                else if (color == OutlineColor.Blue) outline.OutlineColor = Color.blue;
+                else if (color == OutlineColor.Grey) outline.OutlineColor = Color.grey;
+                else if (color == OutlineColor.Black) outline.OutlineColor = Color.black;
+                else if (color == OutlineColor.White) outline.OutlineColor = Color.white;
             }
         }
 
@@ -258,7 +258,7 @@ namespace Utility.Interaction
 
             switch (curTask.taskContentType)
             {
-                case TaskContentType.DIALOGUE:
+                case TaskContentType.Dialogue:
                     var newLen = currentTaskData.tasks.Length + 1;
                     Task[] array1 = new Task[newLen];
                     Array.Copy(currentTaskData.tasks, 0, array1, 0, currentTaskData.taskIndex + 1);
@@ -276,19 +276,19 @@ namespace Utility.Interaction
 
                     currentTaskData.isContinue = false;
                     path = curTask.nextFile;
-                    jsonString = DialogueController.instance.ConvertPathToJson(path);
+                    jsonString = DialogueController.Instance.ConvertPathToJson(path);
                     // currentTaskData.taskIndex--;    // 현재 taskIndex는 선택지이며 선택지 다음 인덱스가 된다. 그런데 대화 종료시 Index가 1 증가하기에 1을 줄여준다.
-                    DialogueController.instance.StartConversation(jsonString);
+                    DialogueController.Instance.StartConversation(jsonString);
                     //다음 인덱스의 타입
                     break;
-                case TaskContentType.TEMP:
+                case TaskContentType.Temp:
                     //새로운 task 실행
                     path = curTask.nextFile;
-                    jsonString = DialogueController.instance.ConvertPathToJson(path);
+                    jsonString = DialogueController.Instance.ConvertPathToJson(path);
                     PushTask(jsonString);
                     StartInteraction();
                     break;
-                case TaskContentType.NEW:
+                case TaskContentType.New:
                     StackNewTask(curTask.nextFile);
                     break;
                 case TaskContentType.EndingChoice:
@@ -344,17 +344,17 @@ namespace Utility.Interaction
                 {
                     Debug.LogError("오류");
                 }
-                if (DialogueController.instance.IsTalking)
+                if (DialogueController.Instance.IsTalking)
                 {
                     return;
                 }
 
                 foreach (var interactionEvent in interaction.interactionEndActions.interactionEvents)
                 {
-                    DialogueController.instance.SetDialougueEndAction(interactionEvent.Action);
+                    DialogueController.Instance.SetDialougueEndAction(interactionEvent.Action);
                 }
 
-                DialogueController.instance.StartConversation(interaction.jsonFile.text);
+                DialogueController.Instance.StartConversation(interaction.jsonFile.text);
             }
             else if (interaction.interactionPlayType == InteractionPlayType.Potal &&
                      gameObject.TryGetComponent(out CheckMapClear mapClear))
@@ -399,7 +399,7 @@ namespace Utility.Interaction
                 game.Play();
                 game.ONEndPlay = () =>
                 {
-                    PlayUIController.Instance.menuPanel.SetActive(false);
+                    PlayUIController.Instance.SetMenuActive(false);
                     foreach (var endAction in interaction.interactionEndActions.interactionEvents)
                     {
                         endAction.Action();
@@ -426,7 +426,7 @@ namespace Utility.Interaction
                         Debug.LogError("Task 타임라인 오류");
                     }
                     
-                    PlayUIController.Instance.menuPanel.SetActive(false);
+                    PlayUIController.Instance.SetMenuActive(false);
                     foreach (var interactionInGame in interaction.inGames)
                     {
                         interactionInGame.SetActive(false);
@@ -443,10 +443,10 @@ namespace Utility.Interaction
                                                         .editorSettings.fps ||
                                                         interaction.timelines[0].state == PlayState.Paused &&
                                                         !interaction.timelines[0].playableGraph.IsValid() &&
-                                                        !DialogueController.instance.IsTalking);
+                                                        !DialogueController.Instance.IsTalking);
                     StartCoroutine(WaitTimeline(waitUntil, () =>
                     {
-                        PlayUIController.Instance.menuPanel.SetActive(true);
+                        PlayUIController.Instance.SetMenuActive(true);
                         Debug.Log("타임라인 끝");
                         foreach (var endAction in interaction.interactionEndActions.interactionEvents)
                         {
@@ -510,7 +510,7 @@ namespace Utility.Interaction
 
         private void StackNewTask(string jsonRoute)
         {
-            DialogueController.instance.taskData = null;
+            DialogueController.Instance.taskData = null;
             GetInteraction().serializedInteractionData.JsonTask = new Stack<TaskData>();
             GC.Collect();
             PushTask(jsonRoute);
@@ -537,7 +537,7 @@ namespace Utility.Interaction
                    currentTaskData.tasks[currentTaskData.taskIndex].order.Equals(currentTaskData.taskOrder) &&
                    currentTaskData.isContinue) //순서 번호 동일한 것 반복
             {
-                DialogueController.instance.taskData = currentTaskData;
+                DialogueController.Instance.taskData = currentTaskData;
                 Task currentTask = currentTaskData.tasks[currentTaskData.taskIndex];
                 Debug.Log("Task 길이: " + currentTaskData.tasks.Length);
                 foreach (var task in currentTaskData.tasks)
@@ -549,15 +549,15 @@ namespace Utility.Interaction
                           currentTask.taskContentType);
                 switch (currentTask.taskContentType)
                 {
-                    case TaskContentType.DIALOGUE:
+                    case TaskContentType.Dialogue:
                         Debug.Log("대화 시작");
                         currentTaskData.isContinue = false;
                         string path = currentTask.nextFile;
                         Debug.Log($"대화 경로 - {path}");
-                        string jsonString = DialogueController.instance.ConvertPathToJson(path);
-                        DialogueController.instance.StartConversation(jsonString);
+                        string jsonString = DialogueController.Instance.ConvertPathToJson(path);
+                        DialogueController.Instance.StartConversation(jsonString);
                         break;
-                    case TaskContentType.ANIMATION:
+                    case TaskContentType.Animation:
                         //세팅된 애니메이션 실행
                         GetComponent<Animator>().Play("Start", 0);
                         break;
@@ -565,21 +565,21 @@ namespace Utility.Interaction
                         currentTaskData.isContinue = false;
                         IGamePlayable gamePlayable =
                             GameObject.Find(currentTask.nextFile).GetComponent<IGamePlayable>();
-                        PlayUIController.Instance.menuPanel.SetActive(false);
+                        PlayUIController.Instance.SetMenuActive(false);
                         gamePlayable.ONEndPlay = () =>
                         {
-                            PlayUIController.Instance.menuPanel.SetActive(true);
+                            PlayUIController.Instance.SetMenuActive(true);
                         };
                         gamePlayable.Play();
                         yield return new WaitUntil(() => gamePlayable.IsPlay);
-                        PlayUIController.Instance.menuPanel.SetActive(true);
+                        PlayUIController.Instance.SetMenuActive(true);
                         currentTaskData.isContinue = true;
                         break;
-                    case TaskContentType.TEMP:
+                    case TaskContentType.Temp:
                         Debug.Log("선택지 열기");
                         currentTaskData.isContinue = false;
-                        DialogueController.instance.SetChoiceAction(ChoiceEvent);
-                        DialogueController.instance.OpenChoicePanel();
+                        DialogueController.Instance.SetChoiceAction(ChoiceEvent);
+                        DialogueController.Instance.OpenChoicePanel();
                         break;
                     case TaskContentType.TempDialogue:
                         //선택지에서 대화를 고른 경우
@@ -602,7 +602,7 @@ namespace Utility.Interaction
                         }
 
                         yield break;
-                    case TaskContentType.NEW:
+                    case TaskContentType.New:
                     {
                         StackNewTask(currentTask.nextFile);
                         yield break;
@@ -624,7 +624,7 @@ namespace Utility.Interaction
 
                         break;
                     }
-                    case TaskContentType.THEEND:
+                    case TaskContentType.TheEnd:
                         //게임 엔딩
                         break;
                     case TaskContentType.Cinematic:
@@ -643,7 +643,7 @@ namespace Utility.Interaction
                             inGame.SetActive(false);
                         }
 
-                        JoystickController.instance.StopSaveLoadJoyStick(true);
+                        JoystickController.Instance.StopSaveLoadJoyStick(true);
 
 
                         if (interaction.timelines[0])
@@ -657,7 +657,7 @@ namespace Utility.Interaction
                                 interactionCinematic.SetActive(true);
                             }
                             interaction.timelines[0].Play();
-                            PlayUIController.Instance.menuPanel.SetActive(false);
+                            PlayUIController.Instance.SetMenuActive(false);
                         }
                         else
                         {
@@ -694,10 +694,10 @@ namespace Utility.Interaction
                                                          .editorSettings.fps ||
                                                          interaction.timelines[0].state == PlayState.Paused &&
                                                          !interaction.timelines[0].playableGraph.IsValid() &&
-                                                         !DialogueController.instance.IsTalking);
+                                                         !DialogueController.Instance.IsTalking);
                         
-                        PlayUIController.Instance.menuPanel.SetActive(true);
-                        JoystickController.instance.StopSaveLoadJoyStick(false);
+                        PlayUIController.Instance.SetMenuActive(true);
+                        JoystickController.Instance.StopSaveLoadJoyStick(false);
                         currentTaskData.isContinue = true;
                         foreach (var cinematic in interaction.cinematics)
                         {
@@ -735,7 +735,7 @@ namespace Utility.Interaction
                 if (interaction.serializedInteractionData.JsonTask.Count > 1)
                 {
                     //선택지인 경우
-                    DialogueController.instance.taskData = null; // null이 아닌 상태에서 모든 task가 끝나면 없어야되는데 남아있음
+                    DialogueController.Instance.taskData = null; // null이 아닌 상태에서 모든 task가 끝나면 없어야되는데 남아있음
                     interaction.serializedInteractionData.JsonTask.Pop();
                     interaction.serializedInteractionData.JsonTask.Peek().isContinue = true;
                 }

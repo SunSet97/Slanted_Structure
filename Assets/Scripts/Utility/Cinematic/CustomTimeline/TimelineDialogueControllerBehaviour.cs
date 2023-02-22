@@ -13,8 +13,8 @@ public class TimelineDialogueControllerBehaviour : PlayableBehaviour
     {
         if (dialogueJson == null) return;
         playable.GetGraph().Stop();
-        DialogueController.instance.StartConversation(dialogueJson.text);
-        DialogueController.instance.SetDialougueEndAction(() => { playable.GetGraph().Play(); });
+        DialogueController.Instance.StartConversation(dialogueJson.text);
+        DialogueController.Instance.SetDialougueEndAction(() => { playable.GetGraph().Play(); });
         dialogueJson = null;
     }
 }

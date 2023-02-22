@@ -35,13 +35,13 @@ namespace CommonScript
         private IEnumerator MoveTo(CharacterManager character)
         {
             character.PickUpCharacter();
-            JoystickController.instance.StopSaveLoadJoyStick(true);
+            JoystickController.Instance.StopSaveLoadJoyStick(true);
             
             character.transform.position = startPoint.position;
             character.transform.LookAt(endPoint);
             
             var waitForFixedUpdate = new WaitForFixedUpdate();
-            character.Animator.SetFloat(Speed, 1f);
+            character.CharacterAnimator.SetFloat(Speed, 1f);
             
             var t = 0f;
             while (t <= 1f)
@@ -51,9 +51,9 @@ namespace CommonScript
                 yield return waitForFixedUpdate;
             }
             character.PutDownCharacter();
-            character.Animator.SetFloat(Speed, 0f);
+            character.CharacterAnimator.SetFloat(Speed, 0f);
             yield return new WaitForSeconds(0.5f);
-            JoystickController.instance.StopSaveLoadJoyStick(false);
+            JoystickController.Instance.StopSaveLoadJoyStick(false);
         }
 
         private void OnDrawGizmos()

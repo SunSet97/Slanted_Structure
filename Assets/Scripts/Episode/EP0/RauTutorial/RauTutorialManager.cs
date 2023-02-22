@@ -97,16 +97,16 @@ namespace Episode.EP0.RauTutorial
         private void TouchSlide()
         {
             // https://www.youtube.com/watch?v=98dQBWUyy9M 멀티 터치 참고
-            if (JoystickController.instance.joystick.Horizontal > 0) swipeDir = Swipe.Right;
-            else if (JoystickController.instance.joystick.Horizontal < 0) swipeDir = Swipe.Left;
-            else if (JoystickController.instance.joystick.Vertical < 0) swipeDir = Swipe.Down;
+            if (JoystickController.Instance.Joystick.Horizontal > 0) swipeDir = Swipe.Right;
+            else if (JoystickController.Instance.Joystick.Horizontal < 0) swipeDir = Swipe.Left;
+            else if (JoystickController.Instance.Joystick.Vertical < 0) swipeDir = Swipe.Down;
             else swipeDir = Swipe.None;
         }
 
         // 조이스틱 이미지 껐다 끄기
         void OnOffJoystick(bool isOn)
         {
-            foreach (var component in JoystickController.instance.joystick.GetComponentsInChildren(typeof(Image), true))
+            foreach (var component in JoystickController.Instance.Joystick.GetComponentsInChildren(typeof(Image), true))
             {
                 var image = (Image) component;
                 if (isOn && !image.name.Equals("Transparent Dynamic Joystick"))
@@ -130,7 +130,7 @@ namespace Episode.EP0.RauTutorial
             var mapData = DataController.Instance.CurrentMap;
             mapData.method = methodNum;
             OnOffJoystick(methodNum != JoystickInputMethod.Other);
-            JoystickController.instance.joystick.AxisOptions = axisNum;
+            JoystickController.Instance.Joystick.AxisOptions = axisNum;
         }
 
         // 숲 초입길
@@ -152,7 +152,7 @@ namespace Episode.EP0.RauTutorial
             DataController.Instance.camInfo.camRot = viewForward.camRot;
 
             ChangeJoystickSetting(JoystickInputMethod.Other, AxisOptions.Horizontal); // 이동 해제, 좌우 스와이프만 가능하도록 변경
-            JoystickController.instance.SetJoystickArea(JoystickAreaType.FULL);
+            JoystickController.Instance.SetJoystickArea(JoystickAreaType.Full);
 
             var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
             mainCharacter.PickUpCharacter();
@@ -219,7 +219,7 @@ namespace Episode.EP0.RauTutorial
                 yield return null;
             }
 
-            JoystickController.instance.SetJoystickArea(JoystickAreaType.DEFAULT);
+            JoystickController.Instance.SetJoystickArea(JoystickAreaType.Default);
         }
 
         private IEnumerator MoveGrass(Transform grassTrans, Transform destGrass, Vector3 moveDelta)
@@ -286,7 +286,7 @@ namespace Episode.EP0.RauTutorial
             var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
             mainCharacter.PickUpCharacter();
 
-            JoystickController.instance.StopSaveLoadJoyStick(true);
+            JoystickController.Instance.StopSaveLoadJoyStick(true);
 
             yield return new WaitUntil(() => woodKickIndex >= 3);
 
@@ -295,7 +295,7 @@ namespace Episode.EP0.RauTutorial
             DataController.Instance.camInfo.camDis = viewRiver.camDis;
             DataController.Instance.camInfo.camRot = viewRiver.camRot;
 
-            JoystickController.instance.StopSaveLoadJoyStick(false);
+            JoystickController.Instance.StopSaveLoadJoyStick(false);
 
             mainCharacter.UseJoystickCharacter();
 
@@ -331,7 +331,7 @@ namespace Episode.EP0.RauTutorial
             DataController.Instance.camInfo.camRot = viewForward.camRot;
             ChangeJoystickSetting(JoystickInputMethod.Other, AxisOptions.Vertical); // 이동 해제, 위아래 스와이프만 가능하도록 변경
             rau.PickUpCharacter();
-            JoystickController.instance.SetJoystickArea(JoystickAreaType.FULL);
+            JoystickController.Instance.SetJoystickArea(JoystickAreaType.Full);
             while (true)
             {
                 TouchSlide();
@@ -350,7 +350,7 @@ namespace Episode.EP0.RauTutorial
                     // 둘러보기, 전방향 이동 튜토리얼
                     ChangeJoystickSetting(JoystickInputMethod.AllDirection, 0); // 전방향 이동
                     rau.UseJoystickCharacter();
-                    JoystickController.instance.SetJoystickArea(JoystickAreaType.DEFAULT);
+                    JoystickController.Instance.SetJoystickArea(JoystickAreaType.Default);
                     yield break;
                 }
 

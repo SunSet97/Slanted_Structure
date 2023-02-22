@@ -32,8 +32,8 @@ namespace Episode.EP0.RauTutorial
             if (!isInteracted)
             {
                 isInteracted = true;
-                DialogueController.instance.StartConversation(jsonFile.text);
-                DialogueController.instance.SetDialougueEndAction(() =>
+                DialogueController.Instance.StartConversation(jsonFile.text);
+                DialogueController.Instance.SetDialougueEndAction(() =>
                 {
                     StartCoroutine(rauTutorialManager.FallInRiver());
                 });

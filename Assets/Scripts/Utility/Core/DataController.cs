@@ -13,13 +13,10 @@ namespace Utility.Core
 {
     public class DataController : MonoBehaviour
     {
-        private static DataController _instance;
+        public static DataController Instance { get; private set; }
 
-        public static DataController Instance => _instance;
+        [Header("캐릭터")] [SerializeField] private CharacterManager[] characters;
 
-        [Header("캐릭터")]
-        [SerializeField] private CharacterManager[] characters;
-        
         [Header("카메라 경계값")] public CamInfo camInfo;
 
         /// <summary>
@@ -27,35 +24,34 @@ namespace Utility.Core
         /// </summary>
         public float camOrthgraphicSize;
 
-        [Header("맵")]
-        public Transform mapGenerate;
+        [Header("맵")] public Transform mapGenerate;
         public string mapCode;
 
         [FormerlySerializedAs("charData")] public CharRelationshipData charRelationshipData;
-        
+
         [NonSerialized] public Camera Cam;
         [NonSerialized] public MapData[] Storymaps;
         [NonSerialized] public MapData CurrentMap;
-        
-        private CharacterManager _mainChar;
 
-        private AssetBundle _mapDB;
+        private CharacterManager mainChar;
+
+        private AssetBundle mapDB;
         internal AssetBundle DialogueDB;
 
-        private UnityAction _onLoadMap;
-        
+        private UnityAction onLoadMap;
+
         [NonSerialized] public List<InteractionObject> InteractionObjects;
 
         private void Awake()
         {
-            if (_instance)
+            if (Instance)
             {
                 Destroy(gameObject);
             }
             else
             {
-                _instance = this;
-                DontDestroyOnLoad(_instance);
+                Instance = this;
+                DontDestroyOnLoad(Instance);
             }
         }
 
@@ -82,7 +78,7 @@ namespace Utility.Core
             Init();
             ChangeMap(mapCode, save);
         }
-        
+
 
         private MapData[] LoadMap(string desMapCode)
         {
@@ -102,28 +98,29 @@ namespace Utility.Core
             {
                 return Storymaps;
             }
-            
-            if (_mapDB != null)
+
+            if (mapDB != null)
             {
-                _mapDB.Unload(true);
+                mapDB.Unload(true);
             }
 
-            _mapDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
+            mapDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
             if (curDay != desDay)
             {
                 if (DialogueDB != null)
                 {
                     DialogueDB.Unload(true);
                 }
+
                 DialogueDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}");
             }
 
-            if (_mapDB == null)
+            if (mapDB == null)
             {
                 Debug.LogError("맵 어셋 번들 오류");
             }
 
-            var mapDataObjects = _mapDB.LoadAllAssets<GameObject>();
+            var mapDataObjects = mapDB.LoadAllAssets<GameObject>();
             MapData[] mapDatas = new MapData[mapDataObjects.Length];
             for (int i = 0; i < mapDataObjects.Length; i++)
             {
@@ -137,12 +134,12 @@ namespace Utility.Core
         {
             if (characterType == Character.Main)
             {
-                return _mainChar;
+                return mainChar;
             }
-            
+
             return Array.Find(characters, item => item.who == characterType);
         }
-        
+
         public CharacterManager[] GetFollowCharacters()
         {
             List<CharacterManager> characterManagers = new List<CharacterManager>();
@@ -160,7 +157,7 @@ namespace Utility.Core
         public void ChangeMap(string desMapCode, SaveData saveData = null)
         {
             Debug.Log("Change Map");
-            
+
             foreach (var character in characters)
             {
                 character.WaitInRoom();
@@ -177,18 +174,18 @@ namespace Utility.Core
             ObjectClicker.Instance.Reset();
 
             var nextMap = Array.Find(Storymaps, mapData => mapData.mapCode.Equals(mapCode));
-            
+
             InteractionObjects.Clear();
-            
+
             CurrentMap = Instantiate(nextMap, mapGenerate);
-            
+
             SetByChangedMap();
-            
+
             CurrentMap.Initialize();
-            
+
             LoadData(saveData);
-            
-            DialogueController.instance.Initialize();
+
+            DialogueController.Instance.Initialize();
 
             if (FadeEffect.Instance.IsAlreadyFadeOut)
             {
@@ -196,22 +193,22 @@ namespace Utility.Core
                 {
                     FadeEffect.Instance.OnFadeOver.RemoveAllListeners();
                     Debug.Log("??");
-                    _onLoadMap?.Invoke();
-                    _onLoadMap = () => { };
+                    onLoadMap?.Invoke();
+                    onLoadMap = () => { };
                 });
 
                 FadeEffect.Instance.FadeIn(CurrentMap.fadeInSec);
             }
             else
             {
-                _onLoadMap?.Invoke();
-                _onLoadMap = () => { };
+                onLoadMap?.Invoke();
+                onLoadMap = () => { };
             }
         }
 
         public void AddOnLoadMap(UnityAction onLoadMap)
         {
-            _onLoadMap += onLoadMap;
+            this.onLoadMap += onLoadMap;
         }
 
         public void AddInteractor(InteractionObject interactionObject)
@@ -230,11 +227,11 @@ namespace Utility.Core
             var mainPosSetIndex = CurrentMap.positionSets.FindIndex(item => item.isMain);
             if (mainPosSetIndex != -1)
             {
-                _mainChar = Array.Find(characters, item => item.who == CurrentMap.positionSets[mainPosSetIndex].who);
+                mainChar = Array.Find(characters, item => item.who == CurrentMap.positionSets[mainPosSetIndex].who);
             }
             else
             {
-                _mainChar = null;
+                mainChar = null;
             }
 
             foreach (var posSet in CurrentMap.positionSets)
@@ -242,9 +239,9 @@ namespace Utility.Core
                 var character = Array.Find(characters, item => item.who == posSet.who);
                 character.SetCharacter(posSet.startPosition);
             }
-            
-            JoystickController.instance.Init(CurrentMap.joystickType);
-            JoystickController.instance.InitializeJoyStick(!CurrentMap.isJoystickNone);
+
+            JoystickController.Instance.Init(CurrentMap.joystickType);
+            JoystickController.Instance.InitializeJoyStick(!CurrentMap.isJoystickNone);
 
             camInfo.camDis = CurrentMap.camDis;
             camInfo.camRot = CurrentMap.camRot;
@@ -266,7 +263,7 @@ namespace Utility.Core
                 character.UseJoystickCharacter();
             }
         }
-        
+
         public void UpdateLikeable(int[] rauLikeables)
         {
             charRelationshipData.selfEstm += rauLikeables[0];
@@ -276,7 +273,10 @@ namespace Utility.Core
 
         public int[] GetLikeable()
         {
-            int[] likable = {charRelationshipData.selfEstm, charRelationshipData.intimacySpRau, charRelationshipData.intimacyOunRau};
+            int[] likable =
+            {
+                charRelationshipData.selfEstm, charRelationshipData.intimacySpRau, charRelationshipData.intimacyOunRau
+            };
             return likable;
         }
 
@@ -295,7 +295,7 @@ namespace Utility.Core
                     character.transform.position = charData.pos;
                     character.transform.rotation = charData.rot;
                 }
-                
+
                 charRelationshipData = saveData.charRelationshipData;
                 foreach (var interactionObject in InteractionObjects)
                 {

@@ -46,13 +46,13 @@ namespace CommonScript
             {
                 cam.transform.position = DataController.Instance.CurrentMap.transform.position +
                                          DataController.Instance.camInfo.camDis +
-                                         DialogueController.instance.dialogueData.CamInfo.camDis;
+                                         DialogueController.Instance.dialogueData.CamInfo.camDis;
             }
             
             if (mainCharacter && viewType.Equals(CameraViewType.FollowCharacter))
             {
                 cam.transform.position = mainCharacter.position + DataController.Instance.camInfo.camDis +
-                                         DialogueController.instance.dialogueData.CamInfo.camDis;
+                                         DialogueController.Instance.dialogueData.CamInfo.camDis;
             }
 
         }

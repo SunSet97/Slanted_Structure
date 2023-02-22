@@ -11,9 +11,9 @@ namespace Utility.Preference
         public static PlayUIController Instance { get; private set; }
 
         public Transform mapUi;
-        
-        [Header("메뉴")] [Space(10)]
-        public GameObject menuPanel;
+
+        [Header("메뉴")] [Space(10)] [SerializeField]
+        private GameObject menuPanel;
         [SerializeField] private Animator menuAnimator;
         [SerializeField] private Button menuButton;
 
@@ -43,7 +43,8 @@ namespace Utility.Preference
         [SerializeField] private Sprite vibeToggleOffSprite;
         
         [NonSerialized] public Canvas Canvas;
-        
+        private static readonly int IsOpen = Animator.StringToHash("IsOpen");
+
         private void Awake()
         {
             if (Instance)
@@ -65,39 +66,39 @@ namespace Utility.Preference
             
             menuButton.onClick.AddListener(() =>
             {
-                if (menuAnimator.GetBool("IsOpen"))
+                if (menuAnimator.GetBool(IsOpen))
                 {
-                    menuAnimator.SetBool("IsOpen", false);
+                    menuAnimator.SetBool(IsOpen, false);
                 }
                 else
                 {
-                    menuAnimator.SetBool("IsOpen", true);
+                    menuAnimator.SetBool(IsOpen, true);
                 }
             });
             
             diaryButton.onClick.AddListener(() =>
             {
-                JoystickController.instance.StopSaveLoadJoyStick(true);
+                JoystickController.Instance.StopSaveLoadJoyStick(true);
                 diaryPanel.SetActive(!diaryPanel.activeSelf);
                 preferencePanel.SetActive(false);
             });
             
             diaryExitButton.onClick.AddListener(() =>
             {
-                JoystickController.instance.StopSaveLoadJoyStick(false);
+                JoystickController.Instance.StopSaveLoadJoyStick(false);
                 diaryPanel.SetActive(false);
             });
 
             preferenceButton.onClick.AddListener(() =>
             {
-                JoystickController.instance.StopSaveLoadJoyStick(true);
+                JoystickController.Instance.StopSaveLoadJoyStick(true);
                 preferencePanel.SetActive(!preferencePanel.activeSelf);
                 diaryPanel.SetActive(false);
             });
 
             preferenceExitButton.onClick.AddListener(() =>
             {
-                JoystickController.instance.StopSaveLoadJoyStick(false);
+                JoystickController.Instance.StopSaveLoadJoyStick(false);
                 preferencePanel.SetActive(false);
             });
 
@@ -196,9 +197,13 @@ namespace Utility.Preference
             UpdateUI();
         }
 
-        private void OnDialogue()
+        public void SetMenuActive(bool isActive)
         {
-            menuAnimator.SetBool("IsOpen", false);
+            if (!isActive)
+            {
+                menuAnimator.SetBool(IsOpen, false);
+            }
+            menuPanel.SetActive(isActive);
         }
     }
 }

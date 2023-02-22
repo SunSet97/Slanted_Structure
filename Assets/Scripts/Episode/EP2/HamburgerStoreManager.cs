@@ -31,23 +31,23 @@ public class HamburgerStoreManager : MonoBehaviour
             character.PickUpCharacter();
             character.transform.position = sofa.transform.GetChild(0).position;
             character.transform.rotation = sofa.transform.GetChild(0).rotation;
-            character.Animator.SetBool("Seat", true);
+            character.CharacterAnimator.SetBool("Seat", true);
         });
 
         sofa.SetInteractionEndEvent(() =>
         {
-            JoystickController.instance.InitializeJoyStick(false);
+            JoystickController.Instance.InitializeJoyStick(false);
             speat.StartMoving();
         });
 
         speat.SetPointEvent(() =>
         {
-            DialogueController.instance.SetDialougueEndAction(() =>
+            DialogueController.Instance.SetDialougueEndAction(() =>
             {
                 speat.StartMoving();
                 StartCoroutine(StartRauMoving());
             });
-            DialogueController.instance.StartConversation(jsonFile.text);
+            DialogueController.Instance.StartConversation(jsonFile.text);
         }, 3);
     }
 
@@ -58,9 +58,9 @@ public class HamburgerStoreManager : MonoBehaviour
         int index = speat.pointIndex;
         PointData desPoint = speat.point[index];
 
-        character.Animator.SetBool("Seat", false);
+        character.CharacterAnimator.SetBool("Seat", false);
         yield return new WaitForSeconds(2f);
-        character.Animator.SetFloat("Speed", rauAniSpeed);
+        character.CharacterAnimator.SetFloat("Speed", rauAniSpeed);
 
         character.transform.LookAt(desPoint.transform);
 

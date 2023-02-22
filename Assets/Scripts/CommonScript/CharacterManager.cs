@@ -8,75 +8,86 @@ namespace CommonScript
 {
     public class CharacterManager : MonoBehaviour, IMovable
     {
-        [NonSerialized] public CharacterController CharacterController;
-        [NonSerialized] public Animator Animator;
-    
+        private Expression emotion;
+
+        public Expression Emotion
+        {
+            get => emotion;
+            set
+            {
+                emotion = value;
+                EmotionAnimationSetting();
+            }
+        }
+
         public Character who;
         [SerializeField] private Transform waitTransform;
-    
+
+        [NonSerialized] public CharacterController CharacterController;
+        [NonSerialized] public Animator CharacterAnimator;
+        [NonSerialized] public bool useGravity;
+
         private SkinnedMeshRenderer skinnedMesh; // 캐릭터 머테리얼
-        private Texture[] faceExpression; //표정 메터리얼
+        private Texture[] faceExpression; //표정 메터리얼 
 
         public void Init()
         {
-            Animator = GetComponent<Animator>();
+            CharacterAnimator = GetComponent<Animator>();
             CharacterController = GetComponent<CharacterController>();
-        
-            Animator.SetFloat(SpeedHash, 0);
-            // 표정 머테리얼 초기화
+
+            CharacterAnimator.SetFloat(SpeedHash, 0);
+
             if (who.Equals(Character.Speat) || who.Equals(Character.Oun) || who.Equals(Character.Rau))
             {
                 faceExpression = Resources.LoadAll<Texture>("Face");
-                skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
-                if (faceExpression.Length <= (int)Emotion)
-                {
-                    return;
-                }
-                skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int) Emotion]);
             }
-            //스핏 표정 머테리얼 초기화
-            if (who.Equals(Character.Speat_Adolescene) || who.Equals(Character.Speat_Adult) || who.Equals(Character.Speat_Child))
+            else if (who.Equals(Character.Speat_Adolescene) || who.Equals(Character.Speat_Adult) ||
+                     who.Equals(Character.Speat_Child))
             {
                 faceExpression = Resources.LoadAll<Texture>($"Speat_Face/{who}");
-                skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
-                if (faceExpression.Length <= (int)Emotion)
-                {
-                    return;
-                }
-                skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int)Emotion]);
             }
+
+            skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
+            if (faceExpression.Length <= (int) Emotion)
+            {
+                return;
+            }
+
+            skinnedMesh.materials[1].SetTexture(MainTex, faceExpression[(int) Emotion]);
         }
 
-        #region 캐릭터 컨트롤
+        public bool IsMove { get; set; }
 
-        public bool IsMove { get; set; } //움직일 수 있는지 여부 (움직임을 억지로 막을 때 사용)
-
-        // 캐릭터를 스크립트로 직접 이동할 수 있게 함 (캐릭터를 손으로 집는다고 생각)
         public void PickUpCharacter()
         {
             IsMove = false;
-            Animator.applyRootMotion = false;
+            CharacterAnimator.applyRootMotion = false;
         }
 
-        // 캐릭터를 스크립트로 직접 이동할 수 있게 함 (캐릭터를 손으로 집는다고 생각)
         public void PutDownCharacter()
         {
             IsMove = true;
-            Animator.applyRootMotion = true;
+            CharacterAnimator.applyRootMotion = true;
+        }
+
+        public void UseJoystickCharacter()
+        {
+            Invoke(nameof(PutDownCharacter), Time.fixedDeltaTime);
         }
 
         public void InitializeCharacter()
         {
             Emotion = Expression.IDLE;
             gameObject.layer = LayerMask.NameToLayer("Default");
-            moveHorDir = Vector3.zero;
-            moveVerDir = Vector3.zero;
-            Animator.SetFloat(SpeedHash, 0f);
-        
-            Animator.SetBool(JumpHash, false);
-            Animator.SetBool(TwoSideHash, false);
-            Animator.SetBool(EatHash, false);
-            Animator.SetBool(SeatHash, false);
+            MoveHorizontal = 0f;
+            MoveVerical = 0f;
+            useGravity = false;
+
+            CharacterAnimator.SetFloat(SpeedHash, 0f);
+
+            CharacterAnimator.SetBool(TwoSideHash, false);
+            CharacterAnimator.SetBool(EatHash, false);
+            CharacterAnimator.SetBool(SeatHash, false);
         }
 
         public void SetCharacter(Transform mapSettingTransform)
@@ -96,33 +107,40 @@ namespace CommonScript
 
                 transform.position = targetPos;
                 transform.LookAt(mainPosSet.startPosition);
-            
+
                 gameObject.layer = LayerMask.NameToLayer("Default");
             }
-            else if(DataController.Instance.CurrentMap.positionSets[posSetIndex].isMain)
+            else if (DataController.Instance.CurrentMap.positionSets[posSetIndex].isMain)
             {
                 transform.position = mapSettingTransform.position;
+                Debug.Log("전  " + transform.rotation.eulerAngles);
                 transform.LookAt(transform.position + mapSettingTransform.right);
-            
+                Debug.Log("후  " + transform.rotation.eulerAngles);
+
                 gameObject.layer = LayerMask.NameToLayer("Player");
             }
-        
+
             Emotion = Expression.IDLE;
-        
+            useGravity = true;
+
             gameObject.SetActive(true);
-        
+            
+            
+            var yRotation = DataController.Instance.camInfo.camRot.y * Mathf.Deg2Rad;
+            var cameraRight = new Vector3(Mathf.Sin(yRotation), 0, Mathf.Cos(yRotation));
+            
             characterOriginRot = transform.eulerAngles;
-
-            camRotation = Quaternion.Euler(0, -DataController.Instance.camInfo.camRot.y, 0);
-            Vector3 transformedDir = camRotation * transform.forward;
-
-            if (transformedDir.x < 0)
+            
+            var dot = Vector3.Dot(transform.forward, cameraRight);
+            if (dot > 0)
+            {
                 characterOriginRot.y += 180f;
-        
+                Debug.Log("정방향이 아님 반전시킴");
+            }
+
             Debug.Log($"{who}  세팅: " + transform.position);
         }
 
-        //대기 방으로 이동하는 함수
         public void WaitInRoom()
         {
             gameObject.SetActive(false);
@@ -130,72 +148,42 @@ namespace CommonScript
             transform.rotation = waitTransform.rotation;
         }
 
-        // 일정 시간 후 캐릭터를 조이스틱으로 움직이게 함
-        public void UseJoystickCharacter()
-        {
-            Invoke("PutDownCharacter", Time.fixedDeltaTime);
-        }
-
-        #endregion
-
-        #region 캐릭터 애니메이션 설정
-
-        // 감정상태
-        private Expression emotion;
-
-        public Expression Emotion
-        {
-            get => emotion;
-            set
-            {
-                emotion = value;
-                EmotionAnimationSetting();
-            }
-        }
-
-        // 현재 Emotion상태값 넣기
-        private void EmotionAnimationSetting()
-        {
-            if (faceExpression.Length <= (int)Emotion || Emotion == Expression.NONE)
-            {
-                return;
-            }
-            skinnedMesh.materials[1].SetTexture("_MainTex", faceExpression[(int) Emotion]);
-        }
-
-        #endregion
-
         #region 캐릭터 이동 설정
 
-        [Header("#Character move setting")] public Vector3 moveHorDir, moveVerDir; // 수평, 수직 이동 방향 벡터
-        public float joyRot;
-        public Quaternion camRotation; // 메인 카메라 기준으로 joystick input 변경(라인트레이서 제외)
+        [Header("#Character move setting")] 
+        [NonSerialized] public float MoveHorizontal; // 수평, 수직 이동 방향 벡터
+
+        [NonSerialized] public float MoveVerical; // 수평, 수직 이동 방향 벡터
 
         private Vector3 characterOriginRot; // 캐릭터의 기존 방향
 
         public float jumpForce = 5f; // 점프력
         public float gravityScale = 0.6f; // 중력 배수
         public float airResistance = 1.2f; // 공기 저항
-    
+
         [SerializeField] private float followDistance = 1f;
         [SerializeField] private float followSpeed = 1f;
         private float lastFollowSpeed;
 
         private static readonly int SpeedHash = Animator.StringToHash("Speed");
-        private static readonly int JumpHash = Animator.StringToHash("Jump");
+        private static readonly int JumpTriggerHash = Animator.StringToHash("JumpTrigger");
         private static readonly int TwoSideHash = Animator.StringToHash("2DSide");
         private static readonly int DirectionHash = Animator.StringToHash("Direction");
         private static readonly int SeatHash = Animator.StringToHash("Seat");
         private static readonly int EatHash = Animator.StringToHash("Eat");
+        private static readonly int MainTex = Shader.PropertyToID("_MainTex");
 
         private void Move2DSide(float x)
         {
-            Animator.SetBool(TwoSideHash, true);
+            if (!Mathf.Approximately(x, 0f))
+            {
+                CharacterAnimator.SetBool(TwoSideHash, true);
+            }
 
-            Vector2 characterRot = default;
+            Vector2 characterRot = transform.eulerAngles;
             if (x < 0)
             {
-                characterRot.y = characterOriginRot.y + 180;
+                characterRot.y = characterOriginRot.y + 180f;
                 transform.eulerAngles = characterRot;
             }
             else if (x > 0)
@@ -205,81 +193,70 @@ namespace CommonScript
             }
         }
 
-        private void QuarterView()
+        private void QuarterView(float joystickAngle)
         {
-            Animator.SetBool(TwoSideHash, false);
-            if (Mathf.Abs(joyRot) > 0)
+            CharacterAnimator.SetBool(TwoSideHash, false);
+            if (Mathf.Abs(joystickAngle) > 0)
             {
-                transform.Rotate(Vector3.up, joyRot);
-            } // 임시 회전
+                transform.Rotate(Vector3.up, joystickAngle);
+            }
 
-            Animator.SetFloat(DirectionHash, joyRot); //X방향
+            CharacterAnimator.SetFloat(DirectionHash, joystickAngle);
         }
 
-        public void MoveCharacter(JoystickInputMethod joystickInputMethod)
+        public void MoveCharacter(JoystickInputMethod joystickInputMethod, bool isJoystickInputUse)
         {
             // 캐릭터를 이 함수로 조종할 수 있을때 (조이스틱 외 미포함)
             if (IsMove)
             {
-                // 메인 카메라 기준으로 캐릭터가 바라보는 방향 계산
-                camRotation = Quaternion.Euler(0, -DataController.Instance.Cam.transform.rotation.eulerAngles.y, 0);
-                Vector3 transformedDir = camRotation * transform.forward;
-                Vector2 characterDir = new Vector2(transformedDir.x, transformedDir.z);
-                // 조이스틱이 가리키는 방향
-                Vector2 joystickDir = new Vector2(JoystickController.instance.inputDirection.x,
-                    JoystickController.instance.inputDirection.y);
+                if (isJoystickInputUse)
+                {
+                    var characterForward2D =
+                        new Vector2(Vector3.Dot(transform.forward, DataController.Instance.Cam.transform.right),
+                            Vector3.Dot(transform.forward, DataController.Instance.Cam.transform.forward));
 
-                joyRot = Vector2.SignedAngle(joystickDir, characterDir);
-                //사이드뷰 일 때
-                if (joystickInputMethod.Equals(JoystickInputMethod.OneDirection))
-                {
-                    Move2DSide(joystickDir.x);
-                }
-                //쿼터뷰일 때    
-                else if (joystickInputMethod.Equals(JoystickInputMethod.AllDirection))
-                {
-                    QuarterView();
-                }
+                    var joystickDir = new Vector2(JoystickController.Instance.inputDirection.x,
+                        JoystickController.Instance.inputDirection.y);
 
-                if (joystickInputMethod.Equals(JoystickInputMethod.Other))
-                {
-                    if (Mathf.Abs(joyRot) > 0)
+                    var joystickDeltaAngle = Vector2.SignedAngle(joystickDir, characterForward2D);
+
+                    if (joystickInputMethod == JoystickInputMethod.OneDirection)
                     {
-                        transform.Rotate(Vector3.up, joyRot);
-                    } // 임시 회전
-                }
-
-                Animator.SetFloat(SpeedHash, JoystickController.instance.inputDegree);
-                //점프는 바닥에 닿아 있을 때 위로 스와이프 했을 경우에 가능(쿼터뷰일때 불가능)
-                if (JoystickController.instance.inputJump && CharacterController.isGrounded)
-                {
-                    moveVerDir.y = 0;
-                    Animator.SetBool(JumpHash, true); //점프 가능 상태로 변경
-                }
-
-
-                //땅에서 떨어져 있을 경우 기본적으로 중력이 적용되고 중력은 가속도이므로 +=를 써서 계속해서 더해줌
-                if (!CharacterController.isGrounded)
-                {
-                    moveVerDir.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
-                }
-                //땅에 붙어있을 경우
-                else
-                {
-                    moveVerDir.y = 0;
-                    //캐릭터 점프 가능
-                    if (JoystickController.instance.inputJump && Animator.GetBool(JumpHash))
+                        Move2DSide(joystickDir.x);
+                    }
+                    else if (joystickInputMethod == JoystickInputMethod.AllDirection)
                     {
-                        moveVerDir.y += jumpForce; //점프력 만큼 힘을 가함
-                        Animator.SetBool(JumpHash, false); //점프 불가능 상태로 변경하여 연속적인 점프 제한
+                        QuarterView(joystickDeltaAngle);
+                    }
+                    else if (joystickInputMethod == JoystickInputMethod.Other)
+                    {
+                        if (Mathf.Abs(joystickDeltaAngle) > 0)
+                        {
+                            transform.Rotate(Vector3.up, joystickDeltaAngle);
+                        }
+                    }
+
+                    CharacterAnimator.SetFloat(SpeedHash, JoystickController.Instance.inputDegree);
+                }
+
+                if (useGravity && !CharacterController.isGrounded)
+                {
+                    MoveVerical += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
+                }
+                else if (CharacterController.isGrounded)
+                {
+                    if (MoveVerical <= 0)
+                    {
+                        MoveVerical = 0;
+                    }
+
+                    if (JoystickController.Instance.InputJump)
+                    {
+                        Jump();
                     }
                 }
 
-                CharacterController.Move((moveHorDir + moveVerDir) * Time.fixedDeltaTime); //캐릭터를 최종 이동 시킴
-            }
-            else
-            {
-                Animator.SetFloat(SpeedHash, 0);
+                CharacterController.Move(new Vector2(MoveHorizontal, MoveVerical) * Time.fixedDeltaTime);
             }
         }
 
@@ -287,14 +264,14 @@ namespace CommonScript
         {
             if (joystickInputMethod.Equals(JoystickInputMethod.OneDirection))
             {
-                Animator.SetBool(TwoSideHash, true);
+                CharacterAnimator.SetBool(TwoSideHash, true);
             }
             else if (joystickInputMethod.Equals(JoystickInputMethod.AllDirection))
             {
-                Animator.SetBool(TwoSideHash, false);
+                CharacterAnimator.SetBool(TwoSideHash, false);
             }
-        
-        
+
+
             var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
 
             var targetPos = (mainCharacter.transform.position - mainCharacter.transform.forward) * followDistance;
@@ -303,48 +280,64 @@ namespace CommonScript
 
             var distance = Vector2.Distance(new Vector2(targetPos.x, targetPos.z),
                 new Vector2(transform.position.x, transform.position.z));
-        
+
             var lookPos = mainCharacter.transform.position;
             lookPos.y = transform.position.y;
             transform.LookAt(lookPos);
-        
+
             var distanceRatio = distance / followDistance;
-        
+
             if (distanceRatio <= 1)
             {
                 var curFollowSpeed = Mathf.Lerp(lastFollowSpeed, 0f, 0.95f);
-                Animator.SetFloat(SpeedHash, curFollowSpeed);
+                CharacterAnimator.SetFloat(SpeedHash, curFollowSpeed);
                 lastFollowSpeed = curFollowSpeed;
             }
             else
             {
-                Animator.SetFloat(SpeedHash, (distanceRatio - 1) * followSpeed);
+                CharacterAnimator.SetFloat(SpeedHash, (distanceRatio - 1) * followSpeed);
             }
 
-            if (JoystickController.instance.inputJump && CharacterController.isGrounded)
+            if (useGravity && !CharacterController.isGrounded)
             {
-                moveVerDir.y = 0;
-                Animator.SetBool(JumpHash, true);
+                MoveVerical += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
             }
-
-            if (!CharacterController.isGrounded)
+            else if (CharacterController.isGrounded)
             {
-                moveVerDir.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
-            }
-            else
-            {
-                moveVerDir.y = 0;
-            
-                if (JoystickController.instance.inputJump && Animator.GetBool(JumpHash))
+                if (MoveVerical <= 0)
                 {
-                    moveVerDir.y += jumpForce;
-                    Animator.SetBool(JumpHash, false);
+                    MoveVerical = 0;
+                }
+
+                if (JoystickController.Instance.InputJump)
+                {
+                    Jump();
                 }
             }
-            CharacterController.Move((moveHorDir + moveVerDir) * Time.fixedDeltaTime);
+
+            CharacterController.Move(new Vector2(MoveHorizontal, MoveVerical) * Time.fixedDeltaTime);
+        }
+
+        // 점프 중에 이동속도 느려짐, RootMotion 때문으로 추측
+        public void Jump()
+        {
+            CharacterAnimator.SetBool(TwoSideHash, false);
+            JoystickController.Instance.InputJump = false;
+            MoveVerical = jumpForce;
+            CharacterAnimator.SetTrigger(JumpTriggerHash);
         }
 
         #endregion
+
+        private void EmotionAnimationSetting()
+        {
+            if (faceExpression.Length <= (int) Emotion || Emotion == Expression.None)
+            {
+                return;
+            }
+
+            skinnedMesh.materials[1].SetTexture(MainTex, faceExpression[(int) Emotion]);
+        }
 
         private void OnDrawGizmos()
         {

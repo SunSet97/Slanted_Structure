@@ -23,7 +23,7 @@ public class DalgonaGame : MonoBehaviour, IGamePlayable
         }
 
         dalgonaPanel.SetActive(true);
-        JoystickController.instance.StopSaveLoadJoyStick(true);
+        JoystickController.Instance.StopSaveLoadJoyStick(true);
         IsPlay = true;
         dalgona[index].Init();
         StartCoroutine(WaitDalgonaEnd());
@@ -31,7 +31,7 @@ public class DalgonaGame : MonoBehaviour, IGamePlayable
 
     public void EndPlay()
     {
-        JoystickController.instance.StopSaveLoadJoyStick(false);
+        JoystickController.Instance.StopSaveLoadJoyStick(false);
         IsPlay = false;
         ONEndPlay?.Invoke();
         dalgonaPanel.SetActive(false);

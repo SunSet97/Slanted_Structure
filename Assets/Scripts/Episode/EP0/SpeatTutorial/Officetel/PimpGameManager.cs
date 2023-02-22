@@ -8,6 +8,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
     public class PimpGameManager : MonoBehaviour, IGamePlayable
     {
         public PimpGuest[] pimpGuests;
+        private static readonly int Speed = Animator.StringToHash("Speed");
 
         private void Start()
         {
@@ -43,10 +44,10 @@ namespace Episode.EP0.SpeatTutorial.Officetel
             IsPlay = false;
             ONEndPlay?.Invoke();
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
-            foreach (var t in pimpGuests)
+            foreach (var pimpGuest in pimpGuests)
             {
-                var animator = t.GetComponent<Animator>();
-                animator.SetFloat("Speed", 0.0f);
+                var animator = pimpGuest.GetComponent<Animator>();
+                animator.SetFloat(Speed, 0.0f);
             }
         }
     }

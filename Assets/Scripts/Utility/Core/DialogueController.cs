@@ -13,9 +13,7 @@ namespace Utility.Core
 {
     public class DialogueController : MonoBehaviour
     {
-        private static DialogueController _instance;
-
-        public static DialogueController instance => _instance;
+        public static DialogueController Instance { get; private set; }
 
         public GameObject dialoguePanel;
 
@@ -40,14 +38,14 @@ namespace Utility.Core
 
         private void Awake()
         {
-            if (_instance)
+            if (Instance)
             {
                 Destroy(gameObject);
             }
             else
             {
-                _instance = this;
-                DontDestroyOnLoad(_instance);
+                Instance = this;
+                DontDestroyOnLoad(Instance);
             }
         }
 
@@ -93,14 +91,14 @@ namespace Utility.Core
                 taskData.isContinue = false;
             }
 
-            JoystickController.instance.StopSaveLoadJoyStick(true);
+            JoystickController.Instance.StopSaveLoadJoyStick(true);
 
             dialogueData.Init(jsonString);
             IsTalking = true;
 
             dialoguePanel.SetActive(true);
 
-            PlayUIController.Instance.menuPanel.SetActive(false);
+            PlayUIController.Instance.SetMenuActive(false);
 
             UpdateWord();
         }
@@ -110,8 +108,8 @@ namespace Utility.Core
             Debug.Log("대화 종료");
             IsTalking = false;
             dialoguePanel.SetActive(false);
-            PlayUIController.Instance.menuPanel.SetActive(true);
-            JoystickController.instance.StopSaveLoadJoyStick(false);
+            PlayUIController.Instance.SetMenuActive(true);
+            JoystickController.Instance.StopSaveLoadJoyStick(false);
             foreach (var positionSet in DataController.Instance.CurrentMap.positionSets)
             {
                 DataController.Instance.GetCharacter(positionSet.who).Emotion = Expression.IDLE;
@@ -199,7 +197,7 @@ namespace Utility.Core
 
         public void OpenChoicePanel()
         {
-            JoystickController.instance.StopSaveLoadJoyStick(true);
+            JoystickController.Instance.StopSaveLoadJoyStick(true);
             int index = taskData.taskIndex;
             int choiceLen = int.Parse(taskData.tasks[index].nextFile);
 
@@ -267,7 +265,7 @@ namespace Utility.Core
         public void PressChoice(int index)
         {
             RemoveChoice();
-            JoystickController.instance.StopSaveLoadJoyStick(false);
+            JoystickController.Instance.StopSaveLoadJoyStick(false);
             dialogueData.ChooseAction?.Invoke(index);
             dialogueData.ChooseAction = null;
         }

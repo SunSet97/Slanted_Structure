@@ -49,7 +49,7 @@ public class PlayGroundManager : MonoBehaviour, IGamePlayable
 
     public void Play()
     {
-        JoystickController.instance.InitializeJoyStick(false);
+        JoystickController.Instance.InitializeJoyStick(false);
 
         DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
         rangeParent.SetActive(false);

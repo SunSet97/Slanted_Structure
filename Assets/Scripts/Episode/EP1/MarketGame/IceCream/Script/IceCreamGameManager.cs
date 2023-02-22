@@ -40,7 +40,7 @@ public class IceCreamGameManager : MonoBehaviour, IGamePlayable
 
     public void Play()
     {
-        JoystickController.instance.StopSaveLoadJoyStick(true);
+        JoystickController.Instance.StopSaveLoadJoyStick(true);
         iceCreamPanel.SetActive(true);
         IsPlay = true;
 
@@ -83,7 +83,7 @@ public class IceCreamGameManager : MonoBehaviour, IGamePlayable
         IsPlay = false;
         ONEndPlay?.Invoke();
         iceCreamPanel.SetActive(false);
-        JoystickController.instance.StopSaveLoadJoyStick(false);
+        JoystickController.Instance.StopSaveLoadJoyStick(false);
     }
 
     private IEnumerator MoveHorizontal()

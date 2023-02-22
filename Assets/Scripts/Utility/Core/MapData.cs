@@ -278,7 +278,7 @@ namespace Utility.Core
             }
             else
             {
-                JoystickInputUpdate();
+                PlayerFixedUpdate();
             }
         }
 
@@ -346,7 +346,7 @@ namespace Utility.Core
         private CharacterManager mainCharacter;
         private CharacterManager[] followCharacters;
 
-        private void JoystickInputUpdate()
+        private void PlayerFixedUpdate()
         {
             if (mainCharacter == null)
             {
@@ -355,10 +355,10 @@ namespace Utility.Core
 
             if (isJoystickInputUse)
             {
-                JoystickController.instance.JoystickInputUpdate(method);
+                JoystickController.Instance.JoystickInputUpdate(method);
             }
 
-            mainCharacter.MoveCharacter(method);
+            mainCharacter.MoveCharacter(method, isJoystickInputUse);
             
             if (followCharacters != null)
             {

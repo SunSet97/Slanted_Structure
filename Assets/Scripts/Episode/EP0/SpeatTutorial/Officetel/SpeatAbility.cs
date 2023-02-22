@@ -151,7 +151,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
                 return;
             }
 
-            var joyStick = JoystickController.instance.joystick;
+            var joyStick = JoystickController.Instance.Joystick;
 
             var fwdDir = mainCharacter.transform.forward;
             var upDir = mainCharacter.transform.up;
@@ -208,7 +208,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
                 var target = hit.collider.transform.position;
                 if (!isHiding)
                 {
-                    JoystickController.instance.StopSaveLoadJoyStick(true);
+                    JoystickController.Instance.StopSaveLoadJoyStick(true);
                     StartCoroutine(Hide(target, door));
                     if (abilityTimerCoroutine != null)
                     {
@@ -222,7 +222,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
                 }
                 else
                 {
-                    JoystickController.instance.StopSaveLoadJoyStick(false);
+                    JoystickController.Instance.StopSaveLoadJoyStick(false);
                     StartCoroutine(Hide(target, hidingDoor));
                     AbilityCooldown();
                 }
@@ -264,7 +264,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
             mainCharacter.PickUpCharacter();
             mainCharacter.transform.rotation = rotation;
 
-            mainCharacter.Animator.SetFloat(Speed, 1f);
+            mainCharacter.CharacterAnimator.SetFloat(Speed, 1f);
 
             var t = 0f;
             var startPos = mainCharacter.transform.position;
@@ -276,7 +276,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
                 yield return waitForFixedUpdate;
             }
 
-            mainCharacter.Animator.SetFloat(Speed, 0f);
+            mainCharacter.CharacterAnimator.SetFloat(Speed, 0f);
             mainCharacter.PutDownCharacter();
 
             door.IsClickEnable = true;

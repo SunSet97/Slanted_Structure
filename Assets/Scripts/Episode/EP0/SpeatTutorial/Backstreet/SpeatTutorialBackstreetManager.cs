@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using CommonScript;
 using Play;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,9 +19,9 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
         private TextAsset jsonFile;
 
         [Header("#UI")] public Slider speatSlider;
-        public Text endText;
+        public Text remainingDistanceText;
         public Slider pimpSlider;
-        public Text distanceText;
+        public Text pimpDistanceText;
 
         [Header("#Objects")] public Transform startPosition;
         public GameObject pimp;
@@ -32,8 +31,9 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
         [SerializeField] private Button jumpButton;
 
         [SerializeField] private float runSpeed;
-
-        private float speatDistance;
+        [SerializeField] private float jumpCooldownSec = 0.05f;
+        
+        private float remainingDistance;
         private float pimpDistance;
         private float speatAccelator;
         private float pimpAccelator;
@@ -49,15 +49,20 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 
         private void Start()
         {
-            InitRunGame();
+            Initialize();
         }
 
-        private void InitRunGame()
+        private void Initialize()
         {
+            DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
+            
             obstacleAssetBundle = AssetBundle.LoadFromFile(Application.dataPath + Path);
 
             Debug.Log(obstacleAssetBundle == null ? "Fail to load" : "Success to load");
             var obstacleAssets = obstacleAssetBundle.LoadAllAssets<GameObject>();
+
+            speatSlider.value = 0f;
+            pimpSlider.value = 0f;
 
             patterns = new GameObject[4][];
             for (var idx = 0; idx < patterns.Length; idx++)
@@ -72,6 +77,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
         public void Play()
         {
             IsPlay = true;
+            StartCoroutine(WaitPimp());
             StartCoroutine(StartRunGame());
         }
 
@@ -83,11 +89,11 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 
             if (jsonFile != null)
             {
-                DialogueController.instance.SetDialougueEndAction(() =>
+                DialogueController.Instance.SetDialougueEndAction(() =>
                 {
                     DataController.Instance.CurrentMap.MapClear();
                 });
-                DialogueController.instance.StartConversation(jsonFile.text);
+                DialogueController.Instance.StartConversation(jsonFile.text);
             }
             else
             {
@@ -95,43 +101,34 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
             }
         }
 
+        private IEnumerator WaitPimp()
+        {
+            yield return new WaitUntil(() => speatSlider.value > speatSlider.maxValue * 0.1f);
+            
+            pimp.SetActive(true);
+            pimpSlider.gameObject.SetActive(true);
+        }
+
         private IEnumerator StartRunGame()
         {
-            CharacterManager mainCharacter = DataController.Instance.GetCharacter(Character.Main);
-            WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
-            
-            JoystickController.instance.InitializeJoyStick(false);
-            JoystickController.instance.inputDegree = 1;
-            JoystickController.instance.inputDirection.x = 1;
-            
-            DataController.Instance.CurrentMap.isJoystickInputUse = false;
+            DataController.Instance.CurrentMap.ui.gameObject.SetActive(true);
+            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            var waitForFixedUpdate = new WaitForFixedUpdate();
 
-            mainCharacter.jumpForce = 7;
+            var originJumpForce = mainCharacter.jumpForce;
+            mainCharacter.jumpForce = 7f;
+            mainCharacter.CharacterAnimator.SetFloat("Speed", JoystickController.Instance.inputDegree);
             
             while (speatSlider.value < speatSlider.maxValue)
             {
-                var speatPercentage = 100f / speatSlider.maxValue;
-                speatDistance = (speatSlider.maxValue - speatSlider.value) * speatPercentage; // 종료 지점과 스핏의 거리
-                pimpDistance = (speatSlider.value - pimpSlider.value) * speatPercentage; // 스핏과 포주의 거리
-            
-                if (!pimp.activeSelf && speatSlider.value > speatSlider.maxValue * 0.1f)
-                {
-                    pimp.SetActive(true);
-                    pimpSlider.fillRect.gameObject.SetActive(true);
-                    pimpSlider.handleRect.gameObject.SetActive(true);
-                }
+                var percentage = 100f / speatSlider.maxValue;
+                remainingDistance = (speatSlider.maxValue - speatSlider.value) * percentage;
+                pimpDistance = (speatSlider.value - pimpSlider.value) * percentage;
 
-                if (pimp.activeSelf)
-                {
-                    Vector3 localPosition = pimp.transform.localPosition;
-                    localPosition.x = 20 - pimpDistance * 2;
-                    pimp.transform.localPosition = localPosition;
-                }
+                remainingDistanceText.text = $"{remainingDistance:0}m";
+                pimpDistanceText.text = $"{pimpDistance:0}m";
 
-                // 남은 거리, 포주와의 거리 텍스트 입력
-                endText.text = $"{speatDistance:0}m";
-                distanceText.text = $"{pimpDistance:0}m";
-
+                
                 if (speatSlider.value >= speatSlider.maxValue)
                 {
                     EndPlay();
@@ -142,58 +139,74 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
                 }
                 
                 
-                
-                // 스핏 달리기(장애물에 막히지 않았을 때만)
-                if (startPosition.position.x < mainCharacter.transform.position.x)
-                {
-                    speatSlider.value += 0.8f * Time.fixedDeltaTime + speatAccelator;
-                    speatAccelator += 0.0009f * Time.fixedDeltaTime;
-                }
-                else
-                {
-                    speatAccelator *= 0.97f;
-                }
-                
                 if (pimp.activeSelf)
                 {
+                    var localPosition = pimp.transform.localPosition;
+                    localPosition.x = 20f - pimpDistance * 2f;
+                    pimp.transform.localPosition = localPosition;
+                    
                     pimpSlider.value += 0.85f * Time.fixedDeltaTime + pimpAccelator;
                     pimpAccelator += 0.0005f * Time.fixedDeltaTime;
                 }
 
                 if (startPosition.position.x < mainCharacter.transform.position.x)
                 {
-                    for (int i = 1; i < trailer.Length; i++)
-                    {
-                        // 트레일러 이동
-                        trailer[i].position = trailer[0].position.x - trailer[i].position.x >= 18f * 2
-                            ? trailer[0].position + 18.5f * 2 * Vector3.right
-                            : // 앞 위치로 이동
-                            trailer[i].position -
-                            Vector3.right * (runSpeed + speatAccelator) * Time.fixedDeltaTime; // 뒤로 밀기
-                        // 제거 및 생성
-                        if (trailer[0].position.x - trailer[i].position.x >= 18f * 2)
-                        {
-                            Destroy(trailer[i].GetChild(0).gameObject); // 현재 장애물 패턴 제거
+                    speatSlider.value += 0.8f * Time.fixedDeltaTime + speatAccelator;
+                    speatAccelator += 0.0009f * Time.fixedDeltaTime;
 
-                            if (speatSlider.value < speatSlider.maxValue * 0.8f)
-                            {
-                                int index = speatDistance > 66 ? 1 : speatDistance > 33 ? 2 : 3;
-                                Instantiate(patterns[index][Random.Range(0, patterns[index].Length)], trailer[i])
-                                    .SetActive(true); // 장애물 패턴 랜덤 생성
-                            }
-                            else
-                            {
-                                Instantiate(patterns[0][1], trailer[i]).SetActive(true); // 장애물 없는 길 생성
-                            }
-                        }
-                    }
+                    InstantiateObstacle();
+                }
+                else
+                {
+                    speatAccelator *= 0.97f;
                 }
 
                 yield return waitForFixedUpdate;
             }
 
-            mainCharacter.jumpForce = 4;
-            mainCharacter.UseJoystickCharacter();
+            mainCharacter.jumpForce = originJumpForce;
+            mainCharacter.CharacterAnimator.SetFloat("Speed", 0f);
+        }
+
+        private void InstantiateObstacle()
+        {
+            for (var idx = 1; idx < trailer.Length; idx++)
+            {
+                if (trailer[0].position.x - trailer[idx].position.x >= 18f * 2)
+                {
+                    trailer[idx].position = trailer[0].position + 18.5f * 2 * Vector3.right;
+                }
+                else
+                {
+                    // 앞 위치로 이동
+                    trailer[idx].position -= Vector3.right * (runSpeed + speatAccelator) * Time.fixedDeltaTime; // 뒤로 밀기
+                }
+                
+                // 제거 및 생성
+                if (trailer[0].position.x - trailer[idx].position.x >= 18f * 2)
+                {
+                    Destroy(trailer[idx].GetChild(0).gameObject); // 현재 장애물 패턴 제거
+
+                    if (speatSlider.value < speatSlider.maxValue * 0.8f)
+                    {
+                        var level = 3;
+                        if (remainingDistance > 66f)
+                        {
+                            level = 1;
+                        }
+                        else if (remainingDistance > 33f)
+                        {
+                            level = 2;
+                        }
+                        Instantiate(patterns[level][Random.Range(0, patterns[level].Length)], trailer[idx])
+                            .SetActive(true);
+                    }
+                    else
+                    {
+                        Instantiate(patterns[0][1], trailer[idx]).SetActive(true);
+                    }
+                }
+            }
         }
 
         private void UseJump()
@@ -204,7 +217,8 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
             }
 
             jumpEnable = false;
-            JoystickController.instance.inputJump = true;
+            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            mainCharacter.Jump();
             StartCoroutine(JumpCooldown());
         }
 
@@ -215,12 +229,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
             var waitForFixedUpdate = new WaitForFixedUpdate();
             while (jumpImage.fillAmount > 0)
             {
-                jumpImage.fillAmount -= Time.fixedDeltaTime * 20f;
-                if (jumpImage.fillAmount < 0.9f)
-                {
-                    JoystickController.instance.inputJump = false;
-                }
-
+                jumpImage.fillAmount -= Time.fixedDeltaTime / jumpCooldownSec;
                 yield return waitForFixedUpdate;
             }
 
@@ -251,7 +260,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
                 yield return waitForFixedUpdate;
             }
 
-            mainCharacter.gameObject.layer = 0;
+            mainCharacter.gameObject.layer = LayerMask.NameToLayer("Player");
 
             while (abilityImage.fillAmount > 0)
             {

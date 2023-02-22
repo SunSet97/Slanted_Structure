@@ -104,21 +104,20 @@ namespace Episode.EP0.SpeatTutorial.Officetel
             if (hit.collider.TryGetComponent(out CharacterManager characterManager) &&
                 characterManager.who.Equals(CustomEnum.Character.Main))
             {
-                var speat = DataController.Instance.GetCharacter(CustomEnum.Character.Speat_Adult);
-                speat.gameObject.layer = LayerMask.NameToLayer("Player");
+               characterManager.gameObject.layer = LayerMask.NameToLayer("Player");
 
                 if (jsonFile)
                 {
-                    speat.IsMove = false;
-
+                    characterManager.IsMove = false;
+                    
                     pimpGameManager.EndPlay();
 
-                    DialogueController.instance.SetDialougueEndAction(() =>
+                    DialogueController.Instance.SetDialougueEndAction(() =>
                     {
-                        speat.IsMove = true;
+                        characterManager.IsMove = true;
                         DataController.Instance.ChangeMap(DataController.Instance.mapCode);
                     });
-                    DialogueController.instance.StartConversation(jsonFile.text);
+                    DialogueController.Instance.StartConversation(jsonFile.text);
                 }
                 else
                 {
