@@ -13,19 +13,23 @@ namespace CommonScript
         public Expression Emotion
         {
             get => emotion;
+
             set
             {
                 emotion = value;
                 EmotionAnimationSetting();
-                
+
             }
         }
 
         public Character who;
+
         [SerializeField] private Transform waitTransform;
 
         [NonSerialized] public CharacterController CharacterController;
+
         [NonSerialized] public Animator CharacterAnimator;
+
         [NonSerialized] public bool useGravity;
 
         private SkinnedMeshRenderer skinnedMesh; // 캐릭터 머테리얼
@@ -49,12 +53,12 @@ namespace CommonScript
             }
 
             skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
-            if (faceExpression.Length <= (int) Emotion)
+            if (faceExpression.Length <= (int)Emotion)
             {
                 return;
             }
 
-            skinnedMesh.materials[1].SetTexture(MainTex, faceExpression[(int) Emotion]);
+            skinnedMesh.materials[1].SetTexture(MainTex, faceExpression[(int)Emotion]);
         }
 
         public bool IsMove { get; set; }
@@ -66,12 +70,6 @@ namespace CommonScript
         }
 
         public void PutDownCharacter()
-        {
-            IsMove = true;
-            CharacterAnimator.applyRootMotion = true;
-        }
-
-        public void UseJoystickCharacter()
         {
             Invoke(nameof(PutDownCharacter), Time.fixedDeltaTime);
         }
@@ -125,13 +123,13 @@ namespace CommonScript
             useGravity = true;
 
             gameObject.SetActive(true);
-            
-            
+
+
             var yRotation = DataController.Instance.camInfo.camRot.y * Mathf.Deg2Rad;
             var cameraRight = new Vector3(Mathf.Sin(yRotation), 0, Mathf.Cos(yRotation));
-            
+
             characterOriginRot = transform.eulerAngles;
-            
+
             var dot = Vector3.Dot(transform.forward, cameraRight);
             if (dot > 0)
             {
@@ -151,8 +149,8 @@ namespace CommonScript
 
         #region 캐릭터 이동 설정
 
-        [Header("#Character move setting")] 
-        [NonSerialized] public float MoveHorizontal; // 수평, 수직 이동 방향 벡터
+        [Header("#Character move setting")] [NonSerialized]
+        public float MoveHorizontal; // 수평, 수직 이동 방향 벡터
 
         [NonSerialized] public float MoveVerical; // 수평, 수직 이동 방향 벡터
 
@@ -162,8 +160,10 @@ namespace CommonScript
         public float gravityScale = 0.6f; // 중력 배수
         public float airResistance = 1.2f; // 공기 저항
 
-        [SerializeField] private float followDistance = 1f;
+        [SerializeField] private float followDistance = 1f; 
+
         [SerializeField] private float followSpeed = 1f;
+
         private float lastFollowSpeed;
 
         private static readonly int SpeedHash = Animator.StringToHash("Speed");
@@ -175,13 +175,8 @@ namespace CommonScript
         private static readonly int MainTex = Shader.PropertyToID("_MainTex");
         private static readonly int EmotionHash = Animator.StringToHash("Emotion");
 
-        private void Move2DSide(float x)
+        public void RotateCharacter2D(float x)
         {
-            if (!Mathf.Approximately(x, 0f))
-            {
-                CharacterAnimator.SetBool(TwoSideHash, true);
-            }
-
             Vector2 characterRot = transform.eulerAngles;
             if (x < 0)
             {
@@ -193,6 +188,14 @@ namespace CommonScript
                 characterRot.y = characterOriginRot.y;
                 transform.eulerAngles = characterRot;
             }
+        }
+        private void Move2DSide(float x)
+        {
+            if (!Mathf.Approximately(x, 0f))
+            {
+                CharacterAnimator.SetBool(TwoSideHash, true);
+            }
+            RotateCharacter2D(x);
         }
 
         private void QuarterView(float joystickAngle)
@@ -333,13 +336,13 @@ namespace CommonScript
 
         private void EmotionAnimationSetting()
         {
-            if (faceExpression.Length <= (int) Emotion || Emotion == Expression.None)
+            if (faceExpression.Length <= (int)Emotion || Emotion == Expression.None)
             {
                 return;
             }
 
-            CharacterAnimator.SetInteger(EmotionHash, (int) Emotion);
-            skinnedMesh.materials[1].SetTexture(MainTex, faceExpression[(int) Emotion]);
+            CharacterAnimator.SetInteger(EmotionHash, (int)Emotion);
+            skinnedMesh.materials[1].SetTexture(MainTex, faceExpression[(int)Emotion]);
         }
 
         private void OnDrawGizmos()
