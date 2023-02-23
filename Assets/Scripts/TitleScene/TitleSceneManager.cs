@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Utility.Core;
+using Utility.Save;
 using Utility.SceneLoader;
 
 namespace TitleScene
@@ -36,6 +37,11 @@ namespace TitleScene
             });
             diaryButton.onClick.AddListener(() => { diaryPanel.SetActive(true); });
             diaryExitButton.onClick.AddListener(() => { diaryPanel.SetActive(false); });
+
+            for (int i = 0; i < 10; i++)
+            {
+                SaveManager.LoadCover(i);
+            }
         }
     }
 }

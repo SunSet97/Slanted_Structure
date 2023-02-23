@@ -7,61 +7,70 @@ namespace Utility.Core
 {
     public class JoystickController : MonoBehaviour
     {
-        [Header("조이스틱")] public Joystick dynamicJoystick;
-        public Joystick fixedJoyStick;
+        public static JoystickController Instance { get; private set; }
+        
+        [Header("조이스틱")] [SerializeField] private Joystick dynamicJoystick;
+        [SerializeField] private Joystick fixedJoyStick;
 
         [SerializeField] private Button jumpButton;
 
-        [NonSerialized] public Joystick joystick;
-        [NonSerialized] public Vector2 inputDirection; // 조이스틱 입력 방향
-        [NonSerialized] public float inputDegree; // 조이스틱 입력 크기
-        [NonSerialized] public bool inputJump; // 조이스틱 입력 점프 판정
-        [NonSerialized] public bool inputDash; // 조이스틱 입력 대쉬 판정
-        [NonSerialized] public bool inputSeat;
+        // for debugging
+        public Vector2 inputDirection;
+        public float inputDegree;
+
+        [NonSerialized] public Joystick Joystick;
+        [NonSerialized] public bool InputJump;
+        [NonSerialized] public bool InputDash;
+        [NonSerialized] public bool InputSeat;
+
         private bool isAlreadySave;
         private bool wasJoystickUse;
 
-
-        private static JoystickController _instance;
-
-        public static JoystickController instance => _instance;
-
         private void Awake()
         {
-            if (_instance)
+            if (Instance)
             {
-                Destroy(gameObject);   
+                Destroy(gameObject);
             }
             else
             {
-                _instance = this;
-                DontDestroyOnLoad(_instance);
+                Instance = this;
+                DontDestroyOnLoad(Instance);
             }
         }
 
         private void Start()
         {
-            jumpButton.onClick.AddListener(() => { inputJump = true; });
+            jumpButton.onClick.AddListener(() =>
+            {
+                var mainCharacter = DataController.Instance.GetCharacter(CustomEnum.Character.Main);
+                // if (!mainCharacter.CharacterController.isGrounded)
+                // {
+                mainCharacter.Jump();
+                // }
+
+            });
         }
 
         public void Init(JoystickType joystickType)
         {
             Debug.Log("조이스틱 초기화 - " + joystickType);
             isAlreadySave = false;
-            if (joystick)
+
+            if (Joystick)
             {
-                joystick.gameObject.SetActive(false);
+                Joystick.gameObject.SetActive(false);
             }
 
             jumpButton.gameObject.SetActive(false);
 
             if (joystickType == JoystickType.Dynamic)
             {
-                joystick = dynamicJoystick;
+                Joystick = dynamicJoystick;
             }
             else if (joystickType == JoystickType.Fixed)
             {
-                joystick = fixedJoyStick;
+                Joystick = fixedJoyStick;
             }
         }
 
@@ -71,28 +80,28 @@ namespace Utility.Core
         /// <param name="isOn">JoyStick On/Off</param>
         public void InitializeJoyStick(bool isOn)
         {
-            if (!joystick)
+            if (!Joystick)
             {
                 return;
             }
 
-            joystick.gameObject.SetActive(isOn);
-            if (joystick.GetType() == typeof(DynamicJoystick))
+            Joystick.gameObject.SetActive(isOn);
+            if (Joystick.GetType() == typeof(DynamicJoystick))
             {
-                joystick.transform.GetChild(0).gameObject.SetActive(false);
-                joystick.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().position = default;
+                Joystick.transform.GetChild(0).gameObject.SetActive(false);
+                Joystick.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().position = default;
             }
-            else if (joystick.GetType() == typeof(FixedJoystick))
+            else if (Joystick.GetType() == typeof(FixedJoystick))
             {
                 jumpButton.gameObject.SetActive(isOn);
-                joystick.transform.GetChild(0).gameObject.SetActive(false);
+                Joystick.transform.GetChild(0).gameObject.SetActive(false);
             }
 
-            joystick.OnPointerUp();
+            Joystick.OnPointerUp();
             inputDegree = 0;
             inputDirection = Vector2.zero;
-            joystick.input = Vector2.zero;
-            inputJump = false;
+            Joystick.input = Vector2.zero;
+            InputJump = false;
         }
 
         /// <summary>
@@ -102,14 +111,15 @@ namespace Utility.Core
         /// <param name="isStop">Save여부   true - save, false - load</param>
         public void StopSaveLoadJoyStick(bool isSave)
         {
-            Debug.Log((isSave ? "Save" : "Load") + ", " + (isAlreadySave ? "저장된 상태" : "저장되지 않은 상태") + ", 이전 상태" + wasJoystickUse);
-            
+            Debug.Log((isSave ? "Save" : "Load") + ", " + (isAlreadySave ? "저장된 상태" : "저장되지 않은 상태") + ", 이전 상태" +
+                      wasJoystickUse);
+
             if (isSave)
             {
                 if (isAlreadySave) return;
 
                 isAlreadySave = true;
-                wasJoystickUse = joystick.gameObject.activeSelf;
+                wasJoystickUse = Joystick.gameObject.activeSelf;
                 InitializeJoyStick(false);
             }
             else
@@ -121,16 +131,16 @@ namespace Utility.Core
 
         public void SetJoystickArea(CustomEnum.JoystickAreaType joystickAreaType)
         {
-            var rect = joystick.GetComponent<RectTransform>();
-            if (joystickAreaType == CustomEnum.JoystickAreaType.DEFAULT)
+            var rect = Joystick.GetComponent<RectTransform>();
+            if (joystickAreaType == CustomEnum.JoystickAreaType.Default)
             {
                 rect.anchorMax = new Vector2(.5f, .5f);
             }
-            else if (joystickAreaType == CustomEnum.JoystickAreaType.FULL)
+            else if (joystickAreaType == CustomEnum.JoystickAreaType.Full)
             {
                 rect.anchorMax = Vector2.one;
             }
-            else if (joystickAreaType == CustomEnum.JoystickAreaType.NONE)
+            else if (joystickAreaType == CustomEnum.JoystickAreaType.None)
             {
                 rect.anchorMax = Vector2.zero;
             }
@@ -142,15 +152,15 @@ namespace Utility.Core
         {
             if (method.Equals(CustomEnum.JoystickInputMethod.OneDirection))
             {
-                inputDegree = Mathf.Abs(joystick.Horizontal);
-                inputDirection.Set(joystick.Horizontal, 0);
-                inputJump = joystick.Vertical > 0.5f;
+                inputDegree = Mathf.Abs(Joystick.Horizontal);
+                inputDirection.Set(Joystick.Horizontal, 0);
+                InputJump = Joystick.Vertical > 0.5f;
             }
             else
             {
-                inputDirection.Set(joystick.Horizontal, joystick.Vertical);
+                inputDirection.Set(Joystick.Horizontal, Joystick.Vertical);
                 inputDegree = Vector2.Distance(Vector2.zero, inputDirection);
-                inputJump = false;
+                InputJump = false;
             }
         }
     }

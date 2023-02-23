@@ -37,29 +37,29 @@ namespace Utility.SpeechBubble
         [Header("말풍선 보이는, 안보이는 시간 타입 선택")] [SerializeField]
         private RandomSecond randomSecond;
 
-        private SpeechBubble _speechBubble;
+        private SpeechBubble speechBubble;
 
         [Header("말풍선")] [Header("말풍선 대사 입력")] [SerializeField]
         public Script[] bubbleScripts;
 
         [Header("말풍선 위치 조절")] [SerializeField] private Vector2 speechPos;
 
-        [SerializeField] private int _bubbleIndex;
-        private bool _isBubble;
-        private bool _isCharacterInRange;
+        [SerializeField] private int bubbleIndex;
+        private bool isBubble;
+        private bool isCharacterInRange;
 
         private void Start()
         {
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
-            _speechBubble =
+            speechBubble =
                 Instantiate(Resources.Load<GameObject>("SpeechBubble"), DataController.Instance.CurrentMap.ui)
                     .GetComponent<SpeechBubble>();
-            _speechBubble.gameObject.SetActive(false);
+            speechBubble.gameObject.SetActive(false);
         }
 
         private void Update()
         {
-            if (_isBubble)
+            if (isBubble)
             {
                 SetSpeechBubblePosition();
             }
@@ -69,11 +69,11 @@ namespace Utility.SpeechBubble
         {
             if (randomSecond == RandomSecond.Random)
             {
-                bubbleScripts[_bubbleIndex].appearSec = Random.Range(1, bubbleScripts[_bubbleIndex].randomRange);
-                bubbleScripts[_bubbleIndex].disappearSec = Random.Range(1, bubbleScripts[_bubbleIndex].randomRange);
+                bubbleScripts[bubbleIndex].appearSec = Random.Range(1, bubbleScripts[bubbleIndex].randomRange);
+                bubbleScripts[bubbleIndex].disappearSec = Random.Range(1, bubbleScripts[bubbleIndex].randomRange);
             }
-            _speechBubble.SetSpeaker(bubbleScripts[_bubbleIndex].speaker);
-            _speechBubble.SetContext(bubbleScripts[_bubbleIndex].dialogue);
+            speechBubble.SetSpeaker(bubbleScripts[bubbleIndex].speaker);
+            speechBubble.SetContext(bubbleScripts[bubbleIndex].dialogue);
         }
 
         private void SetSpeechBubblePosition()
@@ -82,7 +82,7 @@ namespace Utility.SpeechBubble
 
             Vector3 screenPoint =
                 DataController.Instance.Cam.WorldToScreenPoint(transform.position);
-            _speechBubble.transform.position = screenPoint;
+            speechBubble.transform.position = screenPoint;
 
 
             transform.localPosition -= (Vector3)speechPos;
@@ -90,27 +90,27 @@ namespace Utility.SpeechBubble
 
         private IEnumerator StartSpeechBubble()
         {
-            _bubbleIndex %= bubbleScripts.Length;
+            bubbleIndex %= bubbleScripts.Length;
             
-            _isBubble = true;
-            _speechBubble.gameObject.SetActive(true);
+            isBubble = true;
+            speechBubble.gameObject.SetActive(true);
 
             UpdateDialogue();
 
-            var bubbleScript = bubbleScripts[_bubbleIndex];
+            var bubbleScript = bubbleScripts[bubbleIndex];
 
-            _bubbleIndex++;
+            bubbleIndex++;
 
             yield return new WaitForSeconds(bubbleScript.appearSec);
-            _speechBubble.gameObject.SetActive(false);
+            speechBubble.gameObject.SetActive(false);
 
-            _isBubble = false;
+            isBubble = false;
 
             yield return new WaitForSeconds(bubbleScript.disappearSec);
 
-            yield return new WaitWhile(() => DialogueController.instance.IsTalking);
+            yield return new WaitWhile(() => DialogueController.Instance.IsTalking);
 
-            if (_isCharacterInRange && IsBubbleEnable())
+            if (isCharacterInRange && IsBubbleEnable())
             {
                 StartCoroutine(StartSpeechBubble());
             }
@@ -130,19 +130,19 @@ namespace Utility.SpeechBubble
                 StartCoroutine(StartSpeechBubble());
             }
 
-            _isCharacterInRange = true;
+            isCharacterInRange = true;
         }
 
         private void OnTriggerExit(Collider other)
         {
-            _isCharacterInRange = false;
+            isCharacterInRange = false;
         }
 
         private bool IsBubbleEnable()
         {
-            return !_isBubble && (speechBubbleType == SpeechBubbleType.Loop ||
+            return !isBubble && (speechBubbleType == SpeechBubbleType.Loop ||
                    (speechBubbleType == SpeechBubbleType.Once &&
-                    _bubbleIndex != bubbleScripts.Length));
+                    bubbleIndex != bubbleScripts.Length));
         }
     }
 }

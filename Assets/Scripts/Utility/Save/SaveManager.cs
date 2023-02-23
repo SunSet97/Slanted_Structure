@@ -340,7 +340,7 @@ namespace Utility.Save
         public static void LoadCover(int idx)
         {
             _idx = idx;
-            if (!File.Exists(SaveFilePath) || IsCoverLoaded(idx))
+            if (!File.Exists(SaveCoverFilePath) || IsCoverLoaded(idx))
             {
                 return;
             }

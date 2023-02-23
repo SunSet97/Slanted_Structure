@@ -1,68 +1,69 @@
-﻿using UnityEngine;
-using Utility.Core;
-#if UNITY_EDITOR
+﻿using Data;
 using UnityEditor;
-#endif
-using static Data.CustomEnum;
+using UnityEngine;
+using Utility.Core;
 
+namespace CommonScript
+{
 #if UNITY_EDITOR
-[CustomEditor(typeof(CheckMapClear))]
-class DebugMapClear : Editor
-{
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(CheckMapClear))]
+    class DebugMapClear : Editor
     {
-        base.OnInspectorGUI();
-        CheckMapClear checkMapClear = (CheckMapClear)target;
-        if (GUILayout.Button("맵 클리어", GUILayout.Height(30), GUILayout.Width(100)))
-            if (Application.isPlaying)
-                checkMapClear.Clear();
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+            CheckMapClear checkMapClear = (CheckMapClear)target;
+            if (GUILayout.Button("맵 클리어", GUILayout.Height(30), GUILayout.Width(100)))
+                if (Application.isPlaying)
+                    checkMapClear.Clear();
+        }
     }
-}
 #endif
 
-/// <summary>
-/// 맵 클리어 (이동) 오브젝트
-/// 사용방법 1. isTrigger와 Collider를 사용
-/// 사용방법 2. isTrigger 미체크 및 Mapdata.Clearbox.Clear로 사용 
-/// </summary>
-public class CheckMapClear : MonoBehaviour
-{
-    public bool isTrigger;
-
-    public string nextSelectMapcode = "000000";
-
-    public void Clear()
+    /// <summary>
+    /// 맵 클리어 (이동) 오브젝트
+    /// 사용방법 1. isTrigger와 Collider를 사용
+    /// 사용방법 2. isTrigger 미체크 및 Mapdata.Clearbox.Clear로 사용 
+    /// </summary>
+    public class CheckMapClear : MonoBehaviour
     {
-        if (!nextSelectMapcode.Equals("000000") || !nextSelectMapcode.Equals(""))
+        [SerializeField] private bool isTrigger;
+
+        public string nextSelectMapcode = "000000";
+
+        public void Clear()
         {
-            DataController.Instance.CurrentMap.nextMapcode = nextSelectMapcode;
-        }
-        
-        if (DataController.Instance.CurrentMap.useFadeOut)
-        {
-            FadeEffect.Instance.OnFadeOver.AddListener(() =>
+            if (!nextSelectMapcode.Equals("000000") || !nextSelectMapcode.Equals(""))
             {
-                FadeEffect.Instance.OnFadeOver.RemoveAllListeners();
+                DataController.Instance.CurrentMap.nextMapcode = nextSelectMapcode;
+            }
+        
+            if (DataController.Instance.CurrentMap.useFadeOut)
+            {
+                FadeEffect.Instance.OnFadeOver.AddListener(() =>
+                {
+                    FadeEffect.Instance.OnFadeOver.RemoveAllListeners();
+                    DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.nextMapcode);
+                });
+                FadeEffect.Instance.FadeOut(DataController.Instance.CurrentMap.fadeOutSec);
+            }
+            else
+            {
                 DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.nextMapcode);
-            });
-            FadeEffect.Instance.FadeOut(DataController.Instance.CurrentMap.fadeOutSec);
-        }
-        else
-        {
-            DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.nextMapcode);
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!isTrigger)
-        {
-            return;
+            }
         }
 
-        if (DataController.Instance.GetCharacter(Character.Main).name.Equals(other.name))
+        private void OnTriggerEnter(Collider other)
         {
-            Clear();
+            if (!isTrigger)
+            {
+                return;
+            }
+
+            if (DataController.Instance.GetCharacter(CustomEnum.Character.Main).name.Equals(other.name))
+            {
+                Clear();
+            }
         }
     }
 }

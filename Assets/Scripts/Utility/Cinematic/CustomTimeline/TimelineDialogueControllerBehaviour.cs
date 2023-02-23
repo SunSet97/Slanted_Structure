@@ -3,18 +3,21 @@ using UnityEngine;
 using UnityEngine.Playables;
 using Utility.Core;
 
-[Serializable]
-public class TimelineDialogueControllerBehaviour : PlayableBehaviour
+namespace Utility.Cinematic.CustomTimeline
 {
-
-    public TextAsset dialogueJson;
-
-    public override void OnBehaviourPlay(Playable playable, FrameData info)
+    [Serializable]
+    public class TimelineDialogueControllerBehaviour : PlayableBehaviour
     {
-        if (dialogueJson == null) return;
-        playable.GetGraph().Stop();
-        DialogueController.instance.StartConversation(dialogueJson.text);
-        DialogueController.instance.SetDialougueEndAction(() => { playable.GetGraph().Play(); });
-        dialogueJson = null;
+
+        public TextAsset dialogueJson;
+
+        public override void OnBehaviourPlay(Playable playable, FrameData info)
+        {
+            if (dialogueJson == null) return;
+            playable.GetGraph().Stop();
+            DialogueController.Instance.StartConversation(dialogueJson.text);
+            DialogueController.Instance.SetDialougueEndAction(() => { playable.GetGraph().Play(); });
+            dialogueJson = null;
+        }
     }
 }

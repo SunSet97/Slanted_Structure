@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utility.Core;
 
-namespace CommonScript
+namespace Utility.Interaction.Click
 {
     public class ObjectClicker : MonoBehaviour
     {
-        public static ObjectClicker instance;
-        
+        public static ObjectClicker Instance { get; private set; }
+
         // 검색하는 layer
         private int layerMask;
 
@@ -17,23 +17,23 @@ namespace CommonScript
         /// 맵 초기화마다 변경
         /// </summary>
         [NonSerialized]
-        public bool isCustomUse;
+        public bool IsCustomUse;
 
         private readonly List<IClickable> clickables = new List<IClickable>();
 
-        void Awake()
+        private void Awake()
         {
-            instance = this;
+            Instance = this;
         }
 
-        void Start()
+        private void Start()
         {
             layerMask = 1 << LayerMask.NameToLayer("ClickObject") | 1 << LayerMask.NameToLayer("OnlyPlayerCheck");
         }
 
-        void Update()
+        private void Update()
         {
-            if (!isCustomUse)
+            if (!IsCustomUse)
             {
                 OnTouchDisplay();
             }
@@ -78,8 +78,8 @@ namespace CommonScript
                 Debug.Log("클리커 비활성화" + gameObject.activeSelf);
             }
         }
-        
-        public void OnTouchDisplay()
+
+        private void OnTouchDisplay()
         {
             if (!Input.GetMouseButtonDown(0))
             {
@@ -91,7 +91,11 @@ namespace CommonScript
             RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
             foreach (var hit in hits)
             {
-                hit.collider.GetComponent<IClickable>().Click();
+                Debug.Log(hit.collider.gameObject);
+                if (hit.collider.TryGetComponent(out IClickable clickable))
+                {
+                    clickable.Click();
+                }
             }
         }
         
@@ -107,6 +111,13 @@ namespace CommonScript
             Debug.DrawRay(ray.origin, ray.direction * 20f, Color.red, 5f);
             hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
             return true;
+        }
+
+        public void Reset()
+        {
+            gameObject.SetActive(false);
+            IsCustomUse = false;
+            clickables.Clear();
         }
     }
 }

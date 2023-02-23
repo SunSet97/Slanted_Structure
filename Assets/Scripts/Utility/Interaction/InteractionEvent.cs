@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using CommonScript;
 using Move;
 using Play;
 using UnityEngine;
 using UnityEngine.Events;
-using Utility.Core;
 using Utility.Property;
 
 namespace Utility.Interaction

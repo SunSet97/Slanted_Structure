@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utility.Interaction;
 
 namespace Data
@@ -12,7 +11,7 @@ namespace Data
         public SaveCoverData saveCoverData;
 
         public List<CharData> charDatas;
-        
+
         public CharRelationshipData charRelationshipData;
 
         public List<InteractionSaveData> interactionDatas;
@@ -26,22 +25,26 @@ namespace Data
             foreach (var saveDataInteractionData in interactionDatas)
             {
                 UnityEngine.Debug.Log($"인터랙션 이름: {saveDataInteractionData.id}\n" +
-                                      $"Pos: {(Vector3)saveDataInteractionData.pos}\n" +
-                                      $"Rot: {(Quaternion)saveDataInteractionData.rot}\n" +
+                                      $"Pos: {(Vector3) saveDataInteractionData.pos}\n" +
+                                      $"Rot: {(Quaternion) saveDataInteractionData.rot}\n" +
                                       $"Interaction Index: {saveDataInteractionData.interactIndex}");
             }
+
             foreach (var charData in charDatas)
             {
                 UnityEngine.Debug.Log($"캐릭터: {charData.character}\n" +
-                                      $"Pos: {(Vector3)charData.pos}\n" +
-                                      $"Rot: {(Quaternion)charData.rot}\n");
+                                      $"Pos: {(Vector3) charData.pos}\n" +
+                                      $"Rot: {(Quaternion) charData.rot}\n");
             }
         }
     }
-    
+
     [Serializable]
     public class SaveCoverData
     {
         public string mapCode;
+        public string location;
+        public string date;
+        public string time;
     }
 }

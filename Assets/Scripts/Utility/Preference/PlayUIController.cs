@@ -1,20 +1,29 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
+using Utility.Audio;
 using Utility.Core;
 
 namespace Utility.Preference
 {
     public class PlayUIController : MonoBehaviour
     {
-        [SerializeField] private GameObject preferencePanel;
-        [SerializeField] private GameObject diaryPanel;
+        public static PlayUIController Instance { get; private set; }
 
+        public Transform mapUi;
+
+        [Header("메뉴")] [Space(10)] [SerializeField]
+        private GameObject menuPanel;
         [SerializeField] private Animator menuAnimator;
         [SerializeField] private Button menuButton;
 
+        [Header("일기장")] [Space(10)]
+        [SerializeField] private GameObject diaryPanel;
         [SerializeField] private Button diaryButton;
         [SerializeField] private Button diaryExitButton;
         
+        [Header("설정")] [Space(10)]
+        [SerializeField] private GameObject preferencePanel;
         [SerializeField] private Button preferenceButton;
         [SerializeField] private Button preferenceExitButton;
 
@@ -32,44 +41,64 @@ namespace Utility.Preference
         [SerializeField] private Sprite vibeOffSprite;
         [SerializeField] private Sprite vibeToggleOnSprite;
         [SerializeField] private Sprite vibeToggleOffSprite;
+        
+        [NonSerialized] public Canvas Canvas;
+        private static readonly int IsOpen = Animator.StringToHash("IsOpen");
 
+        private void Awake()
+        {
+            if (Instance)
+            {
+                Destroy(gameObject.GetComponentInParent<Canvas>().gameObject);
+            }
+            else
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject.GetComponentInParent<Canvas>().gameObject);
+            }
+        }
+        
         private void Start()
         {
+            Canvas = GetComponentInParent<Canvas>();
+            var canvasScaler = GetComponentInParent<CanvasScaler>();
+            canvasScaler.referenceResolution = new Vector2(Screen.width, canvasScaler.referenceResolution.y);
+            
             menuButton.onClick.AddListener(() =>
             {
-                if (menuAnimator.GetBool("IsOpen"))
+                if (menuAnimator.GetBool(IsOpen))
                 {
-                    menuAnimator.SetBool("IsOpen", false);
+                    menuAnimator.SetBool(IsOpen, false);
                 }
                 else
                 {
-                    menuAnimator.SetBool("IsOpen", true);
+                    menuAnimator.SetBool(IsOpen, true);
                 }
             });
             
             diaryButton.onClick.AddListener(() =>
             {
-                JoystickController.instance.StopSaveLoadJoyStick(true);
+                JoystickController.Instance.StopSaveLoadJoyStick(true);
                 diaryPanel.SetActive(!diaryPanel.activeSelf);
                 preferencePanel.SetActive(false);
             });
             
             diaryExitButton.onClick.AddListener(() =>
             {
-                JoystickController.instance.StopSaveLoadJoyStick(false);
+                JoystickController.Instance.StopSaveLoadJoyStick(false);
                 diaryPanel.SetActive(false);
             });
 
             preferenceButton.onClick.AddListener(() =>
             {
-                JoystickController.instance.StopSaveLoadJoyStick(true);
+                JoystickController.Instance.StopSaveLoadJoyStick(true);
                 preferencePanel.SetActive(!preferencePanel.activeSelf);
                 diaryPanel.SetActive(false);
             });
 
             preferenceExitButton.onClick.AddListener(() =>
             {
-                JoystickController.instance.StopSaveLoadJoyStick(false);
+                JoystickController.Instance.StopSaveLoadJoyStick(false);
                 preferencePanel.SetActive(false);
             });
 
@@ -168,10 +197,13 @@ namespace Utility.Preference
             UpdateUI();
         }
 
-        private void OnDialogue()
+        public void SetMenuActive(bool isActive)
         {
-            
-            menuAnimator.SetBool("IsOpen", false);
+            if (!isActive)
+            {
+                menuAnimator.SetBool(IsOpen, false);
+            }
+            menuPanel.SetActive(isActive);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using CommonScript;
 using Utility.Core;
 
 public class AlleyInMarketManager : MonoBehaviour
