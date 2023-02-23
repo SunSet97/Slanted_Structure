@@ -4,18 +4,20 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Utility.Audio;
 using Utility.Cinematic;
+using Utility.Preference;
 using static Data.CustomEnum;
 
 namespace Utility.Core
 {
     public class DialogueController : MonoBehaviour
     {
-        private static DialogueController _instance;
-    
-        public static DialogueController instance => _instance;
+        public static DialogueController Instance { get; private set; }
 
         public GameObject dialoguePanel;
+
+        public Image dialogueBox;
 
         public Animator charEmotionAnimator;
 
@@ -23,13 +25,12 @@ namespace Utility.Core
         public Text dialogueContentText;
 
         public Transform choiceRoot;
-        
+
         public TaskData taskData;
         public DialogueData dialogueData;
-        
-        [NonSerialized]
-        public bool IsTalking;
-    
+
+        [NonSerialized] public bool IsTalking;
+
         private GameObject[] choiceBtns;
         private Text[] choiceTexts;
 
@@ -37,14 +38,14 @@ namespace Utility.Core
 
         private void Awake()
         {
-            if (_instance)
+            if (Instance)
             {
                 Destroy(gameObject);
             }
             else
             {
-                _instance = this;
-                DontDestroyOnLoad(_instance);
+                Instance = this;
+                DontDestroyOnLoad(Instance);
             }
         }
 
@@ -59,14 +60,13 @@ namespace Utility.Core
                 choiceTexts[i] = choiceBtns[i].GetComponentInChildren<Text>(true);
             }
 
-            EventTrigger eventTrigger = dialoguePanel.GetComponent<EventTrigger>();
-            EventTrigger.Entry entryPointerUp = new EventTrigger.Entry();
-            entryPointerUp.eventID = EventTriggerType.PointerUp;
-            entryPointerUp.callback.AddListener(data =>
+            dialogueBox.alphaHitTestMinimumThreshold = 0.1f;
+            EventTrigger eventTrigger = dialogueBox.GetComponent<EventTrigger>();
+            EventTrigger.Entry entryPointerUp = new EventTrigger.Entry
             {
-                UpdateWord(); 
-            
-            });
+                eventID = EventTriggerType.PointerUp
+            };
+            entryPointerUp.callback.AddListener(data => { UpdateWord(); });
             eventTrigger.triggers.Add(entryPointerUp);
         }
 
@@ -91,64 +91,67 @@ namespace Utility.Core
                 taskData.isContinue = false;
             }
 
-            JoystickController.instance.StopSaveLoadJoyStick(true);
+            JoystickController.Instance.StopSaveLoadJoyStick(true);
 
             dialogueData.Init(jsonString);
             IsTalking = true;
-            
+
             dialoguePanel.SetActive(true);
-            
+
+            PlayUIController.Instance.SetMenuActive(false);
+
             UpdateWord();
+        }
+
+        private void EndConversation()
+        {
+            Debug.Log("대화 종료");
+            IsTalking = false;
+            dialoguePanel.SetActive(false);
+            PlayUIController.Instance.SetMenuActive(true);
+            JoystickController.Instance.StopSaveLoadJoyStick(false);
+            foreach (var positionSet in DataController.Instance.CurrentMap.positionSets)
+            {
+                DataController.Instance.GetCharacter(positionSet.who).Emotion = Expression.IDLE;
+            }
+
+            dialogueData.Reset();
+
+            if (taskData != null)
+            {
+                taskData.isContinue = true;
+            }
         }
 
         private void UpdateWord()
         {
             int dialogueLen = dialogueData.dialogues.Length;
-            
+
             if (dialogueData.dialogueIdx >= dialogueLen)
             {
-                Debug.Log("대화 종료");
-                IsTalking = false;
-                dialoguePanel.SetActive(false);
-                JoystickController.instance.StopSaveLoadJoyStick(false);
-                foreach (var positionSet in DataController.Instance.CurrentMap.positionSets)
-                {
-                    DataController.Instance.GetCharacter(positionSet.who).Emotion = Expression.IDLE;   
-                }
-                foreach (var positionSet in DataController.Instance.CurrentMap.characters)
-                {
-                    // if (Character.TryParse(dialogueData.dialogues[dialogueIdx].anim_name, out Character who))
-                    DataController.Instance.GetCharacter(positionSet.who).Emotion = Expression.IDLE;   
-                }
-                dialogueData.Reset();
-                
-                if (taskData != null)
-                {
-                    taskData.isContinue = true;
-                }
+                EndConversation();
             }
             else
             {
+                var dialogueDataItem = dialogueData.dialogues[dialogueData.dialogueIdx];
                 // 캐릭터 표정 업데이트 (애니메이션)
-                if (!string.IsNullOrEmpty(dialogueData.dialogues[dialogueData.dialogueIdx].anim_name))
+                if (!string.IsNullOrEmpty(dialogueDataItem.anim_name))
                 {
+                    if (Enum.TryParse(dialogueDataItem.anim_name, out Character who))
+                    {
+                        var character = DataController.Instance.GetCharacter(who);
+                        character.Emotion = dialogueDataItem.expression;
+                    }
+
                     if (charEmotionAnimator)
                     {
-                        // Debug.Log(dialogueData.dialogues[dialogueData.dialogueIdx].anim_name);
-                        string path = "Character_dialogue/" + dialogueData.dialogues[dialogueData.dialogueIdx].anim_name;
+                        string animatorPath = "Character_dialogue/" + dialogueDataItem.anim_name;
                         charEmotionAnimator.runtimeAnimatorController =
-                            Resources.Load(path) as RuntimeAnimatorController;
+                            Resources.Load(animatorPath) as RuntimeAnimatorController;
                         if (charEmotionAnimator.runtimeAnimatorController != null)
                         {
                             charEmotionAnimator.GetComponent<Image>().enabled = true;
-                            // Debug.Log((int) dialogueData.dialogues[dialogueData.dialogueIdx].expression + "  " +
-                            //           dialogueData.dialogues[dialogueData.dialogueIdx].expression);
-                            charEmotionAnimator.SetInteger(Emotion, ((int) dialogueData.dialogues[dialogueData.dialogueIdx].expression));
-
-                            if (Enum.TryParse(dialogueData.dialogues[dialogueData.dialogueIdx].anim_name, out Character who))
-                            {
-                                DataController.Instance.GetCharacter(who).Emotion = dialogueData.dialogues[dialogueData.dialogueIdx].expression;   
-                            }
+                            charEmotionAnimator.SetInteger(Emotion, (int) dialogueDataItem.expression);
                         }
                         else
                         {
@@ -167,22 +170,14 @@ namespace Utility.Core
                     charEmotionAnimator.GetComponent<Image>().enabled = false;
                 }
 
-                // 대화 텍스트 업데이트
-
-                // 현재 실행 중인 캐릭터에 대해서
-                // 현재 맵에 기준???    햄버거 집 스핏의 경우 임시로 존재하는 거니까
-                // MapData에 inspector window에서 setting, position setting되어있는 캐릭터들도 추가
-                // 대화 시 무슨 캐릭터인지 anim_name으로 Find (who를 사용)
-                MapData.AnimationCharacterSet animator = DataController.Instance.CurrentMap.characters.Find(
-                    item => item.who.ToString().Equals(dialogueData.dialogues[dialogueData.dialogueIdx].anim_name));
-                // DataController.instance.GetCharacter(animator.who).emotion =(int) dialogueData.dialogues[dialogueIdx].expression
-                if (animator != null)
+                var settedCharacter = DataController.Instance.CurrentMap.characters.Find(
+                    item => item.who.ToString().Equals(dialogueDataItem.anim_name));
+                if (settedCharacter != null)
                 {
-                    animator.characterAnimator.SetInteger(Emotion,
-                        (int)dialogueData.dialogues[dialogueData.dialogueIdx].expression);
-                    if (animator.characterAnimator.TryGetComponent(out CinematicCharacter cinematicCharacter))
+                    if (settedCharacter.characterAnimator.TryGetComponent(out CinematicCharacter cinematicCharacter))
                     {
-                        cinematicCharacter.ExpressionSetting(dialogueData.dialogues[dialogueData.dialogueIdx].expression);
+                        cinematicCharacter.EmotionAnimationSetting((int) dialogueDataItem.expression);
+                        cinematicCharacter.ExpressionSetting(dialogueDataItem.expression);
                     }
                 }
 
@@ -192,10 +187,10 @@ namespace Utility.Core
                 dialogueData.dialogueIdx++;
             }
         }
-    
+
         public void OpenChoicePanel()
         {
-            JoystickController.instance.StopSaveLoadJoyStick(true);
+            JoystickController.Instance.StopSaveLoadJoyStick(true);
             int index = taskData.taskIndex;
             int choiceLen = int.Parse(taskData.tasks[index].nextFile);
 
@@ -206,6 +201,7 @@ namespace Utility.Core
             {
                 Debug.LogError("선택지 개수 오류 - IndexOverFlow");
             }
+
             // 선택지 개수와 조건에 맞게 선택지가 나올 수 있도록 함.
             for (int i = 0; i < choiceBtns.Length; i++)
             {
@@ -214,10 +210,11 @@ namespace Utility.Core
                     choiceBtns[i].SetActive(false);
                     continue;
                 }
+
                 // 친밀도와 자존감이 기준보다 낮으면 일부 선택지가 나오지 않을 수 있음
                 var choiceIndex = index + i + 1;
                 var choiceTask = taskData.tasks[choiceIndex];
-            
+
                 choiceTask.condition = choiceTask.condition.Replace("m", "-");
                 Debug.Log($"{i}번째 선택지 조건 - {choiceTask.condition}");
                 int[] condition = Array.ConvertAll(choiceTask.condition.Split(','), int.Parse);
@@ -229,7 +226,7 @@ namespace Utility.Core
                     {
                         choiceBtns[i].SetActive(true);
                         choiceTexts[i].text = choiceTask.name;
-                    }    
+                    }
                 }
                 else
                 {
@@ -237,24 +234,22 @@ namespace Utility.Core
                     {
                         choiceBtns[i].SetActive(true);
                         choiceTexts[i].text = choiceTask.name;
-                    }    
+                    }
                 }
             }
         }
-    
+
         public void SetChoiceAction(UnityAction<int> choiceAction)
         {
             dialogueData.ChooseAction += choiceAction;
         }
-        
+
         public void SetDialougueEndAction(UnityAction endAction)
         {
             dialogueData.DialogueEndAction += endAction;
         }
-        /// <summary>
-        /// 대화 선택지를 삭제하는 함수
-        /// </summary>
-        void RemoveChoice()
+
+        private void RemoveChoice()
         {
             choiceBtns[0].transform.parent.gameObject.SetActive(false);
         }
@@ -263,7 +258,7 @@ namespace Utility.Core
         public void PressChoice(int index)
         {
             RemoveChoice();
-            JoystickController.instance.StopSaveLoadJoyStick(false);
+            JoystickController.Instance.StopSaveLoadJoyStick(false);
             dialogueData.ChooseAction?.Invoke(index);
             dialogueData.ChooseAction = null;
         }

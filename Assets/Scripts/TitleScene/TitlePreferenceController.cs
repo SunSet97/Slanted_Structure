@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using Utility.Preference;
+using Utility.Audio;
 
 namespace TitleScene
 {

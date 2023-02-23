@@ -6,24 +6,17 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using Utility.Interaction;
+using Utility.Interaction.Click;
 using static Data.CustomEnum;
 
 namespace Utility.Core
 {
     public class DataController : MonoBehaviour
     {
-        private static DataController _instance;
+        public static DataController Instance { get; private set; }
 
-        public static DataController Instance => _instance;
+        [Header("캐릭터")] [SerializeField] private CharacterManager[] characters;
 
-        [Header("캐릭터")]
-        [SerializeField] private CharacterManager rau;
-        [SerializeField] private CharacterManager oun;
-        [SerializeField] private CharacterManager speat;
-        [SerializeField] private CharacterManager speat_Adult;
-        [SerializeField] private CharacterManager speat_Child;
-        [SerializeField] private CharacterManager speat_Adolescene;
-        
         [Header("카메라 경계값")] public CamInfo camInfo;
 
         /// <summary>
@@ -31,46 +24,44 @@ namespace Utility.Core
         /// </summary>
         public float camOrthgraphicSize;
 
-        [Header("맵")]
-        public Transform mapGenerate;
+        [Header("맵")] public Transform mapGenerate;
         public string mapCode;
 
         [FormerlySerializedAs("charData")] public CharRelationshipData charRelationshipData;
-        
+
         [NonSerialized] public Camera Cam;
         [NonSerialized] public MapData[] Storymaps;
         [NonSerialized] public MapData CurrentMap;
-        
-        private CharacterManager _mainChar;
 
-        private AssetBundle _mapDB;
+        private CharacterManager mainChar;
+
+        private AssetBundle mapDB;
         internal AssetBundle DialogueDB;
 
-        private UnityAction _onLoadMap;
-        
+        private UnityAction onLoadMap;
+
         [NonSerialized] public List<InteractionObject> InteractionObjects;
 
         private void Awake()
         {
-            if (_instance)
+            if (Instance)
             {
                 Destroy(gameObject);
             }
             else
             {
-                _instance = this;
-                DontDestroyOnLoad(_instance);
+                Instance = this;
+                DontDestroyOnLoad(Instance);
             }
         }
 
         private void Init()
         {
-            speat = GameObject.Find("Speat").GetComponent<CharacterManager>();
-            oun = GameObject.Find("Oun").GetComponent<CharacterManager>();
-            rau = GameObject.Find("Rau").GetComponent<CharacterManager>();
-            speat_Adolescene = GameObject.Find("Speat_Adolescene").GetComponent<CharacterManager>();
-            speat_Adult = GameObject.Find("Speat_Adult").GetComponent<CharacterManager>();
-            speat_Child = GameObject.Find("Speat_Child").GetComponent<CharacterManager>();
+            for (var index = 0; index < characters.Length; index++)
+            {
+                characters[index] = GameObject.Find(characters[index].who.ToString()).GetComponent<CharacterManager>();
+                characters[index].Init();
+            }
 
             mapGenerate = GameObject.Find("MapGenerate").transform;
 
@@ -79,13 +70,6 @@ namespace Utility.Core
             AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/modulematerials");
 
             Cam = Camera.main;
-            
-            speat.Init();
-            oun.Init();
-            rau.Init();
-            speat_Adolescene.Init();
-            speat_Adult.Init();
-            speat_Child.Init();
         }
 
         public void GameStart(string mapCode = "001010", SaveData save = null)
@@ -94,7 +78,7 @@ namespace Utility.Core
             Init();
             ChangeMap(mapCode, save);
         }
-        
+
 
         private MapData[] LoadMap(string desMapCode)
         {
@@ -114,34 +98,29 @@ namespace Utility.Core
             {
                 return Storymaps;
             }
-            
-            Debug.Log(Application.dataPath + $"/AssetBundles/map/ep{desEp}/day{desDay}");
 
-            if (_mapDB != null)
+            if (mapDB != null)
             {
-                _mapDB.Unload(true);
-                Debug.Log(_mapDB);
-                _mapDB = null;
+                mapDB.Unload(true);
             }
 
-            _mapDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
+            mapDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
             if (curDay != desDay)
             {
                 if (DialogueDB != null)
                 {
                     DialogueDB.Unload(true);
-                    Debug.Log(DialogueDB);
-                    DialogueDB = null;
                 }
+
                 DialogueDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}");
             }
 
-            if (_mapDB == null)
+            if (mapDB == null)
             {
                 Debug.LogError("맵 어셋 번들 오류");
             }
 
-            var mapDataObjects = _mapDB.LoadAllAssets<GameObject>();
+            var mapDataObjects = mapDB.LoadAllAssets<GameObject>();
             MapData[] mapDatas = new MapData[mapDataObjects.Length];
             for (int i = 0; i < mapDataObjects.Length; i++)
             {
@@ -153,45 +132,36 @@ namespace Utility.Core
 
         public CharacterManager GetCharacter(Character characterType)
         {
-            CharacterManager character = null;
-            switch (characterType)
+            if (characterType == Character.Main)
             {
-                case Character.Main:
-                    character = _mainChar;
-                    break;
-                case Character.Rau:
-                    character = rau;
-                    break;
-                case Character.Oun:
-                    character = oun;
-                    break;
-                case Character.Speat:
-                    character = speat;
-                    break;
-                case Character.Speat_Adult:
-                    character = speat_Adult;
-                    break;
-                case Character.Speat_Child:
-                    character = speat_Child;
-                    break;
-                case Character.Speat_Adolescene:
-                    character = speat_Adolescene;
-                    break;
+                return mainChar;
             }
 
-            return character;
+            return Array.Find(characters, item => item.who == characterType);
+        }
+
+        public CharacterManager[] GetFollowCharacters()
+        {
+            List<CharacterManager> characterManagers = new List<CharacterManager>();
+            foreach (var positionSet in CurrentMap.positionSets)
+            {
+                if (positionSet.isFollow)
+                {
+                    characterManagers.Add(GetCharacter(positionSet.who));
+                }
+            }
+
+            return characterManagers.ToArray();
         }
 
         public void ChangeMap(string desMapCode, SaveData saveData = null)
         {
             Debug.Log("Change Map");
-            
-            speat.WaitInRoom();
-            oun.WaitInRoom();
-            rau.WaitInRoom();
-            speat_Child.WaitInRoom();
-            speat_Adolescene.WaitInRoom();
-            speat_Adult.WaitInRoom();
+
+            foreach (var character in characters)
+            {
+                character.WaitInRoom();
+            }
 
             if (CurrentMap != null)
             {
@@ -201,21 +171,21 @@ namespace Utility.Core
 
             Storymaps = LoadMap(desMapCode);
 
-            ObjectClicker.instance.gameObject.SetActive(false);
-            ObjectClicker.instance.isCustomUse = false;
+            ObjectClicker.Instance.Reset();
 
             var nextMap = Array.Find(Storymaps, mapData => mapData.mapCode.Equals(mapCode));
-            Debug.Log(mapCode);
-            Debug.Log(nextMap);
+
             InteractionObjects.Clear();
+
             CurrentMap = Instantiate(nextMap, mapGenerate);
-            CurrentMap.Initialize();
-            
+
             SetByChangedMap();
-            
+
+            CurrentMap.Initialize();
+
             LoadData(saveData);
-            
-            DialogueController.instance.Initialize();
+
+            DialogueController.Instance.Initialize();
 
             if (FadeEffect.Instance.IsAlreadyFadeOut)
             {
@@ -223,22 +193,22 @@ namespace Utility.Core
                 {
                     FadeEffect.Instance.OnFadeOver.RemoveAllListeners();
                     Debug.Log("??");
-                    _onLoadMap?.Invoke();
-                    _onLoadMap = () => { };
+                    onLoadMap?.Invoke();
+                    onLoadMap = () => { };
                 });
 
                 FadeEffect.Instance.FadeIn(CurrentMap.fadeInSec);
             }
             else
             {
-                _onLoadMap?.Invoke();
-                _onLoadMap = () => { };
+                onLoadMap?.Invoke();
+                onLoadMap = () => { };
             }
         }
 
         public void AddOnLoadMap(UnityAction onLoadMap)
         {
-            _onLoadMap += onLoadMap;
+            this.onLoadMap += onLoadMap;
         }
 
         public void AddInteractor(InteractionObject interactionObject)
@@ -248,104 +218,52 @@ namespace Utility.Core
 
         private void SetByChangedMap()
         {
-            speat.PickUpCharacter();
-            oun.PickUpCharacter();
-            rau.PickUpCharacter();
-            speat_Adolescene.PickUpCharacter();
-            speat_Adult.PickUpCharacter();
-            speat_Child.PickUpCharacter();
+            foreach (var character in characters)
+            {
+                character.PickUpCharacter();
+                character.InitializeCharacter();
+            }
 
-            //카메라 위치와 회전
+            var mainPosSetIndex = CurrentMap.positionSets.FindIndex(item => item.isMain);
+            if (mainPosSetIndex != -1)
+            {
+                mainChar = Array.Find(characters, item => item.who == CurrentMap.positionSets[mainPosSetIndex].who);
+            }
+            else
+            {
+                mainChar = null;
+            }
+
+            foreach (var posSet in CurrentMap.positionSets)
+            {
+                var character = Array.Find(characters, item => item.who == posSet.who);
+                character.SetCharacter(posSet.startPosition);
+            }
+
+            JoystickController.Instance.Init(CurrentMap.joystickType);
+            JoystickController.Instance.InitializeJoyStick(!CurrentMap.isJoystickNone);
+
             camInfo.camDis = CurrentMap.camDis;
             camInfo.camRot = CurrentMap.camRot;
 
-            // 해당되는 캐릭터 초기화
-            speat.InitializeCharacter();
-            oun.InitializeCharacter();
-            rau.InitializeCharacter();
-            speat_Adolescene.InitializeCharacter();
-            speat_Adult.InitializeCharacter();
-            speat_Child.InitializeCharacter();
-
-            var temp = CurrentMap.positionSets;
-            for (int k = 0; k < temp.Count; k++)
-            {
-                if (temp[k].who.Equals(Character.Speat))
-                {
-                    if (temp[k].isMain)
-                        _mainChar = speat;
-                    speat.SetCharacter(temp[k].startPosition);
-                    speat.Emotion = Expression.IDLE;
-                }
-                else if (temp[k].who.Equals(Character.Oun))
-                {
-                    if (temp[k].isMain)
-                        _mainChar = oun;
-                    oun.SetCharacter(temp[k].startPosition);
-                }
-                else if (temp[k].who.Equals(Character.Rau))
-                {
-                    if (temp[k].isMain)
-                        _mainChar = rau;
-                    rau.SetCharacter(temp[k].startPosition);
-                }
-                else if (temp[k].who.Equals(Character.Speat_Adolescene))
-                {
-                    if (temp[k].isMain)
-                        _mainChar = speat_Adolescene;
-                    speat_Adolescene.SetCharacter(temp[k].startPosition);
-                }
-                else if (temp[k].who.Equals(Character.Speat_Adult))
-                {
-                    if (temp[k].isMain)
-                        _mainChar = speat_Adult;
-                    speat_Adult.SetCharacter(temp[k].startPosition);
-                }
-                else if (temp[k].who.Equals(Character.Speat_Child))
-                {
-                    if (temp[k].isMain)
-                        _mainChar = speat_Child;
-                    speat_Child.SetCharacter(temp[k].startPosition);
-                }
-            }
-
-            if (_mainChar)
-            {
-                _mainChar.gameObject.layer = LayerMask.NameToLayer("Player");
-            }
-
-            //조이스틱 초기화
-            JoystickController.instance.Init(CurrentMap.joystickType);
-            JoystickController.instance.InitializeJoyStick(!CurrentMap.isJoystickNone);
-
-
-            // CameraMoving 컨트롤
             var cameraMoving = Cam.GetComponent<CameraMoving>();
-
             cameraMoving.Initialize();
 
-
-            //스카이박스 세팅
             RenderSettings.skybox = CurrentMap.skyboxSetting;
             DynamicGI.UpdateEnvironment();
-            //현재 맵에서 카메라 세팅
 
-            //카메라 orthographic 컨트롤
             Cam.orthographic = CurrentMap.isOrthographic;
-            if (CurrentMap.isOrthographic)
+            if (Cam.orthographic)
             {
                 camOrthgraphicSize = CurrentMap.orthographicSize;
             }
 
-            // 조작 가능한 상태로 변경 (중력 적용)
-            speat.UseJoystickCharacter();
-            oun.UseJoystickCharacter();
-            rau.UseJoystickCharacter();
-            speat_Adolescene.UseJoystickCharacter();
-            speat_Child.UseJoystickCharacter();
-            speat_Adult.UseJoystickCharacter();
+            foreach (var character in characters)
+            {
+                character.UseJoystickCharacter();
+            }
         }
-        
+
         public void UpdateLikeable(int[] rauLikeables)
         {
             charRelationshipData.selfEstm += rauLikeables[0];
@@ -355,7 +273,10 @@ namespace Utility.Core
 
         public int[] GetLikeable()
         {
-            int[] likable = {charRelationshipData.selfEstm, charRelationshipData.intimacySpRau, charRelationshipData.intimacyOunRau};
+            int[] likable =
+            {
+                charRelationshipData.selfEstm, charRelationshipData.intimacySpRau, charRelationshipData.intimacyOunRau
+            };
             return likable;
         }
 
@@ -374,7 +295,7 @@ namespace Utility.Core
                     character.transform.position = charData.pos;
                     character.transform.rotation = charData.rot;
                 }
-                
+
                 charRelationshipData = saveData.charRelationshipData;
                 foreach (var interactionObject in InteractionObjects)
                 {

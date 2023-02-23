@@ -1,6 +1,6 @@
 ﻿namespace Data
 {
-    public class CustomEnum
+    public static class CustomEnum
     {
         public enum EndingType
         {
@@ -30,29 +30,29 @@
 
         public enum Expression
         {
-            NONE = -1,
+            None = -1,
             IDLE = 0,
-            LAUGH,
-            SAD,
-            CRY,
-            ANGRY,
-            SURPISE,
-            PANIC,
-            SUSPICION,
-            FEAR,
-            CURIOUS
+            Laugh,
+            Sad,
+            Cry,
+            Angry,
+            Surpise,
+            Panic,
+            Suspicion,
+            Fear,
+            Curious
         }
 
         public enum TaskContentType
         {
             NONE = 0,
-            ANIMATION = 1,
-            DIALOGUE = 2,
-            TEMP = 3,
-            TEMPEND = 4,
+            Animation = 1,
+            Dialogue = 2,
+            Temp = 3,
+            TempEnd = 4,
             TaskReset = 5,
-            NEW = 6,
-            THEEND = 7,
+            New = 6,
+            TheEnd = 7,
             Play = 8,
             FadeIn = 9,
             FadeOut = 10,
@@ -70,14 +70,14 @@
 
         public enum OutlineColor
         {
-            red,
-            magenta,
-            yellow,
-            green,
-            blue,
-            grey,
-            black,
-            white
+            Red,
+            Magenta,
+            Yellow,
+            Green,
+            Blue,
+            Grey,
+            Black,
+            White
         }
 
         public enum InteractionPlayType
@@ -92,7 +92,7 @@
             // FadeOut
         }
 
-        public enum InteractionMethod // 인터렉션 오브젝트 터치했는지 안했는지 감지 기능 필요
+        public enum InteractionMethod
         {
             Touch,
             Trigger,
@@ -102,9 +102,9 @@
 
         public enum JoystickAreaType
         {
-            DEFAULT,
-            NONE,
-            FULL
+            Default,
+            None,
+            Full
         }
 
         public enum Swipe

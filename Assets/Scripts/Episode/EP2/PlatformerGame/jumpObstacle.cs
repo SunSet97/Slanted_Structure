@@ -1,56 +1,61 @@
 ﻿using System.Collections;
+using CommonScript;
 using UnityEngine;
 using Utility.Core;
 
-public class jumpObstacle : JumpInTotal
+namespace Episode.EP2.PlatformerGame
 {
-    public Transform obstacleTransform;
-    public float speed;
-    public AnimationCurve jumpCurve;
-    public float sec;
-    protected override void ButtonPressed()
+    public class JumpObstacle : JumpInTotal
     {
-        StartCoroutine(FramePerParameter());
-        gameManager.ActiveButton(false);
-    }
+        public Transform obstacleTransform;
+        public float speed;
+        public AnimationCurve jumpCurve;
+        public float sec;
 
-    protected override void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
-    }
-
-    protected override void OnTriggerExit(Collider other)
-    {
-        base.OnTriggerExit(other);
-    }
-
-    private IEnumerator FramePerParameter()
-    {
-        var waitForFixedUpdate = new WaitForFixedUpdate();
-        CharacterManager platformer_char = DataController.Instance.GetCharacter(Data.CustomEnum.Character.Main);
-        platformer_char.PickUpCharacter();
-
-        platformer_char.RotateCharacter2D(-1f);
-
-        platformer_char.anim.SetBool("Jump", true);
-        Vector3 startposition = platformer_char.transform.position;
-
-        float t = 0f;
-        while (t <= 1f)
+        protected override void ButtonPressed()
         {
-            t += Time.fixedDeltaTime / sec;
-
-            float curvepercent = jumpCurve.Evaluate(t);
-            var dest_position = Vector3.LerpUnclamped(startposition, obstacleTransform.position, t);
-            dest_position.y = Mathf.LerpUnclamped(startposition.y, obstacleTransform.position.y, curvepercent);
-
-            platformer_char.transform.position = dest_position;
-
-            yield return waitForFixedUpdate;
+            StartCoroutine(FramePerParameter());
+            gameManager.ActiveButton(false);
         }
 
-        platformer_char.anim.SetBool("Jump", false);
-        platformer_char.PutDownCharacter();
+        protected override void OnTriggerEnter(Collider other)
+        {
+            base.OnTriggerEnter(other);
+        }
 
+        protected override void OnTriggerExit(Collider other)
+        {
+            base.OnTriggerExit(other);
+        }
+
+        private IEnumerator FramePerParameter()
+        {
+            var waitForFixedUpdate = new WaitForFixedUpdate();
+            CharacterManager platformer_char = DataController.Instance.GetCharacter(Data.CustomEnum.Character.Main);
+            platformer_char.PickUpCharacter();
+
+            platformer_char.RotateCharacter2D(-1f);
+
+            platformer_char.CharacterAnimator.SetBool("Jump", true);
+            Vector3 startposition = platformer_char.transform.position;
+
+            float t = 0f;
+            while (t <= 1f)
+            {
+                t += Time.fixedDeltaTime / sec;
+
+                float curvepercent = jumpCurve.Evaluate(t);
+                var dest_position = Vector3.LerpUnclamped(startposition, obstacleTransform.position, t);
+                dest_position.y = Mathf.LerpUnclamped(startposition.y, obstacleTransform.position.y, curvepercent);
+
+                platformer_char.transform.position = dest_position;
+
+                yield return waitForFixedUpdate;
+            }
+
+            platformer_char.CharacterAnimator.SetBool("Jump", false);
+            platformer_char.PutDownCharacter();
+
+        }
     }
 }

@@ -1,76 +1,80 @@
 ﻿using System.Collections;
+using CommonScript;
 using UnityEngine;
 using Utility.Core;
 
-public class JumpWall : JumpInTotal
+namespace Episode.EP2.PlatformerGame
 {
-    public Transform firstPos;
-    public Transform secondPos;
-    public Transform thirdPos;
-    public float speed;
-    public AnimationCurve jumpCurve;
-    public float sec1;
-    public float sec2;
-    protected override void ButtonPressed()
+    public class JumpWall : JumpInTotal
     {
-        StartCoroutine(FrameForParameter());
-        gameManager.ActiveButton(false);
-    }
-
-    protected override void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
-    }
-
-    protected override void OnTriggerExit(Collider other)
-    {
-        base.OnTriggerExit(other);
-    }
-
-    private IEnumerator FrameForParameter()
-    {
-        var waitForFixedUpdate = new WaitForFixedUpdate();
-        CharacterManager platformerCharacter = DataController.Instance.GetCharacter(Data.CustomEnum.Character.Main);
-        var characterController = platformerCharacter.GetComponent<CharacterController>();
-        platformerCharacter.useGravity = false;
-        platformerCharacter.PickUpCharacter();
-
-        platformerCharacter.RotateCharacter2D(-1f);
-
-        var moveY = (firstPos.transform.position - platformerCharacter.transform.position).normalized;
-        characterController.Move(moveY);
-
-
-        platformerCharacter.anim.SetTrigger("Climb");
-        float t = 0f;
-        var direction = (secondPos.position - firstPos.position).normalized;
-        while (t <= 1f)
+        public Transform firstPos;
+        public Transform secondPos;
+        public Transform thirdPos;
+        public float speed;
+        public AnimationCurve jumpCurve;
+        public float sec1;
+        public float sec2;
+        protected override void ButtonPressed()
         {
-            yield return waitForFixedUpdate;
-            characterController.Move(direction * Time.fixedDeltaTime * speed);
-
-            t += Time.fixedDeltaTime / sec1;
+            StartCoroutine(FrameForParameter());
+            gameManager.ActiveButton(false);
         }
 
-        var startPosition = platformerCharacter.transform.position;
-        platformerCharacter.anim.SetTrigger("Jump_fence");
-        t = 0f;
-        while (t <= 1f)
+        protected override void OnTriggerEnter(Collider other)
         {
-            t += Time.fixedDeltaTime / sec2;
-
-            float curvepercent = jumpCurve.Evaluate(t);
-            var destPosition = Vector3.LerpUnclamped(startPosition, thirdPos.position, t) - platformerCharacter.transform.position;
-            destPosition.y = Mathf.LerpUnclamped(startPosition.y, thirdPos.position.y, curvepercent) - platformerCharacter.transform.position.y;
-
-            characterController.Move(destPosition * Time.fixedDeltaTime);
-
-            yield return waitForFixedUpdate;
+            base.OnTriggerEnter(other);
         }
 
-        platformerCharacter.useGravity = true;
-        platformerCharacter.anim.SetBool("2DSide", false);
-        platformerCharacter.PutDownCharacter();
+        protected override void OnTriggerExit(Collider other)
+        {
+            base.OnTriggerExit(other);
+        }
 
+        private IEnumerator FrameForParameter()
+        {
+            var waitForFixedUpdate = new WaitForFixedUpdate();
+            CharacterManager platformerCharacter = DataController.Instance.GetCharacter(Data.CustomEnum.Character.Main);
+            var characterController = platformerCharacter.GetComponent<CharacterController>();
+            platformerCharacter.UseGravity = false;
+            platformerCharacter.PickUpCharacter();
+
+            platformerCharacter.RotateCharacter2D(-1f);
+
+            var moveY = (firstPos.transform.position - platformerCharacter.transform.position).normalized;
+            characterController.Move(moveY);
+
+
+            platformerCharacter.CharacterAnimator.SetTrigger("Climb");
+            float t = 0f;
+            var direction = (secondPos.position - firstPos.position).normalized;
+            while (t <= 1f)
+            {
+                yield return waitForFixedUpdate;
+                characterController.Move(direction * Time.fixedDeltaTime * speed);
+
+                t += Time.fixedDeltaTime / sec1;
+            }
+
+            var startPosition = platformerCharacter.transform.position;
+            platformerCharacter.CharacterAnimator.SetTrigger("Jump_fence");
+            t = 0f;
+            while (t <= 1f)
+            {
+                t += Time.fixedDeltaTime / sec2;
+
+                float curvepercent = jumpCurve.Evaluate(t);
+                var destPosition = Vector3.LerpUnclamped(startPosition, thirdPos.position, t) - platformerCharacter.transform.position;
+                destPosition.y = Mathf.LerpUnclamped(startPosition.y, thirdPos.position.y, curvepercent) - platformerCharacter.transform.position.y;
+
+                characterController.Move(destPosition * Time.fixedDeltaTime);
+
+                yield return waitForFixedUpdate;
+            }
+
+            platformerCharacter.UseGravity = true;
+            platformerCharacter.CharacterAnimator.SetBool("2DSide", false);
+            platformerCharacter.PutDownCharacter();
+
+        }
     }
 }

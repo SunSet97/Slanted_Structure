@@ -3,17 +3,20 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class IceCreamClicker : MonoBehaviour, IPointerDownHandler
+namespace Episode.EP1.MarketGame.IceCream
 {
-    [NonSerialized]
-    public UnityAction onPointerEnter;
-
-    public void OnPointerDown(PointerEventData eventData)
+    public class IceCreamClicker : MonoBehaviour, IPointerDownHandler
     {
-        if (!enabled || onPointerEnter == null)
+        [NonSerialized]
+        public UnityAction onPointerEnter;
+
+        public void OnPointerDown(PointerEventData eventData)
         {
-            return;
+            if (!enabled || onPointerEnter == null)
+            {
+                return;
+            }
+            onPointerEnter();
         }
-        onPointerEnter();
     }
 }

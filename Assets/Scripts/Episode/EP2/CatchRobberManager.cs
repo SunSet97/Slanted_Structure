@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using CommonScript;
 using Play;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +25,7 @@ public class dovesComoponents
 public class CatchRobberManager : MonoBehaviour, IGamePlayable
 {
     public bool IsPlay { get; set; }
+    public Action OnEndPlay { get; set; }
 
     private readonly int SpeedHash = Animator.StringToHash("Speed");
 
@@ -78,6 +81,7 @@ public class CatchRobberManager : MonoBehaviour, IGamePlayable
 
     public void EndPlay()
     {
+        OnEndPlay?.Invoke();
         IsPlay = false;
     }
 
@@ -96,7 +100,7 @@ public class CatchRobberManager : MonoBehaviour, IGamePlayable
         {
             if (!isMoving && !isStopping)
             {
-                if (JoystickController.instance.joystick.Horizontal < -0.5 && !isDragged && CurrentDir != Dir.Left)
+                if (JoystickController.Instance.Joystick.Horizontal < -0.5 && !isDragged && CurrentDir != Dir.Left)
                 {
                     // 왼 드래그 공통
                     isDragged = true;
@@ -116,7 +120,7 @@ public class CatchRobberManager : MonoBehaviour, IGamePlayable
                         StartCoroutine(GoHorizontal(moveTransforms[2], moveTransforms[0]));
                     }
                 }
-                else if (JoystickController.instance.joystick.Horizontal > 0.5 && !isDragged && CurrentDir != Dir.Right)
+                else if (JoystickController.Instance.Joystick.Horizontal > 0.5 && !isDragged && CurrentDir != Dir.Right)
                 {
                     //GoDir = Dir.Right;
                     isDragged = true;
@@ -133,7 +137,7 @@ public class CatchRobberManager : MonoBehaviour, IGamePlayable
                         StartCoroutine(GoHorizontal(moveTransforms[1], moveTransforms[0]));
                     }
                 }
-                else if (JoystickController.instance.joystick.Horizontal >= -0.5 && JoystickController.instance.joystick.Horizontal <= 0.5)
+                else if (JoystickController.Instance.Joystick.Horizontal >= -0.5 && JoystickController.Instance.Joystick.Horizontal <= 0.5)
                 {
                     isDragged = false;
                     //Debug.Log("none");
@@ -186,8 +190,8 @@ public class CatchRobberManager : MonoBehaviour, IGamePlayable
         // 현재 캐릭터
         rau = DataController.Instance.GetCharacter(Character.Main);
         rau.IsMove = false;
-        rau.anim.applyRootMotion = false;
-        rau.anim.SetFloat(Speed, 0.7f);
+        rau.CharacterAnimator.applyRootMotion = false;
+        rau.CharacterAnimator.SetFloat(Speed, 0.7f);
         // 라우 위치시키기
         robber.transform.position = rau.transform.position + new Vector3(0, 0, 10);
         if (robber) characterController_robber = robber.GetComponent<CharacterController>();
@@ -212,12 +216,12 @@ public class CatchRobberManager : MonoBehaviour, IGamePlayable
         }
         dovesComponents.Add(new dovesComoponents(tmpAnimsList, tmpCamFollowList));
         //조이스틱 이미지 끄기
-        foreach (Image image in JoystickController.instance.joystick.GetComponentsInChildren(typeof(Image), true))
+        foreach (Image image in JoystickController.Instance.Joystick.GetComponentsInChildren(typeof(Image), true))
         {
             image.color = Color.clear;
         }
         //조이스틱이 수평으로만 움직이도록
-        JoystickController.instance.joystick.AxisOptions = AxisOptions.Horizontal;
+        JoystickController.Instance.Joystick.AxisOptions = AxisOptions.Horizontal;
         //
         rau.PickUpCharacter();
         //
@@ -245,8 +249,8 @@ public class CatchRobberManager : MonoBehaviour, IGamePlayable
 
             moveLeftAndRight.position = followZofRau;
             // rau.ctrl.Move(rau.transform.position-threeWay[0].position);
-            rau.ctrl.Move(new Vector3(0, -1, Time.deltaTime) * rauSpeed);
-            rau.anim.SetFloat(SpeedHash, rauSpeed * Time.deltaTime);
+            rau.CharacterController.Move(new Vector3(0, -1, Time.deltaTime) * rauSpeed);
+            rau.CharacterAnimator.SetFloat(SpeedHash, rauSpeed * Time.deltaTime);
             rauSpeed += acceleration * Time.deltaTime;
         }
         // 캐릭터매니저랑 라우랑 위치 일치시키기 => 충돌 감지때문

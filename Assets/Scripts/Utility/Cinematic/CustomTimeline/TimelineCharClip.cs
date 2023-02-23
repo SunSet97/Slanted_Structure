@@ -3,16 +3,19 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-[Serializable]
-public class TimelineCharClip : PlayableAsset, ITimelineClipAsset
+namespace Utility.Cinematic.CustomTimeline
 {
-    [SerializeField]
-    private TimelineCharBehavior template = new TimelineCharBehavior();
-        
-    public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
+    [Serializable]
+    public class TimelineCharClip : PlayableAsset, ITimelineClipAsset
     {
-        return ScriptPlayable<TimelineCharBehavior>.Create(graph, template);
-    }
+        [SerializeField]
+        private TimelineCharBehavior template = new TimelineCharBehavior();
+        
+        public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
+        {
+            return ScriptPlayable<TimelineCharBehavior>.Create(graph, template);
+        }
 
-    public ClipCaps clipCaps => ClipCaps.All;
+        public ClipCaps clipCaps => ClipCaps.All;
+    }
 }

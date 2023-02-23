@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using CommonScript;
 using UnityEngine;
 
 public class Particle : MonoBehaviour
