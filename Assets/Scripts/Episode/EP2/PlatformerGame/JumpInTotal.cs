@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
 
-public abstract class JumpInTotal : MonoBehaviour
+namespace Episode.EP2.PlatformerGame
 {
-    public PlatformerGameManager gameManager;
-        
-    protected bool isActivated;
-
-    protected virtual void OnTriggerEnter(Collider other) {
-        gameManager.ActiveButton(true, ButtonPressed);
-    }
-    protected virtual void OnTriggerExit(Collider other)
+    public abstract class JumpInTotal : MonoBehaviour
     {
-        gameManager.ActiveButton(false);
+        public PlatformerGameManager gameManager;
+        
+        protected bool isActivated;
+
+        protected virtual void OnTriggerEnter(Collider other) {
+            gameManager.ActiveButton(true, ButtonPressed);
+        }
+        protected virtual void OnTriggerExit(Collider other)
+        {
+            gameManager.ActiveButton(false);
+        }
+        protected abstract void ButtonPressed();
     }
-    protected abstract void ButtonPressed();
 }

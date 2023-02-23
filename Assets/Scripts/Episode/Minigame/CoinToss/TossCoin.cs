@@ -97,7 +97,7 @@ public class TossCoin : MonoBehaviour, IGamePlayable
     }
 
     public bool IsPlay { get; set; }
-    public Action ONEndPlay { get; set; }
+    public Action OnEndPlay { get; set; }
 
     public void Play()
     {
@@ -106,7 +106,7 @@ public class TossCoin : MonoBehaviour, IGamePlayable
 
     public void EndPlay()
     {
-        ONEndPlay?.Invoke();
+        OnEndPlay?.Invoke();
         IsPlay = false;
     }
 }

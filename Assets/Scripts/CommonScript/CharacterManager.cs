@@ -30,7 +30,7 @@ namespace CommonScript
 
         [NonSerialized] public Animator CharacterAnimator;
 
-        [NonSerialized] public bool useGravity;
+        [NonSerialized] public bool UseGravity;
 
         private SkinnedMeshRenderer skinnedMesh; // 캐릭터 머테리얼
         private Texture[] faceExpression; //표정 메터리얼 
@@ -71,6 +71,12 @@ namespace CommonScript
 
         public void PutDownCharacter()
         {
+            IsMove = true;
+            CharacterAnimator.applyRootMotion = true;
+        }
+
+        public void UseJoystickCharacter()
+        {
             Invoke(nameof(PutDownCharacter), Time.fixedDeltaTime);
         }
 
@@ -80,7 +86,7 @@ namespace CommonScript
             gameObject.layer = LayerMask.NameToLayer("Default");
             MoveHorizontal = 0f;
             MoveVerical = 0f;
-            useGravity = false;
+            UseGravity = false;
 
             CharacterAnimator.SetFloat(SpeedHash, 0f);
 
@@ -120,7 +126,7 @@ namespace CommonScript
             }
 
             Emotion = Expression.IDLE;
-            useGravity = true;
+            UseGravity = true;
 
             gameObject.SetActive(true);
 
@@ -160,7 +166,7 @@ namespace CommonScript
         public float gravityScale = 0.6f; // 중력 배수
         public float airResistance = 1.2f; // 공기 저항
 
-        [SerializeField] private float followDistance = 1f; 
+        [SerializeField] private float followDistance = 1f;
 
         [SerializeField] private float followSpeed = 1f;
 
@@ -189,12 +195,14 @@ namespace CommonScript
                 transform.eulerAngles = characterRot;
             }
         }
+
         private void Move2DSide(float x)
         {
             if (!Mathf.Approximately(x, 0f))
             {
                 CharacterAnimator.SetBool(TwoSideHash, true);
             }
+
             RotateCharacter2D(x);
         }
 
@@ -244,7 +252,7 @@ namespace CommonScript
                     CharacterAnimator.SetFloat(SpeedHash, JoystickController.Instance.inputDegree);
                 }
 
-                if (useGravity && !CharacterController.isGrounded)
+                if (UseGravity && !CharacterController.isGrounded)
                 {
                     MoveVerical += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
                 }
@@ -303,7 +311,7 @@ namespace CommonScript
                 CharacterAnimator.SetFloat(SpeedHash, (distanceRatio - 1) * followSpeed);
             }
 
-            if (useGravity && !CharacterController.isGrounded)
+            if (UseGravity && !CharacterController.isGrounded)
             {
                 MoveVerical += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
             }

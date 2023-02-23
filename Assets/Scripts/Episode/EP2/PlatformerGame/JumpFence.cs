@@ -5,13 +5,12 @@ using Utility.Core;
 
 namespace Episode.EP2.PlatformerGame
 {
-    public class JumpObstacle : JumpInTotal
+    public class JumpFence : JumpInTotal
     {
         public Transform obstacleTransform;
         public float speed;
         public AnimationCurve jumpCurve;
         public float sec;
-
         protected override void ButtonPressed()
         {
             StartCoroutine(FramePerParameter());
@@ -36,7 +35,8 @@ namespace Episode.EP2.PlatformerGame
 
             platformer_char.RotateCharacter2D(-1f);
 
-            platformer_char.CharacterAnimator.SetBool("Jump", true);
+            platformer_char.CharacterAnimator.SetBool("2DSide", false);
+            platformer_char.CharacterAnimator.SetTrigger("Jump_fence");
             Vector3 startposition = platformer_char.transform.position;
 
             float t = 0f;
@@ -48,12 +48,13 @@ namespace Episode.EP2.PlatformerGame
                 var dest_position = Vector3.LerpUnclamped(startposition, obstacleTransform.position, t);
                 dest_position.y = Mathf.LerpUnclamped(startposition.y, obstacleTransform.position.y, curvepercent);
 
-                platformer_char.transform.position = dest_position;
+                var characterController = platformer_char.GetComponent<CharacterController>();
+                characterController.transform.position = dest_position;
 
                 yield return waitForFixedUpdate;
             }
 
-            platformer_char.CharacterAnimator.SetBool("Jump", false);
+            platformer_char.CharacterAnimator.SetBool("2DSide", true);
             platformer_char.PutDownCharacter();
 
         }

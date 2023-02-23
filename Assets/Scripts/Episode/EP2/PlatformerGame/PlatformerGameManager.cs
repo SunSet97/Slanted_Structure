@@ -1,35 +1,41 @@
-﻿using Play;
+﻿using System;
+using Play;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class PlatformerGameManager : MonoBehaviour, IGamePlayable
+namespace Episode.EP2.PlatformerGame
 {
-    [SerializeField]
-    private Button InteractableButton;
-
-    public bool IsPlay { get; set; }
-
-    public void ActiveButton(bool isActive, UnityAction unityAction)
-    {   
-        InteractableButton.gameObject.SetActive(isActive);
-        InteractableButton.onClick.AddListener(unityAction);
-    }
-
-    public void ActiveButton(bool isActive)
+    public class PlatformerGameManager : MonoBehaviour, IGamePlayable
     {
-        InteractableButton.gameObject.SetActive(isActive);
-        InteractableButton.onClick.RemoveAllListeners();
-    }
+        [SerializeField]
+        private Button InteractableButton;
 
-    public void EndPlay()
-    {
-        IsPlay = false;
-    }
+        public bool IsPlay { get; set; }
+        public Action OnEndPlay { get; set; }
 
-    public void Play()
-    {
-        IsPlay = true;
+        public void ActiveButton(bool isActive, UnityAction unityAction)
+        {   
+            InteractableButton.gameObject.SetActive(isActive);
+            InteractableButton.onClick.AddListener(unityAction);
+        }
+
+        public void ActiveButton(bool isActive)
+        {
+            InteractableButton.gameObject.SetActive(isActive);
+            InteractableButton.onClick.RemoveAllListeners();
+        }
+
+        public void EndPlay()
+        {
+            OnEndPlay?.Invoke();
+            IsPlay = false;
+        }
+
+        public void Play()
+        {
+            IsPlay = true;
+        }
     }
 }
 

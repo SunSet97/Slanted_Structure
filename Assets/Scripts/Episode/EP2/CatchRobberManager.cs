@@ -25,7 +25,7 @@ public class dovesComoponents
 public class CatchRobberManager : MonoBehaviour, IGamePlayable
 {
     public bool IsPlay { get; set; }
-    public Action ONEndPlay { get; set; }
+    public Action OnEndPlay { get; set; }
 
     private readonly int SpeedHash = Animator.StringToHash("Speed");
 
@@ -81,7 +81,7 @@ public class CatchRobberManager : MonoBehaviour, IGamePlayable
 
     public void EndPlay()
     {
-        ONEndPlay?.Invoke();
+        OnEndPlay?.Invoke();
         IsPlay = false;
     }
 

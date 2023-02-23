@@ -43,7 +43,12 @@ namespace Utility.Core
         {
             jumpButton.onClick.AddListener(() =>
             {
-                DataController.Instance.GetCharacter(CustomEnum.Character.Main).Jump();
+                var mainCharacter = DataController.Instance.GetCharacter(CustomEnum.Character.Main);
+                // if (!mainCharacter.CharacterController.isGrounded)
+                // {
+                mainCharacter.Jump();
+                // }
+
             });
         }
 

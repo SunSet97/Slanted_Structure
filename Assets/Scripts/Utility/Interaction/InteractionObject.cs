@@ -397,7 +397,7 @@ namespace Utility.Interaction
             {
                 var game = interaction.gamePlayableGame.GetComponent<IGamePlayable>();
                 game.Play();
-                game.ONEndPlay = () =>
+                game.OnEndPlay = () =>
                 {
                     PlayUIController.Instance.SetMenuActive(false);
                     foreach (var endAction in interaction.interactionEndActions.interactionEvents)
@@ -566,7 +566,7 @@ namespace Utility.Interaction
                         IGamePlayable gamePlayable =
                             GameObject.Find(currentTask.nextFile).GetComponent<IGamePlayable>();
                         PlayUIController.Instance.SetMenuActive(false);
-                        gamePlayable.ONEndPlay = () =>
+                        gamePlayable.OnEndPlay = () =>
                         {
                             PlayUIController.Instance.SetMenuActive(true);
                         };

@@ -27,7 +27,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
         }
 
         public bool IsPlay { get; set; }
-        public Action ONEndPlay { get; set; }
+        public Action OnEndPlay { get; set; }
 
         public void Play()
         {
@@ -42,7 +42,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
         public void EndPlay()
         {
             IsPlay = false;
-            ONEndPlay?.Invoke();
+            OnEndPlay?.Invoke();
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
             foreach (var pimpGuest in pimpGuests)
             {

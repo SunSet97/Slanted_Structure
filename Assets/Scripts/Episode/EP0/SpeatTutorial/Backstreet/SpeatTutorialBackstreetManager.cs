@@ -13,7 +13,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
     public class SpeatTutorialBackstreetManager : MonoBehaviour, IGamePlayable
     {
         public bool IsPlay { get; set; }
-        public Action ONEndPlay { get; set; }
+        public Action OnEndPlay { get; set; }
 
         [Header("End Dialogue")] [SerializeField]
         private TextAsset jsonFile;
@@ -85,7 +85,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
         {
             IsPlay = false;
 
-            ONEndPlay?.Invoke();
+            OnEndPlay?.Invoke();
 
             if (jsonFile != null)
             {
