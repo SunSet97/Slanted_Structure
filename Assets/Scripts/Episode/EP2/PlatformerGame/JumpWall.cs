@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
-using Utility.System;
+using Utility.Core;
 
 public class JumpWall : JumpInTotal
 {
@@ -30,7 +30,7 @@ public class JumpWall : JumpInTotal
     private IEnumerator FrameForParameter()
     {
         var waitForFixedUpdate = new WaitForFixedUpdate();
-        CharacterManager platformerCharacter = DataController.instance.GetCharacter(Data.CustomEnum.Character.Main);
+        CharacterManager platformerCharacter = DataController.Instance.GetCharacter(Data.CustomEnum.Character.Main);
         var characterController = platformerCharacter.GetComponent<CharacterController>();
         platformerCharacter.useGravity = false;
         platformerCharacter.PickUpCharacter();

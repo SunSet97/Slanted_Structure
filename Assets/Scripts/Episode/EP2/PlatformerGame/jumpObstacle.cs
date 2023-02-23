@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
-using Utility.System;
+using Utility.Core;
 
 public class jumpObstacle : JumpInTotal
 {
@@ -27,7 +27,7 @@ public class jumpObstacle : JumpInTotal
     private IEnumerator FramePerParameter()
     {
         var waitForFixedUpdate = new WaitForFixedUpdate();
-        CharacterManager platformer_char = DataController.instance.GetCharacter(Data.CustomEnum.Character.Main);
+        CharacterManager platformer_char = DataController.Instance.GetCharacter(Data.CustomEnum.Character.Main);
         platformer_char.PickUpCharacter();
 
         platformer_char.RotateCharacter2D(-1f);
