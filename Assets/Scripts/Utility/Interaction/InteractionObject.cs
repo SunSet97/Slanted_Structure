@@ -872,8 +872,8 @@ namespace Utility.Interaction
             get
             {
                 var interaction = GetInteraction();
-                if (interaction.interactionPlayType == InteractionPlayType.Dialogue ||
-                    interaction.interactionPlayType == InteractionPlayType.Task && !interaction.jsonFile)
+                if ((interaction.interactionPlayType == InteractionPlayType.Dialogue ||
+                    interaction.interactionPlayType == InteractionPlayType.Task) && !interaction.jsonFile)
                 {
                     return false;
                 }

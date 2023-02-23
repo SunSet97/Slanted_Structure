@@ -43,48 +43,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 2
-  jsonFile: {fileID: 4900000, guid: 40dcc38d2e4ca4240b3dbb0873c70a01, type: 3}
-  gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues:
-    - name: "\uC2A4\uD54F"
-      expression: 0
-      anim_name: Speat
-      contents: "\uC774\uBBF8 \uC640\uBD24\uC744 \uC218 \uB3C4 \uC788\uB294\uB370
-        \uC0AC\uC2E4 \uBD80\uB3C4\uC2EC\uC740 \uBCFC \uAC8C \uC5C6\uC5B4\uC11C..\uD558\uD558"
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: Rau
-      contents: "\uC800\uBC88\uC5D0 \uC720\uC2EC\uCE69 \uC0AC\uB7EC \uC654\uB294\uB370
-        \uC81C\uB300\uB85C \uAD6C\uACBD\uC740 \uBABB\uD588\uC5C8\uC5B4..!"
-    - name: "\uC2A4\uD54F"
-      expression: 1
-      anim_name: Speat
-      contents: "\uADF8\uB7EC\uBA74 \uB2E4\uD589\uC774\uB2E4! \uAC19\uC774 \uAD6C\uACBD\uC774\uB098
-        \uD558\uC790!"
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
+  id: 
+  interactions: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}
-  outlineRadius: 5
-  interactionMethod: 3
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines: []
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  taskDataDebug: []
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &4224357041490311795
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -219,28 +185,28 @@ MonoBehaviour:
   ui: {fileID: 6432171024083627490}
   skyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 1
-  orthographicSize: 5
-  cameraBound: {fileID: 0}
-  BGM: {fileID: 0}
+  orthographicSize: 7
+  useFadeOut: 0
+  fadeOutSec: 1
+  fadeInSec: 1
+  bgm: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 5772984942624331488}
   clearBoxList:
   - {fileID: 3877089292194072861}
-  positionSets:
-  - index: 0
-    who: 2
-    startPosition: {fileID: 3877089292078665311}
-    posSet: {fileID: 3877089290614172796}
-    isMain: 1
-  - index: 1
-    who: 0
-    startPosition: {fileID: 7720387382965283826}
-    posSet: {fileID: 6493782910071428584}
-    isMain: 0
-  cameraViewType: 0
-  camDis: {x: 0, y: 5.88, z: -11}
-  camRot: {x: 22.5, y: 0, z: 0}
   positionSetting: {fileID: 3877089292092178607}
+  positionSets:
+  - who: 2
+    startPosition: {fileID: 3877089292078665311}
+    isMain: 1
+    isFollow: 0
+  - who: 0
+    startPosition: {fileID: 7720387382965283826}
+    isMain: 0
+    isFollow: 1
+  cameraViewType: 0
+  camDis: {x: 0, y: 20, z: 15}
+  camRot: {x: 50, y: 180, z: 0}
   isJoystickInputUse: 0
   isJoystickNone: 0
   joystickType: 0
@@ -365,7 +331,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 0
-  jsonFile: {fileID: 0}
   nextSelectMapcode: 203130
 --- !u!1 &5772984942624331488
 GameObject:
@@ -427,6 +392,19 @@ Transform:
   m_Father: {fileID: 6493782910071428584}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!135 &3580904518542868289
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6982224096427948660}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3689137975053309575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,49 +417,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 3
-  jsonFile: {fileID: 4900000, guid: 685e43cb09101dc459f54158224b33cd, type: 3}
-  gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues:
-    - name: "\uB77C\uC6B0\uB300\uD6541"
-      expression: 0
-      anim_name: 
-      contents: 
-    - name: 
-      expression: 0
-      anim_name: 
-      contents: 
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
+  id: 
+  interactions: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}
-  outlineRadius: 5
-  interactionMethod: 0
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines:
-  - {fileID: 0}
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  taskDataDebug: []
---- !u!135 &3580904518542868289
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!135 &4601690848595086830
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6982224096427948660}
+  m_GameObject: {fileID: 8228597806488078328}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
@@ -500,108 +450,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 3
-  jsonFile: {fileID: 4900000, guid: a0491ee003fa2fa44b876c7707a41f5c, type: 3}
-  gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues:
-    - name: "\uB77C\uC6B0\uB300\uD6541"
-      expression: 0
-      anim_name: 
-      contents: 
-    - name: 
-      expression: 0
-      anim_name: 
-      contents: 
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
+  id: 
+  interactions: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}
-  outlineRadius: 5
-  interactionMethod: 0
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines:
-  - {fileID: 0}
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  taskDataDebug: []
---- !u!135 &4601690848595086830
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8228597806488078328}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 3
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8401671267659083502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8487068852210935903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionPlayType: 2
-  jsonFile: {fileID: 4900000, guid: d97d7769ed80e0d4685222c5ccac7164, type: 3}
-  gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues: []
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents:
-    - eventType: 2
-      clearBox: {fileID: 0}
-      activeObjs:
-        actives:
-        - activeObject: {fileID: 4782183490038778543}
-          activeSelf: 1
-        - activeObject: {fileID: 4453055765790940044}
-          activeSelf: 1
-      movables:
-        movables: []
-      playableList:
-        playableObjs: []
-      interactObjs:
-        interacts: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
-  useOutline: 0
-  color: 0
-  outline: {fileID: 0}
-  outlineRadius: 5
-  interactionMethod: 1
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines: []
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  taskDataDebug: []
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!135 &2923067643087428440
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -615,6 +471,26 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 300
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8401671267659083502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8487068852210935903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 
+  interactions: []
+  useOutline: 0
+  color: 0
+  outline: {fileID: 0}
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1001 &1660559713842210590
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -694,12 +570,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f68897aeae0c05a4f8edb73c385bc8bd, type: 3}
---- !u!1 &4782183490038778543 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6149318734316858801, guid: f68897aeae0c05a4f8edb73c385bc8bd,
-    type: 3}
-  m_PrefabInstance: {fileID: 1660559713842210590}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3877089290760802347
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -930,27 +800,21 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3877089290760802347}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8487068852210935903 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4613392514329901172, guid: d3d83f0271f08ab459da75e83523ee01,
-    type: 3}
-  m_PrefabInstance: {fileID: 3877089290760802347}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &6432171024083627490 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7822076751237119433, guid: d3d83f0271f08ab459da75e83523ee01,
     type: 3}
   m_PrefabInstance: {fileID: 3877089290760802347}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &6250589508288661607 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7165436058171119692, guid: d3d83f0271f08ab459da75e83523ee01,
-    type: 3}
-  m_PrefabInstance: {fileID: 3877089290760802347}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6982224096427948660 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6137253976330365535, guid: d3d83f0271f08ab459da75e83523ee01,
+    type: 3}
+  m_PrefabInstance: {fileID: 3877089290760802347}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6250589508288661607 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7165436058171119692, guid: d3d83f0271f08ab459da75e83523ee01,
     type: 3}
   m_PrefabInstance: {fileID: 3877089290760802347}
   m_PrefabAsset: {fileID: 0}
@@ -975,6 +839,12 @@ GameObject:
 --- !u!4 &4869369760250747468 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8529054445894535783, guid: d3d83f0271f08ab459da75e83523ee01,
+    type: 3}
+  m_PrefabInstance: {fileID: 3877089290760802347}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8487068852210935903 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4613392514329901172, guid: d3d83f0271f08ab459da75e83523ee01,
     type: 3}
   m_PrefabInstance: {fileID: 3877089290760802347}
   m_PrefabAsset: {fileID: 0}
@@ -1141,9 +1011,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f68897aeae0c05a4f8edb73c385bc8bd, type: 3}
---- !u!1 &4453055765790940044 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6149318734316858801, guid: f68897aeae0c05a4f8edb73c385bc8bd,
-    type: 3}
-  m_PrefabInstance: {fileID: 7537524319495468605}
-  m_PrefabAsset: {fileID: 0}

@@ -121,27 +121,27 @@ MonoBehaviour:
   skyboxSetting: {fileID: 2100000, guid: 0eb005cc9ea7223479478fd555780fb6, type: 2}
   isOrthographic: 0
   orthographicSize: 5
-  cameraBound: {fileID: 0}
-  BGM: {fileID: 0}
+  useFadeOut: 0
+  fadeOutSec: 1
+  fadeInSec: 1
+  bgm: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 2605623699351195845}
   clearBoxList:
   - {fileID: 44233077663622425}
+  positionSetting: {fileID: 132210625347605053}
   positionSets:
-  - index: 0
-    who: 2
+  - who: 2
     startPosition: {fileID: 1508624755088979051}
-    posSet: {fileID: 2611587555137135063}
     isMain: 0
-  - index: 1
-    who: 1
+    isFollow: 0
+  - who: 1
     startPosition: {fileID: 132210624626774840}
-    posSet: {fileID: 132210625226288733}
     isMain: 0
+    isFollow: 0
   cameraViewType: 0
   camDis: {x: -0.2, y: 0.9, z: 2.79}
   camRot: {x: 15.15, y: 180.4, z: 0}
-  positionSetting: {fileID: 132210625347605053}
   isJoystickInputUse: 0
   isJoystickNone: 1
   joystickType: 0
@@ -219,7 +219,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 9
   m_Type: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.71937525, b: 0.4528302, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -312,69 +312,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 5
-  jsonFile: {fileID: 4900000, guid: 4d2c1b566e1ae1845a252701b9c21ad1, type: 3}
-  gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues:
-    - name: "\uB77C\uC6B0"
-      expression: 1
-      anim_name: Rau
-      contents: "\uC544~\uC7AC\uBC0C\uC5C8\uB2E4~"
-    - name: "\uC624\uC6B4"
-      expression: 1
-      anim_name: Oun
-      contents: "\uC7AC\uBC0C\uC5C8\uB2E4\uB2C8 \uB2E4\uD589\uC774\uB124\uC694 \uD558\uD558."
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: Rau
-      contents: "\uB355\uBD84\uC5D0 \uC7AC\uBC0C\uAC8C \uB17C\uAC70 \uAC19\uC544\uC694!
-        \uADF8\uB9AC\uACE0 \uC5EC\uAE30 \uACBD\uCE58 \uB108\uBB34 \uC88B\uB2E4!"
-    - name: "\uC624\uC6B4"
-      expression: 1
-      anim_name: Oun
-      contents: "\uADF8\uCE58! \uC5EC\uAE30\uAC00 \uD48D\uACBD\uC774 \uC9C4\uC9DC
-        \uC88B\uC544\uC694!"
-    - name: "\uC624\uC6B4"
-      expression: 1
-      anim_name: Oun
-      contents: "\uADF8\uB9AC\uACE0 \uC740\uADFC \uAD6C\uC11D\uC9C4 \uB370\uC5D0 \uC788\uC5B4\uC11C
-        \uADF8\uB7F0\uC9C0 \uC0AC\uB78C\uB3C4 \uB9CE\uC9C0 \uC54A\uACE0!"
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: Rau
-      contents: "\uC5B4\uB77C? \uADF8\uB7EC\uB124 \uBE44\uB458\uAE30\uB4E4 \uBC16\uC5D0
-        \uC5C6\uB124"
-    - name: "\uC624\uC6B4"
-      expression: 0
-      anim_name: Oun
-      contents: "\uBE44\uB458\uAE30\uB4E4\uD55C\uD14C \uBC25 \uC918\uBCFC\uAE4C\uC694?"
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: Rau
-      contents: "\uADF8\uB7F4\uAE4C\uC694?"
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
+  id: 
+  interactions: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}
   outlineRadius: 5
-  interactionMethod: 3
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines: []
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  taskDataDebug: []
 --- !u!1 &2605623699351195845
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,7 +407,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 0
-  jsonFile: {fileID: 0}
   nextSelectMapcode: 204210
 --- !u!1 &6459680923671341419
 GameObject:

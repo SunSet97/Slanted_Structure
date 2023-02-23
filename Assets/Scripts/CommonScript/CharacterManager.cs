@@ -137,7 +137,7 @@ namespace CommonScript
             characterOriginRot = transform.eulerAngles;
 
             var dot = Vector3.Dot(transform.forward, cameraRight);
-            if (dot > 0)
+            if (dot < 0)
             {
                 characterOriginRot.y += 180f;
                 Debug.Log("정방향이 아님 반전시킴");

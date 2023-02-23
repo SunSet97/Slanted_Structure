@@ -43,49 +43,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 2
-  jsonFile: {fileID: 4900000, guid: 40dcc38d2e4ca4240b3dbb0873c70a01, type: 3}
-  gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues:
-    - name: "\uC2A4\uD54F"
-      expression: 0
-      anim_name: Speat
-      contents: "\uC774\uBBF8 \uC640\uBD24\uC744 \uC218 \uB3C4 \uC788\uB294\uB370
-        \uC0AC\uC2E4 \uBD80\uB3C4\uC2EC\uC740 \uBCFC \uAC8C \uC5C6\uC5B4\uC11C..\uD558\uD558"
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: Rau
-      contents: "\uC800\uBC88\uC5D0 \uC720\uC2EC\uCE69 \uC0AC\uB7EC \uC654\uB294\uB370
-        \uC81C\uB300\uB85C \uAD6C\uACBD\uC740 \uBABB\uD588\uC5C8\uC5B4..!"
-    - name: "\uC2A4\uD54F"
-      expression: 1
-      anim_name: Speat
-      contents: "\uADF8\uB7EC\uBA74 \uB2E4\uD589\uC774\uB2E4! \uAC19\uC774 \uAD6C\uACBD\uC774\uB098
-        \uD558\uC790!"
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
+  id: 
+  interactions: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}
-  outlineRadius: 5
-  interactionMethod: 3
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines:
-  - {fileID: 0}
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  taskDataDebug: []
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &4224357041490311795
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -220,27 +185,27 @@ MonoBehaviour:
   skyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 1
   orthographicSize: 5
-  cameraBound: {fileID: 0}
-  BGM: {fileID: 0}
+  useFadeOut: 0
+  fadeOutSec: 1
+  fadeInSec: 1
+  bgm: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 5772984942624331488}
   clearBoxList:
   - {fileID: 3877089292194072861}
-  positionSets:
-  - index: 0
-    who: 2
-    startPosition: {fileID: 3877089292078665311}
-    posSet: {fileID: 3877089290614172796}
-    isMain: 1
-  - index: 1
-    who: 0
-    startPosition: {fileID: 7720387382965283826}
-    posSet: {fileID: 6493782910071428584}
-    isMain: 0
-  cameraViewType: 0
-  camDis: {x: 0, y: 5.88, z: -11}
-  camRot: {x: 22.5, y: 0, z: 0}
   positionSetting: {fileID: 3877089292092178607}
+  positionSets:
+  - who: 2
+    startPosition: {fileID: 3877089292078665311}
+    isMain: 1
+    isFollow: 0
+  - who: 0
+    startPosition: {fileID: 7720387382965283826}
+    isMain: 0
+    isFollow: 1
+  cameraViewType: 0
+  camDis: {x: 0, y: 20, z: 15}
+  camRot: {x: 50, y: 180, z: 0}
   isJoystickInputUse: 1
   isJoystickNone: 0
   joystickType: 0
@@ -365,7 +330,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 0
-  jsonFile: {fileID: 0}
   nextSelectMapcode: 205230
 --- !u!1 &5762629141687968490
 GameObject:
@@ -410,89 +374,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 2
-  jsonFile: {fileID: 4900000, guid: b5e067fec4c12ce459ccb584a92c5cbc, type: 3}
-  gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues:
-    - name: "\uC7A1\uC0C1\uC778"
-      expression: 0
-      anim_name: 
-      contents: "\uC2DC\uC7A5 \uAD6C\uACBD\uC740 \uC798\uD558\uC168\uB294\uAC00? \uBCC4
-        \uBCFC\uAC70 \uC5C6\uC9C0?"
-    - name: "\uB77C\uC6B0"
-      expression: 1
-      anim_name: Rau
-      contents: "\uC544\uB2C8\uC5D0\uC694~ \uC7AC\uBC0C\uAC8C \uAD6C\uACBD\uD558\uACE0
-        \uC788\uC5C8\uC5B4\uC694."
-    - name: "\uC7A1\uC0C1\uC778"
-      expression: 0
-      anim_name: 
-      contents: "\uAEC4\uAEC4, \uADF8\uB7EC\uBA74 \uB2E4\uD589\uC774\uACE0. \uC774\uBC88\uC5D4
-        \uD544\uC694\uD55C \uAC74 \uB531\uD788 \uC5C6\uACE0?"
-    - name: "\uB77C\uC6B0"
-      expression: 1
-      anim_name: Rau
-      contents: "\uC74C, \uB2F9\uC7A5\uC740 \uC5C6\uAE34 \uD55C\uB370 \uC5EC\uD589
-        \uC911\uC5D0 \uC0DD\uAE30\uBA74 \uB2E4\uC2DC \uB610 \uB4E4\uB9B4\uAED8\uC694!"
-    - name: "\uC7A1\uC0C1\uC778"
-      expression: 0
-      anim_name: 
-      contents: "\uADF8\uB798 \uADF8\uB798, \uC774\uBC88\uC5D0\uB294 \uCE5C\uAD6C\uB791
-        \uAC19\uC774 \uC654\uB124? \uC5B4\uB5BB\uAC8C \uB9CC\uB0AC\uB294\uAC00?"
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: Rau
-      contents: "\uC544, \uC2DD\uB2F9\uC5D0\uC11C \uC6B0\uC5F0\uD788 \uB9CC\uB098\uAC8C
-        \uB418\uC11C \uC624\uB298 \uAC19\uC774 \uB180\uACE0 \uC788\uC5C8\uC5B4\uC694!"
-    - name: "\uC7A1\uC0C1\uC778"
-      expression: 0
-      anim_name: 
-      contents: "\uADF8\uB807\uAD6C\uB9CC, \uAC00\uB9CC\uBCF4\uB2C8\u2026 \uC774 \uCE5C\uAD6C\u2026\uC798
-        \uBABB\uBCF4\uB358 \uCE5C\uAD6C \uAC19\uB124..? \uB0B4\uAC00 \uC5EC\uAE30
-        \uC0AC\uB78C\uB4E4 \uC6EC\uB9CC\uD558\uBA74 \uB2E4 \uC544\uB294\uB370 \uB9D0\uC774\uC9C0\u2026"
-    - name: "\uC2A4\uD54F"
-      expression: 8
-      anim_name: Speat
-      contents: "\u2026!"
-    - name: "\uB77C\uC6B0"
-      expression: 9
-      anim_name: Rau
-      contents: "(\uC557\u2026\uC2A4\uD54F\u2026\uBB54\uAC00 \uB450\uB824\uC6B4 \uD45C\uC815\uC744
-        \uC9D3\uACE0 \uC788\uC796\uC544\u2026? \uC774\uB7F0 \uD45C\uC815\uC740 \uCC98\uC74C
-        \uBD24\uB294\uB370\u2026)"
-    - name: "\uC7A1\uC0C1\uC778"
-      expression: 0
-      anim_name: 
-      contents: "\uD760\u2026\uC790\uB124 \uBB34\uC2A8 \uC77C \uD558\uACE0 \uC9C0\uB0B4\uB294\uAC00?"
-    - name: "\uB77C\uC6B0"
-      expression: 1
-      anim_name: Rau
-      contents: "\uC557, \uC800\uD76C \uAC11\uC790\uAE30 \uAE09\uD558\uAC8C \uC0DD\uAE34
-        \uC77C\uC774 \uC788\uC5B4\uC11C\uC694! \uC774\uB9CC\u2026!"
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
+  id: 
+  interactions: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}
-  outlineRadius: 5
-  interactionMethod: 0
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines:
-  - {fileID: 0}
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  taskDataDebug: []
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &5772984942624331488
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,42 +455,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 3
-  jsonFile: {fileID: 4900000, guid: 685e43cb09101dc459f54158224b33cd, type: 3}
-  gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues:
-    - name: "\uB77C\uC6B0\uB300\uD6541"
-      expression: 0
-      anim_name: 
-      contents: 
-    - name: 
-      expression: 0
-      anim_name: 
-      contents: 
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
+  id: 
+  interactions: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}
-  outlineRadius: 5
-  interactionMethod: 0
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines:
-  - {fileID: 0}
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  taskDataDebug: []
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &5888642759960880677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -614,42 +475,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 3
-  jsonFile: {fileID: 4900000, guid: a0491ee003fa2fa44b876c7707a41f5c, type: 3}
-  gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues:
-    - name: "\uB77C\uC6B0\uB300\uD6541"
-      expression: 0
-      anim_name: 
-      contents: 
-    - name: 
-      expression: 0
-      anim_name: 
-      contents: 
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
+  id: 
+  interactions: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}
-  outlineRadius: 5
-  interactionMethod: 0
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines:
-  - {fileID: 0}
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  taskDataDebug: []
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &1728017532501205061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -662,80 +495,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 0
-  jsonFile: {fileID: 4900000, guid: b5e067fec4c12ce459ccb584a92c5cbc, type: 3}
-  gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues:
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: 
-      contents: "\uC557, \uC5EC\uAE30\uB294!"
-    - name: "\uC2A4\uD54F"
-      expression: 0
-      anim_name: 
-      contents: "??\uC5EC\uAE30 \uC640\uBD24\uC5C8\uC5B4?? "
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: 
-      contents: "\uC751! \uC800\uBC88\uC5D0 \uC5EC\uAE30 \uC640\uBD24\uB2E4\uACE0
-        \uD588\uC796\uC544!"
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: 
-      contents: "\uC5EC\uAE30\uC11C \uC720\uC2EC\uCE69 \uC0C0\uC5C8\uAC70\uB4E0"
-    - name: "\uC2A4\uD54F"
-      expression: 0
-      anim_name: 
-      contents: "\uC544~\uD558\uAE34 \uC5EC\uAE30\uAC00 \uC9C4\uC9DC \uC5C6\uB294\uAC8C
-        \uC5C6\uAE34\uD574"
-    - name: "\uC7A1\uC0C1\uC778"
-      expression: 0
-      anim_name: 
-      contents: "\uC624~\uC6D0\uC778\uC5EC\uC131\uBD84 \uB610\uBCF4\uB124! \uC138\uBAA8\uB9C8\uC744\uC740
-        \uC798 \uAD6C\uACBD\uD558\uACE0 \uC788\uB294\uC9C0??"
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: 
-      contents: "\uB124! \uB355\uBD84\uC5D0\uC694."
-    - name: "\uC7A1\uC0C1\uC778"
-      expression: 0
-      anim_name: 
-      contents: "\uADF8\uB7EC\uBA74 \uB2E4\uD589\uC774\uAD6C\uBA3C~\uD568 \uAD6C\uACBD\uD558\uACE0
-        \uAC00~"
-  dialogueEndAction:
-  - eventType: 2
-    clearBox: {fileID: 0}
-    activeObjs:
-      actives: []
-    movables:
-      movables: []
-    playableList:
-      playableObjs: []
-    interactObjs:
-      interacts: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
+  id: 
+  interactions: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}
-  outlineRadius: 5
-  interactionMethod: 0
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines:
-  - {fileID: 0}
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  taskDataDebug: []
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &8738023976046660642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -748,34 +515,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 0
-  jsonFile: {fileID: 0}
-  gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues: []
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
+  id: 
+  interactions: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}
-  outlineRadius: 5
-  interactionMethod: 2
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines:
-  - {fileID: 0}
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  taskDataDebug: []
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1001 &3877089290760802347
 PrefabInstance:
   m_ObjectHideFlags: 0
