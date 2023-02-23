@@ -1,32 +1,58 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Utility.Core;
 
-public class JumpFence : MonoBehaviour
+public class JumpFence : JumpInTotal
 {
-    public PlatformerGame platformer;
-    //  public GameObject[] outlines;
-    public PlatformerGame.ButtonType moveType;
-    
-    //가까워졌을 때
-    private void OnTriggerEnter(Collider other)
+    public Transform obstacleTransform;
+    public float speed;
+    public AnimationCurve jumpCurve;
+    public float sec;
+    protected override void ButtonPressed()
     {
-        //버튼 activeButton() 
-        //platformer.ActiveButton();
-
-        //platformer.btnType = moveType;
+        StartCoroutine(FramePerParameter());
+        gameManager.ActiveButton(false);
     }
 
-
-    // Start is called before the first frame update
-    void Start()
+    protected override void OnTriggerEnter(Collider other)
     {
-        
+        base.OnTriggerEnter(other);
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void OnTriggerExit(Collider other)
     {
-        
+        base.OnTriggerExit(other);
+    }
+
+    private IEnumerator FramePerParameter()
+    {
+        var waitForFixedUpdate = new WaitForFixedUpdate();
+        CharacterManager platformer_char = DataController.Instance.GetCharacter(Data.CustomEnum.Character.Main);
+        platformer_char.PickUpCharacter();
+
+        platformer_char.RotateCharacter2D(-1f);
+
+        platformer_char.anim.SetBool("2DSide", false);
+        platformer_char.anim.SetTrigger("Jump_fence");
+        Vector3 startposition = platformer_char.transform.position;
+
+        float t = 0f;
+        while (t <= 1f)
+        {
+            t += Time.fixedDeltaTime / sec;
+
+            float curvepercent = jumpCurve.Evaluate(t);
+            var dest_position = Vector3.LerpUnclamped(startposition, obstacleTransform.position, t);
+            dest_position.y = Mathf.LerpUnclamped(startposition.y, obstacleTransform.position.y, curvepercent);
+
+            var characterController = platformer_char.GetComponent<CharacterController>();
+            characterController.transform.position = dest_position;
+
+            yield return waitForFixedUpdate;
+        }
+
+        platformer_char.anim.SetBool("2DSide", true);
+        platformer_char.PutDownCharacter();
+
     }
 }

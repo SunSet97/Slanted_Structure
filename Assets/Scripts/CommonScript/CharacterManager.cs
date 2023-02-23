@@ -15,6 +15,7 @@ public class CharacterManager : MonoBehaviour, IMovable
 
     [SerializeField] private Transform waitTransform;
 
+    [System.NonSerialized] public bool useGravity;
 
     public void Init()
     {
@@ -60,6 +61,8 @@ public class CharacterManager : MonoBehaviour, IMovable
         moveHorDir = Vector3.zero;
         moveVerDir = Vector3.zero;
         anim.SetFloat(SpeedHash, 0f);
+
+        useGravity = true;
     }
 
     public void SetCharacter(Transform mapSettingTransform)
@@ -134,7 +137,12 @@ public class CharacterManager : MonoBehaviour, IMovable
     private void Move2DSide(float x)
     {
         anim.SetBool("2DSide", true);
+        RotateCharacter2D(x);
 
+
+    }
+    public void RotateCharacter2D(float x)
+    {
         Vector2 characterRot = default;
         if (x < 0)
         {
@@ -204,7 +212,10 @@ public class CharacterManager : MonoBehaviour, IMovable
             //땅에서 떨어져 있을 경우 기본적으로 중력이 적용되고 중력은 가속도이므로 +=를 써서 계속해서 더해줌
             if (!ctrl.isGrounded)
             {
-                moveVerDir.y += Physics.gravity.y * gravityScale * Time.deltaTime;
+                if (useGravity)
+                {
+                    moveVerDir.y += Physics.gravity.y * gravityScale * Time.deltaTime;
+                }
             }
             //땅에 붙어있을 경우
             else
