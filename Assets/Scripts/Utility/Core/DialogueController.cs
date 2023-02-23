@@ -140,13 +140,7 @@ namespace Utility.Core
                     if (Enum.TryParse(dialogueDataItem.anim_name, out Character who))
                     {
                         var character = DataController.Instance.GetCharacter(who);
-                        // 왜 했더라
-                        // if (character.isSelected)
-                        {
-                            character.Emotion =
-                                dialogueDataItem.expression;
-                        }
-                        //Emotion은 변경하는데 애니메이션은 변경 안함 체크 필요
+                        character.Emotion = dialogueDataItem.expression;
                     }
 
                     if (charEmotionAnimator)
@@ -182,8 +176,7 @@ namespace Utility.Core
                 {
                     if (settedCharacter.characterAnimator.TryGetComponent(out CinematicCharacter cinematicCharacter))
                     {
-                        settedCharacter.characterAnimator.SetInteger(Emotion,
-                            (int) dialogueDataItem.expression);
+                        cinematicCharacter.EmotionAnimationSetting((int) dialogueDataItem.expression);
                         cinematicCharacter.ExpressionSetting(dialogueDataItem.expression);
                     }
                 }

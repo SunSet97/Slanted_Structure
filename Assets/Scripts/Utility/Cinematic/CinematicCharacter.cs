@@ -38,7 +38,7 @@ namespace Utility.Cinematic
 
         public void EmotionAnimationSetting(int emotionInt)
         {
-            animator.SetInteger(Emotion, emotionInt); // 애니메이션실행
+            animator.SetInteger(Emotion, emotionInt);
         }
 
         public void ExpressionSetting(CustomEnum.Expression emotion)

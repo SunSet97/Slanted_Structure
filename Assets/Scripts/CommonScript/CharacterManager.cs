@@ -17,6 +17,7 @@ namespace CommonScript
             {
                 emotion = value;
                 EmotionAnimationSetting();
+                
             }
         }
 
@@ -166,12 +167,13 @@ namespace CommonScript
         private float lastFollowSpeed;
 
         private static readonly int SpeedHash = Animator.StringToHash("Speed");
-        private static readonly int JumpTriggerHash = Animator.StringToHash("JumpTrigger");
+        private static readonly int JumpHash = Animator.StringToHash("Jump");
         private static readonly int TwoSideHash = Animator.StringToHash("2DSide");
         private static readonly int DirectionHash = Animator.StringToHash("Direction");
         private static readonly int SeatHash = Animator.StringToHash("Seat");
         private static readonly int EatHash = Animator.StringToHash("Eat");
         private static readonly int MainTex = Shader.PropertyToID("_MainTex");
+        private static readonly int EmotionHash = Animator.StringToHash("Emotion");
 
         private void Move2DSide(float x)
         {
@@ -324,7 +326,7 @@ namespace CommonScript
             CharacterAnimator.SetBool(TwoSideHash, false);
             JoystickController.Instance.InputJump = false;
             MoveVerical = jumpForce;
-            CharacterAnimator.SetTrigger(JumpTriggerHash);
+            CharacterAnimator.SetTrigger(JumpHash);
         }
 
         #endregion
@@ -336,6 +338,7 @@ namespace CommonScript
                 return;
             }
 
+            CharacterAnimator.SetInteger(EmotionHash, (int) Emotion);
             skinnedMesh.materials[1].SetTexture(MainTex, faceExpression[(int) Emotion]);
         }
 
