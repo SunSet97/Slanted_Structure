@@ -84,8 +84,8 @@ namespace CommonScript
         {
             Emotion = Expression.IDLE;
             gameObject.layer = LayerMask.NameToLayer("Default");
-            MoveHorizontal = 0f;
-            MoveVerical = 0f;
+            MoveHorizontal = Vector3.zero;
+            MoveVerical = Vector3.zero;
             UseGravity = false;
 
             CharacterAnimator.SetFloat(SpeedHash, 0f);
@@ -102,7 +102,7 @@ namespace CommonScript
             {
                 return;
             }
-
+            
             if (DataController.Instance.CurrentMap.positionSets[posSetIndex].isFollow)
             {
                 var mainPosSet = DataController.Instance.CurrentMap.positionSets.Find(item => item.isMain);
@@ -130,14 +130,9 @@ namespace CommonScript
 
             gameObject.SetActive(true);
 
-
-            var yRotation = DataController.Instance.camInfo.camRot.y * Mathf.Deg2Rad;
-            var cameraRight = new Vector3(Mathf.Sin(yRotation), 0, Mathf.Cos(yRotation));
-
             characterOriginRot = transform.eulerAngles;
 
-            var dot = Vector3.Dot(transform.forward, cameraRight);
-            if (dot > 0)
+            if (DataController.Instance.CurrentMap.method == JoystickInputMethod.OneDirection && !DataController.Instance.CurrentMap.rightIsForward)
             {
                 characterOriginRot.y += 180f;
                 Debug.Log("정방향이 아님 반전시킴");
@@ -156,9 +151,9 @@ namespace CommonScript
         #region 캐릭터 이동 설정
 
         [Header("#Character move setting")] [NonSerialized]
-        public float MoveHorizontal; // 수평, 수직 이동 방향 벡터
+        public Vector3 MoveHorizontal; // 수평, 수직 이동 방향 벡터
 
-        [NonSerialized] public float MoveVerical; // 수평, 수직 이동 방향 벡터
+        [NonSerialized] public Vector3 MoveVerical; // 수평, 수직 이동 방향 벡터
 
         private Vector3 characterOriginRot; // 캐릭터의 기존 방향
 
@@ -254,13 +249,13 @@ namespace CommonScript
 
                 if (UseGravity && !CharacterController.isGrounded)
                 {
-                    MoveVerical += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
+                    MoveVerical.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
                 }
                 else if (CharacterController.isGrounded)
                 {
-                    if (MoveVerical <= 0)
+                    if (MoveVerical.y <= 0)
                     {
-                        MoveVerical = 0;
+                        MoveVerical = Vector3.zero;
                     }
 
                     if (JoystickController.Instance.InputJump)
@@ -269,7 +264,7 @@ namespace CommonScript
                     }
                 }
 
-                CharacterController.Move(new Vector2(MoveHorizontal, MoveVerical) * Time.fixedDeltaTime);
+                CharacterController.Move((MoveHorizontal + MoveVerical) * Time.fixedDeltaTime);
             }
         }
 
@@ -313,13 +308,13 @@ namespace CommonScript
 
             if (UseGravity && !CharacterController.isGrounded)
             {
-                MoveVerical += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
+                MoveVerical.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
             }
             else if (CharacterController.isGrounded)
             {
-                if (MoveVerical <= 0)
+                if (MoveVerical.y <= 0)
                 {
-                    MoveVerical = 0;
+                    MoveVerical = Vector3.zero;
                 }
 
                 if (JoystickController.Instance.InputJump)
@@ -328,7 +323,7 @@ namespace CommonScript
                 }
             }
 
-            CharacterController.Move(new Vector2(MoveHorizontal, MoveVerical) * Time.fixedDeltaTime);
+            CharacterController.Move((MoveHorizontal + MoveVerical) * Time.fixedDeltaTime);
         }
 
         // 점프 중에 이동속도 느려짐, RootMotion 때문으로 추측
@@ -336,7 +331,7 @@ namespace CommonScript
         {
             CharacterAnimator.SetBool(TwoSideHash, false);
             JoystickController.Instance.InputJump = false;
-            MoveVerical = jumpForce;
+            MoveVerical = new Vector3(0, jumpForce);
             CharacterAnimator.SetTrigger(JumpHash);
         }
 

@@ -47,7 +47,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
             foreach (var pimpGuest in pimpGuests)
             {
                 var animator = pimpGuest.GetComponent<Animator>();
-                animator.SetFloat(Speed, 0.0f);
+                animator.SetFloat(Speed, 0f);
             }
         }
     }

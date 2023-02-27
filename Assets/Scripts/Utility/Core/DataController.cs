@@ -25,14 +25,13 @@ namespace Utility.Core
         public float camOrthgraphicSize;
 
         [Header("맵")] public Transform mapGenerate;
-        public string mapCode;
 
         [FormerlySerializedAs("charData")] public CharRelationshipData charRelationshipData;
 
         [NonSerialized] public Camera Cam;
-        [NonSerialized] public MapData[] Storymaps;
         [NonSerialized] public MapData CurrentMap;
 
+        private MapData[] storyMaps;
         private CharacterManager mainChar;
 
         private AssetBundle mapDB;
@@ -82,6 +81,7 @@ namespace Utility.Core
 
         private MapData[] LoadMap(string desMapCode)
         {
+            var mapCode = CurrentMap ? CurrentMap.mapCode : "000000";
             Debug.Log("현재 맵: " + mapCode);
             Debug.Log("다음 맵: " + desMapCode);
             var curEp = int.Parse(mapCode.Substring(0, 1));
@@ -90,13 +90,11 @@ namespace Utility.Core
             var curDay = int.Parse(mapCode.Substring(1, 2));
             var desDay = int.Parse(desMapCode.Substring(1, 2));
 
-            mapCode = $"{desMapCode:000000}"; // 맵 코드 변경
-
             Debug.Log("Episode:  " + curEp + " : " + desEp);
             Debug.Log("Day:   " + curDay + " : " + desDay);
             if (curEp == desEp && curDay == desDay)
             {
-                return Storymaps;
+                return storyMaps;
             }
 
             if (mapDB != null)
@@ -169,11 +167,11 @@ namespace Utility.Core
                 CurrentMap.DestroyMap();
             }
 
-            Storymaps = LoadMap(desMapCode);
+            storyMaps = LoadMap(desMapCode);
 
             ObjectClicker.Instance.Reset();
 
-            var nextMap = Array.Find(Storymaps, mapData => mapData.mapCode.Equals(mapCode));
+            var nextMap = Array.Find(storyMaps, mapData => mapData.mapCode.Equals(desMapCode));
 
             InteractionObjects.Clear();
 
@@ -233,6 +231,9 @@ namespace Utility.Core
             {
                 mainChar = null;
             }
+            
+            camInfo.camDis = CurrentMap.camDis;
+            camInfo.camRot = CurrentMap.camRot;
 
             foreach (var posSet in CurrentMap.positionSets)
             {
@@ -243,8 +244,6 @@ namespace Utility.Core
             JoystickController.Instance.Init(CurrentMap.joystickType);
             JoystickController.Instance.InitializeJoyStick(!CurrentMap.isJoystickNone);
 
-            camInfo.camDis = CurrentMap.camDis;
-            camInfo.camRot = CurrentMap.camRot;
 
             var cameraMoving = Cam.GetComponent<CameraMoving>();
             cameraMoving.Initialize();
@@ -282,6 +281,7 @@ namespace Utility.Core
 
         private void LoadData(SaveData saveData)
         {
+            var mapCode = CurrentMap.mapCode;
             Debug.Log($"Load 시도 {mapCode} {saveData?.saveCoverData.mapCode}");
             if (saveData != null && mapCode == saveData.saveCoverData.mapCode)
             {

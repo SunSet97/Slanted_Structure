@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System;
-using CommonScript;
 using Utility.Core;
+using Utility.WayPoint;
 
 public class AlleyInMarketManager : MonoBehaviour
 {
@@ -24,23 +22,23 @@ public class AlleyInMarketManager : MonoBehaviour
     {
         int index = 0;
 
-        if ((waypoint.currentIndex == 1 && waypoint.movingDir == Waypoint.MoveDirection.Left) || waypoint.currentIndex == 0)
+        if ((waypoint.CurrentIndex == 1 && waypoint.MovingDir == Waypoint.MoveDirection.Left) || waypoint.CurrentIndex == 0)
         {
             index = 0; camRotDir = 1;
         }
-        else if ((waypoint.currentIndex == 2 && waypoint.movingDir == Waypoint.MoveDirection.Left) || waypoint.currentIndex == 1)
+        else if ((waypoint.CurrentIndex == 2 && waypoint.MovingDir == Waypoint.MoveDirection.Left) || waypoint.CurrentIndex == 1)
         {
             index = 1; camRotDir = 1;
         }
-        else if ((waypoint.currentIndex == 1 && waypoint.movingDir == Waypoint.MoveDirection.Right) || waypoint.currentIndex == 2 || (waypoint.currentIndex == 3 && waypoint.movingDir == Waypoint.MoveDirection.Left))
+        else if ((waypoint.CurrentIndex == 1 && waypoint.MovingDir == Waypoint.MoveDirection.Right) || waypoint.CurrentIndex == 2 || (waypoint.CurrentIndex == 3 && waypoint.MovingDir == Waypoint.MoveDirection.Left))
         {
             index = 2; camRotDir = -1;
         }
-        else if ((waypoint.currentIndex == 2 && waypoint.movingDir == Waypoint.MoveDirection.Right) || waypoint.currentIndex == 3 || (waypoint.currentIndex == 4 && waypoint.movingDir == Waypoint.MoveDirection.Left))
+        else if ((waypoint.CurrentIndex == 2 && waypoint.MovingDir == Waypoint.MoveDirection.Right) || waypoint.CurrentIndex == 3 || (waypoint.CurrentIndex == 4 && waypoint.MovingDir == Waypoint.MoveDirection.Left))
         {
             index = 3;
         }
-        else if ((waypoint.currentIndex == 3 && waypoint.movingDir == Waypoint.MoveDirection.Right) || waypoint.currentIndex == 4)
+        else if ((waypoint.CurrentIndex == 3 && waypoint.MovingDir == Waypoint.MoveDirection.Right) || waypoint.CurrentIndex == 4)
         {
             index = 4;
         }

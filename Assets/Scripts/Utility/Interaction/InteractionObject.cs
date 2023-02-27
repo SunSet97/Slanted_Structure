@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cinemachine;
 using CommonScript;
 using Data;
@@ -30,13 +31,13 @@ namespace Utility.Interaction
         [Header("디버깅용")]
         [SerializeField] internal bool isInteracted;
     }
-    
+
     [Serializable]
     public class Interaction
     {
         [Header("Continuous 혹은 Dialogue인 경우에만 값을 넣으시오")]
         public TextAsset jsonFile;
-        
+
         [Header("인터렉션 방식")] public InteractionPlayType interactionPlayType;
 
         [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Game)]
@@ -47,11 +48,11 @@ namespace Utility.Interaction
 
         // [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.FadeOut)]
         // public float fadeSec;
-        
+
         [Space(10)]
-        
+
         public InteractionEvents interactionStartActions;
-        
+
         public InteractionEvents interactionEndActions;
 
         [Header("인터랙션 방법")] public InteractionMethod interactionMethod;
@@ -60,21 +61,21 @@ namespace Utility.Interaction
 
         [ConditionalHideInInspector("isViewChange")]
         public CamInfo dialogueCamera;
-        
+
         [Header("시네마틱")] public PlayableDirector[] timelines;
         public GameObject[] cinematics;
         public GameObject[] inGames;
 
         [Space(10)]
         public bool isLoop;
-        
+
         [Space(10)] public bool isContinue;
-        
+
         [Space(10)] public SerializedInteractionData serializedInteractionData;
 
         [Header("디버깅 전용 TaskData")] [Space(10)]
         public List<TaskData> debugTaskData;
-        
+
         public Interaction()
         {
             interactionStartActions = new InteractionEvents
@@ -93,22 +94,22 @@ namespace Utility.Interaction
     {
         public string id;
         public List<Interaction> interactions;
-        
+
         [Header("아웃라인 설정")] [Space(20)] [SerializeField]
         private bool useOutline;
-        
+
         [ConditionalHideInInspector("useOutline")] [SerializeField]
         private OutlineColor color;
 
         [ConditionalHideInInspector("useOutline")] [SerializeField]
         private Outline outline;
-        
+
         [Header("기즈모")] [Space(20)] [SerializeField]
         private bool useGizmos;
 
         [ConditionalHideInInspector("useGizmos")] [SerializeField]
         private int gizmosRadius = 5;
-        
+
         [ConditionalHideInInspector("useGizmos")] [SerializeField]
         private Color gizmosColor;
 
@@ -136,7 +137,7 @@ namespace Utility.Interaction
             }
 
             DataController.Instance.AddInteractor(this);
-            
+
             if (GetInteraction().interactionMethod == InteractionMethod.OnChangeMap)
             {
                 Debug.Log("Add OnChange Map");
@@ -203,7 +204,7 @@ namespace Utility.Interaction
         {
             if (index != -1)
             {
-                GetInteraction(index).interactionStartActions.AddInteraction(unityAction);    
+                GetInteraction(index).interactionStartActions.AddInteraction(unityAction);
             }
             else
             {
@@ -256,7 +257,7 @@ namespace Utility.Interaction
                     $"{curTask.order,000000}");
             }
 
-            switch (curTask.taskContentType)
+            switch(curTask.taskContentType)
             {
                 case TaskContentType.Dialogue:
                     var newLen = currentTaskData.tasks.Length + 1;
@@ -298,7 +299,6 @@ namespace Utility.Interaction
             }
         }
 
-
         /// <summary>
         /// 인터랙션을 처음으로 실행할 때 (ex - 터치)
         /// </summary>
@@ -312,14 +312,14 @@ namespace Utility.Interaction
                 Debug.Log($"인터랙션 시작 전 중지 {interaction.serializedInteractionData.isInteractable} {interaction.serializedInteractionData.isInteracted} {interaction.isLoop}");
                 return;
             }
-            
+
             interaction.serializedInteractionData.isInteracted = true;
 
             foreach (var interactionEvent in interaction.interactionStartActions.interactionEvents)
             {
                 interactionEvent.Action();
             }
-            
+
 
             if (interaction.jsonFile && interaction.serializedInteractionData.JsonTask == null)
             {
@@ -327,16 +327,11 @@ namespace Utility.Interaction
             }
 
             if (interaction.interactionPlayType == InteractionPlayType.Animation &&
-                gameObject.GetComponent<Animator>())
+                gameObject.TryGetComponent(out Animator animator))
             {
-                gameObject.GetComponent<Animator>().Play("Start", 0);
-                
-                
-                // End Action
-                // foreach (var interactionEvent in interaction.interactionEndActions.interactionEvents)
-                // {
-                    // interactionEvent.Action();
-                // }
+                animator.SetTrigger("Start");
+                Debug.Log("애니메이션 스타트");
+                StartCoroutine(WaitAnimationEnd(animator, interaction));
             }
             else if (interaction.interactionPlayType == InteractionPlayType.Dialogue)
             {
@@ -385,7 +380,7 @@ namespace Utility.Interaction
                         Debug.LogError("Task 타임라인 오류");
                     }
                 }
-                
+
                 if (interaction.serializedInteractionData.JsonTask != null && interaction.serializedInteractionData.JsonTask.Count == 0)
                 {
                     Debug.LogError("task파일 없음 오류오류");
@@ -425,8 +420,9 @@ namespace Utility.Interaction
                     {
                         Debug.LogError("Task 타임라인 오류");
                     }
-                    
+
                     PlayUIController.Instance.SetMenuActive(false);
+                    JoystickController.Instance.StopSaveLoadJoyStick(true);
                     foreach (var interactionInGame in interaction.inGames)
                     {
                         interactionInGame.SetActive(false);
@@ -446,6 +442,7 @@ namespace Utility.Interaction
                                                         !DialogueController.Instance.IsTalking);
                     StartCoroutine(WaitTimeline(waitUntil, () =>
                     {
+                        JoystickController.Instance.StopSaveLoadJoyStick(false);
                         PlayUIController.Instance.SetMenuActive(true);
                         Debug.Log("타임라인 끝");
                         foreach (var endAction in interaction.interactionEndActions.interactionEvents)
@@ -468,7 +465,7 @@ namespace Utility.Interaction
                             InteractIndex = (InteractIndex + 1) % interactions.Count;
                         }
                     }));
-                    
+
                     return;
                 }
                 else
@@ -533,9 +530,9 @@ namespace Utility.Interaction
             // 진행 후 멈췄다가 한 번 더 클릭해야되는 경우 번호를 다음 번호로 하도록한다
             WaitUntil waitUntil = new WaitUntil(() => currentTaskData.isContinue);
 
-            while (currentTaskData.tasks.Length > currentTaskData.taskIndex &&
-                   currentTaskData.tasks[currentTaskData.taskIndex].order.Equals(currentTaskData.taskOrder) &&
-                   currentTaskData.isContinue) //순서 번호 동일한 것 반복
+            while(currentTaskData.tasks.Length > currentTaskData.taskIndex &&
+                  currentTaskData.tasks[currentTaskData.taskIndex].order.Equals(currentTaskData.taskOrder) &&
+                  currentTaskData.isContinue) //순서 번호 동일한 것 반복
             {
                 DialogueController.Instance.taskData = currentTaskData;
                 Task currentTask = currentTaskData.tasks[currentTaskData.taskIndex];
@@ -547,7 +544,7 @@ namespace Utility.Interaction
 
                 Debug.Log("taskIndex - " + currentTaskData.taskIndex + "\nInteractionType - " +
                           currentTask.taskContentType);
-                switch (currentTask.taskContentType)
+                switch(currentTask.taskContentType)
                 {
                     case TaskContentType.Dialogue:
                         Debug.Log("대화 시작");
@@ -609,10 +606,10 @@ namespace Utility.Interaction
                     }
                     case TaskContentType.FadeOut:
                     {
-                            currentTaskData.isContinue = false;
-                            FadeEffect.Instance.FadeOut();
-                            yield return new WaitUntil(() => FadeEffect.Instance.IsFadeOver);
-                            currentTaskData.isContinue = true;
+                        currentTaskData.isContinue = false;
+                        FadeEffect.Instance.FadeOut();
+                        yield return new WaitUntil(() => FadeEffect.Instance.IsFadeOver);
+                        currentTaskData.isContinue = true;
                         break;
                     }
                     case TaskContentType.FadeIn:
@@ -628,41 +625,23 @@ namespace Utility.Interaction
                         //게임 엔딩
                         break;
                     case TaskContentType.Cinematic:
-                        if (interaction.timelines.Length == 0)
+                        if (interaction.timelines.Length == 0 || !interaction.timelines[0])
                         {
                             Debug.LogError("타임라인 오류");
                         }
                         currentTaskData.isContinue = false;
-                        foreach (var cinematic in interaction.cinematics)
-                        {
-                            cinematic.SetActive(true);
-                        }
 
-                        foreach (var inGame in interaction.inGames)
+                        foreach (var interactionInGame in interaction.inGames)
                         {
-                            inGame.SetActive(false);
+                            interactionInGame.SetActive(false);
                         }
-
+                        foreach (var interactionCinematic in interaction.cinematics)
+                        {
+                            interactionCinematic.SetActive(true);
+                        }
+                        interaction.timelines[0].Play();
                         JoystickController.Instance.StopSaveLoadJoyStick(true);
-
-
-                        if (interaction.timelines[0])
-                        {
-                            foreach (var interactionInGame in interaction.inGames)
-                            {
-                                interactionInGame.SetActive(false);
-                            }
-                            foreach (var interactionCinematic in interaction.cinematics)
-                            {
-                                interactionCinematic.SetActive(true);
-                            }
-                            interaction.timelines[0].Play();
-                            PlayUIController.Instance.SetMenuActive(false);
-                        }
-                        else
-                        {
-                            Debug.LogError("타임라인 세팅 오류");
-                        }
+                        PlayUIController.Instance.SetMenuActive(false);
 
                         // Debug.Log(timeline.);
                         // timeline.playableAsset
@@ -695,7 +674,7 @@ namespace Utility.Interaction
                                                          interaction.timelines[0].state == PlayState.Paused &&
                                                          !interaction.timelines[0].playableGraph.IsValid() &&
                                                          !DialogueController.Instance.IsTalking);
-                        
+
                         PlayUIController.Instance.SetMenuActive(true);
                         JoystickController.Instance.StopSaveLoadJoyStick(false);
                         currentTaskData.isContinue = true;
@@ -803,7 +782,44 @@ namespace Utility.Interaction
             // }
         }
 
-        private IEnumerator WaitTimeline(WaitUntil waitUntil, Action action)
+
+        private IEnumerator WaitAnimationEnd(Animator animator, Interaction interaction)
+        {
+            Debug.Log("기다리기");
+            yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName("Finish"));
+            Debug.Log("기다리기 끝");
+            var clipInfos = animator.GetCurrentAnimatorClipInfo(0);
+            var alreadyDone = clipInfos.Any(item =>
+            {
+                return item.clip.events.Any(t => t.functionName == nameof(OnEndAnimation));
+            });
+            if (alreadyDone)
+            {
+                yield break;
+            }
+            foreach (var animatorClipInfo in clipInfos)
+            {
+                var animationEvent = new AnimationEvent
+                {
+                    time = animatorClipInfo.clip.length,
+                    intParameter = interactions.FindIndex(item => item == interaction),
+                    functionName = nameof(OnEndAnimation)
+                };
+                animatorClipInfo.clip.AddEvent(animationEvent);
+            }
+        }
+
+        public void OnEndAnimation(int interactionIndex)
+        {
+            Debug.Log("실행");
+            // End Action
+            foreach (var interactionEvent in GetInteraction(interactionIndex).interactionEndActions.interactionEvents)
+            {
+                interactionEvent.Action();
+            }
+        }
+
+        private static IEnumerator WaitTimeline(WaitUntil waitUntil, Action action)
         {
             yield return waitUntil;
             action?.Invoke();
@@ -815,7 +831,7 @@ namespace Utility.Interaction
             transform.position = saveData.pos;
             transform.rotation = saveData.rot;
             InteractIndex = saveData.interactIndex;
-            
+
             foreach (var interaction in interactions)
             {
                 var serializedData = saveData.serializedInteractionDatas.Find(item =>
@@ -846,7 +862,7 @@ namespace Utility.Interaction
             Debug.LogError("인터랙션 데이터 설정 오류");
             return null;
         }
-        
+
         public InteractionSaveData GetInteractionSaveData()
         {
             var interactionSaveData = new InteractionSaveData
@@ -857,7 +873,7 @@ namespace Utility.Interaction
                 interactIndex = InteractIndex
             };
             interactionSaveData.serializedInteractionDatas = new List<SerializedInteractionData>();
-            for (var index = 0; index < interactions.Count; index++)
+            for(var index = 0; index < interactions.Count; index++)
             {
                 var interaction = interactions[index];
                 interaction.serializedInteractionData.id = index;
@@ -872,12 +888,17 @@ namespace Utility.Interaction
             get
             {
                 var interaction = GetInteraction();
-                if (interaction.interactionPlayType == InteractionPlayType.Dialogue ||
-                    interaction.interactionPlayType == InteractionPlayType.Task && !interaction.jsonFile)
+                if ((interaction.interactionPlayType == InteractionPlayType.Dialogue ||
+                     interaction.interactionPlayType == InteractionPlayType.Task) && !interaction.jsonFile)
                 {
+                    Debug.LogWarning("Json 세팅 오류");
                     return false;
                 }
-                
+                Debug.Log($"Interactable: {interaction.serializedInteractionData.isInteractable}\n" +
+                          $"Enable:  {enabled}\n" +
+                          $"Method: {interaction.interactionMethod}\n" +
+                          $"Is Interacted: {interaction.serializedInteractionData.isInteracted}");
+
                 return interaction.serializedInteractionData.isInteractable && enabled &&
                        interaction.interactionMethod == InteractionMethod.Touch &&
                        !interaction.serializedInteractionData.isInteracted;
@@ -940,12 +961,12 @@ namespace Utility.Interaction
 
         void IClickable.Click()
         {
-            if (!((IClickable) this).IsClickEnable)
+            if (!((IClickable)this).IsClickEnable)
             {
                 return;
             }
 
-            ((IClickable) this).ActiveObjectClicker(false);
+            ((IClickable)this).ActiveObjectClicker(false);
 
             StartInteraction();
         }
@@ -973,9 +994,9 @@ namespace Utility.Interaction
         public void OnEnter()
         {
             Debug.Log("Enter");
-            if (((IClickable) this).IsClickEnable)
+            if (((IClickable)this).IsClickEnable)
             {
-                ((IClickable) this).ActiveObjectClicker(true);
+                ((IClickable)this).ActiveObjectClicker(true);
             }
 
             if (GetInteraction().interactionMethod == InteractionMethod.Trigger)
@@ -987,9 +1008,9 @@ namespace Utility.Interaction
         public void OnExit()
         {
             Debug.Log("Exit");
-            if (((IClickable) this).IsClickEnable)
+            if (((IClickable)this).IsClickEnable)
             {
-                ((IClickable) this).ActiveObjectClicker(false);
+                ((IClickable)this).ActiveObjectClicker(false);
             }
         }
     }

@@ -8,12 +8,11 @@ namespace Utility.Cinematic.CustomTimeline
     [Serializable]
     public class TimelineDialogueControllerBehaviour : PlayableBehaviour
     {
-
         public TextAsset dialogueJson;
 
         public override void OnBehaviourPlay(Playable playable, FrameData info)
         {
-            if (dialogueJson == null) return;
+            if (!Application.isPlaying || dialogueJson == null) return;
             playable.GetGraph().Stop();
             DialogueController.Instance.StartConversation(dialogueJson.text);
             DialogueController.Instance.SetDialougueEndAction(() => { playable.GetGraph().Play(); });

@@ -114,5 +114,13 @@
             Down,
             None
         }
+
+        public enum TimelineClipType
+        {
+            None,
+            Action,
+            Emotion,
+            Both
+        }
     }
 }

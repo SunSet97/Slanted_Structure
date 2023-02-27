@@ -39,7 +39,7 @@ namespace Utility.Save
             {
                 saveCoverData = new SaveCoverData
                 {
-                    mapCode = DataController.Instance.mapCode,
+                    mapCode = DataController.Instance.CurrentMap.mapCode,
                     location = DataController.Instance.CurrentMap.location,
                     date = DataController.Instance.CurrentMap.date,
                     time = DataController.Instance.CurrentMap.time

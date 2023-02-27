@@ -252,7 +252,7 @@ public class MiniGameManager : MonoBehaviour
     {
         while (true)
         {
-            if (DataController.Instance.mapCode != "010001") break;
+            if (DataController.Instance.CurrentMap.mapCode != "010001") break;
             //kickboard.SetActive(true);
             //kickboardSpeat.SetActive(true);
             kickboardParent.SetActive(true);

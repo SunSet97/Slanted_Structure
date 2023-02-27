@@ -91,6 +91,7 @@ namespace Utility.Core
                 taskData.isContinue = false;
             }
 
+            JoystickController.Instance.InitializeJoyStick();
             JoystickController.Instance.StopSaveLoadJoyStick(true);
 
             dialogueData.Init(jsonString);
