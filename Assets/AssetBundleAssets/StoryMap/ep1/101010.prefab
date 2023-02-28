@@ -69,13 +69,14 @@ MonoBehaviour:
         contents: "\uD5C9! \uBAA8\uB974\uB294 \uC0AC\uB78C\uC774\uC9C0\uB9CC \uB3C4\uC640\uC918\uC57C
           \uB420\uAE4C? \uB108\uBB34 \uACE0\uD1B5\uC2A4\uB7EC\uC6CC \uBCF4\uC5EC"
         sfx: 
+    animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
     interactionEndActions:
       interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
-    dialogueCamera:
+    interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
     timelines: []
@@ -114,6 +115,7 @@ MonoBehaviour:
     dialogueData:
       dialogueIdx: 0
       dialogues: []
+    animator: {fileID: 2911040671306789040}
     interactionStartActions:
       interactionEvents: []
     interactionEndActions:
@@ -132,7 +134,7 @@ MonoBehaviour:
           interactions: []
     interactionMethod: 0
     isViewChange: 0
-    dialogueCamera:
+    interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
     timelines: []
@@ -367,7 +369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 
+  id: byhu
   interactions:
   - jsonFile: {fileID: 4900000, guid: c3cd1485adf0f2f478cfbdbf4ccdb4e9, type: 3}
     interactionPlayType: 2
@@ -388,11 +390,26 @@ MonoBehaviour:
           \uC800\uBD84 \uD63C\uC790 \uD798\uC73C\uB85C\uB294 \uBC97\uC5B4\uB098\uAE30
           \uC5B4\uB824\uC6CC \uBCF4\uC5EC. \uC5B4\uB5BB\uAC8C \uD574\uC57C\uB420\uAE4C?"
         sfx: 
+    animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
     interactionEndActions:
       interactionEvents:
       - eventType: 2
+        clearBox: {fileID: 0}
+        activeObjs:
+          actives:
+          - activeObject: {fileID: 6185187687672425394}
+            activeSelf: 1
+        movables:
+          movables: []
+        playableList:
+          playableObjs: []
+        interactObjs:
+          interacts: []
+        interactionObjs:
+          interactions: []
+      - eventType: 5
         clearBox: {fileID: 0}
         activeObjs:
           actives:
@@ -403,12 +420,15 @@ MonoBehaviour:
         playableList:
           playableObjs: []
         interactObjs:
-          interacts: []
+          interacts:
+          - interactObj: {fileID: 1477650866521656552}
+            interactable: 1
+            index: 0
         interactionObjs:
           interactions: []
     interactionMethod: 0
     isViewChange: 0
-    dialogueCamera:
+    interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
     timelines: []
@@ -480,6 +500,7 @@ MonoBehaviour:
   time: 13:00
   method: 1
   nextMapcode: 102010
+  rightIsForward: 0
   map: {fileID: 6156642736477043673}
   ui: {fileID: 0}
   skyboxSetting: {fileID: 2100000, guid: 5a6e6064c7a621e48b9ea96033587994, type: 2}
@@ -763,6 +784,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Interactable Collider
       objectReference: {fileID: 0}
+    - target: {fileID: 6149318734316858801, guid: f68897aeae0c05a4f8edb73c385bc8bd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7506875957148119002, guid: f68897aeae0c05a4f8edb73c385bc8bd,
         type: 3}
       propertyPath: m_Radius
@@ -770,6 +796,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f68897aeae0c05a4f8edb73c385bc8bd, type: 3}
+--- !u!1 &6185187687672425394 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6149318734316858801, guid: f68897aeae0c05a4f8edb73c385bc8bd,
+    type: 3}
+  m_PrefabInstance: {fileID: 36301065754887683}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3853793652951839288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -971,6 +1003,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3853793652951839288}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &2911040671306789040 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2097961616538452616, guid: a0fbab29208054241ae6ef287606613f,
+    type: 3}
+  m_PrefabInstance: {fileID: 3853793652951839288}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4989674811689741218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1125,15 +1163,15 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 1190419754171831142, guid: 20805600f5162424bba5e20dc49a4900, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 20805600f5162424bba5e20dc49a4900, type: 3}
---- !u!4 &7557400609035964714 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 634716954335892557, guid: 20805600f5162424bba5e20dc49a4900,
-    type: 3}
-  m_PrefabInstance: {fileID: 6930952299971020135}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6825801208322466617 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4509702389007984222, guid: 20805600f5162424bba5e20dc49a4900,
+    type: 3}
+  m_PrefabInstance: {fileID: 6930952299971020135}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7557400609035964714 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 634716954335892557, guid: 20805600f5162424bba5e20dc49a4900,
     type: 3}
   m_PrefabInstance: {fileID: 6930952299971020135}
   m_PrefabAsset: {fileID: 0}
@@ -1456,9 +1494,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a35fed5e55aebc34f8f867a73de39ed5, type: 3}
---- !u!4 &5116514320870631733 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4431704166261371047, guid: a35fed5e55aebc34f8f867a73de39ed5,
+--- !u!1 &6156642736477043673 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3454780072670667339, guid: a35fed5e55aebc34f8f867a73de39ed5,
     type: 3}
   m_PrefabInstance: {fileID: 8827356394434976146}
   m_PrefabAsset: {fileID: 0}
@@ -1468,9 +1506,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8827356394434976146}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6156642736477043673 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3454780072670667339, guid: a35fed5e55aebc34f8f867a73de39ed5,
+--- !u!4 &5116514320870631733 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4431704166261371047, guid: a35fed5e55aebc34f8f867a73de39ed5,
     type: 3}
   m_PrefabInstance: {fileID: 8827356394434976146}
   m_PrefabAsset: {fileID: 0}

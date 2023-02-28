@@ -46,6 +46,9 @@ namespace Utility.Interaction
         [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
         public DialogueData dialogueData;
 
+        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Animation)]
+        public Animator animator;
+
         // [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.FadeOut)]
         // public float fadeSec;
 
@@ -349,12 +352,11 @@ namespace Utility.Interaction
                 TaskStart(interaction.jsonFile.text);
             }
 
-            if (interaction.interactionPlayType == InteractionPlayType.Animation &&
-                gameObject.TryGetComponent(out Animator animator))
+            if (interaction.interactionPlayType == InteractionPlayType.Animation)
             {
-                animator.SetTrigger("Start");
+                interaction.animator.SetTrigger("Start");
                 Debug.Log("애니메이션 스타트");
-                StartCoroutine(WaitAnimationEnd(animator, interaction));
+                StartCoroutine(WaitAnimationEnd(interaction));
             }
             else if (interaction.interactionPlayType == InteractionPlayType.Dialogue)
             {
@@ -569,10 +571,9 @@ namespace Utility.Interaction
                         break;
                     case TaskContentType.Animation:
                         //세팅된 애니메이션 실행
-                        var animator = GetComponent<Animator>();
-                        animator.SetTrigger("Start");
+                        interaction.animator.SetTrigger("Start");
                         Debug.Log("애니메이션 스타트");
-                        StartCoroutine(WaitAnimationEnd(animator, interaction));
+                        StartCoroutine(WaitAnimationEnd(interaction));
                         break;
                     case TaskContentType.Play:
                         currentTaskData.isContinue = false;
@@ -796,12 +797,12 @@ namespace Utility.Interaction
         }
 
 
-        private IEnumerator WaitAnimationEnd(Animator animator, Interaction interaction)
+        private IEnumerator WaitAnimationEnd(Interaction interaction)
         {
             Debug.Log("기다리기");
-            yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName("Finish"));
+            yield return new WaitUntil(() => interaction.animator.GetCurrentAnimatorStateInfo(0).IsName("Finish"));
             Debug.Log("기다리기 끝");
-            var clipInfos = animator.GetCurrentAnimatorClipInfo(0);
+            var clipInfos = interaction.animator.GetCurrentAnimatorClipInfo(0);
             var alreadyDone = clipInfos.Any(item =>
             {
                 return item.clip.events.Any(t => t.functionName == nameof(OnEndAnimation));

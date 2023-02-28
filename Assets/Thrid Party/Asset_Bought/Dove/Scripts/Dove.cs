@@ -1,100 +1,64 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Dove : MonoBehaviour
 {
-    public Animator dove;
-    public GameObject MainCamera;
+    public float speedTime = 0.8f;
 
-	void Start ()
+    [SerializeField] private int randomNum;
+    [SerializeField] private float speed;
+    [SerializeField] private float direction;
+    [SerializeField] private float stateChange = 4.0f;
+
+    [NonSerialized] public Animator DoveAnimator;
+
+    private readonly int speedHash = Animator.StringToHash("Speed");
+    private readonly int directionHash = Animator.StringToHash("Direction");
+    private readonly int stateHash = Animator.StringToHash("State");
+
+    private bool attackBool = false;
+
+    private void Start()
     {
-        dove = GetComponent<Animator>();
-	}
-	
-	void Update ()
+        DoveAnimator = GetComponent<Animator>();
+        DoveAnimator.SetInteger(stateHash, 0);
+        StartCoroutine(RandomState());
+    }
+
+    private void Update()
     {
-        if (dove.GetCurrentAnimatorStateInfo(0).IsName("idle"))
+        MoveDove();
+    }
+
+    public void MoveDove()
+    {
+        if (DoveAnimator.GetInteger(stateHash) != 0)
         {
-            dove.SetBool("takeoff", false);
-            dove.SetBool("landing", false);
-            dove.SetBool("fly", false);
-            dove.SetBool("falling", false);
+            return;
         }
-        if ((Input.GetKeyUp(KeyCode.W))||(Input.GetKeyUp(KeyCode.A))||
-            (Input.GetKeyUp(KeyCode.D))||(Input.GetKeyUp(KeyCode.F))||(Input.GetKeyUp(KeyCode.E))||(Input.GetKeyUp(KeyCode.R)))
+
+        speed = (Mathf.Sin(Time.time * speedTime) * .6f + 1f) / 2f;
+        direction = Mathf.Cos(Time.time * speedTime);
+        DoveAnimator.SetFloat(speedHash, speed);
+        DoveAnimator.SetFloat(directionHash, direction);
+    }
+
+    public void Attack()
+    {
+        DoveAnimator.SetTrigger("Attack");
+    }
+
+    IEnumerator RandomState()
+    {
+        float randomTime=UnityEngine.Random.Range(1,stateChange);
+        var waitForSeconds = new WaitForSeconds(randomTime);
+        while (true)
         {
-            dove.SetBool("idle", true);
-            dove.SetBool("fly", true);
-            dove.SetBool("walk", false);
-            dove.SetBool("turnleft", false);
-            dove.SetBool("turnright", false);
-            dove.SetBool("flyleft", false);
-            dove.SetBool("flyright", false);
-            dove.SetBool("falling", false);
-            dove.SetBool("eat", false);
-            dove.SetBool("preen", false);
+            randomNum = UnityEngine.Random.Range(0, 3);
+            DoveAnimator.SetInteger(stateHash, randomNum);
+
+            yield return waitForSeconds;
         }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            dove.SetBool("walk", true);
-            dove.SetBool("idle", false);
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            dove.SetBool("takeoff", true);
-            dove.SetBool("idle", false);
-            dove.SetBool("falling", false);
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            dove.SetBool("landing", true);
-            dove.SetBool("fly", false);
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            dove.SetBool("turnleft", true);
-            dove.SetBool("flyleft", true);
-            dove.SetBool("walk", false);
-            dove.SetBool("turnright", false);
-            dove.SetBool("flyright", false);
-            dove.SetBool("idle", false);
-            dove.SetBool("fly", false);
-            dove.SetBool("falling", false);
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            dove.SetBool("turnright", true);
-            dove.SetBool("flyright", true);
-            dove.SetBool("turnleft", false);
-            dove.SetBool("flyleft", false);
-            dove.SetBool("walk", false);
-            dove.SetBool("idle", false);
-            dove.SetBool("fly", false);
-            dove.SetBool("falling", false);
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            dove.SetBool("falling", true);
-            dove.SetBool("fly", false);
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            dove.SetBool("eat", true);
-            dove.SetBool("idle", false);
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            dove.SetBool("idle", false);
-            dove.SetBool("preen", true);
-        }
-        if (Input.GetKeyDown(KeyCode.RightControl))
-        {
-            MainCamera.GetComponent<CameraFollow>().enabled = false;
-        }
-        if (Input.GetKeyUp(KeyCode.RightControl))
-        {
-            MainCamera.GetComponent<CameraFollow>().enabled = true;
-        }
-	}
+    }
 }
