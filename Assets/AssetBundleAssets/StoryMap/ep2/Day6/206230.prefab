@@ -75,51 +75,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 2
-  jsonFile: {fileID: 4900000, guid: 875882ff0c1c5e548b0f8be2c25e81e6, type: 3}
-  gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues:
-    - name: "\uC2A4\uD54F"
-      expression: 0
-      anim_name: Speat
-      contents: "\uB530\uB77C\uC624\uB290\uB77C \uACE0\uC0DD\uD588\uC5B4. \uC5EC\uAE30\uC11C
-        \uB9CC \uC798 \uAC74\uB108\uBA74 \uB3FC. \uBE60\uC9C0\uC9C0 \uC54A\uAC8C \uC870\uC2EC\uD574"
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: Rau
-      contents: "\uC544\uB2C8\u2026\uB3C4\uB300\uCCB4 \uC5B4\uB514\uAE38\uB798 \uC5EC\uAE30
-        \uD558\uC218\uAD6C \uAE4C\uC9C0 \uB4E4\uC5B4\uC628\uAC70\uC57C\u2026?"
-    - name: "\uC2A4\uD54F"
-      expression: 0
-      anim_name: Speat
-      contents: "\u2026\uAD70\uB9D0\uB9D0\uACE0 \uB530\uB77C\uC640 \uC548\uC7A1\uC544\uBA39\uC5B4"
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: Rau
-      contents: "\uD558\uD573\u2026\uB18D\uB2F4\uB3C4 \uC9D3\uAD73\uAE34\u2026\uC54C\uC558\uC5B4."
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
+  id: 
+  interactions: []
   useOutline: 0
   color: 0
   outline: {fileID: 2445551836438603349}
   outlineRadius: 5
-  interactionMethod: 3
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines: []
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  taskDataDebug: []
 --- !u!114 &2445551836438603349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,7 +283,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 0
-  jsonFile: {fileID: 0}
   nextSelectMapcode: 205110
 --- !u!1 &1395685093544531159
 GameObject:
@@ -448,27 +408,27 @@ MonoBehaviour:
   skyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
   isOrthographic: 0
   orthographicSize: 0
-  cameraBound: {fileID: 0}
-  BGM: {fileID: 0}
+  useFadeOut: 0
+  fadeOutSec: 1
+  fadeInSec: 1
+  bgm: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 2184414181426779005}
   clearBoxList:
   - {fileID: 1395685092987312460}
+  positionSetting: {fileID: 1395685092927965824}
   positionSets:
-  - index: 0
-    who: 0
+  - who: 0
     startPosition: {fileID: 3599159114237416866}
-    posSet: {fileID: 4107076885387390388}
     isMain: 0
-  - index: 1
-    who: 2
+    isFollow: 0
+  - who: 2
     startPosition: {fileID: 1395685093548560312}
-    posSet: {fileID: 1395685093544531156}
     isMain: 1
+    isFollow: 0
   cameraViewType: 0
   camDis: {x: 0, y: 1, z: -3}
   camRot: {x: 0, y: 0, z: 0}
-  positionSetting: {fileID: 1395685092927965824}
   isJoystickInputUse: 0
   isJoystickNone: 0
   joystickType: 0
@@ -605,33 +565,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 5
-  jsonFile: {fileID: 4900000, guid: 33e9f9bb387055641b70977d0eaf7b8b, type: 3}
-  gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues: []
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
+  id: 
+  interactions: []
   useOutline: 0
   color: 0
   outline: {fileID: 5081629836678006674}
   outlineRadius: 5
-  interactionMethod: 2
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines: []
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  taskDataDebug: []
 --- !u!65 &5232198707942898108
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -893,89 +832,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 2
-  jsonFile: {fileID: 4900000, guid: c80901b5908f6b940900da31e78325bc, type: 3}
-  gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues:
-    - name: "\uC2A4\uD54F"
-      expression: 0
-      anim_name: Speat
-      contents: "\uC5EC\uAE30\uC57C. \uB2E4\uC654\uC5B4."
-    - name: "\uB77C\uC6B0"
-      expression: 0
-      anim_name: Rau
-      contents: "\uD5C9\u2026\uD5C9\u2026.\uC5EC\uAE30\uAC00 \uBB50\uAE38\uB798\u2026"
-    - name: "\uC2A4\uD54F"
-      expression: 0
-      anim_name: Speat
-      contents: "\uADF8\uB9AC\uACE0 \uBCF4\uC5EC\uC904\uAED8 \uC788\uC5B4. \uB180\uB77C\uC9C0
-        \uB9C8."
-    - name: "\uB77C\uC6B0"
-      expression: 9
-      anim_name: Rau
-      contents: "\uC5B4\uC5C9? \uC5EC\uAE30\uC11C \uAC11\uC790\uAE30 \uBB58 \uBCF4\uC5EC\uC904
-        \uAED8 \uC788\uB2E4\uACE0\u2026?"
-    - name: 
-      expression: 0
-      anim_name: 
-      contents: "\uC2A4\uD54F\uC740 \uCCA0\uCC3D\uC0B4\uC744 \uC5F4\uC9C0\uC54A\uACE0
-        \uD1B5\uACFC\uD558\uC5EC \uB4E4\uC5B4\uAC14\uB2E4\uAC00 \uB098\uC654\uB2E4."
-    - name: "\uB77C\uC6B0"
-      expression: 5
-      anim_name: Rau
-      contents: ??????????????????
-    - name: "\uB77C\uC6B0"
-      expression: 5
-      anim_name: Rau
-      contents: "\uB0B4\uAC00 \uC544\uC9C1\uB3C4 \uCDE8\uD55C\uAC74\uAC00? \uB098
-        \uAFC8\uC778\uAC00?"
-    - name: "\uB77C\uC6B0"
-      expression: 5
-      anim_name: Rau
-      contents: "\uBB50\uC57C \uBB34\uC2A8 \uD2B8\uB9AD\uC774\uB77C\uB3C4 \uC788\uB294\uAC70\uC57C?
-        \uC5B4\uB5BB\uAC8C \uD55C\uAC70\uC57C\u2026???"
-    - name: "\uC2A4\uD54F"
-      expression: 0
-      anim_name: Speat
-      contents: "\uC0AC\uC2E4 \uB0B4\uAC00 \uBCF4\uC5EC\uC8FC\uB824\uACE0 \uD55C\uAC8C
-        \uC774\uAC70\uC57C."
-    - name: 
-      expression: 0
-      anim_name: 
-      contents: "\uC2A4\uD54F\uC740 \uD06C\uAC8C \uC228\uC744 \uB4E4\uC774\uB9C8\uC168\uB2E4
-        \uB0B4\uC26C\uBA74\uC11C \uC785\uC744 \uC5F4\uC5C8\uB2E4."
-    - name: "\uC2A4\uD54F"
-      expression: 0
-      anim_name: Speat
-      contents: "\uB098 \uC0AC\uC2E4 \uCD08\uB2A5\uB825\uC744 \uAC00\uC9C0\uAC8C \uB418\uC5B4\uC11C
-        \uB3C4\uB9DD\uCE60 \uC218 \uC788\uC5C8\uC5B4."
-    - name: "\uC2A4\uD54F"
-      expression: 0
-      anim_name: Speat
-      contents: "\uC74C\u2026\uC77C\uB2E8 \uB4E4\uC5B4\uC62C\uB798\u2026?"
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
+  id: 
+  interactions: []
   useOutline: 0
   color: 0
   outline: {fileID: 4352240898744531744}
   outlineRadius: 5
-  interactionMethod: 2
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines: []
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  taskDataDebug: []
 --- !u!65 &5228321217541616883
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1078,7 +940,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 9
   m_Type: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.60991454, g: 0.66241926, b: 0.8396226, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -1315,6 +1177,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9044407976503474981, guid: b9523818310c4c34d94b8779c2995275,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 59004b943bcf2f34f9896147d24fb9a6, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9523818310c4c34d94b8779c2995275, type: 3}
 --- !u!1 &4005663992108130986 stripped

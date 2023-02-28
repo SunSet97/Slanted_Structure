@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 
   interactions:
   - jsonFile: {fileID: 4900000, guid: 61da3d97f3ffd8646994ed9449097ee9, type: 3}
     interactionPlayType: 2
@@ -56,16 +57,19 @@ MonoBehaviour:
         contents: "\uC800 \uC7A5\uC0AC\uAFBC\uC774 \uD55C \uB9D0\uC774 \uC9C4\uC2EC\uC73C\uB85C
           \uD55C \uB9D0 \uAC19\uC73C\uB2C8 \uC624\uB298\uC740 \uC5BC\uB978 \uC219\uC18C\uB85C
           \uB4E4\uC5B4\uAC00\uC11C \uC26C\uC5B4\uC57C \uACA0\uC5B4"
+        sfx: 
       - name: "\uB77C\uC6B0"
         expression: 0
         anim_name: Rau
         contents: "\uAE38\uC744 \uD5E4\uBA58 \uD0D3\uC5D0 \uBC8C\uC368 \uBC24\uC774
           \uB418\uBC84\uB838\uC5B4. \uC5BC\uB978 \uC219\uC18C\uB85C \uAC00\uC790."
+        sfx: 
       - name: 
         expression: 0
         anim_name: 
         contents: "\uC6B0\uCE21\uC73C\uB85C \uCB49\uAC00\uBA74 \uB77C\uC6B0\uC758
           \uC219\uC18C\uAC00 \uB098\uD0C0\uB0A9\uB2C8\uB2E4."
+        sfx: 
     interactionStartActions:
       interactionEvents: []
     interactionEndActions:
@@ -78,36 +82,19 @@ MonoBehaviour:
     timelines: []
     cinematics: []
     inGames: []
-    isLoopDialogue: 0
+    isLoop: 0
     isContinue: 0
     serializedInteractionData:
+      id: 0
       isInteractable: 1
       isInteracted: 0
     debugTaskData: []
-  interactionPlayType: 0
-  jsonFile: {fileID: 0}
-  gamePlayableGame: {fileID: 0}
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
-  interactionMethod: 0
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines: []
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  isInteractable: 1
   useOutline: 0
   color: 0
   outline: {fileID: 0}
-  outlineRadius: 5
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &4831039341036213178
 GameObject:
   m_ObjectHideFlags: 0
@@ -320,6 +307,9 @@ MonoBehaviour:
   skyboxSetting: {fileID: 2100000, guid: 0eb005cc9ea7223479478fd555780fb6, type: 2}
   isOrthographic: 1
   orthographicSize: 7
+  useFadeOut: 0
+  fadeOutSec: 1
+  fadeInSec: 1
   bgm: {fileID: 0}
   characters: []
   clearBoxSetting: {fileID: 5859266698824446595}
@@ -330,6 +320,7 @@ MonoBehaviour:
   - who: 2
     startPosition: {fileID: 6590479492548782690}
     isMain: 1
+    isFollow: 0
   cameraViewType: 0
   camDis: {x: -2, y: 5, z: 16}
   camRot: {x: 1.062, y: 173.17, z: -0.043}
@@ -581,6 +572,21 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogueEndAction.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7099170060218575249, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7099170060218575249, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.73624444
+      objectReference: {fileID: 0}
+    - target: {fileID: 7099170060218575249, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.5188679
       objectReference: {fileID: 0}
     - target: {fileID: 7679528853820744176, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
