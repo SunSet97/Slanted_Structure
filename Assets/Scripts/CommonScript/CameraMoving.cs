@@ -39,20 +39,22 @@ namespace CommonScript
             {
                 cam.orthographicSize = DataController.Instance.camOrthgraphicSize;
             }
-            
-            cam.transform.rotation = Quaternion.Euler(DataController.Instance.camInfo.camRot);
+
+            cam.transform.rotation = Quaternion.Euler(DataController.Instance.camInfo.camRot + DataController.Instance.CamOffsetInfo.camRot);
 
             if (viewType.Equals(CameraViewType.FixedView))
             {
                 cam.transform.position = DataController.Instance.CurrentMap.transform.position +
                                          DataController.Instance.camInfo.camDis +
-                                         DialogueController.Instance.dialogueData.CamInfo.camDis;
+                                         DialogueController.Instance.dialogueData.CamInfo.camDis +
+                                         DataController.Instance.CamOffsetInfo.camDis;
             }
-            
+
             if (mainCharacter && viewType.Equals(CameraViewType.FollowCharacter))
             {
                 cam.transform.position = mainCharacter.position + DataController.Instance.camInfo.camDis +
-                                         DialogueController.Instance.dialogueData.CamInfo.camDis;
+                                         DialogueController.Instance.dialogueData.CamInfo.camDis +
+                                         DataController.Instance.CamOffsetInfo.camDis;
             }
 
         }

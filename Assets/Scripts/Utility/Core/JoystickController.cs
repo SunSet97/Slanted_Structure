@@ -73,6 +73,31 @@ namespace Utility.Core
                 Joystick = fixedJoyStick;
             }
         }
+        
+        public void InitializeJoyStick()
+        {
+            if (!Joystick)
+            {
+                return;
+            }
+
+            Joystick.gameObject.SetActive(Joystick.gameObject.activeSelf);
+            if (Joystick.GetType() == typeof(DynamicJoystick))
+            {
+                Joystick.transform.GetChild(0).gameObject.SetActive(false);
+                Joystick.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().position = default;
+            }
+            else if (Joystick.GetType() == typeof(FixedJoystick))
+            {
+                jumpButton.gameObject.SetActive(jumpButton.gameObject.activeSelf);
+                Joystick.transform.GetChild(0).gameObject.SetActive(false);
+            }
+
+            Joystick.OnPointerUp();
+            inputDegree = 0;
+            inputDirection = Vector2.zero;
+            Joystick.input = Vector2.zero;
+        }
 
         /// <summary>
         /// 조이스틱 상태 초기화하는 함수

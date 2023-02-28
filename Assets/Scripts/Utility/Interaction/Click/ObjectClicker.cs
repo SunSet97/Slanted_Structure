@@ -91,7 +91,6 @@ namespace Utility.Interaction.Click
             RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
             foreach (var hit in hits)
             {
-                Debug.Log(hit.collider.gameObject);
                 if (hit.collider.TryGetComponent(out IClickable clickable))
                 {
                     clickable.Click();

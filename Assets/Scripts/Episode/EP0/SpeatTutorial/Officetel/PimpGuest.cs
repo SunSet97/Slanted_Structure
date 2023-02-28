@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Threading;
 using CommonScript;
 using Data;
 using UnityEngine;
@@ -53,11 +54,9 @@ namespace Episode.EP0.SpeatTutorial.Officetel
 
             characterController.Move(Vector3.right * nextDirection * moveSpeed * Time.deltaTime);
 
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, rotVal, 0),
-                rotationSpeed * Time.fixedDeltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, rotVal, 0), rotationSpeed * Time.fixedDeltaTime);
 
-            if (!speedUp && CheckSameFloorWithCharacter() && CheckCamera() &&
-                (speatAbility.IsUsingAbilityTimer || speatAbility.IsPassing))
+            if (!speedUp && CheckSameFloorWithCharacter() && CheckCamera() && (speatAbility.IsUsingAbilityTimer || speatAbility.IsPassing))
             {
                 speedUp = true;
                 StartCoroutine(SpeedUpFunc());
@@ -69,62 +68,40 @@ namespace Episode.EP0.SpeatTutorial.Officetel
         {
             if (!pimpGameManager.IsPlay)
             {
-                Invoke(nameof(Think), changeDirectionCycle);
                 return;
             }
-
             var animator = GetComponent<Animator>();
             nextDirection = Random.Range(-1, 2);
-            if (nextDirection == 1) // 오른쪽으로 움직임
+            switch(nextDirection)
             {
-                animator.SetFloat(speedHash, 1.0f);
-                rotVal = 90;
-            }
-            else if (nextDirection == -1) // 왼쪽으로 움직임
-            {
-                animator.SetFloat(speedHash, 1.0f);
-                rotVal = -90;
-            }
-            else if (nextDirection == 0) // 정면 바라보고 정지
-            {
-                animator.SetFloat(speedHash, 0.0f);
-                rotVal = 180;
+                // 오른쪽으로 움직임
+                case 1:
+                    animator.SetFloat(speedHash, 1.0f);
+                    rotVal = 90;
+                    break;
+                // 왼쪽으로 움직임
+                case -1:
+                    animator.SetFloat(speedHash, 1.0f);
+                    rotVal = -90;
+                    break;
+                // 정면 바라보고 정지
+                case 0:
+                    animator.SetFloat(speedHash, 0.0f);
+                    rotVal = 180;
+                    break;
             }
 
             Invoke(nameof(Think), changeDirectionCycle);
         }
 
-        private void OnControllerColliderHit(ControllerColliderHit hit)
+        private void OnTriggerEnter(Collider other)
         {
             if (!pimpGameManager.IsPlay)
             {
                 return;
             }
-
-            if (hit.collider.TryGetComponent(out CharacterManager characterManager) &&
-                characterManager.who.Equals(CustomEnum.Character.Main))
-            {
-               characterManager.gameObject.layer = LayerMask.NameToLayer("Player");
-
-                if (jsonFile)
-                {
-                    characterManager.IsMove = false;
-                    
-                    pimpGameManager.EndPlay();
-
-                    DialogueController.Instance.SetDialougueEndAction(() =>
-                    {
-                        characterManager.IsMove = true;
-                        DataController.Instance.ChangeMap(DataController.Instance.mapCode);
-                    });
-                    DialogueController.Instance.StartConversation(jsonFile.text);
-                }
-                else
-                {
-                    DataController.Instance.ChangeMap(DataController.Instance.mapCode);
-                }
-            }
-            else if (hit.gameObject.CompareTag("NPC"))
+            
+            if (other.gameObject.CompareTag("NPC") || other.gameObject.CompareTag("Wall") && other.gameObject != gameObject)
             {
                 nextDirection *= -1;
 
@@ -138,15 +115,32 @@ namespace Episode.EP0.SpeatTutorial.Officetel
                 }
 
             }
+            else if (other.TryGetComponent(out CharacterManager characterManager) && characterManager.Equals(DataController.Instance.GetCharacter(CustomEnum.Character.Main)))
+            {
+                if (jsonFile)
+                {
+                    pimpGameManager.EndPlay();
+
+                    DialogueController.Instance.SetDialougueEndAction(() =>
+                    {
+                        characterManager.IsMove = true;
+                        DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.mapCode);
+                    });
+                    DialogueController.Instance.StartConversation(jsonFile.text);
+                }
+                else
+                {
+                    DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.mapCode);
+                }
+            }
         }
 
         // pimp나 guest가 카메라에 걸리는지 확인하는 함수
         private bool CheckCamera()
         {
             var cam = DataController.Instance.Cam;
-            Vector3 screenPoint = cam.WorldToViewportPoint(gameObject.transform.position);
-            bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 &&
-                            screenPoint.y < 1;
+            var screenPoint = cam.WorldToViewportPoint(gameObject.transform.position);
+            var onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
 
             return onScreen;
         }

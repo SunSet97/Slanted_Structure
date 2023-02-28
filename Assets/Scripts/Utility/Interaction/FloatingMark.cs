@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 using Utility.Core;
-using Utility.Property;
 
 namespace Utility.Interaction
 {

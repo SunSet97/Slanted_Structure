@@ -135,7 +135,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
                 }
                 else if (speatSlider.value >= 10 && speatSlider.value <= pimpSlider.value + 1)
                 {
-                    DataController.Instance.ChangeMap(DataController.Instance.mapCode);
+                    DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.mapCode);
                 }
                 
                 
