@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using System;
+using Data;
 using UnityEngine;
 
 namespace Utility.Cinematic
@@ -7,7 +8,7 @@ namespace Utility.Cinematic
     {
         public CustomEnum.Character who;
 
-        private Animator animator;
+        [NonSerialized] public Animator Animator;
         private SkinnedMeshRenderer skinnedMesh;
         private Texture[] faceExpression;
 
@@ -16,8 +17,8 @@ namespace Utility.Cinematic
 
         private void Start()
         {
-            if (animator == null)
-                animator = GetComponent<Animator>();
+            if (Animator == null)
+                Animator = GetComponent<Animator>();
             if (skinnedMesh == null)
                 skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
             if (faceExpression == null)
@@ -38,7 +39,7 @@ namespace Utility.Cinematic
 
         public void EmotionAnimationSetting(int emotionInt)
         {
-            animator.SetInteger(Emotion, emotionInt);
+            Animator.SetInteger(Emotion, emotionInt);
         }
 
         public void ExpressionSetting(CustomEnum.Expression emotion)

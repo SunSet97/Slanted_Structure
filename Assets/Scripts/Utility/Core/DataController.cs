@@ -70,6 +70,7 @@ namespace Utility.Core
             AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/modulematerials");
 
             Cam = Camera.main;
+            CamOffsetInfo = new CamInfo();
         }
 
         public void GameStart(string mapCode = "001010", SaveData save = null)
