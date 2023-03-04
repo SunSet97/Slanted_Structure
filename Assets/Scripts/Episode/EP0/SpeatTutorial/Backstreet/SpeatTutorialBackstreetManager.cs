@@ -12,11 +12,24 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 {
     public class SpeatTutorialBackstreetManager : MonoBehaviour, IGamePlayable
     {
-        public bool IsPlay { get; set; }
-        public Action OnEndPlay { get; set; }
+        public bool IsPlay
+        {
+            get => isPlay;
+            set
+            {
+                if (!value)
+                {
+                    EndPlay();
+                }
+                else
+                {
+                    Play();
+                }
+                isPlay = value;
+            }
+        }
 
-        [Header("End Dialogue")] [SerializeField]
-        private TextAsset jsonFile;
+        public Action OnEndPlay { get; set; }
 
         [Header("#UI")] [SerializeField] private Slider speatSlider;
         [SerializeField] private Text remainingDistanceText;
@@ -25,6 +38,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 
         [Header("#Objects")] [SerializeField] private Transform startPosition;
         [SerializeField] private GameObject pimp;
+        [SerializeField] private GameObject endTrailer;
         [SerializeField] private Transform[] trailers;
 
         [Header("#Buttons")] [SerializeField] private Button abilityButton;
@@ -34,15 +48,15 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
         [SerializeField] private float jumpCooldownSec = 0.05f;
         [SerializeField] private float abilityCooldownSec = 0.05f;
 
+        private float originJumpForce;
         private float speatAccelator;
         private float pimpAccelator;
-
         private bool jumpEnable;
         private bool abilityEnable;
-
         private GameObject[][] patterns;
-
         private AssetBundle obstacleAssetBundle;
+        private bool isPlay;
+        
         private static readonly int Speed = Animator.StringToHash("Speed");
 
         private const string Path = "/AssetBundles/backstreetrun";
@@ -88,29 +102,20 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 
         public void Play()
         {
-            IsPlay = true;
+            Debug.Log("플레이!");
+            isPlay = true;
             StartCoroutine(WaitPimp());
             StartCoroutine(StartRunGame());
         }
 
         public void EndPlay()
         {
-            IsPlay = false;
-
+            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            mainCharacter.jumpForce = originJumpForce;
+            mainCharacter.CharacterAnimator.SetFloat(Speed, 0f);
+            isPlay = false;
+            StopAllCoroutines();
             OnEndPlay?.Invoke();
-
-            if (jsonFile != null)
-            {
-                DialogueController.Instance.SetDialougueEndAction(() =>
-                {
-                    DataController.Instance.CurrentMap.MapClear();
-                });
-                DialogueController.Instance.StartConversation(jsonFile.text);
-            }
-            else
-            {
-                DataController.Instance.CurrentMap.MapClear();
-            }
         }
 
         private IEnumerator WaitPimp()
@@ -128,11 +133,11 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
             var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
             var waitForFixedUpdate = new WaitForFixedUpdate();
 
-            var originJumpForce = mainCharacter.jumpForce;
+            originJumpForce = mainCharacter.jumpForce;
             mainCharacter.jumpForce = 7f;
             mainCharacter.CharacterAnimator.SetFloat(Speed, 1f);
 
-            while (speatSlider.value < speatSlider.maxValue)
+            while (true)
             {
                 // 총 100m
                 var percentage = 100f / speatSlider.maxValue;
@@ -143,11 +148,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
                 pimpDistanceText.text = $"{pimpDistance * Length / 100f:0}m";
 
 
-                if (speatSlider.value >= speatSlider.maxValue)
-                {
-                    EndPlay();
-                }
-                else if (pimp.activeSelf && speatSlider.value <= pimpSlider.value)
+                if (pimp.activeSelf && speatSlider.value <= pimpSlider.value)
                 {
                     // DialogueController.Instance.SetDialougueEndAction(() =>
                     // {
@@ -162,6 +163,8 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
                     // });
                     // DialogueController.Instance.StartConversation(); 
                     DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.mapCode);
+
+                    break;
                 }
 
                 if (pimp.activeSelf)
@@ -188,9 +191,6 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 
                 yield return waitForFixedUpdate;
             }
-
-            mainCharacter.jumpForce = originJumpForce;
-            mainCharacter.CharacterAnimator.SetFloat(Speed, 0f);
         }
 
         private void InstantiateObstacle(float remainingDistance)
@@ -198,11 +198,11 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
             for (var index = 1; index < trailers.Length; index++)
             {
                 var trailer = trailers[index];
-                if (trailers[0].position.x >= trailer.position.x)
+                if (trailers[0].position.x >= trailer.position.x && !endTrailer.activeSelf)
                 {
                     Destroy(trailer.GetChild(0).gameObject);
 
-                    if (speatSlider.value < speatSlider.maxValue * 0.8f)
+                    if (speatSlider.value < speatSlider.maxValue * 0.9f)
                     {
                         var level = 3;
                         if (remainingDistance > 66f)
@@ -216,6 +216,13 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 
                         Instantiate(patterns[level][Random.Range(0, patterns[level].Length)], trailer).SetActive(true);
                     }
+                    else if(remainingDistance <= 4f)
+                    {
+                        endTrailer.SetActive(true);
+                        endTrailer.transform.SetParent(trailer);
+                        endTrailer.transform.localPosition = new Vector3(-204.17f, 0, 0);
+                        Instantiate(patterns[0][0], trailer).SetActive(true);
+                    }
                     else
                     {
                         Instantiate(patterns[0][1], trailer).SetActive(true);
@@ -227,6 +234,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
                 }
                 else
                 {
+                    Debug.Log("무브");
                     trailer.position -= Vector3.right * ((runSpeed + speatAccelator) * Time.fixedDeltaTime);
                 }
             }

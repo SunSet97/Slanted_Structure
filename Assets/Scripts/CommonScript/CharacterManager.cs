@@ -236,12 +236,25 @@ namespace CommonScript
                     {
                         QuarterView(joystickDeltaAngle);
                     }
+                    else if (joystickInputMethod == JoystickInputMethod.Waypoint)
+                    {
+                        if (Mathf.Abs(joystickDeltaAngle) > 0)
+                        {
+                            transform.Rotate(Vector3.up, joystickDeltaAngle);
+                        }
+                        
+                        DataController.Instance.CurrentMap.waypoint.JoystickUpdate();
+                        
+                        // CharacterAnimator.SetFloat(DirectionHash, joystickAngle);
+                    }
                     else if (joystickInputMethod == JoystickInputMethod.Other)
                     {
                         if (Mathf.Abs(joystickDeltaAngle) > 0)
                         {
                             transform.Rotate(Vector3.up, joystickDeltaAngle);
                         }
+                        
+                        // CharacterAnimator.SetFloat(DirectionHash, joystickAngle);
                     }
 
                     CharacterAnimator.SetFloat(SpeedHash, JoystickController.Instance.inputDegree);

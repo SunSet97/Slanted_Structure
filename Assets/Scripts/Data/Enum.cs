@@ -25,7 +25,8 @@
         {
             OneDirection,
             AllDirection,
-            Other
+            Other,
+            Waypoint
         }
 
         public enum Expression
