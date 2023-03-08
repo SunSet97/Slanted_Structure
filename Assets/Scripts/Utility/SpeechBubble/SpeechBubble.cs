@@ -14,7 +14,7 @@ namespace Utility.SpeechBubble
         {
             speakerText.text = speaker;
         }
-    
+
         public void SetContext(string context)
         {
             contextText.text = context;
