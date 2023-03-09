@@ -11,6 +11,7 @@ using UnityEngine.Events;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using Utility.Core;
+using Utility.Ending;
 using Utility.Interaction.Click;
 using Utility.Json;
 using Utility.Preference;
@@ -281,7 +282,7 @@ namespace Utility.Interaction
                     int.Parse);
             DataController.Instance.UpdateLikeable(changeVal);
 
-            string path, jsonString;
+            string jsonString;
 
             //다음 맵 코드 변경
             if (curTask.order != 0)
@@ -309,16 +310,14 @@ namespace Utility.Interaction
                     currentTaskData.tasks = array1;
 
                     currentTaskData.isContinue = false;
-                    path = curTask.nextFile;
-                    jsonString = DialogueController.Instance.ConvertPathToJson(path);
+                    jsonString = DialogueController.Instance.ConvertPathToJson(curTask.nextFile);
                     // currentTaskData.taskIndex--;    // 현재 taskIndex는 선택지이며 선택지 다음 인덱스가 된다. 그런데 대화 종료시 Index가 1 증가하기에 1을 줄여준다.
                     DialogueController.Instance.StartConversation(jsonString);
                     //다음 인덱스의 타입
                     break;
                 case TaskContentType.Temp:
                     //새로운 task 실행
-                    path = curTask.nextFile;
-                    jsonString = DialogueController.Instance.ConvertPathToJson(path);
+                    jsonString = DialogueController.Instance.ConvertPathToJson(curTask.nextFile);
                     PushTask(jsonString);
                     StartInteraction();
                     break;
@@ -326,8 +325,15 @@ namespace Utility.Interaction
                     StackNewTask(curTask.nextFile);
                     break;
                 case TaskContentType.EndingChoice:
-                    // curTask.nextFile - 엔딩 이름
-                    // 엔딩을 저장할 곳을 찾자 scriptable
+                    jsonString = DialogueController.Instance.ConvertPathToJson(curTask.nextFile);
+                    DialogueController.Instance.SetDialougueEndAction(() =>
+                    {
+                        var endingType = (EndingType)curTask.order;
+                        EndingHelper.Instance.StartEnd(endingType);
+                        //Ennding 번호 - curTask.order
+
+                    });
+                    DialogueController.Instance.StartConversation(jsonString);
                     break;
             }
         }
@@ -640,6 +646,14 @@ namespace Utility.Interaction
                     }
                     case TaskContentType.TheEnd:
                         //게임 엔딩
+                        if (Enum.TryParse(currentTask.nextFile, out EndingType endingType))
+                        {
+                            EndingHelper.Instance.StartEnd(endingType);
+                        }
+                        else
+                        {
+                            Debug.LogError($"엔딩 세팅 오류, {currentTask.nextFile}을 변경해주세요.");
+                        }
                         break;
                     case TaskContentType.Cinematic:
                         if (interaction.timelines.Length == 0 || !interaction.timelines[0])

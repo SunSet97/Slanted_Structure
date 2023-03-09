@@ -1,5 +1,7 @@
 ﻿using Data;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using Utility.Core;
 
@@ -33,7 +35,7 @@ namespace CommonScript
 
         public void Clear()
         {
-            if (!nextSelectMapcode.Equals("000000") || !nextSelectMapcode.Equals(""))
+            if (!nextSelectMapcode.Equals("000000") && !nextSelectMapcode.Equals(""))
             {
                 DataController.Instance.CurrentMap.nextMapcode = nextSelectMapcode;
             }
@@ -49,6 +51,8 @@ namespace CommonScript
             }
             else
             {
+                Debug.Log(nextSelectMapcode);
+                Debug.Log(DataController.Instance.CurrentMap.nextMapcode);
                 DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.nextMapcode);
             }
         }

@@ -56,24 +56,16 @@ namespace Utility.WayPoint
                 // 앞 == 1, 뒤 == -1, 중간 == 0 
                 camRotDir = GetDir(corner);
 
-                float ratio;
-                if (Waypoint.DistanceIgnoreY(corner.corner.position, character.position) < waypoint.checkingDist)
-                {
-                    ratio = Waypoint.DistanceIgnoreY(waypoint.GetMiddlePoint(), character.position) / waypoint.checkingDist;
-                }
-                else
-                {
-                    ratio = Waypoint.DistanceIgnoreY(character.position, corner.corner.position) / cornerRadius;
-                }
+                float ratio = Waypoint.DistanceIgnoreY(character.position, corner.corner.position) / cornerRadius;
 
                 // -1 ~ 1 -> 0 ~ 2 -> 0 ~ 1    0.5는 가운데  뒤인 경우 0 ~ 0.5, 앞인 경우 0.5 ~ 1
                 var t = (camRotDir * ratio + 1) * 0.5f;
 
-                Debug.Log(t);
+                // Debug.Log(t);
                 var camDis = Vector3.Lerp(corner.camSettings[0].camDis, corner.camSettings[1].camDis, t);
-                camDis = Vector3.Lerp(DataController.Instance.camInfo.camDis, camDis, 0.05f);
+                camDis = Vector3.Lerp(DataController.Instance.camInfo.camDis, camDis, 0.04f);
                 var camRot = Vector3.Lerp(corner.camSettings[0].camRot, corner.camSettings[1].camRot, t);
-                camRot = Vector3.Lerp(DataController.Instance.camInfo.camRot, camRot, 0.05f);
+                camRot = Vector3.Lerp(DataController.Instance.camInfo.camRot, camRot, 0.04f);
                 DataController.Instance.camInfo.camDis = camDis;
                 DataController.Instance.camInfo.camRot = camRot;
             }

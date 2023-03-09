@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -10,7 +9,6 @@ namespace Utility.SceneLoader
 {
     public class SceneLoader : MonoBehaviour
     {
-
         private static SceneLoader _instance;
 
         public static SceneLoader Instance

@@ -54,7 +54,7 @@ namespace Utility.Core
             var childCount = choiceRoot.childCount;
             choiceBtns = new GameObject[childCount];
             choiceTexts = new Text[childCount];
-            for (int i = 0; i < childCount; i++)
+            for(int i = 0; i < childCount; i++)
             {
                 choiceBtns[i] = choiceRoot.GetChild(i).gameObject;
                 choiceTexts[i] = choiceBtns[i].GetComponentInChildren<Text>(true);
@@ -152,7 +152,7 @@ namespace Utility.Core
                         if (charEmotionAnimator.runtimeAnimatorController != null)
                         {
                             charEmotionAnimator.GetComponent<Image>().enabled = true;
-                            charEmotionAnimator.SetInteger(Emotion, (int) dialogueDataItem.expression);
+                            charEmotionAnimator.SetInteger(Emotion, (int)dialogueDataItem.expression);
                         }
                         else
                         {
@@ -177,7 +177,7 @@ namespace Utility.Core
                 {
                     if (settedCharacter.characterAnimator.TryGetComponent(out CinematicCharacter cinematicCharacter))
                     {
-                        cinematicCharacter.EmotionAnimationSetting((int) dialogueDataItem.expression);
+                        cinematicCharacter.EmotionAnimationSetting((int)dialogueDataItem.expression);
                         cinematicCharacter.ExpressionSetting(dialogueDataItem.expression);
                     }
                 }
@@ -192,50 +192,44 @@ namespace Utility.Core
         public void OpenChoicePanel()
         {
             JoystickController.Instance.StopSaveLoadJoyStick(true);
-            int index = taskData.taskIndex;
-            int choiceLen = int.Parse(taskData.tasks[index].nextFile);
+            var choiceLen = int.Parse(taskData.tasks[taskData.taskIndex].nextFile);
 
-            int[] likeable = DataController.Instance.GetLikeable();
+            var likeable = DataController.Instance.GetLikeable();
 
             choiceBtns[0].transform.parent.gameObject.SetActive(true);
-            if (taskData.tasks.Length <= index + choiceLen)
+            if (taskData.tasks.Length <= taskData.taskIndex + choiceLen)
             {
                 Debug.LogError("선택지 개수 오류 - IndexOverFlow");
             }
 
             // 선택지 개수와 조건에 맞게 선택지가 나올 수 있도록 함.
-            for (int i = 0; i < choiceBtns.Length; i++)
+            for(var choiceIndex = 0; choiceIndex < choiceLen && choiceIndex < choiceBtns.Length; choiceIndex++)
             {
-                if (choiceLen <= i)
-                {
-                    choiceBtns[i].SetActive(false);
-                    continue;
-                }
-
                 // 친밀도와 자존감이 기준보다 낮으면 일부 선택지가 나오지 않을 수 있음
-                var choiceIndex = index + i + 1;
-                var choiceTask = taskData.tasks[choiceIndex];
+                var choiceTask = taskData.tasks[taskData.taskIndex + choiceIndex + 1];
 
                 choiceTask.condition = choiceTask.condition.Replace("m", "-");
-                Debug.Log($"{i}번째 선택지 조건 - {choiceTask.condition}");
-                int[] condition = Array.ConvertAll(choiceTask.condition.Split(','), int.Parse);
+                Debug.Log($"{choiceIndex}번째 선택지 조건 - {choiceTask.condition}");
+                var condition = Array.ConvertAll(choiceTask.condition.Split(','), int.Parse);
 
                 //양수인 경우 이상, 음수인 경우 이하
                 if (choiceTask.order >= 0)
                 {
-                    if (condition[0] >= likeable[0] && condition[1] >= likeable[1] && condition[2] >= likeable[2])
+                    if (condition[0] < likeable[0] || condition[1] < likeable[1] || condition[2] < likeable[2])
                     {
-                        choiceBtns[i].SetActive(true);
-                        choiceTexts[i].text = choiceTask.name;
+                        continue;
                     }
+                    choiceBtns[choiceIndex].SetActive(true);
+                    choiceTexts[choiceIndex].text = choiceTask.name;
                 }
                 else
                 {
-                    if (condition[0] <= likeable[0] && condition[1] <= likeable[1] && condition[2] <= likeable[2])
+                    if (condition[0] > likeable[0] || condition[1] > likeable[1] || condition[2] > likeable[2])
                     {
-                        choiceBtns[i].SetActive(true);
-                        choiceTexts[i].text = choiceTask.name;
+                        continue;
                     }
+                    choiceBtns[choiceIndex].SetActive(true);
+                    choiceTexts[choiceIndex].text = choiceTask.name;
                 }
             }
         }

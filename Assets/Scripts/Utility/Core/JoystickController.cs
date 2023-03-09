@@ -177,8 +177,14 @@ namespace Utility.Core
         {
             if (method.Equals(CustomEnum.JoystickInputMethod.OneDirection))
             {
-                inputDegree = Mathf.Abs(Joystick.Horizontal);
                 inputDirection.Set(Joystick.Horizontal, 0);
+                inputDegree = Mathf.Abs(Joystick.Horizontal);
+                InputJump = Joystick.Vertical > 0.5f;
+            }
+            else if (method.Equals(CustomEnum.JoystickInputMethod.Waypoint))
+            {
+                //inputDirection = changedDir;
+                inputDegree = Mathf.Abs(Joystick.Horizontal);
                 InputJump = Joystick.Vertical > 0.5f;
             }
             else

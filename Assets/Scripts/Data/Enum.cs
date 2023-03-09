@@ -2,14 +2,6 @@
 {
     public static class CustomEnum
     {
-        public enum EndingType
-        {
-            Normal,
-            Bad,
-            Special,
-            Happy
-        }
-
         public enum Character
         {
             Main = -1,
@@ -25,7 +17,8 @@
         {
             OneDirection,
             AllDirection,
-            Other
+            Other,
+            Waypoint
         }
 
         public enum Expression
@@ -61,13 +54,7 @@
             Clear = 13,
             TempDialogue = 99
         }
-
-        public enum CameraViewType
-        {
-            FollowCharacter,
-            FixedView
-        }
-
+        
         public enum OutlineColor
         {
             Red,
@@ -114,7 +101,7 @@
             Down,
             None
         }
-
+        
         public enum TimelineClipType
         {
             None,

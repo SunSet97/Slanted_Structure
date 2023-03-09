@@ -184,7 +184,7 @@ namespace Utility.Interaction
             foreach (var t in playableList.playableObjs)
             {
                 Debug.Log($"Play Event - {t.gameObject}: {t.isPlay} ");
-                t.gameObject.GetComponent<IGamePlayable>().Play();
+                t.gameObject.GetComponent<IGamePlayable>().IsPlay = t.isPlay;
             }
         }
 

@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 using Utility.Audio;
 using Utility.Preference;
 using Utility.Property;
+using Utility.WayPoint;
 using static Data.CustomEnum;
 
 namespace Utility.Core
@@ -52,8 +53,10 @@ namespace Utility.Core
         
         [ConditionalHideInInspector("method", JoystickInputMethod.OneDirection)]
         public bool rightIsForward;
-        
 
+        [ConditionalHideInInspector("method", JoystickInputMethod.Waypoint)]
+        public Waypoint waypoint;
+        
         [Space(15)] [Tooltip("맵의 이름은 사용자가 원하는 대로 변경하면 되며 맵 구성 어셋들은 이 오브젝트의 자식으로 설정해주면 됩니다.")]
         public GameObject map; // auto setting
 
@@ -335,10 +338,10 @@ namespace Utility.Core
         {
             if (ui)
             {
-                Destroy(ui.gameObject);
+                DestroyImmediate(ui.gameObject);
             }
 
-            Destroy(gameObject);
+            DestroyImmediate(gameObject);
         }
 
         [Header("조이스틱 인풋 사용 유무")]

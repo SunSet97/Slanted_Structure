@@ -1,9 +1,15 @@
-﻿using UnityEngine;
+﻿using Data;
+using UnityEngine;
 using Utility.Core;
-using static Data.CustomEnum;
 
 namespace CommonScript
 {
+    public enum CameraViewType
+    {
+        FollowCharacter,
+        FixedView
+    }
+    
     public class CameraMoving : MonoBehaviour
     {
         public Transform mainCharacter;
@@ -22,7 +28,7 @@ namespace CommonScript
         {
             viewType = DataController.Instance.CurrentMap.cameraViewType;
             cam = Camera.main;
-            var mainChar = DataController.Instance.GetCharacter(Character.Main);
+            var mainChar = DataController.Instance.GetCharacter(CustomEnum.Character.Main);
             if (mainChar)
             {
                 mainCharacter = mainChar.transform;
