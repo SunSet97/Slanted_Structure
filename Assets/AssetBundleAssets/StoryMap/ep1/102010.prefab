@@ -110,6 +110,7 @@ MonoBehaviour:
         anim_name: Rau
         contents: " \uC2DC\uC7A5\uCABD\uC73C\uB85C \uAC00\uC57C\uACA0\uAD6C\uB098..!"
         sfx: 
+    animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
     interactionEndActions:
@@ -128,9 +129,26 @@ MonoBehaviour:
           interacts: []
         interactionObjs:
           interactions: []
+      - eventType: 5
+        clearBox: {fileID: 0}
+        activeObjs:
+          actives:
+          - activeObject: {fileID: 8928361347232363822}
+            activeSelf: 1
+        movables:
+          movables: []
+        playableList:
+          playableObjs: []
+        interactObjs:
+          interacts:
+          - interactObj: {fileID: 3621267214252248089}
+            interactable: 1
+            index: 0
+        interactionObjs:
+          interactions: []
     interactionMethod: 1
     isViewChange: 0
-    dialogueCamera:
+    interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
     timelines: []
@@ -218,13 +236,14 @@ MonoBehaviour:
         anim_name: Rau
         contents: "\uC800 \uD560\uC544\uBC84\uC9C0\uD55C\uD14C \uBB3C\uC5B4\uBD10\uC57C\uC9C0"
         sfx: 
+    animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
     interactionEndActions:
       interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
-    dialogueCamera:
+    interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
     timelines: []
@@ -243,24 +262,6 @@ MonoBehaviour:
   useGizmos: 0
   gizmosRadius: 5
   gizmosColor: {r: 0, g: 0, b: 0, a: 0}
---- !u!114 &6190480480840314498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2848998326228428964}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  outlineWidth: 8
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!1 &3730335768365519805
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,6 +505,8 @@ MonoBehaviour:
   time: 14:00
   method: 0
   nextMapcode: 103010
+  rightIsForward: 1
+  waypoint: {fileID: 0}
   map: {fileID: 6138314364282686254}
   ui: {fileID: 521142926599477821}
   skyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
@@ -570,7 +573,6 @@ GameObject:
   - component: {fileID: 7059842367817232119}
   - component: {fileID: 531416223564354496}
   - component: {fileID: 292830771892740610}
-  - component: {fileID: 2543667620328930025}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -612,13 +614,14 @@ MonoBehaviour:
     dialogueData:
       dialogueIdx: 0
       dialogues: []
+    animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
     interactionEndActions:
       interactionEvents: []
     interactionMethod: 1
     isViewChange: 0
-    dialogueCamera:
+    interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
     timelines: []
@@ -668,7 +671,7 @@ MonoBehaviour:
       isContinue: 1
   useOutline: 0
   color: 0
-  outline: {fileID: 2543667620328930025}
+  outline: {fileID: 0}
   useGizmos: 0
   gizmosRadius: 5
   gizmosColor: {r: 0, g: 0, b: 0, a: 0}
@@ -685,24 +688,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 394.58, y: 121.06, z: 906.5}
   m_Center: {x: 0, y: 0, z: 334.18683}
---- !u!114 &2543667620328930025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6041002278122676726}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  outlineWidth: 8
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!1 &7516509802141283363
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,7 +811,7 @@ PrefabInstance:
     - target: {fileID: 7506875957148119002, guid: f68897aeae0c05a4f8edb73c385bc8bd,
         type: 3}
       propertyPath: m_Radius
-      value: 0.2
+      value: 0.16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f68897aeae0c05a4f8edb73c385bc8bd, type: 3}
@@ -857,7 +842,7 @@ PrefabInstance:
         type: 3}
       propertyPath: outline
       value: 
-      objectReference: {fileID: 6190480480840314498}
+      objectReference: {fileID: 0}
     - target: {fileID: 1008197126064203463, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
       propertyPath: useExclamationMark
@@ -876,7 +861,7 @@ PrefabInstance:
     - target: {fileID: 1008197126064203463, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
       propertyPath: interactions.Array.data[0].serializedInteractionData.isInteractable
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1008197126064203463, guid: b5d6f4e8e25d0d646a2290b24e60c706,
         type: 3}
@@ -1050,9 +1035,9 @@ PrefabInstance:
     - {fileID: 5209476354693123359, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
     - {fileID: 608012451485628335, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b5d6f4e8e25d0d646a2290b24e60c706, type: 3}
---- !u!1 &2848998326228428964 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1744346934642033274, guid: b5d6f4e8e25d0d646a2290b24e60c706,
+--- !u!4 &4162450160276159013 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 468225877287719163, guid: b5d6f4e8e25d0d646a2290b24e60c706,
     type: 3}
   m_PrefabInstance: {fileID: 4592693783051004638}
   m_PrefabAsset: {fileID: 0}
@@ -1062,7 +1047,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 4592693783051004638}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2848998326228428964}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
@@ -1074,18 +1059,12 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 4592693783051004638}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2848998326228428964}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &4162450160276159013 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 468225877287719163, guid: b5d6f4e8e25d0d646a2290b24e60c706,
-    type: 3}
-  m_PrefabInstance: {fileID: 4592693783051004638}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6138314364282686253 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7679528853820744179, guid: b5d6f4e8e25d0d646a2290b24e60c706,
@@ -1190,7 +1169,8 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7503958248964886254, guid: 1d7ee8864ad2d954f8071c602df7eefd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1d7ee8864ad2d954f8071c602df7eefd, type: 3}
 --- !u!4 &8191801494702275357 stripped
 Transform:
@@ -1270,7 +1250,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2989735921817845680, guid: e58060b94398a984eb1f41d13d4023fd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e58060b94398a984eb1f41d13d4023fd, type: 3}
 --- !u!4 &2261542716513617107 stripped
 Transform:

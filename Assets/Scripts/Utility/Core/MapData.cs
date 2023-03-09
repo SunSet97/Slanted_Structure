@@ -338,10 +338,10 @@ namespace Utility.Core
         {
             if (ui)
             {
-                DestroyImmediate(ui.gameObject);
+                Destroy(ui.gameObject);
             }
 
-            DestroyImmediate(gameObject);
+            Destroy(gameObject);
         }
 
         [Header("조이스틱 인풋 사용 유무")]
