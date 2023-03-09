@@ -83,7 +83,7 @@ namespace Utility.Core
 
         private MapData[] LoadMap(string desMapCode)
         {
-            var mapCode = CurrentMap ? CurrentMap.mapCode : "000000";
+            var mapCode = CurrentMap ? CurrentMap.mapCode : "999999";
             Debug.Log("현재 맵: " + mapCode);
             Debug.Log("다음 맵: " + desMapCode);
             var curEp = int.Parse(mapCode.Substring(0, 1));
@@ -96,6 +96,7 @@ namespace Utility.Core
             Debug.Log("Day:   " + curDay + " : " + desDay);
             if (curEp == desEp && curDay == desDay)
             {
+                Debug.Log("이미 있음");
                 return storyMaps;
             }
 
@@ -103,9 +104,9 @@ namespace Utility.Core
             {
                 mapDB.Unload(true);
             }
-
             mapDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
-            if (curDay != desDay)
+            Debug.Log("Load Map");
+            if (curEp != desEp)
             {
                 if (DialogueDB != null)
                 {
@@ -121,13 +122,14 @@ namespace Utility.Core
             }
 
             var mapDataObjects = mapDB.LoadAllAssets<GameObject>();
-            MapData[] mapDatas = new MapData[mapDataObjects.Length];
-            for (int i = 0; i < mapDataObjects.Length; i++)
+            var mapData = new MapData[mapDataObjects.Length];
+            for (var i = 0; i < mapDataObjects.Length; i++)
             {
-                mapDatas[i] = mapDataObjects[i].GetComponent<MapData>();
+                mapData[i] = mapDataObjects[i].GetComponent<MapData>();
+                Debug.Log(mapData[i].mapCode);
             }
 
-            return mapDatas;
+            return mapData;
         }
 
         public CharacterManager GetCharacter(Character characterType)
@@ -174,7 +176,6 @@ namespace Utility.Core
             ObjectClicker.Instance.Reset();
 
             var nextMap = Array.Find(storyMaps, mapData => mapData.mapCode.Equals(desMapCode));
-
             InteractionObjects.Clear();
 
             CurrentMap = Instantiate(nextMap, mapGenerate);

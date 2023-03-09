@@ -9,21 +9,21 @@ namespace Utility.WayPoint
     [Serializable]
     public class WaypointEdge
     {
-        // debug용
-        public Transform frontWaypoint;
-        public Transform backWaypoint;
-        
         public Vector3 frontWaypointPos;
         public Vector3 backWaypointPos;
-        
+
         public int frontIndex;
         public int backIndex;
 
         public int GetCloseVertexIndex(Vector3 mainCharacterPos)
         {
-            return Waypoint.DistanceIgnoreY(frontWaypointPos, mainCharacterPos) < Waypoint.DistanceIgnoreY(backWaypointPos, mainCharacterPos) ? frontIndex : backIndex;
+            return Waypoint.DistanceIgnoreY(frontWaypointPos, mainCharacterPos) <
+                   Waypoint.DistanceIgnoreY(backWaypointPos, mainCharacterPos)
+                ? frontIndex
+                : backIndex;
         }
     }
+
     [ExecuteInEditMode]
     public class Waypoint : MonoBehaviour
     {
@@ -32,36 +32,32 @@ namespace Utility.WayPoint
             Right,
             Left
         }
-        
+
         public List<Transform> waypoints;
 
         [Tooltip("웨이 포인트의 전진 방향을 설정해주세요.")] [SerializeField]
         private MoveDirection moveDirSet;
 
-        [Tooltip("포인트 체크 가능 거리 설정입니다.")] 
-        public float checkingDist = 0.7f;
+        [Tooltip("포인트 체크 가능 거리 설정입니다.")] public float checkingDist = 0.7f;
 
         [SerializeField] private int currentEdgeIndex;
-        
-        [Header("디버그용")] [SerializeField] 
-        private WaypointEdge[] waypointEdges;
-        
+
+        [Header("디버그용")] [SerializeField] private WaypointEdge[] waypointEdges;
+
         private bool isInVertex;
         private MoveDirection movedDir;
 
         private void Start()
         {
             waypointEdges = new WaypointEdge[waypoints.Count - 1];
-            for(var index = 0; index < waypoints.Count - 1; index++)
+            for (var index = 0; index < waypoints.Count - 1; index++)
             {
                 waypointEdges[index] = new WaypointEdge
                 {
                     frontIndex = index + 1,
                     backIndex = index,
                     frontWaypointPos = waypoints[index + 1].position,
-                    backWaypointPos = waypoints[index].position,
-                    frontWaypoint = waypoints[index + 1],
-                    backWaypoint = waypoints[index]
+                    backWaypointPos = waypoints[index].position
                 };
             }
         }
@@ -75,13 +71,12 @@ namespace Utility.WayPoint
             {
                 return;
             }
-            
+
             var closeIndex = waypointEdges[currentEdgeIndex].GetCloseVertexIndex(mainCharacter.transform.position);
 
             var characterDistance = DistanceIgnoreY(mainCharacter.transform.position, waypoints[closeIndex].position);
             if (characterDistance <= checkingDist)
             {
-                //안에 있을때는 바로 현재 기준 앞 뒤 인덱스로 이동
                 isInVertex = true;
             }
             else
@@ -92,30 +87,32 @@ namespace Utility.WayPoint
                     isInVertex = false;
                     if (closeIndex == waypointEdges[currentEdgeIndex].frontIndex && moveDirSet == movedDir)
                     {
-                        currentEdgeIndex = Mathf.Clamp(currentEdgeIndex + 1, 0, waypointEdges.Length);
+                        currentEdgeIndex = Mathf.Clamp(currentEdgeIndex + 1, 0, waypointEdges.Length - 1);
                     }
-                    else if(closeIndex == waypointEdges[currentEdgeIndex].backIndex)
+                    else if (closeIndex == waypointEdges[currentEdgeIndex].backIndex)
                     {
-                        currentEdgeIndex = Mathf.Clamp(currentEdgeIndex - 1, 0, waypointEdges.Length);
+                        currentEdgeIndex = Mathf.Clamp(currentEdgeIndex - 1, 0, waypointEdges.Length - 1);
                     }
                 }
             }
 
             if (joystickInput > 0)
             {
-                movedDir = MoveDirection.Right;   
+                movedDir = MoveDirection.Right;
             }
             else if (joystickInput < 0)
             {
                 movedDir = MoveDirection.Left;
             }
-            
+
             int targetIndex;
             if (movedDir == moveDirSet)
             {
                 if (closeIndex == waypointEdges[currentEdgeIndex].frontIndex && isInVertex)
                 {
-                    targetIndex = waypointEdges[Mathf.Clamp(currentEdgeIndex + 1, 0, waypointEdges.Length - 1)].frontIndex;
+                    // Debug.LogWarning("다음 인덱스로 정면");
+                    targetIndex = waypointEdges[Mathf.Clamp(currentEdgeIndex + 1, 0, waypointEdges.Length - 1)]
+                        .frontIndex;
                 }
                 else
                 {
@@ -126,41 +123,48 @@ namespace Utility.WayPoint
             {
                 if (closeIndex == waypointEdges[currentEdgeIndex].backIndex && isInVertex)
                 {
-                    targetIndex = waypointEdges[Mathf.Clamp(currentEdgeIndex - 1, 0, waypointEdges.Length - 1)].backIndex;
+                    // Debug.LogWarning("뒤에 인덱스로 후면");
+                    targetIndex = waypointEdges[Mathf.Clamp(currentEdgeIndex - 1, 0, waypointEdges.Length - 1)]
+                        .backIndex;
                 }
                 else
                 {
                     targetIndex = waypointEdges[currentEdgeIndex].backIndex;
                 }
             }
-            
-            
+
+            // Debug.Log("노리는 Index: " + targetIndex);
+
             Vector3 targetPos;
             if (isInVertex)
             {
-                if (targetIndex == 0 || targetIndex == waypoints.Count - 1)
+                if ((waypointEdges[currentEdgeIndex].backIndex == targetIndex && targetIndex == 0) || (waypointEdges[currentEdgeIndex].frontIndex == targetIndex && targetIndex == waypoints.Count - 1))
                 {
+                    // Debug.Log($"멈춤 후진 멈춤: {movedDir != moveDirSet && targetIndex == 0}, 정면 멈춤: {movedDir == moveDirSet && targetIndex == waypoints.Count - 1}");
                     JoystickController.Instance.inputDegree = 0f;
                     JoystickController.Instance.inputDirection = Vector2.zero;
                     return;
                 }
-                
+
                 var nearIndex = waypointEdges[currentEdgeIndex].GetCloseVertexIndex(mainCharacter.transform.position);
-                targetPos = (waypoints[targetIndex].position - waypoints[nearIndex].position).normalized * checkingDist + waypoints[nearIndex].position;
+                targetPos =
+                    (waypoints[targetIndex].position - waypoints[nearIndex].position).normalized * checkingDist +
+                    waypoints[nearIndex].position;
             }
             else
             {
                 targetPos = waypoints[targetIndex].position;
             }
+
             var moveDir = targetPos - mainCharacter.transform.position;
 
             var camRotation = Quaternion.Euler(0, -DataController.Instance.Cam.transform.rotation.eulerAngles.y, 0);
             moveDir = camRotation * moveDir;
             var changedDir = new Vector2(moveDir.x, moveDir.z).normalized;
-            
+
             JoystickController.Instance.inputDirection = changedDir;
         }
-        
+
         public static float DistanceIgnoreY(Vector3 vec1, Vector3 vec2)
         {
             vec1.y = 0;
@@ -171,7 +175,7 @@ namespace Utility.WayPoint
 #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
-            for(var i = 0; i < waypoints.Count; i++)
+            for (var i = 0; i < waypoints.Count; i++)
             {
                 Gizmos.color = Color.blue * 0.7f;
                 Gizmos.DrawSphere(waypoints[i].position, 0.5f);
