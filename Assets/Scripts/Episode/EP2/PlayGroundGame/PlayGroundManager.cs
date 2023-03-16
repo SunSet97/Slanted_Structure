@@ -1,33 +1,15 @@
 ﻿using System;
 using System.Collections;
-using Data;
-using Play;
+using Data.GamePlay;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility.Core;
 using Utility.Preference;
 
-namespace Episode.EP2.PlayGround
+namespace Episode.EP2.PlayGroundGame
 {
-    public class PlayGroundManager : MonoBehaviour, IGamePlayable
+    public class PlayGroundManager : Game
     {
-        public bool IsPlay { get; set; }
-        public Action OnEndPlay { get; set; }
-
-        public GameObject canPrefab;
-
-        public GameObject rangeParent;
-        public Button clearButton;
-
-        public Transform startPoint;
-        public Transform destPoint;
-
-        public ThrowCan[] throwCans;
-
-        public CamInfo playCam;
-
-        [SerializeField] private CreateRing ring;
-
         [Serializable]
         public struct ThrowCan
         {
@@ -43,50 +25,53 @@ namespace Episode.EP2.PlayGround
             NotBad,
             Bad
         }
+        
+        public GameObject canPrefab;
+
+        public GameObject rangeParent;
+        public Button clearButton;
+
+        public Transform startPoint;
+        public Transform destPoint;
+
+        public ThrowCan[] throwCans;
+
+        [SerializeField] private CreateRing ring;
 
         private void Start()
         {
             clearButton.onClick.AddListener(ClearCheck);
         }
 
-        public void Play()
+        public override void Play()
         {
-            JoystickController.Instance.InitializeJoyStick(false);
-
-            DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
-            rangeParent.SetActive(false);
-            ring.enabled = false;
-
-            // DataController.instance.camDis = playCam.camDis;
-            // DataController.instance.camRot = playCam.camRot;
-            // StartTimingGame();
-            StartCoroutine(StartTestThrow());
-            IsPlay = true;
+            base.Play();
+            StartTimingGame();
         }
 
-        IEnumerator StartTestThrow()
+        private IEnumerator StartTestThrow()
         {
             while (true)
             {
                 StartThrowing(ResultState.Bad);
-                yield return new WaitForSeconds(2);
+                yield return new WaitForSeconds(2f);
             }
         }
 
-        public void EndPlay()
+        public override void EndPlay()
         {
-            OnEndPlay?.Invoke();
+            base.EndPlay();
         
             DataController.Instance.camInfo.camDis = DataController.Instance.CurrentMap.camDis;
             DataController.Instance.camInfo.camRot = DataController.Instance.CurrentMap.camRot;
-            IsPlay = false;
         }
 
         private void StartTimingGame()
         {
+            JoystickController.Instance.InitializeJoyStick(false);
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(true);
 
-            Canvas canvas = PlayUIController.Instance.Canvas;
+            var canvas = PlayUIController.Instance.Canvas;
 
             canvas.renderMode = RenderMode.ScreenSpaceCamera;
             canvas.worldCamera = DataController.Instance.Cam;
@@ -99,11 +84,23 @@ namespace Episode.EP2.PlayGround
 
             StartCoroutine(PlayTimingGame());
         }
+        
+        private IEnumerator PlayTimingGame()
+        {
+            while (rangeParent.transform.GetChild(2).localScale.x * 0.3 *
+                   rangeParent.transform.GetChild(2).GetComponent<RectTransform>().rect.width <= ring.Radius * 2)
+            {
+                ring.DisplayUpdate();
+                yield return null;
+            }
+
+            EndTimingGame(ResultState.Bad);
+        }
 
         private void EndTimingGame(ResultState result)
         {
             rangeParent.SetActive(false);
-            ring.Remove();
+            ring.Reset();
             PlayUIController.Instance.Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
             StartThrowing(result);
@@ -111,18 +108,18 @@ namespace Episode.EP2.PlayGround
 
         private void StartThrowing(ResultState type)
         {
-            GameObject can = Instantiate(canPrefab);
-            can.GetComponent<Can>().onCollisionEnter.AddListener(() => { Invoke(nameof(EndPlay), 1f); });
+            var can = Instantiate(canPrefab);
+            can.GetComponent<Can>().OnCollisionEnter.AddListener(() => { Invoke(nameof(EndPlay), 1f); });
             can.transform.position = startPoint.position;
 
-            int index = Array.FindIndex(throwCans, item => item.resultType == type);
+            var index = Array.FindIndex(throwCans, item => item.resultType == type);
         
-            Vector3 canDir = (destPoint.position - startPoint.position).normalized;
+            var canDir = (destPoint.position - startPoint.position).normalized;
             canDir.y = throwCans[index].plusY;
 
             can.GetComponent<Collider>().isTrigger = false;
 
-            Rigidbody throwRigid = can.GetComponent<Rigidbody>();
+            var throwRigid = can.GetComponent<Rigidbody>();
             throwRigid.AddForce(canDir * throwCans[index].power, ForceMode.Impulse);
             throwRigid.AddTorque(canDir * throwCans[index].power, ForceMode.Impulse);
         }
@@ -135,19 +132,19 @@ namespace Episode.EP2.PlayGround
             }
 
             ResultState result;
-            if (ring.radius * 2 <= rangeParent.transform.GetChild(2).localScale.x *
+            if (ring.Radius * 2 <= rangeParent.transform.GetChild(2).localScale.x *
                 rangeParent.transform.GetChild(2).GetComponent<RectTransform>().rect.width)
             {
                 Debug.Log("유후! 바로 들어감");
                 result = ResultState.Perfect;
             }
-            else if (ring.radius * 2 <= rangeParent.transform.GetChild(1).localScale.x *
+            else if (ring.Radius * 2 <= rangeParent.transform.GetChild(1).localScale.x *
                      rangeParent.transform.GetChild(1).GetComponent<RectTransform>().rect.width)
             {
                 Debug.Log("아싸! 한번 튕기고 들어감");
                 result = ResultState.Good;
             }
-            else if (ring.radius * 2 <= rangeParent.transform.GetChild(0).localScale.x *
+            else if (ring.Radius * 2 <= rangeParent.transform.GetChild(0).localScale.x *
                      rangeParent.transform.GetChild(0).GetComponent<RectTransform>().rect.width)
             {
                 Debug.Log("아깝다! 한번 튕기고 안들어감");
@@ -161,18 +158,6 @@ namespace Episode.EP2.PlayGround
 
             StopAllCoroutines();
             EndTimingGame(result);
-        }
-
-        private IEnumerator PlayTimingGame()
-        {
-            while (rangeParent.transform.GetChild(2).localScale.x * 0.3 *
-                   rangeParent.transform.GetChild(2).GetComponent<RectTransform>().rect.width <= ring.radius * 2)
-            {
-                ring.DisplayUpdate();
-                yield return null;
-            }
-
-            EndTimingGame(ResultState.Bad);
         }
     }
 }

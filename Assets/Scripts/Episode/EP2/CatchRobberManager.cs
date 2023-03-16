@@ -2,13 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using CommonScript;
-using Play;
+using Data.GamePlay;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility.Core;
 using static Data.CustomEnum;
 
-[System.Serializable]
+[Serializable]
 public class dovesComoponents
 {
     public List<Animator> anims;
@@ -22,13 +22,8 @@ public class dovesComoponents
 
 }
 
-public class CatchRobberManager : MonoBehaviour, IGamePlayable
+public class CatchRobberManager : Game
 {
-    public bool IsPlay { get; set; }
-    public Action OnEndPlay { get; set; }
-
-    private readonly int SpeedHash = Animator.StringToHash("Speed");
-
     // 라우
     private CharacterManager rau;
     [Header("라우")]
@@ -250,7 +245,7 @@ public class CatchRobberManager : MonoBehaviour, IGamePlayable
             moveLeftAndRight.position = followZofRau;
             // rau.ctrl.Move(rau.transform.position-threeWay[0].position);
             rau.CharacterController.Move(new Vector3(0, -1, Time.deltaTime) * rauSpeed);
-            rau.CharacterAnimator.SetFloat(SpeedHash, rauSpeed * Time.deltaTime);
+            rau.CharacterAnimator.SetFloat(Speed, rauSpeed * Time.deltaTime);
             rauSpeed += acceleration * Time.deltaTime;
         }
         // 캐릭터매니저랑 라우랑 위치 일치시키기 => 충돌 감지때문

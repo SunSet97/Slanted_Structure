@@ -1,13 +1,13 @@
-﻿using System;
-using Play;
+﻿using Data.GamePlay;
 using UnityEngine;
 using Utility.Core;
 
 namespace Episode.EP0.SpeatTutorial.Officetel
 {
-    public class PimpGameManager : MonoBehaviour, IGamePlayable
+    public class PimpGameManager : Game
     {
         public PimpGuest[] pimpGuests;
+
         private static readonly int Speed = Animator.StringToHash("Speed");
 
         private void Start()
@@ -26,23 +26,20 @@ namespace Episode.EP0.SpeatTutorial.Officetel
             }
         }
 
-        public bool IsPlay { get; set; }
-        public Action OnEndPlay { get; set; }
 
-        public void Play()
+        public override void Play()
         {
+            base.Play();
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(true);
-            IsPlay = true;
             foreach (var t in pimpGuests)
             {
                 t.Think();
             }
         }
 
-        public void EndPlay()
+        public override void EndPlay()
         {
-            IsPlay = false;
-            OnEndPlay?.Invoke();
+            base.EndPlay();
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
             foreach (var pimpGuest in pimpGuests)
             {

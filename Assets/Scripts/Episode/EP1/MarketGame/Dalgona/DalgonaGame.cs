@@ -1,41 +1,36 @@
-﻿using System;
-using System.Collections;
-using Play;
+﻿using System.Collections;
+using Data.GamePlay;
 using UnityEngine;
 using Utility.Core;
 
 namespace Episode.EP1.MarketGame.Dalgona
 {
-    public class DalgonaGame : MonoBehaviour, IGamePlayable
+    public class DalgonaGame : Game
     {
         public GameObject dalgonaPanel;
-
         public DalgonaDrager[] dalgona;
-        private int index = 0;
+        
+        private int index;
 
-        public bool IsPlay { get; set; }
-        public Action OnEndPlay { get; set; }
-
-        public void Play()
+        public override void Play()
         {
             if (index >= dalgona.Length)
             {
                 Debug.LogError("dalgona index Error");
                 return;
             }
+            base.Play();
 
             dalgonaPanel.SetActive(true);
             JoystickController.Instance.StopSaveLoadJoyStick(true);
-            IsPlay = true;
             dalgona[index].Init();
             StartCoroutine(WaitDalgonaEnd());
         }
 
-        public void EndPlay()
+        public override void EndPlay()
         {
+            base.EndPlay();
             JoystickController.Instance.StopSaveLoadJoyStick(false);
-            OnEndPlay?.Invoke();
-            IsPlay = false;
             dalgonaPanel.SetActive(false);
         }
 

@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using System;
+using Data;
 using UnityEngine;
 using Utility.Core;
 
@@ -7,13 +8,13 @@ namespace CommonScript
     public enum CameraViewType
     {
         FollowCharacter,
-        FixedView
+        FixedView,
+        FocusObject
     }
     
     public class CameraMoving : MonoBehaviour
     {
-        public Transform mainCharacter;
-
+        private Transform focusObject;
         private CameraViewType viewType;
         private Camera cam;
 
@@ -24,19 +25,11 @@ namespace CommonScript
         private float halfWidth;
         private float halfHeight;
 
-        public void Initialize()
+        public void Initialize(CameraViewType cameraViewType, Transform focusObj)
         {
-            viewType = DataController.Instance.CurrentMap.cameraViewType;
+            viewType = cameraViewType;
             cam = Camera.main;
-            var mainChar = DataController.Instance.GetCharacter(CustomEnum.Character.Main);
-            if (mainChar)
-            {
-                mainCharacter = mainChar.transform;
-            }
-            else
-            {
-                mainCharacter = null;
-            }
+            focusObject = focusObj;
         }
 
         private void Update()
@@ -52,17 +45,21 @@ namespace CommonScript
             {
                 cam.transform.position = DataController.Instance.CurrentMap.transform.position +
                                          DataController.Instance.camInfo.camDis +
-                                         DialogueController.Instance.dialogueData.CamInfo.camDis +
+                                         // DialogueController.Instance.dialogueData.CamInfo.camDis +
                                          DataController.Instance.CamOffsetInfo.camDis;
             }
-
-            if (mainCharacter && viewType.Equals(CameraViewType.FollowCharacter))
+            else if (viewType.Equals(CameraViewType.FollowCharacter))
             {
-                cam.transform.position = mainCharacter.position + DataController.Instance.camInfo.camDis +
-                                         DialogueController.Instance.dialogueData.CamInfo.camDis +
+                cam.transform.position = focusObject.position +
+                                         DataController.Instance.camInfo.camDis +
+                                         // DialogueController.Instance.dialogueData.CamInfo.camDis +
                                          DataController.Instance.CamOffsetInfo.camDis;
             }
-
+            else if (viewType.Equals(CameraViewType.FocusObject))
+            {
+                cam.transform.position = focusObject.position +
+                                         DataController.Instance.CamOffsetInfo.camDis;
+            }
         }
     }
 }
