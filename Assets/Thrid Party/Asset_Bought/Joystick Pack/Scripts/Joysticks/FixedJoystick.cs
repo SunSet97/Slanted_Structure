@@ -9,17 +9,17 @@ public class FixedJoystick : Joystick
         background.gameObject.SetActive(false);
     }
     
-    public override void OnPointerDown(PointerEventData eventData)
+    public override void OnBeginDrag(PointerEventData eventData)
     {
         background.position = eventData.position;
         background.gameObject.SetActive(true);
-        base.OnPointerDown(eventData);
+        base.OnBeginDrag(eventData);
     }
     
-    public override void OnPointerUp(PointerEventData eventData)
+    public override void OnEndDrag(PointerEventData eventData)
     {
         background.gameObject.SetActive(false);
-        base.OnPointerUp(eventData);
+        base.OnEndDrag(eventData);
     }
     
     public override void OnDrag(PointerEventData eventData)

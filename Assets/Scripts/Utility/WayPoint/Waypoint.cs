@@ -24,7 +24,6 @@ namespace Utility.WayPoint
         }
     }
 
-    [ExecuteInEditMode]
     public class Waypoint : MonoBehaviour
     {
         private enum MoveDirection
@@ -34,7 +33,6 @@ namespace Utility.WayPoint
         }
 
         public List<Transform> waypoints;
-        
 
         [Tooltip("포인트 체크 가능 거리 설정입니다.")] public float checkingDist = 0.7f;
 

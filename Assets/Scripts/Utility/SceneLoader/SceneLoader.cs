@@ -37,7 +37,7 @@ namespace Utility.SceneLoader
         [SerializeField] private CanvasGroup sceneLoaderCanvasGroup;
         [SerializeField] private Image progressBar;
 
-        private UnityAction<Scene, LoadSceneMode> onSceneLoaded;
+        private UnityAction onSceneLoaded;
 
         private string loadSceneName;
 
@@ -46,10 +46,11 @@ namespace Utility.SceneLoader
             var sceneLoaderPrefab = Resources.Load<SceneLoader>("SceneLoader");
             return Instantiate(sceneLoaderPrefab);
         }
-
+        
         public void LoadScene(string sceneName, int idx = -1)
         {
             gameObject.SetActive(true);
+            Debug.Log("로드");
             SceneManager.sceneLoaded += LoadSceneEnd;
             loadSceneName = sceneName;
             StartCoroutine(Load(sceneName, idx));
@@ -60,10 +61,10 @@ namespace Utility.SceneLoader
             progressBar.fillAmount = 0f;
             yield return StartCoroutine(Fade(true));
 
-            AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
+            var op = SceneManager.LoadSceneAsync(sceneName);
             op.allowSceneActivation = false;
 
-            float timer = 0.0f;
+            var timer = 0.0f;
             while (!op.isDone)
             {
                 yield return null;
@@ -103,6 +104,8 @@ namespace Utility.SceneLoader
         {
             if (scene.name == loadSceneName)
             {
+                Debug.Log("로드 삭제");
+                onSceneLoaded?.Invoke();
                 SceneManager.sceneLoaded -= LoadSceneEnd;
                 gameObject.SetActive(false);
             }
@@ -110,14 +113,14 @@ namespace Utility.SceneLoader
 
         public void AddListener(UnityAction t)
         {
-            onSceneLoaded += (scene, loadSceneMode) => { t(); };
-            SceneManager.sceneLoaded += onSceneLoaded;
+            Debug.Log("Add Scene Load");
+            onSceneLoaded += t;
         }
 
         public void RemoveAllListener()
         {
-            SceneManager.sceneLoaded -= onSceneLoaded;
-            onSceneLoaded = (scene, loadSceneMode) => { };
+            Debug.Log("Remove Scene Load");
+            onSceneLoaded = () => { };
         }
 
         private IEnumerator Fade(bool isFadeIn)

@@ -54,7 +54,7 @@ namespace Utility.Preference
             else
             {
                 Instance = this;
-                DontDestroyOnLoad(gameObject.GetComponentInParent<Canvas>().gameObject);
+                // DontDestroyOnLoad(gameObject.GetComponentInParent<Canvas>().gameObject);
             }
         }
         
