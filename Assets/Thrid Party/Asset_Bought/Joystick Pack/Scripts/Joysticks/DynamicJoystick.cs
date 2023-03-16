@@ -18,7 +18,7 @@ public class DynamicJoystick : Joystick
         background.gameObject.SetActive(false);
     }
 
-    public override void OnPointerDown(PointerEventData eventData)
+    public override void OnBeginDrag(PointerEventData eventData)
     {
         // Debug.Log(eventData);
         // Debug.Log(ScreenPointToAnchoredPosition(eventData.position));
@@ -26,13 +26,13 @@ public class DynamicJoystick : Joystick
         // background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
         background.position = eventData.position;
         background.gameObject.SetActive(true);
-        base.OnPointerDown(eventData);
+        base.OnBeginDrag(eventData);
     }
 
-    public override void OnPointerUp(PointerEventData eventData)
+    public override void OnEndDrag(PointerEventData eventData)
     {
         background.gameObject.SetActive(false);
-        base.OnPointerUp(eventData);
+        base.OnEndDrag(eventData);
     }
 
     protected override void HandleInput(float magnitude, Vector2 normalised, Vector2 radius, Camera cam)

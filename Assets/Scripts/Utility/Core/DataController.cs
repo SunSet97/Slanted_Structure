@@ -35,7 +35,6 @@ namespace Utility.Core
         private MapData[] storyMaps;
         private CharacterManager mainChar;
 
-        private AssetBundle mapDB;
         internal AssetBundle DialogueDB;
 
         private UnityAction onLoadMap;
@@ -51,23 +50,22 @@ namespace Utility.Core
             else
             {
                 Instance = this;
-                DontDestroyOnLoad(Instance);
+                // DontDestroyOnLoad(Instance);
             }
         }
 
         private void Init()
         {
-            for (var index = 0; index < characters.Length; index++)
+            foreach (var character in characters)
             {
-                characters[index] = GameObject.Find(characters[index].who.ToString()).GetComponent<CharacterManager>();
-                characters[index].Init();
+                character.Init();
             }
 
             mapGenerate = GameObject.Find("MapGenerate").transform;
 
             InteractionObjects = new List<InteractionObject>();
 
-            AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/modulematerials");
+            AssetBundleMap.AddAssetBundle("module", $"{Application.dataPath}/AssetBundles/modulematerials");
 
             Cam = Camera.main;
             CamOffsetInfo = new CamInfo();
@@ -100,27 +98,13 @@ namespace Utility.Core
                 return storyMaps;
             }
 
-            if (mapDB != null)
-            {
-                mapDB.Unload(true);
-            }
-            mapDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
-            Debug.Log("Load Map");
-            if (curEp != desEp)
-            {
-                if (DialogueDB != null)
-                {
-                    DialogueDB.Unload(true);
-                }
+            AssetBundleMap.RemoveAssetBundle($"ep{curEp}/day{curDay}");
+            AssetBundleMap.AddAssetBundle($"ep{desEp}/day{desEp}", $"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
 
-                DialogueDB = AssetBundle.LoadFromFile($"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}");
-            }
+            AssetBundleMap.RemoveAssetBundle($"ep{curEp}");
+            AssetBundleMap.AddAssetBundle($"ep{desEp}", $"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}");
 
-            if (mapDB == null)
-            {
-                Debug.LogError("맵 어셋 번들 오류");
-            }
-
+            var mapDB = AssetBundleMap.GetAssetBundle($"ep{desEp}/day{desEp}");
             var mapDataObjects = mapDB.LoadAllAssets<GameObject>();
             var mapData = new MapData[mapDataObjects.Length];
             for (var i = 0; i < mapDataObjects.Length; i++)

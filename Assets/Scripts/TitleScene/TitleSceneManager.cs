@@ -21,7 +21,6 @@ namespace TitleScene
         {
             newStartButton.onClick.AddListener(() =>
             {
-                SceneLoader.Instance.LoadScene("Ingame_set");
 
                 SceneLoader.Instance.AddListener(() =>
                 {
@@ -33,12 +32,15 @@ namespace TitleScene
                     {
                         DataController.Instance.GameStart();
                     }
+                    SceneLoader.Instance.RemoveAllListener();
                 });
+                
+                SceneLoader.Instance.LoadScene("Ingame_set");
             });
             diaryButton.onClick.AddListener(() => { diaryPanel.SetActive(true); });
             diaryExitButton.onClick.AddListener(() => { diaryPanel.SetActive(false); });
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 SaveManager.LoadCover(i);
             }

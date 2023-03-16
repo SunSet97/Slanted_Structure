@@ -45,7 +45,7 @@ namespace Utility.Core
             else
             {
                 Instance = this;
-                DontDestroyOnLoad(Instance);
+                // DontDestroyOnLoad(Instance);
             }
         }
 

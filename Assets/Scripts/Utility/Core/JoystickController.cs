@@ -35,7 +35,7 @@ namespace Utility.Core
             else
             {
                 Instance = this;
-                DontDestroyOnLoad(Instance);
+                // DontDestroyOnLoad(Instance);
             }
         }
 
@@ -93,7 +93,7 @@ namespace Utility.Core
                 Joystick.transform.GetChild(0).gameObject.SetActive(false);
             }
 
-            Joystick.OnPointerUp();
+            Joystick.OnEndDrag();
             inputDegree = 0;
             inputDirection = Vector2.zero;
             Joystick.input = Vector2.zero;
@@ -122,7 +122,7 @@ namespace Utility.Core
                 Joystick.transform.GetChild(0).gameObject.SetActive(false);
             }
 
-            Joystick.OnPointerUp();
+            Joystick.OnEndDrag();
             inputDegree = 0;
             inputDirection = Vector2.zero;
             Joystick.input = Vector2.zero;

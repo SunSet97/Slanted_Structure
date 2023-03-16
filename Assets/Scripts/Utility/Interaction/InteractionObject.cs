@@ -348,10 +348,7 @@ namespace Utility.Interaction
                     jsonString = DialogueController.Instance.ConvertPathToJson(curTask.nextFile);
                     DialogueController.Instance.SetDialougueEndAction(() =>
                     {
-                        var endingType = (EndingType)curTask.order;
-                        EndingHelper.Instance.StartEnd(endingType);
-                        //Ennding 번호 - curTask.order
-
+                        EndingHelper.Instance.StartEnd(curTask.order);
                     });
                     DialogueController.Instance.StartConversation(jsonString);
                     break;
@@ -678,9 +675,9 @@ namespace Utility.Interaction
                     }
                     case TaskContentType.TheEnd:
                         //게임 엔딩
-                        if (Enum.TryParse(currentTask.nextFile, out EndingType endingType))
+                        if (int.TryParse(currentTask.nextFile, out int endingIndex))
                         {
-                            EndingHelper.Instance.StartEnd(endingType);
+                            EndingHelper.Instance.StartEnd(endingIndex);
                         }
                         else
                         {

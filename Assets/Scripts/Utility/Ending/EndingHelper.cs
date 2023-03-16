@@ -1,23 +1,15 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Utility.Ending
 {
-    public enum EndingType
-    {
-        None = 0,
-        Normal = 1,
-        Bad = 2,
-        Special = 3,
-        Happy = 4
-    }
-    
     [Serializable]
     public struct Ending
     {
         public Sprite endingSprite;
-        public EndingType endingType;
+        public int endingIndex;
     }
     
     public class EndingHelper : MonoBehaviour
@@ -39,8 +31,6 @@ namespace Utility.Ending
                     {
                         _instance = Create();
                     }
-
-                    DontDestroyOnLoad(_instance);
                 }
 
                 return _instance;
@@ -48,7 +38,7 @@ namespace Utility.Ending
         }
 
         [SerializeField] private Button button;
-        [SerializeField] private Image image;
+        [FormerlySerializedAs("image")] [SerializeField] private Image endingImage;
         [SerializeField] private Ending[] endings;
         
         private static EndingHelper Create()
@@ -61,17 +51,16 @@ namespace Utility.Ending
         {
             button.onClick.AddListener(() =>
             {
-                // SceneLoader.SceneLoader.Instance.LoadScene("TitleScene");
-                // 홈버튼이었는지 맵 초기화였는지 기억이 안남.
-                
+                SceneLoader.SceneLoader.Instance.LoadScene("TitleScene");
             });
         }
 
 
-        public void StartEnd(EndingType endingType)
+        public void StartEnd(int endingIndex)
         {
-            var ending = Array.Find(endings, item => item.endingType == endingType);
-            image.sprite = ending.endingSprite;
+            gameObject.SetActive(true);
+            var ending = Array.Find(endings, item => item.endingIndex == endingIndex);
+            endingImage.sprite = ending.endingSprite;
         }
     }
 }
