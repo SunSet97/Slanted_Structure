@@ -249,7 +249,7 @@ namespace Utility.Core
 
 
             var cameraMoving = Cam.GetComponent<CameraMoving>();
-            cameraMoving.Initialize();
+            cameraMoving.Initialize(CurrentMap.cameraViewType, GetCharacter(Character.Main).transform);
 
             RenderSettings.skybox = CurrentMap.skyboxSetting;
             DynamicGI.UpdateEnvironment();

@@ -12,9 +12,6 @@ namespace Data
         
         public Dialogue[] dialogues;
         
-        [NonSerialized]
-        public CamInfo CamInfo;
-        
         public UnityAction<int> ChooseAction;
         public UnityAction DialogueEndAction;
         
@@ -22,7 +19,6 @@ namespace Data
         {
             dialogues = Array.Empty<Dialogue>();
             dialogueIdx = 0;
-            CamInfo = new CamInfo();
 
             ChooseAction = null;
             DialogueEndAction = null;
@@ -31,19 +27,6 @@ namespace Data
         public void Init(string json)
         {
             dialogues = JsontoString.FromJsonArray<Dialogue>(json);
-            
-            int peekIdx = dialogues.Length - 1;
-            if (dialogues[peekIdx].name == "camera")
-            {
-                int[] camPos = Array.ConvertAll(dialogues[peekIdx].anim_name.Split(','), int.Parse);
-                int[] camRot = Array.ConvertAll(dialogues[peekIdx].contents.Split(','), int.Parse);
-                CamInfo.camDis = new Vector3(camPos[0], camPos[1], camPos[2]);
-                CamInfo.camRot = new Vector3(camRot[0], camRot[1], camRot[2]);
-            }
-            dialogues = Array.FindAll(dialogues, item =>
-                item.name != "camera"
-            );
-            
             dialogueIdx = 0;
         }
 
@@ -53,7 +36,6 @@ namespace Data
             
             dialogues = Array.Empty<Dialogue>();
             dialogueIdx = 0;
-            CamInfo = new CamInfo();
             
             ChooseAction = null;
             DialogueEndAction = null;

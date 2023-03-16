@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
-using Play;
+using Data.GamePlay;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility.Core;
@@ -10,27 +9,8 @@ using Random = UnityEngine.Random;
 
 namespace Episode.EP0.SpeatTutorial.Backstreet
 {
-    public class SpeatTutorialBackstreetManager : MonoBehaviour, IGamePlayable
+    public class SpeatTutorialBackstreetManager : Game
     {
-        public bool IsPlay
-        {
-            get => isPlay;
-            set
-            {
-                if (!value)
-                {
-                    EndPlay();
-                }
-                else
-                {
-                    Play();
-                }
-                isPlay = value;
-            }
-        }
-
-        public Action OnEndPlay { get; set; }
-
         [Header("#UI")] [SerializeField] private Slider speatSlider;
         [SerializeField] private Text remainingDistanceText;
         [SerializeField] private Slider pimpSlider;
@@ -55,7 +35,6 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
         private bool abilityEnable;
         private GameObject[][] patterns;
         private AssetBundle obstacleAssetBundle;
-        private bool isPlay;
         
         private static readonly int Speed = Animator.StringToHash("Speed");
 
@@ -100,22 +79,21 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
             abilityEnable = true;
         }
 
-        public void Play()
+        public override void Play()
         {
+            base.Play();
             Debug.Log("플레이!");
-            isPlay = true;
             StartCoroutine(WaitPimp());
             StartCoroutine(StartRunGame());
         }
 
-        public void EndPlay()
+        public override void EndPlay()
         {
+            base.EndPlay();
             var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
             mainCharacter.jumpForce = originJumpForce;
             mainCharacter.CharacterAnimator.SetFloat(Speed, 0f);
-            isPlay = false;
             StopAllCoroutines();
-            OnEndPlay?.Invoke();
         }
 
         private IEnumerator WaitPimp()

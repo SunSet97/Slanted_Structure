@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections;
-using Play;
+﻿using System.Collections;
+using Data.GamePlay;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility.Core;
@@ -8,16 +7,13 @@ using Random = UnityEngine.Random;
 
 namespace Episode.EP1.MarketGame.IceCream
 {
-    public class IceCreamGameManager : MonoBehaviour, IGamePlayable
+    public class IceCreamGameManager : Game
     {
         private enum MoveDir
         {
             Left = 0,
             Right = 1
         }
-
-        public bool IsPlay { get; set; }
-        public Action OnEndPlay { get; set; }
 
         [SerializeField] private GameObject iceCreamPanel;
     
@@ -42,11 +38,11 @@ namespace Episode.EP1.MarketGame.IceCream
         private int successCount;
         private Vector3 originPos;
 
-        public void Play()
+        public override void Play()
         {
+            base.Play();
             JoystickController.Instance.StopSaveLoadJoyStick(true);
             iceCreamPanel.SetActive(true);
-            IsPlay = true;
 
             moveDir = (MoveDir) Random.Range(0, 2);
             iceCreamClicker.enabled = false;
@@ -87,10 +83,9 @@ namespace Episode.EP1.MarketGame.IceCream
             StartCoroutine(StartPattern());
         }
 
-        public void EndPlay()
+        public override void EndPlay()
         {
-            OnEndPlay?.Invoke();
-            IsPlay = false;
+            base.EndPlay();
             iceCreamPanel.SetActive(false);
             JoystickController.Instance.StopSaveLoadJoyStick(false);
         }

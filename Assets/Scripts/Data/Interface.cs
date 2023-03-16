@@ -23,31 +23,6 @@ namespace Move
 }
 
 
-namespace Play
-{
-    public interface IGamePlayable
-    {
-        bool IsPlay { get; set; }
-        Action OnEndPlay { get; set; }
-
-        void Play();
-        void EndPlay();
-    }
-    [Serializable]
-    public struct PlayableList
-    {
-        public PlayableObj[] playableObjs;
-    }
-
-    [Serializable]
-    public struct PlayableObj
-    {
-        public GameObject gameObject;
-        public bool isPlay;
-    }
-}
-
-
 public interface IClickable
 {
     bool IsClickEnable { get; set; }

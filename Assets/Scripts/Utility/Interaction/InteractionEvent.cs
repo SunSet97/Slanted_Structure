@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using CommonScript;
+using Data.GamePlay;
 using Move;
-using Play;
 using UnityEngine;
 using UnityEngine.Events;
 using Utility.Property;
@@ -183,8 +183,15 @@ namespace Utility.Interaction
         {
             foreach (var t in playableList.playableObjs)
             {
-                Debug.Log($"Play Event - {t.gameObject}: {t.isPlay} ");
-                t.gameObject.GetComponent<IGamePlayable>().IsPlay = t.isPlay;
+                Debug.Log($"Play Event - {t.gameObject}, {t.game}: {t.isPlay} ");
+                if (t.isPlay)
+                {
+                    t.game.Play();
+                }
+                else
+                {
+                    t.game.EndPlay();
+                }
             }
         }
 

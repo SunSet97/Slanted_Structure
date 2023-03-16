@@ -34,9 +34,7 @@ namespace Utility.WayPoint
         }
 
         public List<Transform> waypoints;
-
-        [Tooltip("웨이 포인트의 전진 방향을 설정해주세요.")] [SerializeField]
-        private MoveDirection moveDirSet;
+        
 
         [Tooltip("포인트 체크 가능 거리 설정입니다.")] public float checkingDist = 0.7f;
 
@@ -44,11 +42,14 @@ namespace Utility.WayPoint
 
         [Header("디버그용")] [SerializeField] private WaypointEdge[] waypointEdges;
 
+        private MoveDirection moveDirSet;
         private bool isInVertex;
         private MoveDirection movedDir;
 
         private void Start()
         {
+            moveDirSet = DataController.Instance.CurrentMap.rightIsForward ? MoveDirection.Right : MoveDirection.Left;
+            
             waypointEdges = new WaypointEdge[waypoints.Count - 1];
             for (var index = 0; index < waypoints.Count - 1; index++)
             {

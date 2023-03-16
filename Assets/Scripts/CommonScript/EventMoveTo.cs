@@ -42,12 +42,11 @@ namespace CommonScript
             
             var waitForFixedUpdate = new WaitForFixedUpdate();
             character.CharacterAnimator.SetFloat(Speed, 1f);
-            
             var t = 0f;
             while (t <= 1f)
             {
                 t += Time.fixedDeltaTime / sec * moveSpeed;
-                character.transform.position += Vector3.Lerp(startPoint.position, endPoint.position, t);
+                character.transform.position = Vector3.Lerp(startPoint.position, endPoint.position, t);
                 yield return waitForFixedUpdate;
             }
             character.PutDownCharacter();
