@@ -16,24 +16,25 @@ public class HamburgerStoreManager : MonoBehaviour
     public InteractionObject partTimeJob;
     public InteractionObject sofa;
 
-    void Start()
+    private void Start()
     {
         InitialSetting();
     }
 
     private void InitialSetting()
     {
+        // 전부 타임라인으로 해도 되겠는뎁쇼
         partTimeJob.SetInteractionEndEvent(() => { sofa.enabled = true; });
 
         sofa.SetInteractionStartEvent(() =>
         {
-            CharacterManager character = DataController.Instance.GetCharacter(Character.Main);
+            var character = DataController.Instance.GetCharacter(Character.Main);
             character.PickUpCharacter();
             character.transform.position = sofa.transform.GetChild(0).position;
             character.transform.rotation = sofa.transform.GetChild(0).rotation;
             character.CharacterAnimator.SetBool("Seat", true);
         });
-
+        
         sofa.SetInteractionEndEvent(() =>
         {
             JoystickController.Instance.InitializeJoyStick(false);

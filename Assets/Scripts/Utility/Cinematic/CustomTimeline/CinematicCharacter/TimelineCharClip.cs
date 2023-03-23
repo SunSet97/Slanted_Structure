@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-namespace Utility.Cinematic.CustomTimeline
+namespace Utility.Cinematic.CustomTimeline.CinematicCharacter
 {
     [Serializable]
     public class TimelineCharClip : PlayableAsset, ITimelineClipAsset

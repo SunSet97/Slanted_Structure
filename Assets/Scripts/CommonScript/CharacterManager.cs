@@ -215,70 +215,72 @@ namespace CommonScript
         public void MoveCharacter(JoystickInputMethod joystickInputMethod, bool isJoystickInputUse)
         {
             // 캐릭터를 이 함수로 조종할 수 있을때 (조이스틱 외 미포함)
-            if (IsMove)
+            if (!IsMove)
             {
-                if (isJoystickInputUse)
-                {
-                    var characterForward2D =
-                        new Vector2(Vector3.Dot(transform.forward, DataController.Instance.Cam.transform.right),
-                            Vector3.Dot(transform.forward, DataController.Instance.Cam.transform.forward));
-
-                    var joystickDir = new Vector2(JoystickController.Instance.inputDirection.x,
-                        JoystickController.Instance.inputDirection.y);
-
-                    var joystickDeltaAngle = Vector2.SignedAngle(joystickDir, characterForward2D);
-
-                    if (joystickInputMethod == JoystickInputMethod.OneDirection)
-                    {
-                        Move2DSide(joystickDir.x);
-                    }
-                    else if (joystickInputMethod == JoystickInputMethod.AllDirection)
-                    {
-                        QuarterView(joystickDeltaAngle);
-                    }
-                    else if (joystickInputMethod == JoystickInputMethod.Waypoint)
-                    {
-                        if (Mathf.Abs(joystickDeltaAngle) > 0)
-                        {
-                            transform.Rotate(Vector3.up, joystickDeltaAngle);
-                        }
-                        
-                        DataController.Instance.CurrentMap.waypoint.JoystickUpdate();
-                        
-                        // CharacterAnimator.SetFloat(DirectionHash, joystickAngle);
-                    }
-                    else if (joystickInputMethod == JoystickInputMethod.Other)
-                    {
-                        if (Mathf.Abs(joystickDeltaAngle) > 0)
-                        {
-                            transform.Rotate(Vector3.up, joystickDeltaAngle);
-                        }
-                        
-                        // CharacterAnimator.SetFloat(DirectionHash, joystickAngle);
-                    }
-
-                    CharacterAnimator.SetFloat(SpeedHash, JoystickController.Instance.inputDegree);
-                }
-
-                if (UseGravity && !CharacterController.isGrounded)
-                {
-                    MoveVerical.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
-                }
-                else if (CharacterController.isGrounded)
-                {
-                    if (MoveVerical.y <= 0)
-                    {
-                        MoveVerical = Vector3.zero;
-                    }
-
-                    if (JoystickController.Instance.InputJump)
-                    {
-                        Jump();
-                    }
-                }
-
-                CharacterController.Move((MoveHorizontal + MoveVerical) * Time.fixedDeltaTime);
+                return;
             }
+            
+            if (isJoystickInputUse)
+            {
+                var characterForward2D =
+                    new Vector2(Vector3.Dot(transform.forward, DataController.Instance.Cam.transform.right),
+                        Vector3.Dot(transform.forward, DataController.Instance.Cam.transform.forward));
+
+                var joystickDir = new Vector2(JoystickController.Instance.inputDirection.x,
+                    JoystickController.Instance.inputDirection.y);
+
+                var joystickDeltaAngle = Vector2.SignedAngle(joystickDir, characterForward2D);
+
+                if (joystickInputMethod == JoystickInputMethod.OneDirection)
+                {
+                    Move2DSide(joystickDir.x);
+                }
+                else if (joystickInputMethod == JoystickInputMethod.AllDirection)
+                {
+                    QuarterView(joystickDeltaAngle);
+                }
+                else if (joystickInputMethod == JoystickInputMethod.Waypoint)
+                {
+                    if (Mathf.Abs(joystickDeltaAngle) > 0)
+                    {
+                        transform.Rotate(Vector3.up, joystickDeltaAngle);
+                    }
+                        
+                    DataController.Instance.CurrentMap.waypoint.JoystickUpdate();
+                        
+                    // CharacterAnimator.SetFloat(DirectionHash, joystickAngle);
+                }
+                else if (joystickInputMethod == JoystickInputMethod.Other)
+                {
+                    if (Mathf.Abs(joystickDeltaAngle) > 0)
+                    {
+                        transform.Rotate(Vector3.up, joystickDeltaAngle);
+                    }
+                        
+                    // CharacterAnimator.SetFloat(DirectionHash, joystickAngle);
+                }
+
+                CharacterAnimator.SetFloat(SpeedHash, JoystickController.Instance.inputDegree);
+            }
+
+            if (UseGravity && !CharacterController.isGrounded)
+            {
+                MoveVerical.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
+            }
+            else if (CharacterController.isGrounded)
+            {
+                if (MoveVerical.y <= 0)
+                {
+                    MoveVerical = Vector3.zero;
+                }
+
+                if (JoystickController.Instance.InputJump)
+                {
+                    Jump();
+                }
+            }
+
+            CharacterController.Move((MoveHorizontal + MoveVerical) * Time.fixedDeltaTime);
         }
 
         public void FollowMainCharacter(JoystickInputMethod joystickInputMethod)
@@ -352,12 +354,13 @@ namespace CommonScript
 
         private void EmotionAnimationSetting()
         {
+            CharacterAnimator.SetInteger(EmotionHash, (int)Emotion);
+            
             if (faceExpression.Length <= (int)Emotion || Emotion == Expression.None)
             {
                 return;
             }
 
-            CharacterAnimator.SetInteger(EmotionHash, (int)Emotion);
             skinnedMesh.materials[1].SetTexture(MainTex, faceExpression[(int)Emotion]);
         }
 
