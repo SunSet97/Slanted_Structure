@@ -179,13 +179,23 @@ namespace Utility.Core
             {
                 inputDirection.Set(Joystick.Horizontal, 0);
                 inputDegree = Mathf.Abs(Joystick.Horizontal);
-                InputJump = Joystick.Vertical > 0.5f;
-            }
+                if(Mathf.Approximately(inputDegree, 0f)){
+                    return;
+                }
+                var angle = (-1 * (Vector2.Angle(Vector2.up, new Vector2(Joystick.Horizontal, Joystick.Vertical)) - 90f));
+
+                InputJump = angle >= 30f;
+            }   
             else if (method.Equals(CustomEnum.JoystickInputMethod.Waypoint))
             {
                 //inputDirection = changedDir;
                 inputDegree = Mathf.Abs(Joystick.Horizontal);
-                InputJump = Joystick.Vertical > 0.5f;
+                if(Mathf.Approximately(inputDegree, 0f)){
+                    return;
+                }
+                var angle = (-1 * (Vector2.Angle(Vector2.up, new Vector2(Joystick.Horizontal, Joystick.Vertical)) - 90f));
+
+                InputJump = angle >= 30f;
             }
             else
             {

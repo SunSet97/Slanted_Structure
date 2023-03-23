@@ -43,8 +43,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 
-  interactions: []
+  id: 3124142
+  interactions:
+  - jsonFile: {fileID: 4900000, guid: 40dcc38d2e4ca4240b3dbb0873c70a01, type: 3}
+    interactionPlayType: 2
+    gamePlayableGame: {fileID: 0}
+    dialogueData:
+      dialogueIdx: 0
+      dialogues: []
+    animator: {fileID: 0}
+    interactionStartActions:
+      interactionEvents: []
+    interactionEndActions:
+      interactionEvents: []
+    interactionMethod: 3
+    isViewChange: 0
+    interactionCamera:
+      camDis: {x: 0, y: 0, z: 0}
+      camRot: {x: 0, y: 0, z: 0}
+    timelines: []
+    cinematics: []
+    inGames: []
+    isLoop: 0
+    isContinue: 0
+    serializedInteractionData:
+      id: 0
+      isInteractable: 1
+      isInteracted: 0
+    debugTaskData: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -181,6 +207,8 @@ MonoBehaviour:
   time: 12:00
   method: 1
   nextMapcode: 203130
+  rightIsForward: 0
+  waypoint: {fileID: 0}
   map: {fileID: 6432171025233255367}
   ui: {fileID: 6432171024083627490}
   skyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
@@ -330,7 +358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTrigger: 0
+  isTrigger: 1
   nextSelectMapcode: 203130
 --- !u!1 &5772984942624331488
 GameObject:
@@ -558,6 +586,11 @@ PrefabInstance:
       propertyPath: interactionObject
       value: 
       objectReference: {fileID: 5888642759960880677}
+    - target: {fileID: 5385500836903059132, guid: f68897aeae0c05a4f8edb73c385bc8bd,
+        type: 3}
+      propertyPath: useMark
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6149318734316858801, guid: f68897aeae0c05a4f8edb73c385bc8bd,
         type: 3}
       propertyPath: m_Name
@@ -920,6 +953,17 @@ PrefabInstance:
       propertyPath: useExclamationMark
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5385500836903059132, guid: f68897aeae0c05a4f8edb73c385bc8bd,
+        type: 3}
+      propertyPath: useMark
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5385500836903059132, guid: f68897aeae0c05a4f8edb73c385bc8bd,
+        type: 3}
+      propertyPath: markPrefab
+      value: 
+      objectReference: {fileID: 3272743960733024790, guid: cdc85a3c7bf6b294c9fcca40d2ff00de,
+        type: 3}
     - target: {fileID: 6149318734316858801, guid: f68897aeae0c05a4f8edb73c385bc8bd,
         type: 3}
       propertyPath: m_Name

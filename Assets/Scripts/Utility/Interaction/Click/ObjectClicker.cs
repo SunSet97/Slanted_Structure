@@ -88,12 +88,11 @@ namespace Utility.Interaction.Click
 
             var rect = JoystickController.Instance.Joystick.GetComponent<RectTransform>();
 
-            if (Input.mousePosition.x / Screen.currentResolution.width <= rect.anchorMax.x
-                && Input.mousePosition.y / Screen.currentResolution.height <= rect.anchorMax.y)
-            {
-                return;
-            }
-            
+            // if (Input.mousePosition.x / Screen.currentResolution.width <= rect.anchorMax.x
+            //     && Input.mousePosition.y / Screen.currentResolution.height <= rect.anchorMax.y)
+            // {
+            //     return;
+            // }
             var ray = DataController.Instance.Cam.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 20f, Color.red, 5f);
             var hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
