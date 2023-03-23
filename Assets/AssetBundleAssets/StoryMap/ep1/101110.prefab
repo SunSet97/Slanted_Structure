@@ -74,11 +74,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 
+  id: trftfv
   interactions:
   - jsonFile: {fileID: 4900000, guid: c04797a6b95aa754fbffa83c35c12561, type: 3}
     interactionPlayType: 2
     gamePlayableGame: {fileID: 0}
+    game: {fileID: 0}
     dialogueData:
       dialogueIdx: 0
       dialogues:
@@ -161,9 +162,41 @@ MonoBehaviour:
     interactionStartActions:
       interactionEvents: []
     interactionEndActions:
-      interactionEvents: []
+      interactionEvents:
+      - eventType: 2
+        clearBox: {fileID: 0}
+        activeObjs:
+          actives:
+          - activeObject: {fileID: 8463249865370951776}
+            activeSelf: 1
+        movables:
+          movables: []
+        playableList:
+          playableObjs: []
+        interactObjs:
+          interacts: []
+        interactionObjs:
+          interactions: []
+      - eventType: 5
+        clearBox: {fileID: 0}
+        activeObjs:
+          actives:
+          - activeObject: {fileID: 8463249865370951776}
+            activeSelf: 1
+        movables:
+          movables: []
+        playableList:
+          playableObjs: []
+        interactObjs:
+          interacts:
+          - interactObj: {fileID: 7684895251071856094}
+            interactable: 1
+            index: 0
+        interactionObjs:
+          interactions: []
     interactionMethod: 3
     isViewChange: 0
+    isFocusObject: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
@@ -172,6 +205,9 @@ MonoBehaviour:
     inGames: []
     isLoop: 0
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
@@ -285,7 +321,7 @@ GameObject:
   - component: {fileID: 4663496884024641402}
   - component: {fileID: 8025885332110070052}
   - component: {fileID: 2758083508867504917}
-  - component: {fileID: 714606672460204901}
+  - component: {fileID: 7682930955518478661}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -303,7 +339,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 8432433583622132316}
   m_Father: {fileID: 4996712655644327898}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -333,7 +370,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.0790651, y: 3.3036036, z: 37.9217}
   m_Center: {x: -4.56, y: 1.6698072, z: 1.9796677}
---- !u!65 &714606672460204901
+--- !u!65 &7682930955518478661
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -345,7 +382,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 5.39, y: 3.3036036, z: 1}
-  m_Center: {x: -1.67, y: 1.6698072, z: 20.51}
+  m_Center: {x: -1.67, y: 1.6698072, z: 4.15}
 --- !u!1 &4725764577095104772
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,8 +912,26 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 6
+  m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2188931250924561471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6067357973837269894}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  outlineWidth: 8
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!114 &7684895251071856094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -894,6 +949,7 @@ MonoBehaviour:
   - jsonFile: {fileID: 4900000, guid: 803b77ea70914f1478281d6083e9beeb, type: 3}
     interactionPlayType: 2
     gamePlayableGame: {fileID: 0}
+    game: {fileID: 0}
     dialogueData:
       dialogueIdx: 0
       dialogues:
@@ -910,6 +966,7 @@ MonoBehaviour:
       interactionEvents: []
     interactionMethod: 0
     isViewChange: 0
+    isFocusObject: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
@@ -918,14 +975,17 @@ MonoBehaviour:
     inGames: []
     isLoop: 1
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
-      isInteractable: 1
+      isInteractable: 0
       isInteracted: 0
     debugTaskData: []
-  useOutline: 0
+  useOutline: 1
   color: 2
-  outline: {fileID: 0}
+  outline: {fileID: 2188931250924561471}
   useGizmos: 0
   gizmosRadius: 5
   gizmosColor: {r: 0, g: 0, b: 0, a: 0}
@@ -1019,7 +1079,7 @@ MonoBehaviour:
   map: {fileID: 4996712655644327899}
   ui: {fileID: 0}
   skyboxSetting: {fileID: 2100000, guid: 5a6e6064c7a621e48b9ea96033587994, type: 2}
-  isOrthographic: 1
+  isOrthographic: 0
   orthographicSize: 4.24
   useFadeOut: 0
   fadeOutSec: 1
@@ -1036,7 +1096,7 @@ MonoBehaviour:
     isMain: 1
     isFollow: 0
   cameraViewType: 0
-  camDis: {x: -2, y: 4.5, z: 5}
+  camDis: {x: -3, y: 4.5, z: 3}
   camRot: {x: 25.431, y: 162.844, z: 2}
   isJoystickInputUse: 1
   isJoystickNone: 0
@@ -1098,7 +1158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTrigger: 0
+  isTrigger: 1
   nextSelectMapcode: 102010
 --- !u!1 &7684895251594130212
 GameObject:
@@ -1193,6 +1253,115 @@ Transform:
   m_Father: {fileID: 7684895251809826837}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &847032829477714641
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8086447680313912262}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 99.99999, y: 277.5095, z: 99.99999}
+  m_Center: {x: -0.000011444091, y: 138.75475, z: 0.000007629394}
+--- !u!1 &9041901547011922172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8432433583622132316}
+  - component: {fileID: 7588958047396353717}
+  - component: {fileID: 5904271689090658845}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8432433583622132316
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9041901547011922172}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1.63}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4663496884024641402}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7588958047396353717
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9041901547011922172}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.39, y: 3.3036036, z: 1}
+  m_Center: {x: -1.67, y: 1.6698072, z: 4.15}
+--- !u!114 &5904271689090658845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9041901547011922172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 5153
+  interactions:
+  - jsonFile: {fileID: 4900000, guid: 8efc9b39f8b548e46be5599bf902637a, type: 3}
+    interactionPlayType: 2
+    gamePlayableGame: {fileID: 0}
+    game: {fileID: 0}
+    dialogueData:
+      dialogueIdx: 0
+      dialogues: []
+    animator: {fileID: 0}
+    interactionStartActions:
+      interactionEvents: []
+    interactionEndActions:
+      interactionEvents: []
+    interactionMethod: 1
+    isViewChange: 0
+    isFocusObject: 0
+    interactionCamera:
+      camDis: {x: 0, y: 0, z: 0}
+      camRot: {x: 0, y: 0, z: 0}
+    timelines: []
+    cinematics: []
+    inGames: []
+    isLoop: 1
+    isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
+    serializedInteractionData:
+      id: 0
+      isInteractable: 1
+      isInteracted: 0
+    debugTaskData: []
+  useOutline: 0
+  color: 0
+  outline: {fileID: 0}
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1001 &17272578682003348
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6731,13 +6900,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: Interactable Collider
       objectReference: {fileID: 0}
+    - target: {fileID: 6149318734316858801, guid: f68897aeae0c05a4f8edb73c385bc8bd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7506875957148119002, guid: f68897aeae0c05a4f8edb73c385bc8bd,
         type: 3}
       propertyPath: m_Radius
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f68897aeae0c05a4f8edb73c385bc8bd, type: 3}
+--- !u!1 &8463249865370951776 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6149318734316858801, guid: f68897aeae0c05a4f8edb73c385bc8bd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2316332519782518225}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2360797682860448551
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16540,8 +16720,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5352122207173504081, guid: b538e071042087045835f475a1ed5d55,
+        type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352122207173504081, guid: b538e071042087045835f475a1ed5d55,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6065028810704909218, guid: b538e071042087045835f475a1ed5d55,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6065028810704909218, guid: b538e071042087045835f475a1ed5d55,
+        type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b538e071042087045835f475a1ed5d55, type: 3}
+--- !u!1 &8086447680313912262 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3850356669001821949, guid: b538e071042087045835f475a1ed5d55,
+    type: 3}
+  m_PrefabInstance: {fileID: 4996712655798175035}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8313848286749605861 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3906691635647331038, guid: b538e071042087045835f475a1ed5d55,
@@ -24638,15 +24844,15 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 1190419754171831142, guid: 20805600f5162424bba5e20dc49a4900, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 20805600f5162424bba5e20dc49a4900, type: 3}
---- !u!4 &7091142148751538581 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 634716954335892557, guid: 20805600f5162424bba5e20dc49a4900,
-    type: 3}
-  m_PrefabInstance: {fileID: 7684895251071856088}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6067357973837269894 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4509702389007984222, guid: 20805600f5162424bba5e20dc49a4900,
+    type: 3}
+  m_PrefabInstance: {fileID: 7684895251071856088}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7091142148751538581 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 634716954335892557, guid: 20805600f5162424bba5e20dc49a4900,
     type: 3}
   m_PrefabInstance: {fileID: 7684895251071856088}
   m_PrefabAsset: {fileID: 0}
