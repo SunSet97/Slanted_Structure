@@ -2,11 +2,12 @@
 using Data;
 using UnityEngine;
 using UnityEngine.Playables;
+using Utility.Core;
 
-namespace Utility.Cinematic.CustomTimeline
+namespace Utility.Cinematic.CustomTimeline.Character
 {
     [Serializable]
-    public class TimelineCharBehavior : PlayableBehaviour
+    public class CharBehavior : PlayableBehaviour
     {
         //[SerializeField] private CustomEnum.Character who;
 
@@ -42,9 +43,10 @@ namespace Utility.Cinematic.CustomTimeline
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
             base.ProcessFrame(playable, info, playerData);
-            var cin_character = playerData as CinematicCharacter;
-            cin_character.EmotionAnimationSetting((int)expression);
-            cin_character.ExpressionSetting(expression);
+            var cinCharacter = ((CharacterBindingHelper)playerData).who;
+
+            var character = DataController.Instance.GetCharacter(cinCharacter);
+            character.Emotion = expression;
         }
     
         #endregion

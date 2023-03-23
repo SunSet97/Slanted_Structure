@@ -246,7 +246,7 @@ namespace Utility.Core
 
             foreach (var character in characters)
             {
-                character.UseJoystickCharacter();
+                character.PutDownCharacter();
             }
         }
 
