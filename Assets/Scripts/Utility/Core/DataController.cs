@@ -90,8 +90,8 @@ namespace Utility.Core
             var curDay = int.Parse(mapCode.Substring(1, 2));
             var desDay = int.Parse(desMapCode.Substring(1, 2));
 
-            Debug.Log("Episode:  " + curEp + " : " + desEp);
-            Debug.Log("Day:   " + curDay + " : " + desDay);
+            Debug.Log($"Cur ep: {curEp}, day: {curDay}");
+            Debug.Log($"Des ep: {desEp}, day: {desDay}");
             if (curEp == desEp && curDay == desDay)
             {
                 Debug.Log("이미 있음");
@@ -99,12 +99,15 @@ namespace Utility.Core
             }
 
             AssetBundleMap.RemoveAssetBundle($"ep{curEp}/day{curDay}");
-            AssetBundleMap.AddAssetBundle($"ep{desEp}/day{desEp}", $"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
+            AssetBundleMap.AddAssetBundle($"ep{desEp}/day{desDay}", $"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
 
-            AssetBundleMap.RemoveAssetBundle($"ep{curEp}");
-            AssetBundleMap.AddAssetBundle($"ep{desEp}", $"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}");
+            if (curEp != desEp)
+            {
+                AssetBundleMap.RemoveAssetBundle($"ep{curEp}");
+                AssetBundleMap.AddAssetBundle($"ep{desEp}", $"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}");
+            }
 
-            var mapDB = AssetBundleMap.GetAssetBundle($"ep{desEp}/day{desEp}");
+            var mapDB = AssetBundleMap.GetAssetBundle($"ep{desEp}/day{desDay}");
             var mapDataObjects = mapDB.LoadAllAssets<GameObject>();
             var mapData = new MapData[mapDataObjects.Length];
             for (var i = 0; i < mapDataObjects.Length; i++)
@@ -233,7 +236,9 @@ namespace Utility.Core
 
 
             var cameraMoving = Cam.GetComponent<CameraMoving>();
-            cameraMoving.Initialize(CurrentMap.cameraViewType, GetCharacter(Character.Main).transform);
+            Debug.Log(cameraMoving);
+            Debug.Log(CurrentMap);
+            cameraMoving.Initialize(CurrentMap.cameraViewType, GetCharacter(Character.Main)?.transform);
 
             RenderSettings.skybox = CurrentMap.skyboxSetting;
             DynamicGI.UpdateEnvironment();

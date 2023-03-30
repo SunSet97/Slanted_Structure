@@ -13,7 +13,10 @@ namespace Utility.Core
             {
                 return;
             }
-            AssetBundleDB.Add(key, AssetBundle.LoadFromFile(filePath));
+
+            var assetBundle = AssetBundle.LoadFromFile(filePath);
+            Debug.Log($"Add AssetBundle: {assetBundle}");
+            AssetBundleDB.Add(key, assetBundle);
         }
 
         public static void RemoveAssetBundle(string key)

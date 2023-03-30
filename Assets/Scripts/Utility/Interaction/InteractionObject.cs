@@ -463,7 +463,6 @@ namespace Utility.Interaction
                     var timelineAsset = interaction.timelines[0].playableAsset as TimelineAsset;
                     if (timelineAsset != null)
                     {
-                        DataController.Instance.GetCharacter(Character.Main).PickUpCharacter();
                         var trackAssets = timelineAsset.GetOutputTracks();
                         foreach (var trackAsset in trackAssets)
                         {
@@ -480,7 +479,7 @@ namespace Utility.Interaction
                     }
 
                     PlayUIController.Instance.SetMenuActive(false);
-                    DataController.Instance.GetCharacter(Character.Main).PickUpCharacter();
+                    DataController.Instance.GetCharacter(Character.Main)?.PickUpCharacter();
                     JoystickController.Instance.StopSaveLoadJoyStick(true);
                     foreach (var interactionInGame in interaction.inGames)
                     {
@@ -504,7 +503,7 @@ namespace Utility.Interaction
                     StartCoroutine(WaitTimeline(waitUntil, () =>
                     {
                         JoystickController.Instance.StopSaveLoadJoyStick(false);
-                        DataController.Instance.GetCharacter(Character.Main).UseJoystickCharacter();
+                        DataController.Instance.GetCharacter(Character.Main)?.UseJoystickCharacter();
                         PlayUIController.Instance.SetMenuActive(true);
                         Debug.Log("타임라인 끝");
 
@@ -712,7 +711,7 @@ namespace Utility.Interaction
 
                         interaction.timelines[0].Play();
                         JoystickController.Instance.StopSaveLoadJoyStick(true);
-                        DataController.Instance.GetCharacter(Character.Main).PickUpCharacter();
+                        DataController.Instance.GetCharacter(Character.Main)?.PickUpCharacter();
                         PlayUIController.Instance.SetMenuActive(false);
 
                         // Debug.Log(timeline.);
@@ -750,7 +749,7 @@ namespace Utility.Interaction
 
                         PlayUIController.Instance.SetMenuActive(true);
                         JoystickController.Instance.StopSaveLoadJoyStick(false);
-                        DataController.Instance.GetCharacter(Character.Main).UseJoystickCharacter();
+                        DataController.Instance.GetCharacter(Character.Main)?.UseJoystickCharacter();
                         currentTaskData.isContinue = true;
                         foreach (var cinematic in interaction.cinematics)
                         {

@@ -25,7 +25,7 @@ namespace CommonScript
         private float halfHeight;
         private Coroutine shakeCameraCoroutine;
 
-        public void Initialize(CameraViewType cameraViewType, Transform focusObj)
+        public void Initialize(CameraViewType cameraViewType, Transform focusObj = null)
         {
             viewType = cameraViewType;
             cam = Camera.main;
