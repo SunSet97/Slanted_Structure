@@ -93,6 +93,7 @@ namespace Utility.Interaction.Click
             // {
             //     return;
             // }
+            Debug.Log("클릭");
             var ray = DataController.Instance.Cam.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 20f, Color.red, 5f);
             var hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
@@ -101,6 +102,7 @@ namespace Utility.Interaction.Click
                 if (hit.collider.TryGetComponent(out IClickable clickable))
                 {
                     clickable.Click();
+                    Debug.Log("됨");
                 }
             }
         }

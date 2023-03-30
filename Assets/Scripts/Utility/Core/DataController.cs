@@ -28,7 +28,7 @@ namespace Utility.Core
 
         [FormerlySerializedAs("charData")] public CharRelationshipData charRelationshipData;
 
-        [NonSerialized] public CamInfo CamOffsetInfo;
+        public CamInfo CamOffsetInfo;
         [NonSerialized] public Camera Cam;
         [NonSerialized] public MapData CurrentMap;
 
