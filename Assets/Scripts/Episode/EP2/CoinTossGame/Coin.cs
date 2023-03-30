@@ -1,28 +1,39 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Episode.EP2.CoinTossGame
 {
     public class Coin : MonoBehaviour
     {
-        [NonSerialized] private CoinTossGameManager coinTossGameManager;
-        public void Init(CoinTossGameManager gameManager, Vector3 dir, float force)
+        private Action checkAction;
+        public void Init(Vector3 dir, float force, float timer, Action action)
         {
-            coinTossGameManager = gameManager;
+            checkAction = action;
             var myRigidbody = GetComponent<Rigidbody>();
-            myRigidbody.AddForce(dir * force);
-            // myRigidbody.AddTorque(dir * force, ForceMode.VelocityChange);
+            myRigidbody.AddForce(dir * force, ForceMode.VelocityChange);
+
+            StartCoroutine(WaitStop(timer));
+        }
+
+        private IEnumerator WaitStop(float timer)
+        {
+            yield return new WaitForSeconds(timer);
+            Check();
+        }
+
+        private void Check()
+        {
+            checkAction?.Invoke();
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.name != "water_upper")
-            {
-                return;
-            }
-            // else if(tossButton >=5) EndPlay()
-            // else 몇초후? Button.SetActive(true)
-            // coinTossGameManager.EndPlay();
+            // 바닥인가 분수인가
+            
+            StopAllCoroutines();
+            
+            Check();
         }
     }
 }

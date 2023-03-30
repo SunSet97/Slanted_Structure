@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
+using CommonScript;
 using Data;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility.Core;
 using Utility.Interaction.Click;
 using static Data.CustomEnum;
+using Random = UnityEngine.Random;
 
 namespace Episode.EP0.RauTutorial
 {
@@ -49,6 +51,9 @@ namespace Episode.EP0.RauTutorial
         [SerializeField] private CamInfo viewQuarter = new CamInfo
             {camDis = new Vector3(-6f, 5f, 0f), camRot = new Vector3(20, 90, 0)};
 
+        [SerializeField] private float shakeTime = 1f;
+        [SerializeField] private float shakeAmount = .7f;
+        
         private Swipe swipeDir;
         private int grassSwipeIndex;
         private bool isGrassSwipe;
@@ -306,9 +311,14 @@ namespace Episode.EP0.RauTutorial
 
         private void KickWood(Slider slider)
         {
-            if (Mathf.Abs(slider.value) >= 0.35f) return;
-
-            woodKickIndex++;
+            DataController.Instance.Cam.GetComponent<CameraMoving>().Shake(shakeTime, shakeAmount);
+            
+            // if (Mathf.Abs(slider.value) >= 0.35f)
+            // {
+            //     return;
+            // }
+            //
+            // woodKickIndex++;
         }
 
         // 나무 숲

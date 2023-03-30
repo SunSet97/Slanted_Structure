@@ -1,5 +1,4 @@
-﻿using System;
-using Data;
+﻿using System.Collections;
 using UnityEngine;
 using Utility.Core;
 
@@ -24,6 +23,7 @@ namespace CommonScript
         private Vector3 maxBound;
         private float halfWidth;
         private float halfHeight;
+        private Coroutine shakeCameraCoroutine;
 
         public void Initialize(CameraViewType cameraViewType, Transform focusObj)
         {
@@ -60,6 +60,35 @@ namespace CommonScript
                 cam.transform.position = focusObject.position +
                                          DataController.Instance.CamOffsetInfo.camDis;
             }
+        }
+
+        public void Shake(float shakeTime, float shakeAmount)
+        {
+            if (shakeCameraCoroutine != null)
+            {
+                StopCoroutine(shakeCameraCoroutine);
+            }
+
+            shakeCameraCoroutine = StartCoroutine(ShakeCamera(shakeTime, shakeAmount));
+        }
+
+        private IEnumerator ShakeCamera(float shakeTime, float shakeAmount)
+        {
+            var camTransform = transform.parent;
+            var originVector3 = camTransform.localPosition;
+
+            var t = 0f;
+            while (t <= shakeTime)
+            {
+                var randomPoint = originVector3 + (Vector3)Random.insideUnitCircle * shakeAmount;
+                camTransform.localPosition = randomPoint;
+                yield return null;
+
+                t += Time.deltaTime;
+            }
+
+            camTransform.localPosition = originVector3;
+            shakeCameraCoroutine = null;
         }
     }
 }
