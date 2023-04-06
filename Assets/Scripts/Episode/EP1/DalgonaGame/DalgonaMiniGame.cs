@@ -1,20 +1,22 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Data.GamePlay;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utility.Core;
 
-namespace Episode.EP1.MarketGame.Dalgona
+namespace Episode.EP1.DalgonaGame
 {
-    public class DalgonaGame : Game
+    public class DalgonaMiniGame : MiniGame
     {
         public GameObject dalgonaPanel;
-        public DalgonaDrager[] dalgona;
+        [FormerlySerializedAs("dalgona")] [SerializeField] private DalgonaDrager[] dalgonaDragger;
         
         private int index;
 
         public override void Play()
         {
-            if (index >= dalgona.Length)
+            if (index >= dalgonaDragger.Length)
             {
                 Debug.LogError("dalgona index Error");
                 return;
@@ -23,7 +25,7 @@ namespace Episode.EP1.MarketGame.Dalgona
 
             dalgonaPanel.SetActive(true);
             JoystickController.Instance.StopSaveLoadJoyStick(true);
-            dalgona[index].Init();
+            dalgonaDragger[index].Init();
             StartCoroutine(WaitDalgonaEnd());
         }
 
@@ -36,11 +38,11 @@ namespace Episode.EP1.MarketGame.Dalgona
 
         private IEnumerator WaitDalgonaEnd()
         {
-            yield return new WaitUntil(() => dalgona[index].isEnd);
-            if (index + 1 < dalgona.Length)
+            yield return new WaitUntil(() => dalgonaDragger[index].isEnd);
+            if (index + 1 < dalgonaDragger.Length)
             {
                 index++;
-                dalgona[index].Init();
+                dalgonaDragger[index].Init();
                 StartCoroutine(WaitDalgonaEnd());
             }
             else

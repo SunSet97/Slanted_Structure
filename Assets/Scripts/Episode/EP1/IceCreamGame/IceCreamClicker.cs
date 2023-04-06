@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace Episode.EP1.MarketGame.IceCream
+namespace Episode.EP1.IceCreamGame
 {
     public class IceCreamClicker : MonoBehaviour, IPointerDownHandler
     {

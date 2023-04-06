@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utility.Interaction;
 
 namespace Data
@@ -25,7 +26,7 @@ namespace Data
 
     namespace GamePlay
     {
-        public abstract class Game : MonoBehaviour
+        public abstract class MiniGame : MonoBehaviour
         {
             public Action OnEndPlay;
         
@@ -51,9 +52,7 @@ namespace Data
         [Serializable]
         public struct PlayableObj
         {
-            [Header("Legacy, Game을 사용하세요.")]
-            public GameObject gameObject;
-            public Game game;
+            [FormerlySerializedAs("game")] public MiniGame miniGame;
             public bool isPlay;
         }
     }

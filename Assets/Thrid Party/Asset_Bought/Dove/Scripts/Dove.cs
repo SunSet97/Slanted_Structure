@@ -1,64 +1,66 @@
 ﻿using System.Collections;
 using UnityEngine;
-using System;
 
-public class Dove : MonoBehaviour
+namespace Thrid_Party.Asset_Bought.Dove.Scripts
 {
-    public float speedTime = 0.8f;
-
-    [SerializeField] private int randomNum;
-    [SerializeField] private float speed;
-    [SerializeField] private float direction;
-    [SerializeField] private float stateChange = 4.0f;
-
-    [NonSerialized] public Animator DoveAnimator;
-
-    private readonly int speedHash = Animator.StringToHash("Speed");
-    private readonly int directionHash = Animator.StringToHash("Direction");
-    private readonly int stateHash = Animator.StringToHash("State");
-
-    private bool attackBool = false;
-
-    private void Start()
+    public class Dove : MonoBehaviour
     {
-        DoveAnimator = GetComponent<Animator>();
-        DoveAnimator.SetInteger(stateHash, 0);
-        StartCoroutine(RandomState());
-    }
+        public float speedTime = 0.8f;
 
-    private void Update()
-    {
-        MoveDove();
-    }
+        [SerializeField] private int randomNum;
+        [SerializeField] private float speed;
+        [SerializeField] private float direction;
+        [SerializeField] private float stateChange = 4.0f;
 
-    public void MoveDove()
-    {
-        if (DoveAnimator.GetInteger(stateHash) != 0)
+        private Animator doveAnimator;
+
+        private readonly int speedHash = Animator.StringToHash("Speed");
+        private readonly int directionHash = Animator.StringToHash("Direction");
+        private readonly int stateHash = Animator.StringToHash("State");
+
+        private bool attackBool = false;
+
+        private void Start()
         {
-            return;
+            doveAnimator = GetComponent<Animator>();
+            doveAnimator.SetInteger(stateHash, 0);
+            StartCoroutine(RandomState());
         }
 
-        speed = (Mathf.Sin(Time.time * speedTime) * .6f + 1f) / 2f;
-        direction = Mathf.Cos(Time.time * speedTime);
-        DoveAnimator.SetFloat(speedHash, speed);
-        DoveAnimator.SetFloat(directionHash, direction);
-    }
-
-    public void Attack()
-    {
-        DoveAnimator.SetTrigger("Attack");
-    }
-
-    IEnumerator RandomState()
-    {
-        float randomTime=UnityEngine.Random.Range(1,stateChange);
-        var waitForSeconds = new WaitForSeconds(randomTime);
-        while (true)
+        private void Update()
         {
-            randomNum = UnityEngine.Random.Range(0, 3);
-            DoveAnimator.SetInteger(stateHash, randomNum);
+            MoveDove();
+        }
 
-            yield return waitForSeconds;
+        public void MoveDove()
+        {
+            if (doveAnimator.GetInteger(stateHash) != 0)
+            {
+                return;
+            }
+
+            speed = (Mathf.Sin(Time.time * speedTime) * .6f + 1f) / 2f;
+            direction = Mathf.Cos(Time.time * speedTime);
+            doveAnimator.SetFloat(speedHash, speed);
+            doveAnimator.SetFloat(directionHash, direction);
+        }
+
+        public void Attack()
+        {
+            doveAnimator.SetTrigger("Attack");
+        }
+
+        IEnumerator RandomState()
+        {
+            var randomTime = UnityEngine.Random.Range(1, stateChange);
+            var waitForSeconds = new WaitForSeconds(randomTime);
+            while (true)
+            {
+                randomNum = UnityEngine.Random.Range(0, 3);
+                doveAnimator.SetInteger(stateHash, randomNum);
+
+                yield return waitForSeconds;
+            }
         }
     }
 }

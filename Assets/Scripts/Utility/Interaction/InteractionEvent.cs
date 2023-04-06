@@ -183,14 +183,14 @@ namespace Utility.Interaction
         {
             foreach (var t in playableList.playableObjs)
             {
-                Debug.Log($"Play Event - {t.gameObject}, {t.game}: {t.isPlay} ");
+                Debug.Log($"Play Event - {t.miniGame}: {t.isPlay} ");
                 if (t.isPlay)
                 {
-                    t.game.Play();
+                    t.miniGame.Play();
                 }
                 else
                 {
-                    t.game.EndPlay();
+                    t.miniGame.EndPlay();
                 }
             }
         }

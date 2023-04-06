@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Episode.EP2.PlayGroundGame
+namespace Episode.EP2.ThrowCanGame
 {
     public class Can : MonoBehaviour
     {
@@ -26,22 +26,17 @@ namespace Episode.EP2.PlayGroundGame
 
             OnCollisionEnter?.Invoke();
             enabled = false;
-            Destroy(gameObject);
-            Debug.Log("하이");
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!enabled)
+            if (!enabled || !other.CompareTag("item"))
             {
                 return;
             }
-        
-            if (other.CompareTag("item") || other.CompareTag("floor"))
-            {
-                OnCollisionEnter?.Invoke();
-                enabled = false;
-            }
+            
+            OnCollisionEnter?.Invoke();
+            enabled = false;
         }
     }
 }

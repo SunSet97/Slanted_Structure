@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1907904685706869629
 RectTransform:
   m_ObjectHideFlags: 0
@@ -36,7 +36,7 @@ RectTransform:
   m_AnchoredPosition: {x: 960, y: 540}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &2573505282445816367
+--- !u!1 &1600108481314719487
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,24 +44,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8804370484284251790}
-  - component: {fileID: 5114730206841944508}
-  - component: {fileID: 3290523233562666087}
+  - component: {fileID: 3005813237176748847}
+  - component: {fileID: 5843267376574694022}
   m_Layer: 0
-  m_Name: ring
+  m_Name: Ring Line Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &8804370484284251790
+--- !u!224 &3005813237176748847
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2573505282445816367}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 1600108481314719487}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -73,28 +72,13 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5114730206841944508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2573505282445816367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c48fa193b31e493fae764d90d62c0b57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  segments: 360
-  noteSpeed: 0.1
-  ring: {fileID: 3693269577944472143}
---- !u!120 &3290523233562666087
+--- !u!120 &5843267376574694022
 LineRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2573505282445816367}
+  m_GameObject: {fileID: 1600108481314719487}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -129,13 +113,13 @@ LineRenderer:
   m_Positions: []
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 10.787855
     widthCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 0.4807701
+        time: 0.060107596
+        value: 0.041666668
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -191,9 +175,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6591651534744311227}
-  - component: {fileID: 3674140187270937258}
+  - component: {fileID: 297468147458211727}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Interaction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -207,13 +191,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2733851438825801757}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.50579834, y: 4.9431067, z: -4.927685}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5086918323779867312}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3674140187270937258
+--- !u!114 &297468147458211727
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -222,17 +206,204 @@ MonoBehaviour:
   m_GameObject: {fileID: 2733851438825801757}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
+  m_Script: {fileID: 11500000, guid: 19e1650e5f7191247844af9a6add01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 1241241
+  id: 1e
   interactions:
   - jsonFile: {fileID: 4900000, guid: 8b3c8716e3595c94cb6bdfad2f6bf71a, type: 3}
     interactionPlayType: 2
-    gamePlayableGame: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
       dialogueIdx: 0
-      dialogues: []
+      dialogues:
+      - name: 
+        expression: 0
+        anim_name: 
+        contents: "\uB458\uC740 \uB9E5\uC8FC\uB97C \uB9C8\uC2DC\uBA74\uC11C \uC774\uB7F0\uC800\uB7F0
+          \uB3C4\uB780\uB3C4\uB780 \uC774\uC57C\uAE30\uB97C \uB098\uB204\uACE0 \uC788\uB2E4."
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC2A4\uD54F, \uC544\uAE4C\uB294 \uAD1C\uCC2E\uC558\uC5B4\u2026?"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 9
+        anim_name: Speat
+        contents: "\uBB50\uAC00\u2026?"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC544\uB2C8\u2026\uC544\uAE4C \uC0C1\uC778 \uC544\uC800\uC528\uAC00
+          \uB110 \uCD94\uAD81\uD558\uB4EF\uC774 \uBB3C\uC5B4\uBCF4\uB294\uB370\u2026
+          \uB108\uAC00 \uBB54\uAC00\u2026 \uBB34\uC11C\uC6CC\uD558\uB294 \uD45C\uC815\uC774\uAE38\uB798\u2026"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Spat
+        contents: "\uC544\u2026 \uC544\uB0D0\u2026 \uAD1C\uCC2E\uC544\u2026! \uADF8\uB0E5
+          \uB0AF\uAC00\uB824\uC11C \uADF8\uB7AC\uC5B4\u2026"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 9
+        anim_name: Rau
+        contents: "(\uB0AF\uAC00\uB9AC\uB294 \uC131\uACA9\uC740 \uC544\uB2CC \uAC70
+          \uAC19\uC740\uB370\u2026)\uC544\uBB34\uD2BC\u2026\uAD1C\uCC2E\uB2E4\uBA74
+          \uB2E4\uD589\uC774\uACE0\u2026"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC544 \uADFC\uB370 \uC2A4\uD54F, \uB108\uB294 \uAFC8\uC774 \uBB50\uC57C??"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 5
+        anim_name: Speat
+        contents: "\uAFC8?? \uAC11\uC790\uAE30??"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC751, \uADF8\uB0E5 \uAD81\uAE08\uD574\uC84C\uC5B4."
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC74C\u2026.\uB108\uB294 \uAFC8\uC774 \uBB54\uB370..?"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC0AC\uC2E4 \uB098\uB3C4 \uC544\uC9C1 \uAFC8\uC740 \uC5C6\uC5B4"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 9
+        anim_name: Speat
+        contents: "\uC5E5? \uBB50\uC57C?"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 1
+        anim_name: Rau
+        contents: "\uD558\uD558\uD558. \uADF8\uB798\uB3C4 \uC88B\uC544\uD558\uB294
+          \uC77C\uC740 \uC788\uC5B4."
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 1
+        anim_name: Rau
+        contents: "\uB0B4\uAC00 \uAE30\uACC4\uACF5\uD559\uACFC\uB85C \uAC04 \uC774\uC720\uAC00
+          \uAE30\uACC4 \uB9CC\uC9C0\uB294 \uAC8C \uC7AC\uBC0C\uC5B4\uC11C\uC600\uAC70\uB4E0"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uADF8\uB798\uC11C \uC544\uB9C8 \uC774 \uCABD\uC73C\uB85C \uAC00\uC9C0
+          \uC54A\uC744\uAE4C \uC2F6\uC5B4"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC74C\u2026. \uC88B\uC544\uD558\uB294 \uAC70\uB77C\uBA74 \uB098\uB294\u2026\uADF8\uB9BC\uADF8\uB9AC\uB294
+          \uAC78 \uC88B\uC544\uD574\u2026"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 5
+        anim_name: Rau
+        contents: "\uC544 \uC9C4\uC9DC? \uBB54\uAC00 \uC758\uC678\uB2E4..!"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uADF8\uCE58? \uB098\uB3C4 \uADF8\uB807\uAC8C \uC0DD\uAC01\uD574.
+          \uC0AC\uC2E4 \uC6B0\uC5F0\uD788 \uC54C\uAC8C \uB41C \uCDE8\uBBF8\uB77C\uC11C"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 9
+        anim_name: Rau
+        contents: "\uC5C7 \uC5B4\uB5BB\uAC8C \uC54C\uAC8C \uB410\uB294\uB370?"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC544\uB2C8..\uBB50 \uC6B0\uC5F0\uD788 \uADF8\uB9BC \uADF8\uB9B4
+          \uC218 \uC788\uB294 \uB3C4\uAD6C\uAC00 \uC788\uAE38\uB798 \uADF8\uB824 \uBD24\uB294\uB370
+          \uC7AC\uBC0C\uB354\uB77C\uACE0\u2026? \uADF8\uB798\uC11C \uAC00\uB054\uC529
+          \uADF8\uB9BC \uADF8\uB824"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 9
+        anim_name: Rau
+        contents: "\uC8FC\uB85C \uC5B4\uB5A4 \uADF8\uB9BC\uC73C\uB85C \uADF8\uB824??"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC74C\u2026\uC0AC\uC2E4 \uADF8\uB9BC\uC774\uB77C\uAE30 \uBCF4\uB2E8
+          \uADF8\uB798\uBE44\uD2F0\uAE34\uD55C\uB370, \uB0B4 \uAC10\uC815\uC744 \uD45C\uCD9C\uD558\uB294
+          \uAC83 \uAC19\uC544."
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 1
+        anim_name: Rau
+        contents: "\uC624\uC624 \uBA4B\uC9C0\uB2E4\u2026! \uADF8\uB798\uBE44\uD2F0
+          \uBCF4\uACE0 \uC2F6\uC5B4! \uB098\uC911\uC5D0 \uBCF4\uC5EC\uC8FC\uB77C!"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uADF8\uB798 \uADF8\uB798. \uBCF4\uC5EC\uC8FC\uB294 \uAC74 \uC5B4\uB835\uC9C0
+          \uC54A\uC9C0."
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uADF8\uB7FC \uB108\uB294 \uADF8 \uCABD\uC73C\uB85C \uAC08 \uC0DD\uAC01\uC740
+          \uC5C6\uC5B4? \uADF8\uB9BC \uADF8\uB9AC\uB294 \uC77C\uB85C \uB9D0\uC774\uC57C!"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 5
+        anim_name: Speat
+        contents: "\uB0B4\uAC00\u2026? \uC5D0\uC774\u2026 \uB0B4\uAC00 \uC5B4\uB5BB\uAC8C
+          \uADF8\uB798\u2026"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC65C \uC548\uB3FC! \uD558\uACE0 \uC2F6\uC73C\uBA74 \uD558\uB294
+          \uAC70\uC9C0. \uADF8\uB9AC\uACE0 \uB108 \uC785\uC73C\uB85C \uB108\uAC00
+          \uC88B\uC544\uD558\uB294 \uC77C\uC774\uB77C\uACE0 \uD588\uC796\uC544!"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uADF8\uAC74 \uB9DE\uB294\uB370\u2026\uADF8\uB0E5\u2026\uD560 \uC218
+          \uC788\uB294 \uC0C1\uD669\uC778\uAC00 \uC2F6\uC5B4."
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uACBD\uC81C\uC801\uC778 \uAC83 \uB54C\uBB38\uC5D0 \uADF8\uB7F0\uAC70\uC57C..?"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uADF8\uAC83\uB3C4 \uADF8\uAC70\uC9C0\uB9CC\u2026\uC0AC\uC2E4 \uADF8\uB9AC\uAE30
+          \uD798\uB4E0 \uC0C1\uD669\uC5D0 \uC788\uB294 \uAC83\uB3C4 \uC788\uC5B4\u2026\uB0B4\uAC00
+          \uC9C1\uC5C5\uC744 \uC815\uC2DD\uC801\uC73C\uB85C \uAC00\uC9C0\uB294 \uAC83\uC5D0\uB3C4
+          \uB450\uB824\uC6C0\uC744 \uAC00\uC9C0\uACE0 \uC788\uACE0"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 9
+        anim_name: Rau
+        contents: "\uBB54\uAC00 \uB0B4\uAC00 \uC2F6\uAC8C \uB9D0\uD560 \uC218 \uC5C6\uB294
+          \uAC8C \uC544\uB2CC \uC0C1\uD669 \uAC19\uB124\u2026"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\u2026"
+        sfx: 
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -245,19 +416,18 @@ MonoBehaviour:
         movables:
           movables: []
         playableList:
-          playableObjs:
-          - gameObject: {fileID: 8262045694450098936}
-            isPlay: 1
+          playableObjs: []
         interactObjs:
           interacts: []
         interactionObjs:
           interactions:
-          - interactObj: {fileID: 3674140187270937258}
+          - interactObj: {fileID: 297468147458211727}
             index: 1
             waitSeconds: 0
             useFadeOut: 0
-    interactionMethod: 0
+    interactionMethod: 3
     isViewChange: 0
+    isFocusObject: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
@@ -266,6 +436,9 @@ MonoBehaviour:
     inGames: []
     isLoop: 0
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
@@ -273,7 +446,7 @@ MonoBehaviour:
     debugTaskData: []
   - jsonFile: {fileID: 0}
     interactionPlayType: 4
-    gamePlayableGame: {fileID: 8262045694450098936}
+    miniGame: {fileID: 4488275306121895061}
     dialogueData:
       dialogueIdx: 0
       dialogues: []
@@ -294,12 +467,13 @@ MonoBehaviour:
           interacts: []
         interactionObjs:
           interactions:
-          - interactObj: {fileID: 3674140187270937258}
+          - interactObj: {fileID: 297468147458211727}
             index: 2
             waitSeconds: 0
             useFadeOut: 0
-    interactionMethod: 0
+    interactionMethod: 2
     isViewChange: 0
+    isFocusObject: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
@@ -308,6 +482,9 @@ MonoBehaviour:
     inGames: []
     isLoop: 0
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
@@ -315,10 +492,194 @@ MonoBehaviour:
     debugTaskData: []
   - jsonFile: {fileID: 4900000, guid: f98e30d1f24eecb4b98d6abf72cd92e9, type: 3}
     interactionPlayType: 2
-    gamePlayableGame: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
       dialogueIdx: 0
-      dialogues: []
+      dialogues:
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC815\uD655\uD788 \uC5B4\uB5A4 \uC0C1\uD669\uC778\uC9C0\uB294
+          \uBAA8\uB974\uC9C0\uB9CC \uB108\uAC00 \uD558\uACE0 \uC2F6\uC740 \uAC83\uC744
+          \uD558\uC9C0 \uBABB\uD558\uB294 \uAC74 \uC880 \uC2AC\uD504\uB124\u2026"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uADF8\uCE58\u2026\uBB3C\uB860 \uC608\uC804\uC758 \uC0B6\uBCF4\uB2E8
+          \uB0AB\uB2E4\uACE0\uB294 \uC0DD\uAC01\uD574"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uADF8\uB807\uB2E4\uBA74 \uB2E4\uD589\uC774\uACE0.. \uD558\uC9C0\uB9CC
+          \uC0AC\uB78C\uC778\uC0DD\uC774\uB77C\uB294 \uAC8C \uACC4\uC18D \uBCC0\uD558\uB294
+          \uAC70\uC796\uC544. \uB610 \uB354 \uB098\uC544\uC9C8 \uC218 \uC788\uB294
+          \uAC70\uACE0"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC801\uC5B4\uB3C4 \uB108\uAC00 \uC9C0\uAE08 \uC0C1\uD669\uB54C\uBB38\uC5D0
+          \uC5B4\uB824\uC6B4 \uAC74\uB370, \uADF8\uAC70\uB97C \uB108 \uD0D3\uC73C\uB85C
+          \uB3CC\uB9AC\uC9C0 \uC54A\uC558\uC73C\uBA74 \uC88B\uACA0\uC5B4."
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC0AC\uB78C\uC774 \uD658\uACBD\uC5D0 \uC758\uD574 \uC601\uD5A5\uC744
+          \uB9CE\uC774 \uBC1B\uACE0 \uB610 \uADF8\uAC78 \uC790\uAE30 \uB9C8\uC74C\uB300\uB85C
+          \uBC14\uAFB8\uAE30 \uD798\uB4E0 \uC0C1\uD669\uC77C \uC218 \uB3C4 \uC788\uC796\uC544?
+          \uADFC\uB370 \uADF8\uAC8C \uADF8 \uC0C1\uD669\uC5D0 \uC788\uB294 \uC0AC\uB78C\uC758
+          \uD0D3\uC744 \uD558\uB294 \uAC74 \uC544\uB2C8\uB77C\uACE0 \uC0DD\uAC01\uD574."
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uADF8\uB798\uC11C \uB108\uB3C4 \uADF8\uB9BC\uC744 \uBABB \uADF8\uB9AC\uB294
+          \uC774 \uC0C1\uD669\uC774 \uB108\uAC00 \uC790\uACA9\uC774 \uC5C6\uB2E4\uB358\uAC00
+          \uADF8\uB7F0 \uC2DD\uC73C\uB85C \uC0DD\uAC01\uD558\uC9C4 \uC54A\uC558\uC73C\uBA74
+          \uC88B\uACA0\uC5B4"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC751\u2026\uACE0\uB9C8\uC6CC....\uADF8\uB0E5 \uBC49\uC740 \uB9D0\uC774\uC5C8\uB294\uB370
+          \uB418\uAC8C \uAE4A\uAC8C \uB9D0\uD574\uC918\uC11C \uB180\uB790\uB124"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uADF8\uB0E5 \uB0B4\uAC00 \uC18D\uC0C1\uD574\uC11C \uADF8\uB798.
+          \uD558\uACE0 \uC2F6\uC740\uAC78 \uD558\uC9C0 \uBABB\uD558\uB294 \uC0AC\uB78C\uB4E4\uC774
+          \uC5BC\uB9C8\uB098 \uB9CE\uC740\uB370, \uADF8\uAC8C \uB0B4 \uC606\uC5D0
+          \uC788\uB294 \uB108\uB77C\uB294 \uAC8C."
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uADF8\uB798\uB3C4 \uC6D0\uB9C8\uC744\uC5D0\uB294 \uADF8\uB7F0
+          \uD798\uB4E0 \uC0AC\uB78C\uB4E4\uC744 \uC9C0\uC6D0\uD574\uC8FC\uB294 \uC81C\uB3C4
+          \uAC19\uC740\uAC8C \uC788\uB294\uB370 \uC138\uBAA8\uB9C8\uC744\uC5D0\uB294
+          \uC5C6\uB098..?"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC0AC\uC2E4 \uC798 \uBAB0\uB77C. \uADF8\uB9AC\uACE0 \uC870\uC2EC\uC2A4\uB7EC\uC6B4
+          \uBD80\uBD84\uB3C4 \uC788\uACE0\u2026."
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC5D0\uACE0\u2026\uB0B4\uAC00 \uD55C\uBC88 \uCC3E\uC544\uBD10\uBCFC\uAE4C\u2026?"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC5C9\u2026? \uC544\uB2C8 \uADF8\uB7F4 \uD544\uC694\uB294 \uC5C6\uC5B4..
+          \uB0B4\uAC00 \uCC3E\uC544\uC57C\uC9C0 \uB0B4 \uC77C\uC778\uB370"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC557\u2026\uB108\uD55C\uD14C \uB3C4\uC6C0\uB418\uACE0 \uC2F6\uC5C8\uAC70\uB4E0
+          \uC2E4\uB840\uC600\uC73C\uBA74 \uBBF8\uC548\uD574"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC544\uB0D0\uC544\uB0D0. \uC9C4\uC2EC\uC73C\uB85C \uC0DD\uAC01\uD574\uC8FC\uB294
+          \uAC70 \uAC19\uC544\uC11C \uC624\uD788\uB824 \uACE0\uB9D9\uC9C0 \uB0B4\uAC00."
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uB098\uB3C4 \uC544\uC9C1 \uC5B4\uB9AC\uACE0 \uB0B4 \uD560\uC77C\uC744
+          \uC798\uD558\uACE0 \uC788\uB2E4\uACE0 \uD558\uAE34 \uC5B4\uB835\uC9C0\uB9CC,
+          \uB108\uAC00 \uB9E8\uB0A0 \uB0AE\uBC24\uBC14\uB00C\uBA74\uC11C \uC77C\uD558\uB294
+          \uAC8C \uAC71\uC815\uB418\uC11C \uADF8\uB798"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC0C8\uBCBD\uC5D0 \uC77C\uD558\uB294 \uAC74 \uC775\uC219\uD574\uC838\uC11C
+          \uAD1C\uCC2E\uC544. \uC798 \uB54C \uC790\uB2C8\uAE4C \uB108\uBB34 \uAC71\uC815\uC548\uD574\uB3C4
+          \uB3FC."
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uADF8\uB7F0\uB370 \uC774\uB807\uAC8C \uB0A0 \uC704\uD574\uC11C
+          \uC2DC\uAC04 \uB0B4\uC918\uC11C \uC815\uB9D0 \uACE0\uB9C8\uC6CC"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC544\uB2C8 \uBB50\u2026\uBCC4\uAC70\uB3C4 \uC544\uB2C8\uACE0
+          \uC5B4\uCA4C\uB2E4\uAC00 \uD55C\uBC88\uC778\uB370 \uC774\uB7F0 \uACBD\uC6B0\uB3C4.
+          \uC624\uD788\uB824 \uC7AC\uBBF8\uC5C6\uC5C8\uC9C0 \uC54A\uB098 \uC2F6\uC740\uB370"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uBB34\uC2A8 \uC18C\uB9AC\uC57C! \uB355\uBD84\uC5D0 \uC7AC\uBC0C\uAC8C
+          \uB180 \uC218 \uC788\uC5C8\uB294\uB370."
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uADF8\uB807\uB2E4\uBA74 \uB2E4\uD589\uC774\uB124. \uB098\uB3C4
+          \uC624\uB298 \uC7AC\uBC0C\uC5C8\uC5B4. \uBB54\uAC00 \uB610\uB798\uB791 \uC774\uB807\uAC8C
+          \uB9D8\uD3B8\uD788 \uB178\uB294 \uAC83\uB3C4 \uC5BC\uB9C8\uB9CC\uC778\uAC00
+          \uC2F6\uB124"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC557\u2026\uD639\uC2DC \uB530\uB85C \uB178\uB294 \uCE5C\uAD6C\uB294
+          \uC5C6\uB294 \uAC70\uC57C\u2026?"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC74C\u2026..\uADF8\uB807\uC9C0\u2026?"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC544\uC557\u2026.\uBBF8\uC548\u2026"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 1
+        anim_name: Speat
+        contents: "\uD558\uD558 \uBB58 \uB610 \uBBF8\uC548\uD574, \uC77C\uB9CC\uD558\uB2E4\uBCF4\uB2C8\uAE4C
+          \uB531\uD788 \uB204\uAD6C\uB791 \uB180 \uC77C\uC774 \uC5C6\uB124. \uADF8\uB798\uC11C
+          \uB108\uB791 \uB180\uAC8C \uB418\uC11C \uC88B\uC740 \uAC70 \uAC19\uC544"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uB108\uAC00 \uD53C\uACE4\uD574\uD560\uAE4C\uBD10 \uAC71\uC815\uD588\uB294\uB370
+          \uB2E4\uD589\uC774\uB2E4..!"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 1
+        anim_name: Speat
+        contents: "\uC880\u2026\uB108\uAC00 \uD53C\uACE4\uD55C \uD0C0\uC785\uC774\uAE34\uD558\uC9C0"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 6
+        anim_name: Rau
+        contents: "\uB0B4\uAC00\u2026?"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 1
+        anim_name: Speat
+        contents: "\uB18D\uB2F4\uC774\uC57C \uB18D\uB2F4\uC774\uC57C~ \uC624\uD788\uB824
+          \uC990\uAC70\uC6E0\uC5B4. \uB9E8\uB0A0 \uBC18\uBCF5\uB418\uB294 \uC77C\uC0C1\uC774\uC5C8\uB294\uB370
+          \uB355\uBD84\uC5D0 \uD658\uAE30\uD558\uACE0 \uC88B\uC9C0!"
+        sfx: 
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -336,12 +697,13 @@ MonoBehaviour:
           interacts: []
         interactionObjs:
           interactions:
-          - interactObj: {fileID: 3674140187270937258}
+          - interactObj: {fileID: 297468147458211727}
             index: 3
             waitSeconds: 0
             useFadeOut: 0
-    interactionMethod: 0
+    interactionMethod: 2
     isViewChange: 0
+    isFocusObject: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
@@ -350,6 +712,9 @@ MonoBehaviour:
     inGames: []
     isLoop: 0
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
@@ -357,7 +722,7 @@ MonoBehaviour:
     debugTaskData: []
   - jsonFile: {fileID: 0}
     interactionPlayType: 4
-    gamePlayableGame: {fileID: 8262045694450098936}
+    miniGame: {fileID: 4488275306121895061}
     dialogueData:
       dialogueIdx: 0
       dialogues: []
@@ -378,12 +743,13 @@ MonoBehaviour:
           interacts: []
         interactionObjs:
           interactions:
-          - interactObj: {fileID: 3674140187270937258}
+          - interactObj: {fileID: 297468147458211727}
             index: 4
             waitSeconds: 0
             useFadeOut: 0
-    interactionMethod: 0
+    interactionMethod: 2
     isViewChange: 0
+    isFocusObject: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
@@ -392,6 +758,9 @@ MonoBehaviour:
     inGames: []
     isLoop: 0
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
@@ -399,10 +768,146 @@ MonoBehaviour:
     debugTaskData: []
   - jsonFile: {fileID: 4900000, guid: 75a110c7d627c9e4fbaccf9d81f7abbf, type: 3}
     interactionPlayType: 2
-    gamePlayableGame: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
       dialogueIdx: 0
-      dialogues: []
+      dialogues:
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uADF8\uB7FC \uB108\uB294 \uC55E\uC73C\uB878 \uC5B4\uB5BB\uAC8C
+          \uC0B4\uC544\uAC00\uACE0 \uC2F6\uC5B4?"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC74C\u2026\uD558\uB8E8\uD558\uB8E8 \uC0B4\uC544\uAC00\uB294\uAC8C
+          \uC77C\uC0C1\uC774\uB77C \uADF8\uB7F0 \uC0DD\uAC01\uD574\uBCF8\uC801\uC774
+          \uC5C6\uB124\u2026\uAE00\uC384\u2026"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC0AC\uC2E4 \uB098\uB3C4 \uADF8\uB807\uAC8C \uAD6C\uCCB4\uC801\uC73C\uB85C
+          \uC0DD\uAC01\uD558\uACE0 \uC788\uC5B4\uC11C \uBB3C\uC5B4\uBCF8 \uAC74 \uC544\uB2C8\uAE34\uD574
+          \uADF8\uB0E5 \uAD81\uAE08\uD588\uAC70\uB4E0!"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uADF8\uB7FC \uB300\uAC15 \uB098\uC911\uC5D0\uB294 \uBB50\uD558\uBA74\uC11C
+          \uC0B4\uACE0 \uC2F6\uB2E4 \uC774\uB7F0 \uAC74 \uC788\uC5B4?"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC74C\u2026\uC77C\uB2E8\uC740 \uB178\uB144\uC5D0\uB294 \uACF5\uAE30
+          \uC88B\uC740 \uC232 \uC18D\uC5D0 \uC9D1\uC744 \uC9C1\uC811 \uC9C0\uC5B4\uC11C
+          \uBC18\uB824\uB3D9\uBB3C\uB4E4\uC774\uB791 \uC624\uC21C\uB3C4\uC21C \uC0B4\uACE0
+          \uC2F6\uC740 \uAC8C \uB85C\uB9DD\uC774\uAE34\uD574"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC624\u2026\uB098\uB984 \uAD6C\uCCB4\uC801\uC778\uB370? \uB3C4\uC2DC\uB294
+          \uC2EB\uC5B4?"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC544\uB2C8 \uBB50 \uB3C4\uC2DC \uC0DD\uD65C\uC774 \uC2EB\uC740
+          \uAC74 \uC544\uB2CC\uB370, \uACF5\uAE30 \uC88B\uC740 \uC232 \uC18D\uC5D0\uC11C
+          \uC5EC\uC720\uB86D\uAC8C \uC0B4\uBA74\uC11C \uAC00\uB054 \uCE5C\uAD6C\uB4E4
+          \uCD08\uB300\uD574\uC11C \uB180 \uBA74 \uC88B\uC796\uC544~"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uD558\uAE34 \uB3C4\uC2DC\uB294 \uBB54\uAC00 \uC815\uC2E0\uC5C6\uACE0
+          \uBC14\uAE00\uBC14\uAE00\uD558\uC9C0. \uAD1C\uCC2E\uC740 \uAC70 \uAC19\uC544"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 1
+        anim_name: Rau
+        contents: "\uADF8\uCE58! \uBB3C\uB860 \uC9C1\uC811 \uC9D1\uC9D3\uB294 \uAC74
+          \uC5B4\uB835\uACA0\uC9C0\uB9CC, \uBB50 \uC5B4\uCC0C\uB4E0 \uB418\uACA0\uC9C0!
+          \uD558\uD56B"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uADF8\uB7FC \uB108\uB3C4 \uD55C \uBC88 \uC9C0\uAE08 \uC0DD\uAC01\uD574\uBD10!
+          \uB098\uC911\uC5D0 \uBB50\uD558\uACE0 \uC0B4\uACE0 \uC2F6\uC740\uC9C0!"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 7
+        anim_name: Speat
+        contents: "\uC74C\u2026\uAC11\uC791\uC2A4\uB7EC\uC6B4\uB370\u2026\uD760\u2026."
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 7
+        anim_name: Speat
+        contents: "\uADF8\uB0E5 \uC544\uBB34 \uAC71\uC815 \uC5C6\uC774 \uC0B4 \uC218
+          \uC788\uC5C8\uC73C\uBA74 \uC88B\uACA0\uC5B4."
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 7
+        anim_name: Speat
+        contents: "\uC9C0\uAE08\uC774\uC57C \uC77C, \uC9D1, \uC77C, \uC9D1\uC774 \uC77C\uC0C1\uC774\uACE0
+          \uB531\uD788 \uB0B4 \uC0B6\uC774\uB77C\uB294 \uAC8C \uC5C6\uAE30\uB3C4\uD558\uACE0\u2026"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 7
+        anim_name: Speat
+        contents: "\u2026\uC0AC\uC2E4 \uB0B4\uAC00 \uC228\uACE0 \uC9C0\uB0B4\uB294
+          \uC0C1\uD669\uC774\uB098 \uB9C8\uCC2C\uAC00\uC9C0\uAC70\uB4E0"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 6
+        anim_name: Rau
+        contents: "\uC5C9??? \uC65C??? \uBB50 \uB54C\uBB38\uC5D0\u2026."
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC74C\u2026\uB098\uC911\uC5D0 \uB9D0\uD560 \uAE30\uD68C\uAC00
+          \uB418\uBA74 \uB9D0\uD574\uC904\uAC8C.. \uADF8\uB798\uC11C \uC544\uBB34\uD2BC
+          \uC0AC\uC2E4 \uB9D8\uD3B8\uD788 \uC0B0\uC801\uC774 \uC5C6\uB294 \uAC70 \uAC19\uC544"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC774\uB807\uAC8C \uC5B4\uB461\uAC8C \uC785\uACE0 \uB2E4\uB2C8\uB294
+          \uC774\uC720\uB3C4 \uD2F0 \uC548\uB098\uB824\uACE0 \uD558\uB294 \uAC83\uB3C4
+          \uC788\uACE0\u2026\uC0C8\uBCBD\uC5D0 \uC77C\uD558\uB294 \uAC83\uB3C4 \uB9C8\uCC2C\uAC00\uC9C0\uC778\uAC70\uACE0"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 2
+        anim_name: Rau
+        contents: "\uC544\uB2C8\u2026\uC2A4\uD54F\u2026\uB108\uAC00 \uADF8\uB7F0 \uC0C1\uD669\uC778
+          \uC904\uC740 \uC0C1\uC0C1\uB3C4 \uBABB\uD588\uC5B4\u2026\uB9CE\uC774 \uD798\uB4E4\uACA0\uB2E4\u2026"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uBB50\u2026\uC774\uC820 \uC775\uC219\uD574\u2026\uADF8\uB0E5 \uD558\uB8E8\uD558\uB8E8
+          \uC0B4\uC544\uAC00\uACE0\uB294 \uC788\uC9C0\uB9CC, \uC55E\uC73C\uB85C \uACC4\uC18D
+          \uC774\uB807\uAC8C \uC0B4\uACE0 \uC2F6\uC9C4 \uC54A\uB124."
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 8
+        anim_name: Rau
+        contents: "\uC5B4\u2026\uC5B4\u2026? \uC2A4\uD54F\u2026\uADF8\uB807\uAC8C
+          \uB9D0\uD558\uC9C0\uB9C8\u2026.\uC544\uBB34\uB9AC \uD798\uB4E4\uC5B4\uB3C4
+          \uC0AC\uB78C \uC77C\uC740 \uBAA8\uB974\uB294 \uAC70\uC796\uC544.."
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uADF8\uAC74 \uB9DE\uC9C0\u2026\uBB3C\uB860 \uC8FD\uACE0 \uC2F6\uB2E4\uB294
+          \uB9D0\uC740 \uC544\uB2C8\uC5C8\uACE0, \uADF8\uB0E5 \uC774 \uC0C1\uD669\uC5D0\uC11C
+          \uBC97\uC5B4\uB098\uACE0 \uC2F6\uC740 \uAC70 \uAC19\uC544."
+        sfx: 
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -420,12 +925,13 @@ MonoBehaviour:
           interacts: []
         interactionObjs:
           interactions:
-          - interactObj: {fileID: 3674140187270937258}
+          - interactObj: {fileID: 297468147458211727}
             index: 5
             waitSeconds: 0
             useFadeOut: 0
-    interactionMethod: 0
+    interactionMethod: 2
     isViewChange: 0
+    isFocusObject: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
@@ -434,6 +940,9 @@ MonoBehaviour:
     inGames: []
     isLoop: 0
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
@@ -441,7 +950,7 @@ MonoBehaviour:
     debugTaskData: []
   - jsonFile: {fileID: 0}
     interactionPlayType: 4
-    gamePlayableGame: {fileID: 0}
+    miniGame: {fileID: 4488275306121895061}
     dialogueData:
       dialogueIdx: 0
       dialogues: []
@@ -462,12 +971,13 @@ MonoBehaviour:
           interacts: []
         interactionObjs:
           interactions:
-          - interactObj: {fileID: 3674140187270937258}
+          - interactObj: {fileID: 297468147458211727}
             index: 6
             waitSeconds: 0
             useFadeOut: 0
-    interactionMethod: 0
+    interactionMethod: 2
     isViewChange: 0
+    isFocusObject: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
@@ -476,6 +986,9 @@ MonoBehaviour:
     inGames: []
     isLoop: 0
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
@@ -483,10 +996,176 @@ MonoBehaviour:
     debugTaskData: []
   - jsonFile: {fileID: 4900000, guid: 50caf4ef1f7884d4c9a432cf64bb74bc, type: 3}
     interactionPlayType: 2
-    gamePlayableGame: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
       dialogueIdx: 0
-      dialogues: []
+      dialogues:
+      - name: "\uB77C\uC6B0"
+        expression: 2
+        anim_name: Rau
+        contents: "\uB108\uAC00 \uADF8\uB7F0 \uC0C1\uD669\uC778 \uC904\uC740 \uC0C1\uC0C1\uB3C4
+          \uBABB\uD588\uB124\u2026\uC5BC\uB9C8\uB098 \uB9C8\uC74C \uACE0\uC0DD\uC774
+          \uC2EC\uD588\uC744\uC9C0 \uC0C1\uC0C1\uB3C4 \uC548\uAC00\u2026"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uB098\uB294 \uAD1C\uCC2E\uC544. \uC774\uBBF8 \uC775\uC219\uD558\uAC70\uB4E0.
+          \uD558\uB8E8 \uC774\uD2C0\uB3C4 \uC544\uB2C8\uACE0. \uADF8\uB798\uC11C \uC624\uB298\uC774
+          \uD2B9\uBCC4\uD55C \uAC70 \uAC19\uC544."
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uB110 \uCC98\uC74C \uB9CC\uB09C \uB0A0\uC5D0 \uBB54\uAC00 \uC0C8\uB85C\uC6B4
+          \uC77C\uC774 \uC0DD\uAE38 \uAC83 \uAC19\uC740 \uB290\uB08C\uC774 \uB4E4\uC5C8\uB294\uB370
+          \uB0B4 \uC608\uC0C1\uC774 \uB9DE\uC558\uB124."
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uB355\uBD84\uC5D0 \uC9C0\uB8E8\uD55C \uC77C\uC0C1\uC5D0\uC11C
+          \uBC97\uC5B4\uB09C \uAE30\uBD84\uC774\uC57C. \uACE0\uB9C8\uC6CC \uB77C\uC6B0"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 2
+        anim_name: Rau
+        contents: "\uB098\uB294 \uD55C\uAC8C \uC5C6\uB294 \uAC78\u2026\uADF8\uB798\uB3C4
+          \uB108\uAC00 \uAE30\uBD84 \uC88B\uC544\uC84C\uB2E4\uBA74 \uB2E4\uD589\uC774\uC57C."
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uADF8\uB9BC \uADF8\uB9B4 \uB54C \uB9D0\uACE0\uB294 \uB531\uD788
+          \uC7AC\uBBF8\uB784 \uAC8C \uC5C6\uB294 \uC77C\uC0C1\uC774\uC5C8\uB294\uB370.
+          \uC6D0\uB9C8\uC744 \uB3CC\uC544\uAC00\uC11C\uB3C4 \uAC00\uB054\uC529 \uB180\uB7EC\uC640."
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uB2F9\uC5F0\uD558\uC9C0..! \uC774\uB807\uAC8C \uCE5C\uAD6C \uC0AC\uACBC\uB294\uB370!
+          \uB9E8\uB0A0\uC740 \uC544\uB2C8\uC5B4\uB3C4 \uC790\uC8FC \uB180\uB7EC \uC62C\uAED8..!"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 1
+        anim_name: Speat
+        contents: "\uBE48\uB9D0\uC774\uBA74 \uC548\uB41C\uB2E4? \uC9C4\uC9DC\uB85C"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uBE48\uB9D0 \uC544\uB2C8\uB2E4! \uB098 \uBE48\uB9D0 \uAC19\uC740
+          \uAC70 \uC548\uD574! \uADF8\uB9AC\uACE0 \uB098\uB791 \uB180\uBA74 \uB108\uAC00
+          \uD589\uBCF5\uD574\uC9C0\uB294\uB370 \uC790\uC8FC \uB180\uB7EC\uAC00\uC57C\uC9C0"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 1
+        anim_name: Speat
+        contents: "\uD06C\uD06C \uACE0\uB9C8\uC6CC. \uC774\uC81C \uB108\uB3C4 \uB0B4
+          \uD558\uB098\uC758 \uC228\uD1B5 \uD2B8\uC774\uAC8C \uB9CC\uB4DC\uB294 \uC874\uC7AC\uAC00
+          \uB410\uB124"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uADF8\uB807\uAC8C \uB9D0\uD558\uB2C8\uAE4C \uBB54\uAC00 \uAC10\uB3D9\uC774\uB124\u2026\uC9C4\uC9DC\u2026"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uADF8\uAC74 \uADF8\uB807\uACE0 \uB108\uAC00 \uC228\uACE0 \uB2E4\uB2CC\uB2E4\uB294
+          \uAC74\u2026\uB204\uAC00 \uB3C4\uC640\uC904 \uC218 \uC5C6\uB294 \uC0C1\uD669\uC778\uAC70\uC57C?"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uADF8\uB098\uB9C8 \uB9AC\uB098 \uC5B8\uB2C8\uD55C\uD14C \uB3C4\uC6C0\uBC1B\uC558\uC5C8\uC5B4.
+          \uADF8\uB798\uC11C \uC9C0\uAE08 \uB098\uD63C\uC790 \uD798\uC73C\uB85C \uC0B4\uC544\uAC08
+          \uC218 \uC788\uB294\uAC70\uACE0."
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uADF8\uB9AC\uACE0 \uC544\uB9C8 \uC55E\uC73C\uB85C \uACC4\uC18D
+          \uC774\uB807\uAC8C \uC0B4\uC544\uC57C\uD560 \uC218 \uB3C4 \uC788\uACE0\u2026"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\u2026\uADF8\uB7FC \uB098\uB791 \uAC19\uC774 \uC6D0\uB9C8\uC744
+          \uAC08\uB798\u2026?"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\u2026\uC5B4? \uAC11\uC790\uAE30?"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uB098 \uC9C4\uC9C0\uD574. \uB108\uAC00 \uC815\uD655\uD788 \uC5B4\uB5A4
+          \uC0C1\uD669\uC778\uC9C0\uB294 \uBAA8\uB974\uACA0\uC9C0\uB9CC, \uADF8\uB798\uB3C4
+          \uB108\uAC00 \uC798\uBABB\uD588\uC744 \uAC70\uB77C\uACE4 \uC0DD\uAC01\uC548\uD574."
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC6D0\uB9C8\uC744\uC5D0 \uB098\uB984 \uB2E4\uB978 \uB3C4\uD615\uB4E4\uB3C4
+          \uC0B4\uC544\uAC00\uAC70\uB4E0 \uB2E4\uC591\uD558\uAC8C. \uD63C\uD608\uB3C4
+          \uB9CE\uACE0. \uADF8\uB798\uC11C \uC801\uC751\uD558\uB294\uB370 \uD070 \uBB38\uC81C
+          \uC5C6\uC744\uAC70\uC57C."
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC5B4\u2026\uB0B4\uAC00 \uAC08 \uC218 \uC788\uC744\uC9C0\uB294
+          \uBAA8\uB974\uACA0\uB2E4.. \uADFC\uB370 \uB9CC\uC57D \uAC08 \uC218 \uC788\uB2E4\uBA74
+          \uC88B\uAE34 \uD558\uACA0\uB124. \uB9D0\uC774\uB77C\uB3C4 \uACE0\uB9C8\uC6CC"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uB9D0\uB9CC \uD558\uB294 \uAC70 \uC544\uB2C8\uC57C. \uB9CC\uC57D
+          \uB108\uB9CC \uAD1C\uCC2E\uC73C\uBA74 \uB098 \uC5EC\uD589 \uB05D\uB098\uACE0
+          \uAC19\uC774 \uC138\uBAA8\uB9C8\uC744\uC5D0\uC11C \uB098\uC624\uC790."
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\u2026\uC2DC\uAC04 \uB2A6\uC5C8\uB2E4. \uC624\uB298 \uC6B0\uB9AC
+          \uC9D1\uC5D0\uC11C \uC790\uACE0 \uAC08\uB798? \uB108 \uC880 \uCDE8\uD55C
+          \uAC70 \uAC19\uC544\uC11C"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC74C\u2026\uADF8\uB7F4\uAE4C\u2026? \uCE5C\uAD6C \uC9D1\uC5D0\uC11C
+          \uC790\uB294 \uAC83\uB3C4 \uC88B\uC9C0"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uB204\uAD74 \uC6B0\uB9AC \uC9D1\uC5D0 \uCD08\uB300\uD558\uB294
+          \uAC74 \uB108\uAC00 \uCC98\uC74C\uC774\uC57C."
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC624, \uC601\uAD11\uC73C\uB85C \uBC1B\uC544\uB4DC\uB9B4\uAED8~"
+        sfx: 
+      - name: "\uC2A4\uD54F"
+        expression: 1
+        anim_name: Speat
+        contents: "\uD558\uD56B, \uC7AC\uBC0C\uB124. \uC880 \uC881\uAE34\uD55C\uB370
+          \uC798 \uC218 \uC788\uC744\uAC70\uC57C"
+        sfx: 
+      - name: 
+        expression: 0
+        anim_name: 
+        contents: "\uADF8\uB807\uAC8C \uBC24\uC774 \uB418\uC5C8\uACE0 \uB458\uC740
+          \uC2A4\uD54F\uC758 \uC790\uCDE8\uBC29\uC5D0 \uAC00\uC11C \uC774\uC57C\uAE30\uB97C
+          \uB098\uB204\uBA70 \uBC24\uC744 \uC9C0\uC0C8\uC6B0\uB2E4 \uC7A0\uC5D0 \uBE60\uC84C\uB2E4."
+        sfx: 
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -504,8 +1183,9 @@ MonoBehaviour:
           interacts: []
         interactionObjs:
           interactions: []
-    interactionMethod: 0
+    interactionMethod: 2
     isViewChange: 0
+    isFocusObject: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
@@ -514,6 +1194,9 @@ MonoBehaviour:
     inGames: []
     isLoop: 0
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
@@ -548,13 +1231,61 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3070732721964558625}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: 8.601, y: 0.136, z: -5.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7147352855898190907}
-  m_RootOrder: 0
+  m_Father: {fileID: 5086918325192144248}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!1 &3176495899931086098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5378201581765435499}
+  - component: {fileID: 2046282045312307200}
+  m_Layer: 0
+  m_Name: Ring Creator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5378201581765435499
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3176495899931086098}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5086918323779867312}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2046282045312307200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3176495899931086098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c48fa193b31e493fae764d90d62c0b57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineRenderer: {fileID: 5843267376574694022}
+  ringImage: {fileID: 361582645702902921}
+  rangeParent: {fileID: 8977387244996853649}
+  segments: 360
+  noteSpeed: 0.1
 --- !u!1 &3335456639102092226
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,7 +1328,7 @@ GameObject:
   - component: {fileID: 6573940078317919201}
   - component: {fileID: 361582645702902921}
   m_Layer: 0
-  m_Name: Ring Start
+  m_Name: Ring Radius(Setting)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -617,10 +1348,10 @@ RectTransform:
   m_Father: {fileID: 8610898152667947169}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 256, y: 256}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6573940078317919201
 CanvasRenderer:
@@ -670,7 +1401,7 @@ GameObject:
   - component: {fileID: 7614138284177336494}
   - component: {fileID: 8355844090810370271}
   m_Layer: 0
-  m_Name: range (3)
+  m_Name: Safe Zone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -690,10 +1421,10 @@ RectTransform:
   m_Father: {fileID: 8610898152667947169}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 256, y: 256}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7614138284177336494
 CanvasRenderer:
@@ -774,7 +1505,7 @@ Transform:
   m_Children:
   - {fileID: 5086918325620033182}
   m_Father: {fileID: 5086918323779867312}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4584840252310384534
 GameObject:
@@ -789,7 +1520,7 @@ GameObject:
   - component: {fileID: 57568257218634179}
   - component: {fileID: 2268956723439558982}
   m_Layer: 0
-  m_Name: InnerCircle_btn
+  m_Name: InnerCircle Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -809,10 +1540,10 @@ RectTransform:
   m_Father: {fileID: 8610898152667947169}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 256, y: 256}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8147567150894652236
 CanvasRenderer:
@@ -863,7 +1594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -922,11 +1653,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1907904685706869629}
-  - {fileID: 1162007476189775579}
   - {fileID: 5086918325332188284}
   - {fileID: 5086918325192144248}
   - {fileID: 2240582524147130051}
   - {fileID: 6591651534744311227}
+  - {fileID: 1162007476189775579}
+  - {fileID: 5378201581765435499}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -954,7 +1686,7 @@ MonoBehaviour:
   rightIsForward: 0
   waypoint: {fileID: 0}
   map: {fileID: 7185179039764740770}
-  ui: {fileID: 0}
+  ui: {fileID: 1907904685706869629}
   skyboxSetting: {fileID: 2100000, guid: 60a35dfd0bcf1404ba332b8f6ab0b5b8, type: 2}
   isOrthographic: 0
   orthographicSize: 0
@@ -1005,11 +1737,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5086918323900167047}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: 8.601, y: 0.136, z: -7.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5086918325696444135}
+  m_Father: {fileID: 5086918325192144248}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &5086918325192144251
@@ -1039,10 +1771,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 5086918325696444135}
-  - {fileID: 7147352855898190907}
+  - {fileID: 5086918323900167044}
+  - {fileID: 4931852950572653625}
   m_Father: {fileID: 5086918323779867312}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5086918325332188287
 GameObject:
@@ -1075,7 +1807,7 @@ Transform:
   - {fileID: 8380394307123055931}
   - {fileID: 8980066375743405879}
   m_Father: {fileID: 5086918323779867312}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5086918325620033177
 GameObject:
@@ -1102,7 +1834,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5086918325620033177}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 14.77}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2240582524147130051}
@@ -1122,68 +1854,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isTrigger: 0
   nextSelectMapcode: 204110
---- !u!1 &5086918325696444134
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5086918325696444135}
-  m_Layer: 0
-  m_Name: 0 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5086918325696444135
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5086918325696444134}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 5086918323900167044}
-  m_Father: {fileID: 5086918325192144248}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5144857205549581643
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7147352855898190907}
-  m_Layer: 0
-  m_Name: 1 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7147352855898190907
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5144857205549581643}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4931852950572653625}
-  m_Father: {fileID: 5086918325192144248}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5803555426770804366
 GameObject:
   m_ObjectHideFlags: 0
@@ -1196,7 +1866,7 @@ GameObject:
   - component: {fileID: 3134215202249396561}
   - component: {fileID: 5066554053526431108}
   m_Layer: 0
-  m_Name: range (2)
+  m_Name: Caution Zone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1210,16 +1880,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5803555426770804366}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.5}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 8610898152667947169}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 256, y: 256}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3134215202249396561
 CanvasRenderer:
@@ -1285,7 +1955,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8610898152667947169}
-  - {fileID: 8804370484284251790}
+  - {fileID: 3005813237176748847}
   m_Father: {fileID: 1907904685706869629}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1323,7 +1993,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5086918323779867312}
-  m_RootOrder: 1
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4488275306121895061
 MonoBehaviour:
@@ -1339,7 +2009,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canPrefab: {fileID: 4541711105496458148, guid: 994adae05cd60474f94991cf92fa8863,
     type: 3}
-  rangeParent: {fileID: 8977387244996853649}
   clearButton: {fileID: 2268956723439558982}
   startPoint: {fileID: 8380394307123055931}
   destPoint: {fileID: 8980066375743405879}
@@ -1356,10 +2025,7 @@ MonoBehaviour:
   - power: 5
     plusY: 0.5
     resultType: 3
-  playCam:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  ring: {fileID: 0}
+  ringCreator: {fileID: 2046282045312307200}
 --- !u!1 &8687297359747354155
 GameObject:
   m_ObjectHideFlags: 0
@@ -1399,7 +2065,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8610898152667947169}
-  - component: {fileID: 2178629373425007614}
   m_Layer: 0
   m_Name: range
   m_TagString: Untagged
@@ -1428,16 +2093,8 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 257, y: 256}
+  m_SizeDelta: {x: 256, y: 256}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &2178629373425007614
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8977387244996853649}
-  m_CullTransparentMesh: 0
 --- !u!1001 &5086918324579167989
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1527,9 +2184,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8522679e7eb86a43bad69af3e9b33ea, type: 3}
---- !u!1 &7185179039764740770 stripped
+--- !u!1 &4282665139230101795 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 2679288865674826839, guid: f8522679e7eb86a43bad69af3e9b33ea,
+  m_CorrespondingSourceObject: {fileID: 9076802753089847254, guid: f8522679e7eb86a43bad69af3e9b33ea,
     type: 3}
   m_PrefabInstance: {fileID: 5086918324579167989}
   m_PrefabAsset: {fileID: 0}
@@ -1539,9 +2196,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5086918324579167989}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4282665139230101795 stripped
+--- !u!1 &7185179039764740770 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 9076802753089847254, guid: f8522679e7eb86a43bad69af3e9b33ea,
+  m_CorrespondingSourceObject: {fileID: 2679288865674826839, guid: f8522679e7eb86a43bad69af3e9b33ea,
     type: 3}
   m_PrefabInstance: {fileID: 5086918324579167989}
   m_PrefabAsset: {fileID: 0}

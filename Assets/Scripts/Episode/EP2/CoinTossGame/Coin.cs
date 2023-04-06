@@ -7,9 +7,14 @@ namespace Episode.EP2.CoinTossGame
     public class Coin : MonoBehaviour
     {
         private Action checkAction;
-        public void Init(Vector3 dir, float force, float timer, Action action)
+        
+        private Action<bool> endAction;
+        
+        public void Init(Vector3 dir, float force, float timer, Action action1, Action<bool> action2)
         {
-            checkAction = action;
+            checkAction = action1;
+            endAction = action2;
+            
             var myRigidbody = GetComponent<Rigidbody>();
             myRigidbody.AddForce(dir * force, ForceMode.VelocityChange);
 
@@ -19,21 +24,23 @@ namespace Episode.EP2.CoinTossGame
         private IEnumerator WaitStop(float timer)
         {
             yield return new WaitForSeconds(timer);
-            Check();
+            Check(false);
         }
 
-        private void Check()
+        private void Check(bool isClear)
         {
             checkAction?.Invoke();
+
+            endAction?.Invoke(isClear);
         }
 
         private void OnTriggerEnter(Collider other)
         {
             // 바닥인가 분수인가
-            
+
             StopAllCoroutines();
             
-            Check();
+            Check(true);
         }
     }
 }

@@ -13,10 +13,11 @@ namespace Episode.EP2.PlatformGame
         public AnimationCurve jumpCurve;
         public float sec1;
         public float sec2;
+
         protected override void PressButton()
         {
             StartCoroutine(FrameForParameter());
-            gameManager.ActiveButton(false);
+            miniGameManager.ActiveButton(false);
         }
 
         private IEnumerator FrameForParameter()
@@ -52,8 +53,10 @@ namespace Episode.EP2.PlatformGame
                 t += Time.fixedDeltaTime / sec2;
 
                 var curvepercent = jumpCurve.Evaluate(t);
-                var destPosition = Vector3.LerpUnclamped(startPosition, thirdPos.position, t) - mainCharacter.transform.position;
-                destPosition.y = Mathf.LerpUnclamped(startPosition.y, thirdPos.position.y, curvepercent) - mainCharacter.transform.position.y;
+                var destPosition = Vector3.LerpUnclamped(startPosition, thirdPos.position, t) -
+                                   mainCharacter.transform.position;
+                destPosition.y = Mathf.LerpUnclamped(startPosition.y, thirdPos.position.y, curvepercent) -
+                                 mainCharacter.transform.position.y;
 
                 characterController.Move(destPosition * Time.fixedDeltaTime);
 
@@ -63,7 +66,6 @@ namespace Episode.EP2.PlatformGame
             mainCharacter.UseGravity = true;
             mainCharacter.CharacterAnimator.SetBool("2DSide", false);
             mainCharacter.PutDownCharacter();
-
         }
     }
 }

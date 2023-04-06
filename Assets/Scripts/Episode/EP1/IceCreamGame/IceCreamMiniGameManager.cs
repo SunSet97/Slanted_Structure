@@ -5,9 +5,9 @@ using UnityEngine.UI;
 using Utility.Core;
 using Random = UnityEngine.Random;
 
-namespace Episode.EP1.MarketGame.IceCream
+namespace Episode.EP1.IceCreamGame
 {
-    public class IceCreamGameManager : Game
+    public class IceCreamMiniGameManager : MiniGame
     {
         private enum MoveDir
         {

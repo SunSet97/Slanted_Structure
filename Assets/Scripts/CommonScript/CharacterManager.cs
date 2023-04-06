@@ -95,15 +95,9 @@ namespace CommonScript
             CharacterAnimator.SetBool(SeatHash, false);
         }
 
-        public void SetCharacter(Transform mapSettingTransform)
+        public void SetCharacter(MapData.CharacterPositionSet posSet)
         {
-            var posSetIndex = DataController.Instance.CurrentMap.positionSets.FindIndex(item => item.who == who);
-            if (posSetIndex == -1)
-            {
-                return;
-            }
-            
-            if (DataController.Instance.CurrentMap.positionSets[posSetIndex].isFollow)
+            if (posSet.isFollow)
             {
                 var mainPosSet = DataController.Instance.CurrentMap.positionSets.Find(item => item.isMain);
                 var targetPos = (mainPosSet.startPosition.position - mainPosSet.startPosition.right) * followDistance;
@@ -115,14 +109,19 @@ namespace CommonScript
 
                 gameObject.layer = LayerMask.NameToLayer("Default");
             }
-            else if (DataController.Instance.CurrentMap.positionSets[posSetIndex].isMain)
+            else
             {
-                transform.position = mapSettingTransform.position;
-                Debug.Log("전  " + transform.rotation.eulerAngles);
-                transform.LookAt(transform.position + mapSettingTransform.right);
-                Debug.Log("후  " + transform.rotation.eulerAngles);
+                transform.position = posSet.startPosition.position;
+                transform.LookAt(transform.position + posSet.startPosition.right);
 
-                gameObject.layer = LayerMask.NameToLayer("Player");
+                if (posSet.isMain)
+                {
+                    gameObject.layer = LayerMask.NameToLayer("Player");
+                }
+                else
+                {
+                    gameObject.layer = LayerMask.NameToLayer("Default");
+                }
             }
 
             Emotion = Expression.IDLE;
@@ -132,7 +131,8 @@ namespace CommonScript
 
             characterOriginRot = transform.eulerAngles;
 
-            if (DataController.Instance.CurrentMap.method == JoystickInputMethod.OneDirection && !DataController.Instance.CurrentMap.rightIsForward)
+            if (DataController.Instance.CurrentMap.method == JoystickInputMethod.OneDirection &&
+                !DataController.Instance.CurrentMap.rightIsForward)
             {
                 characterOriginRot.y += 180f;
                 Debug.Log("정방향이 아님 반전시킴");
@@ -166,6 +166,7 @@ namespace CommonScript
         [SerializeField] private float followSpeed = 1f;
 
         private float lastFollowSpeed;
+        private bool isGround;
 
         private static readonly int SpeedHash = Animator.StringToHash("Speed");
         private static readonly int JumpHash = Animator.StringToHash("Jump");
@@ -214,12 +215,29 @@ namespace CommonScript
 
         public void MoveCharacter(JoystickInputMethod joystickInputMethod, bool isJoystickInputUse)
         {
+            if (!isGround)
+            {
+                // jump하거나 떨어지거나 등등에서 isGround가 false인 경우
+                
+                if (CharacterController.isGrounded)
+                {
+                    isGround = true;
+                }
+            }
+            else
+            {
+                // 바닥에 있다가 뜨는 경우
+                // Jump -> Jump에서 isGround = false;
+                // 떨어지는 경우 -> 어카지
+            }
             // 캐릭터를 이 함수로 조종할 수 있을때 (조이스틱 외 미포함)
             if (!IsMove)
             {
                 return;
             }
-            
+
+            Debug.Log($"바닥 - {CharacterController.isGrounded}");
+
             if (isJoystickInputUse)
             {
                 var characterForward2D =
@@ -245,9 +263,9 @@ namespace CommonScript
                     {
                         transform.Rotate(Vector3.up, joystickDeltaAngle);
                     }
-                        
+
                     DataController.Instance.CurrentMap.waypoint.JoystickUpdate();
-                        
+
                     // CharacterAnimator.SetFloat(DirectionHash, joystickAngle);
                 }
                 else if (joystickInputMethod == JoystickInputMethod.Other)
@@ -256,7 +274,7 @@ namespace CommonScript
                     {
                         transform.Rotate(Vector3.up, joystickDeltaAngle);
                     }
-                        
+
                     // CharacterAnimator.SetFloat(DirectionHash, joystickAngle);
                 }
 
@@ -355,7 +373,7 @@ namespace CommonScript
         private void EmotionAnimationSetting()
         {
             CharacterAnimator.SetInteger(EmotionHash, (int)Emotion);
-            
+
             if (faceExpression.Length <= (int)Emotion || Emotion == Expression.None)
             {
                 return;

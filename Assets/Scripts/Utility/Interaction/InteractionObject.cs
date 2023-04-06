@@ -9,6 +9,7 @@ using Data.GamePlay;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
+using UnityEngine.Serialization;
 using UnityEngine.Timeline;
 using Utility.Core;
 using Utility.Ending;
@@ -40,11 +41,8 @@ namespace Utility.Interaction
 
         [Header("인터렉션 방식")] public InteractionPlayType interactionPlayType;
 
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Game)]
-        public GameObject gamePlayableGame;
-
-        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Game)]
-        public Game game;
+        [FormerlySerializedAs("game")] [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Game)]
+        public MiniGame miniGame;
 
         [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
         public DialogueData dialogueData;
@@ -359,7 +357,7 @@ namespace Utility.Interaction
         /// </summary>
         public void StartInteraction()
         {
-            Debug.Log("Start Interaction");
+            Debug.Log($"Start Interaction {InteractIndex}");
             var interaction = GetInteraction();
 
             if (interaction.isWait && interaction.waitInteractionData.waitInteractions.Any(waitInteraction =>
@@ -448,9 +446,8 @@ namespace Utility.Interaction
             }
             else if (interaction.interactionPlayType == InteractionPlayType.Game)
             {
-                var game = interaction.game;
-                game.Play();
-                game.OnEndPlay = () =>
+                interaction.miniGame.Play();
+                interaction.miniGame.OnEndPlay = () =>
                 {
                     PlayUIController.Instance.SetMenuActive(false);
                     interaction.EndAction();
@@ -622,7 +619,7 @@ namespace Utility.Interaction
                     case TaskContentType.Play:
                         currentTaskData.isContinue = false;
                         var gamePlayable =
-                            GameObject.Find(currentTask.nextFile).GetComponent<Game>();
+                            GameObject.Find(currentTask.nextFile).GetComponent<MiniGame>();
                         PlayUIController.Instance.SetMenuActive(false);
                         gamePlayable.OnEndPlay = () => { PlayUIController.Instance.SetMenuActive(true); };
                         gamePlayable.Play();

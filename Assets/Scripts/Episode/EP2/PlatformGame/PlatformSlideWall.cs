@@ -13,7 +13,7 @@ namespace Episode.EP2.PlatformGame
         protected override void PressButton()
         {
             StartCoroutine(FramePerParameter());
-            gameManager.ActiveButton(false);
+            miniGameManager.ActiveButton(false);
         }
 
         private IEnumerator FramePerParameter()

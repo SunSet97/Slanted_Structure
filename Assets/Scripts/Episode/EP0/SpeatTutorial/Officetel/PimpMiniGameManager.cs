@@ -4,7 +4,7 @@ using Utility.Core;
 
 namespace Episode.EP0.SpeatTutorial.Officetel
 {
-    public class PimpGameManager : Game
+    public class PimpMiniGameManager : MiniGame
     {
         public PimpGuest[] pimpGuests;
 
