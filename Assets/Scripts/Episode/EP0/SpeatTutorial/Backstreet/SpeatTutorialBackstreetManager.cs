@@ -40,7 +40,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 
         private const string Path = "/AssetBundles/backstreetrun";
         private const int Length = 100;
-        private const float TrailerDistance = 18.65f;
+        public float TrailerDistance = 18.65f;
 
         private void Start()
         {
