@@ -22,8 +22,10 @@ namespace Episode.EP0.SpeatTutorial.Officetel
         [SerializeField] private float rotationSpeed;
         [SerializeField] private float increaseSpeed;
         [SerializeField] private int nextDirection;
+        
+        [SerializeField] private int floor;
 
-        private PimpGameManager pimpGameManager;
+        private PimpMiniGameManager pimpMiniGameManager;
         private CharacterController characterController;
         private int rotVal = 180;
         private bool speedUp;
@@ -31,9 +33,9 @@ namespace Episode.EP0.SpeatTutorial.Officetel
         private const float SameFloorRange = 0.5f; // y값 얼마차이까지 스핏하고 같은 층에 있다고 판단할 것인지 범위.
         private readonly int speedHash = Animator.StringToHash("Speed");
 
-        public void Init(PimpGameManager gameManager)
+        public void Init(PimpMiniGameManager miniGameManager)
         {
-            pimpGameManager = gameManager;
+            pimpMiniGameManager = miniGameManager;
             characterController = GetComponent<CharacterController>();
             var animator = GetComponent<Animator>();
             animator.SetFloat(speedHash, 0f);
@@ -65,7 +67,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
 
         public void Think()
         {
-            if (!pimpGameManager.IsPlay)
+            if (!pimpMiniGameManager.IsPlay)
             {
                 return;
             }
@@ -95,7 +97,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!pimpGameManager.IsPlay)
+            if (!pimpMiniGameManager.IsPlay)
             {
                 return;
             }
@@ -118,7 +120,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
             {
                 if (jsonFile)
                 {
-                    pimpGameManager.EndPlay();
+                    pimpMiniGameManager.EndPlay();
 
                     DialogueController.Instance.SetDialougueEndAction(() =>
                     {
@@ -146,8 +148,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
 
         private bool CheckSameFloorWithCharacter()
         {
-            var character = DataController.Instance.GetCharacter(CustomEnum.Character.Main);
-            return Mathf.Abs(gameObject.transform.position.y - character.transform.position.y) <= SameFloorRange;
+            return floor == speatAbility.Floor;
         }
 
         private IEnumerator SpeedUpFunc()

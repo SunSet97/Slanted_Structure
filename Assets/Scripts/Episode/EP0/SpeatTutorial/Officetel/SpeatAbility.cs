@@ -24,6 +24,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
 
         [NonSerialized] public bool IsUsingAbilityTimer;
         [NonSerialized] public bool IsPassing;
+        [NonSerialized] public int Floor = 5;
 
         private float abilityDuration;
         private float cooldown;
@@ -34,6 +35,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
         private bool isHiding;
         private OutlineClickObj hidingDoor;
         private float originPosZ;
+        
 
         private static readonly int Speed = Animator.StringToHash("Speed");
 
@@ -67,7 +69,10 @@ namespace Episode.EP0.SpeatTutorial.Officetel
         {
             while (abilityDuration > 0)
             {
-                Dash();
+                if (!isHiding)
+                {
+                    Dash();
+                }
 
                 abilityDuration -= Time.deltaTime;
                 abilityButton.image.fillAmount = abilityDuration / setDuration;
@@ -179,12 +184,14 @@ namespace Episode.EP0.SpeatTutorial.Officetel
             else if (joyStick.Vertical > .7f && Physics.Raycast(mainCharacter.transform.position, upDir,
                          out var upFloor, float.MaxValue, floorLayerMask))
             {
+                Floor += 1;
                 passVector2 = Vector2.up;
                 StartCoroutine(CheckPass(upFloor.point + Vector3.up));
             }
             else if (joyStick.Vertical < -.7f && Physics.Raycast(mainCharacter.transform.position, -upDir,
                          out var downFloor, float.MaxValue, floorLayerMask))
             {
+                Floor -= 1;
                 passVector2 = Vector2.down;
                 StartCoroutine(CheckPass(downFloor.point + Vector3.down));
             }
@@ -192,7 +199,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
 
         private void PassDoor()
         {
-            if (cooldown > 0f || IsPassing || !ObjectClicker.Instance.TouchDisplay(out RaycastHit[] hits))
+            if (IsPassing || !ObjectClicker.Instance.TouchDisplay(out RaycastHit[] hits))
             {
                 return;
             }
@@ -210,21 +217,11 @@ namespace Episode.EP0.SpeatTutorial.Officetel
                 {
                     JoystickController.Instance.StopSaveLoadJoyStick(true);
                     StartCoroutine(Hide(target, door));
-                    if (abilityTimerCoroutine != null)
-                    {
-                        StopCoroutine(abilityTimerCoroutine);
-                        abilityText.text = "";
-                        IsUsingAbilityTimer = false;
-                        abilityButton.image.fillAmount = 0f;
-                        abilityCooldownImage.fillAmount = 1f;
-                        passVector2 = Vector2.zero;
-                    }
                 }
                 else
                 {
                     JoystickController.Instance.StopSaveLoadJoyStick(false);
                     StartCoroutine(Hide(target, hidingDoor));
-                    AbilityCooldown();
                 }
             }
         }

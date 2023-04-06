@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 
 namespace Episode.EP0.SpeatTutorial.Backstreet
 {
-    public class SpeatTutorialBackstreetManager : Game
+    public class SpeatTutorialBackstreetManager : MiniGame
     {
         [Header("#UI")] [SerializeField] private Slider speatSlider;
         [SerializeField] private Text remainingDistanceText;

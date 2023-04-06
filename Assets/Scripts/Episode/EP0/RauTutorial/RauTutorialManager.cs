@@ -7,7 +7,6 @@ using UnityEngine.UI;
 using Utility.Core;
 using Utility.Interaction.Click;
 using static Data.CustomEnum;
-using Random = UnityEngine.Random;
 
 namespace Episode.EP0.RauTutorial
 {
@@ -313,12 +312,12 @@ namespace Episode.EP0.RauTutorial
         {
             DataController.Instance.Cam.GetComponent<CameraMoving>().Shake(shakeTime, shakeAmount);
             
-            // if (Mathf.Abs(slider.value) >= 0.35f)
-            // {
-            //     return;
-            // }
-            //
-            // woodKickIndex++;
+            if (Mathf.Abs(slider.value) >= 0.35f)
+            {
+                return;
+            }
+            
+            woodKickIndex++;
         }
 
         // 나무 숲

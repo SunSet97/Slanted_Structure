@@ -22,7 +22,7 @@ public class dovesComoponents
 
 }
 
-public class CatchRobberManager : Game
+public class CatchRobberManager : MiniGame
 {
     // 라우
     private CharacterManager rau;

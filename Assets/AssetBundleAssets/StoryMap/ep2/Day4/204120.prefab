@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 2399816370064954772}
   - component: {fileID: 2690421587306461866}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Interaction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,10 +78,23 @@ MonoBehaviour:
   interactions:
   - jsonFile: {fileID: 4900000, guid: a6d6156f8e860be4f961d86bb4cd696b, type: 3}
     interactionPlayType: 2
-    gamePlayableGame: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
       dialogueIdx: 0
-      dialogues: []
+      dialogues:
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC880 \uAE38\uC774 \uD5D8\uD558\uB2C8\uAE4C \uC870\uC2EC\uD574\uC11C
+          \uC798 \uB530\uB77C\uC640 \uC54C\uC558\uC9C0?"
+        sfx: 
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uBA3C\uC800 \uB9E8 \uC67C\uCABD\uC73C\uB85C \uAC00\uC788\uB294
+          \uC2A4\uD54F\uC744 \uB530\uB77C \uC7A5\uC560\uBB3C\uB4E4\uC744 \uB118\uC5B4
+          \uAC00\uBCF4\uC790"
+        sfx: 
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -95,7 +108,7 @@ MonoBehaviour:
           movables: []
         playableList:
           playableObjs:
-          - gameObject: {fileID: 6456295206237137197}
+          - miniGame: {fileID: 4256621584465776343}
             isPlay: 1
         interactObjs:
           interacts: []
@@ -103,6 +116,7 @@ MonoBehaviour:
           interactions: []
     interactionMethod: 3
     isViewChange: 0
+    isFocusObject: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
@@ -111,6 +125,9 @@ MonoBehaviour:
     inGames: []
     isLoop: 0
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
@@ -232,37 +249,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2399816370064954772}
-  m_Father: {fileID: 6402695763431204835}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6402695763431204834
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6402695763431204835}
-  m_Layer: 0
-  m_Name: 0 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6402695763431204835
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6402695763431204834}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 6402695763069972232}
   m_Father: {fileID: 6402695764158438385}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -293,7 +279,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6402695763431204835}
+  - {fileID: 6402695763069972232}
   m_Father: {fileID: 6402695762669684867}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -367,7 +353,7 @@ GameObject:
   - component: {fileID: 3422364722523798226}
   - component: {fileID: 4256621584465776343}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Platform Game Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -399,7 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46cb19610f52c314a9e7e866f5b55e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractableButton: {fileID: 0}
+  interactableButton: {fileID: 0}
 --- !u!65 &4744586326011187698
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Episode.EP1.MarketGame.Dalgona
+namespace Episode.EP1.DalgonaGame
 {
     public class DalgonaDrager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {

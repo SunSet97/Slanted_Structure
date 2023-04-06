@@ -228,7 +228,7 @@ namespace Utility.Core
             foreach (var posSet in CurrentMap.positionSets)
             {
                 var character = Array.Find(characters, item => item.who == posSet.who);
-                character.SetCharacter(posSet.startPosition);
+                character.SetCharacter(posSet);
             }
 
             JoystickController.Instance.Init(CurrentMap.joystickType);
@@ -236,7 +236,6 @@ namespace Utility.Core
 
 
             var cameraMoving = Cam.GetComponent<CameraMoving>();
-            Debug.Log(cameraMoving);
             Debug.Log(CurrentMap);
             cameraMoving.Initialize(CurrentMap.cameraViewType, GetCharacter(Character.Main)?.transform);
 

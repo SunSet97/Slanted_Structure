@@ -10,11 +10,11 @@ namespace Episode.EP2.PlatformGame
         public float speed;
         public AnimationCurve jumpCurve;
         public float sec;
-        
+
         protected override void PressButton()
         {
             StartCoroutine(FramePerParameter());
-            gameManager.ActiveButton(false);
+            miniGameManager.ActiveButton(false);
         }
 
         private IEnumerator FramePerParameter()
@@ -46,7 +46,6 @@ namespace Episode.EP2.PlatformGame
 
             mainCharacter.CharacterAnimator.SetBool("2DSide", true);
             mainCharacter.PutDownCharacter();
-
         }
     }
 }

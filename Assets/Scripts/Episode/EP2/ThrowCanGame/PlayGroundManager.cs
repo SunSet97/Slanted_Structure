@@ -6,12 +6,12 @@ using UnityEngine.UI;
 using Utility.Core;
 using Utility.Preference;
 
-namespace Episode.EP2.PlayGroundGame
+namespace Episode.EP2.ThrowCanGame
 {
-    public class PlayGroundManager : Game
+    public class PlayGroundManager : MiniGame
     {
         [Serializable]
-        public struct ThrowCan
+        public struct ThrowProp
         {
             public float power;
             [Range(0, 1)] public float plusY;
@@ -26,17 +26,16 @@ namespace Episode.EP2.PlayGroundGame
             Bad
         }
         
-        public GameObject canPrefab;
+        [SerializeField] private GameObject canPrefab;
 
-        public GameObject rangeParent;
-        public Button clearButton;
+        [SerializeField] private Button clearButton;
 
-        public Transform startPoint;
-        public Transform destPoint;
+        [SerializeField] private Transform startPoint;
+        [SerializeField] private Transform destPoint;
 
-        public ThrowCan[] throwCans;
+        [SerializeField] private ThrowProp[] throwCans;
 
-        [SerializeField] private CreateRing ring;
+        [SerializeField] private RingCreator ringCreator;
 
         private void Start()
         {
@@ -49,48 +48,19 @@ namespace Episode.EP2.PlayGroundGame
             StartTimingGame();
         }
 
-        private IEnumerator StartTestThrow()
-        {
-            while (true)
-            {
-                StartThrowing(ResultState.Bad);
-                yield return new WaitForSeconds(2f);
-            }
-        }
-
-        public override void EndPlay()
-        {
-            base.EndPlay();
-        
-            DataController.Instance.camInfo.camDis = DataController.Instance.CurrentMap.camDis;
-            DataController.Instance.camInfo.camRot = DataController.Instance.CurrentMap.camRot;
-        }
-
         private void StartTimingGame()
         {
-            JoystickController.Instance.InitializeJoyStick(false);
-            DataController.Instance.CurrentMap.ui.gameObject.SetActive(true);
-
-            var canvas = PlayUIController.Instance.Canvas;
-
-            canvas.renderMode = RenderMode.ScreenSpaceCamera;
-            canvas.worldCamera = DataController.Instance.Cam;
-            canvas.planeDistance = 0.8f;
-
-            rangeParent.SetActive(true);
-
-            ring.Setup();
-            ring.CreatePoints();
+            ringCreator.Setup();
 
             StartCoroutine(PlayTimingGame());
         }
         
         private IEnumerator PlayTimingGame()
         {
-            while (rangeParent.transform.GetChild(2).localScale.x * 0.3 *
-                   rangeParent.transform.GetChild(2).GetComponent<RectTransform>().rect.width <= ring.Radius * 2)
+            var child = ringCreator.rangeParent.transform.GetChild(2).GetComponent<RectTransform>();
+            while (child.localScale.x * 0.3 * child.rect.width <= ringCreator.Radius * 2)
             {
-                ring.DisplayUpdate();
+                ringCreator.DisplayUpdate();
                 yield return null;
             }
 
@@ -99,14 +69,14 @@ namespace Episode.EP2.PlayGroundGame
 
         private void EndTimingGame(ResultState result)
         {
-            rangeParent.SetActive(false);
-            ring.Reset();
+            ringCreator.rangeParent.SetActive(false);
+            ringCreator.Reset();
             PlayUIController.Instance.Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
-            StartThrowing(result);
+            ThrowCan(result);
         }
 
-        private void StartThrowing(ResultState type)
+        private void ThrowCan(ResultState type)
         {
             var can = Instantiate(canPrefab);
             can.GetComponent<Can>().OnCollisionEnter.AddListener(() => { Invoke(nameof(EndPlay), 1f); });
@@ -130,22 +100,22 @@ namespace Episode.EP2.PlayGroundGame
             {
                 return;
             }
-
+            
             ResultState result;
-            if (ring.Radius * 2 <= rangeParent.transform.GetChild(2).localScale.x *
-                rangeParent.transform.GetChild(2).GetComponent<RectTransform>().rect.width)
+            if (ringCreator.Radius * 2 <= ringCreator.rangeParent.transform.GetChild(2).localScale.x *
+                ringCreator.rangeParent.transform.GetChild(2).GetComponent<RectTransform>().rect.width)
             {
                 Debug.Log("유후! 바로 들어감");
                 result = ResultState.Perfect;
             }
-            else if (ring.Radius * 2 <= rangeParent.transform.GetChild(1).localScale.x *
-                     rangeParent.transform.GetChild(1).GetComponent<RectTransform>().rect.width)
+            else if (ringCreator.Radius * 2 <= ringCreator.rangeParent.transform.GetChild(1).localScale.x *
+                     ringCreator.rangeParent.transform.GetChild(1).GetComponent<RectTransform>().rect.width)
             {
                 Debug.Log("아싸! 한번 튕기고 들어감");
                 result = ResultState.Good;
             }
-            else if (ring.Radius * 2 <= rangeParent.transform.GetChild(0).localScale.x *
-                     rangeParent.transform.GetChild(0).GetComponent<RectTransform>().rect.width)
+            else if (ringCreator.Radius * 2 <= ringCreator.rangeParent.transform.GetChild(0).localScale.x *
+                     ringCreator.rangeParent.transform.GetChild(0).GetComponent<RectTransform>().rect.width)
             {
                 Debug.Log("아깝다! 한번 튕기고 안들어감");
                 result = ResultState.NotBad;
