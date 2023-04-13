@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Utility.Utils;
 
 namespace Utility.Ending
 {
@@ -51,7 +52,7 @@ namespace Utility.Ending
         {
             button.onClick.AddListener(() =>
             {
-                SceneLoader.SceneLoader.Instance.LoadScene("TitleScene");
+                SceneLoader.Instance.LoadScene("TitleScene");
             });
         }
 

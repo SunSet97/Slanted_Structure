@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using CommonScript;
 using UnityEngine;
+using Utility.Core;
 
 public class Particle : MonoBehaviour
 {

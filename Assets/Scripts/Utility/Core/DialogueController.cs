@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Data;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 using Utility.Audio;
 using Utility.Cinematic;
 using Utility.Preference;
+using Utility.Utils;
 using static Data.CustomEnum;
 
 namespace Utility.Core
@@ -54,7 +56,7 @@ namespace Utility.Core
             var childCount = choiceRoot.childCount;
             choiceBtns = new GameObject[childCount];
             choiceTexts = new Text[childCount];
-            for(int i = 0; i < childCount; i++)
+            for (int i = 0; i < childCount; i++)
             {
                 choiceBtns[i] = choiceRoot.GetChild(i).gameObject;
                 choiceTexts[i] = choiceBtns[i].GetComponentInChildren<Text>(true);
@@ -79,8 +81,11 @@ namespace Utility.Core
 
         public string ConvertPathToJson(string path)
         {
-            string dialogueName = path.Split('/')[1];
-            return DataController.Instance.DialogueDB.LoadAsset<TextAsset>(dialogueName).text;
+            var directoryPath = path.Split('/')[0];
+            var desEp = directoryPath.Last();
+            var dialogueName = path.Split('/')[1];
+            var assetBundle = AssetBundleMap.GetAssetBundle($"ep{desEp}");
+            return assetBundle.LoadAsset<TextAsset>(dialogueName).text;
         }
 
         public void StartConversation(string jsonString)
@@ -196,14 +201,16 @@ namespace Utility.Core
 
             var likeable = DataController.Instance.GetLikeable();
 
-            choiceBtns[0].transform.parent.gameObject.SetActive(true);
+            choiceRoot.gameObject.SetActive(true);
             if (taskData.tasks.Length <= taskData.taskIndex + choiceLen)
             {
                 Debug.LogError("선택지 개수 오류 - IndexOverFlow");
             }
 
+            int choiceIndex;
+
             // 선택지 개수와 조건에 맞게 선택지가 나올 수 있도록 함.
-            for(var choiceIndex = 0; choiceIndex < choiceLen && choiceIndex < choiceBtns.Length; choiceIndex++)
+            for (choiceIndex = 0; choiceIndex < choiceLen && choiceIndex < choiceBtns.Length; choiceIndex++)
             {
                 // 친밀도와 자존감이 기준보다 낮으면 일부 선택지가 나오지 않을 수 있음
                 var choiceTask = taskData.tasks[taskData.taskIndex + choiceIndex + 1];
@@ -217,8 +224,10 @@ namespace Utility.Core
                 {
                     if (condition[0] < likeable[0] || condition[1] < likeable[1] || condition[2] < likeable[2])
                     {
+                        choiceBtns[choiceIndex].SetActive(false);
                         continue;
                     }
+
                     choiceBtns[choiceIndex].SetActive(true);
                     choiceTexts[choiceIndex].text = choiceTask.name;
                 }
@@ -226,11 +235,18 @@ namespace Utility.Core
                 {
                     if (condition[0] > likeable[0] || condition[1] > likeable[1] || condition[2] > likeable[2])
                     {
+                        choiceBtns[choiceIndex].SetActive(false);
                         continue;
                     }
+
                     choiceBtns[choiceIndex].SetActive(true);
                     choiceTexts[choiceIndex].text = choiceTask.name;
                 }
+            }
+
+            for (; choiceIndex < choiceBtns.Length; choiceIndex++)
+            {
+                choiceBtns[choiceIndex].SetActive(false);
             }
         }
 

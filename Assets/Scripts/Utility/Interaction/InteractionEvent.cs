@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using CommonScript;
 using Data.GamePlay;
 using Move;
 using UnityEngine;
 using UnityEngine.Events;
+using Utility.Core;
 using Utility.Property;
 
 namespace Utility.Interaction
@@ -36,6 +36,7 @@ namespace Utility.Interaction
             Play,
             Interactable,
             Interaction,
+
             // FadeOut,
             // PlayAudio,
             Custom
@@ -69,7 +70,7 @@ namespace Utility.Interaction
         {
             public Interact[] interacts;
         }
-        
+
         [Serializable]
         public struct Interaction
         {
@@ -78,13 +79,13 @@ namespace Utility.Interaction
             public int waitSeconds;
             public bool useFadeOut;
         }
-        
+
         [Serializable]
         public struct InteractionList
         {
             public Interaction[] interactions;
         }
-        
+
         [Serializable]
         public struct Audio
         {
@@ -107,13 +108,13 @@ namespace Utility.Interaction
 
         [ConditionalHideInInspector("eventType", EventType.Interactable)]
         public InteractList interactObjs;
-        
+
         [ConditionalHideInInspector("eventType", EventType.Interaction)]
         public InteractionList interactionObjs;
-        
+
         // [ConditionalHideInInspector("eventType", EventType.FadeOut)]
         // public float fadeSec;
-        
+
         // [ConditionalHideInInspector("eventType", EventType.PlayAudio)]
         // public Audio audio;
 
@@ -203,7 +204,7 @@ namespace Utility.Interaction
                 interaction.serializedInteractionData.isInteractable = t.interactable;
             }
         }
-        
+
         private void InteractEvent()
         {
             foreach (var t in interactionObjs.interactions)
@@ -213,7 +214,7 @@ namespace Utility.Interaction
                 t.interactObj.Invoke(nameof(InteractionObject.StartInteraction), t.waitSeconds);
             }
         }
-        
+
         // private void PlayAudio()
         // {
         //     if (audio.isSfx)

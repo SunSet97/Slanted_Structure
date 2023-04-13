@@ -3,8 +3,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Utility.Core;
 
-namespace Utility.Core
+namespace Utility.Utils
 {
     public class FadeEffect : MonoBehaviour
     {

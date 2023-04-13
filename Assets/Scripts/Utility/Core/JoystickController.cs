@@ -44,11 +44,7 @@ namespace Utility.Core
             jumpButton.onClick.AddListener(() =>
             {
                 var mainCharacter = DataController.Instance.GetCharacter(CustomEnum.Character.Main);
-                // if (!mainCharacter.CharacterController.isGrounded)
-                // {
-                mainCharacter.Jump();
-                // }
-
+                mainCharacter.TryJump();
             });
         }
 
@@ -182,9 +178,14 @@ namespace Utility.Core
                 if(Mathf.Approximately(inputDegree, 0f)){
                     return;
                 }
-                var angle = (-1 * (Vector2.Angle(Vector2.up, new Vector2(Joystick.Horizontal, Joystick.Vertical)) - 90f));
 
-                InputJump = angle >= 30f;
+                if (Joystick.GetType() == typeof(DynamicJoystick))
+                {
+                    var angle = (-1 * (Vector2.Angle(Vector2.up, new Vector2(Joystick.Horizontal, Joystick.Vertical)) -
+                                       90f));
+
+                    InputJump = angle >= 30f;
+                }
             }   
             else if (method.Equals(CustomEnum.JoystickInputMethod.Waypoint))
             {
@@ -193,15 +194,19 @@ namespace Utility.Core
                 if(Mathf.Approximately(inputDegree, 0f)){
                     return;
                 }
-                var angle = (-1 * (Vector2.Angle(Vector2.up, new Vector2(Joystick.Horizontal, Joystick.Vertical)) - 90f));
 
-                InputJump = angle >= 30f;
+                if (Joystick.GetType() == typeof(DynamicJoystick))
+                {
+                    var angle = (-1 * (Vector2.Angle(Vector2.up, new Vector2(Joystick.Horizontal, Joystick.Vertical)) -
+                                       90f));
+
+                    InputJump = angle >= 30f;
+                }
             }
             else
             {
                 inputDirection.Set(Joystick.Horizontal, Joystick.Vertical);
                 inputDegree = Vector2.Distance(Vector2.zero, inputDirection);
-                InputJump = false;
             }
         }
     }

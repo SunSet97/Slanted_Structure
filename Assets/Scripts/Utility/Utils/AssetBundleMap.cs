@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Utility.Core
+namespace Utility.Utils
 {
     public static class AssetBundleMap
     {

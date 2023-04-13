@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
-using Utility.Core;
 
-namespace CommonScript
+namespace Utility.Core
 {
     public enum CameraViewType
     {
@@ -36,29 +35,29 @@ namespace CommonScript
         {
             if (cam.orthographic)
             {
-                cam.orthographicSize = DataController.Instance.camOrthgraphicSize;
+                cam.orthographicSize = DataController.Instance.camOrthographicSize;
             }
 
-            cam.transform.rotation = Quaternion.Euler(DataController.Instance.camInfo.camRot + DataController.Instance.CamOffsetInfo.camRot);
+            cam.transform.rotation = Quaternion.Euler(DataController.Instance.camInfo.camRot + DataController.Instance.camOffsetInfo.camRot);
 
             if (viewType.Equals(CameraViewType.FixedView))
             {
                 cam.transform.position = DataController.Instance.CurrentMap.transform.position +
                                          DataController.Instance.camInfo.camDis +
                                          // DialogueController.Instance.dialogueData.CamInfo.camDis +
-                                         DataController.Instance.CamOffsetInfo.camDis;
+                                         DataController.Instance.camOffsetInfo.camDis;
             }
             else if (viewType.Equals(CameraViewType.FollowCharacter))
             {
                 cam.transform.position = focusObject.position +
                                          DataController.Instance.camInfo.camDis +
                                          // DialogueController.Instance.dialogueData.CamInfo.camDis +
-                                         DataController.Instance.CamOffsetInfo.camDis;
+                                         DataController.Instance.camOffsetInfo.camDis;
             }
             else if (viewType.Equals(CameraViewType.FocusObject))
             {
                 cam.transform.position = focusObject.position +
-                                         DataController.Instance.CamOffsetInfo.camDis;
+                                         DataController.Instance.camOffsetInfo.camDis;
             }
         }
 

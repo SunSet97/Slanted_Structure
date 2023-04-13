@@ -1,5 +1,4 @@
-﻿using CommonScript;
-using Data;
+﻿using Data;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;

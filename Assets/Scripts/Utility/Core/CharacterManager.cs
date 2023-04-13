@@ -1,10 +1,9 @@
 ﻿using System;
 using Move;
 using UnityEngine;
-using Utility.Core;
 using static Data.CustomEnum;
 
-namespace CommonScript
+namespace Utility.Core
 {
     public class CharacterManager : MonoBehaviour, IMovable
     {
@@ -166,7 +165,7 @@ namespace CommonScript
         [SerializeField] private float followSpeed = 1f;
 
         private float lastFollowSpeed;
-        private bool isGround;
+        private bool isGrounded;
 
         private static readonly int SpeedHash = Animator.StringToHash("Speed");
         private static readonly int JumpHash = Animator.StringToHash("Jump");
@@ -215,28 +214,24 @@ namespace CommonScript
 
         public void MoveCharacter(JoystickInputMethod joystickInputMethod, bool isJoystickInputUse)
         {
-            if (!isGround)
+            // Jump -> Jump에서 isGround = false;
+            // 떨어지는 경우 -> 바닥에 붙어있다고 판정 넣고 점프 가능하게
+            if (!isGrounded)
             {
-                // jump하거나 떨어지거나 등등에서 isGround가 false인 경우
+                // jump하고 떨어지고 있는 경우
                 
                 if (CharacterController.isGrounded)
                 {
-                    isGround = true;
+                    // 점프 가능
+                    isGrounded = true;
                 }
             }
-            else
-            {
-                // 바닥에 있다가 뜨는 경우
-                // Jump -> Jump에서 isGround = false;
-                // 떨어지는 경우 -> 어카지
-            }
+            
             // 캐릭터를 이 함수로 조종할 수 있을때 (조이스틱 외 미포함)
             if (!IsMove)
             {
                 return;
             }
-
-            Debug.Log($"바닥 - {CharacterController.isGrounded}");
 
             if (isJoystickInputUse)
             {
@@ -281,13 +276,17 @@ namespace CommonScript
                 CharacterAnimator.SetFloat(SpeedHash, JoystickController.Instance.inputDegree);
             }
 
-            if (UseGravity && !CharacterController.isGrounded)
+            if (UseGravity && !isGrounded)
             {
                 MoveVerical.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
             }
-            else if (CharacterController.isGrounded)
+            else if (isGrounded)
             {
-                if (MoveVerical.y <= 0)
+                if (!CharacterController.isGrounded)
+                {
+                    MoveVerical.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
+                }
+                else if (MoveVerical.y <= 0)
                 {
                     MoveVerical = Vector3.zero;
                 }
@@ -339,13 +338,17 @@ namespace CommonScript
                 CharacterAnimator.SetFloat(SpeedHash, (distanceRatio - 1) * followSpeed);
             }
 
-            if (UseGravity && !CharacterController.isGrounded)
+            if (UseGravity && !isGrounded)
             {
                 MoveVerical.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
             }
-            else if (CharacterController.isGrounded)
+            else if (isGrounded)
             {
-                if (MoveVerical.y <= 0)
+                if (!CharacterController.isGrounded)
+                {
+                    MoveVerical.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
+                }
+                else if (MoveVerical.y <= 0)
                 {
                     MoveVerical = Vector3.zero;
                 }
@@ -359,11 +362,22 @@ namespace CommonScript
             CharacterController.Move((MoveHorizontal + MoveVerical) * Time.fixedDeltaTime);
         }
 
+        public void TryJump()
+        {
+            JoystickController.Instance.InputJump = true;
+        }
+
         // 점프 중에 이동속도 느려짐, RootMotion 때문으로 추측
         public void Jump()
         {
-            CharacterAnimator.SetBool(TwoSideHash, false);
+            if (!isGrounded)
+            {
+                return;
+            }
+
+            isGrounded = false;
             JoystickController.Instance.InputJump = false;
+            CharacterAnimator.SetBool(TwoSideHash, false);
             MoveVerical = new Vector3(0, jumpForce);
             CharacterAnimator.SetTrigger(JumpHash);
         }

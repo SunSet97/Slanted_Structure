@@ -1,11 +1,11 @@
 ﻿using Data;
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
 using UnityEngine;
-using Utility.Core;
+using Utility.Utils;
+#if UNITY_EDITOR
+#endif
 
-namespace CommonScript
+namespace Utility.Core
 {
 #if UNITY_EDITOR
     [CustomEditor(typeof(CheckMapClear))]

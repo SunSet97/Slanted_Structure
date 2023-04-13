@@ -10,7 +10,7 @@ namespace Data
         public int intimacySpRau;
         public int intimacyOunRau;
     }
-    
+
     [Serializable]
     public struct CharData
     {

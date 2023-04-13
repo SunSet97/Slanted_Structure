@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
-using CommonScript;
 using Data;
 using Data.GamePlay;
 using UnityEngine;
@@ -17,6 +16,7 @@ using Utility.Interaction.Click;
 using Utility.Json;
 using Utility.Preference;
 using Utility.Property;
+using Utility.Utils;
 using Task = Data.Task;
 using static Data.CustomEnum;
 
@@ -108,8 +108,8 @@ namespace Utility.Interaction
                         .Initialize(CameraViewType.FocusObject, transform);
                 }
 
-                DataController.Instance.CamOffsetInfo.camDis = interactionCamera.camDis;
-                DataController.Instance.CamOffsetInfo.camRot = interactionCamera.camRot;
+                DataController.Instance.camOffsetInfo.camDis = interactionCamera.camDis;
+                DataController.Instance.camOffsetInfo.camRot = interactionCamera.camRot;
             }
 
             foreach (var interactionEvent in interactionStartActions.interactionEvents)
@@ -129,8 +129,8 @@ namespace Utility.Interaction
                             DataController.Instance.GetCharacter(Character.Main).transform);
                 }
 
-                DataController.Instance.CamOffsetInfo.camDis = Vector3.zero;
-                DataController.Instance.CamOffsetInfo.camRot = Vector3.zero;
+                DataController.Instance.camOffsetInfo.camDis = Vector3.zero;
+                DataController.Instance.camOffsetInfo.camRot = Vector3.zero;
             }
 
             foreach (var endAction in interactionEndActions.interactionEvents)

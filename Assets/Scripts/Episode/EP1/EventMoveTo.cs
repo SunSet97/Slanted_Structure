@@ -3,7 +3,7 @@ using Data;
 using UnityEngine;
 using Utility.Core;
 
-namespace CommonScript
+namespace Episode.EP1
 {
     public class EventMoveTo : MonoBehaviour
     {

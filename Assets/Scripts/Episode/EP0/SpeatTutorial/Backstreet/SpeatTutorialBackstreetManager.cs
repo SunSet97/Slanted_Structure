@@ -227,7 +227,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 
             jumpEnable = false;
             var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
-            mainCharacter.Jump();
+            mainCharacter.TryJump();
             StartCoroutine(JumpCooldown());
         }
 

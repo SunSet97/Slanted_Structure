@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using CommonScript;
 using Data;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using Utility.Interaction;
 using Utility.Interaction.Click;
+using Utility.Utils;
 using static Data.CustomEnum;
 
 namespace Utility.Core
@@ -17,25 +16,21 @@ namespace Utility.Core
 
         [Header("캐릭터")] [SerializeField] private CharacterManager[] characters;
 
-        [Header("카메라 경계값")] public CamInfo camInfo;
-
-        /// <summary>
-        /// 디버깅용
-        /// </summary>
-        public float camOrthgraphicSize;
-
         [Header("맵")] public Transform mapGenerate;
 
-        [FormerlySerializedAs("charData")] public CharRelationshipData charRelationshipData;
+        // For Debugging & Setting
+        [Header("카메라 경계값")] public CamInfo camInfo;
 
-        public CamInfo CamOffsetInfo;
+        public float camOrthographicSize;
+
+        public CharRelationshipData charRelationshipData;
+
+        public CamInfo camOffsetInfo;
         [NonSerialized] public Camera Cam;
         [NonSerialized] public MapData CurrentMap;
 
         private MapData[] storyMaps;
         private CharacterManager mainChar;
-
-        internal AssetBundle DialogueDB;
 
         private UnityAction onLoadMap;
 
@@ -68,7 +63,7 @@ namespace Utility.Core
             AssetBundleMap.AddAssetBundle("module", $"{Application.dataPath}/AssetBundles/modulematerials");
 
             Cam = Camera.main;
-            CamOffsetInfo = new CamInfo();
+            camOffsetInfo = new CamInfo();
         }
 
         public void GameStart(string mapCode = "001010", SaveData save = null)
@@ -99,7 +94,8 @@ namespace Utility.Core
             }
 
             AssetBundleMap.RemoveAssetBundle($"ep{curEp}/day{curDay}");
-            AssetBundleMap.AddAssetBundle($"ep{desEp}/day{desDay}", $"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
+            AssetBundleMap.AddAssetBundle($"ep{desEp}/day{desDay}",
+                $"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
 
             if (curEp != desEp)
             {
@@ -146,6 +142,10 @@ namespace Utility.Core
         public void ChangeMap(string desMapCode, SaveData saveData = null)
         {
             Debug.Log("Change Map");
+
+            // 맵 바뀐 횟수 4~5번
+            // if(일정 회수 이상인 경우)
+            MobileAdsManager.ShowAd();
 
             foreach (var character in characters)
             {
@@ -221,7 +221,7 @@ namespace Utility.Core
             {
                 mainChar = null;
             }
-            
+
             camInfo.camDis = CurrentMap.camDis;
             camInfo.camRot = CurrentMap.camRot;
 
@@ -245,7 +245,7 @@ namespace Utility.Core
             Cam.orthographic = CurrentMap.isOrthographic;
             if (Cam.orthographic)
             {
-                camOrthgraphicSize = CurrentMap.orthographicSize;
+                camOrthographicSize = CurrentMap.orthographicSize;
             }
 
             foreach (var character in characters)

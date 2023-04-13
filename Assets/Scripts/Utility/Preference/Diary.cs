@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utility.Core;
 using Utility.Save;
+using Utility.Utils;
 
 namespace Utility.Preference
 {
@@ -97,15 +98,15 @@ namespace Utility.Preference
                             }
 
                             SaveManager.Load(t);
-                            SceneLoader.SceneLoader.Instance.LoadScene("Ingame_set", t);
+                            SceneLoader.Instance.LoadScene("Ingame_set", t);
 
-                            SceneLoader.SceneLoader.Instance.AddListener(() =>
+                            SceneLoader.Instance.AddListener(() =>
                             {
                                 var saveData = SaveManager.GetSaveData(t);
                                 saveData.Debug();
                                 DataController.Instance.GameStart(saveData.saveCoverData.mapCode, saveData);
 
-                                SceneLoader.SceneLoader.Instance.RemoveAllListener();
+                                SceneLoader.Instance.RemoveAllListener();
                             });
                         }
                     }

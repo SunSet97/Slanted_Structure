@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CommonScript;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Utility.Audio;

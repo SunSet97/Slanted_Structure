@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using GoogleMobileAds.Api;
+using UnityEngine;
 using UnityEngine.UI;
 using Utility.Core;
 using Utility.Save;
-using Utility.SceneLoader;
+using Utility.Utils;
 
 namespace TitleScene
 {
@@ -19,6 +20,14 @@ namespace TitleScene
 
         private void Start()
         {
+            MobileAds.RaiseAdEventsOnUnityMainThread = true;
+            MobileAds.Initialize(initStatus =>
+            {
+                Debug.Log("MobileAds Initialized");
+                // This callback is called once the MobileAds SDK is initialized.
+                MobileAdsManager.LoadInterstitialAd();
+            });
+            
             newStartButton.onClick.AddListener(() =>
             {
 

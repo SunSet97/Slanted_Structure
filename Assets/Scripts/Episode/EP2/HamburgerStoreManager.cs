@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using CommonScript;
 using UnityEngine;
 using Utility.Core;
 using Utility.Interaction;

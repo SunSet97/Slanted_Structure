@@ -1,5 +1,4 @@
 ﻿using System;
-using CommonScript;
 using Data;
 using UnityEngine;
 using Utility.Core;
