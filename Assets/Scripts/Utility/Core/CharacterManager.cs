@@ -1,4 +1,5 @@
 ﻿using System;
+using Data;
 using Move;
 using UnityEngine;
 using static Data.CustomEnum;
@@ -94,7 +95,7 @@ namespace Utility.Core
             CharacterAnimator.SetBool(SeatHash, false);
         }
 
-        public void SetCharacter(MapData.CharacterPositionSet posSet)
+        public void SetCharacter(MapData.CharacterPositionSet posSet, CharacterData characterData = null)
         {
             if (posSet.isFollow)
             {
@@ -103,15 +104,31 @@ namespace Utility.Core
 
                 targetPos.y = mainPosSet.startPosition.position.y;
 
-                transform.position = targetPos;
-                transform.LookAt(mainPosSet.startPosition);
+                if (characterData != null)
+                {
+                    transform.position = characterData.pos;
+                    transform.rotation = characterData.rot;
+                }
+                else
+                {
+                    transform.position = targetPos;
+                    transform.LookAt(mainPosSet.startPosition);   
+                }
 
                 gameObject.layer = LayerMask.NameToLayer("Default");
             }
             else
             {
-                transform.position = posSet.startPosition.position;
-                transform.LookAt(transform.position + posSet.startPosition.right);
+                if (characterData != null)
+                {
+                    transform.position = characterData.pos;
+                    transform.rotation = characterData.rot;
+                }
+                else
+                {
+                    transform.position = posSet.startPosition.position;
+                    transform.LookAt(transform.position + posSet.startPosition.right);
+                }
 
                 if (posSet.isMain)
                 {

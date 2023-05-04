@@ -104,14 +104,13 @@ namespace Utility.Utils
         {
             if (scene.name == loadSceneName)
             {
-                Debug.Log("로드 삭제");
                 onSceneLoaded?.Invoke();
                 SceneManager.sceneLoaded -= LoadSceneEnd;
                 gameObject.SetActive(false);
             }
         }
 
-        public void AddListener(UnityAction t)
+        public void AddOnLoadListener(UnityAction t)
         {
             Debug.Log("Add Scene Load");
             onSceneLoaded += t;

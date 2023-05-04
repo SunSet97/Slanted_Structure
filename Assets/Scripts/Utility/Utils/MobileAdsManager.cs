@@ -5,11 +5,12 @@ namespace Utility.Utils
 {
     public static class MobileAdsManager
     {
-#if UNITY_EDITOR || UNITY_ANDROID
         private const string ADUnitId = "ca-app-pub-3940256099942544/1033173712";
-#endif
 
         private static InterstitialAd interstitialAd;
+
+        public static int ADCount = 0;
+        public const int CountPerAds = 4;
 
         public static void ShowAd()
         {

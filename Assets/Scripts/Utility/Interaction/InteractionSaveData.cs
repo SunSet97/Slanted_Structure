@@ -17,7 +17,5 @@ namespace Utility.Interaction
         [FormerlySerializedAs("serializedInteractionData")] public List<SerializedInteractionData> serializedInteractionDatas;
         
         public int interactIndex;
-        
-        
     }
 }

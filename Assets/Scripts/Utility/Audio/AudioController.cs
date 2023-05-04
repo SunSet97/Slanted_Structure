@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Management.Instrumentation;
 using UnityEngine;
 
 namespace Utility.Audio
@@ -20,7 +21,7 @@ namespace Utility.Audio
                     }
                     else
                     {
-                        _instance = Resources.Load<AudioController>("AudioController");   
+                        _instance = Resources.Load<AudioController>("UI/AudioController");   
                     }
                     DontDestroyOnLoad(_instance);
                     _instance.audioClips = new List<AudioClip>();

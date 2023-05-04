@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utility.Audio;
 using Utility.Core;
+using Utility.Utils;
 
 namespace Utility.Preference
 {
@@ -26,6 +27,10 @@ namespace Utility.Preference
         [SerializeField] private GameObject preferencePanel;
         [SerializeField] private Button preferenceButton;
         [SerializeField] private Button preferenceExitButton;
+        [SerializeField] private Button titleButton;
+        
+        [Header("Check Panel")] [Space(10)] [SerializeField]
+        private CheckPanel checkPanel;
 
         [Header("사운드 패널")] [Space(10)] [SerializeField]
         private Slider soundSlider;
@@ -54,7 +59,6 @@ namespace Utility.Preference
             else
             {
                 Instance = this;
-                // DontDestroyOnLoad(gameObject.GetComponentInParent<Canvas>().gameObject);
             }
         }
         
@@ -100,6 +104,18 @@ namespace Utility.Preference
             {
                 JoystickController.Instance.StopSaveLoadJoyStick(false);
                 preferencePanel.SetActive(false);
+            });
+            
+            checkPanel.SetListener(CheckPanel.ButtonType.No, () => { checkPanel.gameObject.SetActive(false);});
+            
+            titleButton.onClick.AddListener(() =>
+            {
+                checkPanel.SetText($"저장되지 않은 데이터가 있을 수 있습니다.{System.Environment.NewLine}타이틀 화면으로 돌아가시겠습니까?");
+                checkPanel.SetListener(CheckPanel.ButtonType.Yes, () =>
+                {
+                    SceneLoader.Instance.LoadScene("TitleScene");  
+                });
+                checkPanel.gameObject.SetActive(true);
             });
 
             vibeToggle.onClick.AddListener(() =>

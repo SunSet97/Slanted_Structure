@@ -30,8 +30,7 @@ namespace TitleScene
             
             newStartButton.onClick.AddListener(() =>
             {
-
-                SceneLoader.Instance.AddListener(() =>
+                SceneLoader.Instance.AddOnLoadListener(() =>
                 {
                     if (Application.isEditor)
                     {

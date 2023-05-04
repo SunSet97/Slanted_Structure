@@ -10,7 +10,7 @@ namespace Data
     {
         public SaveCoverData saveCoverData;
 
-        public List<CharData> charDatas;
+        public List<CharacterData> charDatas;
 
         public CharRelationshipData charRelationshipData;
 

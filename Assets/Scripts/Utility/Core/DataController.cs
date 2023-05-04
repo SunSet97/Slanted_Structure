@@ -28,13 +28,12 @@ namespace Utility.Core
         public CamInfo camOffsetInfo;
         [NonSerialized] public Camera Cam;
         [NonSerialized] public MapData CurrentMap;
+        [NonSerialized] public List<InteractionObject> InteractionObjects;
 
         private MapData[] storyMaps;
         private CharacterManager mainChar;
 
         private UnityAction onLoadMap;
-
-        [NonSerialized] public List<InteractionObject> InteractionObjects;
 
         private void Awake()
         {
@@ -45,7 +44,6 @@ namespace Utility.Core
             else
             {
                 Instance = this;
-                // DontDestroyOnLoad(Instance);
             }
         }
 
@@ -68,6 +66,7 @@ namespace Utility.Core
 
         public void GameStart(string mapCode = "001010", SaveData save = null)
         {
+            MobileAdsManager.ADCount++;
             Debug.Log("게임 시작");
             Init();
             ChangeMap(mapCode, save);
@@ -143,9 +142,11 @@ namespace Utility.Core
         {
             Debug.Log("Change Map");
 
-            // 맵 바뀐 횟수 4~5번
-            // if(일정 회수 이상인 경우)
-            MobileAdsManager.ShowAd();
+            if (MobileAdsManager.ADCount >= MobileAdsManager.CountPerAds)
+            {
+                MobileAdsManager.ShowAd();
+                MobileAdsManager.ADCount = 0;
+            }
 
             foreach (var character in characters)
             {
@@ -167,10 +168,10 @@ namespace Utility.Core
 
             CurrentMap = Instantiate(nextMap, mapGenerate);
 
-            SetByChangedMap();
+            SetByChangedMap(saveData);
 
             CurrentMap.Initialize();
-
+            
             LoadData(saveData);
 
             DialogueController.Instance.Initialize();
@@ -204,7 +205,7 @@ namespace Utility.Core
             InteractionObjects.Add(interactionObject);
         }
 
-        private void SetByChangedMap()
+        private void SetByChangedMap(SaveData saveData)
         {
             foreach (var character in characters)
             {
@@ -228,7 +229,15 @@ namespace Utility.Core
             foreach (var posSet in CurrentMap.positionSets)
             {
                 var character = Array.Find(characters, item => item.who == posSet.who);
-                character.SetCharacter(posSet);
+                if (saveData != null)
+                {
+                    var charData = saveData.charDatas.Find(item => item.character == character.who);
+                    character.SetCharacter(posSet, charData);
+                }
+                else
+                {
+                    character.SetCharacter(posSet);
+                }
             }
 
             JoystickController.Instance.Init(CurrentMap.joystickType);
@@ -273,25 +282,18 @@ namespace Utility.Core
         private void LoadData(SaveData saveData)
         {
             var mapCode = CurrentMap.mapCode;
-            Debug.Log($"Load 시도 {mapCode} {saveData?.saveCoverData.mapCode}");
-            if (saveData != null && mapCode == saveData.saveCoverData.mapCode)
+            Debug.Log($"Load 시도 {mapCode}");
+            if (saveData != null)
             {
                 Debug.Log($"Load {mapCode}");
-                Debug.Log($"{InteractionObjects.Count}   {saveData.interactionDatas.Count}");
-                Debug.Log($"{CurrentMap.positionSets.Count}   {saveData.charDatas.Count}");
-                foreach (var positionSet in CurrentMap.positionSets)
-                {
-                    var character = GetCharacter(positionSet.who);
-                    var charData = saveData.charDatas.Find(item => item.character == character.who);
-                    character.transform.position = charData.pos;
-                    character.transform.rotation = charData.rot;
-                }
-
+                Debug.Log($"Interaction 개수: {InteractionObjects.Count}, Save 개수: {saveData.interactionDatas.Count}");
+                Debug.Log($"PosSet 개수: {CurrentMap.positionSets.Count}, Save 개수: {saveData.charDatas.Count}");
+            
                 charRelationshipData = saveData.charRelationshipData;
                 foreach (var interactionObject in InteractionObjects)
                 {
                     var interactionSaveData = saveData.interactionDatas.Find(item => item.id == interactionObject.id);
-
+            
                     interactionObject.Load(interactionSaveData);
                 }
             }

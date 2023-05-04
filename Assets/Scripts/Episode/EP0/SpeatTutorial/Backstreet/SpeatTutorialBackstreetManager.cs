@@ -140,7 +140,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
                     //     }
                     // });
                     // DialogueController.Instance.StartConversation(); 
-                    DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.mapCode);
+                    DataController.Instance.CurrentMap.ResetMap();
 
                     break;
                 }

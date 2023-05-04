@@ -12,10 +12,9 @@ namespace Utility.Save
 {
     public static class SaveManager
     {
-        private static int _idx;
-
-        private static string SaveFilePath => $"{Application.persistentDataPath}/saveData{_idx}.save";
-        private static string SaveCoverFilePath => $"{Application.persistentDataPath}/saveCoverData{_idx}.save";
+        private static readonly string SaveDirectoryPath = $"{Application.persistentDataPath}\\SaveData";
+        private static string SaveFilePath(int index) => $"{SaveDirectoryPath}\\saveData{index}.save";
+        private static string SaveCoverFilePath(int index) => $"{SaveDirectoryPath}\\saveCoverData{index}.save";
 
 
         private static readonly byte[] EncryptKey = Encoding.UTF8.GetBytes("SA3*FDN&48SDFhuj34VMK34KV~3gd$");
@@ -26,7 +25,7 @@ namespace Utility.Save
 
         static SaveManager()
         {
-            Debug.Log(SaveFilePath);
+            Debug.Log(SaveDirectoryPath);
             Init();
         }
 
@@ -41,14 +40,13 @@ namespace Utility.Save
 
         public static async Task SaveAsync(int idx, SaveData saveData, Action saveEndAction = null)
         {
-            _idx = idx;
             RijndaelManaged rijn = new RijndaelManaged();
             rijn.Mode = CipherMode.ECB;
             rijn.Padding = PaddingMode.Zeros;
             rijn.BlockSize = 256;
             using (ICryptoTransform encryptor = rijn.CreateEncryptor(EncryptKey, EncryptIv))
             {
-                using (var fileStream = File.Open(SaveCoverFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                using (var fileStream = File.Open(SaveCoverFilePath(idx), FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
                     try
                     {
@@ -75,7 +73,7 @@ namespace Utility.Save
                     fileStream.Close();
                 }
 
-                using (var fileStream = File.Open(SaveFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                using (var fileStream = File.Open(SaveFilePath(idx), FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
                     try
                     {
@@ -108,8 +106,7 @@ namespace Utility.Save
 
         public static async Task LoadAsync(int idx)
         {
-            _idx = idx;
-            if (!File.Exists(SaveFilePath) || IsLoaded(idx))
+            if (!File.Exists(SaveFilePath(idx)) || IsLoaded(idx))
             {
                 return;
             }
@@ -121,7 +118,7 @@ namespace Utility.Save
 
             using (ICryptoTransform decryptor = rijn.CreateDecryptor(EncryptKey, EncryptIv))
             {
-                using (var fileStream = File.Open(SaveFilePath, FileMode.Open))
+                using (var fileStream = File.Open(SaveFilePath(idx), FileMode.Open))
                 {
                     if (fileStream.Length <= 0)
                     {
@@ -170,8 +167,7 @@ namespace Utility.Save
 
         public static async Task LoadCoverAsync(int idx)
         {
-            _idx = idx;
-            if (!File.Exists(SaveFilePath) || IsCoverLoaded(idx))
+            if (!File.Exists(SaveFilePath(idx)) || IsCoverLoaded(idx))
             {
                 return;
             }
@@ -183,7 +179,7 @@ namespace Utility.Save
 
             using (ICryptoTransform decryptor = rijn.CreateDecryptor(EncryptKey, EncryptIv))
             {
-                using (var fileStream = File.Open(SaveCoverFilePath, FileMode.Open))
+                using (var fileStream = File.Open(SaveCoverFilePath(idx), FileMode.Open))
                 {
                     if (fileStream.Length <= 0)
                     {
@@ -230,14 +226,13 @@ namespace Utility.Save
 
         public static void Save(int idx, SaveData saveData, Action saveEndAction = null)
         {
-            _idx = idx;
             RijndaelManaged rijn = new RijndaelManaged();
             rijn.Mode = CipherMode.ECB;
             rijn.Padding = PaddingMode.Zeros;
             rijn.BlockSize = 256;
             using (ICryptoTransform encryptor = rijn.CreateEncryptor(EncryptKey, EncryptIv))
             {
-                using (var fileStream = File.Open(SaveCoverFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                using (var fileStream = File.Open(SaveCoverFilePath(idx), FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
                     try
                     {
@@ -258,7 +253,7 @@ namespace Utility.Save
                     fileStream.Close();
                 }
 
-                using (var fileStream = File.Open(SaveFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                using (var fileStream = File.Open(SaveFilePath(idx), FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
                     try
                     {
@@ -286,8 +281,7 @@ namespace Utility.Save
 
         public static void Load(int idx)
         {
-            _idx = idx;
-            if (!File.Exists(SaveFilePath) || IsLoaded(idx))
+            if (!File.Exists(SaveFilePath(idx)) || IsLoaded(idx))
             {
                 return;
             }
@@ -299,7 +293,7 @@ namespace Utility.Save
 
             using (ICryptoTransform decryptor = rijn.CreateDecryptor(EncryptKey, EncryptIv))
             {
-                using (var fileStream = File.Open(SaveFilePath, FileMode.Open))
+                using (var fileStream = File.Open(SaveFilePath(idx), FileMode.Open))
                 {
                     if (fileStream.Length <= 0)
                     {
@@ -339,8 +333,7 @@ namespace Utility.Save
 
         public static void LoadCover(int idx)
         {
-            _idx = idx;
-            if (!File.Exists(SaveCoverFilePath) || IsCoverLoaded(idx))
+            if (!File.Exists(SaveCoverFilePath(idx)) || IsCoverLoaded(idx))
             {
                 return;
             }
@@ -352,7 +345,7 @@ namespace Utility.Save
 
             using (ICryptoTransform decryptor = rijn.CreateDecryptor(EncryptKey, EncryptIv))
             {
-                using (var fileStream = File.Open(SaveCoverFilePath, FileMode.Open))
+                using (var fileStream = File.Open(SaveCoverFilePath(idx), FileMode.Open))
                 {
                     if (fileStream.Length <= 0)
                     {
@@ -388,15 +381,14 @@ namespace Utility.Save
 
         public static void Delete(int idx)
         {
-            _idx = idx;
-            if (File.Exists(SaveFilePath))
+            if (File.Exists(SaveFilePath(idx)))
             {
-                File.Delete(SaveFilePath);
+                File.Delete(SaveFilePath(idx));
             }
 
-            if (File.Exists(SaveCoverFilePath))
+            if (File.Exists(SaveCoverFilePath(idx)))
             {
-                File.Delete(SaveCoverFilePath);
+                File.Delete(SaveCoverFilePath(idx));
             }
 
             if (IsCoverLoaded(idx))
@@ -422,8 +414,7 @@ namespace Utility.Save
 
         public static bool Has(int idx)
         {
-            _idx = idx;
-            return File.Exists(SaveFilePath) && File.Exists(SaveCoverFilePath);
+            return File.Exists(SaveFilePath(idx)) && File.Exists(SaveCoverFilePath(idx));
         }
 
         public static bool IsLoaded(int idx)

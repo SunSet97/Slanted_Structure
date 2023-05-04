@@ -1,5 +1,4 @@
-﻿using Data;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utility.Core;
@@ -26,41 +25,26 @@ namespace Utility.Preference
         [SerializeField] private Button deleteButton;
 
         [Header("덮어쓰기")] [Space(15)] [SerializeField]
-        private GameObject coverPanel;
+        private CheckPanel checkPanel;
 
-        [SerializeField] private Button coverYesButton;
-        [SerializeField] private Button coverNoButton;
+        private int coverIdx;
 
-        private int _coverIdx;
+        private RectMask2D saveMask;
+        private RectMask2D loadMask;
+        private RectMask2D deleteMask;
+        private ButtonType focusedButton;
 
-        private RectMask2D _saveMask;
-        private RectMask2D _loadMask;
-        private RectMask2D _deleteMask;
-
-        private ButtonType _focusedButton;
-        
         private void Awake()
         {
-            _saveMask = saveButton.transform.parent.GetComponent<RectMask2D>();
-            _loadMask = loadButton.transform.parent.GetComponent<RectMask2D>();
-            _deleteMask = deleteButton.transform.parent.GetComponent<RectMask2D>();
+            saveMask = saveButton.transform.parent.GetComponent<RectMask2D>();
+            loadMask = loadButton.transform.parent.GetComponent<RectMask2D>();
+            deleteMask = deleteButton.transform.parent.GetComponent<RectMask2D>();
 
             saveButton.onClick.AddListener(() => { FocusButton(ButtonType.Save); });
             loadButton.onClick.AddListener(() => { FocusButton(ButtonType.Load); });
             deleteButton.onClick.AddListener(() => { FocusButton(ButtonType.Delete); });
 
-            coverYesButton.onClick.AddListener(() =>
-            {
-                SaveData saveData = SaveHelper.Instance.GetSaveData();
-                SaveManager.Save(_coverIdx, saveData, () =>
-                {
-                    Debug.Log(_coverIdx + "저장");
-                    UpdateDiary();
-                    coverPanel.SetActive(false);
-                });
-            });
-
-            coverNoButton.onClick.AddListener(() => { coverPanel.SetActive(false); });
+            checkPanel.SetListener(CheckPanel.ButtonType.No, () => { checkPanel.gameObject.SetActive(false); });
 
             for (var idx = 0; idx < diarySaveParent.childCount; idx++)
             {
@@ -69,16 +53,27 @@ namespace Utility.Preference
                 button.onClick.RemoveAllListeners();
                 button.onClick.AddListener(() =>
                 {
-                    if (_focusedButton == ButtonType.Save)
+                    if (focusedButton == ButtonType.Save)
                     {
                         if (SaveManager.Has(t))
                         {
-                            _coverIdx = t;
-                            coverPanel.SetActive(true);
+                            coverIdx = t;
+                            checkPanel.SetText($"저장되지 않은 데이터가 있을 수 있습니다.{System.Environment.NewLine}덮어쓰시겠습니까?");
+                            checkPanel.SetListener(CheckPanel.ButtonType.Yes, () =>
+                            {
+                                var saveData = SaveHelper.Instance.GetSaveData();
+                                SaveManager.Save(coverIdx, saveData, () =>
+                                {
+                                    Debug.Log(coverIdx + "저장");
+                                    UpdateDiary();
+                                    checkPanel.gameObject.SetActive(false);
+                                });
+                            });
+                            checkPanel.gameObject.SetActive(true);
                         }
                         else
                         {
-                            SaveData saveData = SaveHelper.Instance.GetSaveData();
+                            var saveData = SaveHelper.Instance.GetSaveData();
                             SaveManager.Save(t, saveData, () =>
                             {
                                 Debug.Log(t + "저장");
@@ -86,7 +81,7 @@ namespace Utility.Preference
                             });
                         }
                     }
-                    else if (_focusedButton == ButtonType.Load)
+                    else if (focusedButton == ButtonType.Load)
                     {
                         if (SaveManager.Has(t) && SaveManager.IsCoverLoaded(t))
                         {
@@ -94,29 +89,52 @@ namespace Utility.Preference
 
                             if (sceneName.Equals("Ingame_set"))
                             {
-                                gameObject.SetActive(false);
+                                checkPanel.SetText($"저장되지 않은 데이터가 있을 수 있습니다.{System.Environment.NewLine}로드하시겠습니까?");
+                                checkPanel.SetListener(CheckPanel.ButtonType.Yes, () =>
+                                {
+                                    gameObject.SetActive(false);
+
+                                    SaveManager.Load(t);
+                                    SceneLoader.Instance.AddOnLoadListener(() =>
+                                    {
+                                        var saveData = SaveManager.GetSaveData(t);
+                                        saveData.Debug();
+                                        DataController.Instance.GameStart(saveData.saveCoverData.mapCode, saveData);
+
+                                        SceneLoader.Instance.RemoveAllListener();
+                                    });
+                                    SceneLoader.Instance.LoadScene("Ingame_set", t);
+                                });
+                                checkPanel.gameObject.SetActive(true);
                             }
-
-                            SaveManager.Load(t);
-                            SceneLoader.Instance.LoadScene("Ingame_set", t);
-
-                            SceneLoader.Instance.AddListener(() =>
+                            else
                             {
-                                var saveData = SaveManager.GetSaveData(t);
-                                saveData.Debug();
-                                DataController.Instance.GameStart(saveData.saveCoverData.mapCode, saveData);
+                                SaveManager.Load(t);
 
-                                SceneLoader.Instance.RemoveAllListener();
-                            });
+                                SceneLoader.Instance.AddOnLoadListener(() =>
+                                {
+                                    var saveData = SaveManager.GetSaveData(t);
+                                    saveData.Debug();
+                                    DataController.Instance.GameStart(saveData.saveCoverData.mapCode, saveData);
+
+                                    SceneLoader.Instance.RemoveAllListener();
+                                });
+                                SceneLoader.Instance.LoadScene("Ingame_set", t);
+                            }
                         }
                     }
-                    else if (_focusedButton == ButtonType.Delete)
+                    else if (focusedButton == ButtonType.Delete)
                     {
-                        if (SaveManager.Has(t))
+                        checkPanel.SetText($"삭제된 데이터는 복구할 수 없습니다.{System.Environment.NewLine}로드하시겠습니까?");
+                        checkPanel.SetListener(CheckPanel.ButtonType.Yes, () =>
                         {
-                            SaveManager.Delete(t);
-                            UpdateDiary();
-                        }
+                            if (SaveManager.Has(t))
+                            {
+                                SaveManager.Delete(t);
+                                UpdateDiary();
+                            }
+                        });
+                        checkPanel.gameObject.SetActive(true);
                     }
                 });
             }
@@ -124,64 +142,74 @@ namespace Utility.Preference
 
         private void FocusButton(ButtonType buttonType)
         {
-            _focusedButton = buttonType;
+            focusedButton = buttonType;
             if (buttonType == ButtonType.Save)
             {
-                _saveMask.rectTransform.anchoredPosition = new Vector2(120, _saveMask.rectTransform.anchoredPosition.y);
-                _loadMask.rectTransform.anchoredPosition = new Vector2(167, _loadMask.rectTransform.anchoredPosition.y);
-                _deleteMask.rectTransform.anchoredPosition =
-                    new Vector2(179, _deleteMask.rectTransform.anchoredPosition.y);
+                saveMask.rectTransform.anchoredPosition = new Vector2(120, saveMask.rectTransform.anchoredPosition.y);
+                loadMask.rectTransform.anchoredPosition = new Vector2(167, loadMask.rectTransform.anchoredPosition.y);
+                deleteMask.rectTransform.anchoredPosition =
+                    new Vector2(179, deleteMask.rectTransform.anchoredPosition.y);
 
-                _saveMask.enabled = false;
-                _loadMask.enabled = true;
-                _deleteMask.enabled = true;
+                saveMask.enabled = false;
+                loadMask.enabled = true;
+                deleteMask.enabled = true;
 
                 for (var idx = 0; idx < diarySaveParent.childCount; idx++)
                 {
                     if (!SaveManager.Has(idx))
                     {
-                        var button = diarySaveParent.GetChild(idx).GetComponentInChildren<Button>();
-                        button.enabled = true;
+                        var button = diarySaveParent.GetChild(idx).GetComponent<Button>();
+                        button.interactable = true;
                     }
                 }
             }
             else if (buttonType == ButtonType.Load)
             {
-                _saveMask.rectTransform.anchoredPosition = new Vector2(167, _saveMask.rectTransform.anchoredPosition.y);
-                _loadMask.rectTransform.anchoredPosition = new Vector2(120, _loadMask.rectTransform.anchoredPosition.y);
-                _deleteMask.rectTransform.anchoredPosition =
-                    new Vector2(179, _deleteMask.rectTransform.anchoredPosition.y);
+                saveMask.rectTransform.anchoredPosition = new Vector2(167, saveMask.rectTransform.anchoredPosition.y);
+                loadMask.rectTransform.anchoredPosition = new Vector2(120, loadMask.rectTransform.anchoredPosition.y);
+                deleteMask.rectTransform.anchoredPosition =
+                    new Vector2(179, deleteMask.rectTransform.anchoredPosition.y);
 
-                _saveMask.enabled = true;
-                _loadMask.enabled = false;
-                _deleteMask.enabled = true;
+                saveMask.enabled = true;
+                loadMask.enabled = false;
+                deleteMask.enabled = true;
 
                 for (var idx = 0; idx < diarySaveParent.childCount; idx++)
                 {
+                    var button = diarySaveParent.GetChild(idx).GetComponent<Button>();
+
                     if (!SaveManager.Has(idx))
                     {
-                        var button = diarySaveParent.GetChild(idx).GetComponentInChildren<Button>();
-                        button.enabled = false;
+                        button.interactable = false;
+                    }
+                    else
+                    {
+                        button.interactable = true;
                     }
                 }
             }
             else if (buttonType == ButtonType.Delete)
             {
-                _saveMask.rectTransform.anchoredPosition = new Vector2(179, _saveMask.rectTransform.anchoredPosition.y);
-                _loadMask.rectTransform.anchoredPosition = new Vector2(167, _loadMask.rectTransform.anchoredPosition.y);
-                _deleteMask.rectTransform.anchoredPosition =
-                    new Vector2(120, _deleteMask.rectTransform.anchoredPosition.y);
+                saveMask.rectTransform.anchoredPosition = new Vector2(179, saveMask.rectTransform.anchoredPosition.y);
+                loadMask.rectTransform.anchoredPosition = new Vector2(167, loadMask.rectTransform.anchoredPosition.y);
+                deleteMask.rectTransform.anchoredPosition =
+                    new Vector2(120, deleteMask.rectTransform.anchoredPosition.y);
 
-                _saveMask.enabled = true;
-                _loadMask.enabled = true;
-                _deleteMask.enabled = false;
+                saveMask.enabled = true;
+                loadMask.enabled = true;
+                deleteMask.enabled = false;
 
                 for (var idx = 0; idx < diarySaveParent.childCount; idx++)
                 {
+                    var button = diarySaveParent.GetChild(idx).GetComponent<Button>();
+
                     if (!SaveManager.Has(idx))
                     {
-                        var button = diarySaveParent.GetChild(idx).GetComponentInChildren<Button>();
-                        button.enabled = false;
+                        button.interactable = false;
+                    }
+                    else
+                    {
+                        button.interactable = true;
                     }
                 }
             }

@@ -35,6 +35,7 @@ namespace Utility.Core
 
         public void Clear()
         {
+            MobileAdsManager.ADCount++;
             if (!nextSelectMapcode.Equals("000000") && !nextSelectMapcode.Equals(""))
             {
                 DataController.Instance.CurrentMap.nextMapcode = nextSelectMapcode;

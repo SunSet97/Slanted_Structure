@@ -334,6 +334,11 @@ namespace Utility.Core
             }
         }
 
+        public void ResetMap()
+        {
+            DataController.Instance.ChangeMap(mapCode);
+        }
+
         public void DestroyMap()
         {
             if (ui)

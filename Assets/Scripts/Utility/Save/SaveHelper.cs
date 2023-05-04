@@ -44,7 +44,7 @@ namespace Utility.Save
                     date = DataController.Instance.CurrentMap.date,
                     time = DataController.Instance.CurrentMap.time
                 },
-                charDatas = new List<CharData>(),
+                charDatas = new List<CharacterData>(),
                 charRelationshipData = DataController.Instance.charRelationshipData,
                 interactionDatas = new List<InteractionSaveData>()
             };
@@ -58,7 +58,7 @@ namespace Utility.Save
             foreach (var positionSet in DataController.Instance.CurrentMap.positionSets)
             {
                 var character = DataController.Instance.GetCharacter(positionSet.who);
-                saveData.charDatas.Add(new CharData
+                saveData.charDatas.Add(new CharacterData
                 {
                     pos = character.transform.position,
                     rot = character.transform.rotation,

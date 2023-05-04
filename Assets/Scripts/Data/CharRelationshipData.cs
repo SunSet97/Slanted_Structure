@@ -10,12 +10,4 @@ namespace Data
         public int intimacySpRau;
         public int intimacyOunRau;
     }
-
-    [Serializable]
-    public struct CharData
-    {
-        public CustomEnum.Character character;
-        public SerializableVector3 pos;
-        public SerializableQuaternion rot;
-    }
 }

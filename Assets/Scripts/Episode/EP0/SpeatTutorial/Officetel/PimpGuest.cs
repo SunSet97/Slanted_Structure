@@ -124,13 +124,13 @@ namespace Episode.EP0.SpeatTutorial.Officetel
                     DialogueController.Instance.SetDialougueEndAction(() =>
                     {
                         characterManager.IsMove = true;
-                        DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.mapCode);
+                        DataController.Instance.CurrentMap.ResetMap();
                     });
                     DialogueController.Instance.StartConversation(jsonFile.text);
                 }
                 else
                 {
-                    DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.mapCode);
+                    DataController.Instance.CurrentMap.ResetMap();
                 }
             }
         }

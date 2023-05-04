@@ -893,7 +893,6 @@ namespace Utility.Interaction
 
         public void Load(InteractionSaveData saveData)
         {
-            Debug.Log(saveData);
             transform.position = saveData.pos;
             transform.rotation = saveData.rot;
             InteractIndex = saveData.interactIndex;
