@@ -108,7 +108,7 @@ namespace Utility.SpeechBubble
 
             yield return new WaitForSeconds(bubbleScript.disappearSec);
 
-            yield return new WaitWhile(() => DialogueController.Instance.IsTalking);
+            yield return new WaitWhile(() => DialogueController.Instance.IsDialogue);
 
             if (isCharacterInRange && IsBubbleEnable())
             {

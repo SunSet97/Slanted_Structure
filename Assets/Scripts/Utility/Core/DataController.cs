@@ -20,12 +20,13 @@ namespace Utility.Core
 
         // For Debugging & Setting
         [Header("카메라 경계값")] public CamInfo camInfo;
-
+        public CamInfo camOffsetInfo;
         public float camOrthographicSize;
 
         public CharRelationshipData charRelationshipData;
 
-        public CamInfo camOffsetInfo;
+        [Header("Dialogue")] public float dialoguePrintSec = .1f;
+        
         [NonSerialized] public Camera Cam;
         [NonSerialized] public MapData CurrentMap;
         [NonSerialized] public List<InteractionObject> InteractionObjects;
@@ -173,8 +174,6 @@ namespace Utility.Core
             CurrentMap.Initialize();
             
             LoadData(saveData);
-
-            DialogueController.Instance.Initialize();
 
             if (FadeEffect.Instance.IsAlreadyFadeOut)
             {

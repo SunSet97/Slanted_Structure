@@ -121,7 +121,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
                 {
                     pimpMiniGameManager.EndPlay();
 
-                    DialogueController.Instance.SetDialougueEndAction(() =>
+                    DialogueController.Instance.SetDialogueEndAction(() =>
                     {
                         characterManager.IsMove = true;
                         DataController.Instance.CurrentMap.ResetMap();

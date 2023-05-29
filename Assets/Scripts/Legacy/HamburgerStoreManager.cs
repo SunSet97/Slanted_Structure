@@ -42,7 +42,7 @@ public class HamburgerStoreManager : MonoBehaviour
 
         speat.SetPointEvent(() =>
         {
-            DialogueController.Instance.SetDialougueEndAction(() =>
+            DialogueController.Instance.SetDialogueEndAction(() =>
             {
                 speat.StartMoving();
                 StartCoroutine(StartRauMoving());
