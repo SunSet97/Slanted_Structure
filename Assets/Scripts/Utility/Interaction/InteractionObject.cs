@@ -46,24 +46,21 @@ namespace Utility.Interaction
 
         [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
         public DialogueData dialogueData;
+        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
+        public float dialoguePrintSec;
 
         [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Animation)]
         public Animator animator;
 
-        // [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.FadeOut)]
-        // public float fadeSec;
-
+        [Header("Interaction Event")]
         [Space(10)] public InteractionEvents interactionStartActions;
-
         public InteractionEvents interactionEndActions;
 
         [Header("인터랙션 방법")] public InteractionMethod interactionMethod;
 
         [Header("카메라 뷰")] public bool isViewChange;
-
         [ConditionalHideInInspector("isViewChange")]
         public bool isFocusObject;
-
         [ConditionalHideInInspector("isViewChange")]
         public CamInfo interactionCamera;
 
@@ -71,14 +68,14 @@ namespace Utility.Interaction
         public GameObject[] cinematics;
         public GameObject[] inGames;
 
+        [Header("Interaction State")]
         [Space(10)] public bool isLoop;
-
         [Space(10)] public bool isContinue;
-
+        // Save 관련 체크 필요
         [Space(10)] public bool isWait;
-
         [ConditionalHideInInspector("isWait")] public WaitInteractionData waitInteractionData;
 
+        [Header("Serialized Data")]
         [Space(10)] public SerializedInteractionData serializedInteractionData;
 
         [Header("디버깅 전용 TaskData")] [Space(10)]
@@ -200,19 +197,23 @@ namespace Utility.Interaction
         {
             if (!Application.isPlaying)
             {
-                foreach (var interaction in interactions)
+                if (interactions != null && interactions.Count > 0)
                 {
-                    if (interaction.interactionPlayType == InteractionPlayType.Dialogue)
+                    foreach (var interaction in interactions)
                     {
-                        interaction.dialogueData = new DialogueData
+                        if (interaction.interactionPlayType == InteractionPlayType.Dialogue)
                         {
-                            dialogues =
-                                JsontoString.FromJsonArray<Dialogue>(interaction.jsonFile.text)
-                        };
-                    }
-                    else if (interaction.interactionPlayType == InteractionPlayType.Task)
-                    {
-                        interaction.debugTaskData = LoadTaskData();
+                            interaction.dialogueData = new DialogueData();
+                            if (Mathf.Approximately(interaction.dialoguePrintSec, 0))
+                            {
+                                interaction.dialoguePrintSec = DataController.Instance.dialoguePrintSec;
+                            }
+                            interaction.dialogueData.Init(interaction.jsonFile.text);
+                        }
+                        else if (interaction.interactionPlayType == InteractionPlayType.Task)
+                        {
+                            interaction.debugTaskData = LoadTaskData();
+                        }
                     }
                 }
             }
@@ -285,18 +286,16 @@ namespace Utility.Interaction
         /// <param name="index">선택지 번호, 1번부터 시작</param>
         private void ChoiceEvent(int index)
         {
-            TaskData currentTaskData = GetInteraction().serializedInteractionData.JsonTask.Peek();
+            var currentTaskData = GetInteraction().serializedInteractionData.JsonTask.Peek();
             var tempTaskIndex = currentTaskData.taskIndex;
             var choiceLen = int.Parse(currentTaskData.tasks[tempTaskIndex].nextFile);
             Debug.Log(choiceLen);
             currentTaskData.taskIndex += choiceLen;
             Debug.Log(currentTaskData.taskIndex);
-            Task curTask = currentTaskData.tasks[tempTaskIndex + index];
+            var curTask = currentTaskData.tasks[tempTaskIndex + index];
             //변화값
             curTask.increaseVar = curTask.increaseVar.Replace("m", "-");
-            int[] changeVal =
-                Array.ConvertAll(curTask.increaseVar.Split(','),
-                    int.Parse);
+            var changeVal = Array.ConvertAll(curTask.increaseVar.Split(','), int.Parse);
             DataController.Instance.UpdateLikeable(changeVal);
 
             string jsonString;
@@ -304,15 +303,14 @@ namespace Utility.Interaction
             //다음 맵 코드 변경
             if (curTask.order != 0)
             {
-                DataController.Instance.CurrentMap.SetNextMapCode(
-                    $"{curTask.order,000000}");
+                DataController.Instance.CurrentMap.SetNextMapCode($"{curTask.order,000000}");
             }
 
             switch (curTask.taskContentType)
             {
                 case TaskContentType.Dialogue:
                     var newLen = currentTaskData.tasks.Length + 1;
-                    Task[] array1 = new Task[newLen];
+                    var array1 = new Task[newLen];
                     Array.Copy(currentTaskData.tasks, 0, array1, 0, currentTaskData.taskIndex + 1);
                     array1[currentTaskData.taskIndex + 1] = new Task
                     {
@@ -327,14 +325,14 @@ namespace Utility.Interaction
                     currentTaskData.tasks = array1;
 
                     currentTaskData.isContinue = false;
-                    jsonString = DialogueController.Instance.ConvertPathToJson(curTask.nextFile);
+                    jsonString = DialogueController.ConvertPathToJson(curTask.nextFile);
                     // currentTaskData.taskIndex--;    // 현재 taskIndex는 선택지이며 선택지 다음 인덱스가 된다. 그런데 대화 종료시 Index가 1 증가하기에 1을 줄여준다.
                     DialogueController.Instance.StartConversation(jsonString);
                     //다음 인덱스의 타입
                     break;
                 case TaskContentType.Temp:
                     //새로운 task 실행
-                    jsonString = DialogueController.Instance.ConvertPathToJson(curTask.nextFile);
+                    jsonString = DialogueController.ConvertPathToJson(curTask.nextFile);
                     PushTask(jsonString);
                     StartInteraction();
                     break;
@@ -342,8 +340,8 @@ namespace Utility.Interaction
                     StackNewTask(curTask.nextFile);
                     break;
                 case TaskContentType.EndingChoice:
-                    jsonString = DialogueController.Instance.ConvertPathToJson(curTask.nextFile);
-                    DialogueController.Instance.SetDialougueEndAction(() =>
+                    jsonString = DialogueController.ConvertPathToJson(curTask.nextFile);
+                    DialogueController.Instance.SetDialogueEndAction(() =>
                     {
                         EndingHelper.Instance.StartEnd(curTask.order);
                     });
@@ -396,15 +394,15 @@ namespace Utility.Interaction
                     Debug.LogError("오류");
                 }
 
-                if (DialogueController.Instance.IsTalking)
+                if (DialogueController.Instance.IsDialogue)
                 {
                     return;
                 }
 
-                DialogueController.Instance.SetDialougueEndAction(interaction.EndAction);
+                DialogueController.Instance.SetDialogueEndAction(interaction.EndAction);
 
 
-                DialogueController.Instance.StartConversation(interaction.jsonFile.text);
+                DialogueController.Instance.StartConversation(interaction.jsonFile.text, interaction.dialoguePrintSec);
             }
             else if (interaction.interactionPlayType == InteractionPlayType.Potal &&
                      gameObject.TryGetComponent(out CheckMapClear mapClear))
@@ -496,7 +494,7 @@ namespace Utility.Interaction
                         .editorSettings.fps ||
                         interaction.timelines[0].state == PlayState.Paused &&
                         !interaction.timelines[0].playableGraph.IsValid() &&
-                        !DialogueController.Instance.IsTalking);
+                        !DialogueController.Instance.IsDialogue);
                     StartCoroutine(WaitTimeline(waitUntil, () =>
                     {
                         JoystickController.Instance.StopSaveLoadJoyStick(false);
@@ -607,7 +605,7 @@ namespace Utility.Interaction
                         currentTaskData.isContinue = false;
                         string path = currentTask.nextFile;
                         Debug.Log($"대화 경로 - {path}");
-                        string jsonString = DialogueController.Instance.ConvertPathToJson(path);
+                        string jsonString = DialogueController.ConvertPathToJson(path);
                         DialogueController.Instance.StartConversation(jsonString);
                         break;
                     case TaskContentType.Animation:
@@ -742,7 +740,7 @@ namespace Utility.Interaction
                             .editorSettings.fps ||
                             interaction.timelines[0].state == PlayState.Paused &&
                             !interaction.timelines[0].playableGraph.IsValid() &&
-                            !DialogueController.Instance.IsTalking);
+                            !DialogueController.Instance.IsDialogue);
 
                         PlayUIController.Instance.SetMenuActive(true);
                         JoystickController.Instance.StopSaveLoadJoyStick(false);

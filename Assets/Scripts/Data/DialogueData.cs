@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
+using Utility.Core;
 using Utility.Json;
 
 namespace Data
@@ -8,15 +9,19 @@ namespace Data
     [Serializable]
     public class DialogueData
     { 
-        public int dialogueIdx;
-        
         public Dialogue[] dialogues;
         
+        public int dialogueIdx;
+
+        [NonSerialized] public float DialoguePrintSec;
+        [NonSerialized] public float NextSec;
+
         public UnityAction<int> ChooseAction;
         public UnityAction DialogueEndAction;
         
         public DialogueData()
         {
+            Debug.Log("초기화");
             dialogues = Array.Empty<Dialogue>();
             dialogueIdx = 0;
 
@@ -24,16 +29,27 @@ namespace Data
             DialogueEndAction = null;
         }
 
-        public void Init(string json)
+        public void Init(string json, float dialoguePrintSec = 0f, float nextSec = 0f)
         {
+            Debug.Log("초기화");
             dialogues = JsontoString.FromJsonArray<Dialogue>(json);
+            Debug.Log("추가");
+            if (Mathf.Approximately(dialoguePrintSec, 0))
+            {
+                dialoguePrintSec = DataController.Instance.dialoguePrintSec;
+            }
+            foreach (var dialogue in dialogues)
+            {
+                dialogue.PrintSec = dialoguePrintSec;
+                dialogue.NextSec = nextSec;
+            }
             dialogueIdx = 0;
         }
 
         public void Reset()
         {
             DialogueEndAction?.Invoke();
-            
+            Debug.Log("초기화");
             dialogues = Array.Empty<Dialogue>();
             dialogueIdx = 0;
             
@@ -73,5 +89,12 @@ namespace Data
         public string anim_name;
         public string contents;
         public string sfx;
+
+        [Space(5)]
+        [NonSerialized] public float PrintSec;
+        [NonSerialized] public float NextSec;
+        
+        [NonSerialized] public float startTime;
+        [NonSerialized] public float endTime;
     }
 }
