@@ -17,7 +17,7 @@
 
         CGPROGRAM
         // Physically based Standard lighting model, and enable shadows on all light types
-        #pragma surface surf Toon
+        #pragma surface surf Toon exclude_path:forward     
         sampler2D _MainTex;
         sampler2D _BumpMap;
         sampler2D _RampTex;

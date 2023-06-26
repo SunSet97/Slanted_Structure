@@ -47,7 +47,7 @@ MonoBehaviour:
   interactions:
   - jsonFile: {fileID: 4900000, guid: ceb6ce8f8b540dc4a8ddd75311349fcd, type: 3}
     interactionPlayType: 2
-    gamePlayableGame: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
       dialogueIdx: 0
       dialogues:
@@ -71,6 +71,7 @@ MonoBehaviour:
       interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
+    isFocusObject: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
@@ -79,6 +80,9 @@ MonoBehaviour:
     inGames: []
     isLoop: 0
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
@@ -151,7 +155,7 @@ MonoBehaviour:
   interactions:
   - jsonFile: {fileID: 4900000, guid: 9bb22f8bf5a331a45a920549a62faba1, type: 3}
     interactionPlayType: 2
-    gamePlayableGame: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
       dialogueIdx: 0
       dialogues:
@@ -180,6 +184,7 @@ MonoBehaviour:
           interactions: []
     interactionMethod: 1
     isViewChange: 0
+    isFocusObject: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
@@ -188,6 +193,9 @@ MonoBehaviour:
     inGames: []
     isLoop: 0
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
@@ -209,6 +217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5724989132033950183}
   - component: {fileID: 5724989132033950180}
+  - component: {fileID: 1130905551463647725}
   m_Layer: 0
   m_Name: 002030
   m_TagString: Untagged
@@ -275,12 +284,34 @@ MonoBehaviour:
     startPosition: {fileID: 5724989133351906227}
     isMain: 1
     isFollow: 0
+    runSpeed: 0
+    playGravity: 1.1
+    jumpForce: 7
   cameraViewType: 0
   camDis: {x: 0, y: 2, z: -8}
   camRot: {x: 10, y: 0, z: 0}
   isJoystickInputUse: 1
   isJoystickNone: 0
   joystickType: 0
+--- !u!114 &1130905551463647725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5724989132033950182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9c4a0858fe02bf489eed97d0f37c22b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  who: 0
+  waitTransform: {fileID: 0}
+  jumpForce: 5
+  gravityScale: 0.6
+  airResistance: 1.2
+  followDistance: 1
+  followSpeed: 1
 --- !u!1 &5724989132166803285
 GameObject:
   m_ObjectHideFlags: 0

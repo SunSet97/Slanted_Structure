@@ -39,11 +39,19 @@ namespace Utility.Cinematic
 
         public void EmotionAnimationSetting(int emotionInt)
         {
+            if(!Application.isPlaying){
+                return;
+            }
+
             Animator.SetInteger(Emotion, emotionInt);
         }
 
         public void ExpressionSetting(CustomEnum.Expression emotion)
         {
+            if(!Application.isPlaying){
+                return;
+            }
+            
             if (faceExpression.Length <= (int) emotion)
             {
                 return;

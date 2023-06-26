@@ -7,6 +7,7 @@
         _MainTex("Albedo(RGB)",2D) = "White"{}
         _MarkTex("Emission",2D) = "White"{}
         _RampTex("Ramp",2D) = "White"{}
+        _Speed("Blink",float)=0.01
         _CelShadingLevels("Levels",Range(0,1))=0.8
         _BrightDark("Brightness$Darkness",Range(-1,1))=0
     }
@@ -26,6 +27,7 @@
         float _CelShadingLevels;
         fixed4 _Color;
         float _BrightDark;
+        float _Speed;
         
         struct Input
         {
@@ -36,7 +38,7 @@
         };
         void surf(Input IN, inout SurfaceOutput o)
         {
-            float4 ramp = tex2D(_RampTex, float2(_Time.y*0.2,0.5));
+            float4 ramp = tex2D(_RampTex, float2(_Time.y*_Speed,0.5));
             o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_BumpMap));
             o.Albedo = tex2D(_MainTex, IN.uv_MainTex).rgb*_Color;
             o.Emission = tex2D(_MarkTex,IN.uv_MarkTex)*ramp.g;

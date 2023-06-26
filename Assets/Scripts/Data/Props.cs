@@ -31,6 +31,11 @@ namespace Data
             public Action OnEndPlay;
         
             [NonSerialized] public bool IsPlay;
+
+            [Header("#Play")] [SerializeField] protected float runSpeed;
+            [SerializeField] protected float playGravity;
+
+            [SerializeField] protected float jumpForce;
         
             public virtual void Play()
             {

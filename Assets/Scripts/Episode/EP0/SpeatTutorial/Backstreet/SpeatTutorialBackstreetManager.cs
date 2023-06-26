@@ -24,9 +24,11 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
         [Header("#Buttons")] [SerializeField] private Button abilityButton;
         [SerializeField] private Button jumpButton;
 
-        [SerializeField] private float runSpeed;
-        [SerializeField] private float jumpCooldownSec = 0.05f;
+        [Header("#Play")] [SerializeField] private float jumpCooldownSec = 0.05f;
         [SerializeField] private float abilityCooldownSec = 0.05f;
+
+        [Header("Constant")]
+        [SerializeField] private float TrailerDistance = 18.65f;
 
         private float originJumpForce;
         private float speatAccelator;
@@ -40,7 +42,6 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 
         private const string Path = "/AssetBundles/backstreetrun";
         private const int Length = 100;
-        public float TrailerDistance = 18.65f;
 
         private void Start()
         {

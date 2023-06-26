@@ -14,10 +14,13 @@ namespace Utility.Cinematic.CustomTimeline.CinematicDialogue
         public TextAsset dialogueJson;
 
         [SerializeField] private float dialoguePrintSec;
-        [SerializeField] private bool isAuto;
+        public bool isAuto;
 
         [ConditionalHideInInspector("isAuto")] [SerializeField]
         private float nextSec;
+
+        [ConditionalHideInInspector("isAuto")] [SerializeField]
+        private bool isHold;
 
         [ConditionalHideInInspector("isAuto")] [SerializeField]
         private DialogueData dialogueData;
@@ -47,7 +50,7 @@ namespace Utility.Cinematic.CustomTimeline.CinematicDialogue
             if (!isAuto)
             {
                 dialogueData = null;
-                duration = 1f;
+                //duration = 1f;
             }
             else
             {

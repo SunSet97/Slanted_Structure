@@ -27,6 +27,10 @@ namespace Utility.Core
             public Transform startPosition;
             public bool isMain;
             public bool isFollow;
+
+            public float runSpeed;
+            public float playGravity;
+            public float jumpForce;
         }
         #region Default
 

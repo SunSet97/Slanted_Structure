@@ -16,8 +16,10 @@ namespace Utility.Cinematic.CustomTimeline.CinematicDialogue
             foreach (var clip in clips)
             {
                 var dialogueBehaviour = ((TimelineDialogueClip)clip.asset).template;
-                dialogueBehaviour.UpdateTrack();
-                clip.duration = dialogueBehaviour.GetDuration();
+                if(dialogueBehaviour.isAuto) {
+                    dialogueBehaviour.UpdateTrack();
+                    clip.duration = dialogueBehaviour.GetDuration();
+                }
             }
 
             return base.CreateTrackMixer(graph, go, inputCount);
