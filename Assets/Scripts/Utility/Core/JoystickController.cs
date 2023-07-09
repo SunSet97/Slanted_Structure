@@ -20,8 +20,6 @@ namespace Utility.Core
 
         [NonSerialized] public Joystick Joystick;
         [NonSerialized] public bool InputJump;
-        [NonSerialized] public bool InputDash;
-        [NonSerialized] public bool InputSeat;
 
         private bool isAlreadySave;
         private bool wasJoystickUse;

@@ -28,7 +28,6 @@ namespace Utility.Core
             public bool isMain;
             public bool isFollow;
 
-            public float runSpeed;
             public float playGravity;
             public float jumpForce;
         }

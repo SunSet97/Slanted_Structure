@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using Data.GamePlay;
 using UnityEngine;
@@ -11,6 +12,13 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 {
     public class SpeatTutorialBackstreetManager : MiniGame
     {
+        [Serializable]
+        private class TrailData
+        {
+            public Transform transform;
+            public Trail trail;
+        }
+        
         [Header("#UI")] [SerializeField] private Slider speatSlider;
         [SerializeField] private Text remainingDistanceText;
         [SerializeField] private Slider pimpSlider;
@@ -18,72 +26,65 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 
         [Header("#Objects")] [SerializeField] private Transform startPosition;
         [SerializeField] private GameObject pimp;
-        [SerializeField] private GameObject endTrailer;
-        [SerializeField] private Transform[] trailers;
+        // [SerializeField] private Trail endTrailer;
+        [SerializeField] private TrailData[] trailerData;
+        [SerializeField] private Transform resetPoint;
 
         [Header("#Buttons")] [SerializeField] private Button abilityButton;
         [SerializeField] private Button jumpButton;
 
         [Header("#Play")] [SerializeField] private float jumpCooldownSec = 0.05f;
         [SerializeField] private float abilityCooldownSec = 0.05f;
+        [SerializeField] private float runSpeed;
+        [SerializeField] private float freeDistance;
+        // [SerializeField] private float endDistance;
 
-        [Header("Constant")]
-        [SerializeField] private float TrailerDistance = 18.65f;
-
-        private float originJumpForce;
-        private float speatAccelator;
-        private float pimpAccelator;
+        private bool JumpEnable
+        {
+            get => jumpEnable;
+            set
+            {
+                jumpEnable = value;
+                jumpButton.enabled = jumpEnable;
+            }
+        }        
+        
+        private float speatAcceleration;
+        private float pimpAcceleration;
         private bool jumpEnable;
         private bool abilityEnable;
-        private GameObject[][] patterns;
+        private Trail[][] patterns;
         private AssetBundle obstacleAssetBundle;
         
-        private static readonly int Speed = Animator.StringToHash("Speed");
-
+        private static readonly int SpeedHash = Animator.StringToHash("Speed");
+        
         private const string Path = "/AssetBundles/backstreetrun";
         private const int Length = 100;
 
         private void Start()
         {
-            Initialize();
-        }
-
-        private void Initialize()
-        {
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
 
             obstacleAssetBundle = AssetBundle.LoadFromFile(Application.dataPath + Path);
-
             Debug.Log(obstacleAssetBundle == null ? "Fail to load" : "Success to load");
             var obstacleAssets = obstacleAssetBundle.LoadAllAssets<GameObject>();
 
-            speatSlider.value = 0f;
-            pimpSlider.value = 0f;
-
-            patterns = new GameObject[4][];
+            patterns = new Trail[4][];
             for (var idx = 0; idx < patterns.Length; idx++)
             {
                 var obstacles = obstacleAssets
                     .Where(item => item.name.Substring(7, 1) == idx.ToString()).Distinct()
                     .ToArray();
-                patterns[idx] = obstacles;
-                foreach (var obstacle in obstacles)
-                {
-                    Debug.Log(obstacle);
-                }
+                patterns[idx] = obstacles.Select(item => item.GetComponent<Trail>()).ToArray();
             }
 
             abilityButton.onClick.AddListener(UseAbility);
             jumpButton.onClick.AddListener(UseJump);
-
-            jumpEnable = true;
-            abilityEnable = true;
         }
 
         public override void Play()
         {
             base.Play();
-            Debug.Log("플레이!");
             StartCoroutine(WaitPimp());
             StartCoroutine(StartRunGame());
         }
@@ -92,9 +93,10 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
         {
             base.EndPlay();
             var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
-            mainCharacter.jumpForce = originJumpForce;
-            mainCharacter.CharacterAnimator.SetFloat(Speed, 0f);
+            mainCharacter.CharacterAnimator.SetFloat(SpeedHash, 0f);
             StopAllCoroutines();
+            
+            DataController.Instance.CurrentMap.MapClear();
         }
 
         private IEnumerator WaitPimp()
@@ -103,18 +105,23 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 
             pimp.SetActive(true);
             pimpSlider.gameObject.SetActive(true);
-            pimp.GetComponent<Animator>().SetFloat(Speed, 1f);
+            pimp.GetComponent<Animator>().SetFloat(SpeedHash, 1f);
         }
 
         private IEnumerator StartRunGame()
         {
+            speatSlider.value = 0f;
+            pimpSlider.value = 0f;
+            JumpEnable = true;
+            abilityEnable = true;
+            
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(true);
             var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
-            var waitForFixedUpdate = new WaitForFixedUpdate();
 
-            originJumpForce = mainCharacter.jumpForce;
-            mainCharacter.jumpForce = 7f;
-            mainCharacter.CharacterAnimator.SetFloat(Speed, 1f);
+            const float deltaTime = 0.01f;
+            var waitForSeconds = new WaitForSeconds(deltaTime);
+            
+            mainCharacter.CharacterAnimator.SetFloat(SpeedHash, 1f);
 
             while (true)
             {
@@ -126,6 +133,10 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
                 remainingDistanceText.text = $"{remainingDistance * Length / 100f:0}m";
                 pimpDistanceText.text = $"{pimpDistance * Length / 100f:0}m";
 
+                if (Mathf.Approximately(remainingDistance, 0f))
+                {
+                    EndPlay();
+                }
 
                 if (pimp.activeSelf && speatSlider.value <= pimpSlider.value)
                 {
@@ -140,7 +151,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
                     //         speatSlider.value += speatSlider.maxValue * 0.1f;
                     //     }
                     // });
-                    // DialogueController.Instance.StartConversation(); 
+                    // DialogueController.Instance.StartConversation();
                     DataController.Instance.CurrentMap.ResetMap();
 
                     break;
@@ -152,81 +163,88 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
                     localPosition.x = 20f - pimpDistance * 2f;
                     pimp.transform.localPosition = localPosition;
 
-                    pimpSlider.value += 0.85f * Time.fixedDeltaTime + pimpAccelator;
-                    pimpAccelator += 0.0003f * Time.fixedDeltaTime;
+                    pimpSlider.value += 0.85f * deltaTime + pimpAcceleration;
+                    pimpAcceleration += 0.0003f * deltaTime;
                 }
 
                 if (startPosition.position.x < mainCharacter.transform.position.x)
                 {
-                    speatSlider.value += 0.8f * Time.fixedDeltaTime + speatAccelator;
-                    speatAccelator += 0.0009f * Time.fixedDeltaTime;
+                    speatSlider.value += 0.8f * deltaTime + speatAcceleration;
+                    speatAcceleration += 0.0009f * deltaTime;
 
-                    InstantiateObstacle(remainingDistance);
+                    UpdateObstacle(remainingDistance, deltaTime);
                 }
                 else
                 {
-                    speatAccelator *= 0.98f;
+                    speatAcceleration *= 0.98f;
                 }
 
-                yield return waitForFixedUpdate;
+                yield return waitForSeconds;
             }
         }
 
-        private void InstantiateObstacle(float remainingDistance)
+        private void UpdateObstacle(float remainingDistance, float deltaTime)
         {
-            for (var index = 1; index < trailers.Length; index++)
+            for (var index = 0; index < trailerData.Length; index++)
             {
-                var trailer = trailers[index];
-                if (trailers[0].position.x >= trailer.position.x && !endTrailer.activeSelf)
+                var trailData = trailerData[index];
+                // if (resetPoint.position.x >= trailData.transform.position.x && !endTrailer.gameObject.activeSelf)
+                if (resetPoint.position.x >= trailData.transform.position.x)
                 {
-                    Destroy(trailer.GetChild(0).gameObject);
+                    Destroy(trailData.trail.gameObject);
 
-                    if (speatSlider.value < speatSlider.maxValue * 0.9f)
+                    Debug.Log(remainingDistance);
+                    if (remainingDistance > freeDistance)
                     {
                         var level = 3;
-                        if (remainingDistance > 66f)
+                        var ratio = Mathf.InverseLerp(freeDistance, 100, remainingDistance);
+                        Debug.Log(ratio);
+                        if (ratio > .66f)
                         {
                             level = 1;
                         }
-                        else if (remainingDistance > 33f)
+                        else if (ratio > .33f)
                         {
                             level = 2;
                         }
 
-                        Instantiate(patterns[level][Random.Range(0, patterns[level].Length)], trailer).SetActive(true);
+                        trailData.trail = Instantiate(patterns[level][Random.Range(0, patterns[level].Length)],
+                            trailData.transform);
+                        trailData.trail.gameObject.SetActive(true);
                     }
-                    else if(remainingDistance <= 4f)
-                    {
-                        endTrailer.SetActive(true);
-                        endTrailer.transform.SetParent(trailer);
-                        endTrailer.transform.localPosition = new Vector3(-204.17f, 0, 0);
-                        Instantiate(patterns[0][0], trailer).SetActive(true);
-                    }
+                    // else if (remainingDistance > endDistance)
                     else
                     {
-                        Instantiate(patterns[0][1], trailer).SetActive(true);
+                        trailData.trail = Instantiate(patterns[0][0], trailData.transform);
+                        trailData.trail.gameObject.SetActive(true);
                         Debug.Log($"남은거리: {remainingDistance}, 생성");
                     }
-                    
-                    var leftIndex = ((index - 1) + (trailers.Length - 1) - 1) % (trailers.Length - 1) + 1;
-                    trailer.position = trailers[leftIndex].position + TrailerDistance * Vector3.right;
+                    // else
+                    // {
+                    //     endTrailer.gameObject.SetActive(true);
+                    //     endTrailer.transform.SetParent(trailData.transform);
+                    //     trailData.trail = endTrailer;
+                    //     endTrailer.transform.localPosition = new Vector3(-215f, 0, 0);
+                    // }
+
+                    var leftIndex = (index - 1 + trailerData.Length) % trailerData.Length;
+                    trailData.transform.position = trailerData[leftIndex].transform.position +
+                                                   (trailerData[leftIndex].trail.length / 2 +
+                                                    trailerData[index].trail.length / 2) * Vector3.right;
                 }
-                else
-                {
-                    Debug.Log("무브");
-                    trailer.position -= Vector3.right * ((runSpeed + speatAccelator) * Time.fixedDeltaTime);
-                }
+
+                trailData.transform.position -= Vector3.right * ((runSpeed + speatAcceleration) * deltaTime);
             }
         }
 
         private void UseJump()
         {
-            if (!jumpEnable)
+            if (!JumpEnable)
             {
                 return;
             }
 
-            jumpEnable = false;
+            JumpEnable = false;
             var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
             mainCharacter.TryJump();
             StartCoroutine(JumpCooldown());
@@ -243,7 +261,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
                 yield return waitForFixedUpdate;
             }
 
-            jumpEnable = true;
+            JumpEnable = true;
         }
 
         private void UseAbility()

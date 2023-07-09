@@ -204,10 +204,6 @@ namespace Utility.Interaction
                         if (interaction.interactionPlayType == InteractionPlayType.Dialogue)
                         {
                             interaction.dialogueData = new DialogueData();
-                            if (Mathf.Approximately(interaction.dialoguePrintSec, 0))
-                            {
-                                interaction.dialoguePrintSec = DataController.Instance.dialoguePrintSec;
-                            }
                             interaction.dialogueData.Init(interaction.jsonFile.text);
                         }
                         else if (interaction.interactionPlayType == InteractionPlayType.Task)
@@ -220,6 +216,15 @@ namespace Utility.Interaction
             else
             {
                 gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
+                if (interactions != null)
+                {
+                    var t = interactions.Where(interaction => Mathf.Approximately(interaction.dialoguePrintSec, 0))
+                        .ToArray();
+                    foreach (var interaction in t)
+                    {
+                        interaction.dialoguePrintSec = DataController.Instance.dialoguePrintSec;
+                    }
+                }
             }
 
             if (useOutline)
@@ -933,9 +938,10 @@ namespace Utility.Interaction
                 id = id,
                 pos = transform.position,
                 rot = transform.rotation,
-                interactIndex = InteractIndex
+                interactIndex = InteractIndex,
+                serializedInteractionDatas = new List<SerializedInteractionData>()
             };
-            interactionSaveData.serializedInteractionDatas = new List<SerializedInteractionData>();
+            
             for (var index = 0; index < interactions.Count; index++)
             {
                 var interaction = interactions[index];

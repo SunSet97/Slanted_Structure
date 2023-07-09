@@ -86,7 +86,7 @@ namespace Utility.Core
             gameObject.layer = LayerMask.NameToLayer("Default");
             MoveHorizontal = Vector3.zero;
             MoveVerical = Vector3.zero;
-            UseGravity = false;
+            UseGravity = false; 
 
             CharacterAnimator.SetFloat(SpeedHash, 0f);
 
@@ -142,6 +142,9 @@ namespace Utility.Core
 
             Emotion = Expression.IDLE;
             UseGravity = true;
+            jumpForce = posSet.jumpForce;
+            gravityScale = posSet.playGravity;
+            // speed는 어떻게 하는거지
 
             gameObject.SetActive(true);
 
@@ -379,13 +382,18 @@ namespace Utility.Core
             CharacterController.Move((MoveHorizontal + MoveVerical) * Time.fixedDeltaTime);
         }
 
+        public bool IsJumpEnable()
+        {
+            return isGrounded;
+        }
+
         public void TryJump()
         {
             JoystickController.Instance.InputJump = true;
         }
 
         // 점프 중에 이동속도 느려짐, RootMotion 때문으로 추측
-        public void Jump()
+        private void Jump()
         {
             if (!isGrounded)
             {

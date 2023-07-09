@@ -33,8 +33,7 @@ namespace Data
         {
             Debug.Log("초기화");
             dialogues = JsontoString.FromJsonArray<Dialogue>(json);
-            Debug.Log("추가");
-            if (Mathf.Approximately(dialoguePrintSec, 0))
+            if (Application.isPlaying && Mathf.Approximately(dialoguePrintSec, 0))
             {
                 dialoguePrintSec = DataController.Instance.dialoguePrintSec;
             }
