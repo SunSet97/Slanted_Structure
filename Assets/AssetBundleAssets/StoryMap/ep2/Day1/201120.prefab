@@ -259,6 +259,9 @@ MonoBehaviour:
     startPosition: {fileID: 586399221686276720}
     isMain: 1
     isFollow: 0
+    runSpeed: 0
+    playGravity: 0
+    jumpForce: 0
   cameraViewType: 0
   camDis: {x: 2, y: 1, z: -5}
   camRot: {x: 0, y: 0, z: 0}
@@ -402,22 +405,11 @@ MonoBehaviour:
   interactions:
   - jsonFile: {fileID: 4900000, guid: 2b8bf484f58366e4eb5bbce858ec39bb, type: 3}
     interactionPlayType: 2
-    gamePlayableGame: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
+      dialogues: []
       dialogueIdx: 0
-      dialogues:
-      - name: "\uC2A4\uD54F"
-        expression: 0
-        anim_name: Speat
-        contents: "\uC5EC\uAE34 \uC2DC\uC7A5 \uACE8\uBAA9\uC778\uB370 \uB098\uB9CC
-          \uB530\uB77C\uC624\uBA74 \uB3FC. \uC774 \uACE8\uBAA9 \uB05D\uCABD\uC73C\uB85C
-          \uAC00\uBA74 \uC788\uC5B4."
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 0
-        anim_name: Rau
-        contents: "\uC77C\uB2E8 \uC2A4\uD54F\uC744 \uB530\uB77C\uAC00\uBCF4\uC790."
-        sfx: 
+    dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -425,6 +417,7 @@ MonoBehaviour:
       interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
+    isFocusObject: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
@@ -433,6 +426,9 @@ MonoBehaviour:
     inGames: []
     isLoop: 0
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
@@ -699,60 +695,11 @@ MonoBehaviour:
   interactions:
   - jsonFile: {fileID: 4900000, guid: f5501df58107fa647b31fdc5143cd9ca, type: 3}
     interactionPlayType: 2
-    gamePlayableGame: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
+      dialogues: []
       dialogueIdx: 0
-      dialogues:
-      - name: "\uCE7C\uAD6D\uC218 \uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uC5B4\uC774 \uC6D0\uB9C8\uC744 \uD615\uC528~ \uCE7C\uAD6D\uC218\uC880
-          \uBA39\uACE0\uAC00~ \uB9DB\uC788\uC5B4~"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 7
-        anim_name: Rau
-        contents: "\uC5D0\u2026? \uC800 \uC5EC\uC794\uB370\u2026"
-        sfx: 
-      - name: "\uCE7C\uAD6D\uC218 \uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uC5B4\uB77C? \uC120\uBA38\uC2B4\uAC19\uC544\uC11C \uAC19\uC740
-          \uB0A8\uC794 \uC904 \uC54C\uC558\uC9C0~\uD5C8\uD5C8 \uBBF8\uC548\uD600~"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 7
-        anim_name: Rau
-        contents: "\uC544\u2026\uB124\u2026"
-        sfx: 
-      - name: "\uCE7C\uAD6D\uC218 \uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uC544\uBB34\uD2BC \uC544\uAC00\uC528 \uBC25 \uC548\uBA39\uC5C8\uC73C\uBA74
-          \uBA39\uACE0 \uAC00~"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 0
-        anim_name: Rau
-        contents: "\uC544 \uC9C0\uAE08, \uCE5C\uAD6C \uC18C\uAC1C\uB85C \uB2E4\uB978\uB370
-          \uAC00\uACE0 \uC788\uB294 \uAE38\uC774\uC5B4\uC11C\uC694\u2026\uB124.."
-        sfx: 
-      - name: "\uCE7C\uAD6D\uC218 \uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uC544~ \uAC70\uCC38 \uC544\uAC00\uC528\uAC00 \uBE44\uC2F8\uAC8C
-          \uAD74\uAE30\uB294~\uBA39\uACE0\uAC00\uBA74 \uB418\uC796\uC5B4~"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 9
-        anim_name: Rau
-        contents: "\uC544..; \uAD1C\uCC2E\uC2B5\uB2C8\uB2E4\u2026"
-        sfx: 
-      - name: "\uCE7C\uAD6D\uC218 \uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uB5BC\uC789\u2026"
-        sfx: 
+    dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -760,6 +707,7 @@ MonoBehaviour:
       interactionEvents: []
     interactionMethod: 1
     isViewChange: 0
+    isFocusObject: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
@@ -768,6 +716,9 @@ MonoBehaviour:
     inGames: []
     isLoop: 0
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
@@ -876,58 +827,11 @@ MonoBehaviour:
   interactions:
   - jsonFile: {fileID: 4900000, guid: edc03e778b225174faed97f09d6e1697, type: 3}
     interactionPlayType: 2
-    gamePlayableGame: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
+      dialogues: []
       dialogueIdx: 0
-      dialogues:
-      - name: "\uB5A1\uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uC6D0\uB9C8\uC744 \uC544\uAC00\uC528~ \uB5A1\uD55C\uBC88 \uBCF4\uACE0\uAC00~"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 5
-        anim_name: Rau
-        contents: "\uC624 \uB5A1 \uC88B\uC544\uD558\uB294\uB370!"
-        sfx: 
-      - name: "\uB5A1\uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uD63C\uC790 \uC5EC\uD589\uC628\uAC70\uC57C?"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 1
-        anim_name: Rau
-        contents: "\uB124 \uD734\uD559\uD558\uACE0 \uD63C\uC790 \uC5EC\uD589\uC654\uC5B4\uC694"
-        sfx: 
-      - name: "\uB5A1\uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uC5EC\uC790 \uD63C\uC790\uC11C \uB3CC\uC544\uB2E4\uB2C8\uBA74
-          \uBABB \uC368~"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 9
-        anim_name: Rau
-        contents: "\uB124\u2026?"
-        sfx: 
-      - name: "\uB5A1\uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uC5EC\uC790 \uD63C\uC790 \uC704\uD5D8\uD558\uAC8C \uB3CC\uC544\uB2E4\uB2C8\uBA74
-          \uC5B4\uC9F8~"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 0
-        anim_name: Rau
-        contents: "\uC544\u2026\uB124\u2026"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 9
-        anim_name: Rau
-        contents: "\uC544\uB2C8 \uC5EC\uAE30 \uC0AC\uB78C\uB4E4\uC740 \uC65C \uC774\uB9AC
-          \uC774\uC0C1\uD55C \uB9D0\uB4E4\uB9CC \uD55C\uB2F4.."
-        sfx: 
+    dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -935,6 +839,7 @@ MonoBehaviour:
       interactionEvents: []
     interactionMethod: 1
     isViewChange: 0
+    isFocusObject: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
@@ -943,6 +848,9 @@ MonoBehaviour:
     inGames: []
     isLoop: 0
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1

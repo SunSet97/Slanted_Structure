@@ -5,6 +5,7 @@
         _Color("Color",Color)=(1,1,1,1)
         _MainTex("Texture",2D)= "White"{}
         _RampTex("Ramp",2D) = "White"{}
+        _AlphaValue("Alpha",Range(0,1))=1
     }
     SubShader
     {
@@ -16,6 +17,7 @@
         sampler2D _MainTex;
         sampler2D _RampTex;
         fixed4 _Color;
+        float _AlphaVlue;
 
         struct Input
         {
