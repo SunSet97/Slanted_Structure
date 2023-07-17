@@ -79,14 +79,7 @@ namespace Utility.SpeechBubble
 
         private void SetSpeechBubblePosition()
         {
-            transform.localPosition += (Vector3)speechPos;
-
-            Vector3 screenPoint =
-                DataController.Instance.Cam.WorldToScreenPoint(transform.position);
-            speechBubble.transform.position = screenPoint;
-
-
-            transform.localPosition -= (Vector3)speechPos;
+            speechBubble.transform.position = (Vector3)speechPos + transform.position;
         }
 
         private IEnumerator StartSpeechBubble()
