@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Utility.Core;
+using Utility.Preference;
 using Random = UnityEngine.Random;
 
 namespace Utility.SpeechBubble
@@ -52,7 +53,7 @@ namespace Utility.SpeechBubble
         {
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
             speechBubble =
-                Instantiate(Resources.Load<GameObject>("SpeechBubble"), DataController.Instance.CurrentMap.ui)
+                Instantiate(Resources.Load<GameObject>("SpeechBubble"), PlayUIController.Instance.worldSpaceUI)
                     .GetComponent<SpeechBubble>();
             speechBubble.gameObject.SetActive(false);
         }

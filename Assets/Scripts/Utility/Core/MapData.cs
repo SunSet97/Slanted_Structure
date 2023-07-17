@@ -272,6 +272,16 @@ namespace Utility.Core
         public Vector3 camDis;
         public Vector3 camRot;
         
+        public bool useFieldOfView;
+        [ConditionalHideInInspector("useFieldOfView")]
+        public float fieldOfView;
+        
+        public bool useClippingPlanes;
+        [ConditionalHideInInspector("useClippingPlanes")]
+        public float farClipPlane;
+        
+        public bool usePostProcessing;
+
         private void Start()
         {
             if (!Application.isPlaying)
@@ -371,7 +381,7 @@ namespace Utility.Core
 
             if (isJoystickInputUse)
             {
-                JoystickController.Instance.JoystickInputUpdate(method);
+                JoystickController.Instance.UpdateJoystickInput(method);
             }
 
             mainCharacter.MoveCharacter(method, isJoystickInputUse);

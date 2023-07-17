@@ -59,11 +59,13 @@ namespace Utility.Interaction
         [Header("인터랙션 방법")] public InteractionMethod interactionMethod;
 
         [Header("카메라 뷰")] public bool isViewChange;
-        [ConditionalHideInInspector("isViewChange")]
-        public bool isFocusObject;
-        [ConditionalHideInInspector("isViewChange")]
-        public CamInfo interactionCamera;
+        [ConditionalHideInInspector("isViewChange")] public bool isFocusObject;
+        [ConditionalHideInInspector("isViewChange")] public bool isMain;
+        [ConditionalHideInInspector("isViewChange")] public CamInfo interactionCamera;
 
+        [Header("캐릭터 이동")] public bool isTeleport;
+        [ConditionalHideInInspector("isTeleport")] public Transform teleportTarget;
+        
         [Header("시네마틱")] public PlayableDirector[] timelines;
         public GameObject[] cinematics;
         public GameObject[] inGames;
@@ -80,6 +82,8 @@ namespace Utility.Interaction
 
         [Header("디버깅 전용 TaskData")] [Space(10)]
         public List<TaskData> debugTaskData;
+
+        private CamInfo savedCamInfo;
 
         public Interaction()
         {
@@ -105,8 +109,21 @@ namespace Utility.Interaction
                         .Initialize(CameraViewType.FocusObject, transform);
                 }
 
-                DataController.Instance.camOffsetInfo.camDis = interactionCamera.camDis;
-                DataController.Instance.camOffsetInfo.camRot = interactionCamera.camRot;
+                if (isMain)
+                {
+                    savedCamInfo = DataController.Instance.camInfo;
+                    DataController.Instance.camInfo = interactionCamera;
+                }
+                else
+                {
+                    DataController.Instance.camOffsetInfo = interactionCamera;
+                }
+            }
+
+            if (isTeleport)
+            {
+                var character = DataController.Instance.GetCharacter(Character.Main);
+                character.Teleport(teleportTarget);
             }
 
             foreach (var interactionEvent in interactionStartActions.interactionEvents)
@@ -126,8 +143,15 @@ namespace Utility.Interaction
                             DataController.Instance.GetCharacter(Character.Main).transform);
                 }
 
-                DataController.Instance.camOffsetInfo.camDis = Vector3.zero;
-                DataController.Instance.camOffsetInfo.camRot = Vector3.zero;
+                if (isMain)
+                {
+                    DataController.Instance.camInfo = savedCamInfo;
+                }
+                else
+                {
+                    DataController.Instance.camOffsetInfo.camDis = Vector3.zero;
+                    DataController.Instance.camOffsetInfo.camRot = Vector3.zero;
+                }
             }
 
             foreach (var endAction in interactionEndActions.interactionEvents)
@@ -303,8 +327,6 @@ namespace Utility.Interaction
             var changeVal = Array.ConvertAll(curTask.increaseVar.Split(','), int.Parse);
             DataController.Instance.UpdateLikeable(changeVal);
 
-            string jsonString;
-
             //다음 맵 코드 변경
             if (curTask.order != 0)
             {
@@ -330,7 +352,7 @@ namespace Utility.Interaction
                     currentTaskData.tasks = array1;
 
                     currentTaskData.isContinue = false;
-                    jsonString = DialogueController.ConvertPathToJson(curTask.nextFile);
+                    var jsonString = DialogueController.ConvertPathToJson(curTask.nextFile);
                     // currentTaskData.taskIndex--;    // 현재 taskIndex는 선택지이며 선택지 다음 인덱스가 된다. 그런데 대화 종료시 Index가 1 증가하기에 1을 줄여준다.
                     DialogueController.Instance.StartConversation(jsonString);
                     //다음 인덱스의 타입
@@ -343,14 +365,6 @@ namespace Utility.Interaction
                     break;
                 case TaskContentType.New:
                     StackNewTask(curTask.nextFile);
-                    break;
-                case TaskContentType.EndingChoice:
-                    jsonString = DialogueController.ConvertPathToJson(curTask.nextFile);
-                    DialogueController.Instance.SetDialogueEndAction(() =>
-                    {
-                        EndingHelper.Instance.StartEnd(curTask.order);
-                    });
-                    DialogueController.Instance.StartConversation(jsonString);
                     break;
             }
         }
@@ -405,8 +419,7 @@ namespace Utility.Interaction
                 }
 
                 DialogueController.Instance.SetDialogueEndAction(interaction.EndAction);
-
-
+                
                 DialogueController.Instance.StartConversation(interaction.jsonFile.text, interaction.dialoguePrintSec);
             }
             else if (interaction.interactionPlayType == InteractionPlayType.Potal &&
@@ -422,7 +435,7 @@ namespace Utility.Interaction
                     var timelineAsset = interaction.timelines[0].playableAsset as TimelineAsset;
                     if (timelineAsset != null)
                     {
-                        DataController.Instance.GetCharacter(Character.Main).PickUpCharacter();
+                        // DataController.Instance.GetCharacter(Character.Main).PickUpCharacter();
                         var trackAssets = timelineAsset.GetOutputTracks();
                         foreach (var trackAsset in trackAssets)
                         {
@@ -479,7 +492,7 @@ namespace Utility.Interaction
                     }
 
                     PlayUIController.Instance.SetMenuActive(false);
-                    DataController.Instance.GetCharacter(Character.Main)?.PickUpCharacter();
+                    // DataController.Instance.GetCharacter(Character.Main)?.PickUpCharacter();
                     JoystickController.Instance.StopSaveLoadJoyStick(true);
                     foreach (var interactionInGame in interaction.inGames)
                     {
@@ -641,6 +654,10 @@ namespace Utility.Interaction
                         Debug.Log("선택지 선택 - 단순 대화");
                         interaction.serializedInteractionData.JsonTask.Peek().isContinue = true;
                         yield break;
+                    case TaskContentType.ImmediatelyTemp:
+                        currentTaskData.isContinue = false;
+                        StartImmediately();
+                        break;
                     // TaskEnd 보다는 TaskReset이라는 말이 어울린다
                     // 애매하네
                     //TaskEnd, TaskReset - TaskEnd를 할 때 Task를 재사용 가능하도록 하냐 Task를 재사용하지 못하도록 하냐..
@@ -681,7 +698,7 @@ namespace Utility.Interaction
                     }
                     case TaskContentType.TheEnd:
                         //게임 엔딩
-                        if (int.TryParse(currentTask.nextFile, out int endingIndex))
+                        if (int.TryParse(currentTask.nextFile, out var endingIndex))
                         {
                             EndingHelper.Instance.StartEnd(endingIndex);
                         }
@@ -711,7 +728,7 @@ namespace Utility.Interaction
 
                         interaction.timelines[0].Play();
                         JoystickController.Instance.StopSaveLoadJoyStick(true);
-                        DataController.Instance.GetCharacter(Character.Main)?.PickUpCharacter();
+                        // DataController.Instance.GetCharacter(Character.Main)?.PickUpCharacter();
                         PlayUIController.Instance.SetMenuActive(false);
 
                         // Debug.Log(timeline.);
@@ -796,6 +813,85 @@ namespace Utility.Interaction
                 else
                 {
                     interaction.EndAction();
+                }
+            }
+        }
+
+        private void StartImmediately()
+        {
+            var currentTaskData = GetInteraction().serializedInteractionData.JsonTask.Peek();
+            var tempTaskIndex = currentTaskData.taskIndex;
+            var choiceLen = int.Parse(currentTaskData.tasks[tempTaskIndex].nextFile);
+            
+            if (currentTaskData.tasks.Length <= currentTaskData.taskIndex + choiceLen)
+            {
+                Debug.LogError("선택지 개수 오류 - IndexOverFlow");
+            }
+            
+            Debug.Log(choiceLen);
+            currentTaskData.taskIndex += choiceLen;
+            Debug.Log(currentTaskData.taskIndex);
+            
+            var likeable = DataController.Instance.GetLikeable();
+            
+            for (var index = 0; index < choiceLen; index++)
+            {
+                var curTask = currentTaskData.tasks[tempTaskIndex + index];
+                //변화값
+                curTask.condition = curTask.increaseVar.Replace("m", "-");
+                Debug.Log($"{index}번째 선택지 조건 - {curTask.condition}");
+                var condition = Array.ConvertAll(curTask.condition.Split(','), int.Parse);
+                
+                
+                if (curTask.order >= 0)
+                {
+                    if (condition[0] < likeable[0] || condition[1] < likeable[1] || condition[2] < likeable[2])
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    if (condition[0] > likeable[0] || condition[1] > likeable[1] || condition[2] > likeable[2])
+                    {
+                        continue;
+                    }
+                }
+
+                switch (curTask.taskContentType)
+                {
+                    // 조건에 따라 바로 실행하기
+                    case TaskContentType.Dialogue:
+                        var newLen = currentTaskData.tasks.Length + 1;
+                        var array1 = new Task[newLen];
+                        Array.Copy(currentTaskData.tasks, 0, array1, 0, currentTaskData.taskIndex + 1);
+                        array1[currentTaskData.taskIndex + 1] = new Task
+                        {
+                            taskContentType = TaskContentType.TempDialogue,
+                            order = array1[tempTaskIndex].order
+                        };
+                        Debug.Log(currentTaskData.tasks.Length - currentTaskData.taskIndex - 1);
+                        Array.Copy(currentTaskData.tasks, currentTaskData.taskIndex + 1, array1,
+                            currentTaskData.taskIndex + 2,
+                            currentTaskData.tasks.Length - currentTaskData.taskIndex - 1);
+                        //dispose gc로 바로 하긴 힘들다
+                        currentTaskData.tasks = array1;
+
+                        currentTaskData.isContinue = false;
+                        var jsonString = DialogueController.ConvertPathToJson(curTask.nextFile);
+                        // currentTaskData.taskIndex--;    // 현재 taskIndex는 선택지이며 선택지 다음 인덱스가 된다. 그런데 대화 종료시 Index가 1 증가하기에 1을 줄여준다.
+                        DialogueController.Instance.StartConversation(jsonString);
+                        //다음 인덱스의 타입
+                        break;
+                    case TaskContentType.Temp:
+                        //새로운 task 실행
+                        jsonString = DialogueController.ConvertPathToJson(curTask.nextFile);
+                        PushTask(jsonString);
+                        StartInteraction();
+                        break;
+                    case TaskContentType.New:
+                        StackNewTask(curTask.nextFile);
+                        break;
                 }
             }
         }

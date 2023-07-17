@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Utility.Core;
+using Utility.Preference;
 
 namespace Utility.Interaction
 {
@@ -14,7 +15,7 @@ namespace Utility.Interaction
         {
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
 
-            floatingMark = Instantiate(markPrefab, DataController.Instance.CurrentMap.ui);
+            floatingMark = Instantiate(markPrefab, PlayUIController.Instance.worldSpaceUI);
             floatingMark.SetActive(false);
         }
 
@@ -30,8 +31,7 @@ namespace Utility.Interaction
         {
             if (floatingMark.activeSelf)
             {
-                floatingMark.transform.position =
-                    DataController.Instance.Cam.WorldToScreenPoint((Vector3)markOffset + transform.position);
+                floatingMark.transform.position = (Vector3)markOffset + transform.position;
             }
         }
 

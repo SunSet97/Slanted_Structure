@@ -6,7 +6,7 @@ using Utility.Interaction;
 namespace Data
 {
     [Serializable]
-    public class CamInfo {
+    public struct CamInfo {
         public Vector3 camDis;
         public Vector3 camRot;
     }

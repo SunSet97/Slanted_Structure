@@ -11,10 +11,9 @@ namespace Utility.Core
         
         [Header("조이스틱")] [SerializeField] private Joystick dynamicJoystick;
         [SerializeField] private Joystick fixedJoyStick;
-
         [SerializeField] private Button jumpButton;
 
-        // for debugging
+        [Header("For Debug")]
         public Vector2 inputDirection;
         public float inputDegree;
 
@@ -33,7 +32,6 @@ namespace Utility.Core
             else
             {
                 Instance = this;
-                // DontDestroyOnLoad(Instance);
             }
         }
 
@@ -46,7 +44,7 @@ namespace Utility.Core
             });
         }
 
-        public void Init(JoystickType joystickType)
+        public void Initialize(JoystickType joystickType)
         {
             Debug.Log("조이스틱 초기화 - " + joystickType);
             isAlreadySave = false;
@@ -68,13 +66,13 @@ namespace Utility.Core
             }
         }
         
-        public void InitializeJoyStick()
+        public void ResetJoyStickState()
         {
             if (!Joystick)
             {
                 return;
             }
-
+            
             Joystick.gameObject.SetActive(Joystick.gameObject.activeSelf);
             if (Joystick.GetType() == typeof(DynamicJoystick))
             {
@@ -97,7 +95,7 @@ namespace Utility.Core
         /// 조이스틱 상태 초기화하는 함수
         /// </summary>
         /// <param name="isOn">JoyStick On/Off</param>
-        public void InitializeJoyStick(bool isOn)
+        public void SetJoyStickState(bool isOn)
         {
             if (!Joystick)
             {
@@ -127,7 +125,7 @@ namespace Utility.Core
         /// 조이스틱 멈추고 이전 상태에 따라 키거나 끄는 함수
         /// ex) 대화 이전에 조이스틱을 사용하지 않으면 계속 사용하지 않는다.
         /// </summary>
-        /// <param name="isStop">Save여부   true - save, false - load</param>
+        /// <param name="isSave">Save여부   true - save, false - load</param>
         public void StopSaveLoadJoyStick(bool isSave)
         {
             Debug.Log((isSave ? "Save" : "Load") + ", " + (isAlreadySave ? "저장된 상태" : "저장되지 않은 상태") + ", 이전 상태" +
@@ -139,12 +137,12 @@ namespace Utility.Core
 
                 isAlreadySave = true;
                 wasJoystickUse = Joystick.gameObject.activeSelf;
-                InitializeJoyStick(false);
+                SetJoyStickState(false);
             }
             else
             {
                 isAlreadySave = false;
-                InitializeJoyStick(wasJoystickUse);
+                SetJoyStickState(wasJoystickUse);
             }
         }
 
@@ -167,7 +165,7 @@ namespace Utility.Core
             Debug.Log("조이스틱 영역 조절" + rect.anchorMax);
         }
 
-        public void JoystickInputUpdate(CustomEnum.JoystickInputMethod method)
+        public void UpdateJoystickInput(CustomEnum.JoystickInputMethod method)
         {
             if (method.Equals(CustomEnum.JoystickInputMethod.OneDirection))
             {
@@ -179,8 +177,8 @@ namespace Utility.Core
 
                 if (Joystick.GetType() == typeof(DynamicJoystick))
                 {
-                    var angle = (-1 * (Vector2.Angle(Vector2.up, new Vector2(Joystick.Horizontal, Joystick.Vertical)) -
-                                       90f));
+                    var angle = -1 * (Vector2.Angle(Vector2.up, new Vector2(Joystick.Horizontal, Joystick.Vertical)) -
+                                      90f);
 
                     InputJump = angle >= 30f;
                 }
@@ -195,8 +193,8 @@ namespace Utility.Core
 
                 if (Joystick.GetType() == typeof(DynamicJoystick))
                 {
-                    var angle = (-1 * (Vector2.Angle(Vector2.up, new Vector2(Joystick.Horizontal, Joystick.Vertical)) -
-                                       90f));
+                    var angle = -1 * (Vector2.Angle(Vector2.up, new Vector2(Joystick.Horizontal, Joystick.Vertical)) -
+                                      90f);
 
                     InputJump = angle >= 30f;
                 }
@@ -205,6 +203,22 @@ namespace Utility.Core
             {
                 inputDirection.Set(Joystick.Horizontal, Joystick.Vertical);
                 inputDegree = Vector2.Distance(Vector2.zero, inputDirection);
+            }
+        }
+        
+        public void SetVisible(bool isVisible)
+        {
+            var joystickChildren = Joystick.transform.GetChild(0).GetComponentsInChildren<Image>(true);
+            foreach (var image in joystickChildren)
+            {
+                if (isVisible)
+                {
+                    image.color = Color.white - Color.black * 0.5f;
+                }
+                else
+                {
+                    image.color = Color.clear;
+                }
             }
         }
     }

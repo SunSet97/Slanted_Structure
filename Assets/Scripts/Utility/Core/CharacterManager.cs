@@ -86,7 +86,7 @@ namespace Utility.Core
             gameObject.layer = LayerMask.NameToLayer("Default");
             MoveHorizontal = Vector3.zero;
             MoveVerical = Vector3.zero;
-            UseGravity = false; 
+            UseGravity = false;
 
             CharacterAnimator.SetFloat(SpeedHash, 0f);
 
@@ -112,7 +112,7 @@ namespace Utility.Core
                 else
                 {
                     transform.position = targetPos;
-                    transform.LookAt(mainPosSet.startPosition);   
+                    transform.LookAt(mainPosSet.startPosition);
                 }
 
                 gameObject.layer = LayerMask.NameToLayer("Default");
@@ -157,14 +157,28 @@ namespace Utility.Core
                 Debug.Log("정방향이 아님 반전시킴");
             }
 
-            Debug.Log($"{who}  세팅: " + transform.position);
+            Debug.Log($"{who}  세팅: {transform.position}, {transform.localEulerAngles}");
         }
 
         public void WaitInRoom()
         {
             gameObject.SetActive(false);
-            transform.position = waitTransform.position;
-            transform.rotation = waitTransform.rotation;
+            Teleport(waitTransform);
+        }
+
+        public void Teleport(Transform target)
+        {
+            var isMove = IsMove;
+            var applyRootMotion = CharacterAnimator.applyRootMotion;
+
+            PickUpCharacter();
+
+            transform.position = target.position;
+            transform.rotation = target.rotation;
+
+            IsMove = isMove;
+
+            CharacterAnimator.applyRootMotion = applyRootMotion;
         }
 
         #region 캐릭터 이동 설정
@@ -239,14 +253,14 @@ namespace Utility.Core
             if (!isGrounded)
             {
                 // jump하고 떨어지고 있는 경우
-                
+
                 if (CharacterController.isGrounded)
                 {
                     // 점프 가능
                     isGrounded = true;
                 }
             }
-            
+
             // 캐릭터를 이 함수로 조종할 수 있을때 (조이스틱 외 미포함)
             if (!IsMove)
             {

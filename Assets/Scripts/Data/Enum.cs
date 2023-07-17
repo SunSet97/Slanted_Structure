@@ -50,7 +50,7 @@
             FadeIn = 9,
             FadeOut = 10,
             Cinematic = 11,
-            EndingChoice = 12,
+            ImmediatelyTemp = 12,
             Clear = 13,
             TempDialogue = 99
         }

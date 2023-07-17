@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Data;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Serialization;
 using Utility.Interaction;
 using Utility.Interaction.Click;
 using Utility.Utils;
@@ -18,15 +20,16 @@ namespace Utility.Core
 
         [Header("맵")] public Transform mapGenerate;
 
-        // For Debugging & Setting
-        [Header("카메라 경계값")] public CamInfo camInfo;
-        public CamInfo camOffsetInfo;
-        public float camOrthographicSize;
-
-        public CharRelationshipData charRelationshipData;
+        [Header("Camera")] public float defaultFieldOfView;
+        [FormerlySerializedAs("defaultfarClipPlane")] [FormerlySerializedAs("defaultFarDistance")] public float defaultFarClipPlane;
 
         [Header("Dialogue")] public float dialoguePrintSec = .1f;
-        
+
+        [Header("For Debug")] public CamInfo camInfo;
+        public CamInfo camOffsetInfo;
+        public float camOrthographicSize;
+        public CharRelationshipData charRelationshipData;
+
         [NonSerialized] public Camera Cam;
         [NonSerialized] public MapData CurrentMap;
         [NonSerialized] public List<InteractionObject> InteractionObjects;
@@ -141,7 +144,7 @@ namespace Utility.Core
 
         public void ChangeMap(string desMapCode, SaveData saveData = null)
         {
-            Debug.Log("Change Map");
+            Debug.Log($"Change Map -> {desMapCode}");
 
             if (MobileAdsManager.ADCount >= MobileAdsManager.CountPerAds)
             {
@@ -172,7 +175,7 @@ namespace Utility.Core
             SetByChangedMap(saveData);
 
             CurrentMap.Initialize();
-            
+
             LoadData(saveData);
 
             if (FadeEffect.Instance.IsAlreadyFadeOut)
@@ -239,18 +242,20 @@ namespace Utility.Core
                 }
             }
 
-            JoystickController.Instance.Init(CurrentMap.joystickType);
-            JoystickController.Instance.InitializeJoyStick(!CurrentMap.isJoystickNone);
-
-
-            var cameraMoving = Cam.GetComponent<CameraMoving>();
-            Debug.Log(CurrentMap);
-            cameraMoving.Initialize(CurrentMap.cameraViewType, GetCharacter(Character.Main)?.transform);
+            JoystickController.Instance.Initialize(CurrentMap.joystickType);
+            JoystickController.Instance.SetJoyStickState(!CurrentMap.isJoystickNone);
 
             RenderSettings.skybox = CurrentMap.skyboxSetting;
             DynamicGI.UpdateEnvironment();
+            
+            var cameraMoving = Cam.GetComponent<CameraMoving>();
+            cameraMoving.Initialize(CurrentMap.cameraViewType, GetCharacter(Character.Main)?.transform);
 
+            Cam.farClipPlane = CurrentMap.useClippingPlanes ? CurrentMap.farClipPlane : defaultFarClipPlane;
+            Cam.fieldOfView = CurrentMap.useFieldOfView ? CurrentMap.fieldOfView : defaultFieldOfView;
+            Cam.GetComponent<PostProcessLayer>().enabled = CurrentMap.usePostProcessing;
             Cam.orthographic = CurrentMap.isOrthographic;
+            
             if (Cam.orthographic)
             {
                 camOrthographicSize = CurrentMap.orthographicSize;
@@ -287,12 +292,12 @@ namespace Utility.Core
                 Debug.Log($"Load {mapCode}");
                 Debug.Log($"Interaction 개수: {InteractionObjects.Count}, Save 개수: {saveData.interactionDatas.Count}");
                 Debug.Log($"PosSet 개수: {CurrentMap.positionSets.Count}, Save 개수: {saveData.charDatas.Count}");
-            
+
                 charRelationshipData = saveData.charRelationshipData;
                 foreach (var interactionObject in InteractionObjects)
                 {
                     var interactionSaveData = saveData.interactionDatas.Find(item => item.id == interactionObject.id);
-            
+
                     interactionObject.Load(interactionSaveData);
                 }
             }

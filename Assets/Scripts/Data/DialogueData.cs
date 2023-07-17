@@ -8,9 +8,9 @@ namespace Data
 {
     [Serializable]
     public class DialogueData
-    { 
+    {
         public Dialogue[] dialogues;
-        
+
         public int dialogueIdx;
 
         [NonSerialized] public float DialoguePrintSec;
@@ -18,7 +18,7 @@ namespace Data
 
         public UnityAction<int> ChooseAction;
         public UnityAction DialogueEndAction;
-        
+
         public DialogueData()
         {
             Debug.Log("초기화");
@@ -37,11 +37,13 @@ namespace Data
             {
                 dialoguePrintSec = DataController.Instance.dialoguePrintSec;
             }
+
             foreach (var dialogue in dialogues)
             {
                 dialogue.PrintSec = dialoguePrintSec;
                 dialogue.NextSec = nextSec;
             }
+
             dialogueIdx = 0;
         }
 
@@ -51,7 +53,7 @@ namespace Data
             Debug.Log("초기화");
             dialogues = Array.Empty<Dialogue>();
             dialogueIdx = 0;
-            
+
             ChooseAction = null;
             DialogueEndAction = null;
         }
@@ -82,17 +84,17 @@ namespace Data
     }
 
     [Serializable]
-    public class Dialogue {
+    public class Dialogue
+    {
         public string name;
         public CustomEnum.Expression expression;
         public string anim_name;
         public string contents;
         public string sfx;
 
-        [Space(5)]
-        [NonSerialized] public float PrintSec;
+        [Space(5)] [NonSerialized] public float PrintSec;
         [NonSerialized] public float NextSec;
-        
+
         [NonSerialized] public float startTime;
         [NonSerialized] public float endTime;
     }

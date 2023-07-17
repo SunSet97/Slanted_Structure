@@ -36,7 +36,7 @@ public class HamburgerStoreManager : MonoBehaviour
         
         sofa.SetInteractionEndEvent(() =>
         {
-            JoystickController.Instance.InitializeJoyStick(false);
+            JoystickController.Instance.SetJoyStickState(false);
             speat.StartMoving();
         });
 

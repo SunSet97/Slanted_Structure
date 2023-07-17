@@ -128,11 +128,10 @@ namespace Episode.EP0.RauTutorial
         /// </summary>
         /// <param name="methodNum">0 = one dir, 1 = all dir, 2 = other, Other인 경우 인터랙션, 조이스틱 X</param>
         /// <param name="axisNum">0 = both, 1 = hor, 2 = ver</param>
-        private void ChangeJoystickSetting(JoystickInputMethod methodNum, AxisOptions axisNum)
+        private static void ChangeJoystickSetting(JoystickInputMethod methodNum, AxisOptions axisNum)
         {
-            var mapData = DataController.Instance.CurrentMap;
-            mapData.method = methodNum;
-            OnOffJoystick(methodNum != JoystickInputMethod.Other);
+            DataController.Instance.CurrentMap.method = methodNum;
+            JoystickController.Instance.SetVisible(methodNum != JoystickInputMethod.Other);
             JoystickController.Instance.Joystick.AxisOptions = axisNum;
         }
 
@@ -151,8 +150,7 @@ namespace Episode.EP0.RauTutorial
             var grassSwipe = Array.Find(checkPoints, item => item.terrainType == TerrainType.GrassSwipe);
             grassSwipe.ui.SetActive(true);
 
-            DataController.Instance.camInfo.camDis = viewForward.camDis;
-            DataController.Instance.camInfo.camRot = viewForward.camRot;
+            DataController.Instance.camInfo = viewForward;
 
             ChangeJoystickSetting(JoystickInputMethod.Other, AxisOptions.Horizontal); // 이동 해제, 좌우 스와이프만 가능하도록 변경
             JoystickController.Instance.SetJoystickArea(JoystickAreaType.Full);
@@ -283,8 +281,7 @@ namespace Episode.EP0.RauTutorial
             var riverCheckPoint = Array.Find(checkPoints, item => item.terrainType == TerrainType.River);
             riverCheckPoint.ui.SetActive(true);
 
-            DataController.Instance.camInfo.camDis = viewRiver.camDis;
-            DataController.Instance.camInfo.camRot = viewRiver.camRot;
+            DataController.Instance.camInfo = viewRiver;
 
             var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
             mainCharacter.PickUpCharacter();
@@ -295,8 +292,7 @@ namespace Episode.EP0.RauTutorial
 
             riverCheckPoint.ui.SetActive(false);
 
-            DataController.Instance.camInfo.camDis = viewRiver.camDis;
-            DataController.Instance.camInfo.camRot = viewRiver.camRot;
+            DataController.Instance.camInfo = viewRiver;
 
             JoystickController.Instance.StopSaveLoadJoyStick(false);
 
@@ -322,8 +318,7 @@ namespace Episode.EP0.RauTutorial
         // 나무 숲
         private void Forest()
         {
-            DataController.Instance.camInfo.camDis = viewQuarter.camDis;
-            DataController.Instance.camInfo.camRot = viewQuarter.camRot;
+            DataController.Instance.camInfo = viewQuarter;
 
             ChangeJoystickSetting(JoystickInputMethod.AllDirection, AxisOptions.Both);
         }
@@ -335,8 +330,7 @@ namespace Episode.EP0.RauTutorial
 
             var forestWoodCheckPoint = Array.Find(checkPoints, item => item.terrainType == TerrainType.ForestWood);
             forestWoodCheckPoint.ui.SetActive(true);
-            DataController.Instance.camInfo.camDis = viewForward.camDis;
-            DataController.Instance.camInfo.camRot = viewForward.camRot;
+            DataController.Instance.camInfo = viewForward;
             ChangeJoystickSetting(JoystickInputMethod.Other, AxisOptions.Vertical); // 이동 해제, 위아래 스와이프만 가능하도록 변경
             rau.PickUpCharacter();
             JoystickController.Instance.SetJoystickArea(JoystickAreaType.Full);
@@ -353,8 +347,7 @@ namespace Episode.EP0.RauTutorial
                 if (woodSwipeIndex >= movePoint.Length && !isWoodMoveUp)
                 {
                     forestWoodCheckPoint.ui.SetActive(false);
-                    DataController.Instance.camInfo.camDis = viewQuarter.camDis;
-                    DataController.Instance.camInfo.camRot = viewQuarter.camRot;
+                    DataController.Instance.camInfo = viewQuarter;
                     // 둘러보기, 전방향 이동 튜토리얼
                     ChangeJoystickSetting(JoystickInputMethod.AllDirection, 0); // 전방향 이동
                     rau.UseJoystickCharacter();

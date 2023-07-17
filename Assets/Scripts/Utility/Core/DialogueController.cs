@@ -85,7 +85,7 @@ namespace Utility.Core
                 taskData.isContinue = false;
             }
 
-            JoystickController.Instance.InitializeJoyStick();
+            JoystickController.Instance.ResetJoyStickState();
             JoystickController.Instance.StopSaveLoadJoyStick(true);
             dialogueData.Init(jsonString, printSec);
             IsDialogue = true;

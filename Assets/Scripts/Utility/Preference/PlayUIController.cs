@@ -12,6 +12,7 @@ namespace Utility.Preference
         public static PlayUIController Instance { get; private set; }
 
         public Transform mapUi;
+        public Transform worldSpaceUI;
 
         [Header("메뉴")] [Space(10)] [SerializeField]
         private GameObject menuPanel;
