@@ -44,14 +44,12 @@ namespace Utility.Core
             {
                 cam.transform.position = DataController.Instance.CurrentMap.transform.position +
                                          DataController.Instance.camInfo.camDis +
-                                         // DialogueController.Instance.dialogueData.CamInfo.camDis +
                                          DataController.Instance.camOffsetInfo.camDis;
             }
             else if (viewType.Equals(CameraViewType.FollowCharacter))
             {
                 cam.transform.position = focusObject.position +
                                          DataController.Instance.camInfo.camDis +
-                                         // DialogueController.Instance.dialogueData.CamInfo.camDis +
                                          DataController.Instance.camOffsetInfo.camDis;
             }
             else if (viewType.Equals(CameraViewType.FocusObject))

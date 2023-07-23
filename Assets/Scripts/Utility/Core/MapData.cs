@@ -54,10 +54,10 @@ namespace Utility.Core
         [Tooltip("이 맵의 조이스틱 입력 방식입니다.")] public JoystickInputMethod method;
         [Tooltip("클리어시 넘어갈 다음 맵의 맵 코드입니다.")] public string nextMapcode = "000000";
         
-        [ConditionalHideInInspector("isJoystickInputUse")] [ConditionalHideInInspector("method", JoystickInputMethod.OneDirection)]
+        [ConditionalHideInInspector("method", JoystickInputMethod.OneDirection)] [ConditionalHideInInspector("isJoystickInputUse")]
         public bool rightIsForward;
 
-        [ConditionalHideInInspector("isJoystickInputUse")] [ConditionalHideInInspector("method", JoystickInputMethod.Waypoint)]
+        [ConditionalHideInInspector("method", JoystickInputMethod.Waypoint)] [ConditionalHideInInspector("isJoystickInputUse")]
         public Waypoint waypoint;
         
         [Space(15)] [Tooltip("맵의 이름은 사용자가 원하는 대로 변경하면 되며 맵 구성 어셋들은 이 오브젝트의 자식으로 설정해주면 됩니다.")]

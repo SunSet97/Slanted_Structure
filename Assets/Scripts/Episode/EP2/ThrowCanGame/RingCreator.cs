@@ -23,7 +23,7 @@ namespace Episode.EP2.ThrowCanGame
 
         public void Setup()
         {
-            JoystickController.Instance.InitializeJoyStick(false);
+            JoystickController.Instance.SetJoyStickState(false);
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(true);
 
             var canvas = PlayUIController.Instance.Canvas;

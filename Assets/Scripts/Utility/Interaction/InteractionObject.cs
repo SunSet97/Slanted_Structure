@@ -107,6 +107,7 @@ namespace Utility.Interaction
                 {
                     DataController.Instance.Cam.GetComponent<CameraMoving>()
                         .Initialize(CameraViewType.FocusObject, transform);
+                    isMain = false;
                 }
 
                 if (isMain)
@@ -141,6 +142,7 @@ namespace Utility.Interaction
                     DataController.Instance.Cam.GetComponent<CameraMoving>()
                         .Initialize(DataController.Instance.CurrentMap.cameraViewType,
                             DataController.Instance.GetCharacter(Character.Main).transform);
+                    isMain = false;
                 }
 
                 if (isMain)
