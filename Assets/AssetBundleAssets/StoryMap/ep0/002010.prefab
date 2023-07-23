@@ -932,63 +932,6 @@ MonoBehaviour:
   m_AmplitudeGain: 1
   m_FrequencyGain: 1
   mNoiseOffsets: {x: -695.6019, y: 957.4523, z: 164.6272}
---- !u!54 &3672374486057777783
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4289378083983423325}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!136 &3895709604936835452
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4289378083983423325}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7758745221963328600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4289378083983423325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ef90cf0afe734d63b3cf9a19cb3e08f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  who: 4
-  playableDirectors: []
---- !u!114 &3254747231225063230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4289378083983423325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e197ed4abe1366342b7a4159dda7b538, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  who: 4
 --- !u!1 &4139913449855547378
 GameObject:
   m_ObjectHideFlags: 0
@@ -1019,6 +962,63 @@ Transform:
   m_Father: {fileID: 6934192289208220648}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &3672374486057777783
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4289378083983423325}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &3895709604936835452
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4289378083983423325}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3254747231225063230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4289378083983423325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e197ed4abe1366342b7a4159dda7b538, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  who: 4
+--- !u!114 &7758745221963328600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4289378083983423325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ef90cf0afe734d63b3cf9a19cb3e08f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  who: 4
+  playableDirectors: []
 --- !u!1 &5081894485495415367
 GameObject:
   m_ObjectHideFlags: 0
@@ -1386,7 +1386,7 @@ GameObject:
   - component: {fileID: 6934192289208220648}
   - component: {fileID: 3657500505586469007}
   m_Layer: 0
-  m_Name: 002010 1
+  m_Name: 002010
   m_TagString: Map
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2842,6 +2842,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: fbx_club_door
       objectReference: {fileID: 0}
+    - target: {fileID: 1251634490110743467, guid: e8c0ecb4de08bde42a0dae54a7198b79,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 2811912164292125112, guid: e8c0ecb4de08bde42a0dae54a7198b79,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2988,6 +2993,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_curtain
       objectReference: {fileID: 0}
+    - target: {fileID: 7499815455628270406, guid: f63b8fbc552f408488d94e0f3953200e,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3219481912773991319, guid: f63b8fbc552f408488d94e0f3953200e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f63b8fbc552f408488d94e0f3953200e, type: 3}
@@ -3064,6 +3074,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_sofa
       objectReference: {fileID: 0}
+    - target: {fileID: 3240443898605586639, guid: 4795ebbef77d31c478eaadc7d1c6d140,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3427953758085010540, guid: 4795ebbef77d31c478eaadc7d1c6d140, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4795ebbef77d31c478eaadc7d1c6d140, type: 3}
@@ -3139,6 +3154,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_bathroom_showers
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984628172632207806, guid: 770b78832279d0b46b8256bc93133227,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4755747148232672660, guid: 770b78832279d0b46b8256bc93133227, type: 3}
@@ -3226,6 +3246,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_wall_officetel_room
       objectReference: {fileID: 0}
+    - target: {fileID: 3579252483439161242, guid: 9ba583a31f3fa294f8babe42ebeac33c,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ba583a31f3fa294f8babe42ebeac33c, type: 3}
 --- !u!4 &7479465054777312437 stripped
@@ -3245,6 +3270,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_tissue_box
+      objectReference: {fileID: 0}
+    - target: {fileID: 465814210666777274, guid: 91518f6ff5bd4be459b0496ebf45213d,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 3471640166790707369, guid: 91518f6ff5bd4be459b0496ebf45213d,
         type: 3}
@@ -3321,6 +3351,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_cosmetic_table
+      objectReference: {fileID: 0}
+    - target: {fileID: 2207825251452717368, guid: 82041f4aab516664e822a2980c3b9193,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 2952281658057620267, guid: 82041f4aab516664e822a2980c3b9193,
         type: 3}
@@ -3453,6 +3488,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_lamp
       objectReference: {fileID: 0}
+    - target: {fileID: 8292519065541173756, guid: ca6e27f5b8558ca4d95f0968d5e27308,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8807719263947429502, guid: ca6e27f5b8558ca4d95f0968d5e27308, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ca6e27f5b8558ca4d95f0968d5e27308, type: 3}
@@ -3529,6 +3569,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_microwave
       objectReference: {fileID: 0}
+    - target: {fileID: 8242288789684226277, guid: ef00ddb13d9f5ae4a8b4eb04ac226917,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8235845473453628956, guid: ef00ddb13d9f5ae4a8b4eb04ac226917, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ef00ddb13d9f5ae4a8b4eb04ac226917, type: 3}
@@ -3549,6 +3594,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_shelves
+      objectReference: {fileID: 0}
+    - target: {fileID: 5695199939412612950, guid: 935b14d7727229b4caeae84cb14844ea,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 8742106946759632197, guid: 935b14d7727229b4caeae84cb14844ea,
         type: 3}
@@ -3681,6 +3731,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_air_conditioner
       objectReference: {fileID: 0}
+    - target: {fileID: 8072023304279913739, guid: a73f557459996ff41b812a291933ec00,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -2130774696730126019, guid: a73f557459996ff41b812a291933ec00, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a73f557459996ff41b812a291933ec00, type: 3}
@@ -3701,6 +3756,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_sink_table
+      objectReference: {fileID: 0}
+    - target: {fileID: 1891834734966940789, guid: 8a16179aa682fef4b93ffd6a0044cecc,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 3177989324333766246, guid: 8a16179aa682fef4b93ffd6a0044cecc,
         type: 3}
@@ -3833,6 +3893,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_calendar
       objectReference: {fileID: 0}
+    - target: {fileID: 7833577791544235113, guid: 32dc0a74705366e47bc5025d58d2aff0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -5535798302920287421, guid: 32dc0a74705366e47bc5025d58d2aff0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 32dc0a74705366e47bc5025d58d2aff0, type: 3}
@@ -3853,6 +3918,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_officetel_room_glass_wall_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5714238843845655984, guid: 02d7c69a78c5d0448b4464630002a2c1,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 8725253880037658531, guid: 02d7c69a78c5d0448b4464630002a2c1,
         type: 3}
@@ -3930,6 +4000,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_table_under_tv
       objectReference: {fileID: 0}
+    - target: {fileID: 1881049475997464096, guid: e0481387d0bf85e4ba52e35d5cb2c6f5,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 3188985389420741683, guid: e0481387d0bf85e4ba52e35d5cb2c6f5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4005,6 +4080,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_refrigerator
+      objectReference: {fileID: 0}
+    - target: {fileID: 444174272754423399, guid: e85f3c2ef40ec0c4594e52adfd81f35a,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 3490676727467992180, guid: e85f3c2ef40ec0c4594e52adfd81f35a,
         type: 3}
@@ -4082,6 +4162,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_carpet_2
       objectReference: {fileID: 0}
+    - target: {fileID: 1508223692690645733, guid: 9a6a4d2895393eb4fb375ff3e6a68aa8,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 2500923506698588406, guid: 9a6a4d2895393eb4fb375ff3e6a68aa8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4158,6 +4243,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_bathroom_glass_wall
       objectReference: {fileID: 0}
+    - target: {fileID: 6539685652395829936, guid: d4db841f2b289a1479912183a08ed1ca,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 7825840717213948067, guid: d4db841f2b289a1479912183a08ed1ca,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4233,6 +4323,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_bathroom_door
+      objectReference: {fileID: 0}
+    - target: {fileID: 6353798777687712975, guid: bb88e79cc0eb5b74096cd65e75a19d9a,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7959658843866519260, guid: bb88e79cc0eb5b74096cd65e75a19d9a,
         type: 3}
@@ -4365,6 +4460,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_wall_hanger_2
       objectReference: {fileID: 0}
+    - target: {fileID: 7216034492609909433, guid: be92bdf9b5330a94c8d1c5ae6f35515c,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2626509515913152399, guid: be92bdf9b5330a94c8d1c5ae6f35515c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: be92bdf9b5330a94c8d1c5ae6f35515c, type: 3}
@@ -4385,6 +4485,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_wall_hanger_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5259622193787605574, guid: 6f8b9253cc43ba94aaf0acd44543ba03,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 9126183301465137237, guid: 6f8b9253cc43ba94aaf0acd44543ba03,
         type: 3}
@@ -4517,6 +4622,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_bathroom_shelf
       objectReference: {fileID: 0}
+    - target: {fileID: 7092397207295792408, guid: 2670e6ff698f07945a5f4a92221dbe3b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6620470487207395911, guid: 2670e6ff698f07945a5f4a92221dbe3b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2670e6ff698f07945a5f4a92221dbe3b, type: 3}
@@ -4537,6 +4647,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_bed
+      objectReference: {fileID: 0}
+    - target: {fileID: 4704640711749635718, guid: 4b68b5a7d2223864f9d8b2e14e840497,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 8579748810706353301, guid: 4b68b5a7d2223864f9d8b2e14e840497,
         type: 3}
@@ -4669,6 +4784,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_window
       objectReference: {fileID: 0}
+    - target: {fileID: 7813938955413316130, guid: 22305ebb6bca4c346912cded7614a3c6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -2296139943697148724, guid: 22305ebb6bca4c346912cded7614a3c6, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 22305ebb6bca4c346912cded7614a3c6, type: 3}
@@ -4745,6 +4865,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_bathroom_toilet
       objectReference: {fileID: 0}
+    - target: {fileID: 3408971521091586845, guid: 24961f49caf236048a1813a7683f9f4f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7382986506268119792, guid: 24961f49caf236048a1813a7683f9f4f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 24961f49caf236048a1813a7683f9f4f, type: 3}
@@ -4765,6 +4890,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_little_sofa
+      objectReference: {fileID: 0}
+    - target: {fileID: 5152801658974133666, guid: 7ae8432ce6af258418796ce01650986a,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 8203645465571667889, guid: 7ae8432ce6af258418796ce01650986a,
         type: 3}
@@ -4897,6 +5027,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_closet
       objectReference: {fileID: 0}
+    - target: {fileID: 8869299029721848724, guid: 16ae9eef9c0623d4b9471c0fe5ca69ed,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -2663481371397938107, guid: 16ae9eef9c0623d4b9471c0fe5ca69ed, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 16ae9eef9c0623d4b9471c0fe5ca69ed, type: 3}
@@ -4973,6 +5108,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_officetel_room_glass_wall_2
       objectReference: {fileID: 0}
+    - target: {fileID: 3024312596235720746, guid: 873e0d1b47db6f14d8efd61ea6770693,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 3586081658824862966, guid: 873e0d1b47db6f14d8efd61ea6770693,
         type: 3}
       propertyPath: m_Materials.Array.data[1]
@@ -4998,6 +5138,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_bathroom_mirror
+      objectReference: {fileID: 0}
+    - target: {fileID: 6532861946830328151, guid: 85f30c36f6aa86b4488f82d4df37681b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7850401469486064452, guid: 85f30c36f6aa86b4488f82d4df37681b,
         type: 3}
@@ -5074,6 +5219,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_table_lamp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1498071156716704853, guid: 663dbc25cddc928409e714320cdb1774,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 2490893149540279878, guid: 663dbc25cddc928409e714320cdb1774,
         type: 3}
@@ -5206,6 +5356,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_washing_machine
       objectReference: {fileID: 0}
+    - target: {fileID: 8407511996108208672, guid: 32dbc6c620f029743a0ff5f58ff3c15e,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -201998414619995576, guid: 32dbc6c620f029743a0ff5f58ff3c15e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 32dbc6c620f029743a0ff5f58ff3c15e, type: 3}
@@ -5226,6 +5381,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_table_beside_bed
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795793867519129257, guid: 079bae1770de46e4695a858ed71760cb,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7364953329887839418, guid: 079bae1770de46e4695a858ed71760cb,
         type: 3}
@@ -5358,6 +5518,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_bathroom_cabinet
       objectReference: {fileID: 0}
+    - target: {fileID: 3540543958705096139, guid: 35a932f9709cfb6498387b0e012ab29f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6454218217593388456, guid: 35a932f9709cfb6498387b0e012ab29f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 35a932f9709cfb6498387b0e012ab29f, type: 3}
@@ -5378,6 +5543,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_television
+      objectReference: {fileID: 0}
+    - target: {fileID: 904552760238825533, guid: de0b097b1d5c84146b9645980216418c,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4239791781957636654, guid: de0b097b1d5c84146b9645980216418c,
         type: 3}
@@ -5510,6 +5680,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_bathroom_washstand
       objectReference: {fileID: 0}
+    - target: {fileID: 4104951443318217032, guid: 77a5a22b2e681b748bcedd68173c520e,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8980448745125386543, guid: 77a5a22b2e681b748bcedd68173c520e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 77a5a22b2e681b748bcedd68173c520e, type: 3}
@@ -5585,6 +5760,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_trash_can
+      objectReference: {fileID: 0}
+    - target: {fileID: 3930723468964449501, guid: 6cf893164a5afd74e9f03ad9d52df58a,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2597386976918156307, guid: 6cf893164a5afd74e9f03ad9d52df58a, type: 3}
@@ -5662,6 +5842,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_chair_of_dressing_table
       objectReference: {fileID: 0}
+    - target: {fileID: 8307117649608190191, guid: d85ea5496f94dc440b4ce852d52d6b50,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -4990216512473153512, guid: d85ea5496f94dc440b4ce852d52d6b50, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d85ea5496f94dc440b4ce852d52d6b50, type: 3}
@@ -5682,6 +5867,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: obj_table
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704258640708450404, guid: df7c3d519cd346643bf0e4abb05b03c0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 8751269068704041591, guid: df7c3d519cd346643bf0e4abb05b03c0,
         type: 3}
