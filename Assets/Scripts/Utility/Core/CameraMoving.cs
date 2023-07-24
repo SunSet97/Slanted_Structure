@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Utility.Preference;
 
 namespace Utility.Core
 {
@@ -39,6 +40,7 @@ namespace Utility.Core
             }
 
             cam.transform.rotation = Quaternion.Euler(DataController.Instance.camInfo.camRot + DataController.Instance.camOffsetInfo.camRot);
+            PlayUIController.Instance.worldSpaceUI.rotation = cam.transform.rotation;
 
             if (viewType.Equals(CameraViewType.FixedView))
             {
