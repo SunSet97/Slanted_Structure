@@ -655,7 +655,7 @@ namespace Utility.Interaction
                         //선택지에서 대화를 고른 경우
                         Debug.Log("선택지 선택 - 단순 대화");
                         interaction.serializedInteractionData.JsonTask.Peek().isContinue = true;
-                        yield break;
+                        break;
                     case TaskContentType.ImmediatelyTemp:
                         currentTaskData.isContinue = false;
                         StartImmediately();
