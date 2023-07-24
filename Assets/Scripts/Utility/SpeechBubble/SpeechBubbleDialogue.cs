@@ -43,6 +43,7 @@ namespace Utility.SpeechBubble
         [Header("말풍선")] [Header("말풍선 대사 입력")] [SerializeField]
         public Script[] bubbleScripts;
 
+        [SerializeField] private bool isWorld; 
         [Header("말풍선 위치 조절")] [SerializeField] private Vector2 speechPos;
 
         [SerializeField] private int bubbleIndex;
@@ -52,9 +53,19 @@ namespace Utility.SpeechBubble
         private void Start()
         {
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
-            speechBubble =
-                Instantiate(Resources.Load<GameObject>("SpeechBubble"), PlayUIController.Instance.worldSpaceUI)
-                    .GetComponent<SpeechBubble>();
+            if (isWorld)
+            {
+                speechBubble =
+                    Instantiate(Resources.Load<GameObject>("SpeechBubbleWorld"), PlayUIController.Instance.worldSpaceUI)
+                        .GetComponent<SpeechBubble>();
+            }
+            else
+            {
+                speechBubble =
+                    Instantiate(Resources.Load<GameObject>("SpeechBubbleCanvas"), PlayUIController.Instance.mapUi)
+                        .GetComponent<SpeechBubble>();
+            }
+
             speechBubble.gameObject.SetActive(false);
         }
 
@@ -79,7 +90,19 @@ namespace Utility.SpeechBubble
 
         private void SetSpeechBubblePosition()
         {
-            speechBubble.transform.position = (Vector3)speechPos + transform.position;
+            if (isWorld)
+            {
+                speechBubble.transform.position = (Vector3)speechPos + transform.position;
+            }
+            else
+            {
+                transform.localPosition += (Vector3)speechPos;
+
+                var screenPoint = DataController.Instance.Cam.WorldToScreenPoint(transform.position);
+                speechBubble.transform.position = screenPoint;
+
+                transform.localPosition -= (Vector3)speechPos;
+            }
         }
 
         private IEnumerator StartSpeechBubble()
