@@ -142,8 +142,23 @@ namespace Utility.Core
 
             Emotion = Expression.IDLE;
             UseGravity = true;
-            jumpForce = posSet.jumpForce;
-            gravityScale = posSet.playGravity;
+            if (DataController.Instance.CurrentMap.isCustomJumpForce)
+            {
+                gravityScale = DataController.Instance.CurrentMap.jumpForce;
+            }
+            else
+            {
+                jumpForce = DataController.Instance.jumpForce;
+            }
+            
+            if (DataController.Instance.CurrentMap.isCustomGravityScale)
+            {
+                gravityScale = DataController.Instance.CurrentMap.gravityScale;
+            }
+            else
+            {
+                gravityScale = DataController.Instance.gravityScale;
+            }
             // speed는 어떻게 하는거지
 
             gameObject.SetActive(true);

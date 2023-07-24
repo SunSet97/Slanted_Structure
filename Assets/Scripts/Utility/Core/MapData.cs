@@ -27,10 +27,8 @@ namespace Utility.Core
             public Transform startPosition;
             public bool isMain;
             public bool isFollow;
-
-            public float playGravity;
-            public float jumpForce;
         }
+
         #region Default
 
         [TextArea(7, int.MaxValue)] [SerializeField]
@@ -40,26 +38,27 @@ namespace Utility.Core
         #endregion
 
         #region 맵 설정
-        [Header("#Map Setting")]
-        [Tooltip("맵의 코드이며 변경시 오브젝트의 이름도 같이 변경 됩니다.(코드는 반드시 6자리)")]
+
+        [Header("#Map Setting")] [Tooltip("맵의 코드이며 변경시 오브젝트의 이름도 같이 변경 됩니다.(코드는 반드시 6자리)")]
         public string mapCode = "000000"; // auto setting
 
         public string location;
         public string date;
         public string time;
-    
-        [Space(15)]
-    
-        [ConditionalHideInInspector("isJoystickInputUse")]
-        [Tooltip("이 맵의 조이스틱 입력 방식입니다.")] public JoystickInputMethod method;
+
+        [Space(15)] [ConditionalHideInInspector("isJoystickInputUse")] [Tooltip("이 맵의 조이스틱 입력 방식입니다.")]
+        public JoystickInputMethod method;
+
         [Tooltip("클리어시 넘어갈 다음 맵의 맵 코드입니다.")] public string nextMapcode = "000000";
-        
-        [ConditionalHideInInspector("method", JoystickInputMethod.OneDirection)] [ConditionalHideInInspector("isJoystickInputUse")]
+
+        [ConditionalHideInInspector("method", JoystickInputMethod.OneDirection)]
+        [ConditionalHideInInspector("isJoystickInputUse")]
         public bool rightIsForward;
 
-        [ConditionalHideInInspector("method", JoystickInputMethod.Waypoint)] [ConditionalHideInInspector("isJoystickInputUse")]
+        [ConditionalHideInInspector("method", JoystickInputMethod.Waypoint)]
+        [ConditionalHideInInspector("isJoystickInputUse")]
         public Waypoint waypoint;
-        
+
         [Space(15)] [Tooltip("맵의 이름은 사용자가 원하는 대로 변경하면 되며 맵 구성 어셋들은 이 오브젝트의 자식으로 설정해주면 됩니다.")]
         public GameObject map; // auto setting
 
@@ -70,17 +69,20 @@ namespace Utility.Core
 
         [Tooltip("카메라의 orthographic 뷰를 제어할 수 있습니다.")]
         public bool isOrthographic;
+
         [ConditionalHideInInspector("isOrthographic")]
         public float orthographicSize;
-        
-        [Header("FadeOut")] [Space(10)]
-        public bool useFadeOut;
+
+        [Header("FadeOut")] [Space(10)] public bool useFadeOut;
+
         [ConditionalHideInInspector("useFadeOut")]
         public float fadeOutSec = 1f;
-        
+
         public float fadeInSec = 1f;
 
-        [FormerlySerializedAs("BGM")] [Header("BGM입니다")] public AudioClip bgm;
+        [FormerlySerializedAs("BGM")] [Header("BGM입니다")]
+        public AudioClip bgm;
+
         [Header("애니메이션 실행되는 캐릭터 넣으세요")] public List<AnimationCharacterSet> characters;
 
         [Header("#클리어 박스")]
@@ -111,6 +113,7 @@ namespace Utility.Core
                 positionSetting = Instantiate(temp, transform.position, Quaternion.identity, transform);
                 positionSetting.name = "Position Setting";
             }
+
             DestroyImmediate(temp);
         }
 
@@ -138,6 +141,16 @@ namespace Utility.Core
         private GameObject positionSetting; // auto setting
 
         public List<CharacterPositionSet> positionSets; // auto setting
+
+        [Space(10)] public bool isCustomJumpForce;
+
+        [ConditionalHideInInspectorAttribute("isCustomJumpForce")]
+        public float jumpForce;
+
+        public bool isCustomGravityScale;
+
+        [ConditionalHideInInspector("isCustomGravityScale")]
+        public float gravityScale;
 
         //ContextMenu 연결
         public void CreateClearBox()
@@ -199,7 +212,8 @@ namespace Utility.Core
             Transform instant = new GameObject().transform;
             temp.who = createWho;
             temp.startPosition =
-                Instantiate(instant, positionSetting.transform.position, Quaternion.identity, positionSetting.transform);
+                Instantiate(instant, positionSetting.transform.position, Quaternion.identity,
+                    positionSetting.transform);
             temp.startPosition.name = createWho + " Start Position";
             DestroyImmediate(instant.gameObject);
             positionSets.Add(temp);
@@ -266,20 +280,21 @@ namespace Utility.Core
         }
 
         #endregion
-        
-        [Space(10)]
-        public CameraViewType cameraViewType;
+
+        [Space(10)] public CameraViewType cameraViewType;
         public Vector3 camDis;
         public Vector3 camRot;
-        
+
         public bool useFieldOfView;
+
         [ConditionalHideInInspector("useFieldOfView")]
         public float fieldOfView;
-        
+
         public bool useClippingPlanes;
+
         [ConditionalHideInInspector("useClippingPlanes")]
         public float farClipPlane;
-        
+
         public bool usePostProcessing;
 
         private void Start()
@@ -329,7 +344,7 @@ namespace Utility.Core
         {
             clearBoxList[0].nextSelectMapcode = nextMapCode;
         }
-        
+
         public void MapClear(float waitTime)
         {
             Invoke("MapClear", waitTime);
@@ -362,10 +377,10 @@ namespace Utility.Core
             Destroy(gameObject);
         }
 
-        [Header("조이스틱 인풋 사용 유무")]
-        public bool isJoystickInputUse;
+        [Header("조이스틱 인풋 사용 유무")] public bool isJoystickInputUse;
 
         [Header("조이스틱 존재 유무")] public bool isJoystickNone;
+
         [ConditionalHideInInspector("isJoystickInputUse")]
         public JoystickType joystickType;
 
@@ -385,7 +400,7 @@ namespace Utility.Core
             }
 
             mainCharacter.MoveCharacter(method, isJoystickInputUse);
-            
+
             if (followCharacters != null)
             {
                 foreach (var followCharacter in followCharacters)
