@@ -88,7 +88,7 @@ MonoBehaviour:
     randomRange: 0
     dialogue: "\uC751\uC751, \uB098 \uC9C0\uAE08 \uBC84\uC2A4\uAC00 \uC798 \uC548\uC640\uC11C
       \uC880 \uB2A6\uC744 \uC218 \uC788\uC744 \uAC70 \uAC19\uC544. \uBBF8\uC548\uD574...!"
-  speechPos: {x: 0, y: 2}
+  speechPos: {x: 0, y: 1.5}
   bubbleIndex: 0
 --- !u!135 &3186108763171863574
 SphereCollider:
@@ -141,8 +141,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1506419644018672064}
-  m_LocalRotation: {x: -0, y: 0.9945793, z: -0, w: 0.10398117}
-  m_LocalPosition: {x: 0.40958023, y: -0.027999997, z: 3.8858092}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 374053555270988029}
@@ -164,13 +164,13 @@ MonoBehaviour:
   randomSecond: 0
   bubbleScripts:
   - speaker: "\uACF5\uC0AC \uC911\uC778 \uC138\uBAA8\uC7782"
-    appearSec: 2
+    appearSec: 5
     disappearSec: 4
     randomRange: 0
     dialogue: "\uC57C~\uAC70\uAE30 \uC774\uC05C \uC560\uB4E4 \uB9CE\uB354\uB77C, \uC624\uB79C\uB9CC\uC5D0
       \uC678\uC2DD\uB2C8\uAE4C \uB108\uBB34 \uC88B\uB358\uB370? \uB2E4\uC74C\uC5D0
       \uC885\uC885 \uAC00\uBCF4\uC790\uACE0."
-  speechPos: {x: 0, y: 2}
+  speechPos: {x: 0, y: 1.5}
   bubbleIndex: 0
 --- !u!135 &7372225577541798527
 SphereCollider:
@@ -184,7 +184,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 6
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.74, y: 0, z: 5.59}
 --- !u!1 &1540187252460636169
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,9 +379,12 @@ MonoBehaviour:
     interactionMethod: 1
     isViewChange: 0
     isFocusObject: 0
+    isMain: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
     timelines: []
     cinematics: []
     inGames: []
@@ -449,12 +452,12 @@ MonoBehaviour:
   randomSecond: 0
   bubbleScripts:
   - speaker: "\uACF5\uC0AC \uC911\uC778 \uC138\uBAA8\uC7781"
-    appearSec: 1
+    appearSec: 4
     disappearSec: 4
     randomRange: 0
     dialogue: "\uC5B4\uC81C \uB0B4\uAC00 \uAC00\uBCF4\uC790 \uD574\uC11C \uAC04 \uB370
       \uAD1C\uCC2E\uC9C0 \uC54A\uC558\uC5B4?"
-  speechPos: {x: 0, y: 2}
+  speechPos: {x: 0, y: 1.5}
   bubbleIndex: 0
 --- !u!135 &1800794854877479363
 SphereCollider:
@@ -468,7 +471,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 6
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 1.2, y: 0, z: -2.48}
 --- !u!1 &1819886800590764929
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,7 +524,7 @@ MonoBehaviour:
     disappearSec: 3
     randomRange: 0
     dialogue: "\uBC84\uC2A4\uAC00 \uC5B8\uC81C \uC624\uB294\uAC70\uC57C..."
-  speechPos: {x: 0, y: 2}
+  speechPos: {x: 0, y: 1.5}
   bubbleIndex: 0
 --- !u!135 &1213354974295537718
 SphereCollider:
@@ -614,7 +617,7 @@ GameObject:
   - component: {fileID: 879834141979248137}
   m_Layer: 0
   m_Name: TownEntrance_portal (1)
-  m_TagString: obj_interaction
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -634,6 +637,73 @@ Transform:
   m_Father: {fileID: 572254489938092672}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2402348676167437230
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6371780571978364671}
+  - component: {fileID: 6672954831157896022}
+  - component: {fileID: 6439129959753236943}
+  m_Layer: 0
+  m_Name: SpeechBubble (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6371780571978364671
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2402348676167437230}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1464940237392061824}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6672954831157896022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2402348676167437230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17847716cc895bc40a79b5f14f43d3a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speechBubbleType: 0
+  randomSecond: 0
+  bubbleScripts:
+  - speaker: "\uAF2C\uB9C8 \uC544\uC7742"
+    appearSec: 4
+    disappearSec: 5
+    randomRange: 0
+    dialogue: "\uC57C! \uADF8\uB9CC \uAD34\uB86D\uD600!\n"
+  speechPos: {x: 0, y: 1.5}
+  bubbleIndex: 0
+--- !u!135 &6439129959753236943
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2402348676167437230}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Center: {x: -2.91, y: 0, z: 1.81}
 --- !u!1 &2420285411521204622
 GameObject:
   m_ObjectHideFlags: 0
@@ -863,9 +933,12 @@ MonoBehaviour:
     interactionMethod: 3
     isViewChange: 0
     isFocusObject: 0
+    isMain: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
     timelines: []
     cinematics: []
     inGames: []
@@ -955,7 +1028,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3282784108072048414}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.26, y: 0, z: 1.08}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5725843421463110212}
@@ -977,11 +1050,11 @@ MonoBehaviour:
   randomSecond: 0
   bubbleScripts:
   - speaker: "\uAF2C\uB9C8 \uC544\uC7743"
-    appearSec: 3.5
+    appearSec: 5
     disappearSec: 5
     randomRange: 0
     dialogue: "\uC2EB\uC740\uB370~ \uACC4\uC18D \uAD34\uB86D\uD790\uAEC0\uB370~"
-  speechPos: {x: 0, y: 15}
+  speechPos: {x: 0, y: 1.5}
   bubbleIndex: 0
 --- !u!135 &8445523389057565522
 SphereCollider:
@@ -995,7 +1068,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 6
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -1.73, y: 0, z: 0}
 --- !u!1 &3604565855276388180
 GameObject:
   m_ObjectHideFlags: 0
@@ -1044,13 +1117,13 @@ MonoBehaviour:
   randomSecond: 0
   bubbleScripts:
   - speaker: "\uC218\uB2E4\uB5A0\uB294 \uC138\uBAA8\uC7781"
-    appearSec: 1
+    appearSec: 2
     disappearSec: 3
     randomRange: 0
     dialogue: "\uC694\uC998 \uB0A8\uC790\uCE5C\uAD6C\uAC00 \uBC14\uB78C\uD53C\uB294
       \uAC70 \uAC19\uC544..."
   - speaker: "\uC218\uB2E4\uB5A0\uB294 \uC138\uBAA8\uC7781"
-    appearSec: 1
+    appearSec: 4
     disappearSec: 3
     randomRange: 0
     dialogue: "\uC544\uB2C8, \uB0B4\uAC00 \uC9C1\uC811 \uBCF8\uAC74 \uC544\uB2CC\uB370...\uC9C0\uC778\uC774
@@ -1058,18 +1131,18 @@ MonoBehaviour:
       \uAC19\uC774 \uBAA8\uD154 \uB4E4\uC5B4\uAC00\uB294 \uAC78 \uBD24\uB2E4\uB294
       \uAC70\uC57C..."
   - speaker: "\uC218\uB2E4\uB5A0\uB294 \uC138\uBAA8\uC7781"
-    appearSec: 1
+    appearSec: 2
     disappearSec: 3
     randomRange: 0
     dialogue: "...\uB3C4\uC2EC \uCABD \uACE8\uBAA9 \uCABD\uC73C\uB85C \uB4E4\uC5B4\uAC00\uB294
       \uAC78 \uBD24\uB300..."
   - speaker: "\uC218\uB2E4\uB5A0\uB294 \uC138\uBAA8\uC7781"
-    appearSec: 1
+    appearSec: 2
     disappearSec: 3
     randomRange: 0
     dialogue: "\uADF8\uB7EC\uB2C8\uAE4C...\uB098 \uC5B4\uB5A1\uD558\uC9C0...\uC5ED\uC2DC
       \uD5E4\uC5B4\uC838\uC57C\uACA0\uC9C0..?"
-  speechPos: {x: 0, y: 2}
+  speechPos: {x: 0, y: 1.5}
   bubbleIndex: 0
 --- !u!135 &4786646647210332119
 SphereCollider:
@@ -1178,9 +1251,12 @@ MonoBehaviour:
     interactionMethod: 1
     isViewChange: 0
     isFocusObject: 0
+    isMain: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
     timelines: []
     cinematics: []
     inGames: []
@@ -1416,6 +1492,11 @@ MonoBehaviour:
   cameraViewType: 0
   camDis: {x: -2.7, y: 2, z: 5.4}
   camRot: {x: 10, y: 180, z: 0}
+  useFieldOfView: 0
+  fieldOfView: 0
+  useClippingPlanes: 0
+  farClipPlane: 0
+  usePostProcessing: 0
   isJoystickInputUse: 1
   isJoystickNone: 0
   joystickType: 0
@@ -1432,7 +1513,7 @@ GameObject:
   - component: {fileID: 5050153546119397721}
   m_Layer: 0
   m_Name: TownEntrance
-  m_TagString: obj_interaction
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1642,9 +1723,12 @@ MonoBehaviour:
     interactionMethod: 1
     isViewChange: 0
     isFocusObject: 0
+    isMain: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
     timelines: []
     cinematics: []
     inGames: []
@@ -1777,14 +1861,14 @@ MonoBehaviour:
       \uC5C5\uC18C\uC5D0\uC11C 2\uCC28\uB85C \uAC04\uAC70 \uAC19\uC740\uB370..? \uAC70\uAE30\uC5D0
       \uADF8\uB7F0 \uACF3 \uB9CE\uC790\uB098..."
   - speaker: "\uC218\uB2E4\uB5A0\uB294 \uC138\uBAA8\uC7782"
-    appearSec: 2
+    appearSec: 4
     disappearSec: 3
     randomRange: 0
     dialogue: "\uC5B4\uB5A1\uD558\uAE34, \uD5E4\uC5B4\uC800\uC57C\uC9C0! \uC5EC\uB7EC\uBC88
       \uAC14\uC744\uC9C0 \uC5B4\uB5BB\uAC8C \uC54C\uC544. \uADF8\uB9AC\uACE0 \uC55E\uC73C\uB85C\uB3C4
       \uC548\uAC08 \uAC70\uB780 \uBCF4\uC7A5\uB3C4 \uC5C6\uACE0. \uC81C\uBC1C \uD5E4\uC5B4\uC9C0\uC790
       \uCE5C\uAD6C\uC57C..."
-  speechPos: {x: 0, y: 2}
+  speechPos: {x: 0, y: 1.5}
   bubbleIndex: 0
 --- !u!135 &6089661009757547027
 SphereCollider:
@@ -2061,9 +2145,12 @@ MonoBehaviour:
     interactionMethod: 1
     isViewChange: 0
     isFocusObject: 0
+    isMain: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
     timelines: []
     cinematics: []
     inGames: []
@@ -2083,73 +2170,6 @@ MonoBehaviour:
   useGizmos: 0
   gizmosRadius: 5
   gizmosColor: {r: 0, g: 0, b: 0, a: 0}
---- !u!1 &7945051586525502923
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4647542753700998687}
-  - component: {fileID: 4432853454094238980}
-  - component: {fileID: 5475967996566977943}
-  m_Layer: 0
-  m_Name: SpeechBubble
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4647542753700998687
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945051586525502923}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 2.08}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1464940237392061824}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4432853454094238980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945051586525502923}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17847716cc895bc40a79b5f14f43d3a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speechBubbleType: 0
-  randomSecond: 0
-  bubbleScripts:
-  - speaker: "\uAF2C\uB9C8 \uC544\uC7741"
-    appearSec: 0.5
-    disappearSec: 5
-    randomRange: 0
-    dialogue: "\uC57C! \uADF8\uB9CC \uAD34\uB86D\uD600!"
-  speechPos: {x: 0, y: 5}
-  bubbleIndex: 0
---- !u!135 &5475967996566977943
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7945051586525502923}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 8
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8890114818167743391
 GameObject:
   m_ObjectHideFlags: 0
@@ -2234,7 +2254,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9151804343569566548}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.87, y: 0, z: 1.64}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9146496028105656552}
@@ -2256,11 +2276,11 @@ MonoBehaviour:
   randomSecond: 0
   bubbleScripts:
   - speaker: "\uAF2C\uB9C8 \uC544\uC7742"
-    appearSec: 2.5
+    appearSec: 3
     disappearSec: 5
     randomRange: 0
     dialogue: "\uD06D\uD06D! \uC598~\uAC54\uBA20\uAC54\uB7D0\uD360~"
-  speechPos: {x: 0, y: 5}
+  speechPos: {x: 0, y: 1.5}
   bubbleIndex: 0
 --- !u!135 &442420302575700747
 SphereCollider:
@@ -2274,7 +2294,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 6
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 1.41, y: 0, z: 2.93}
 --- !u!1001 &153626154722186683
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4366,15 +4386,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecbf24d003c22ad4a90d020c85199e64, type: 3}
---- !u!95 &7762768127459499399 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 9117553949065214528, guid: ecbf24d003c22ad4a90d020c85199e64,
-    type: 3}
-  m_PrefabInstance: {fileID: 1527542129168967623}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &374053555270988029 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1153498486963525434, guid: ecbf24d003c22ad4a90d020c85199e64,
+    type: 3}
+  m_PrefabInstance: {fileID: 1527542129168967623}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7762768127459499399 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9117553949065214528, guid: ecbf24d003c22ad4a90d020c85199e64,
     type: 3}
   m_PrefabInstance: {fileID: 1527542129168967623}
   m_PrefabAsset: {fileID: 0}
@@ -5382,15 +5402,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b4ea903cc63931543b7f5e149c1ca07e, type: 3}
---- !u!95 &1181317959131784594 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 3507756860101821122, guid: b4ea903cc63931543b7f5e149c1ca07e,
-    type: 3}
-  m_PrefabInstance: {fileID: 2362960625213761360}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9146496028105656552 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6783561808622628792, guid: b4ea903cc63931543b7f5e149c1ca07e,
+    type: 3}
+  m_PrefabInstance: {fileID: 2362960625213761360}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1181317959131784594 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3507756860101821122, guid: b4ea903cc63931543b7f5e149c1ca07e,
     type: 3}
   m_PrefabInstance: {fileID: 2362960625213761360}
   m_PrefabAsset: {fileID: 0}

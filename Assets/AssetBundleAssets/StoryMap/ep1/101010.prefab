@@ -47,10 +47,8 @@ MonoBehaviour:
   interactions:
   - jsonFile: {fileID: 4900000, guid: f73535788d39d444fa52db292e36640d, type: 3}
     interactionPlayType: 2
-    gamePlayableGame: {fileID: 0}
-    game: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
-      dialogueIdx: 0
       dialogues:
       - name: "\uB77C\uC6B0"
         expression: 0
@@ -70,6 +68,8 @@ MonoBehaviour:
         contents: "\uD5C9! \uBAA8\uB974\uB294 \uC0AC\uB78C\uC774\uC9C0\uB9CC \uB3C4\uC640\uC918\uC57C
           \uB420\uAE4C? \uB108\uBB34 \uACE0\uD1B5\uC2A4\uB7EC\uC6CC \uBCF4\uC5EC"
         sfx: 
+      dialogueIdx: 0
+    dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -78,9 +78,12 @@ MonoBehaviour:
     interactionMethod: 3
     isViewChange: 0
     isFocusObject: 0
+    isMain: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
     timelines: []
     cinematics: []
     inGames: []
@@ -100,6 +103,36 @@ MonoBehaviour:
   useGizmos: 0
   gizmosRadius: 5
   gizmosColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!1 &2469582073596700047
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4673520607259858018}
+  m_Layer: 0
+  m_Name: TelePort
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4673520607259858018
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2469582073596700047}
+  m_LocalRotation: {x: -0, y: 0.88382006, z: -0, w: 0.467827}
+  m_LocalPosition: {x: -1.32, y: 0, z: 12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5116514320870631733}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 124.213005, z: 0}
 --- !u!114 &1477650866521656552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,11 +149,11 @@ MonoBehaviour:
   interactions:
   - jsonFile: {fileID: 0}
     interactionPlayType: 1
-    gamePlayableGame: {fileID: 0}
-    game: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
-      dialogueIdx: 0
       dialogues: []
+      dialogueIdx: 0
+    dialoguePrintSec: 0
     animator: {fileID: 2911040671306789040}
     interactionStartActions:
       interactionEvents: []
@@ -141,9 +174,12 @@ MonoBehaviour:
     interactionMethod: 0
     isViewChange: 1
     isFocusObject: 1
+    isMain: 0
     interactionCamera:
       camDis: {x: 0.3, y: 0.5, z: 0.5}
       camRot: {x: 10, y: 30, z: 0}
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
     timelines: []
     cinematics: []
     inGames: []
@@ -363,10 +399,8 @@ MonoBehaviour:
   interactions:
   - jsonFile: {fileID: 4900000, guid: c3cd1485adf0f2f478cfbdbf4ccdb4e9, type: 3}
     interactionPlayType: 2
-    gamePlayableGame: {fileID: 0}
-    game: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
-      dialogueIdx: 0
       dialogues:
       - name: ???
         expression: 1
@@ -375,12 +409,14 @@ MonoBehaviour:
           \uB9D0\uC558\uB124 \uB098\uC880 \uB3C4\uC640\uC8FC\uC2DC\uAC8C"
         sfx: 
       - name: "\uB77C\uC6B0"
-        expression: 0
+        expression: 6
         anim_name: Rau
         contents: "\uB531\uBD10\uB3C4 \uD06C\uAC8C \uBB3C\uB9B0 \uAC83 \uAC19\uC544.
           \uC800\uBD84 \uD63C\uC790 \uD798\uC73C\uB85C\uB294 \uBC97\uC5B4\uB098\uAE30
           \uC5B4\uB824\uC6CC \uBCF4\uC5EC. \uC5B4\uB5BB\uAC8C \uD574\uC57C\uB420\uAE4C?"
         sfx: 
+      dialogueIdx: 0
+    dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -418,11 +454,14 @@ MonoBehaviour:
         interactionObjs:
           interactions: []
     interactionMethod: 0
-    isViewChange: 0
+    isViewChange: 1
     isFocusObject: 0
+    isMain: 1
     interactionCamera:
-      camDis: {x: 0, y: 0, z: 0}
-      camRot: {x: 0, y: 0, z: 0}
+      camDis: {x: 1.86, y: 0.48, z: 1}
+      camRot: {x: 0, y: 223.82, z: 0}
+    isTeleport: 1
+    teleportTarget: {fileID: 4673520607259858018}
     timelines: []
     cinematics: []
     inGames: []
@@ -490,11 +529,11 @@ MonoBehaviour:
   interactions:
   - jsonFile: {fileID: 0}
     interactionPlayType: 0
-    gamePlayableGame: {fileID: 0}
-    game: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
-      dialogueIdx: 0
       dialogues: []
+      dialogueIdx: 0
+    dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -503,9 +542,12 @@ MonoBehaviour:
     interactionMethod: 1
     isViewChange: 0
     isFocusObject: 0
+    isMain: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
     timelines: []
     cinematics: []
     inGames: []
@@ -614,9 +656,16 @@ MonoBehaviour:
     startPosition: {fileID: 8827356394752289631}
     isMain: 1
     isFollow: 0
+    playGravity: 0
+    jumpForce: 0
   cameraViewType: 0
   camDis: {x: -3, y: 4.5, z: 3}
   camRot: {x: 25, y: 162, z: 2}
+  useFieldOfView: 0
+  fieldOfView: 0
+  useClippingPlanes: 0
+  farClipPlane: 0
+  usePostProcessing: 0
   isJoystickInputUse: 1
   isJoystickNone: 0
   joystickType: 0
@@ -1187,7 +1236,7 @@ PrefabInstance:
     - target: {fileID: 5385500836903059132, guid: f68897aeae0c05a4f8edb73c385bc8bd,
         type: 3}
       propertyPath: markOffset.y
-      value: 1.1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6149318734316858801, guid: f68897aeae0c05a4f8edb73c385bc8bd,
         type: 3}
