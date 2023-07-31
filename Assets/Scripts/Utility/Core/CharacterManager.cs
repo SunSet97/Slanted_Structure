@@ -35,6 +35,9 @@ namespace Utility.Core
         private SkinnedMeshRenderer skinnedMesh; // 캐릭터 머테리얼
         private Texture[] faceExpression; //표정 메터리얼 
 
+        private bool isMoved;
+        private bool isAppliedRootMotion;
+
         public void Init()
         {
             CharacterAnimator = GetComponent<Animator>();
@@ -80,9 +83,21 @@ namespace Utility.Core
             Invoke(nameof(PutDownCharacter), Time.fixedDeltaTime);
         }
 
+        private void SaveCharacterState()
+        {
+            isMoved = IsMove;
+            isAppliedRootMotion = CharacterAnimator.applyRootMotion;
+        }
+
+        private void LoadCharacterState()
+        {
+            IsMove = isMoved;
+            CharacterAnimator.applyRootMotion = isAppliedRootMotion;
+        }
+
         public void InitializeCharacter()
         {
-            Emotion = Expression.IDLE;
+            Emotion = Expression.Idle;
             gameObject.layer = LayerMask.NameToLayer("Default");
             MoveHorizontal = Vector3.zero;
             MoveVerical = Vector3.zero;
@@ -150,7 +165,7 @@ namespace Utility.Core
             {
                 jumpForce = DataController.Instance.jumpForce;
             }
-            
+
             if (DataController.Instance.CurrentMap.isCustomGravityScale)
             {
                 gravityScale = DataController.Instance.CurrentMap.gravityScale;
@@ -178,22 +193,27 @@ namespace Utility.Core
         public void WaitInRoom()
         {
             gameObject.SetActive(false);
-            Teleport(waitTransform);
+            Teleport(waitTransform, true);
         }
 
-        public void Teleport(Transform target)
+        public void Teleport(Transform target, bool isImmediately = false)
         {
-            var isMove = IsMove;
-            var applyRootMotion = CharacterAnimator.applyRootMotion;
-
+            // save & load
+            SaveCharacterState();
             PickUpCharacter();
-
+            Debug.Log($"{transform.position} -> {target.position}");
             transform.position = target.position;
             transform.rotation = target.rotation;
 
-            IsMove = isMove;
-
-            CharacterAnimator.applyRootMotion = applyRootMotion;
+            Debug.Log($"Result: {transform.position}");
+            if (isImmediately)
+            {
+                LoadCharacterState();
+            }
+            else
+            {
+                Invoke(nameof(LoadCharacterState), Time.deltaTime);
+            }
         }
 
         #region 캐릭터 이동 설정

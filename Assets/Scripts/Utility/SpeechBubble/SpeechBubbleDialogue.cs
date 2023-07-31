@@ -43,7 +43,7 @@ namespace Utility.SpeechBubble
         [Header("말풍선")] [Header("말풍선 대사 입력")] [SerializeField]
         public Script[] bubbleScripts;
 
-        [SerializeField] private bool isWorld; 
+        [SerializeField] private bool isWorld;
         [Header("말풍선 위치 조절")] [SerializeField] private Vector2 speechPos;
 
         [SerializeField] private int bubbleIndex;
@@ -84,6 +84,7 @@ namespace Utility.SpeechBubble
                 bubbleScripts[bubbleIndex].appearSec = Random.Range(1, bubbleScripts[bubbleIndex].randomRange);
                 bubbleScripts[bubbleIndex].disappearSec = Random.Range(1, bubbleScripts[bubbleIndex].randomRange);
             }
+
             speechBubble.SetSpeaker(bubbleScripts[bubbleIndex].speaker);
             speechBubble.SetContext(bubbleScripts[bubbleIndex].dialogue);
         }
@@ -96,19 +97,16 @@ namespace Utility.SpeechBubble
             }
             else
             {
-                transform.localPosition += (Vector3)speechPos;
-
-                var screenPoint = DataController.Instance.Cam.WorldToScreenPoint(transform.position);
+                var screenPoint =
+                    DataController.Instance.Cam.WorldToScreenPoint(transform.position + (Vector3)speechPos);
                 speechBubble.transform.position = screenPoint;
-
-                transform.localPosition -= (Vector3)speechPos;
             }
         }
 
         private IEnumerator StartSpeechBubble()
         {
             bubbleIndex %= bubbleScripts.Length;
-            
+
             isBubble = true;
             speechBubble.gameObject.SetActive(true);
 
@@ -158,8 +156,8 @@ namespace Utility.SpeechBubble
         private bool IsBubbleEnable()
         {
             return !isBubble && (speechBubbleType == SpeechBubbleType.Loop ||
-                   (speechBubbleType == SpeechBubbleType.Once &&
-                    bubbleIndex != bubbleScripts.Length));
+                                 (speechBubbleType == SpeechBubbleType.Once &&
+                                  bubbleIndex != bubbleScripts.Length));
         }
     }
 }

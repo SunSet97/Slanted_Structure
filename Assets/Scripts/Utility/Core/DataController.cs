@@ -4,7 +4,6 @@ using Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering.PostProcessing;
-using UnityEngine.Serialization;
 using Utility.Interaction;
 using Utility.Interaction.Click;
 using Utility.Utils;
@@ -17,11 +16,13 @@ namespace Utility.Core
         public static DataController Instance { get; private set; }
 
         [Header("캐릭터")] [SerializeField] private CharacterManager[] characters;
-
+        public float jumpForce;
+        public float gravityScale;
+            
         [Header("맵")] public Transform mapGenerate;
 
         [Header("Camera")] public float defaultFieldOfView;
-        [FormerlySerializedAs("defaultfarClipPlane")] [FormerlySerializedAs("defaultFarDistance")] public float defaultFarClipPlane;
+        public float defaultFarClipPlane;
 
         [Header("Dialogue")] public float dialoguePrintSec = .1f;
 
