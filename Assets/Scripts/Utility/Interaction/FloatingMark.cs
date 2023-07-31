@@ -8,7 +8,7 @@ namespace Utility.Interaction
     {
         [SerializeField] private GameObject markPrefab;
         [SerializeField] private Vector2 markOffset;
-
+        [SerializeField] private bool isWorld;
         private GameObject floatingMark;
 
         private void Start()
@@ -31,7 +31,16 @@ namespace Utility.Interaction
         {
             if (floatingMark.activeSelf)
             {
-                floatingMark.transform.position = (Vector3)markOffset + transform.position;
+                if (isWorld)
+                {
+                    floatingMark.transform.position = (Vector3)markOffset + transform.position;
+                }
+                else
+                {
+                    var screenPoint =
+                        DataController.Instance.Cam.WorldToScreenPoint(transform.position + (Vector3)markOffset);
+                    floatingMark.transform.position = screenPoint;
+                }
             }
         }
 

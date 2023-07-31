@@ -89,14 +89,33 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
             StartCoroutine(StartRunGame());
         }
 
-        public override void EndPlay()
+        public override void EndPlay(bool isSuccess)
         {
-            base.EndPlay();
-            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
-            mainCharacter.CharacterAnimator.SetFloat(SpeedHash, 0f);
-            StopAllCoroutines();
+            base.EndPlay(isSuccess);
             
-            DataController.Instance.CurrentMap.MapClear();
+            if (isSuccess)
+            {
+                var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+                mainCharacter.CharacterAnimator.SetFloat(SpeedHash, 0f);
+                StopAllCoroutines();
+                DataController.Instance.CurrentMap.MapClear();   
+            }
+            else
+            {
+                DataController.Instance.CurrentMap.ResetMap();
+                // DialogueController.Instance.SetDialougueEndAction(() =>
+                // {
+                //     if (speatSlider.value + speatSlider.maxValue * 0.1f >= speatSlider.maxValue * 0.8f)
+                //     {
+                //         // speatSlider.value
+                //     }
+                //     else
+                //     {
+                //         speatSlider.value += speatSlider.maxValue * 0.1f;
+                //     }
+                // });
+                // DialogueController.Instance.StartConversation();   
+            }
         }
 
         private IEnumerator WaitPimp()
@@ -121,6 +140,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
             const float deltaTime = 0.01f;
             var waitForSeconds = new WaitForSeconds(deltaTime);
             
+            // Debug.Log($"  세팅: {mainCharacter.transform.position}, {mainCharacter.transform.localEulerAngles}");
             mainCharacter.CharacterAnimator.SetFloat(SpeedHash, 1f);
 
             while (true)
@@ -135,24 +155,12 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 
                 if (Mathf.Approximately(remainingDistance, 0f))
                 {
-                    EndPlay();
+                    EndPlay(true);
                 }
 
                 if (pimp.activeSelf && speatSlider.value <= pimpSlider.value)
                 {
-                    // DialogueController.Instance.SetDialougueEndAction(() =>
-                    // {
-                    //     if (speatSlider.value + speatSlider.maxValue * 0.1f >= speatSlider.maxValue * 0.8f)
-                    //     {
-                    //         // speatSlider.value
-                    //     }
-                    //     else
-                    //     {
-                    //         speatSlider.value += speatSlider.maxValue * 0.1f;
-                    //     }
-                    // });
-                    // DialogueController.Instance.StartConversation();
-                    DataController.Instance.CurrentMap.ResetMap();
+                    EndPlay(false);
 
                     break;
                 }
@@ -193,12 +201,12 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
                 {
                     Destroy(trailData.trail.gameObject);
 
-                    Debug.Log(remainingDistance);
+                    // Debug.Log(remainingDistance);
                     if (remainingDistance > freeDistance)
                     {
                         var level = 3;
                         var ratio = Mathf.InverseLerp(freeDistance, 100, remainingDistance);
-                        Debug.Log(ratio);
+                        // Debug.Log(ratio);
                         if (ratio > .66f)
                         {
                             level = 1;

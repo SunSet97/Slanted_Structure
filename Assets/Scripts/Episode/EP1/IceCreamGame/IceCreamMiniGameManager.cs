@@ -83,9 +83,9 @@ namespace Episode.EP1.IceCreamGame
             StartCoroutine(StartPattern());
         }
 
-        public override void EndPlay()
+        public override void EndPlay(bool isSuccess)
         {
-            base.EndPlay();
+            base.EndPlay(isSuccess);
             iceCreamPanel.SetActive(false);
             JoystickController.Instance.StopSaveLoadJoyStick(false);
         }
@@ -242,7 +242,7 @@ namespace Episode.EP1.IceCreamGame
             iceCream.position = originPos;
 
             yield return new WaitForSeconds(1f);
-            EndPlay();
+            EndPlay(true);
         }
 
         private IEnumerator ChangeSellerEmotion(int emotion)

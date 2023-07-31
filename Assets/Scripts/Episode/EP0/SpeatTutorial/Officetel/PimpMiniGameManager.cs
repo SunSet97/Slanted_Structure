@@ -37,9 +37,9 @@ namespace Episode.EP0.SpeatTutorial.Officetel
             }
         }
 
-        public override void EndPlay()
+        public override void EndPlay(bool isSuccess)
         {
-            base.EndPlay();
+            base.EndPlay(isSuccess);
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
             foreach (var pimpGuest in pimpGuests)
             {

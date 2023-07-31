@@ -79,9 +79,9 @@ namespace Episode.EP2.CatchPickpocket
             IsPlay = true;
         }
 
-        public override void EndPlay()
+        public override void EndPlay(bool isSuccess)
         {
-            OnEndPlay?.Invoke();
+            OnEndPlay?.Invoke(isSuccess);
             IsPlay = false;
         }
 

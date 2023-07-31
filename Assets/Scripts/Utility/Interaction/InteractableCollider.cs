@@ -15,6 +15,8 @@ namespace Utility.Interaction
         [SerializeField] private GameObject markPrefab;
         [ConditionalHideInInspector("useMark")]
         [SerializeField] private Vector2 markOffset;
+        [ConditionalHideInInspector("useMark")]
+        [SerializeField] private bool isWorld;
 
         private void Start()
         {
@@ -38,8 +40,16 @@ namespace Utility.Interaction
         {
             if (interactionObject.GetInteraction().serializedInteractionData.isInteractable && useMark && interactionObject.ExclamationMark.activeSelf)
             {
-                interactionObject.ExclamationMark.transform.position =
-                    DataController.Instance.Cam.WorldToScreenPoint((Vector3) markOffset + interactionObject.transform.position);
+                if (isWorld)
+                {
+                    interactionObject.ExclamationMark.transform.position = (Vector3)markOffset + interactionObject.transform.position;
+                }
+                else
+                {
+                    var screenPoint =
+                        DataController.Instance.Cam.WorldToScreenPoint(interactionObject.transform.position + (Vector3)markOffset);
+                    interactionObject.ExclamationMark.transform.position = screenPoint;
+                }
             }
         }
 

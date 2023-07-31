@@ -60,9 +60,9 @@ namespace Episode.EP2.CoinTossGame
         }
         
         // 5번 넘게 실패할 경우 EndPlay
-        public override void EndPlay()
+        public override void EndPlay(bool isSuccess)
         {
-            base.EndPlay();
+            base.EndPlay(isSuccess);
             arrow.gameObject.SetActive(false);
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
         }
@@ -125,7 +125,7 @@ namespace Episode.EP2.CoinTossGame
                         if (tryNum >= 5)
                         {
                             Debug.Log("끝남");
-                            EndPlay();
+                            EndPlay(false);
                         }
                         else
                         {

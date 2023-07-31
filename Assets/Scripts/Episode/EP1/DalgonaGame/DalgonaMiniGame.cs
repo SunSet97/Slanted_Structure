@@ -29,9 +29,9 @@ namespace Episode.EP1.DalgonaGame
             StartCoroutine(WaitDalgonaEnd());
         }
 
-        public override void EndPlay()
+        public override void EndPlay(bool isSuccess)
         {
-            base.EndPlay();
+            base.EndPlay(isSuccess);
             JoystickController.Instance.StopSaveLoadJoyStick(false);
             dalgonaPanel.SetActive(false);
         }

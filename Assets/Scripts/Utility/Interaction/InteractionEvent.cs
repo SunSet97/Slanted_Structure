@@ -36,7 +36,6 @@ namespace Utility.Interaction
             Play,
             Interactable,
             Interaction,
-
             // FadeOut,
             // PlayAudio,
             Custom
@@ -184,15 +183,8 @@ namespace Utility.Interaction
         {
             foreach (var t in playableList.playableObjs)
             {
-                Debug.Log($"Play Event - {t.miniGame}: {t.isPlay} ");
-                if (t.isPlay)
-                {
-                    t.miniGame.Play();
-                }
-                else
-                {
-                    t.miniGame.EndPlay();
-                }
+                Debug.Log($"Play Event - {t.miniGame}");
+                t.miniGame.Play();
             }
         }
 

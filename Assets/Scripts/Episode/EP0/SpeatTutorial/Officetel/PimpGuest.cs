@@ -119,7 +119,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
             {
                 if (jsonFile)
                 {
-                    pimpMiniGameManager.EndPlay();
+                    pimpMiniGameManager.EndPlay(false);
 
                     DialogueController.Instance.SetDialogueEndAction(() =>
                     {

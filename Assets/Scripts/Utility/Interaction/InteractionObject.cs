@@ -54,7 +54,14 @@ namespace Utility.Interaction
 
         [Header("Interaction Event")]
         [Space(10)] public InteractionEvents interactionStartActions;
+
+        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Game, true)]
         public InteractionEvents interactionEndActions;
+        
+        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Game)]
+        public InteractionEvents onSuccessEndAction;
+        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Game)]
+        public InteractionEvents onFailEndAction;
 
         [Header("인터랙션 방법")] public InteractionMethod interactionMethod;
 
@@ -133,7 +140,7 @@ namespace Utility.Interaction
             }
         }
 
-        public void EndAction()
+        public void EndAction(bool isSuccess = false)
         {
             if (isViewChange)
             {
@@ -156,9 +163,29 @@ namespace Utility.Interaction
                 }
             }
 
-            foreach (var endAction in interactionEndActions.interactionEvents)
+            if (interactionPlayType == InteractionPlayType.Game)
             {
-                endAction.Action();
+                if (isSuccess)
+                {
+                    foreach (var action in onSuccessEndAction.interactionEvents)
+                    {
+                        action.Action();
+                    }
+                }
+                else
+                {
+                    foreach (var action in onFailEndAction.interactionEvents)
+                    {
+                        action.Action();
+                    }
+                }
+            }
+            else
+            {
+                foreach (var endAction in interactionEndActions.interactionEvents)
+                {
+                    endAction.Action();
+                }
             }
         }
     }
@@ -420,7 +447,10 @@ namespace Utility.Interaction
                     return;
                 }
 
-                DialogueController.Instance.SetDialogueEndAction(interaction.EndAction);
+                DialogueController.Instance.SetDialogueEndAction(() =>
+                {
+                    interaction.EndAction();
+                });
                 
                 DialogueController.Instance.StartConversation(interaction.jsonFile.text, interaction.dialoguePrintSec);
             }
@@ -465,10 +495,10 @@ namespace Utility.Interaction
             else if (interaction.interactionPlayType == InteractionPlayType.Game)
             {
                 interaction.miniGame.Play();
-                interaction.miniGame.OnEndPlay = () =>
+                interaction.miniGame.OnEndPlay = isSuccess =>
                 {
                     PlayUIController.Instance.SetMenuActive(false);
-                    interaction.EndAction();
+                    interaction.EndAction(isSuccess);
                 };
             }
             else if (interaction.interactionPlayType == InteractionPlayType.Cinematic)
@@ -639,7 +669,7 @@ namespace Utility.Interaction
                         var gamePlayable =
                             GameObject.Find(currentTask.nextFile).GetComponent<MiniGame>();
                         PlayUIController.Instance.SetMenuActive(false);
-                        gamePlayable.OnEndPlay = () => { PlayUIController.Instance.SetMenuActive(true); };
+                        gamePlayable.OnEndPlay = isSuccess => { PlayUIController.Instance.SetMenuActive(true); };
                         gamePlayable.Play();
                         yield return new WaitUntil(() => gamePlayable.IsPlay);
                         PlayUIController.Instance.SetMenuActive(true);

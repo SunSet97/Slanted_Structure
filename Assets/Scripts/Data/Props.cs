@@ -28,7 +28,7 @@ namespace Data
     {
         public abstract class MiniGame : MonoBehaviour
         {
-            public Action OnEndPlay;
+            public Action<bool> OnEndPlay;
         
             [NonSerialized] public bool IsPlay;
 
@@ -37,10 +37,10 @@ namespace Data
                 IsPlay = true;
             }
 
-            public virtual void EndPlay()
+            public virtual void EndPlay(bool isSuccess)
             {
                 IsPlay = false;
-                OnEndPlay?.Invoke();
+                OnEndPlay?.Invoke(isSuccess);
             }
         }
         [Serializable]
