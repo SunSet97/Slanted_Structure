@@ -51,7 +51,7 @@ namespace Utility.Core
 
         [Tooltip("클리어시 넘어갈 다음 맵의 맵 코드입니다.")] public string nextMapcode = "000000";
 
-        [ConditionalHideInInspector("method", JoystickInputMethod.OneDirection)]
+        //[ConditionalHideInInspector("method", JoystickInputMethod.OneDirection)]
         [ConditionalHideInInspector("isJoystickInputUse")]
         public bool rightIsForward;
 

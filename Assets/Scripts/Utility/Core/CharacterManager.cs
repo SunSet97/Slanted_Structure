@@ -97,7 +97,7 @@ namespace Utility.Core
 
         public void InitializeCharacter()
         {
-            Emotion = Expression.Idle;
+            Emotion = Expression.IDLE;
             gameObject.layer = LayerMask.NameToLayer("Default");
             MoveHorizontal = Vector3.zero;
             MoveVerical = Vector3.zero;

@@ -7,15 +7,22 @@ namespace Utility.Interaction
     public class FloatingMark : MonoBehaviour
     {
         [SerializeField] private GameObject markPrefab;
-        [SerializeField] private Vector2 markOffset;
+        [SerializeField] private Vector3 markOffset;
         [SerializeField] private bool isWorld;
         private GameObject floatingMark;
 
         private void Start()
         {
-            gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
+            if (isWorld)
+            {
+                floatingMark = Instantiate(markPrefab, PlayUIController.Instance.worldSpaceUI);
+            }
+            else
+            {
+                floatingMark = Instantiate(markPrefab, PlayUIController.Instance.mapUi);
+            }
 
-            floatingMark = Instantiate(markPrefab, PlayUIController.Instance.worldSpaceUI);
+            gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
             floatingMark.SetActive(false);
         }
 
@@ -33,12 +40,12 @@ namespace Utility.Interaction
             {
                 if (isWorld)
                 {
-                    floatingMark.transform.position = (Vector3)markOffset + transform.position;
+                    floatingMark.transform.position = markOffset + transform.position;
                 }
                 else
                 {
                     var screenPoint =
-                        DataController.Instance.Cam.WorldToScreenPoint(transform.position + (Vector3)markOffset);
+                        DataController.Instance.Cam.WorldToScreenPoint(transform.position + markOffset);
                     floatingMark.transform.position = screenPoint;
                 }
             }

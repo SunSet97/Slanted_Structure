@@ -10,6 +10,7 @@ namespace Episode.EP1.DalgonaGame
     public class DalgonaMiniGame : MiniGame
     {
         public GameObject dalgonaPanel;
+
         [FormerlySerializedAs("dalgona")] [SerializeField] private DalgonaDrager[] dalgonaDragger;
         
         private int index;
@@ -47,7 +48,7 @@ namespace Episode.EP1.DalgonaGame
             }
             else
             {
-                EndPlay();
+                EndPlay(true);
             }
         }
     }

@@ -1361,9 +1361,18 @@ MonoBehaviour:
     startPosition: {fileID: 130550365025338250}
     isMain: 1
     isFollow: 0
+  isCustomJumpForce: 0
+  jumpForce: 0
+  isCustomGravityScale: 0
+  gravityScale: 0
   cameraViewType: 0
   camDis: {x: 0, y: 0, z: -9}
   camRot: {x: 0, y: 0, z: 0}
+  useFieldOfView: 0
+  fieldOfView: 0
+  useClippingPlanes: 1
+  farClipPlane: 50
+  usePostProcessing: 0
   isJoystickInputUse: 1
   isJoystickNone: 0
   joystickType: 0
@@ -1744,7 +1753,6 @@ MonoBehaviour:
     interactionPlayType: 2
     miniGame: {fileID: 0}
     dialogueData:
-      dialogueIdx: 0
       dialogues:
       - name: ???
         expression: 2
@@ -1771,6 +1779,8 @@ MonoBehaviour:
           \uD1B5\uACFC\uD560 \uC218 \uC788\uACE0, \uBB38 \uB4A4\uB85C \uC228\uC744
           \uC218 \uC788\uC2B5\uB2C8\uB2E4. ??\uC758 \uD0C8\uCD9C\uC744 \uB3C4\uC640\uC8FC\uC138\uC694."
         sfx: 
+      dialogueIdx: 0
+    dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -1793,9 +1803,12 @@ MonoBehaviour:
     interactionMethod: 3
     isViewChange: 0
     isFocusObject: 0
+    isMain: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
     timelines: []
     cinematics: []
     inGames: []
@@ -2045,9 +2058,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deb16415df8b5d448bc731ea043c967d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 4
-  playGravity: 1
-  jumpForce: 4
   pimpGuests:
   - {fileID: 7228687594958272198}
   - {fileID: 3031211890420645348}

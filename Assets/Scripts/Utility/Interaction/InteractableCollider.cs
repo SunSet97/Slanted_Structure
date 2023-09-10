@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Serialization;
 using Utility.Core;
+using Utility.Preference;
 using Utility.Property;
 
 namespace Utility.Interaction
@@ -14,7 +15,7 @@ namespace Utility.Interaction
         [ConditionalHideInInspector("useMark")]
         [SerializeField] private GameObject markPrefab;
         [ConditionalHideInInspector("useMark")]
-        [SerializeField] private Vector2 markOffset;
+        [SerializeField] private Vector3 markOffset;
         [ConditionalHideInInspector("useMark")]
         [SerializeField] private bool isWorld;
 
@@ -23,7 +24,15 @@ namespace Utility.Interaction
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
             if (useMark)
             {
-                interactionObject.ExclamationMark = Instantiate(markPrefab, DataController.Instance.CurrentMap.ui);
+                if (isWorld)
+                {
+                    interactionObject.ExclamationMark = Instantiate(markPrefab, PlayUIController.Instance.worldSpaceUI);
+                }
+                else
+                {
+                    interactionObject.ExclamationMark = Instantiate(markPrefab, PlayUIController.Instance.mapUi);
+                }
+
                 interactionObject.ExclamationMark.SetActive(false);
             }
         }
@@ -42,12 +51,12 @@ namespace Utility.Interaction
             {
                 if (isWorld)
                 {
-                    interactionObject.ExclamationMark.transform.position = (Vector3)markOffset + interactionObject.transform.position;
+                    interactionObject.ExclamationMark.transform.position = markOffset + interactionObject.transform.position;
                 }
                 else
                 {
                     var screenPoint =
-                        DataController.Instance.Cam.WorldToScreenPoint(interactionObject.transform.position + (Vector3)markOffset);
+                        DataController.Instance.Cam.WorldToScreenPoint(interactionObject.transform.position + markOffset);
                     interactionObject.ExclamationMark.transform.position = screenPoint;
                 }
             }
