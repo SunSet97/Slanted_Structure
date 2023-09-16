@@ -3,8 +3,6 @@ using Data.GamePlay;
 using Episode.EP2.ThrowCanGame;
 using UnityEngine;
 using UnityEngine.UI;
-using Utility.Core;
-using Utility.Preference;
 
 namespace Episode.EP2.DoveFeedGame
 {
@@ -12,16 +10,21 @@ namespace Episode.EP2.DoveFeedGame
     {
         private enum ResultState
         {
-            Perfect,
-            Good,
-            NotBad,
-            Bad
+            Perfect = 1,
+            Good = 2,
+            NotBad = 3,
+            Bad = 4
         }
         
+        [Header("Ring")]
         [SerializeField] private Button clearButton;
-
         [SerializeField] private RingCreator ringCreator;
+        [SerializeField] private RectTransform[] targets;
+        [Range(0, 1)] [SerializeField] private float noteSpeed;
 
+        // [Header("비둘기")]
+        // [SerializeField] private Animator dove;
+        
         private void Start()
         {
             clearButton.onClick.AddListener(ClearCheck);
@@ -30,42 +33,53 @@ namespace Episode.EP2.DoveFeedGame
         public override void Play()
         {
             base.Play();
-            StartTimingGame();
-        }
-
-        private void StartTimingGame()
-        {
-            ringCreator.rangeParent.SetActive(true);
-
-            ringCreator.Setup();
-
-            StartCoroutine(PlayTimingGame());
+            
+            ringCreator.Initialize();
+            StartCoroutine(UpdateGame());
         }
         
-        private IEnumerator PlayTimingGame()
+        private IEnumerator UpdateGame()
         {
-            var child = ringCreator.rangeParent.transform.GetChild(2).GetComponent<RectTransform>();
-            while (child.localScale.x * 0.3 * child.rect.width <= ringCreator.Radius * 2)
+            while (targets[2].localScale.x * 0.3 * targets[2].rect.width <= ringCreator.Radius * 2)
             {
-                ringCreator.DisplayUpdate();
+                ringCreator.DisplayUpdate(noteSpeed);
                 yield return null;
             }
 
             EndTimingGame(ResultState.Bad);
         }
 
-        private void EndTimingGame(ResultState result)
-        {
-            ringCreator.rangeParent.SetActive(false);
-            ringCreator.Reset();
-            PlayUIController.Instance.Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
-            FeedDove(result);
-        }
-
         private void FeedDove(ResultState type)
         {
-            // 먹이
+            // 먹이 주기
+            if (type == ResultState.Perfect || type == ResultState.Good)
+            {
+                if (type == ResultState.Perfect)
+                {
+                    // dove.SetInteger("Attack", (int)type);
+                }
+                else if (type == ResultState.Good)
+                {
+                    // dove.SetInteger("Attack", (int)type);
+                }
+
+                Debug.Log($"성공 {type}");
+                Invoke(nameof(Success), 1f);
+            }
+            else
+            {
+                if (type == ResultState.NotBad)
+                {
+                    // dove.SetInteger("Attack", (int)type);
+                }
+                else if (type == ResultState.Bad)
+                {
+                    // dove.SetInteger("Attack", (int)type);
+                }
+
+                Debug.Log($"실패 {type}");
+                Invoke(nameof(Fail), 1f);
+            }
         }
 
         private void ClearCheck()
@@ -76,20 +90,17 @@ namespace Episode.EP2.DoveFeedGame
             }
             
             ResultState result;
-            if (ringCreator.Radius * 2 <= ringCreator.rangeParent.transform.GetChild(2).localScale.x *
-                ringCreator.rangeParent.transform.GetChild(2).GetComponent<RectTransform>().rect.width)
+            if (ringCreator.Radius * 2 <= targets[2].localScale.x * targets[2].rect.width)
             {
                 Debug.Log("유후! 바로 들어감");
                 result = ResultState.Perfect;
             }
-            else if (ringCreator.Radius * 2 <= ringCreator.rangeParent.transform.GetChild(1).localScale.x *
-                     ringCreator.rangeParent.transform.GetChild(1).GetComponent<RectTransform>().rect.width)
+            else if (ringCreator.Radius * 2 <= targets[1].localScale.x * targets[1].rect.width)
             {
                 Debug.Log("아싸! 한번 튕기고 들어감");
                 result = ResultState.Good;
             }
-            else if (ringCreator.Radius * 2 <= ringCreator.rangeParent.transform.GetChild(0).localScale.x *
-                     ringCreator.rangeParent.transform.GetChild(0).GetComponent<RectTransform>().rect.width)
+            else if (ringCreator.Radius * 2 <= targets[0].localScale.x * targets[0].rect.width)
             {
                 Debug.Log("아깝다! 한번 튕기고 안들어감");
                 result = ResultState.NotBad;
@@ -102,6 +113,22 @@ namespace Episode.EP2.DoveFeedGame
 
             StopAllCoroutines();
             EndTimingGame(result);
+        }
+        
+        private void EndTimingGame(ResultState result)
+        {
+            ringCreator.End();
+            FeedDove(result);
+        }
+        
+        private void Success()
+        {
+            EndPlay(true);
+        }
+        
+        private void Fail()
+        {
+            EndPlay(true);
         }
     }
 }

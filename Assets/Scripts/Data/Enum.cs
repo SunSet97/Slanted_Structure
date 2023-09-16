@@ -24,12 +24,12 @@
         public enum Expression
         {
             None = -1,
-            IDLE = 0,
+            Idle = 0,
             Laugh,
             Sad,
             Cry,
             Angry,
-            Surpise,
+            Surprise,
             Panic,
             Suspicion,
             Fear,
@@ -38,7 +38,7 @@
 
         public enum TaskContentType
         {
-            NONE = 0,
+            None = 0,
             Animation = 1,
             Dialogue = 2,
             Temp = 3,
@@ -70,7 +70,7 @@
         public enum InteractionPlayType
         {
             None = -1,
-            Potal,
+            Portal,
             Animation,
             Dialogue,
             Task,

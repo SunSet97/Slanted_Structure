@@ -10,18 +10,15 @@ namespace Episode.EP2.ThrowCanGame
     {
         [SerializeField] private LineRenderer lineRenderer;
         [SerializeField] private Image ringImage;
-        public GameObject rangeParent;
-        
+        [SerializeField] private GameObject rangeParent;
         [SerializeField] private int segments;
-        [SerializeField] [Range(0, 1)] private float noteSpeed;
+        [SerializeField] private float ringWidth;
 
         [NonSerialized] public float Radius;
-    
-        private float originalRadius;
         
-        private const float RingWidth = 10f;
+        private float originalRadius;
 
-        public void Setup()
+        public void Initialize()
         {
             JoystickController.Instance.SetJoyStickState(false);
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(true);
@@ -37,8 +34,8 @@ namespace Episode.EP2.ThrowCanGame
             lineRenderer.positionCount = segments + 50;
             lineRenderer.useWorldSpace = false;
 
-            lineRenderer.endWidth = RingWidth;
-            lineRenderer.startWidth = RingWidth;
+            lineRenderer.endWidth = ringWidth;
+            lineRenderer.startWidth = ringWidth;
             lineRenderer.alignment = LineAlignment.TransformZ;
             originalRadius = ringImage.rectTransform.localScale.x / 3
                          * Mathf.Pow(ringImage.sprite.rect.width, 2)
@@ -56,19 +53,22 @@ namespace Episode.EP2.ThrowCanGame
             CreatePoints();
         }
 
-        public void Reset()
+        public void End()
         {
+            PlayUIController.Instance.Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
+            
             lineRenderer.enabled = false;
+            rangeParent.SetActive(false);
         }
 
-        public void DisplayUpdate()
+        public void DisplayUpdate(float noteSpeed)
         {
             Radius -= originalRadius * noteSpeed * Time.deltaTime;
             CreatePoints();
         }
 
-        public void CreatePoints()
+        private void CreatePoints()
         {
             for (var i = 0; i < lineRenderer.positionCount; i++)
             {

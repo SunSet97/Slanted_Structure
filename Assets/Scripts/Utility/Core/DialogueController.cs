@@ -40,6 +40,10 @@ namespace Utility.Core
         private bool isUnfolding;
         private Coroutine printCoroutine;
 
+        private CameraViewType savedCamViewType;
+        private CamInfo savedCamInfo;
+        private Transform savedTrackTransform;
+        
         private static readonly int Emotion = Animator.StringToHash("Emotion");
 
         private void Awake()
@@ -92,12 +96,16 @@ namespace Utility.Core
             dialoguePanel.SetActive(true);
             PlayUIController.Instance.SetMenuActive(false);
             isUnfolding = false;
+            savedCamViewType = DataController.Instance.Cam.GetComponent<CameraMoving>().ViewType; 
+            savedTrackTransform = DataController.Instance.Cam.GetComponent<CameraMoving>().TrackTransform;
+            savedCamInfo = DataController.Instance.camOffsetInfo;
 
             ProgressDialogue();
         }
 
         private void OnInputDialogue()
         {
+            Debug.Log($"누름! {dialogueInputArea.raycastTarget}");
             if (isUnfolding)
             {
                 CompletePrint();
@@ -177,7 +185,37 @@ namespace Utility.Core
                 }
             }
 
-            AudioController.Instance.PlayOneShot(dialogueData.dialogues[dialogueData.dialogueIdx].sfx);
+            if (dialogueDataItem.isViewChange)
+            {
+                // !(XOR & !AND) -> !XOR | AND  -> !(100 010 001)
+                if (!(dialogueDataItem.isOriginalCamInfo ^ dialogueDataItem.isTrackMainCharacter ^
+                      dialogueDataItem.isTrackTransform) ||
+                    (dialogueDataItem.isOriginalCamInfo && dialogueDataItem.isTrackMainCharacter &&
+                     dialogueDataItem.isTrackTransform))
+                {
+                    Debug.LogError($"Setting Error - Dialogue Camera 관련 bool 오류 {dialogueData.dialogueIdx}");
+                }
+
+                if (dialogueDataItem.isTrackTransform)
+                {
+                    DataController.Instance.Cam.GetComponent<CameraMoving>()
+                        .Initialize(CameraViewType.FollowCharacter, dialogueDataItem.trackTransform);
+                }
+                else if (dialogueDataItem.isTrackMainCharacter)
+                {
+                    DataController.Instance.Cam.GetComponent<CameraMoving>()
+                        .Initialize(CameraViewType.FollowCharacter, DataController.Instance.GetCharacter(Character.Main).transform);
+                } 
+                else if (dialogueDataItem.isOriginalCamInfo)
+                {
+                    DataController.Instance.Cam.GetComponent<CameraMoving>()
+                        .Initialize(savedCamViewType, savedTrackTransform);
+                }
+
+                DataController.Instance.camOffsetInfo = dialogueDataItem.isOriginalCamInfo ? savedCamInfo : dialogueDataItem.camOffsetInfo;
+            }
+
+            AudioController.Instance.PlayOneShot(dialogueDataItem.sfx);
         }
 
         private void StartDialoguePrint()
@@ -186,6 +224,12 @@ namespace Utility.Core
             // blinkingIndicator.SetActive(false);
             dialogueNameText.text = "";
             dialogueContentText.text = "";
+
+            if (printCoroutine != null)
+            {
+                StopCoroutine(printCoroutine);
+            }
+
             printCoroutine = StartCoroutine(DialoguePrint());
         }
 
@@ -199,9 +243,9 @@ namespace Utility.Core
 
             var printSec = DataController.Instance.dialoguePrintSec;
 
-            if (!Mathf.Approximately(dialogueDataItem.PrintSec, 0f))
+            if (!Mathf.Approximately(dialogueDataItem.printSec, 0f))
             {
-                printSec = dialogueDataItem.PrintSec;
+                printSec = dialogueDataItem.printSec;
             }
 
             var waitForSec = new WaitForSeconds(printSec);
@@ -259,7 +303,7 @@ namespace Utility.Core
             JoystickController.Instance.StopSaveLoadJoyStick(false);
             foreach (var positionSet in DataController.Instance.CurrentMap.positionSets)
             {
-                DataController.Instance.GetCharacter(positionSet.who).Emotion = Expression.IDLE;
+                DataController.Instance.GetCharacter(positionSet.who).Emotion = Expression.Idle;
             }
 
             dialogueData.Reset();
@@ -363,6 +407,7 @@ namespace Utility.Core
 
         public void SetInputEnable(bool isEnable)
         {
+            Debug.Log($"Input Eanble? {isEnable}");
             dialogueInputArea.raycastTarget = isEnable;
         }
 

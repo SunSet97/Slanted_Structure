@@ -1,8 +1,10 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using Utility.Core;
 using Utility.Json;
+using Utility.Property;
 
 namespace Data
 {
@@ -12,9 +14,6 @@ namespace Data
         public Dialogue[] dialogues;
 
         public int dialogueIdx;
-
-        [NonSerialized] public float DialoguePrintSec;
-        [NonSerialized] public float NextSec;
 
         public UnityAction<int> ChooseAction;
         public UnityAction DialogueEndAction;
@@ -40,8 +39,8 @@ namespace Data
 
             foreach (var dialogue in dialogues)
             {
-                dialogue.PrintSec = dialoguePrintSec;
-                dialogue.NextSec = nextSec;
+                dialogue.printSec = dialoguePrintSec;
+                dialogue.nextSec = nextSec;
             }
 
             dialogueIdx = 0;
@@ -92,10 +91,26 @@ namespace Data
         public string contents;
         public string sfx;
 
-        [Space(5)] [NonSerialized] public float PrintSec;
-        [NonSerialized] public float NextSec;
+        [FormerlySerializedAs("PrintSec")] [Space(5)]
+        public float printSec;
 
-        [NonSerialized] public float startTime;
-        [NonSerialized] public float endTime;
+        [FormerlySerializedAs("NextSec")] public float nextSec;
+
+
+        [NonSerialized] public double startTime;
+        [NonSerialized] public double endTime;
+
+        [Header("카메라 뷰")] public bool isViewChange;
+        [ConditionalHideInInspector("isViewChange")]
+        public bool isOriginalCamInfo;
+        [ConditionalHideInInspector("isViewChange")]
+        public bool isTrackTransform;
+        [ConditionalHideInInspector("isViewChange")]
+        public bool isTrackMainCharacter;
+        [FormerlySerializedAs("camInfo")] [ConditionalHideInInspector("isViewChange")]
+        public CamInfo camOffsetInfo;
+        
+        [ConditionalHideInInspector("isTrackTransform")]
+        public Transform trackTransform;
     }
 }

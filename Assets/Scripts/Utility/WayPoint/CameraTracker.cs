@@ -63,19 +63,19 @@ namespace Utility.WayPoint
 
                 // Debug.Log(t);
                 var camDis = Vector3.Lerp(corner.camSettings[0].camDis, corner.camSettings[1].camDis, t);
-                camDis = Vector3.Lerp(DataController.Instance.camInfo.camDis, camDis, 0.04f);
+                camDis = Vector3.Lerp(DataController.Instance.camOffsetInfo.camDis, camDis, 0.04f);
                 var camRot = Vector3.Lerp(corner.camSettings[0].camRot, corner.camSettings[1].camRot, t);
-                camRot = Vector3.Lerp(DataController.Instance.camInfo.camRot, camRot, 0.04f);
-                DataController.Instance.camInfo.camDis = camDis;
-                DataController.Instance.camInfo.camRot = camRot;
+                camRot = Vector3.Lerp(DataController.Instance.camOffsetInfo.camRot, camRot, 0.04f);
+                DataController.Instance.camOffsetInfo.camDis = camDis;
+                DataController.Instance.camOffsetInfo.camRot = camRot;
             }
             else
             {
                 var corner = cornerCameraSettings[cornerIndex];
                 camRotDir = GetDir(corner);
 
-                var camDis = DataController.Instance.camInfo.camDis;
-                var camRot = DataController.Instance.camInfo.camRot;
+                var camDis = DataController.Instance.camOffsetInfo.camDis;
+                var camRot = DataController.Instance.camOffsetInfo.camRot;
                 if (Mathf.Approximately(camRotDir, 1f))
                 {
                     camDis = Vector3.Lerp(camDis, corner.camSettings[1].camDis,0.05f);
@@ -87,8 +87,8 @@ namespace Utility.WayPoint
                     camRot = Vector3.Lerp(camRot, corner.camSettings[0].camRot,0.05f);
                 }
 
-                DataController.Instance.camInfo.camDis = camDis;
-                DataController.Instance.camInfo.camRot = camRot;
+                DataController.Instance.camOffsetInfo.camDis = camDis;
+                DataController.Instance.camOffsetInfo.camRot = camRot;
             }
         }
 

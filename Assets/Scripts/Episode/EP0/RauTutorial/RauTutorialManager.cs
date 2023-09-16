@@ -150,7 +150,7 @@ namespace Episode.EP0.RauTutorial
             var grassSwipe = Array.Find(checkPoints, item => item.terrainType == TerrainType.GrassSwipe);
             grassSwipe.ui.SetActive(true);
 
-            DataController.Instance.camInfo = viewForward;
+            DataController.Instance.camOffsetInfo = viewForward;
 
             ChangeJoystickSetting(JoystickInputMethod.Other, AxisOptions.Horizontal); // 이동 해제, 좌우 스와이프만 가능하도록 변경
             JoystickController.Instance.SetJoystickArea(JoystickAreaType.Full);
@@ -259,8 +259,8 @@ namespace Episode.EP0.RauTutorial
             yield return new WaitUntil(() => !isGrassSwipe);
 
             var mapData = DataController.Instance.CurrentMap;
-            DataController.Instance.camInfo.camDis = mapData.camDis;
-            DataController.Instance.camInfo.camRot = mapData.camRot;
+            DataController.Instance.camOffsetInfo.camDis = mapData.camDis;
+            DataController.Instance.camOffsetInfo.camRot = mapData.camRot;
 
             var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
             mainCharacter.UseJoystickCharacter();
@@ -281,7 +281,7 @@ namespace Episode.EP0.RauTutorial
             var riverCheckPoint = Array.Find(checkPoints, item => item.terrainType == TerrainType.River);
             riverCheckPoint.ui.SetActive(true);
 
-            DataController.Instance.camInfo = viewRiver;
+            DataController.Instance.camOffsetInfo = viewRiver;
 
             var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
             mainCharacter.PickUpCharacter();
@@ -292,7 +292,7 @@ namespace Episode.EP0.RauTutorial
 
             riverCheckPoint.ui.SetActive(false);
 
-            DataController.Instance.camInfo = viewRiver;
+            DataController.Instance.camOffsetInfo = viewRiver;
 
             JoystickController.Instance.StopSaveLoadJoyStick(false);
 
@@ -318,7 +318,7 @@ namespace Episode.EP0.RauTutorial
         // 나무 숲
         private void Forest()
         {
-            DataController.Instance.camInfo = viewQuarter;
+            DataController.Instance.camOffsetInfo = viewQuarter;
 
             ChangeJoystickSetting(JoystickInputMethod.AllDirection, AxisOptions.Both);
         }
@@ -330,7 +330,7 @@ namespace Episode.EP0.RauTutorial
 
             var forestWoodCheckPoint = Array.Find(checkPoints, item => item.terrainType == TerrainType.ForestWood);
             forestWoodCheckPoint.ui.SetActive(true);
-            DataController.Instance.camInfo = viewForward;
+            DataController.Instance.camOffsetInfo = viewForward;
             ChangeJoystickSetting(JoystickInputMethod.Other, AxisOptions.Vertical); // 이동 해제, 위아래 스와이프만 가능하도록 변경
             rau.PickUpCharacter();
             JoystickController.Instance.SetJoystickArea(JoystickAreaType.Full);
@@ -347,7 +347,7 @@ namespace Episode.EP0.RauTutorial
                 if (woodSwipeIndex >= movePoint.Length && !isWoodMoveUp)
                 {
                     forestWoodCheckPoint.ui.SetActive(false);
-                    DataController.Instance.camInfo = viewQuarter;
+                    DataController.Instance.camOffsetInfo = viewQuarter;
                     // 둘러보기, 전방향 이동 튜토리얼
                     ChangeJoystickSetting(JoystickInputMethod.AllDirection, 0); // 전방향 이동
                     rau.UseJoystickCharacter();

@@ -17,8 +17,9 @@ namespace Utility.Cinematic.CustomTimeline.CinematicDialogue
             {
                 var dialogueBehaviour = ((TimelineDialogueClip)clip.asset).template;
                 if(dialogueBehaviour.isAuto) {
-                    dialogueBehaviour.UpdateTrack();
+                    dialogueBehaviour.UpdateTrack(clip.displayName, clip.start);
                     clip.duration = dialogueBehaviour.GetDuration();
+                    clip.clipIn = 0;
                 }
             }
 

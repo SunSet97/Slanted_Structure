@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utility.Utils;
 
-namespace Utility.Ending
+namespace Utility.Core.Ending
 {
     [Serializable]
     public struct Ending

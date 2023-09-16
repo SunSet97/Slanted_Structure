@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Data;
 using Move;
 using UnityEngine;
@@ -97,7 +98,7 @@ namespace Utility.Core
 
         public void InitializeCharacter()
         {
-            Emotion = Expression.IDLE;
+            Emotion = Expression.Idle;
             gameObject.layer = LayerMask.NameToLayer("Default");
             MoveHorizontal = Vector3.zero;
             MoveVerical = Vector3.zero;
@@ -105,6 +106,7 @@ namespace Utility.Core
 
             CharacterAnimator.SetFloat(SpeedHash, 0f);
 
+            Debug.LogWarning("Set 2D false");
             CharacterAnimator.SetBool(TwoSideHash, false);
             CharacterAnimator.SetBool(EatHash, false);
             CharacterAnimator.SetBool(SeatHash, false);
@@ -155,7 +157,7 @@ namespace Utility.Core
                 }
             }
 
-            Emotion = Expression.IDLE;
+            Emotion = Expression.Idle;
             UseGravity = true;
             if (DataController.Instance.CurrentMap.isCustomJumpForce)
             {
@@ -265,6 +267,7 @@ namespace Utility.Core
             if (!Mathf.Approximately(x, 0f))
             {
                 CharacterAnimator.SetBool(TwoSideHash, true);
+                Debug.LogWarning("Set 2D true");
             }
 
             RotateCharacter2D(x);
@@ -273,6 +276,7 @@ namespace Utility.Core
         private void QuarterView(float joystickAngle)
         {
             CharacterAnimator.SetBool(TwoSideHash, false);
+            Debug.LogWarning("Set 2D false");
             if (Mathf.Abs(joystickAngle) > 0)
             {
                 transform.Rotate(Vector3.up, joystickAngle);
@@ -283,26 +287,54 @@ namespace Utility.Core
 
         public void MoveCharacter(JoystickInputMethod joystickInputMethod, bool isJoystickInputUse)
         {
+            // 
+            // Jump를 해서 isGround는 false이지만 아직 점프는 안한 상태
             // Jump -> Jump에서 isGround = false;
             // 떨어지는 경우 -> 바닥에 붙어있다고 판정 넣고 점프 가능하게
             if (!isGrounded)
             {
+                // Debug.Log($"점프 중 {CharacterController.isGrounded}");
                 // jump하고 떨어지고 있는 경우
 
                 if (CharacterController.isGrounded)
                 {
+                    // 
                     // 점프 가능
                     isGrounded = true;
                 }
             }
 
+            if (UseGravity && !isGrounded)
+            {
+                MoveVerical.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
+                // Debug.Log($"{isGrounded}, {CharacterController.isGrounded} 중력 더하는 중 {MoveVerical.y}");
+            }
+            else if (isGrounded)
+            {
+                if (!CharacterController.isGrounded)
+                {
+                    // Debug.Log($"{isGrounded}, {CharacterController.isGrounded} 중력 더하는 중 {MoveVerical.y}");
+                    MoveVerical.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
+                }
+                else if (MoveVerical.y <= 0)
+                {
+                    MoveVerical = Vector3.zero;
+                }
+
+                if (JoystickController.Instance.InputJump)
+                {
+                    Jump();
+                }
+            }
+            
             // 캐릭터를 이 함수로 조종할 수 있을때 (조이스틱 외 미포함)
             if (!IsMove)
             {
                 return;
             }
+            
 
-            if (isJoystickInputUse)
+            if (!DataController.Instance.CurrentMap.isJoystickControlDisable && isJoystickInputUse)
             {
                 var characterForward2D =
                     new Vector2(Vector3.Dot(transform.forward, DataController.Instance.Cam.transform.right),
@@ -345,28 +377,9 @@ namespace Utility.Core
                 CharacterAnimator.SetFloat(SpeedHash, JoystickController.Instance.inputDegree);
             }
 
-            if (UseGravity && !isGrounded)
-            {
-                MoveVerical.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
-            }
-            else if (isGrounded)
-            {
-                if (!CharacterController.isGrounded)
-                {
-                    MoveVerical.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
-                }
-                else if (MoveVerical.y <= 0)
-                {
-                    MoveVerical = Vector3.zero;
-                }
-
-                if (JoystickController.Instance.InputJump)
-                {
-                    Jump();
-                }
-            }
-
+            // Debug.Log($"전: {transform.position}");
             CharacterController.Move((MoveHorizontal + MoveVerical) * Time.fixedDeltaTime);
+            // Debug.Log($"후: {transform.position}");
         }
 
         public void FollowMainCharacter(JoystickInputMethod joystickInputMethod)
@@ -374,10 +387,12 @@ namespace Utility.Core
             if (joystickInputMethod.Equals(JoystickInputMethod.OneDirection))
             {
                 CharacterAnimator.SetBool(TwoSideHash, true);
+                Debug.LogWarning("Set 2D true");
             }
             else if (joystickInputMethod.Equals(JoystickInputMethod.AllDirection))
             {
                 CharacterAnimator.SetBool(TwoSideHash, false);
+                Debug.LogWarning("Set 2D false");
             }
 
 
@@ -438,22 +453,32 @@ namespace Utility.Core
 
         public void TryJump()
         {
+            if (!isGrounded)
+            {
+                Debug.Log($"{isGrounded}, {CharacterController.isGrounded} - 점프 불가능해욧");
+            }
+
+            Debug.Log("TryJump");
             JoystickController.Instance.InputJump = true;
         }
 
-        // 점프 중에 이동속도 느려짐, RootMotion 때문으로 추측
-        private void Jump()
+        public void Jump()
         {
-            if (!isGrounded)
-            {
-                return;
-            }
+            Debug.Log($"{isGrounded}, {CharacterController.isGrounded} - 점프!");
 
             isGrounded = false;
             JoystickController.Instance.InputJump = false;
-            CharacterAnimator.SetBool(TwoSideHash, false);
+            // CharacterAnimator.SetBool(TwoSideHash, false);
             MoveVerical = new Vector3(0, jumpForce);
-            CharacterAnimator.SetTrigger(JumpHash);
+            CharacterAnimator.SetTrigger(JumpHash);   
+        }
+        
+        // 점프 중에 이동속도 느려짐, RootMotion 때문으로 추측
+        public void ImmediatelyJump()
+        {
+            Jump();
+            // 다음 프레임에 Move Character 실행
+            // 이번 프레임에 실행 X
         }
 
         #endregion

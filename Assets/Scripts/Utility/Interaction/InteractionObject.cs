@@ -11,7 +11,7 @@ using UnityEngine.Playables;
 using UnityEngine.Serialization;
 using UnityEngine.Timeline;
 using Utility.Core;
-using Utility.Ending;
+using Utility.Core.Ending;
 using Utility.Interaction.Click;
 using Utility.Json;
 using Utility.Preference;
@@ -66,9 +66,12 @@ namespace Utility.Interaction
         [Header("인터랙션 방법")] public InteractionMethod interactionMethod;
 
         [Header("카메라 뷰")] public bool isViewChange;
-        [ConditionalHideInInspector("isViewChange")] public bool isFocusObject;
-        [ConditionalHideInInspector("isViewChange")] public bool isMain;
+        [FormerlySerializedAs("isFocusObject")] [ConditionalHideInInspector("isViewChange")] public bool isTrackTransform;
+        [FormerlySerializedAs("isMain")] [ConditionalHideInInspector("isViewChange")] public bool isTrackMainCharacter;
+        [ConditionalHideInInspector("isTrackTransform")] public Transform trackTransform;
         [ConditionalHideInInspector("isViewChange")] public CamInfo interactionCamera;
+        
+        public bool isCameraHold;
 
         [Header("캐릭터 이동")] public bool isTeleport;
         [ConditionalHideInInspector("isTeleport")] public Transform teleportTarget;
@@ -91,6 +94,8 @@ namespace Utility.Interaction
         public List<TaskData> debugTaskData;
 
         private CamInfo savedCamInfo;
+        private CameraViewType savedCamViewType;
+        private Transform savedTrackTransform;
 
         public Interaction()
         {
@@ -107,27 +112,43 @@ namespace Utility.Interaction
         public void StartAction(Transform transform)
         {
             serializedInteractionData.isInteracted = true;
+            
+            savedCamViewType = DataController.Instance.Cam.GetComponent<CameraMoving>().ViewType;
+            savedTrackTransform = DataController.Instance.Cam.GetComponent<CameraMoving>().TrackTransform;
+            savedCamInfo = DataController.Instance.camOffsetInfo;
 
             if (isViewChange)
             {
-                if (isFocusObject)
+                if (isTrackTransform)
+                {
+                    if (trackTransform == null)
+                    {
+                        DataController.Instance.Cam.GetComponent<CameraMoving>()
+                            .Initialize(CameraViewType.FollowCharacter, transform);
+                    }
+                    else
+                    {
+                        DataController.Instance.Cam.GetComponent<CameraMoving>()
+                            .Initialize(CameraViewType.FollowCharacter, trackTransform);
+
+                    }
+                }
+                else if (isTrackMainCharacter)
                 {
                     DataController.Instance.Cam.GetComponent<CameraMoving>()
-                        .Initialize(CameraViewType.FocusObject, transform);
-                    isMain = false;
-                }
-
-                if (isMain)
-                {
-                    savedCamInfo = DataController.Instance.camInfo;
-                    DataController.Instance.camInfo = interactionCamera;
+                        .Initialize(CameraViewType.FollowCharacter,
+                            DataController.Instance.GetCharacter(Character.Main).transform);
                 }
                 else
                 {
-                    DataController.Instance.camOffsetInfo = interactionCamera;
+                    DataController.Instance.Cam.GetComponent<CameraMoving>()
+                        .Initialize(CameraViewType.FollowCharacter, transform);
                 }
+
+                DataController.Instance.camOffsetInfo = interactionCamera;
             }
 
+            Debug.Log($"텔레포트: {isTeleport}");
             if (isTeleport)
             {
                 var character = DataController.Instance.GetCharacter(Character.Main);
@@ -142,25 +163,11 @@ namespace Utility.Interaction
 
         public void EndAction(bool isSuccess = false)
         {
-            if (isViewChange)
+            if (!isCameraHold)
             {
-                if (isFocusObject)
-                {
-                    DataController.Instance.Cam.GetComponent<CameraMoving>()
-                        .Initialize(DataController.Instance.CurrentMap.cameraViewType,
-                            DataController.Instance.GetCharacter(Character.Main).transform);
-                    isMain = false;
-                }
-
-                if (isMain)
-                {
-                    DataController.Instance.camInfo = savedCamInfo;
-                }
-                else
-                {
-                    DataController.Instance.camOffsetInfo.camDis = Vector3.zero;
-                    DataController.Instance.camOffsetInfo.camRot = Vector3.zero;
-                }
+                DataController.Instance.Cam.GetComponent<CameraMoving>()
+                    .Initialize(savedCamViewType, savedTrackTransform);
+                DataController.Instance.camOffsetInfo = savedCamInfo;
             }
 
             if (interactionPlayType == InteractionPlayType.Game)
@@ -454,7 +461,7 @@ namespace Utility.Interaction
                 
                 DialogueController.Instance.StartConversation(interaction.jsonFile.text, interaction.dialoguePrintSec);
             }
-            else if (interaction.interactionPlayType == InteractionPlayType.Potal &&
+            else if (interaction.interactionPlayType == InteractionPlayType.Portal &&
                      gameObject.TryGetComponent(out CheckMapClear mapClear))
             {
                 interaction.EndAction();
@@ -497,7 +504,6 @@ namespace Utility.Interaction
                 interaction.miniGame.Play();
                 interaction.miniGame.OnEndPlay = isSuccess =>
                 {
-                    PlayUIController.Instance.SetMenuActive(false);
                     interaction.EndAction(isSuccess);
                 };
             }
@@ -849,33 +855,37 @@ namespace Utility.Interaction
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void StartImmediately()
         {
             var currentTaskData = GetInteraction().serializedInteractionData.JsonTask.Peek();
-            var tempTaskIndex = currentTaskData.taskIndex;
-            var choiceLen = int.Parse(currentTaskData.tasks[tempTaskIndex].nextFile);
+            var originTaskIndex = currentTaskData.taskIndex;
+            var taskCount = int.Parse(currentTaskData.tasks[originTaskIndex].nextFile);
             
-            if (currentTaskData.tasks.Length <= currentTaskData.taskIndex + choiceLen)
+            if (currentTaskData.tasks.Length <= originTaskIndex + taskCount)
             {
-                Debug.LogError("선택지 개수 오류 - IndexOverFlow");
+                Debug.LogError("즉시 실행 개수 오류 - IndexOverFlow");
             }
             
-            Debug.Log(choiceLen);
-            currentTaskData.taskIndex += choiceLen;
+            Debug.Log(taskCount);
+            currentTaskData.taskIndex += taskCount;
             Debug.Log(currentTaskData.taskIndex);
             
             var likeable = DataController.Instance.GetLikeable();
             
-            for (var index = 0; index < choiceLen; index++)
+            for (var index = 0; index < taskCount; index++)
             {
-                var curTask = currentTaskData.tasks[tempTaskIndex + index];
+                var targetTask = currentTaskData.tasks[originTaskIndex + index];
+                
                 //변화값
-                curTask.condition = curTask.increaseVar.Replace("m", "-");
-                Debug.Log($"{index}번째 선택지 조건 - {curTask.condition}");
-                var condition = Array.ConvertAll(curTask.condition.Split(','), int.Parse);
+                targetTask.condition = targetTask.increaseVar.Replace("m", "-");
+                Debug.Log($"{index}번째 선택지 조건 - {targetTask.condition}");
+                var condition = Array.ConvertAll(targetTask.condition.Split(','), int.Parse);
                 
                 
-                if (curTask.order >= 0)
+                if (targetTask.order >= 0)
                 {
                     if (condition[0] < likeable[0] || condition[1] < likeable[1] || condition[2] < likeable[2])
                     {
@@ -890,7 +900,7 @@ namespace Utility.Interaction
                     }
                 }
 
-                switch (curTask.taskContentType)
+                switch (targetTask.taskContentType)
                 {
                     // 조건에 따라 바로 실행하기
                     case TaskContentType.Dialogue:
@@ -900,7 +910,7 @@ namespace Utility.Interaction
                         array1[currentTaskData.taskIndex + 1] = new Task
                         {
                             taskContentType = TaskContentType.TempDialogue,
-                            order = array1[tempTaskIndex].order
+                            order = array1[originTaskIndex].order
                         };
                         Debug.Log(currentTaskData.tasks.Length - currentTaskData.taskIndex - 1);
                         Array.Copy(currentTaskData.tasks, currentTaskData.taskIndex + 1, array1,
@@ -910,19 +920,20 @@ namespace Utility.Interaction
                         currentTaskData.tasks = array1;
 
                         currentTaskData.isContinue = false;
-                        var jsonString = DialogueController.ConvertPathToJson(curTask.nextFile);
+                        var jsonString = DialogueController.ConvertPathToJson(targetTask.nextFile);
                         // currentTaskData.taskIndex--;    // 현재 taskIndex는 선택지이며 선택지 다음 인덱스가 된다. 그런데 대화 종료시 Index가 1 증가하기에 1을 줄여준다.
                         DialogueController.Instance.StartConversation(jsonString);
                         //다음 인덱스의 타입
                         break;
                     case TaskContentType.Temp:
                         //새로운 task 실행
-                        jsonString = DialogueController.ConvertPathToJson(curTask.nextFile);
+                        jsonString = DialogueController.ConvertPathToJson(targetTask.nextFile);
                         PushTask(jsonString);
                         StartInteraction();
                         break;
                     case TaskContentType.New:
-                        StackNewTask(curTask.nextFile);
+                        Debug.LogWarning("사용하지 마세요");
+                        StackNewTask(targetTask.nextFile);
                         break;
                 }
             }

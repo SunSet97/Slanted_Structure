@@ -6,15 +6,9 @@ namespace Episode.EP2.ThrowCanGame
 {
     public class Can : MonoBehaviour
     {
-        [NonSerialized]
-        public UnityEvent OnCollisionEnter;
+        public Action OnCollisionEnter;
 
         private float timer;
-
-        private void Awake()
-        {
-            OnCollisionEnter = new UnityEvent();
-        }
 
         private void Update()
         {

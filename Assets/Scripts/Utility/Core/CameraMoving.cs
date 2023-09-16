@@ -1,20 +1,31 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using Utility.Preference;
+using Random = UnityEngine.Random;
 
 namespace Utility.Core
 {
     public enum CameraViewType
     {
+        /// <summary>
+        /// TrackObject
+        /// </summary>
         FollowCharacter,
-        FixedView,
-        FocusObject
+        FixedView
     }
-    
+
+    public enum FreezeType
+    {
+        X,
+        Y,
+        Z
+    }
+
     public class CameraMoving : MonoBehaviour
     {
-        private Transform focusObject;
-        private CameraViewType viewType;
+        [NonSerialized] public Transform TrackTransform;
+        [NonSerialized] public CameraViewType ViewType;
         private Camera cam;
 
         // 카메라 무빙 경계
@@ -25,11 +36,48 @@ namespace Utility.Core
         private float halfHeight;
         private Coroutine shakeCameraCoroutine;
 
+        private bool isFreezeX;
+        private bool isFreezeY;
+        private bool isFreezeZ;
+
+        private float freezeX;
+        private float freezeY;
+        private float freezeZ;
+
         public void Initialize(CameraViewType cameraViewType, Transform focusObj = null)
         {
-            viewType = cameraViewType;
+            isFreezeX = false;
+            isFreezeY = false;
+            isFreezeZ = false;
+            ViewType = cameraViewType;
             cam = Camera.main;
-            focusObject = focusObj;
+            TrackTransform = focusObj;
+        }
+
+        public void Freeze(FreezeType freezeType)
+        {
+            switch (freezeType)
+            {
+                case FreezeType.X:
+                    isFreezeX = true;
+                    freezeX = cam.transform.position.x;
+                    break;
+                case FreezeType.Y:
+                    isFreezeY = true;
+                    freezeY = cam.transform.position.y;
+                    break;
+                case FreezeType.Z:
+                    isFreezeZ = true;
+                    freezeZ = cam.transform.position.z;
+                    break;
+            }
+        }
+
+        public void UnFreeze()
+        {
+            isFreezeX = false;
+            isFreezeY = false;
+            isFreezeZ = false;
         }
 
         private void Update()
@@ -39,25 +87,38 @@ namespace Utility.Core
                 cam.orthographicSize = DataController.Instance.camOrthographicSize;
             }
 
-            cam.transform.rotation = Quaternion.Euler(DataController.Instance.camInfo.camRot + DataController.Instance.camOffsetInfo.camRot);
-            PlayUIController.Instance.worldSpaceUI.rotation = cam.transform.rotation;
+            var camTransform = cam.transform;
+            camTransform.rotation = Quaternion.Euler(DataController.Instance.camOffsetInfo.camRot);
+            PlayUIController.Instance.worldSpaceUI.rotation = camTransform.rotation;
 
-            if (viewType.Equals(CameraViewType.FixedView))
+            if (ViewType.Equals(CameraViewType.FixedView))
             {
-                cam.transform.position = DataController.Instance.CurrentMap.transform.position +
-                                         DataController.Instance.camInfo.camDis +
-                                         DataController.Instance.camOffsetInfo.camDis;
+                camTransform.position = DataController.Instance.CurrentMap.transform.position +
+                                        DataController.Instance.camOffsetInfo.camDis;
             }
-            else if (viewType.Equals(CameraViewType.FollowCharacter))
+            else if (ViewType.Equals(CameraViewType.FollowCharacter))
             {
-                cam.transform.position = focusObject.position +
-                                         DataController.Instance.camInfo.camDis +
-                                         DataController.Instance.camOffsetInfo.camDis;
+                camTransform.position = TrackTransform.position +
+                                        DataController.Instance.camOffsetInfo.camDis;
             }
-            else if (viewType.Equals(CameraViewType.FocusObject))
+
+            if (isFreezeX)
             {
-                cam.transform.position = focusObject.position +
-                                         DataController.Instance.camOffsetInfo.camDis;
+                var camPos = camTransform.position;
+                camPos.x = freezeX;
+                camTransform.position = camPos;
+            }
+            else if (isFreezeY)
+            {
+                var camPos = camTransform.position;
+                camPos.y = freezeY;
+                camTransform.position = camPos;
+            }
+            else if (isFreezeZ)
+            {
+                var camPos = camTransform.position;
+                camPos.z = freezeZ;
+                camTransform.position = camPos;
             }
         }
 

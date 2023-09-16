@@ -44,7 +44,7 @@ namespace Utility.Cinematic
                         if (trackAsset is AnimationTrack)
                         {
                             var binding = playableDirector.GetGenericBinding(trackAsset);
-                            if (((Animator)binding).gameObject.TryGetComponent(out CharacterManager characterManager))
+                            if (binding && ((Animator)binding).gameObject.TryGetComponent(out CharacterManager characterManager))
                             {
                                 playableDirector.SetGenericBinding(trackAsset, null);
                             }

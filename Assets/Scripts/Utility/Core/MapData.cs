@@ -381,6 +381,9 @@ namespace Utility.Core
 
         [Header("조이스틱 존재 유무")] public bool isJoystickNone;
 
+        [Header("조이스틱 컨트롤 불가능 유무")]
+        public bool isJoystickControlDisable;
+
         [ConditionalHideInInspector("isJoystickInputUse")]
         public JoystickType joystickType;
 

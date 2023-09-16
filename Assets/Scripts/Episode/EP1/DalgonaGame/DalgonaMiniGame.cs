@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using Data.GamePlay;
+﻿using Data.GamePlay;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utility.Core;
 
 namespace Episode.EP1.DalgonaGame
@@ -10,8 +7,8 @@ namespace Episode.EP1.DalgonaGame
     public class DalgonaMiniGame : MiniGame
     {
         public GameObject dalgonaPanel;
-
-        [FormerlySerializedAs("dalgona")] [SerializeField] private DalgonaDrager[] dalgonaDragger;
+        
+        [SerializeField] private DalgonaDragger[] dalgonaDragger;
         
         private int index;
 
@@ -22,12 +19,24 @@ namespace Episode.EP1.DalgonaGame
                 Debug.LogError("dalgona index Error");
                 return;
             }
+
             base.Play();
 
             dalgonaPanel.SetActive(true);
             JoystickController.Instance.StopSaveLoadJoyStick(true);
-            dalgonaDragger[index].Init();
-            StartCoroutine(WaitDalgonaEnd());
+            dalgonaDragger[index].Init(() =>
+            {
+                index++;
+                if (index < dalgonaDragger.Length)
+                {
+                    dalgonaDragger[index].Play();
+                }
+                else
+                {
+                    EndPlay(true);
+                }
+            });
+            dalgonaDragger[index].Play();
         }
 
         public override void EndPlay(bool isSuccess)
@@ -35,21 +44,6 @@ namespace Episode.EP1.DalgonaGame
             base.EndPlay(isSuccess);
             JoystickController.Instance.StopSaveLoadJoyStick(false);
             dalgonaPanel.SetActive(false);
-        }
-
-        private IEnumerator WaitDalgonaEnd()
-        {
-            yield return new WaitUntil(() => dalgonaDragger[index].isEnd);
-            if (index + 1 < dalgonaDragger.Length)
-            {
-                index++;
-                dalgonaDragger[index].Init();
-                StartCoroutine(WaitDalgonaEnd());
-            }
-            else
-            {
-                EndPlay(true);
-            }
         }
     }
 }

@@ -25,9 +25,13 @@ namespace Utility.Core
         public float defaultFarClipPlane;
 
         [Header("Dialogue")] public float dialoguePrintSec = .1f;
+        public float dialogueNextSec = .05f;
 
-        [Header("For Debug")] public CamInfo camInfo;
-        public CamInfo camOffsetInfo;
+        /// <summary>
+        /// Camera Offset, whenever work, affect by all
+        /// </summary>
+        [Header("For Debug")] public CamInfo camOffsetInfo;
+        
         public float camOrthographicSize;
         public CharRelationshipData charRelationshipData;
 
@@ -226,8 +230,8 @@ namespace Utility.Core
                 mainChar = null;
             }
 
-            camInfo.camDis = CurrentMap.camDis;
-            camInfo.camRot = CurrentMap.camRot;
+            camOffsetInfo.camDis = CurrentMap.camDis;
+            camOffsetInfo.camRot = CurrentMap.camRot;
 
             foreach (var posSet in CurrentMap.positionSets)
             {

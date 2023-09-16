@@ -25,28 +25,27 @@ namespace Utility.Cinematic.CustomTimeline.CinematicDialogue
         [ConditionalHideInInspector("isAuto")] [SerializeField]
         private DialogueData dialogueData;
 
-        private float duration;
+        private double clipStartTime;
+        private double duration;
         private DialogueController dialogueController;
 
         public void Init()
         {
-            if (Application.isPlaying)
+            if (Mathf.Approximately(dialoguePrintSec, 0))
             {
-                if (Mathf.Approximately(dialoguePrintSec, 0))
-                {
-                    dialoguePrintSec = DataController.Instance.dialoguePrintSec;
-                }
-            }
-            else
-            {
-                dialoguePrintSec = 0.05f;
+                dialoguePrintSec = Application.isPlaying ? DataController.Instance.dialoguePrintSec : 0.05f;
             }
 
-            nextSec = 0.05f;
+            if (Mathf.Approximately(nextSec, 0))
+            {
+                nextSec = Application.isPlaying ? DataController.Instance.dialogueNextSec : 0.05f;
+            }
         }
 
-        public void UpdateTrack()
+        public void UpdateTrack(string clipName, double clipStartTime)
         {
+            this.clipStartTime = clipStartTime;
+            
             if (!isAuto)
             {
                 dialogueData = null;
@@ -54,28 +53,27 @@ namespace Utility.Cinematic.CustomTimeline.CinematicDialogue
             }
             else
             {
+                // 기본값으로 초기화
                 if (dialogueData.dialogues.Length == 0)
                 {
                     dialogueData.Init(dialogueJson.text, dialoguePrintSec, nextSec);
                 }
                 else
                 {
+                    // 기본 세팅이 안되어있는 경우 - Clip Property 값으로 세팅
                     foreach (var dialogue in dialogueData.dialogues)
                     {
-                        if (Mathf.Approximately(dialogue.PrintSec, dialogueData.DialoguePrintSec))
+                        if (Mathf.Approximately(dialogue.printSec, 0))
                         {
-                            dialogue.PrintSec = dialoguePrintSec;
+                            dialogue.printSec = dialoguePrintSec;
                         }
 
-                        if (Mathf.Approximately(dialogue.NextSec, dialogueData.NextSec))
+                        if (Mathf.Approximately(dialogue.nextSec, 0))
                         {
-                            dialogue.NextSec = nextSec;
+                            dialogue.nextSec = nextSec;
                         }
                     }
                 }
-
-                dialogueData.DialoguePrintSec = dialoguePrintSec;
-                dialogueData.NextSec = nextSec;
 
                 duration = 0f;
 
@@ -85,9 +83,10 @@ namespace Utility.Cinematic.CustomTimeline.CinematicDialogue
                     var len = dialogue.contents.Length - 1 > 0
                         ? dialogue.contents.Length - 1
                         : dialogue.contents.Length;
-                    duration += dialogue.PrintSec * len + dialogue.NextSec;
+                    duration += dialogue.printSec * len + dialogue.nextSec;
                     dialogue.startTime = prev;
                     dialogue.endTime = duration;
+                    Debug.Log($"{clipName} Start - {prev},  EndTIme - {duration}, - {dialogue.printSec}, {len}, {dialogue.nextSec}");
                 }
             }
         }
@@ -136,8 +135,11 @@ namespace Utility.Cinematic.CustomTimeline.CinematicDialogue
             }
             else
             {
-                dialogueController.SetInputEnable(true);
-                dialogueController.dialoguePanel.SetActive(false);
+                if (dialogueController)
+                {
+                    dialogueController.SetInputEnable(true);
+                    dialogueController.dialoguePanel.SetActive(false);
+                }
             }
         }
 
@@ -149,32 +151,35 @@ namespace Utility.Cinematic.CustomTimeline.CinematicDialogue
             {
                 return;
             }
-
+            
             var time = playable.GetTime();
             var dialogue = dialogueData.dialogues.First(item =>
-                item.startTime <= playable.GetTime() && item.endTime >= playable.GetTime());
+                item.startTime <= time && item.endTime >= time);
 
             if (!Application.isPlaying)
             {
                 dialogueController = playerData as DialogueController;
-                dialogueController.dialoguePanel.SetActive(true);
-                var dur = Math.Min(Math.Max(time - dialogue.startTime, 0),
-                    dialogue.endTime - dialogue.NextSec - dialogue.startTime);
-                var contentCount = (int)(dur / dialogue.PrintSec) + 1;
-                var content = dialogue.contents.Substring(0, contentCount);
-                dialogueController.SetText(dialogue.name, content);
+                if (dialogueController)
+                {
+                    dialogueController.dialoguePanel.SetActive(true);
+                    var dur = Math.Min(Math.Max(time - dialogue.startTime, 0),
+                        dialogue.endTime - dialogue.nextSec - dialogue.startTime);
+                    var contentCount = (int)(dur / dialogue.printSec) + 1;
+                    var content = dialogue.contents.Substring(0, contentCount);
+                    dialogueController.SetText(dialogue.name, content);
+                }
             }
             else
             {
                 var dur = Math.Min(Math.Max(time - dialogue.startTime, 0),
-                    dialogue.endTime - dialogue.NextSec - dialogue.startTime);
-                var contentCount = (int)(dur / dialogue.PrintSec) + 1;
+                    dialogue.endTime - dialogue.nextSec - dialogue.startTime);
+                var contentCount = (int)(dur / dialogue.printSec) + 1;
                 var content = dialogue.contents.Substring(0, contentCount);
                 DialogueController.Instance.SetText(dialogue.name, content);
             }
         }
 
-        public float GetDuration()
+        public double GetDuration()
         {
             return duration;
         }

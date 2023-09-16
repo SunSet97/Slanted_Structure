@@ -123,7 +123,6 @@ namespace Episode.EP0.SpeatTutorial.Officetel
 
                     DialogueController.Instance.SetDialogueEndAction(() =>
                     {
-                        characterManager.IsMove = true;
                         DataController.Instance.CurrentMap.ResetMap();
                     });
                     DialogueController.Instance.StartConversation(jsonFile.text);

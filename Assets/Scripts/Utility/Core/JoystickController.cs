@@ -18,7 +18,30 @@ namespace Utility.Core
         public float inputDegree;
 
         [NonSerialized] public Joystick Joystick;
-        [NonSerialized] public bool InputJump;
+        
+        public bool InputJump
+        {
+            get => inputJump;
+            set
+            {
+                if (value)
+                {
+                    var character = DataController.Instance.GetCharacter(CustomEnum.Character.Main);
+                    if (character != null && character.IsJumpEnable())
+                    {
+                        // 점프 중이 아닌 경우에만 True 가능
+                        inputJump = true;
+                        Debug.Log("Jump On");
+                    }
+                }
+                else
+                {
+                    inputJump = false;
+                }
+            }
+        }
+
+        private bool inputJump;
 
         private bool isAlreadySave;
         private bool wasJoystickUse;
@@ -174,12 +197,12 @@ namespace Utility.Core
                 if(Mathf.Approximately(inputDegree, 0f)){
                     return;
                 }
-
+                
                 if (Joystick.GetType() == typeof(DynamicJoystick))
                 {
                     var angle = -1 * (Vector2.Angle(Vector2.up, new Vector2(Joystick.Horizontal, Joystick.Vertical)) -
                                       90f);
-
+                    
                     InputJump = angle >= 30f;
                 }
             }   

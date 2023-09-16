@@ -6,17 +6,16 @@ namespace Episode.EP2.CoinTossGame
 {
     public class Coin : MonoBehaviour
     {
-        private Action checkAction;
-        
         private Action<bool> endAction;
+        private bool isTriggered;
         
-        public void Init(Vector3 dir, float force, float timer, Action action1, Action<bool> action2)
+        public void Init(Vector3 dir, float force, float timer, Action<bool> endAction)
         {
-            checkAction = action1;
-            endAction = action2;
-            
+            this.endAction = endAction;
+
+            isTriggered = false;
             var myRigidbody = GetComponent<Rigidbody>();
-            myRigidbody.AddForce(dir * force, ForceMode.VelocityChange);
+            myRigidbody.AddForce(dir.normalized * force, ForceMode.VelocityChange);
 
             StartCoroutine(WaitStop(timer));
         }
@@ -29,18 +28,24 @@ namespace Episode.EP2.CoinTossGame
 
         private void Check(bool isClear)
         {
-            checkAction?.Invoke();
-
             endAction?.Invoke(isClear);
         }
 
         private void OnTriggerEnter(Collider other)
         {
+            if (isTriggered)
+            {
+                return;
+            }
+            
+            isTriggered = true;
             // 바닥인가 분수인가
 
             StopAllCoroutines();
             
+            // Debug.Log($"other - {other.gameObject}");
             Check(true);
+            // GetComponent<Collider>().
         }
     }
 }

@@ -108,10 +108,8 @@ MonoBehaviour:
   interactions:
   - jsonFile: {fileID: 4900000, guid: 418ddd3eb083f3c488fcaab2f3683efb, type: 3}
     interactionPlayType: 2
-    gamePlayableGame: {fileID: 0}
-    game: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
-      dialogueIdx: 0
       dialogues:
       - name: "\uC624\uC6B4"
         expression: 0
@@ -152,6 +150,8 @@ MonoBehaviour:
         contents: "\uBCF4\uC790\u2026 \uC9C0\uAE08 \uB3D9\uC804\uC774 5\uAC1C \uC788\uC73C\uB2C8\uAE4C,
           5\uBC88 \uC548\uC5D0 \uAF2D \uB123\uB294\uB2E4!"
         sfx: 
+      dialogueIdx: 0
+    dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -165,19 +165,25 @@ MonoBehaviour:
           movables: []
         playableList:
           playableObjs:
-          - gameObject: {fileID: 0}
-            game: {fileID: 2218439710466595589}
+          - miniGame: {fileID: 2218439710466595589}
             isPlay: 1
         interactObjs:
           interacts: []
         interactionObjs:
           interactions: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
     isFocusObject: 0
+    isMain: 0
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
     timelines: []
     cinematics: []
     inGames: []
@@ -398,9 +404,18 @@ MonoBehaviour:
     startPosition: {fileID: 3118118523383460399}
     isMain: 0
     isFollow: 0
+  isCustomJumpForce: 0
+  jumpForce: 0
+  isCustomGravityScale: 0
+  gravityScale: 0
   cameraViewType: 0
   camDis: {x: 3, y: 2.5, z: -3}
   camRot: {x: 25, y: 0, z: 0}
+  useFieldOfView: 0
+  fieldOfView: 0
+  useClippingPlanes: 0
+  farClipPlane: 0
+  usePostProcessing: 0
   isJoystickInputUse: 0
   isJoystickNone: 1
   joystickType: 0
@@ -1736,7 +1751,27 @@ PrefabInstance:
         type: 3}
       propertyPath: arrow
       value: 
-      objectReference: {fileID: 4435358240205115430}
+      objectReference: {fileID: 0}
+    - target: {fileID: 6829274090457639783, guid: 934204194c118fa4faef716a28626978,
+        type: 3}
+      propertyPath: maxPower
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6829274090457639783, guid: 934204194c118fa4faef716a28626978,
+        type: 3}
+      propertyPath: minPower
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6829274090457639783, guid: 934204194c118fa4faef716a28626978,
+        type: 3}
+      propertyPath: powerSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6829274090457639783, guid: 934204194c118fa4faef716a28626978,
+        type: 3}
+      propertyPath: rotateSpeed
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6832302541301629125, guid: 934204194c118fa4faef716a28626978,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2212,7 +2247,7 @@ PrefabInstance:
         type: 3}
       propertyPath: arrow
       value: 
-      objectReference: {fileID: 4435358240205115430}
+      objectReference: {fileID: 0}
     - target: {fileID: 9051248470689563431, guid: 934204194c118fa4faef716a28626978,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2260,12 +2295,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ce4180a3077bc4289b4ed228499d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &4435358240205115430 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9043933261725556804, guid: 934204194c118fa4faef716a28626978,
-    type: 3}
-  m_PrefabInstance: {fileID: 4615925407143358562}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8385757125737277791 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3778306913209391421, guid: 934204194c118fa4faef716a28626978,

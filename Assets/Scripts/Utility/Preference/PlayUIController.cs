@@ -61,10 +61,13 @@ namespace Utility.Preference
             {
                 Instance = this;
             }
+
+            Init();
         }
         
-        private void Start()
+        private void Init()
         {
+            Debug.Log("Start");
             Canvas = GetComponentInParent<Canvas>();
             var canvasScaler = GetComponentInParent<CanvasScaler>();
             canvasScaler.referenceResolution = new Vector2(Screen.width, canvasScaler.referenceResolution.y);
@@ -216,6 +219,7 @@ namespace Utility.Preference
 
         public void SetMenuActive(bool isActive)
         {
+            Debug.Log($"메뉴 패널 {isActive}");
             if (!isActive)
             {
                 menuAnimator.SetBool(IsOpen, false);
