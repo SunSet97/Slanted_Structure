@@ -44,9 +44,18 @@ namespace Utility.WayPoint
         private bool isInVertex;
         private MoveDirection movedDir;
 
+        private int originalEdgeIndex;
         private void Start()
         {
+            originalEdgeIndex = currentEdgeIndex;
+            Init();
+        }
+        
+        public void Init()
+        {
+            isInVertex = false;
             moveDirSet = DataController.Instance.CurrentMap.rightIsForward ? MoveDirection.Right : MoveDirection.Left;
+            currentEdgeIndex = originalEdgeIndex;
             
             waypointEdges = new WaypointEdge[waypoints.Count - 1];
             for (var index = 0; index < waypoints.Count - 1; index++)

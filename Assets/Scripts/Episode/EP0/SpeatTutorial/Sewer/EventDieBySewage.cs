@@ -1,13 +1,15 @@
 ﻿using Data;
 using UnityEngine;
 using Utility.Core;
+using Utility.WayPoint;
 
 namespace Episode.EP0.SpeatTutorial.Sewer
 {
     public class EventDieBySewage : MonoBehaviour
     {
-        public Transform respawnPoint;
-
+        [SerializeField] private Transform respawnPoint;
+        [SerializeField] private Waypoint waypoint;
+        
         private void Awake()
         {
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
@@ -24,6 +26,7 @@ namespace Episode.EP0.SpeatTutorial.Sewer
             character.PickUpCharacter();
             other.transform.position = respawnPoint.position;
             character.UseJoystickCharacter();
+            waypoint.Init();
         }
     }
 }

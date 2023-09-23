@@ -15,7 +15,7 @@ namespace Utility.Utils
         public GraphicRaycaster graphicRaycaster;
         [NonSerialized] public bool IsFadeOver;
         [NonSerialized] public bool IsAlreadyFadeOut;
-        internal UnityEvent OnFadeOver;
+        internal Action OnFadeOver;
 
         private void Awake()
         {
@@ -26,7 +26,6 @@ namespace Utility.Utils
             else
             {
                 Instance = this;
-                OnFadeOver = new UnityEvent();
             }
         }
 
@@ -35,10 +34,6 @@ namespace Utility.Utils
             if (!IsAlreadyFadeOut)
             {
                 Debug.LogWarning("경고경고, FadeOut이 아닌 상태에서 FadeIn 실행");
-            
-                // IsFadeOver = true;
-                // OnFadeOver?.Invoke();
-                // return;
             }
         
             IsFadeOver = false;
@@ -77,7 +72,9 @@ namespace Utility.Utils
             fadePanel.gameObject.SetActive(false);
 
             Debug.Log("Fade In 종료");
-            OnFadeOver?.Invoke();
+            var tAction = OnFadeOver;
+            OnFadeOver = () => { };
+            tAction?.Invoke();
         }
 
         public void FadeOut(float fadeOutSec = 2f)
@@ -86,7 +83,9 @@ namespace Utility.Utils
             {
                 Debug.LogWarning("이미 FadeOut임, 오류");
                 IsFadeOver = true;
-                OnFadeOver?.Invoke();
+                var tAction = OnFadeOver;
+                OnFadeOver = () => { };
+                tAction?.Invoke();
                 return;
             }
         
@@ -126,7 +125,9 @@ namespace Utility.Utils
         
             Debug.Log("Fade Out 종료");
         
-            OnFadeOver?.Invoke();
+            var tAction = OnFadeOver;
+            OnFadeOver = () => { };
+            tAction?.Invoke();
         }
     }
 }

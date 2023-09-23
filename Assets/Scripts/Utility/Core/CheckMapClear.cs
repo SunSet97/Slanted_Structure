@@ -43,17 +43,15 @@ namespace Utility.Core
         
             if (DataController.Instance.CurrentMap.useFadeOut)
             {
-                FadeEffect.Instance.OnFadeOver.AddListener(() =>
+                FadeEffect.Instance.OnFadeOver += () =>
                 {
-                    FadeEffect.Instance.OnFadeOver.RemoveAllListeners();
                     DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.nextMapcode);
-                });
+                };
+                
                 FadeEffect.Instance.FadeOut(DataController.Instance.CurrentMap.fadeOutSec);
             }
             else
             {
-                Debug.Log(nextSelectMapcode);
-                Debug.Log(DataController.Instance.CurrentMap.nextMapcode);
                 DataController.Instance.ChangeMap(DataController.Instance.CurrentMap.nextMapcode);
             }
         }

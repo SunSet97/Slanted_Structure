@@ -20,7 +20,7 @@ namespace Data
 
         public DialogueData()
         {
-            Debug.Log("초기화");
+            Debug.Log("Dialogue Data Init");
             dialogues = Array.Empty<Dialogue>();
             dialogueIdx = 0;
 
@@ -46,15 +46,17 @@ namespace Data
             dialogueIdx = 0;
         }
 
-        public void Reset()
+        public void EndDialogue()
         {
-            DialogueEndAction?.Invoke();
             Debug.Log("초기화");
             dialogues = Array.Empty<Dialogue>();
             dialogueIdx = 0;
 
             ChooseAction = null;
+
+            var tAction = DialogueEndAction;
             DialogueEndAction = null;
+            tAction?.Invoke();
         }
     }
 

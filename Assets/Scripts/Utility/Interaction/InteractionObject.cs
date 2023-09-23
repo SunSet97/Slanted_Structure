@@ -451,12 +451,13 @@ namespace Utility.Interaction
 
                 if (DialogueController.Instance.IsDialogue)
                 {
+                    Debug.Log("대화중임");
                     return;
                 }
 
                 DialogueController.Instance.SetDialogueEndAction(() =>
                 {
-                    interaction.EndAction();
+                    EndAction(interaction);
                 });
                 
                 DialogueController.Instance.StartConversation(interaction.jsonFile.text, interaction.dialoguePrintSec);
@@ -464,7 +465,7 @@ namespace Utility.Interaction
             else if (interaction.interactionPlayType == InteractionPlayType.Portal &&
                      gameObject.TryGetComponent(out CheckMapClear mapClear))
             {
-                interaction.EndAction();
+                EndAction(interaction);
                 mapClear.Clear();
             }
             else if (interaction.interactionPlayType == InteractionPlayType.Task)
@@ -474,15 +475,23 @@ namespace Utility.Interaction
                     var timelineAsset = interaction.timelines[0].playableAsset as TimelineAsset;
                     if (timelineAsset != null)
                     {
-                        // DataController.Instance.GetCharacter(Character.Main).PickUpCharacter();
-                        var trackAssets = timelineAsset.GetOutputTracks();
-                        foreach (var trackAsset in trackAssets)
+                        var trackAssets = timelineAsset.GetOutputTracks().ToList();
+                        while (trackAssets.Count > 0)
                         {
+                            var trackAsset = trackAssets.First();
+
                             if (trackAsset is CinemachineTrack)
                             {
                                 interaction.timelines[0].SetGenericBinding(trackAsset,
                                     DataController.Instance.Cam.GetComponent<CinemachineBrain>());
                             }
+
+                            if (trackAsset.isSubTrack)
+                            {
+                                trackAssets.AddRange(trackAsset.GetChildTracks());
+                            }
+
+                            trackAssets.Remove(trackAsset);
                         }
                     }
                     else
@@ -504,7 +513,7 @@ namespace Utility.Interaction
                 interaction.miniGame.Play();
                 interaction.miniGame.OnEndPlay = isSuccess =>
                 {
-                    interaction.EndAction(isSuccess);
+                    EndAction(interaction, isSuccess);
                 };
             }
             else if (interaction.interactionPlayType == InteractionPlayType.Cinematic)
@@ -558,7 +567,7 @@ namespace Utility.Interaction
                         PlayUIController.Instance.SetMenuActive(true);
                         Debug.Log("타임라인 끝");
 
-                        interaction.EndAction();
+                        EndAction(interaction);
 
                         foreach (var interactionInGame in interaction.inGames)
                         {
@@ -589,6 +598,16 @@ namespace Utility.Interaction
             {
                 InteractIndex = (InteractIndex + 1) % interactions.Count;
             }
+        }
+
+        private void EndAction(Interaction interaction, bool isSuccess = false)
+        {
+            if (GetInteraction().interactionMethod != InteractionMethod.Trigger)
+            {
+                OnEnter();
+            }
+
+            interaction.EndAction(isSuccess);
         }
 
         private void OnDrawGizmos()
@@ -850,7 +869,7 @@ namespace Utility.Interaction
                 }
                 else
                 {
-                    interaction.EndAction();
+                    EndAction(interaction);
                 }
             }
         }
@@ -1024,7 +1043,7 @@ namespace Utility.Interaction
         public void OnEndAnimation(int interactionIndex)
         {
             Debug.Log("실행");
-            GetInteraction(interactionIndex).EndAction();
+            EndAction(GetInteraction(interactionIndex));
         }
 
         private static IEnumerator WaitTimeline(WaitUntil waitUntil, Action action)

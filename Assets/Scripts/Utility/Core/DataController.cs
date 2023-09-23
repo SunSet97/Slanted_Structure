@@ -93,8 +93,8 @@ namespace Utility.Core
             var curDay = int.Parse(mapCode.Substring(1, 2));
             var desDay = int.Parse(desMapCode.Substring(1, 2));
 
-            Debug.Log($"Cur ep: {curEp}, day: {curDay}");
-            Debug.Log($"Des ep: {desEp}, day: {desDay}");
+            // Debug.Log($"Cur ep: {curEp}, day: {curDay}");
+            // Debug.Log($"Des ep: {desEp}, day: {desDay}");
             if (curEp == desEp && curDay == desDay)
             {
                 Debug.Log("이미 있음");
@@ -156,6 +156,8 @@ namespace Utility.Core
                 MobileAdsManager.ShowAd();
                 MobileAdsManager.ADCount = 0;
             }
+            
+            DialogueController.Instance.EndConversation();
 
             foreach (var character in characters)
             {
@@ -185,13 +187,12 @@ namespace Utility.Core
 
             if (FadeEffect.Instance.IsAlreadyFadeOut)
             {
-                FadeEffect.Instance.OnFadeOver.AddListener(() =>
+                FadeEffect.Instance.OnFadeOver += () =>
                 {
-                    FadeEffect.Instance.OnFadeOver.RemoveAllListeners();
-                    Debug.Log("??");
+                    Debug.Log("FadeOver -> LoadMap");
                     onLoadMap?.Invoke();
                     onLoadMap = () => { };
-                });
+                };
 
                 FadeEffect.Instance.FadeIn(CurrentMap.fadeInSec);
             }

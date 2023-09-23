@@ -117,10 +117,10 @@ namespace Episode.EP0.SpeatTutorial.Officetel
             }
             else if (other.TryGetComponent(out CharacterManager characterManager) && characterManager.Equals(DataController.Instance.GetCharacter(CustomEnum.Character.Main)))
             {
+                pimpMiniGameManager.EndPlay(false);
+                
                 if (jsonFile)
                 {
-                    pimpMiniGameManager.EndPlay(false);
-
                     DialogueController.Instance.SetDialogueEndAction(() =>
                     {
                         DataController.Instance.CurrentMap.ResetMap();

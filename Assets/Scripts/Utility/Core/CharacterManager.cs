@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using Data;
 using Move;
 using UnityEngine;
@@ -106,7 +105,7 @@ namespace Utility.Core
 
             CharacterAnimator.SetFloat(SpeedHash, 0f);
 
-            Debug.LogWarning("Set 2D false");
+            // Debug.LogWarning("Set 2D false");
             CharacterAnimator.SetBool(TwoSideHash, false);
             CharacterAnimator.SetBool(EatHash, false);
             CharacterAnimator.SetBool(SeatHash, false);
@@ -267,7 +266,7 @@ namespace Utility.Core
             if (!Mathf.Approximately(x, 0f))
             {
                 CharacterAnimator.SetBool(TwoSideHash, true);
-                Debug.LogWarning("Set 2D true");
+                // Debug.LogWarning("Set 2D true");
             }
 
             RotateCharacter2D(x);
@@ -276,7 +275,7 @@ namespace Utility.Core
         private void QuarterView(float joystickAngle)
         {
             CharacterAnimator.SetBool(TwoSideHash, false);
-            Debug.LogWarning("Set 2D false");
+            // Debug.LogWarning("Set 2D false");
             if (Mathf.Abs(joystickAngle) > 0)
             {
                 transform.Rotate(Vector3.up, joystickAngle);
@@ -387,12 +386,12 @@ namespace Utility.Core
             if (joystickInputMethod.Equals(JoystickInputMethod.OneDirection))
             {
                 CharacterAnimator.SetBool(TwoSideHash, true);
-                Debug.LogWarning("Set 2D true");
+                // Debug.LogWarning("Set 2D true");
             }
             else if (joystickInputMethod.Equals(JoystickInputMethod.AllDirection))
             {
                 CharacterAnimator.SetBool(TwoSideHash, false);
-                Debug.LogWarning("Set 2D false");
+                // Debug.LogWarning("Set 2D false");
             }
 
 

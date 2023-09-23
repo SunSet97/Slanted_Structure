@@ -34,11 +34,13 @@ namespace Data
 
             public virtual void Play()
             {
+                Debug.Log("PlayGame");
                 IsPlay = true;
             }
 
             public virtual void EndPlay(bool isSuccess)
             {
+                Debug.Log("EndGame");
                 IsPlay = false;
                 OnEndPlay?.Invoke(isSuccess);
             }

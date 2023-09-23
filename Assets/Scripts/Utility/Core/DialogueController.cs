@@ -31,7 +31,7 @@ namespace Utility.Core
         [SerializeField] private Transform choiceRoot;
 
         [Header("Debug")] public TaskData taskData;
-        public DialogueData dialogueData;
+        [SerializeField] private DialogueData dialogueData;
 
         [NonSerialized] public bool IsDialogue;
 
@@ -105,7 +105,6 @@ namespace Utility.Core
 
         private void OnInputDialogue()
         {
-            Debug.Log($"누름! {dialogueInputArea.raycastTarget}");
             if (isUnfolding)
             {
                 CompletePrint();
@@ -261,8 +260,7 @@ namespace Utility.Core
 
                 yield return waitForSec;
             }
-
-            Debug.Log("프린트 끝");
+            
             CompletePrint();
         }
 
@@ -294,19 +292,28 @@ namespace Utility.Core
             dialogueData.dialogueIdx++;
         }
 
-        private void EndConversation()
+        public void EndConversation()
         {
-            Debug.Log("대화 종료");
+            Debug.Log($"대화 종료 {IsDialogue}");
+            
+            if (!IsDialogue)
+            {
+                return;
+            }
+            
             IsDialogue = false;
             dialoguePanel.SetActive(false);
             PlayUIController.Instance.SetMenuActive(true);
             JoystickController.Instance.StopSaveLoadJoyStick(false);
-            foreach (var positionSet in DataController.Instance.CurrentMap.positionSets)
+            if (DataController.Instance.CurrentMap)
             {
-                DataController.Instance.GetCharacter(positionSet.who).Emotion = Expression.Idle;
+                foreach (var positionSet in DataController.Instance.CurrentMap.positionSets)
+                {
+                    DataController.Instance.GetCharacter(positionSet.who).Emotion = Expression.Idle;
+                }
             }
 
-            dialogueData.Reset();
+            dialogueData.EndDialogue();
 
             if (taskData != null)
             {
@@ -377,6 +384,7 @@ namespace Utility.Core
 
         public void SetDialogueEndAction(UnityAction endAction)
         {
+            Debug.Log("Add Dialogue EndAction");
             dialogueData.DialogueEndAction += endAction;
         }
 
@@ -390,8 +398,9 @@ namespace Utility.Core
         {
             RemoveChoice();
             JoystickController.Instance.StopSaveLoadJoyStick(false);
-            dialogueData.ChooseAction?.Invoke(index);
+            var tAction = dialogueData.ChooseAction;
             dialogueData.ChooseAction = null;
+            tAction?.Invoke(index);
         }
 
         private bool IsDialogueEnd()

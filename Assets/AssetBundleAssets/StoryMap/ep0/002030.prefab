@@ -56,6 +56,16 @@ MonoBehaviour:
         contents: "\uC544\uC774\uACE0 \uD5C8\uB9AC\uC57C...\uC5EC\uAE34 \uC5B4\uB514\uC9C0..?
           \uC544\uC624 \uB0C4\uC0C8..."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: ??
         expression: 0
         anim_name: Speat_Adult
@@ -63,6 +73,16 @@ MonoBehaviour:
           \uBC97\uC5B4\uB09C \uAC70 \uAC19\uC73C\uB2C8...\uADF8\uB798\uC11C \uC774\uC81C
           \uB098\uB294 \uC5B4\uB514\uB85C \uAC00\uC9C0..?"
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
@@ -70,12 +90,21 @@ MonoBehaviour:
       interactionEvents: []
     interactionEndActions:
       interactionEvents: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
-    isFocusObject: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
     timelines: []
     cinematics: []
     inGames: []
@@ -165,6 +194,16 @@ MonoBehaviour:
         contents: "\uBC84\uB824\uC9C4 \uACF3\uC778\uAC00..? \uC77C\uB2E8 \uB4E4\uC5B4\uAC00\uC11C
           \uC7A0\uC2DC \uC26C\uC790.."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
@@ -184,12 +223,21 @@ MonoBehaviour:
           interacts: []
         interactionObjs:
           interactions: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
     interactionMethod: 1
     isViewChange: 0
-    isFocusObject: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
     timelines: []
     cinematics: []
     inGames: []
@@ -286,13 +334,21 @@ MonoBehaviour:
     startPosition: {fileID: 5724989133351906227}
     isMain: 1
     isFollow: 0
-    playGravity: 1.1
-    jumpForce: 7
+  isCustomJumpForce: 0
+  jumpForce: 0
+  isCustomGravityScale: 0
+  gravityScale: 0
   cameraViewType: 0
   camDis: {x: 0, y: 2, z: -8}
   camRot: {x: 10, y: 0, z: 0}
+  useFieldOfView: 0
+  fieldOfView: 0
+  useClippingPlanes: 0
+  farClipPlane: 0
+  usePostProcessing: 0
   isJoystickInputUse: 1
   isJoystickNone: 0
+  isJoystickControlDisable: 0
   joystickType: 0
 --- !u!114 &1130905551463647725
 MonoBehaviour:
@@ -617,7 +673,7 @@ PrefabInstance:
     - target: {fileID: 4175555072946378378, guid: 73e827f24e127ad44a3406da33eafdaf,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.52
+      value: 0.51
       objectReference: {fileID: 0}
     - target: {fileID: 4175555072967859458, guid: 73e827f24e127ad44a3406da33eafdaf,
         type: 3}
@@ -929,6 +985,11 @@ PrefabInstance:
       propertyPath: respawnPoint
       value: 
       objectReference: {fileID: 5724989133351906227}
+    - target: {fileID: 6510885461403342209, guid: 73e827f24e127ad44a3406da33eafdaf,
+        type: 3}
+      propertyPath: waypoint
+      value: 
+      objectReference: {fileID: 2646391034365251941}
     - target: {fileID: 6510885461815029417, guid: 73e827f24e127ad44a3406da33eafdaf,
         type: 3}
       propertyPath: moveDirSet
@@ -1095,6 +1156,16 @@ PrefabInstance:
     - {fileID: 2782376677405735087, guid: 73e827f24e127ad44a3406da33eafdaf, type: 3}
     - {fileID: 7584803646213596512, guid: 73e827f24e127ad44a3406da33eafdaf, type: 3}
     - {fileID: 7627060786119192379, guid: 73e827f24e127ad44a3406da33eafdaf, type: 3}
+    - {fileID: 6510885462463007588, guid: 73e827f24e127ad44a3406da33eafdaf, type: 3}
+    - {fileID: 6510885460867411955, guid: 73e827f24e127ad44a3406da33eafdaf, type: 3}
+    - {fileID: 4175555072494520704, guid: 73e827f24e127ad44a3406da33eafdaf, type: 3}
+    - {fileID: 4175555073012722973, guid: 73e827f24e127ad44a3406da33eafdaf, type: 3}
+    - {fileID: 4175555072722840946, guid: 73e827f24e127ad44a3406da33eafdaf, type: 3}
+    - {fileID: 6510885462255120282, guid: 73e827f24e127ad44a3406da33eafdaf, type: 3}
+    - {fileID: 6510885461373402984, guid: 73e827f24e127ad44a3406da33eafdaf, type: 3}
+    - {fileID: 2180310417193792359, guid: 73e827f24e127ad44a3406da33eafdaf, type: 3}
+    - {fileID: 7790377017849501011, guid: 73e827f24e127ad44a3406da33eafdaf, type: 3}
+    - {fileID: 4175555073585954180, guid: 73e827f24e127ad44a3406da33eafdaf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 73e827f24e127ad44a3406da33eafdaf, type: 3}
 --- !u!1 &5724989134008353924 stripped
 GameObject:

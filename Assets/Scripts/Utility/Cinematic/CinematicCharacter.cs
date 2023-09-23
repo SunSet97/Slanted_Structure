@@ -15,7 +15,7 @@ namespace Utility.Cinematic
         private static readonly int Emotion = Animator.StringToHash("Emotion");
         private static readonly int MainTex = Shader.PropertyToID("_MainTex");
 
-        private void Start()
+        private void Awake()
         {
             if (Animator == null)
                 Animator = GetComponent<Animator>();
@@ -39,7 +39,8 @@ namespace Utility.Cinematic
 
         public void EmotionAnimationSetting(int emotionInt)
         {
-            if(!Application.isPlaying){
+            if (!Application.isPlaying)
+            {
                 return;
             }
 
