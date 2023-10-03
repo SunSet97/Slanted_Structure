@@ -85,8 +85,7 @@ namespace Utility.Core
         private MapData[] LoadMap(string desMapCode)
         {
             var mapCode = CurrentMap ? CurrentMap.mapCode : "999999";
-            Debug.Log("현재 맵: " + mapCode);
-            Debug.Log("다음 맵: " + desMapCode);
+            Debug.Log($"{mapCode} -> {desMapCode}");
             var curEp = int.Parse(mapCode.Substring(0, 1));
             var desEp = int.Parse(desMapCode.Substring(0, 1));
 
@@ -149,7 +148,7 @@ namespace Utility.Core
 
         public void ChangeMap(string desMapCode, SaveData saveData = null)
         {
-            Debug.Log($"Change Map -> {desMapCode}");
+            Debug.Log($"Change Map {(CurrentMap != null ? CurrentMap.mapCode : "")} -> {desMapCode}");
 
             if (MobileAdsManager.ADCount >= MobileAdsManager.CountPerAds)
             {
@@ -178,6 +177,7 @@ namespace Utility.Core
             InteractionObjects.Clear();
 
             CurrentMap = Instantiate(nextMap, mapGenerate);
+            Debug.Log($"Instantiate -> {nextMap.mapCode}");
 
             SetByChangedMap(saveData);
 

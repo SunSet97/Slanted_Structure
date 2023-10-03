@@ -99,7 +99,7 @@ namespace Utility.Interaction.Click
             var hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
             foreach (var hit in hits)
             {
-                if (hit.collider.TryGetComponent(out IClickable clickable))
+                if (hit.collider.isTrigger && hit.collider.TryGetComponent(out IClickable clickable))
                 {
                     clickable.Click();
                     Debug.Log("됨");

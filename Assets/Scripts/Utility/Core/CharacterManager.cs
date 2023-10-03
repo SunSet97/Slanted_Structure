@@ -202,7 +202,7 @@ namespace Utility.Core
             // save & load
             SaveCharacterState();
             PickUpCharacter();
-            Debug.Log($"{transform.position} -> {target.position}");
+            Debug.Log($" {who} - {transform.position} -> {target.position}");
             transform.position = target.position;
             transform.rotation = target.rotation;
 

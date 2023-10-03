@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2db6974a3f98634a833d26c2928139d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTrigger: 0
+  isTrigger: 1
   nextSelectMapcode: 000000
 --- !u!1 &6571003619915153711
 GameObject:
@@ -123,30 +123,72 @@ MonoBehaviour:
   interactions:
   - jsonFile: {fileID: 4900000, guid: 4cca2625335da8742897897b1cddcf03, type: 3}
     interactionPlayType: 3
-    gamePlayableGame: {fileID: 0}
+    miniGame: {fileID: 0}
     dialogueData:
-      dialogueIdx: 0
       dialogues: []
+      dialogueIdx: 0
+    dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
     interactionEndActions:
       interactionEvents: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
     timelines: []
     cinematics: []
     inGames: []
     isLoop: 0
     isContinue: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
       isInteracted: 0
-    debugTaskData: []
+    debugTaskData:
+    - tasks:
+      - name: "\uB77C\uC6B0\uB300\uD6541"
+        taskContentType: 2
+        nextFile: dialogue_ep2/203010
+        order: 1
+        condition: 
+        increaseVar: 
+      - name: 
+        taskContentType: 3
+        nextFile: 2
+        order: 1
+        condition: 
+        increaseVar: 
+      - name: "\uC2A4\uD54F\uC5D0\uAC8C \uB9CC\uB098\uC790\uACE0 \uD55C\uB2E4"
+        taskContentType: 2
+        nextFile: dialogue_ep2/203010_speat
+        order: 203110
+        condition: 0,0,0
+        increaseVar: 0,0,0
+      - name: "\uC624\uC6B4\uC5D0\uAC8C \uB9CC\uB098\uC790\uACE0 \uD55C\uB2E4"
+        taskContentType: 2
+        nextFile: dialogue_ep2/203010_oun
+        order: 203210
+        condition: 0,0,0
+        increaseVar: 0,0,0
+      taskIndex: 0
+      taskOrder: 1
+      isContinue: 1
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -227,11 +269,21 @@ MonoBehaviour:
     startPosition: {fileID: 8195409945449437646}
     isMain: 1
     isFollow: 0
+  isCustomJumpForce: 0
+  jumpForce: 0
+  isCustomGravityScale: 0
+  gravityScale: 0
   cameraViewType: 0
   camDis: {x: -24.14, y: 18.1, z: 16.61}
   camRot: {x: 30, y: 126.722, z: 0}
+  useFieldOfView: 0
+  fieldOfView: 0
+  useClippingPlanes: 0
+  farClipPlane: 0
+  usePostProcessing: 0
   isJoystickInputUse: 1
   isJoystickNone: 0
+  isJoystickControlDisable: 0
   joystickType: 0
 --- !u!1 &8195409945370627800
 GameObject:
@@ -243,7 +295,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8195409945370627801}
   m_Layer: 0
-  m_Name: Position Setting (1)
+  m_Name: Position Setting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -260,7 +312,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8195409945860835748}
+  - {fileID: 8195409945449437646}
   m_Father: {fileID: 8195409945138062109}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -292,37 +344,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3395172103621154481}
-  m_Father: {fileID: 8195409945860835748}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8195409945860835747
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8195409945860835748}
-  m_Layer: 0
-  m_Name: 0 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8195409945860835748
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8195409945860835747}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 8195409945449437646}
   m_Father: {fileID: 8195409945370627801}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -159,5 +159,13 @@ namespace Utility.SpeechBubble
                                  (speechBubbleType == SpeechBubbleType.Once &&
                                   bubbleIndex != bubbleScripts.Length));
         }
+
+        private void OnDestroy()
+        {
+            if (speechBubble.gameObject)
+            {
+                Destroy(speechBubble.gameObject);
+            }
+        }
     }
 }
