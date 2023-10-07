@@ -8,20 +8,21 @@ namespace Utility.Preference.Audio
     {
         [SerializeField] private Slider audioSlider;
         [SerializeField] private Animator muteAnimator;
-        
+
         private static readonly int Mute = Animator.StringToHash("Mute");
 
-        public void Init()
+        private void Awake()
         {
             audioSlider.onValueChanged.AddListener(value =>
             {
-                muteAnimator.SetBool(Mute, !Mathf.Approximately(value, 0));
+                muteAnimator.SetBool(Mute, Mathf.Approximately(value, 0));
                 AudioLoader.SaveAudio(value);
             });
         }
 
-        public void SetAudio(float audioValue)
+        private void OnEnable()
         {
+            AudioLoader.LoadAudio(out var audioValue);
             audioSlider.value = audioValue;
         }
     }

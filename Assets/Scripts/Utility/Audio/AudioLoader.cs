@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Utility.Audio
 {
@@ -6,30 +7,34 @@ namespace Utility.Audio
     {
         public static void SaveVibe(bool viveState)
         {
-            PlayerPrefs.SetString("vibe", viveState.ToString());
+            PlayerPrefs.SetString("Vibe", viveState.ToString());
         }
         
         public static void SaveAudio(float audioValue)
         {
-            PlayerPrefs.SetFloat("sound", audioValue);
+            PlayerPrefs.SetFloat("Audio", audioValue);
         }
 
-        public static void LoadPreference(out float audioValue, out bool isVibe)
+        public static void LoadVibe(out bool isVibe)
         {
             isVibe = false;
-            audioValue = 0.5f;
             if (PlayerPrefs.HasKey("Vibe"))
             {
                 var vibeString = PlayerPrefs.GetString("Vibe");
-                if (vibeString.Equals("true"))
+                if (vibeString.Equals("True", StringComparison.OrdinalIgnoreCase))
                 {
                     isVibe = true;
                 }
-                else if (vibeString.Equals("false"))
+                else if (vibeString.Equals("False", StringComparison.OrdinalIgnoreCase))
                 {
                     isVibe = false;
                 }
             }
+        }
+        
+        public static void LoadAudio(out float audioValue)
+        {
+            audioValue = 0.5f;
 
             if (PlayerPrefs.HasKey("Audio"))
             {

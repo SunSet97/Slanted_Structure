@@ -11,7 +11,7 @@ namespace Utility.Preference.Audio
         
         private static readonly int Vibe = Animator.StringToHash("Vibe");
 
-        public void Init()
+        public void Awake()
         {
             vibeToggle.onClick.AddListener(() =>
             {
@@ -21,8 +21,9 @@ namespace Utility.Preference.Audio
             });
         }
 
-        public void SetVibe(bool isVibe)
+        private void OnEnable()
         {
+            AudioLoader.LoadVibe(out var isVibe);
             vibeAnimator.SetBool(Vibe, isVibe);
         }
     }
