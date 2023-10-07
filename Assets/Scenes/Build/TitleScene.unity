@@ -730,6 +730,51 @@ RectTransform:
   m_AnchoredPosition: {x: 286.50006, y: -65.000015}
   m_SizeDelta: {x: 303, y: 182}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &252731272
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 252731274}
+  - component: {fileID: 252731273}
+  m_Layer: 0
+  m_Name: AudioUiController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &252731273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 252731272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 106bacb7335f4f1483cf48d54407b666, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSlider: {fileID: 992953015}
+  vibeToggle: {fileID: 1304530667}
+--- !u!4 &252731274
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 252731272}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &290049989
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -963,6 +1008,7 @@ GameObject:
   - component: {fileID: 513880872}
   - component: {fileID: 513880875}
   - component: {fileID: 513880874}
+  - component: {fileID: 513880873}
   m_Layer: 5
   m_Name: Mute
   m_TagString: Untagged
@@ -989,6 +1035,25 @@ RectTransform:
   m_AnchoredPosition: {x: -228.99998, y: 0}
   m_SizeDelta: {x: 72, y: 62}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &513880873
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513880871}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fe07cedcb1bda405292ed3bdc6945aa1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &513880874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1826,17 +1891,6 @@ MonoBehaviour:
   infoPanel: {fileID: 2023868397}
   focusTransform: {fileID: 1393113240}
   backgroundTransform: {fileID: 919570916}
-  soundSlider: {fileID: 1980733832}
-  vibeToggle: {fileID: 61743092}
-  mute: {fileID: 513880874}
-  muteOnSprite: {fileID: 21300000, guid: d1e9a750594034a36a2a39f697be2837, type: 3}
-  muteOffSprite: {fileID: 21300000, guid: 5d320577c7e4f416f97601a392a8e9b5, type: 3}
-  vibe: {fileID: 235383669}
-  vibeOnSprite: {fileID: 21300000, guid: d1b246000933d4ab99d48b32710e52d0, type: 3}
-  vibeOffSprite: {fileID: 21300000, guid: 140c0070086a54601bfee2413173d975, type: 3}
-  vibeToggleOnSprite: {fileID: 21300000, guid: 009504bd669daa246aad46951acc369c, type: 3}
-  vibeToggleOffSprite: {fileID: 21300000, guid: 3083a5c4dc1b44a44a0315c09fab8f12,
-    type: 3}
 --- !u!4 &887312579
 Transform:
   m_ObjectHideFlags: 0
@@ -2019,7 +2073,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 435a6feb2fd964db3b8835d352dbeb88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapCode: 201120
+  mapCode: 202111
   newStartButton: {fileID: 6884486}
   diaryButton: {fileID: 1449813609}
   diaryExitButton: {fileID: 8509816663749598486}
@@ -2239,6 +2293,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 992953014}
+  - component: {fileID: 992953015}
   m_Layer: 5
   m_Name: Audio
   m_TagString: Untagged
@@ -2268,6 +2323,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 80}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &992953015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992953013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f8a3614b8fc45bcb10807108eab82e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSlider: {fileID: 1980733832}
+  muteAnimator: {fileID: 513880873}
 --- !u!1 &1029054004
 GameObject:
   m_ObjectHideFlags: 0
@@ -2587,6 +2656,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1304530666}
+  - component: {fileID: 1304530668}
+  - component: {fileID: 1304530667}
   m_Layer: 5
   m_Name: Vibe
   m_TagString: Untagged
@@ -2616,6 +2687,39 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -80}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1304530667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304530665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d47184d9c9ae4732b98ac783185b38b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vibeToggle: {fileID: 61743092}
+  vibeAnimator: {fileID: 1304530668}
+--- !u!95 &1304530668
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304530665}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2399d438264ec4329ad7080ee447be4c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &1333393739
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3018,10 +3122,10 @@ RectTransform:
   m_Father: {fileID: 891215904}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1635244720
 GameObject:

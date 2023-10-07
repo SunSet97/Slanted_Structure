@@ -4,44 +4,37 @@ namespace Utility.Audio
 {
     public class AudioLoader : MonoBehaviour
     {
-        public static void SavePreference(string viveState, float soundValue)
+        public static void SaveVibe(bool viveState)
         {
-            PlayerPrefs.SetString("vibe", viveState);
-
-            PlayerPrefs.SetFloat("sound", soundValue);
+            PlayerPrefs.SetString("vibe", viveState.ToString());
+        }
+        
+        public static void SaveAudio(float audioValue)
+        {
+            PlayerPrefs.SetFloat("sound", audioValue);
         }
 
-        public static bool LoadPreference(out float soundValue, out bool isVibe)
+        public static void LoadPreference(out float audioValue, out bool isVibe)
         {
-            isVibe = true;
-            soundValue = 0.5f;
-            if (PlayerPrefs.HasKey("vibe"))
+            isVibe = false;
+            audioValue = 0.5f;
+            if (PlayerPrefs.HasKey("Vibe"))
             {
-                var vibeString = PlayerPrefs.GetString("vibe");
-                if (vibeString.Equals("on"))
+                var vibeString = PlayerPrefs.GetString("Vibe");
+                if (vibeString.Equals("true"))
                 {
                     isVibe = true;
                 }
-                else if (vibeString.Equals("off"))
+                else if (vibeString.Equals("false"))
                 {
                     isVibe = false;
                 }
             }
-            else
-            {
-                return false;
-            }
 
-            if (PlayerPrefs.HasKey("sound"))
+            if (PlayerPrefs.HasKey("Audio"))
             {
-                soundValue = PlayerPrefs.GetFloat("sound");
+                audioValue = PlayerPrefs.GetFloat("Audio");
             }
-            else
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }

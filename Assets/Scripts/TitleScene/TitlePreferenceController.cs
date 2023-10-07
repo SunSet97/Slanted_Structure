@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using Utility.Audio;
 
 namespace TitleScene
 {
@@ -25,23 +24,9 @@ namespace TitleScene
     
         [SerializeField] private Transform focusTransform;
         [SerializeField] private Transform backgroundTransform;
-    
-        [Header("사운드 패널")]
-        [Space(10)]
-        [SerializeField] private Slider soundSlider;
-        [SerializeField] private Button vibeToggle;
-    
-        [SerializeField] private Image mute;
-        [SerializeField] private Sprite muteOnSprite;
-        [SerializeField] private Sprite muteOffSprite;
-    
-        [SerializeField] private Image vibe;
-        [SerializeField] private Sprite vibeOnSprite;
-        [SerializeField] private Sprite vibeOffSprite;
-        [SerializeField] private Sprite vibeToggleOnSprite;
-        [SerializeField] private Sprite vibeToggleOffSprite;
 
         private PreferencePanelType preferencePanelType;
+        
         void Start()
         {
             preferenceButton.onClick.AddListener(() =>
@@ -63,40 +48,6 @@ namespace TitleScene
             {
                 UpdatePanelFocus(PreferencePanelType.Info);
             });
-        
-            vibeToggle.onClick.AddListener(() =>
-            {
-                if (vibeToggle.image.sprite == vibeToggleOnSprite)
-                {
-                    //진동끄기
-                    vibeToggle.image.sprite = vibeToggleOffSprite;
-                    vibe.sprite = vibeOffSprite;
-                }
-                else
-                {
-                    //진동키기
-                    vibeToggle.image.sprite = vibeToggleOnSprite;
-                    vibe.sprite = vibeOnSprite;
-                }
-
-                SavePreference();
-            });
-        
-            soundSlider.onValueChanged.AddListener(value =>
-            {
-                if (Mathf.Approximately(value, 0))
-                {
-                    mute.sprite = muteOffSprite;
-                }
-                else
-                {
-                    mute.sprite = muteOnSprite;
-                }
-
-                SavePreference();
-            });
-        
-            LoadPreference();
         }
 
         private void UpdatePanelFocus(PreferencePanelType preferencePanelType)
@@ -126,63 +77,6 @@ namespace TitleScene
                 button.interactable = false;
                 button.transform.SetParent(focusTransform);
             }
-        }
-
-        private void UpdateUI()
-        {
-            if (vibeToggle.image.sprite == vibeToggleOnSprite)
-            {
-                vibeToggle.image.sprite = vibeToggleOnSprite;
-                vibe.sprite = vibeOnSprite;
-            }
-            else
-            {
-                vibeToggle.image.sprite = vibeToggleOffSprite;
-                vibe.sprite = vibeOffSprite;
-            }
-
-            if (Mathf.Approximately(soundSlider.value, 0))
-            {
-                mute.sprite = muteOffSprite;
-            }
-            else
-            {
-                mute.sprite = muteOnSprite;
-            }
-        }
-    
-        private void SavePreference()
-        {
-            string vibeState;
-            if (vibeToggle.image.sprite == vibeToggleOnSprite)
-            {
-                vibeState = "on";
-            }
-            else
-            {
-                vibeState = "off";
-            }
-            AudioLoader.SavePreference(vibeState, soundSlider.value);
-        }
-    
-        private void LoadPreference()
-        {
-            if (AudioLoader.LoadPreference(out float soundValue, out bool isVibe))
-            {
-                if (isVibe)
-                {
-                    vibeToggle.image.sprite = vibeToggleOnSprite;
-                    vibe.sprite = vibeOnSprite;
-                }
-                else
-                {
-                    vibeToggle.image.sprite = vibeToggleOffSprite;
-                    vibe.sprite = vibeOffSprite;
-                }
-                soundSlider.value = soundValue;
-            }
-
-            UpdateUI();
         }
     }
 }
