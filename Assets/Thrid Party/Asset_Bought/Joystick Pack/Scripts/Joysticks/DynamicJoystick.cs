@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Unity Editor의 Hierarchy창에 select한 경우 조이스틱 홀더가 0,0으로 리셋되는 경우가 있음
+/// </summary>
 public class DynamicJoystick : Joystick
 {
     public float MoveThreshold

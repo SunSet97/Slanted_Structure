@@ -160,12 +160,13 @@ namespace Utility.Core
             UseGravity = true;
             if (DataController.Instance.CurrentMap.isCustomJumpForce)
             {
-                gravityScale = DataController.Instance.CurrentMap.jumpForce;
+                jumpForce = DataController.Instance.CurrentMap.jumpForce;
             }
             else
             {
                 jumpForce = DataController.Instance.jumpForce;
             }
+            Debug.LogWarning($"Set JumpForce {jumpForce}");
 
             if (DataController.Instance.CurrentMap.isCustomGravityScale)
             {

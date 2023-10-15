@@ -33,8 +33,9 @@ namespace Episode.EP2.CatchPickpocket
         [SerializeField] private float obstacleSpeed = 1f;
         [SerializeField] private Transform obstacleRoot;
 
-        [Header("라우")] [SerializeField] private float rauRunAnimationSpeed = 1f;
+        [Header("라우")]
         [SerializeField] private float rauSpeed = 1f;
+        [SerializeField] private float rauRunAnimationSpeed = 15f;
         [SerializeField] private float acceleration;
         [SerializeField] private Transform movePointParent;
         [SerializeField] private Transform[] movePoints;
@@ -57,11 +58,17 @@ namespace Episode.EP2.CatchPickpocket
         private Vector3 runDirection;
         private float originCharacterYPos;
         private float spawnTime;
+        private CameraMoving cameraMoving;
 
-        private static readonly int Speed = Animator.StringToHash("Speed");
+        private const float JumpSpeed = 1.5f;
+
+        private static readonly int SpeedHash = Animator.StringToHash("Speed");
+        private static readonly int ResetJumpHash = Animator.StringToHash("ResetJump");
 
         public override void EndPlay(bool isSuccess)
         {
+            mainCharacter.CharacterAnimator.SetFloat("JumpSpeed", 1);
+            
             StopAllCoroutines();
             Destroy(mainCharacter.gameObject.GetComponent<CatchPickpocketPlayer>());
             JoystickController.Instance.SetJoystickArea(CustomEnum.JoystickAreaType.Default);
@@ -87,14 +94,14 @@ namespace Episode.EP2.CatchPickpocket
                 var obstacleManager = t.GetComponent<ObstacleManager>();
                 obstacleManager.Initialize(obstacleSpeed);
             }
-            
+
+            cameraMoving = DataController.Instance.Cam.GetComponent<CameraMoving>();
             originCharacterYPos = -float.MaxValue;
             JoystickController.Instance.SetJoystickArea(CustomEnum.JoystickAreaType.Full);
             runDirection = Vector3.forward;
 
             mainCharacter = DataController.Instance.GetCharacter(CustomEnum.Character.Main);
             mainCharacter.CharacterAnimator.applyRootMotion = false;
-            mainCharacter.CharacterAnimator.SetFloat(Speed, 0.7f);
             mainCharacter.gameObject.AddComponent<CatchPickpocketPlayer>().Init(OnTrigger);
 
             renderCamera.transform.SetParent(mainCharacter.transform);
@@ -105,6 +112,8 @@ namespace Episode.EP2.CatchPickpocket
 
             JoystickController.Instance.SetVisible(false);
             JoystickController.Instance.Joystick.AxisOptions = AxisOptions.Horizontal;
+            
+            mainCharacter.CharacterAnimator.SetFloat("JumpSpeed", JumpSpeed);
         }
 
         private void Update()
@@ -174,17 +183,23 @@ namespace Episode.EP2.CatchPickpocket
                 originCharacterYPos = mainCharacter.transform.position.y;
             }
 
-            if (mainCharacter.IsJumpEnable())
+            if (!JoystickController.Instance.InputJump && mainCharacter.IsJumpEnable())
             {
-                // Debug.Log("움직이는 중");
+                cameraMoving.UnFreeze();
+
                 mainCharacter.CharacterController.Move(runDirection * (Time.fixedDeltaTime * rauSpeed));
-                mainCharacter.CharacterAnimator.SetFloat(Speed, rauSpeed * rauRunAnimationSpeed * Time.fixedDeltaTime);
+
+                mainCharacter.CharacterAnimator.SetBool(ResetJumpHash, true);
+                
+                if (!mainCharacter.CharacterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
+                {
+                    var animationSpeed = Mathf.Clamp(rauSpeed * rauRunAnimationSpeed * Time.fixedDeltaTime, 0f, 1f);
+                    animationSpeed = Mathf.Lerp(mainCharacter.CharacterAnimator.GetFloat(SpeedHash), animationSpeed, .1f);
+                    mainCharacter.CharacterAnimator.SetFloat(SpeedHash, animationSpeed);
+                }
+
                 rauSpeed += acceleration * Time.fixedDeltaTime;
-            }
-            else
-            {
-                // Debug.Log("멈춤");
-                mainCharacter.CharacterAnimator.SetFloat(Speed, 0);
+                Debug.Log($"Set Speed {rauSpeed}, Animate Speed - {rauSpeed * rauRunAnimationSpeed * Time.fixedDeltaTime}");
             }
 
             pickpocket.transform.Translate(0, 0, robberSpeed * Time.fixedDeltaTime);
@@ -197,10 +212,13 @@ namespace Episode.EP2.CatchPickpocket
             // Instantiate(responseUiPrefab, obstacle.transform.position, obstacle.transform.rotation);
             responseUi.SetTrigger("Play");
 
-            DataController.Instance.Cam.GetComponent<CameraMoving>().Freeze(FreezeType.Y);
+            cameraMoving.Freeze(FreezeType.Y);
 
+            mainCharacter.CharacterAnimator.SetBool(ResetJumpHash, false);
+            mainCharacter.CharacterAnimator.SetFloat(SpeedHash, 0);
+            Debug.Log("Set Speed 0");
             mainCharacter.TryJump();
-
+            
             // isStop = true;
             if (isStop)
             {
