@@ -58,13 +58,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Data\CharacterData.cs" />
-     <Compile Include="Assets\Scripts\Data\CharRelationshipData.cs" />
-     <Compile Include="Assets\Scripts\Data\DialogueData.cs" />
      <Compile Include="Assets\Scripts\Data\Enum.cs" />
      <Compile Include="Assets\Scripts\Data\Interface.cs" />
      <Compile Include="Assets\Scripts\Data\Props.cs" />
-     <Compile Include="Assets\Scripts\Data\SaveData.cs" />
      <Compile Include="Assets\Scripts\Episode\EP0\RauTutorial\EventDieByWater.cs" />
      <Compile Include="Assets\Scripts\Episode\EP0\RauTutorial\EventTutorialProgress.cs" />
      <Compile Include="Assets\Scripts\Episode\EP0\RauTutorial\RauTutorialManager.cs" />
@@ -104,50 +100,57 @@
      <Compile Include="Assets\Scripts\TitleScene\TitleSceneManager.cs" />
      <Compile Include="Assets\Scripts\Utility\Audio\AudioController.cs" />
      <Compile Include="Assets\Scripts\Utility\Audio\AudioLoader.cs" />
-     <Compile Include="Assets\Scripts\Utility\Cinematic\CharacterBindingHelper.cs" />
-     <Compile Include="Assets\Scripts\Utility\Cinematic\CinematicCharacter.cs" />
-     <Compile Include="Assets\Scripts\Utility\Cinematic\CustomTimeline\Character\CharAsset.cs" />
-     <Compile Include="Assets\Scripts\Utility\Cinematic\CustomTimeline\Character\CharBehavior.cs" />
-     <Compile Include="Assets\Scripts\Utility\Cinematic\CustomTimeline\Character\CharClip.cs" />
-     <Compile Include="Assets\Scripts\Utility\Cinematic\CustomTimeline\CinematicCharacter\TimelineCharAsset.cs" />
-     <Compile Include="Assets\Scripts\Utility\Cinematic\CustomTimeline\CinematicCharacter\TimelineCharBehavior.cs" />
-     <Compile Include="Assets\Scripts\Utility\Cinematic\CustomTimeline\CinematicCharacter\TimelineCharClip.cs" />
-     <Compile Include="Assets\Scripts\Utility\Cinematic\CustomTimeline\CinematicDialogue\DialogueTrack.cs" />
-     <Compile Include="Assets\Scripts\Utility\Cinematic\CustomTimeline\CinematicDialogue\TimelineDialogueBehaviour.cs" />
-     <Compile Include="Assets\Scripts\Utility\Cinematic\CustomTimeline\CinematicDialogue\TimelineDialogueClip.cs" />
+     <Compile Include="Assets\Scripts\Utility\Character\CharacterData.cs" />
+     <Compile Include="Assets\Scripts\Utility\Character\CharacterManager.cs" />
      <Compile Include="Assets\Scripts\Utility\Core\CameraMoving.cs" />
-     <Compile Include="Assets\Scripts\Utility\Core\CharacterManager.cs" />
-     <Compile Include="Assets\Scripts\Utility\Core\CheckMapClear.cs" />
      <Compile Include="Assets\Scripts\Utility\Core\DataController.cs" />
-     <Compile Include="Assets\Scripts\Utility\Core\DialogueController.cs" />
-     <Compile Include="Assets\Scripts\Utility\Core\Ending\EndingHelper.cs" />
      <Compile Include="Assets\Scripts\Utility\Core\JoystickController.cs" />
-     <Compile Include="Assets\Scripts\Utility\Core\MapData.cs" />
+     <Compile Include="Assets\Scripts\Utility\Dialogue\CharRelationshipData.cs" />
+     <Compile Include="Assets\Scripts\Utility\Dialogue\DialogueController.cs" />
+     <Compile Include="Assets\Scripts\Utility\Dialogue\DialogueData.cs" />
+     <Compile Include="Assets\Scripts\Utility\Game\MiniGame.cs" />
      <Compile Include="Assets\Scripts\Utility\Interaction\Click\ObjectClicker.cs" />
      <Compile Include="Assets\Scripts\Utility\Interaction\Click\OutlineClickObj.cs" />
      <Compile Include="Assets\Scripts\Utility\Interaction\Click\OutlineCollider.cs" />
      <Compile Include="Assets\Scripts\Utility\Interaction\FloatingMark.cs" />
      <Compile Include="Assets\Scripts\Utility\Interaction\InteractableCollider.cs" />
+     <Compile Include="Assets\Scripts\Utility\Interaction\InteractionData.cs" />
      <Compile Include="Assets\Scripts\Utility\Interaction\InteractionEvent.cs" />
      <Compile Include="Assets\Scripts\Utility\Interaction\InteractionObject.cs" />
-     <Compile Include="Assets\Scripts\Utility\Interaction\InteractionSaveData.cs" />
      <Compile Include="Assets\Scripts\Utility\Interaction\InteractionTrigger.cs" />
-     <Compile Include="Assets\Scripts\Utility\Json\EditJson.cs" />
-     <Compile Include="Assets\Scripts\Utility\Json\JsontoString.cs" />
+     <Compile Include="Assets\Scripts\Utility\Map\CheckMapClear.cs" />
+     <Compile Include="Assets\Scripts\Utility\Map\MapData.cs" />
+     <Compile Include="Assets\Scripts\Utility\Map\SpeechBubble\SpeechBubble.cs" />
+     <Compile Include="Assets\Scripts\Utility\Map\SpeechBubble\SpeechBubbleDialogue.cs" />
+     <Compile Include="Assets\Scripts\Utility\Preference\Audio\AudioSlider.cs" />
+     <Compile Include="Assets\Scripts\Utility\Preference\Audio\VibeToggle.cs" />
      <Compile Include="Assets\Scripts\Utility\Preference\CheckPanel.cs" />
      <Compile Include="Assets\Scripts\Utility\Preference\Diary.cs" />
      <Compile Include="Assets\Scripts\Utility\Preference\PlayUIController.cs" />
-     <Compile Include="Assets\Scripts\Utility\Property\ConditionalHideInInspectorAttribute.cs" />
+     <Compile Include="Assets\Scripts\Utility\Save\SaveData.cs" />
      <Compile Include="Assets\Scripts\Utility\Save\SaveHelper.cs" />
      <Compile Include="Assets\Scripts\Utility\Save\SaveManager.cs" />
-     <Compile Include="Assets\Scripts\Utility\Serialize\SerializableQuaternion.cs" />
-     <Compile Include="Assets\Scripts\Utility\Serialize\SerializableVector3.cs" />
-     <Compile Include="Assets\Scripts\Utility\SpeechBubble\SpeechBubble.cs" />
-     <Compile Include="Assets\Scripts\Utility\SpeechBubble\SpeechBubbleDialogue.cs" />
+     <Compile Include="Assets\Scripts\Utility\Timeline\CharacterBindingHelper.cs" />
+     <Compile Include="Assets\Scripts\Utility\Timeline\CinematicCharacter.cs" />
+     <Compile Include="Assets\Scripts\Utility\Timeline\CustomTimeline\Character\CharAsset.cs" />
+     <Compile Include="Assets\Scripts\Utility\Timeline\CustomTimeline\Character\CharBehavior.cs" />
+     <Compile Include="Assets\Scripts\Utility\Timeline\CustomTimeline\Character\CharClip.cs" />
+     <Compile Include="Assets\Scripts\Utility\Timeline\CustomTimeline\CinematicCharacter\TimelineCharAsset.cs" />
+     <Compile Include="Assets\Scripts\Utility\Timeline\CustomTimeline\CinematicCharacter\TimelineCharBehavior.cs" />
+     <Compile Include="Assets\Scripts\Utility\Timeline\CustomTimeline\CinematicCharacter\TimelineCharClip.cs" />
+     <Compile Include="Assets\Scripts\Utility\Timeline\CustomTimeline\CinematicDialogue\DialogueTrack.cs" />
+     <Compile Include="Assets\Scripts\Utility\Timeline\CustomTimeline\CinematicDialogue\TimelineDialogueBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Utility\Timeline\CustomTimeline\CinematicDialogue\TimelineDialogueClip.cs" />
      <Compile Include="Assets\Scripts\Utility\Utils\AssetBundleMap.cs" />
+     <Compile Include="Assets\Scripts\Utility\Utils\EndingHelper.cs" />
      <Compile Include="Assets\Scripts\Utility\Utils\FadeEffect.cs" />
+     <Compile Include="Assets\Scripts\Utility\Utils\Json\EditJson.cs" />
+     <Compile Include="Assets\Scripts\Utility\Utils\Json\JsontoString.cs" />
      <Compile Include="Assets\Scripts\Utility\Utils\MobileAdsManager.cs" />
+     <Compile Include="Assets\Scripts\Utility\Utils\Property\ConditionalHideInInspectorAttribute.cs" />
      <Compile Include="Assets\Scripts\Utility\Utils\SceneLoader.cs" />
+     <Compile Include="Assets\Scripts\Utility\Utils\Serialize\SerializableQuaternion.cs" />
+     <Compile Include="Assets\Scripts\Utility\Utils\Serialize\SerializableVector3.cs" />
      <Compile Include="Assets\Scripts\Utility\WayPoint\CameraTracker.cs" />
      <Compile Include="Assets\Scripts\Utility\WayPoint\Waypoint.cs" />
      <Compile Include="Assets\Thrid Party\Asset_Bought\Dove\Scripts\CameraFollow.cs" />
@@ -334,9 +337,9 @@
      <None Include="Assets\Thrid Party\Asset_Bought\Plugins\Easy Save 3\Change Log\Change Log.txt" />
      <None Include="Assets\Thrid Party\QuickOutline\Readme.txt" />
      <None Include="Assets\Thrid Party\Asset_Bought\Plugins\SkinTools\Readme.txt.txt" />
-     <None Include="Assets\GoogleMobileAds\GoogleMobileAds_version-8.0.0_manifest.txt" />
+     <None Include="Assets\Thrid Party\GoogleMobileAds\GoogleMobileAds_version-8.0.0_manifest.txt" />
      <None Include="Assets\Thrid Party\Asset_Bought\PolygonNature\Shaders\SyntyStudios_Moss.shader" />
-     <None Include="Assets\GoogleMobileAds\link.xml" />
+     <None Include="Assets\Thrid Party\GoogleMobileAds\link.xml" />
      <None Include="Assets\Thrid Party\UMotionEditor\Shaders\UnlitLine.shader" />
      <None Include="Assets\Art\Materials\Toon\Toon_Mixed.shader" />
      <None Include="Assets\Thrid Party\UMotionEditor\Shaders\ColorUnlit.shader" />
@@ -598,24 +601,6 @@
  <Reference Include="UnityEngine.XRModule">
  <HintPath>/Applications/Unity/Hub/Editor/2019.2.17f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
  </Reference>
- <Reference Include="GoogleMobileAds.Ump">
- <HintPath>/Users/uisoo/Documents/GitHub/Slanted_Structure/Assets/GoogleMobileAds/GoogleMobileAds.Ump.dll</HintPath>
- </Reference>
- <Reference Include="GoogleMobileAds.Unity">
- <HintPath>/Users/uisoo/Documents/GitHub/Slanted_Structure/Assets/GoogleMobileAds/GoogleMobileAds.Unity.dll</HintPath>
- </Reference>
- <Reference Include="GoogleMobileAds.Ump.Unity">
- <HintPath>/Users/uisoo/Documents/GitHub/Slanted_Structure/Assets/GoogleMobileAds/GoogleMobileAds.Ump.Unity.dll</HintPath>
- </Reference>
- <Reference Include="GoogleMobileAds.Core">
- <HintPath>/Users/uisoo/Documents/GitHub/Slanted_Structure/Assets/GoogleMobileAds/GoogleMobileAds.Core.dll</HintPath>
- </Reference>
- <Reference Include="GoogleMobileAds.Common">
- <HintPath>/Users/uisoo/Documents/GitHub/Slanted_Structure/Assets/GoogleMobileAds/GoogleMobileAds.Common.dll</HintPath>
- </Reference>
- <Reference Include="GoogleMobileAds">
- <HintPath>/Users/uisoo/Documents/GitHub/Slanted_Structure/Assets/GoogleMobileAds/GoogleMobileAds.dll</HintPath>
- </Reference>
  <Reference Include="UMotionApplication">
  <HintPath>/Users/uisoo/Documents/GitHub/Slanted_Structure/Assets/Thrid Party/UMotionEditor/Plugins/Application/UMotionApplication.dll</HintPath>
  </Reference>
@@ -630,6 +615,24 @@
  </Reference>
  <Reference Include="clipper_library">
  <HintPath>/Users/uisoo/Documents/GitHub/Slanted_Structure/Library/PackageCache/com.unity.cinemachine@2.7.9/Runtime/ThirdParty/clipper_library.dll</HintPath>
+ </Reference>
+ <Reference Include="GoogleMobileAds.Core">
+ <HintPath>/Users/uisoo/Documents/GitHub/Slanted_Structure/Assets/Thrid Party/GoogleMobileAds/GoogleMobileAds.Core.dll</HintPath>
+ </Reference>
+ <Reference Include="GoogleMobileAds.Common">
+ <HintPath>/Users/uisoo/Documents/GitHub/Slanted_Structure/Assets/Thrid Party/GoogleMobileAds/GoogleMobileAds.Common.dll</HintPath>
+ </Reference>
+ <Reference Include="GoogleMobileAds.Ump.Unity">
+ <HintPath>/Users/uisoo/Documents/GitHub/Slanted_Structure/Assets/Thrid Party/GoogleMobileAds/GoogleMobileAds.Ump.Unity.dll</HintPath>
+ </Reference>
+ <Reference Include="GoogleMobileAds">
+ <HintPath>/Users/uisoo/Documents/GitHub/Slanted_Structure/Assets/Thrid Party/GoogleMobileAds/GoogleMobileAds.dll</HintPath>
+ </Reference>
+ <Reference Include="GoogleMobileAds.Unity">
+ <HintPath>/Users/uisoo/Documents/GitHub/Slanted_Structure/Assets/Thrid Party/GoogleMobileAds/GoogleMobileAds.Unity.dll</HintPath>
+ </Reference>
+ <Reference Include="GoogleMobileAds.Ump">
+ <HintPath>/Users/uisoo/Documents/GitHub/Slanted_Structure/Assets/Thrid Party/GoogleMobileAds/GoogleMobileAds.Ump.dll</HintPath>
  </Reference>
  <Reference Include="mscorlib">
  <HintPath>/Applications/Unity/Hub/Editor/2019.2.17f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -991,13 +994,13 @@
       <Project>{2CA40E6E-1819-F262-2F70-901FD95D2D94}</Project>
       <Name>UMotionSourceApplication</Name>
     </ProjectReference>
-    <ProjectReference Include="GoogleMobileAds.Editor.csproj">
-      <Project>{94A8F115-B696-0D48-8F79-389DC14C576D}</Project>
-      <Name>GoogleMobileAds.Editor</Name>
-    </ProjectReference>
     <ProjectReference Include="UMotionSourceEditor.csproj">
       <Project>{57962432-7864-7DE2-1355-2E1D5835F4F0}</Project>
       <Name>UMotionSourceEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="GoogleMobileAds.Editor.csproj">
+      <Project>{94A8F115-B696-0D48-8F79-389DC14C576D}</Project>
+      <Name>GoogleMobileAds.Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
