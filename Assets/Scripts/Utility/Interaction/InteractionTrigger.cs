@@ -1,5 +1,4 @@
-﻿using Data;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Utility.Interaction
 {
@@ -7,7 +6,7 @@ namespace Utility.Interaction
     {
         public void OnTriggerEnter(Collider other)
         {
-            if (GetInteraction().interactionMethod != CustomEnum.InteractionMethod.Trigger)
+            if (GetInteractionData().interactionMethod != InteractionMethod.Trigger)
             {
                 return;
             }

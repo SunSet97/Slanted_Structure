@@ -4,10 +4,13 @@ using Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering.PostProcessing;
+using Utility.Character;
+using Utility.Dialogue;
 using Utility.Interaction;
 using Utility.Interaction.Click;
+using Utility.Map;
+using Utility.Save;
 using Utility.Utils;
-using static Data.CustomEnum;
 
 namespace Utility.Core
 {
@@ -122,14 +125,14 @@ namespace Utility.Core
             return mapData;
         }
 
-        public CharacterManager GetCharacter(Character characterType)
+        public CharacterManager GetCharacter(Character.CharacterType characterTypeType)
         {
-            if (characterType == Character.Main)
+            if (characterTypeType == Character.CharacterType.Main)
             {
                 return mainChar;
             }
 
-            return Array.Find(characters, item => item.who == characterType);
+            return Array.Find(characters, item => item.who == characterTypeType);
         }
 
         public CharacterManager[] GetFollowCharacters()
@@ -239,7 +242,7 @@ namespace Utility.Core
                 var character = Array.Find(characters, item => item.who == posSet.who);
                 if (saveData != null)
                 {
-                    var charData = saveData.charDatas.Find(item => item.character == character.who);
+                    var charData = saveData.charDatas.Find(item => item.characterType == character.who);
                     character.SetCharacter(posSet, charData);
                 }
                 else
@@ -255,7 +258,7 @@ namespace Utility.Core
             DynamicGI.UpdateEnvironment();
             
             var cameraMoving = Cam.GetComponent<CameraMoving>();
-            cameraMoving.Initialize(CurrentMap.cameraViewType, GetCharacter(Character.Main)?.transform);
+            cameraMoving.Initialize(CurrentMap.cameraViewType, GetCharacter(Character.CharacterType.Main)?.transform);
 
             Cam.farClipPlane = CurrentMap.useClippingPlanes ? CurrentMap.farClipPlane : defaultFarClipPlane;
             Cam.fieldOfView = CurrentMap.useFieldOfView ? CurrentMap.fieldOfView : defaultFieldOfView;
@@ -280,13 +283,13 @@ namespace Utility.Core
             charRelationshipData.intimacyOunRau += rauLikeables[2];
         }
 
-        public int[] GetLikeable()
+        public int[] GetRelationshipData()
         {
-            int[] likable =
+            int[] relationshipData =
             {
                 charRelationshipData.selfEstm, charRelationshipData.intimacySpRau, charRelationshipData.intimacyOunRau
             };
-            return likable;
+            return relationshipData;
         }
 
         private void LoadData(SaveData saveData)
@@ -304,7 +307,7 @@ namespace Utility.Core
                 {
                     var interactionSaveData = saveData.interactionDatas.Find(item => item.id == interactionObject.id);
 
-                    interactionObject.Load(interactionSaveData);
+                    interactionObject.LoadData(interactionSaveData);
                 }
             }
         }

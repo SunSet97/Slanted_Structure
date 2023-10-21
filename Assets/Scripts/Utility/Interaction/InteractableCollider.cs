@@ -2,7 +2,7 @@
 using UnityEngine.Serialization;
 using Utility.Core;
 using Utility.Preference;
-using Utility.Property;
+using Utility.Utils.Property;
 
 namespace Utility.Interaction
 {
@@ -47,7 +47,7 @@ namespace Utility.Interaction
 
         private void Update()
         {
-            if (interactionObject.GetInteraction().serializedInteractionData.isInteractable && useMark && interactionObject.ExclamationMark.activeSelf)
+            if (interactionObject.GetInteractionData().serializedInteractionData.isInteractable && useMark && interactionObject.ExclamationMark.activeSelf)
             {
                 if (isWorld)
                 {
@@ -64,7 +64,7 @@ namespace Utility.Interaction
 
         private void OnTriggerEnter(Collider other)
         {
-            interactionObject.OnEnter();
+            interactionObject.OnColEnter();
         }
 
         private void OnTriggerExit(Collider other)

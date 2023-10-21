@@ -1,7 +1,8 @@
 ﻿using System.Collections;
-using Data;
 using UnityEngine;
+using Utility.Character;
 using Utility.Core;
+using Utility.Dialogue;
 
 namespace Episode.EP0.SpeatTutorial.Officetel
 {
@@ -115,13 +116,13 @@ namespace Episode.EP0.SpeatTutorial.Officetel
                 }
 
             }
-            else if (other.TryGetComponent(out CharacterManager characterManager) && characterManager.Equals(DataController.Instance.GetCharacter(CustomEnum.Character.Main)))
+            else if (other.TryGetComponent(out CharacterManager characterManager) && characterManager.Equals(DataController.Instance.GetCharacter(CharacterType.Main)))
             {
                 pimpMiniGameManager.EndPlay(false);
                 
                 if (jsonFile)
                 {
-                    DialogueController.Instance.SetDialogueEndAction(() =>
+                    DialogueController.Instance.AddDialogueEndAction(() =>
                     {
                         DataController.Instance.CurrentMap.ResetMap();
                     });

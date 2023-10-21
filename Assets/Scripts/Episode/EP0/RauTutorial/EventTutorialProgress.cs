@@ -1,6 +1,6 @@
 ﻿using System;
-using Data;
 using UnityEngine;
+using Utility.Character;
 using Utility.Core;
 
 namespace Episode.EP0.RauTutorial
@@ -17,7 +17,7 @@ namespace Episode.EP0.RauTutorial
         private void OnTriggerEnter(Collider other)
         {
             if (!other.TryGetComponent(out CharacterManager character) &&
-                character != DataController.Instance.GetCharacter(CustomEnum.Character.Main))
+                character != DataController.Instance.GetCharacter(CharacterType.Main))
             {
                 return;
             }

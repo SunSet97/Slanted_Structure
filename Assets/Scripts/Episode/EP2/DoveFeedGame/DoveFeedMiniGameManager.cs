@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using Data.GamePlay;
 using Episode.EP2.ThrowCanGame;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility.Game;
 
 namespace Episode.EP2.DoveFeedGame
 {

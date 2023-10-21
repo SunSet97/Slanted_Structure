@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Data;
-using Data.GamePlay;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility.Character;
 using Utility.Core;
+using Utility.Game;
 using Random = UnityEngine.Random;
 
 namespace Episode.EP2.CatchPickpocket
@@ -100,7 +101,7 @@ namespace Episode.EP2.CatchPickpocket
             JoystickController.Instance.SetJoystickArea(CustomEnum.JoystickAreaType.Full);
             runDirection = Vector3.forward;
 
-            mainCharacter = DataController.Instance.GetCharacter(CustomEnum.Character.Main);
+            mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
             mainCharacter.CharacterAnimator.applyRootMotion = false;
             mainCharacter.gameObject.AddComponent<CatchPickpocketPlayer>().Init(OnTrigger);
 

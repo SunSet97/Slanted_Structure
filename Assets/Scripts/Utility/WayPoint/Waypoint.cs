@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Utility.Character;
 using Utility.Core;
-using static Data.CustomEnum;
 
 namespace Utility.WayPoint
 {
@@ -72,7 +72,7 @@ namespace Utility.WayPoint
 
         public void JoystickUpdate()
         {
-            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
             var joystickInput = JoystickController.Instance.Joystick.Horizontal;
 
             if (waypoints.Count <= 0)

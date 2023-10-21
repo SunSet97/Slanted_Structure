@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Data;
 using UnityEngine;
+using Utility.Character;
 using Utility.Core;
 using Utility.Interaction;
 
@@ -62,7 +63,7 @@ namespace Utility.Save
                 {
                     pos = character.transform.position,
                     rot = character.transform.rotation,
-                    character = character.who
+                    characterType = character.who
                 });
             }
             saveData.Debug();

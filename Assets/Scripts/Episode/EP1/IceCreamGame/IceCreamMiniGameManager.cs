@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
-using Data.GamePlay;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility.Core;
+using Utility.Game;
 using Random = UnityEngine.Random;
 
 namespace Episode.EP1.IceCreamGame

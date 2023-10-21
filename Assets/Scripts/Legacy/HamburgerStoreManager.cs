@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Utility.Character;
 using Utility.Core;
+using Utility.Dialogue;
 using Utility.Interaction;
 using static Data.CustomEnum;
 
@@ -27,7 +29,7 @@ public class HamburgerStoreManager : MonoBehaviour
 
         sofa.SetInteractionStartEvent(() =>
         {
-            var character = DataController.Instance.GetCharacter(Character.Main);
+            var character = DataController.Instance.GetCharacter(CharacterType.Main);
             character.PickUpCharacter();
             character.transform.position = sofa.transform.GetChild(0).position;
             character.transform.rotation = sofa.transform.GetChild(0).rotation;
@@ -42,7 +44,7 @@ public class HamburgerStoreManager : MonoBehaviour
 
         speat.SetPointEvent(() =>
         {
-            DialogueController.Instance.SetDialogueEndAction(() =>
+            DialogueController.Instance.AddDialogueEndAction(() =>
             {
                 speat.StartMoving();
                 StartCoroutine(StartRauMoving());
@@ -53,7 +55,7 @@ public class HamburgerStoreManager : MonoBehaviour
 
     private IEnumerator StartRauMoving()
     {
-        CharacterManager character = DataController.Instance.GetCharacter(Character.Main);
+        CharacterManager character = DataController.Instance.GetCharacter(CharacterType.Main);
         character.PickUpCharacter();
         int index = speat.pointIndex;
         PointData desPoint = speat.point[index];

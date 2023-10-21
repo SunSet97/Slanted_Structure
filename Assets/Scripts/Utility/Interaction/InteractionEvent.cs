@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Data.GamePlay;
 using Move;
 using UnityEngine;
 using UnityEngine.Events;
-using Utility.Core;
-using Utility.Property;
+using Utility.Game;
+using Utility.Map;
+using Utility.Utils.Property;
 
 namespace Utility.Interaction
 {
@@ -192,7 +192,7 @@ namespace Utility.Interaction
         {
             foreach (var t in interactObjs.interacts)
             {
-                var interaction = t.interactObj.GetInteraction(t.index);
+                var interaction = t.interactObj.GetInteractionData(t.index);
                 interaction.serializedInteractionData.isInteractable = t.interactable;
             }
         }
@@ -202,7 +202,7 @@ namespace Utility.Interaction
             foreach (var t in interactionObjs.interactions)
             {
                 t.interactObj.InteractIndex = t.index;
-                t.interactObj.GetInteraction().serializedInteractionData.isInteractable = true;
+                t.interactObj.GetInteractionData().serializedInteractionData.isInteractable = true;
                 t.interactObj.Invoke(nameof(InteractionObject.StartInteraction), t.waitSeconds);
             }
         }

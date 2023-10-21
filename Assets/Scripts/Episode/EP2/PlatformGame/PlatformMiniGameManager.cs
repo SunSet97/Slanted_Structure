@@ -1,7 +1,7 @@
-﻿using Data.GamePlay;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Utility.Game;
 
 namespace Episode.EP2.PlatformGame
 {

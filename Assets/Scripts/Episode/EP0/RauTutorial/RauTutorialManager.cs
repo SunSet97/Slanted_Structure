@@ -3,12 +3,22 @@ using System.Collections;
 using Data;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility.Character;
 using Utility.Core;
 using Utility.Interaction.Click;
+using Utility.Map;
 using static Data.CustomEnum;
 
 namespace Episode.EP0.RauTutorial
 {
+    public enum Swipe
+    {
+        Left,
+        Right,
+        Down,
+        None
+    }
+    
     public enum TerrainType
     {
         ForestIntro,
@@ -128,10 +138,10 @@ namespace Episode.EP0.RauTutorial
         /// </summary>
         /// <param name="methodNum">0 = one dir, 1 = all dir, 2 = other, Other인 경우 인터랙션, 조이스틱 X</param>
         /// <param name="axisNum">0 = both, 1 = hor, 2 = ver</param>
-        private static void ChangeJoystickSetting(JoystickInputMethod methodNum, AxisOptions axisNum)
+        private static void ChangeJoystickSetting(CharacterMoveType methodNum, AxisOptions axisNum)
         {
-            DataController.Instance.CurrentMap.method = methodNum;
-            JoystickController.Instance.SetVisible(methodNum != JoystickInputMethod.Other);
+            DataController.Instance.CurrentMap.characterMoveType = methodNum;
+            JoystickController.Instance.SetVisible(methodNum != CharacterMoveType.Other);
             JoystickController.Instance.Joystick.AxisOptions = axisNum;
         }
 
@@ -152,10 +162,10 @@ namespace Episode.EP0.RauTutorial
 
             DataController.Instance.camOffsetInfo = viewForward;
 
-            ChangeJoystickSetting(JoystickInputMethod.Other, AxisOptions.Horizontal); // 이동 해제, 좌우 스와이프만 가능하도록 변경
+            ChangeJoystickSetting(CharacterMoveType.Other, AxisOptions.Horizontal); // 이동 해제, 좌우 스와이프만 가능하도록 변경
             JoystickController.Instance.SetJoystickArea(JoystickAreaType.Full);
 
-            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
             mainCharacter.PickUpCharacter();
 
             while (true)
@@ -238,7 +248,7 @@ namespace Episode.EP0.RauTutorial
 
         private IEnumerator MoveForward(Vector3 character, Vector3 grass)
         {
-            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
             var t = 0f;
             var waitForFixedUpdate = new WaitForFixedUpdate();
             const float speed = 3f;
@@ -262,10 +272,10 @@ namespace Episode.EP0.RauTutorial
             DataController.Instance.camOffsetInfo.camDis = mapData.camDis;
             DataController.Instance.camOffsetInfo.camRot = mapData.camRot;
 
-            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
             mainCharacter.UseJoystickCharacter();
 
-            ChangeJoystickSetting(JoystickInputMethod.OneDirection, AxisOptions.Both);
+            ChangeJoystickSetting(CharacterMoveType.OneDirection, AxisOptions.Both);
         }
 
         public IEnumerator FallInRiver()
@@ -283,7 +293,7 @@ namespace Episode.EP0.RauTutorial
 
             DataController.Instance.camOffsetInfo = viewRiver;
 
-            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
             mainCharacter.PickUpCharacter();
 
             JoystickController.Instance.StopSaveLoadJoyStick(true);
@@ -320,18 +330,18 @@ namespace Episode.EP0.RauTutorial
         {
             DataController.Instance.camOffsetInfo = viewQuarter;
 
-            ChangeJoystickSetting(JoystickInputMethod.AllDirection, AxisOptions.Both);
+            ChangeJoystickSetting(CharacterMoveType.AllDirection, AxisOptions.Both);
         }
 
         private IEnumerator KnockDownTree()
         {
-            var rau = DataController.Instance.GetCharacter(Character.Rau);
+            var rau = DataController.Instance.GetCharacter(CharacterType.Rau);
             forestTree.GetComponent<Animation>().Play();
 
             var forestWoodCheckPoint = Array.Find(checkPoints, item => item.terrainType == TerrainType.ForestWood);
             forestWoodCheckPoint.ui.SetActive(true);
             DataController.Instance.camOffsetInfo = viewForward;
-            ChangeJoystickSetting(JoystickInputMethod.Other, AxisOptions.Vertical); // 이동 해제, 위아래 스와이프만 가능하도록 변경
+            ChangeJoystickSetting(CharacterMoveType.Other, AxisOptions.Vertical); // 이동 해제, 위아래 스와이프만 가능하도록 변경
             rau.PickUpCharacter();
             JoystickController.Instance.SetJoystickArea(JoystickAreaType.Full);
             while (true)
@@ -349,7 +359,7 @@ namespace Episode.EP0.RauTutorial
                     forestWoodCheckPoint.ui.SetActive(false);
                     DataController.Instance.camOffsetInfo = viewQuarter;
                     // 둘러보기, 전방향 이동 튜토리얼
-                    ChangeJoystickSetting(JoystickInputMethod.AllDirection, 0); // 전방향 이동
+                    ChangeJoystickSetting(CharacterMoveType.AllDirection, 0); // 전방향 이동
                     rau.UseJoystickCharacter();
                     JoystickController.Instance.SetJoystickArea(JoystickAreaType.Default);
                     yield break;
@@ -361,7 +371,7 @@ namespace Episode.EP0.RauTutorial
 
         private IEnumerator MoveUp(Vector3 point)
         {
-            var rau = DataController.Instance.GetCharacter(Character.Rau);
+            var rau = DataController.Instance.GetCharacter(CharacterType.Rau);
             var fixedUpdate = new WaitForFixedUpdate();
             var t = .0f;
             var charPos = rau.transform.position;

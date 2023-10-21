@@ -3,6 +3,7 @@ using System.Linq;
 using Data;
 using UnityEditor;
 using UnityEngine;
+using Utility.Character;
 using Utility.Core;
 
 namespace Utility.WayPoint
@@ -50,7 +51,7 @@ namespace Utility.WayPoint
         {
             if (CheckCorner(out var cornerIndex))
             {
-                var character = DataController.Instance.GetCharacter(CustomEnum.Character.Main).transform;
+                var character = DataController.Instance.GetCharacter(CharacterType.Main).transform;
 
                 var corner = cornerCameraSettings[cornerIndex];
                 // 앞 == 1, 뒤 == -1, 중간 == 0 
@@ -95,7 +96,7 @@ namespace Utility.WayPoint
 
         private static int GetDir(CornerCameraSetting corner)
         {
-            var character = DataController.Instance.GetCharacter(CustomEnum.Character.Main).transform;
+            var character = DataController.Instance.GetCharacter(CharacterType.Main).transform;
             var frontDir = corner.front.position - corner.corner.position;
             var backDir = corner.back.position - corner.corner.position;
             var charDir = corner.corner.position - character.position;
@@ -116,7 +117,7 @@ namespace Utility.WayPoint
 
         private bool CheckCorner(out int cornerIndex)
         {
-            var character = DataController.Instance.GetCharacter(CustomEnum.Character.Main).transform;
+            var character = DataController.Instance.GetCharacter(CharacterType.Main).transform;
             var characterVec = character.position;
             characterVec.y = 0;
             Vector3 cornerVec;

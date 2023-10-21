@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Utility.Character;
 using Utility.Core;
 
 namespace Episode.EP2.PlatformGame
@@ -20,7 +21,7 @@ namespace Episode.EP2.PlatformGame
         private IEnumerator FramePerParameter()
         {
             var waitForFixedUpdate = new WaitForFixedUpdate();
-            var mainCharacter = DataController.Instance.GetCharacter(Data.CustomEnum.Character.Main);
+            var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
             mainCharacter.PickUpCharacter();
 
             mainCharacter.RotateCharacter2D(-1f);

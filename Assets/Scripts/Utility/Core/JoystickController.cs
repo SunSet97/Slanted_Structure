@@ -2,6 +2,8 @@
 using Data;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility.Character;
+using Utility.Map;
 
 namespace Utility.Core
 {
@@ -26,7 +28,7 @@ namespace Utility.Core
             {
                 if (value)
                 {
-                    var character = DataController.Instance.GetCharacter(CustomEnum.Character.Main);
+                    var character = DataController.Instance.GetCharacter(CharacterType.Main);
                     if (character != null && character.IsJumpEnable())
                     {
                         // 점프 중이 아닌 경우에만 True 가능
@@ -62,7 +64,7 @@ namespace Utility.Core
         {
             jumpButton.onClick.AddListener(() =>
             {
-                var mainCharacter = DataController.Instance.GetCharacter(CustomEnum.Character.Main);
+                var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
                 mainCharacter.TryJump();
             });
         }
@@ -188,9 +190,9 @@ namespace Utility.Core
             Debug.Log("조이스틱 영역 조절" + rect.anchorMax);
         }
 
-        public void UpdateJoystickInput(CustomEnum.JoystickInputMethod method)
+        public void UpdateJoystickInput(CharacterMoveType method)
         {
-            if (method.Equals(CustomEnum.JoystickInputMethod.OneDirection))
+            if (method.Equals(CharacterMoveType.OneDirection))
             {
                 inputDirection.Set(Joystick.Horizontal, 0);
                 inputDegree = Mathf.Abs(Joystick.Horizontal);
@@ -206,7 +208,7 @@ namespace Utility.Core
                     InputJump = angle >= 30f;
                 }
             }   
-            else if (method.Equals(CustomEnum.JoystickInputMethod.Waypoint))
+            else if (method.Equals(CharacterMoveType.Waypoint))
             {
                 //inputDirection = changedDir;
                 inputDegree = Mathf.Abs(Joystick.Horizontal);

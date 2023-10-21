@@ -1,6 +1,7 @@
-﻿using Data;
-using UnityEngine;
+﻿using UnityEngine;
+using Utility.Character;
 using Utility.Core;
+using Utility.Dialogue;
 
 namespace Episode.EP0.RauTutorial
 {
@@ -20,7 +21,7 @@ namespace Episode.EP0.RauTutorial
         private void OnTriggerEnter(Collider other)
         {
             if (!other.TryGetComponent(out CharacterManager character) &&
-                character != DataController.Instance.GetCharacter(CustomEnum.Character.Main) || !respawnPoint)
+                character != DataController.Instance.GetCharacter(CharacterType.Main) || !respawnPoint)
             {
                 return;
             }
@@ -32,7 +33,7 @@ namespace Episode.EP0.RauTutorial
             {
                 isInteracted = true;
                 DialogueController.Instance.StartConversation(jsonFile.text);
-                DialogueController.Instance.SetDialogueEndAction(() =>
+                DialogueController.Instance.AddDialogueEndAction(() =>
                 {
                     StartCoroutine(rauTutorialManager.FallInRiver());
                 });

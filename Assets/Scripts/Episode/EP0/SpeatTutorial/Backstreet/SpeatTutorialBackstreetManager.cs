@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using Data.GamePlay;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility.Character;
 using Utility.Core;
-using static Data.CustomEnum;
+using Utility.Game;
 using Random = UnityEngine.Random;
 
 namespace Episode.EP0.SpeatTutorial.Backstreet
@@ -95,7 +95,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
             
             if (isSuccess)
             {
-                var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+                var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
                 mainCharacter.CharacterAnimator.SetFloat(SpeedHash, 0f);
                 StopAllCoroutines();
                 DataController.Instance.CurrentMap.MapClear();   
@@ -135,7 +135,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
             abilityEnable = true;
             
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(true);
-            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
 
             const float deltaTime = 0.01f;
             var waitForSeconds = new WaitForSeconds(deltaTime);
@@ -253,7 +253,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
             }
 
             JumpEnable = false;
-            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
             mainCharacter.TryJump();
             StartCoroutine(JumpCooldown());
         }
@@ -285,7 +285,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 
         private IEnumerator AbilityCooldown()
         {
-            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
             mainCharacter.gameObject.layer = LayerMask.NameToLayer("SpeatWallPass");
             var waitForFixedUpdate = new WaitForFixedUpdate();
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Utility.Character;
 using Utility.Core;
 
 namespace Episode.EP2.PlatformGame
@@ -23,7 +24,7 @@ namespace Episode.EP2.PlatformGame
         private IEnumerator FrameForParameter()
         {
             var waitForFixedUpdate = new WaitForFixedUpdate();
-            var mainCharacter = DataController.Instance.GetCharacter(Data.CustomEnum.Character.Main);
+            var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
             var characterController = mainCharacter.GetComponent<CharacterController>();
             mainCharacter.UseGravity = false;
             mainCharacter.PickUpCharacter();

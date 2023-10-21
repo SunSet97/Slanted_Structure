@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
-using Data.GamePlay;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Utility.Game;
 
 namespace Episode.EP2.ThrowCanGame
 {

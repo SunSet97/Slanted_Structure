@@ -1,5 +1,5 @@
-﻿using Data;
-using UnityEngine;
+﻿using UnityEngine;
+using Utility.Character;
 using Utility.Core;
 using Utility.WayPoint;
 
@@ -18,7 +18,7 @@ namespace Episode.EP0.SpeatTutorial.Sewer
         private void OnTriggerEnter(Collider other)
         {
             if (!other.TryGetComponent(out CharacterManager character) &&
-                character != DataController.Instance.GetCharacter(CustomEnum.Character.Main) || !respawnPoint)
+                character != DataController.Instance.GetCharacter(CharacterType.Main) || !respawnPoint)
             {
                 return;
             }

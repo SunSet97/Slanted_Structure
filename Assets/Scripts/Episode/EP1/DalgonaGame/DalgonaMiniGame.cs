@@ -1,6 +1,6 @@
-﻿using Data.GamePlay;
-using UnityEngine;
+﻿using UnityEngine;
 using Utility.Core;
+using Utility.Game;
 
 namespace Episode.EP1.DalgonaGame
 {

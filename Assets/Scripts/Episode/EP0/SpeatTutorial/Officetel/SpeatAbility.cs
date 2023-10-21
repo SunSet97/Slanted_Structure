@@ -2,9 +2,9 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility.Character;
 using Utility.Core;
 using Utility.Interaction.Click;
-using static Data.CustomEnum;
 
 namespace Episode.EP0.SpeatTutorial.Officetel
 {
@@ -100,7 +100,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
 
         private IEnumerator Cooldown()
         {
-            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
             mainCharacter.gameObject.layer = LayerMask.NameToLayer("Player");
 
             cooldown = setCooldown;
@@ -116,7 +116,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
 
         private IEnumerator CheckPass(Vector3 targetPos)
         {
-            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
 
             mainCharacter.PickUpCharacter();
 
@@ -149,7 +149,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
 
         private void Dash()
         {
-            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
 
             if (passVector2 != Vector2.zero || !IsUsingAbilityTimer)
             {
@@ -237,7 +237,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
                 canvasGroup.interactable = false;
             }
 
-            var mainCharacter = DataController.Instance.GetCharacter(Character.Main);
+            var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
             door.IsClickEnable = false;
             IsPassing = true;
 

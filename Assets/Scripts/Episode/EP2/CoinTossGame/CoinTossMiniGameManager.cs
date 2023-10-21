@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
-using Data.GamePlay;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Utility.Core;
+using Utility.Game;
 
 namespace Episode.EP2.CoinTossGame
 {

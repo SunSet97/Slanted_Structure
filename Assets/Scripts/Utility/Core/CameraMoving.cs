@@ -52,6 +52,7 @@ namespace Utility.Core
             ViewType = cameraViewType;
             cam = Camera.main;
             TrackTransform = focusObj;
+            Debug.LogWarning($"{ViewType}, {TrackTransform}");
         }
 
         public void Freeze(FreezeType freezeType)
