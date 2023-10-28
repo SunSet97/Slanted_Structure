@@ -1405,7 +1405,7 @@ MonoBehaviour:
   location: "\uC624\uD53C\uC2A4\uD154 \uBC29"
   date: 3 YEARS AGO DAY??
   time: 22:00
-  method: 0
+  characterMoveType: 0
   nextMapcode: 002011
   rightIsForward: 0
   waypoint: {fileID: 0}
@@ -1738,13 +1738,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 0}
     interactionPlayType: 5
     miniGame: {fileID: 0}
-    dialogueData:
-      dialogues: []
-      dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
@@ -1778,7 +1775,7 @@ MonoBehaviour:
     isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    timelines:
+    playableDirectors:
     - {fileID: 4314241073070298216}
     cinematics: []
     inGames: []
@@ -1792,6 +1789,9 @@ MonoBehaviour:
       isInteractable: 1
       isInteracted: 0
     debugTaskData: []
+    dialogueData:
+      dialogueElements: []
+      dialogueIdx: 0
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -1839,7 +1839,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: ad069b48c30b3c649a6fbb9b349330ae, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 0
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -2802,12 +2802,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ecea6a8f3cd88b49b6622b87a5956c3, type: 3}
---- !u!4 &4953986871772398720 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8229264196738806159, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
-    type: 3}
-  m_PrefabInstance: {fileID: 3959826255050028303}
-  m_PrefabAsset: {fileID: 0}
 --- !u!95 &7158388858360375348 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6170938929142471995, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
@@ -2817,6 +2811,12 @@ Animator:
 --- !u!1 &4289378083983423325 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 969063762552734290, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
+    type: 3}
+  m_PrefabInstance: {fileID: 3959826255050028303}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4953986871772398720 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8229264196738806159, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
     type: 3}
   m_PrefabInstance: {fileID: 3959826255050028303}
   m_PrefabAsset: {fileID: 0}

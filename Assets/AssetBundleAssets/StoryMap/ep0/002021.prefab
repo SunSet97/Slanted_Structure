@@ -2869,7 +2869,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1843127991639497925}
   m_LocalRotation: {x: -0, y: -0.00000008940697, z: -0, w: 1}
-  m_LocalPosition: {x: 7.958078e-14, y: 0, z: -5.0000005}
+  m_LocalPosition: {x: 0.0000006675722, y: 0.000000020861625, z: -4.9999995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 607363623025631339}
@@ -4278,7 +4278,7 @@ MonoBehaviour:
   location: "\uBD80\uB3C4\uC2EC \uB4B7\uACE8\uBAA9"
   date: 3 YEARS AGO DAY??
   time: 23:00
-  method: 2
+  characterMoveType: 2
   nextMapcode: 002030
   rightIsForward: 0
   waypoint: {fileID: 0}
@@ -4299,6 +4299,10 @@ MonoBehaviour:
   - {fileID: 3345937348758904124}
   positionSetting: {fileID: 3345937350307993779}
   positionSets: []
+  isCustomJumpForce: 0
+  jumpForce: 0
+  isCustomGravityScale: 0
+  gravityScale: 0
   cameraViewType: 1
   camDis: {x: 15, y: -0.3, z: -2.5}
   camRot: {x: 0, y: 0, z: 0}
@@ -4309,6 +4313,7 @@ MonoBehaviour:
   usePostProcessing: 1
   isJoystickInputUse: 0
   isJoystickNone: 1
+  isJoystickControlDisable: 0
   joystickType: 0
 --- !u!1 &3345937350307993779
 GameObject:
@@ -6228,7 +6233,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: b60419e35f07af346b50d1f4fcfcbf5e, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 0
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -8100,7 +8105,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6301653107788103486}
   m_LocalRotation: {x: -0, y: -0.15442425, z: -0, w: 0.9880046}
-  m_LocalPosition: {x: 1.8106637, y: 0, z: -1.9722537}
+  m_LocalPosition: {x: 1.8106639, y: -0.0000000834465, z: -1.9722539}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 627666907968456941}
@@ -8167,13 +8172,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 213
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 0}
     interactionPlayType: 5
     miniGame: {fileID: 0}
-    dialogueData:
-      dialogues: []
-      dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
@@ -8192,16 +8194,22 @@ MonoBehaviour:
           interacts: []
         interactionObjs:
           interactions: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
-    isFocusObject: 0
-    isMain: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    timelines:
+    playableDirectors:
     - {fileID: 2017992756566975214}
     cinematics: []
     inGames: []
@@ -8215,6 +8223,9 @@ MonoBehaviour:
       isInteractable: 1
       isInteracted: 0
     debugTaskData: []
+    dialogueData:
+      dialogueElements: []
+      dialogueIdx: 0
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -16888,15 +16899,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c36635050da33f4e938731c37c741fd, type: 3}
---- !u!4 &7222703862377219505 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6811857248812516395, guid: 0c36635050da33f4e938731c37c741fd,
-    type: 3}
-  m_PrefabInstance: {fileID: 4230189527831265690}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7222703861871856129 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6811857248378358683, guid: 0c36635050da33f4e938731c37c741fd,
+    type: 3}
+  m_PrefabInstance: {fileID: 4230189527831265690}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7222703862377219505 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6811857248812516395, guid: 0c36635050da33f4e938731c37c741fd,
     type: 3}
   m_PrefabInstance: {fileID: 4230189527831265690}
   m_PrefabAsset: {fileID: 0}
@@ -18400,12 +18411,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ecea6a8f3cd88b49b6622b87a5956c3, type: 3}
---- !u!95 &1548854614896604848 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 6170938929142471995, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
-    type: 3}
-  m_PrefabInstance: {fileID: 4673952814606085003}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5597966681715550681 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 969063762552734290, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
@@ -18415,6 +18420,12 @@ GameObject:
 --- !u!4 &3668480403212900868 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8229264196738806159, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
+    type: 3}
+  m_PrefabInstance: {fileID: 4673952814606085003}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1548854614896604848 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6170938929142471995, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
     type: 3}
   m_PrefabInstance: {fileID: 4673952814606085003}
   m_PrefabAsset: {fileID: 0}

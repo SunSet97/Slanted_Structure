@@ -160,8 +160,10 @@ namespace Utility.Interaction
 
         [Header("Interaction State")] [Space(10)]
         public bool isLoop;
-
-        [Space(10)] public bool isContinue;
+        [FormerlySerializedAs("isContinue")] [ConditionalHideInInspector("isNextInteract", true)]
+        public bool isNextInteractable;
+        [ConditionalHideInInspector("isNextInteractable", true)] [FormerlySerializedAs("isInteract")]
+        public bool isNextInteract;
 
         // Save 관련 체크 필요
         [Space(10)] public bool isWait;

@@ -191,7 +191,7 @@ namespace Utility.Interaction
                         Debug.LogError("오류");
                     }
 
-                    DialogueController.Instance.AddDialogueEndAction(() => { EndAction(interactionDatum); });
+                    DialogueController.Instance.AddDialogueEndAction(() => { EndInteraction(interactionDatum); });
                     DialogueController.Instance.StartConversation(interactionDatum.jsonFile.text,
                         interactionDatum.dialoguePrintSec);
                     break;
@@ -203,7 +203,7 @@ namespace Utility.Interaction
                         return;
                     }
 
-                    EndAction(interactionDatum);
+                    EndInteraction(interactionDatum);
                     mapClear.Clear();
                     break;
                 case InteractionPlayType.Task:
@@ -224,7 +224,7 @@ namespace Utility.Interaction
                     break;
                 }
                 case InteractionPlayType.Game:
-                    interactionDatum.miniGame.OnEndPlay = isSuccess => { EndAction(interactionDatum, isSuccess); };
+                    interactionDatum.miniGame.OnEndPlay = isSuccess => { EndInteraction(interactionDatum, isSuccess); };
                     interactionDatum.miniGame.Play();
                     break;
                 case InteractionPlayType.Cinematic:
@@ -264,9 +264,7 @@ namespace Utility.Interaction
                         DataController.Instance.GetCharacter(CharacterType.Main)?.UseJoystickCharacter();
                         PlayUIController.Instance.SetMenuActive(true);
                         Debug.Log("타임라인 끝");
-
-                        EndAction(interactionDatum);
-
+                        
                         foreach (var interactionInGame in interactionDatum.inGames)
                         {
                             interactionInGame.SetActive(true);
@@ -277,33 +275,14 @@ namespace Utility.Interaction
                             interactionCinematic.SetActive(false);
                         }
 
-                        if (interactionData.Count > 0 && interactionDatum.isContinue)
-                        {
-                            InteractIndex = (InteractIndex + 1) % interactionData.Count;
-                        }
+                        EndInteraction(interactionDatum);
                     }));
 
                     return;
                 }
             }
-
-
-            if (interactionData.Count > 0 && interactionDatum.isContinue)
-            {
-                InteractIndex = (InteractIndex + 1) % interactionData.Count;
-            }
         }
-
-        private void EndAction(InteractionData interactionDatum, bool isSuccess = false)
-        {
-            if (GetInteractionData().interactionMethod != InteractionMethod.Trigger)
-            {
-                OnColEnter();
-            }
-
-            interactionDatum.EndAction(isSuccess);
-        }
-
+        
         private void StartTaskAction(InteractionData interactionDatum)
         {
             var taskData = interactionDatum.serializedInteractionData.JsonTask.Peek();
@@ -369,7 +348,7 @@ namespace Utility.Interaction
                         ExecuteChoiceByRelationship();
                         break;
                     case TaskContentType.DialogueElement:
-                        // ExecuteChoiceByRelationship();
+                        // asdad
                         // 대화 실행
                         break;
                     // TaskEnd 보다는 TaskReset이라는 말이 어울린다
@@ -461,9 +440,6 @@ namespace Utility.Interaction
                             JoystickController.Instance.StopSaveLoadJoyStick(false);
                             DataController.Instance.GetCharacter(CharacterType.Main)?.UseJoystickCharacter();
 
-                            interactionDatum.serializedInteractionData.JsonTask.Peek().taskIndex++;
-                            StartTaskAction(interactionDatum);
-
                             foreach (var cinematic in interactionDatum.cinematics)
                             {
                                 cinematic.SetActive(false);
@@ -473,6 +449,9 @@ namespace Utility.Interaction
                             {
                                 inGame.SetActive(true);
                             }
+                            
+                            interactionDatum.serializedInteractionData.JsonTask.Peek().taskIndex++;
+                            StartTaskAction(interactionDatum);
                         }));
 
                         break;
@@ -505,14 +484,33 @@ namespace Utility.Interaction
                     }
                     else
                     {
-                        EndAction(interactionDatum);
+                        EndInteraction(interactionDatum);
                     }
                 }
             }
         }
 
+        private void EndInteraction(InteractionData interactionDatum, bool isSuccess = false)
+        {
+            if (interactionDatum.isNextInteractable)
+            {
+                InteractIndex = (InteractIndex + 1) % interactionData.Count;
+            }
+
+            interactionDatum.EndAction(isSuccess);
+
+            if (interactionDatum.isNextInteract)
+            {
+                StartInteraction();
+            } 
+            else if (GetInteractionData().interactionMethod != InteractionMethod.Trigger)
+            {
+                OnColEnter();
+            }
+        }
+
         /// <summary>
-        /// 선택지를 눌렀을 때 부르는 함수, Task에서는 실행이 된다
+        /// 선택지를 눌렀을 때 부르는 함수, Task로 사용한다
         /// </summary>
         /// <param name="index">선택지 번호, 1번부터 시작</param>
         private void ExecuteChoiceAction(int index)
@@ -667,7 +665,7 @@ namespace Utility.Interaction
             var clipInfos = interactionDatum.animator.GetCurrentAnimatorClipInfo(0);
             var alreadyDone = clipInfos.Any(item =>
             {
-                return item.clip.events.Any(t => t.functionName == nameof(OnAnimationEnd));
+                return item.clip.events.Any(t => t.functionName == nameof(EndAnimation));
             });
             if (alreadyDone)
             {
@@ -680,7 +678,7 @@ namespace Utility.Interaction
                 {
                     time = animatorClipInfo.clip.length,
                     intParameter = interactionData.FindIndex(item => item == interactionDatum),
-                    functionName = nameof(OnAnimationEnd)
+                    functionName = nameof(EndAnimation)
                 };
                 animatorClipInfo.clip.AddEvent(animationEvent);
             }
@@ -690,10 +688,10 @@ namespace Utility.Interaction
         /// Use by AnimationEvent
         /// </summary>
         /// <param name="interactionIndex"></param>
-        public void OnAnimationEnd(int interactionIndex)
+        public void EndAnimation(int interactionIndex)
         {
             Debug.Log("실행");
-            EndAction(GetInteractionData(interactionIndex));
+            EndInteraction(GetInteractionData(interactionIndex));
         }
 
         /// <summary>

@@ -11,7 +11,7 @@ namespace Utility.Interaction
                 return;
             }
 
-            Debug.Log(gameObject.name + "트리거  " + other.transform.gameObject);
+            Debug.Log($"트리거 {gameObject}, 캐릭터: {other.transform.gameObject}");
             StartInteraction();
         }
     }
