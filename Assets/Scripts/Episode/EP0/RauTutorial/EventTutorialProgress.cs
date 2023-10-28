@@ -7,8 +7,9 @@ namespace Episode.EP0.RauTutorial
 {
     public class EventTutorialProgress : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField] private RauTutorialManager rauTutorialManager;
-
+#pragma warning restore 0649
         private void Awake()
         {
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");

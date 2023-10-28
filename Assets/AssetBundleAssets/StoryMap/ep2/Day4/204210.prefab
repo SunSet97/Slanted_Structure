@@ -44,13 +44,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1241
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 4900000, guid: 4d66200b4826bb2478b3c8c47929d27a, type: 3}
-    interactionPlayType: 2
-    gamePlayableGame: {fileID: 0}
-    dialogueData:
-      dialogueIdx: 0
-      dialogues: []
+    interactionPlayType: 4
+    miniGame: {fileID: 0}
+    dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -68,21 +66,38 @@ MonoBehaviour:
           interacts: []
         interactionObjs:
           interactions: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
-    timelines: []
+    isCameraHold: 0
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
-    isContinue: 0
+    isNextInteractable: 0
+    isNextInteract: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
       isInteracted: 0
     debugTaskData: []
+    dialogueData:
+      dialogueElements: []
+      dialogueIdx: 0
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -208,8 +223,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6928999582477664438}
-  m_Father: {fileID: 6001385600508940770}
-  m_RootOrder: 0
+  m_Father: {fileID: 6005943890414339471}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 81.775, z: 0}
 --- !u!1 &5104086260424071056
 GameObject:
@@ -255,38 +270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 0
-  nextSelectMapcode: 204220
---- !u!1 &5853082869754555329
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6001385600508940770}
-  m_Layer: 0
-  m_Name: 0 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6001385600508940770
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5853082869754555329}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 8943134169707400837}
-  m_Father: {fileID: 6005943890414339471}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  nextSelectMapCode: 204220
 --- !u!1 &6005943889770735678
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,7 +298,7 @@ Transform:
   m_LocalPosition: {x: -2.01, y: -0.11, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 6005943890618038871}
+  m_Father: {fileID: 6005943890414339471}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -43.732002, z: 0}
 --- !u!1 &6005943890414339464
@@ -344,40 +328,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6001385600508940770}
-  - {fileID: 6005943890618038871}
-  m_Father: {fileID: 6005943890886827749}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6005943890618038864
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6005943890618038871}
-  m_Layer: 0
-  m_Name: 1 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6005943890618038871
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6005943890618038864}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
   - {fileID: 6005943889770735677}
-  m_Father: {fileID: 6005943890414339471}
+  - {fileID: 8943134169707400837}
+  m_Father: {fileID: 6005943890886827749}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6005943890886827750
@@ -427,12 +380,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b31600ebb60d14c9e0212bbddd902d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptDesription: "Episode2-Day6_\uC624\uC6B4_\uD559\uAD50 \uC55E"
   mapCode: 204210
   location: "\uD559\uAD50 \uC55E"
   date: DAY05
   time: 13:00
-  method: 1
+  characterMoveType: 1
   nextMapcode: 204220
   rightIsForward: 0
   waypoint: {fileID: 0}
@@ -446,10 +398,8 @@ MonoBehaviour:
   fadeInSec: 1
   bgm: {fileID: 0}
   characters: []
-  clearBoxSetting: {fileID: 8702950728014630964}
   clearBoxList:
   - {fileID: 8558591690487152949}
-  positionSetting: {fileID: 6005943890414339464}
   positionSets:
   - who: 2
     startPosition: {fileID: 8943134169707400837}
@@ -459,11 +409,21 @@ MonoBehaviour:
     startPosition: {fileID: 6005943889770735677}
     isMain: 0
     isFollow: 0
+  isCustomJumpForce: 0
+  jumpForce: 0
+  isCustomGravityScale: 0
+  gravityScale: 0
   cameraViewType: 0
   camDis: {x: -1.22, y: 1.88, z: 6.22}
   camRot: {x: 5.5, y: 167, z: 0}
+  useFieldOfView: 0
+  fieldOfView: 0
+  useClippingPlanes: 0
+  farClipPlane: 0
+  usePostProcessing: 0
   isJoystickInputUse: 0
   isJoystickNone: 1
+  isJoystickControlDisable: 0
   joystickType: 0
 --- !u!1 &8702950728014630964
 GameObject:

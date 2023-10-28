@@ -7,8 +7,10 @@ namespace Episode.EP2.PlatformGame
 {
     public class PlatformMiniGameManager : MiniGame
     {
+#pragma warning disable 0649
         [SerializeField] private Button interactionButton;
-
+#pragma warning restore 0649
+        
         public void ActiveButton(bool isActive, UnityAction unityAction = default)
         {
             interactionButton.gameObject.SetActive(isActive);

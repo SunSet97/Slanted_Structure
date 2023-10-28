@@ -10,6 +10,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
 {
     public class SpeatAbility : MonoBehaviour
     {
+#pragma warning disable 0649
         [Header("-UI")] [SerializeField] private Button abilityButton;
         public Image abilityCooldownImage;
         public Text abilityText;
@@ -25,6 +26,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
         [NonSerialized] public bool IsUsingAbilityTimer;
         [NonSerialized] public bool IsPassing;
         [NonSerialized] public int Floor = 5;
+#pragma warning restore 0649
 
         private float abilityDuration;
         private float cooldown;

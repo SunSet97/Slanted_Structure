@@ -4,18 +4,18 @@ using Utility.Character;
 using Utility.Core;
 using Utility.Dialogue;
 using Utility.Interaction;
-using static Data.CustomEnum;
 
 public class HamburgerStoreManager : MonoBehaviour
 {
+#pragma warning disable 0649
     public TextAsset jsonFile;
     [SerializeField]
     private NpcWayPoint speat;
 
     [Range(0, 1f)] public float rauAniSpeed;
 
-    public InteractionObject partTimeJob;
     public InteractionObject sofa;
+#pragma warning restore 0649
 
     private void Start()
     {
@@ -24,9 +24,6 @@ public class HamburgerStoreManager : MonoBehaviour
 
     private void InitialSetting()
     {
-        // 전부 타임라인으로 해도 되겠는뎁쇼
-        partTimeJob.SetInteractionEndEvent(() => { sofa.enabled = true; });
-
         sofa.SetInteractionStartEvent(() =>
         {
             var character = DataController.Instance.GetCharacter(CharacterType.Main);

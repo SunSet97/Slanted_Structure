@@ -7,13 +7,15 @@ namespace Episode.EP1
 {
     public class EventMoveTo : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField] private Transform startPoint;
         [SerializeField] private Transform endPoint;
         
         [SerializeField] private float sec = 5f;
         [Range(5, 20)]
         [SerializeField] private int moveSpeed = 10;
-
+#pragma warning restore 0649
+        
         private static readonly int Speed = Animator.StringToHash("Speed");
         
         private void Awake()

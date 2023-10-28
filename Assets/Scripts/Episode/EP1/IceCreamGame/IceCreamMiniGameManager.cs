@@ -18,6 +18,7 @@ namespace Episode.EP1.IceCreamGame
             Surprise = 3,
         }
 
+#pragma warning disable 0649
         [SerializeField] private GameObject iceCreamPanel;
         [SerializeField] private IceCreamClicker iceCreamClicker;
         [SerializeField] private Transform iceCream;
@@ -29,6 +30,7 @@ namespace Episode.EP1.IceCreamGame
 
         [SerializeField] [Range(10, 20)] private float horizontalSpeed = 11f;
         [SerializeField] [Range(5, 10)] private float verticalSpeed = 11f;
+#pragma warning restore 0649
         
         private int successCount;
         private Vector3 originPos;

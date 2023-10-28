@@ -16,6 +16,7 @@ namespace Utility.Preference
             Delete
         }
 
+#pragma warning disable 0649
         [SerializeField] private ButtonType defaultButtonType;
 
         [SerializeField] private Transform diarySaveParent;
@@ -26,7 +27,8 @@ namespace Utility.Preference
 
         [Header("덮어쓰기")] [Space(15)] [SerializeField]
         private CheckPanel checkPanel;
-
+#pragma warning restore 0649
+        
         private int coverIdx;
 
         private RectMask2D saveMask;

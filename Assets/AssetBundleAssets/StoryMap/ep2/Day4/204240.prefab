@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &121945365875487166
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 121945365875487161}
-  m_Layer: 0
-  m_Name: 0 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &121945365875487161
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 121945365875487166}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 121945366844382135}
-  m_Father: {fileID: 121945367841809150}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &121945366336648892
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 0
-  nextSelectMapcode: 205210
+  nextSelectMapCode: 205210
 --- !u!1 &121945366375449245
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,12 +106,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b31600ebb60d14c9e0212bbddd902d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptDesription: "Episode2_day6_\uC624\uC6B4_\uB3D9\uC544\uB9AC\uBC29(\uBC24)"
   mapCode: 204240
   location: "\uB3D9\uC544\uB9AC\uBC29"
   date: DAY05
   time: 19:00
-  method: 0
+  characterMoveType: 0
   nextMapcode: 205210
   rightIsForward: 0
   waypoint: {fileID: 0}
@@ -156,10 +124,8 @@ MonoBehaviour:
   fadeInSec: 1
   bgm: {fileID: 0}
   characters: []
-  clearBoxSetting: {fileID: 9093155230054080512}
   clearBoxList:
   - {fileID: 121945366336648894}
-  positionSetting: {fileID: 121945367841809151}
   positionSets:
   - who: 2
     startPosition: {fileID: 121945366844382135}
@@ -169,11 +135,21 @@ MonoBehaviour:
     startPosition: {fileID: 2140233431813814611}
     isMain: 0
     isFollow: 0
+  isCustomJumpForce: 0
+  jumpForce: 0
+  isCustomGravityScale: 0
+  gravityScale: 0
   cameraViewType: 0
   camDis: {x: -7.64, y: 4.3, z: -1.03}
   camRot: {x: 30, y: 90, z: 0}
+  useFieldOfView: 0
+  fieldOfView: 0
+  useClippingPlanes: 0
+  farClipPlane: 0
+  usePostProcessing: 0
   isJoystickInputUse: 0
   isJoystickNone: 1
+  isJoystickControlDisable: 0
   joystickType: 0
 --- !u!1 &121945366844382132
 GameObject:
@@ -203,7 +179,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4646987236623099301}
-  m_Father: {fileID: 121945365875487161}
+  m_Father: {fileID: 121945367841809150}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 117.45801, z: 0}
 --- !u!1 &121945367841809151
@@ -233,8 +209,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 121945365875487161}
-  - {fileID: 3886489426248406198}
+  - {fileID: 121945366844382135}
+  - {fileID: 2140233431813814611}
   m_Father: {fileID: 121945366375449244}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -282,13 +258,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 21454
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 4900000, guid: 0669560141ce690498120aa2e0373550, type: 3}
-    interactionPlayType: 3
-    gamePlayableGame: {fileID: 0}
-    dialogueData:
-      dialogueIdx: 0
-      dialogues: []
+    interactionPlayType: 8
+    miniGame: {fileID: 0}
+    dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -306,21 +280,38 @@ MonoBehaviour:
           interacts: []
         interactionObjs:
           interactions: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
-    timelines: []
+    isCameraHold: 0
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
-    isContinue: 0
+    isNextInteractable: 0
+    isNextInteract: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
       isInteracted: 0
     debugTaskData: []
+    dialogueData:
+      dialogueElements: []
+      dialogueIdx: 0
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -418,37 +409,6 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!1 &6413993155615383747
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3886489426248406198}
-  m_Layer: 0
-  m_Name: 1 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3886489426248406198
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6413993155615383747}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 2140233431813814611}
-  m_Father: {fileID: 121945367841809150}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7763608049884409391
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,8 +436,8 @@ Transform:
   m_LocalPosition: {x: 1.58, y: 0, z: 0.82}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 3886489426248406198}
-  m_RootOrder: 0
+  m_Father: {fileID: 121945367841809150}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 214.239, z: 0}
 --- !u!1 &8845733610462656037
 GameObject:

@@ -44,12 +44,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1232
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 4900000, guid: ceb6ce8f8b540dc4a8ddd75311349fcd, type: 3}
-    interactionPlayType: 2
+    interactionPlayType: 4
     miniGame: {fileID: 0}
+    dialoguePrintSec: 0
+    animator: {fileID: 0}
+    interactionStartActions:
+      interactionEvents: []
+    interactionEndActions:
+      interactionEvents: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
+    interactionMethod: 3
+    isViewChange: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
+    interactionCamera:
+      camDis: {x: 0, y: 0, z: 0}
+      camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
+    playableDirector: {fileID: 0}
+    cinematics: []
+    inGames: []
+    isLoop: 0
+    isNextInteractable: 0
+    isNextInteract: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
+    serializedInteractionData:
+      id: 0
+      isInteractable: 1
+      isInteracted: 0
+    debugTaskData: []
     dialogueData:
-      dialogues:
+      dialogueElements:
       - name: ??
         expression: 0
         anim_name: Speat_Adult
@@ -84,40 +119,6 @@ MonoBehaviour:
           camRot: {x: 0, y: 0, z: 0}
         trackTransform: {fileID: 0}
       dialogueIdx: 0
-    dialoguePrintSec: 0
-    animator: {fileID: 0}
-    interactionStartActions:
-      interactionEvents: []
-    interactionEndActions:
-      interactionEvents: []
-    onSuccessEndAction:
-      interactionEvents: []
-    onFailEndAction:
-      interactionEvents: []
-    interactionMethod: 3
-    isViewChange: 0
-    isTrackTransform: 0
-    isTrackMainCharacter: 0
-    trackTransform: {fileID: 0}
-    interactionCamera:
-      camDis: {x: 0, y: 0, z: 0}
-      camRot: {x: 0, y: 0, z: 0}
-    isCameraHold: 0
-    isTeleport: 0
-    teleportTarget: {fileID: 0}
-    timelines: []
-    cinematics: []
-    inGames: []
-    isLoop: 0
-    isContinue: 0
-    isWait: 0
-    waitInteractionData:
-      waitInteractions: []
-    serializedInteractionData:
-      id: 0
-      isInteractable: 1
-      isInteracted: 0
-    debugTaskData: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -182,29 +183,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: asd
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 4900000, guid: 9bb22f8bf5a331a45a920549a62faba1, type: 3}
-    interactionPlayType: 2
+    interactionPlayType: 4
     miniGame: {fileID: 0}
-    dialogueData:
-      dialogues:
-      - name: ??
-        expression: 0
-        anim_name: Speat_Adult
-        contents: "\uBC84\uB824\uC9C4 \uACF3\uC778\uAC00..? \uC77C\uB2E8 \uB4E4\uC5B4\uAC00\uC11C
-          \uC7A0\uC2DC \uC26C\uC790.."
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
@@ -238,11 +220,12 @@ MonoBehaviour:
     isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    timelines: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
-    isContinue: 0
+    isNextInteractable: 0
+    isNextInteract: 0
     isWait: 0
     waitInteractionData:
       waitInteractions: []
@@ -251,6 +234,25 @@ MonoBehaviour:
       isInteractable: 1
       isInteracted: 0
     debugTaskData: []
+    dialogueData:
+      dialogueElements:
+      - name: ??
+        expression: 0
+        anim_name: Speat_Adult
+        contents: "\uBC84\uB824\uC9C4 \uACF3\uC778\uAC00..? \uC77C\uB2E8 \uB4E4\uC5B4\uAC00\uC11C
+          \uC7A0\uC2DC \uC26C\uC790.."
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      dialogueIdx: 0
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -304,14 +306,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b31600ebb60d14c9e0212bbddd902d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptDesription: "\uC2A4\uD54F \uD29C\uD1A0\uB9AC\uC5BC_\uB7F0\uAC8C\uC784\n\uBC30\uACBD:
-    \uD558\uC218\uAD6C\n\uAC8C\uC784 \uBDF0:\uCFFC\uD130\uBDF0(Orthographic)\n\uAC8C\uC784
-    \uD50C\uB808\uC774: \uD50C\uB7AB\uD3EC\uBA38 \uAC8C\uC784\n\uB2A5\uB825: X\n"
   mapCode: 002030
   location: "\uD558\uC218\uAD6C"
   date: 3 YEARS AGO DAY??
   time: 24:00
-  method: 3
+  characterMoveType: 3
   nextMapcode: 002031
   rightIsForward: 0
   waypoint: {fileID: 2646391034365251941}
@@ -325,10 +324,8 @@ MonoBehaviour:
   fadeInSec: 1
   bgm: {fileID: 0}
   characters: []
-  clearBoxSetting: {fileID: 7045955273984404481}
   clearBoxList:
   - {fileID: 5724989132166803283}
-  positionSetting: {fileID: 5724989133969462290}
   positionSets:
   - who: 4
     startPosition: {fileID: 5724989133351906227}
@@ -414,7 +411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 0
-  nextSelectMapcode: 002031
+  nextSelectMapCode: 002031
 --- !u!1 &5724989133351906226
 GameObject:
   m_ObjectHideFlags: 0

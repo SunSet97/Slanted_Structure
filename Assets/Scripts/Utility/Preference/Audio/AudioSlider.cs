@@ -6,8 +6,10 @@ namespace Utility.Preference.Audio
 {
     public class AudioSlider : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField] private Slider audioSlider;
         [SerializeField] private Animator muteAnimator;
+#pragma warning restore 0649
 
         private static readonly int Mute = Animator.StringToHash("Mute");
 

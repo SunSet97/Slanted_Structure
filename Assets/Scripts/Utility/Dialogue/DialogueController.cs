@@ -23,6 +23,7 @@ namespace Utility.Dialogue
 
         public GameObject dialoguePanel;
 
+#pragma warning disable 0649
         [Header("UI")] [FormerlySerializedAs("dialogueBox")] [SerializeField]
         private Image dialogueInputArea;
 
@@ -38,6 +39,7 @@ namespace Utility.Dialogue
         [SerializeField] private DialogueData dialogueData;
 
         [NonSerialized] public bool IsDialogue;
+#pragma warning restore 0649
 
         private GameObject[] choiceButtons;
         private Text[] choiceTexts;

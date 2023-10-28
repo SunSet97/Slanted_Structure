@@ -9,7 +9,8 @@ namespace TitleScene
         {
             Audio, Info
         }
-    
+ 
+#pragma warning disable 0649
         [SerializeField] private Button preferenceButton;
         [SerializeField] private Button exitButton;
     
@@ -24,7 +25,7 @@ namespace TitleScene
     
         [SerializeField] private Transform focusTransform;
         [SerializeField] private Transform backgroundTransform;
-
+#pragma warning restore 0649
         private PreferencePanelType preferencePanelType;
         
         void Start()

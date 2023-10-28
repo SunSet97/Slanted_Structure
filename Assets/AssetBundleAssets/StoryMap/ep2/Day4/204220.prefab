@@ -44,13 +44,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 21415
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 4900000, guid: ef7a1644e945c894ab766a5aac04d3e8, type: 3}
-    interactionPlayType: 2
-    gamePlayableGame: {fileID: 0}
-    dialogueData:
-      dialogueIdx: 0
-      dialogues: []
+    interactionPlayType: 4
+    miniGame: {fileID: 0}
+    dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
@@ -68,21 +66,38 @@ MonoBehaviour:
           interacts: []
         interactionObjs:
           interactions: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
-    timelines: []
+    isCameraHold: 0
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
-    isContinue: 0
+    isNextInteractable: 0
+    isNextInteract: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
     serializedInteractionData:
       id: 0
       isInteractable: 1
       isInteracted: 0
     debugTaskData: []
+    dialogueData:
+      dialogueElements: []
+      dialogueIdx: 0
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -116,40 +131,9 @@ Transform:
   m_LocalPosition: {x: 1.12, y: 0, z: 2.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 2971182278824231739}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 89.065, z: 0}
---- !u!1 &3003297322893325417
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2971182278824231739}
-  m_Layer: 0
-  m_Name: 1 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2971182278824231739
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3003297322893325417}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1169875868613917184}
   m_Father: {fileID: 8243696506476974853}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 89.065, z: 0}
 --- !u!1 &4776330207722187855
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,12 +429,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b31600ebb60d14c9e0212bbddd902d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptDesription: "Episode2_day6_\uC624\uC6B4_\uD559\uAD50 \uB3D9\uC544\uB9AC\uBC29"
   mapCode: 204220
   location: "\uB3D9\uC544\uB9AC\uBC29"
   date: DAY05
   time: 14:00
-  method: 1
+  characterMoveType: 1
   nextMapcode: 204231
   rightIsForward: 0
   waypoint: {fileID: 0}
@@ -464,10 +447,8 @@ MonoBehaviour:
   fadeInSec: 1
   bgm: {fileID: 0}
   characters: []
-  clearBoxSetting: {fileID: 5406479914291712898}
   clearBoxList:
   - {fileID: 8243696507681908969}
-  positionSetting: {fileID: 8243696506476974852}
   positionSets:
   - who: 2
     startPosition: {fileID: 8243696506338593294}
@@ -477,11 +458,21 @@ MonoBehaviour:
     startPosition: {fileID: 1169875868613917184}
     isMain: 0
     isFollow: 0
+  isCustomJumpForce: 0
+  jumpForce: 0
+  isCustomGravityScale: 0
+  gravityScale: 0
   cameraViewType: 0
   camDis: {x: -7.64, y: 4.3, z: -1.03}
   camRot: {x: 30, y: 90, z: 0}
+  useFieldOfView: 0
+  fieldOfView: 0
+  useClippingPlanes: 0
+  farClipPlane: 0
+  usePostProcessing: 0
   isJoystickInputUse: 0
   isJoystickNone: 1
+  isJoystickControlDisable: 0
   joystickType: 0
 --- !u!1 &8243696506338593329
 GameObject:
@@ -511,7 +502,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7724426985376957490}
-  m_Father: {fileID: 8243696507072526705}
+  m_Father: {fileID: 8243696506476974853}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 94.577, z: 0}
 --- !u!1 &8243696506476974852
@@ -541,40 +532,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8243696507072526705}
-  - {fileID: 2971182278824231739}
-  m_Father: {fileID: 8243696505852718915}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8243696507072526704
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8243696507072526705}
-  m_Layer: 0
-  m_Name: 0 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8243696507072526705
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8243696507072526704}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
   - {fileID: 8243696506338593294}
-  m_Father: {fileID: 8243696506476974853}
+  - {fileID: 1169875868613917184}
+  m_Father: {fileID: 8243696505852718915}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8243696507681908971
@@ -621,7 +581,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 0
-  nextSelectMapcode: 204231
+  nextSelectMapCode: 204231
 --- !u!1001 &909391414575561200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -916,15 +876,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a82fa34459c16046951f42ff27dc979, type: 3}
---- !u!4 &6528086692106546010 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4174650997271140752, guid: 8a82fa34459c16046951f42ff27dc979,
-    type: 3}
-  m_PrefabInstance: {fileID: 7167261880516653770}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6528086692106546011 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4174650997271140753, guid: 8a82fa34459c16046951f42ff27dc979,
+    type: 3}
+  m_PrefabInstance: {fileID: 7167261880516653770}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6528086692106546010 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4174650997271140752, guid: 8a82fa34459c16046951f42ff27dc979,
     type: 3}
   m_PrefabInstance: {fileID: 7167261880516653770}
   m_PrefabAsset: {fileID: 0}

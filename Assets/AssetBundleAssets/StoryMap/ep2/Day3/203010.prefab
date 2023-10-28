@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 1
-  nextSelectMapcode: 000000
+  nextSelectMapCode: 000000
 --- !u!1 &6571003619915153711
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,13 +120,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 3255326
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 4900000, guid: 4cca2625335da8742897897b1cddcf03, type: 3}
-    interactionPlayType: 3
+    interactionPlayType: 8
     miniGame: {fileID: 0}
-    dialogueData:
-      dialogues: []
-      dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
@@ -148,11 +145,12 @@ MonoBehaviour:
     isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    timelines: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
-    isContinue: 0
+    isNextInteractable: 0
+    isNextInteract: 0
     isWait: 0
     waitInteractionData:
       waitInteractions: []
@@ -188,7 +186,9 @@ MonoBehaviour:
         increaseVar: 0,0,0
       taskIndex: 0
       taskOrder: 1
-      isContinue: 1
+    dialogueData:
+      dialogueElements: []
+      dialogueIdx: 0
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -241,12 +241,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b31600ebb60d14c9e0212bbddd902d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptDesription: "Episode2-Day3 \uB77C\uC6B0 \uC219\uC18C"
   mapCode: 203010
   location: "\uB77C\uC6B0 \uC219\uC18C"
   date: DAY04
   time: 10:00
-  method: 1
+  characterMoveType: 1
   nextMapcode: 
   rightIsForward: 0
   waypoint: {fileID: 0}
@@ -260,10 +259,8 @@ MonoBehaviour:
   fadeInSec: 1
   bgm: {fileID: 0}
   characters: []
-  clearBoxSetting: {fileID: 6571003619915153711}
   clearBoxList:
   - {fileID: 6804218609852677782}
-  positionSetting: {fileID: 8195409945370627800}
   positionSets:
   - who: 2
     startPosition: {fileID: 8195409945449437646}

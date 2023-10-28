@@ -25,6 +25,7 @@ namespace Episode.EP2.ThrowCanGame
             Bad
         }
         
+#pragma warning disable 0649
         [Header("Can")]
         [SerializeField] private GameObject canPrefab;
         [SerializeField] private Transform startPoint;
@@ -36,6 +37,7 @@ namespace Episode.EP2.ThrowCanGame
         [SerializeField] private RectTransform[] targets;
         [SerializeField] private RingCreator ringCreator;
         [Range(0, 1)] [SerializeField] private float noteSpeed;
+#pragma warning restore 0649
         
         private void Start()
         {

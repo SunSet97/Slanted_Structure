@@ -6,10 +6,11 @@ namespace Episode.EP1.DalgonaGame
 {
     public class DalgonaMiniGame : MiniGame
     {
+#pragma warning disable 0649
         public GameObject dalgonaPanel;
         
         [SerializeField] private DalgonaDragger[] dalgonaDragger;
-        
+#pragma warning restore 0649
         private int index;
 
         public override void Play()

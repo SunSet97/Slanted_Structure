@@ -25,6 +25,7 @@ namespace Utility.Interaction
     [ExecuteInEditMode]
     public class InteractionObject : MonoBehaviour, IClickable
     {
+#pragma warning disable 0649
         public string id;
         [FormerlySerializedAs("interactions")] public List<InteractionData> interactionData;
 
@@ -49,7 +50,8 @@ namespace Utility.Interaction
         [NonSerialized] public GameObject ExclamationMark;
 
         [NonSerialized] public int InteractIndex;
-
+#pragma warning restore 0649
+        
         private void Awake()
         {
             if (!Application.isPlaying)
@@ -229,16 +231,13 @@ namespace Utility.Interaction
                     break;
                 case InteractionPlayType.Cinematic:
                 {
-                    if (interactionDatum.playableDirectors == null || interactionDatum.playableDirectors.Length == 0)
+                    if (!interactionDatum.playableDirector)
                     {
                         Debug.LogError("타임라인 세팅 오류");
                         return;
                     }
 
-                    foreach (var playableDirector in interactionDatum.playableDirectors)
-                    {
-                        BindPlayableDirector(playableDirector);
-                    }
+                    BindPlayableDirector(interactionDatum.playableDirector);
 
                     PlayUIController.Instance.SetMenuActive(false);
                     // DataController.Instance.GetCharacter(Character.Main)?.PickUpCharacter();
@@ -252,11 +251,8 @@ namespace Utility.Interaction
                     {
                         interactionCinematic.SetActive(true);
                     }
-
-                    foreach (var playableDirector in interactionDatum.playableDirectors)
-                    {
-                        playableDirector.Play();
-                    }
+                    
+                    interactionDatum.playableDirector.Play();
 
                     StartCoroutine(WaitCinematicEnd(interactionDatum, () =>
                     {
@@ -456,7 +452,7 @@ namespace Utility.Interaction
 
                         break;
                     case TaskContentType.ClearMap:
-                        DataController.Instance.CurrentMap.MapClear();
+                        DataController.Instance.CurrentMap.ClearMap();
                         break;
                     default:
                     {
@@ -534,7 +530,7 @@ namespace Utility.Interaction
             //다음 맵 코드 변경
             if (curTask.order != 0)
             {
-                DataController.Instance.CurrentMap.SetNextMapCode($"{curTask.order,000000}");
+                DataController.Instance.CurrentMap.SetClearMapCode($"{curTask.order,000000}");
             }
 
             ChoiceAction(interaction, choiceTargetIndex);
@@ -637,11 +633,12 @@ namespace Utility.Interaction
         {
             yield return new WaitUntil(() =>
             {
-                return interactionDatum.playableDirectors.All(playableDirector =>
-                    Math.Abs(playableDirector.time - playableDirector.duration) <=
-                    1 / ((TimelineAsset)playableDirector.playableAsset).editorSettings.fps ||
-                    playableDirector.state == PlayState.Paused && !playableDirector.playableGraph.IsValid() &&
-                    !DialogueController.Instance.IsDialogue);
+                var playableDirector = interactionDatum.playableDirector;
+
+                return Math.Abs(playableDirector.time - playableDirector.duration) <=
+                       1 / ((TimelineAsset)playableDirector.playableAsset).editorSettings.fps ||
+                       playableDirector.state == PlayState.Paused && !playableDirector.playableGraph.IsValid() &&
+                       !DialogueController.Instance.IsDialogue;
             });
 
             onEndAction?.Invoke();

@@ -6,9 +6,12 @@ namespace Utility.Interaction
 {
     public class FloatingMark : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField] private GameObject markPrefab;
         [SerializeField] private Vector3 markOffset;
         [SerializeField] private bool isWorld;
+#pragma warning restore 0649
+        
         private GameObject floatingMark;
 
         private void Start()

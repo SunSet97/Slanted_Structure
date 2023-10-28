@@ -24,9 +24,11 @@ namespace Utility.Character
             }
         }
 
+#pragma warning disable 0649
         public CharacterType who;
 
         [SerializeField] private Transform waitTransform;
+#pragma warning restore 0649
 
         [NonSerialized] public CharacterController CharacterController;
 

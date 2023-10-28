@@ -7,8 +7,10 @@ namespace Episode.EP0.SpeatTutorial.Sewer
 {
     public class EventDieBySewage : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField] private Transform respawnPoint;
         [SerializeField] private Waypoint waypoint;
+#pragma warning restore 0649
         
         private void Awake()
         {

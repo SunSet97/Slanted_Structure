@@ -36,10 +36,12 @@ namespace Utility.Utils
                 return _instance;
             }
         }
-
+        
+#pragma warning disable 0649
         [SerializeField] private Button button;
         [FormerlySerializedAs("image")] [SerializeField] private Image endingImage;
         [SerializeField] private Ending[] endings;
+#pragma warning restore 0649
         
         private static EndingHelper Create()
         {

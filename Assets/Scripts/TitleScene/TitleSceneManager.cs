@@ -9,6 +9,7 @@ namespace TitleScene
 {
     public class TitleSceneManager : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField] private string mapCode;
 
         [SerializeField] private Button newStartButton;
@@ -17,7 +18,8 @@ namespace TitleScene
         [SerializeField] private Button diaryExitButton;
 
         [SerializeField] private GameObject diaryPanel;
-
+#pragma warning restore 0649
+        
         private void Start()
         {
             MobileAds.RaiseAdEventsOnUnityMainThread = true;

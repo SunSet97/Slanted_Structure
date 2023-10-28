@@ -7,10 +7,12 @@ namespace Episode.EP0.RauTutorial
 {
     public class EventDieByWater : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField] private RauTutorialManager rauTutorialManager;
         [SerializeField] private Transform respawnPoint;
         [SerializeField] private TextAsset jsonFile;
-
+#pragma warning restore 0649
+        
         private bool isInteracted;
 
         private void Awake()

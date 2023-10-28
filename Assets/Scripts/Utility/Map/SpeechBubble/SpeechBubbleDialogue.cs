@@ -32,7 +32,8 @@ namespace Utility.Map.SpeechBubble
             Custom,
             Random
         }
-
+        
+#pragma warning disable 0649
         [FormerlySerializedAs("speechBubbleDialogueType")] [Header("말풍선 대화 타입 선택")] [SerializeField]
         private SpeechBubbleType speechBubbleType;
 
@@ -48,6 +49,8 @@ namespace Utility.Map.SpeechBubble
         [Header("말풍선 위치 조절")] [SerializeField] private Vector2 speechPos;
 
         [SerializeField] private int bubbleIndex;
+#pragma warning restore 0649
+        
         private bool isBubble;
         private bool isCharacterInRange;
 

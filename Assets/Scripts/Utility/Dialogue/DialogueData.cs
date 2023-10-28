@@ -23,7 +23,6 @@ namespace Utility.Dialogue
 
         public void Init(string json, float dialoguePrintSec = 0f, float nextSec = 0f)
         {
-            Debug.Log("초기화");
             dialogueElements = JsontoString.FromJsonArray<DialogueElement>(json);
             if (Application.isPlaying && Mathf.Approximately(dialoguePrintSec, 0))
             {

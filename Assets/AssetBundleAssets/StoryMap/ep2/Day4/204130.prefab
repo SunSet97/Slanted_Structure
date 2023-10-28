@@ -106,11 +106,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 
-  interactions: []
+  interactionData: []
   useOutline: 0
   color: 0
   outline: {fileID: 2145686849853542039}
-  outlineRadius: 5
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &2145686849853542039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,8 +222,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1395685093544531156}
-  - {fileID: 4107076885387390388}
+  - {fileID: 1395685093548560312}
+  - {fileID: 3599159114237416866}
   m_Father: {fileID: 1395685093762790093}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -283,38 +285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 0
-  nextSelectMapcode: 205110
---- !u!1 &1395685093544531159
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1395685093544531156}
-  m_Layer: 0
-  m_Name: 1 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1395685093544531156
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1395685093544531159}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1395685093548560312}
-  m_Father: {fileID: 1395685092927965825}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  nextSelectMapCode: 205110
 --- !u!1 &1395685093548560315
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,7 +314,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 865107121813608425}
-  m_Father: {fileID: 1395685093544531156}
+  m_Father: {fileID: 1395685092927965825}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1395685093762790092
@@ -394,15 +365,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b31600ebb60d14c9e0212bbddd902d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptDesription: "Episode2-Day4_\uC2A4\uD54F \uD558\uC218\uAD6C \uC544\uC9C0\uD2B8\n+Ep0\uC5D0\uC11C
-    \uCE74\uBA54\uB77C\uAC00 \uC774\uB3D9\uC5D0\uB530\uB77C \uD68C\uC804\uD588\uB358
-    \uAC83\uCC98\uB7FC \uAD6C\uD604\uD574\uC57C\uD568."
   mapCode: 204130
   location: "\uD558\uC218\uAD6C"
   date: DAY05
   time: 13:00
-  method: 2
+  characterMoveType: 2
   nextMapcode: 205110
+  rightIsForward: 0
+  waypoint: {fileID: 0}
   map: {fileID: 4005663992108130986}
   ui: {fileID: 0}
   skyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
@@ -413,10 +383,8 @@ MonoBehaviour:
   fadeInSec: 1
   bgm: {fileID: 0}
   characters: []
-  clearBoxSetting: {fileID: 2184414181426779005}
   clearBoxList:
   - {fileID: 1395685092987312460}
-  positionSetting: {fileID: 1395685092927965824}
   positionSets:
   - who: 0
     startPosition: {fileID: 3599159114237416866}
@@ -426,11 +394,21 @@ MonoBehaviour:
     startPosition: {fileID: 1395685093548560312}
     isMain: 1
     isFollow: 0
+  isCustomJumpForce: 0
+  jumpForce: 0
+  isCustomGravityScale: 0
+  gravityScale: 0
   cameraViewType: 0
   camDis: {x: 0, y: 1, z: -3}
   camRot: {x: 0, y: 0, z: 0}
+  useFieldOfView: 0
+  fieldOfView: 0
+  useClippingPlanes: 0
+  farClipPlane: 0
+  usePostProcessing: 0
   isJoystickInputUse: 0
   isJoystickNone: 0
+  isJoystickControlDisable: 0
   joystickType: 0
 --- !u!1 &1585814380106605648
 GameObject:
@@ -482,9 +460,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6622f8bd62115ca498cf9546240f772c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDirSet: 1
-  checkingDist: 0.7
-  currentIndex: 0
   waypoints:
   - {fileID: 7371105613178214492}
   - {fileID: 121516551296187449}
@@ -492,7 +467,9 @@ MonoBehaviour:
   - {fileID: 3835944343086939652}
   - {fileID: 3977372962960798820}
   - {fileID: 8409674523444131935}
-  checkedWaypoint: {fileID: 7371105613178214492}
+  checkingDist: 0.7
+  currentEdgeIndex: 0
+  waypointEdges: []
 --- !u!114 &7971267800568325789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,11 +543,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 
-  interactions: []
+  interactionData: []
   useOutline: 0
   color: 0
   outline: {fileID: 8912639980160996908}
-  outlineRadius: 5
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &5232198707942898108
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -602,37 +581,6 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
---- !u!1 &1906258858632929016
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4107076885387390388}
-  m_Layer: 0
-  m_Name: 0 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4107076885387390388
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1906258858632929016}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 3599159114237416866}
-  m_Father: {fileID: 1395685092927965825}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2184414181426779005
 GameObject:
   m_ObjectHideFlags: 0
@@ -863,11 +811,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 
-  interactions: []
+  interactionData: []
   useOutline: 0
   color: 0
   outline: {fileID: 6845450772160013955}
-  outlineRadius: 5
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &5228321217541616883
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1107,8 +1057,8 @@ Transform:
   m_LocalPosition: {x: 2.16, y: 0.99, z: 26.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4107076885387390388}
-  m_RootOrder: 0
+  m_Father: {fileID: 1395685092927965825}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2010569141556599192
 PrefabInstance:

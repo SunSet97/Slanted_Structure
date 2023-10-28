@@ -1,5 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utility.Core;
 using Utility.Utils;
 #if UNITY_EDITOR
@@ -29,16 +30,18 @@ namespace Utility.Map
     /// </summary>
     public class CheckMapClear : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField] private bool isTrigger;
 
-        public string nextSelectMapcode = "000000";
-
+        [FormerlySerializedAs("nextSelectMapcode")] public string nextSelectMapCode = "000000";
+#pragma warning restore 0649
+        
         public void Clear()
         {
             MobileAdsManager.ADCount++;
-            if (!nextSelectMapcode.Equals("000000") && !nextSelectMapcode.Equals(""))
+            if (!nextSelectMapCode.Equals("000000") && !nextSelectMapCode.Equals(""))
             {
-                DataController.Instance.CurrentMap.nextMapcode = nextSelectMapcode;
+                DataController.Instance.CurrentMap.nextMapcode = nextSelectMapCode;
             }
         
             if (DataController.Instance.CurrentMap.useFadeOut)

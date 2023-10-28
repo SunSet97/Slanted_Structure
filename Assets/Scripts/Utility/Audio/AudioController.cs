@@ -31,10 +31,12 @@ namespace Utility.Audio
 
         private List<AudioClip> audioClips;
 
+#pragma warning disable 0649
         [SerializeField]
         private AudioSource bgmSource;
         [SerializeField]
         private AudioSource sfxSource;
+#pragma warning restore 0649
 
         public void PlayBgm(AudioClip audioClip)
         {

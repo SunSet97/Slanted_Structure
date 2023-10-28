@@ -63,6 +63,7 @@ namespace Utility.Save
                     }
                     catch (CryptographicException e)
                     {
+                        Debug.LogError(e);
                         fileStream.Close();
                         rijn.Clear();
                         saveEndAction?.Invoke();
@@ -88,6 +89,7 @@ namespace Utility.Save
                     }
                     catch (CryptographicException e)
                     {
+                        Debug.LogError(e);
                         fileStream.Close();
                         rijn.Clear();
                         saveEndAction?.Invoke();
@@ -207,7 +209,7 @@ namespace Utility.Save
                     }
                     catch (CryptographicException e)
                     {
-                        Debug.Log(e);
+                        Debug.LogError(e);
 
                         var saveCoverData = new SaveCoverData
                         {
@@ -243,6 +245,7 @@ namespace Utility.Save
                     }
                     catch (CryptographicException e)
                     {
+                        Debug.LogError(e);
                         fileStream.Close();
                         rijn.Clear();
                         saveEndAction?.Invoke();
@@ -263,6 +266,7 @@ namespace Utility.Save
                     }
                     catch (CryptographicException e)
                     {
+                        Debug.LogError(e);
                         fileStream.Close();
                         rijn.Clear();
                         saveEndAction?.Invoke();
@@ -312,7 +316,7 @@ namespace Utility.Save
                     }
                     catch (CryptographicException e)
                     {
-                        Debug.Log(e);
+                        Debug.LogError(e);
                         var saveData = new SaveData
                         {
                             saveCoverData = new SaveCoverData
@@ -362,7 +366,7 @@ namespace Utility.Save
                     }
                     catch (CryptographicException e)
                     {
-                        Debug.Log(e);
+                        Debug.LogError(e);
 
                         var saveCoverData = new SaveCoverData
                         {

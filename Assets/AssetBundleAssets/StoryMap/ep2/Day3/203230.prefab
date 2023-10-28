@@ -81,14 +81,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b31600ebb60d14c9e0212bbddd902d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptDesription: "\uC778\uACF5 \uD638\uC218 \uBCA4\uCE58\n\uBE44\uB458\uAE30\uB098
-    \uC624\uB9AC\uB4E4\uC5D0\uAC8C \uBC25\uC744 \uC8FC\uB294 \uC778\uD130\uB809\uC158\n\n+\uB300\uD654\uC2DC
-    \uCE74\uBA54\uB77C \uBDF0\ndir(2.9,1.13,2.26)\nrot(16.88,218.1)"
   mapCode: 203230
   location: "\uC778\uACF5\uD638\uC218"
   date: DAY04
   time: 16:30
-  method: 2
+  characterMoveType: 2
   nextMapcode: 204210
   rightIsForward: 0
   waypoint: {fileID: 0}
@@ -102,10 +99,8 @@ MonoBehaviour:
   fadeInSec: 1
   bgm: {fileID: 0}
   characters: []
-  clearBoxSetting: {fileID: 2605623699351195845}
   clearBoxList:
   - {fileID: 44233077663622425}
-  positionSetting: {fileID: 132210625347605053}
   positionSets:
   - who: 2
     startPosition: {fileID: 1508624755088979051}
@@ -553,13 +548,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: iojnj
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 0}
-    interactionPlayType: 4
+    interactionPlayType: 16
     miniGame: {fileID: 8210616557469343307}
-    dialogueData:
-      dialogues: []
-      dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
@@ -572,18 +564,21 @@ MonoBehaviour:
       interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
-    isFocusObject: 0
-    isMain: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    timelines: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
-    isContinue: 0
+    isNextInteractable: 0
+    isNextInteract: 0
     isWait: 0
     waitInteractionData:
       waitInteractions: []
@@ -592,6 +587,9 @@ MonoBehaviour:
       isInteractable: 1
       isInteracted: 0
     debugTaskData: []
+    dialogueData:
+      dialogueElements: []
+      dialogueIdx: 0
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -673,7 +671,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 0
-  nextSelectMapcode: 204210
+  nextSelectMapCode: 204210
 --- !u!1 &4894949354123171326
 GameObject:
   m_ObjectHideFlags: 0

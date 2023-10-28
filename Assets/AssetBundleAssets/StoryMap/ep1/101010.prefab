@@ -44,51 +44,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 123
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 4900000, guid: f73535788d39d444fa52db292e36640d, type: 3}
-    interactionPlayType: 2
+    interactionPlayType: 4
     miniGame: {fileID: 0}
-    dialogueData:
-      dialogues:
-      - name: "\uB77C\uC6B0"
-        expression: 0
-        anim_name: Rau
-        contents: "\uC624! \uC800\uAE30\uC5D0 \uC785\uAD6C\uAC00 \uBCF4\uC774\uB294
-          \uAC70 \uAC19\uC544! \uB4DC\uB514\uC5B4!!"
-        sfx: 
-      - name: ???
-        expression: 1
-        anim_name: NPC_Access_Old
-        contents: "\uC774\uBCF4\uC2DC\uAC8C!! \uB3C4\uC640\uC8FC\uAC8C\uB098!! \uB36B\uC5D0
-          \uAC78\uB838\uC5B4!! \uC73C\uC544\uC545!"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 5
-        anim_name: Rau
-        contents: "\uD5C9! \uBAA8\uB974\uB294 \uC0AC\uB78C\uC774\uC9C0\uB9CC \uB3C4\uC640\uC918\uC57C
-          \uB420\uAE4C? \uB108\uBB34 \uACE0\uD1B5\uC2A4\uB7EC\uC6CC \uBCF4\uC5EC"
-        sfx: 
-      dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
     interactionEndActions:
       interactionEvents: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
-    isFocusObject: 0
-    isMain: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    timelines: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
-    isContinue: 0
+    isNextInteractable: 0
+    isNextInteract: 0
     isWait: 0
     waitInteractionData:
       waitInteractions: []
@@ -97,6 +83,57 @@ MonoBehaviour:
       isInteractable: 1
       isInteracted: 0
     debugTaskData: []
+    dialogueData:
+      dialogueElements:
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC624! \uC800\uAE30\uC5D0 \uC785\uAD6C\uAC00 \uBCF4\uC774\uB294
+          \uAC70 \uAC19\uC544! \uB4DC\uB514\uC5B4!!"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: ???
+        expression: 1
+        anim_name: NPC_Access_Old
+        contents: "\uC774\uBCF4\uC2DC\uAC8C!! \uB3C4\uC640\uC8FC\uAC8C\uB098!! \uB36B\uC5D0
+          \uAC78\uB838\uC5B4!! \uC73C\uC544\uC545!"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB77C\uC6B0"
+        expression: 5
+        anim_name: Rau
+        contents: "\uD5C9! \uBAA8\uB974\uB294 \uC0AC\uB78C\uC774\uC9C0\uB9CC \uB3C4\uC640\uC918\uC57C
+          \uB420\uAE4C? \uB108\uBB34 \uACE0\uD1B5\uC2A4\uB7EC\uC6CC \uBCF4\uC5EC"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      dialogueIdx: 0
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -146,13 +183,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1010104
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 0}
-    interactionPlayType: 1
+    interactionPlayType: 2
     miniGame: {fileID: 0}
-    dialogueData:
-      dialogues: []
-      dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 2911040671306789040}
     interactionStartActions:
@@ -171,20 +205,27 @@ MonoBehaviour:
           interacts: []
         interactionObjs:
           interactions: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
     interactionMethod: 0
     isViewChange: 1
-    isFocusObject: 1
-    isMain: 0
+    isTrackTransform: 1
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0.3, y: 0.5, z: 0.5}
       camRot: {x: 10, y: 30, z: 0}
+    isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    timelines: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
-    isContinue: 0
+    isNextInteractable: 0
+    isNextInteract: 0
     isWait: 0
     waitInteractionData:
       waitInteractions: []
@@ -193,6 +234,9 @@ MonoBehaviour:
       isInteractable: 0
       isInteracted: 0
     debugTaskData: []
+    dialogueData:
+      dialogueElements: []
+      dialogueIdx: 0
   useOutline: 1
   color: 2
   outline: {fileID: 4714200627111009078}
@@ -261,7 +305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 0
-  nextSelectMapcode: 101110
+  nextSelectMapCode: 101110
 --- !u!1 &5301669206690136066
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,26 +453,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: byhu
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 4900000, guid: c3cd1485adf0f2f478cfbdbf4ccdb4e9, type: 3}
-    interactionPlayType: 2
+    interactionPlayType: 4
     miniGame: {fileID: 0}
-    dialogueData:
-      dialogues:
-      - name: ???
-        expression: 1
-        anim_name: NPC_Access_Old
-        contents: "\uC5EC\uAE30 \uC21C\uCC30\uD558\uB2E4\uAC00 \uB36B\uC5D0 \uAC78\uB9AC\uACE0
-          \uB9D0\uC558\uB124 \uB098\uC880 \uB3C4\uC640\uC8FC\uC2DC\uAC8C"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 0
-        anim_name: Rau
-        contents: "\uB531\uBD10\uB3C4 \uD06C\uAC8C \uBB3C\uB9B0 \uAC83 \uAC19\uC544.
-          \uC800\uBD84 \uD63C\uC790 \uD798\uC73C\uB85C\uB294 \uBC97\uC5B4\uB098\uAE30
-          \uC5B4\uB824\uC6CC \uBCF4\uC5EC. \uC5B4\uB5BB\uAC8C \uD574\uC57C\uB420\uAE4C?"
-        sfx: 
-      dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
@@ -466,20 +494,27 @@ MonoBehaviour:
             index: 0
         interactionObjs:
           interactions: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
     interactionMethod: 0
     isViewChange: 1
-    isFocusObject: 0
-    isMain: 1
+    isTrackTransform: 0
+    isTrackMainCharacter: 1
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 1.86, y: 0.48, z: 1}
       camRot: {x: 0, y: 223.82, z: 0}
+    isCameraHold: 0
     isTeleport: 1
     teleportTarget: {fileID: 4673520607259858018}
-    timelines: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
-    isContinue: 0
+    isNextInteractable: 0
+    isNextInteract: 0
     isWait: 0
     waitInteractionData:
       waitInteractions: []
@@ -488,6 +523,42 @@ MonoBehaviour:
       isInteractable: 1
       isInteracted: 0
     debugTaskData: []
+    dialogueData:
+      dialogueElements:
+      - name: ???
+        expression: 1
+        anim_name: NPC_Access_Old
+        contents: "\uC5EC\uAE30 \uC21C\uCC30\uD558\uB2E4\uAC00 \uB36B\uC5D0 \uAC78\uB9AC\uACE0
+          \uB9D0\uC558\uB124 \uB098\uC880 \uB3C4\uC640\uC8FC\uC2DC\uAC8C"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uB531\uBD10\uB3C4 \uD06C\uAC8C \uBB3C\uB9B0 \uAC83 \uAC19\uC544.
+          \uC800\uBD84 \uD63C\uC790 \uD798\uC73C\uB85C\uB294 \uBC97\uC5B4\uB098\uAE30
+          \uC5B4\uB824\uC6CC \uBCF4\uC5EC. \uC5B4\uB5BB\uAC8C \uD574\uC57C\uB420\uAE4C?"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      dialogueIdx: 0
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -540,39 +611,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 8574
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 4900000, guid: 8efc9b39f8b548e46be5599bf902637a, type: 3}
     interactionPlayType: 2
     miniGame: {fileID: 0}
-    dialogueData:
-      dialogues:
-      - name: "\uB77C\uC6B0"
-        expression: 0
-        anim_name: Rau
-        contents: "\uC5EC\uAE30\uB85C\uB294 \uB354 \uC774\uC0C1 \uBCFC \uC77C\uC5C6\uC5B4.
-          \uB9C8\uC744\uB85C \uB4E4\uC5B4\uAC00\uC790."
-        sfx: 
-      dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
     interactionEndActions:
       interactionEvents: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
     interactionMethod: 1
     isViewChange: 0
-    isFocusObject: 0
-    isMain: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    timelines: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 1
-    isContinue: 0
+    isNextInteractable: 0
+    isNextInteract: 0
     isWait: 0
     waitInteractionData:
       waitInteractions: []
@@ -581,6 +650,25 @@ MonoBehaviour:
       isInteractable: 1
       isInteracted: 0
     debugTaskData: []
+    dialogueData:
+      dialogueElements:
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC5EC\uAE30\uB85C\uB294 \uB354 \uC774\uC0C1 \uBCFC \uC77C\uC5C6\uC5B4.
+          \uB9C8\uC744\uB85C \uB4E4\uC5B4\uAC00\uC790."
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      dialogueIdx: 0
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -660,12 +748,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b31600ebb60d14c9e0212bbddd902d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptDesription: "Episode1 \uB9C8\uC744 \uC785\uAD6C \uC55E \uC218\uD480"
   mapCode: 101010
   location: "\uB9C8\uC744 \uC785\uAD6C \uC55E"
   date: DAY01
   time: 13:00
-  method: 1
+  characterMoveType: 1
   nextMapcode: 102010
   rightIsForward: 0
   waypoint: {fileID: 0}
@@ -679,18 +766,18 @@ MonoBehaviour:
   fadeInSec: 1
   bgm: {fileID: 0}
   characters: []
-  clearBoxSetting: {fileID: 9152339363227293229}
   clearBoxList:
   - {fileID: 8827356395818957754}
   - {fileID: 5886575602822887874}
-  positionSetting: {fileID: 8827356394857391284}
   positionSets:
   - who: 2
     startPosition: {fileID: 8827356394752289631}
     isMain: 1
     isFollow: 0
-    playGravity: 0
-    jumpForce: 0
+  isCustomJumpForce: 0
+  jumpForce: 0
+  isCustomGravityScale: 0
+  gravityScale: 0
   cameraViewType: 0
   camDis: {x: -3, y: 4.5, z: 3}
   camRot: {x: 25, y: 162, z: 2}
@@ -701,6 +788,7 @@ MonoBehaviour:
   usePostProcessing: 0
   isJoystickInputUse: 1
   isJoystickNone: 0
+  isJoystickControlDisable: 0
   joystickType: 0
 --- !u!1 &8827356394752289616
 GameObject:
@@ -822,7 +910,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 1
-  nextSelectMapcode: 102010
+  nextSelectMapCode: 102010
 --- !u!1 &9152339363227293229
 GameObject:
   m_ObjectHideFlags: 0

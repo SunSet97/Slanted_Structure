@@ -12,13 +12,13 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
 {
     public class SpeatTutorialBackstreetManager : MiniGame
     {
+#pragma warning disable 0649
         [Serializable]
         private class TrailData
         {
             public Transform transform;
             public Trail trail;
         }
-        
         [Header("#UI")] [SerializeField] private Slider speatSlider;
         [SerializeField] private Text remainingDistanceText;
         [SerializeField] private Slider pimpSlider;
@@ -38,6 +38,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
         [SerializeField] private float runSpeed;
         [SerializeField] private float freeDistance;
         // [SerializeField] private float endDistance;
+#pragma warning restore 0649
 
         private bool JumpEnable
         {
@@ -98,7 +99,7 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
                 var mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
                 mainCharacter.CharacterAnimator.SetFloat(SpeedHash, 0f);
                 StopAllCoroutines();
-                DataController.Instance.CurrentMap.MapClear();   
+                DataController.Instance.CurrentMap.ClearMap();   
             }
             else
             {

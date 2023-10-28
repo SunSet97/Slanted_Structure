@@ -109,12 +109,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b31600ebb60d14c9e0212bbddd902d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptDesription: "Episode2 \uB77C\uC6B0_\uC2A4\uD54F_\uC2DC\uC7A5 \uC548 \uACE8\uBAA9"
   mapCode: 201120
   location: "\uC2DC\uC7A5 \uC548 \uACE8\uBAA9"
   date: DAY02
   time: 11:00
-  method: 3
+  characterMoveType: 3
   nextMapcode: 201130
   rightIsForward: 1
   waypoint: {fileID: 1861134460472003904}
@@ -128,10 +127,8 @@ MonoBehaviour:
   fadeInSec: 1
   bgm: {fileID: 0}
   characters: []
-  clearBoxSetting: {fileID: 601651777780013674}
   clearBoxList:
   - {fileID: 586399222419395053}
-  positionSetting: {fileID: 586399220801641128}
   positionSets:
   - who: 2
     startPosition: {fileID: 586399221686276720}
@@ -151,6 +148,7 @@ MonoBehaviour:
   usePostProcessing: 0
   isJoystickInputUse: 1
   isJoystickNone: 0
+  isJoystickControlDisable: 0
   joystickType: 0
 --- !u!1 &586399222419395055
 GameObject:
@@ -210,7 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 1
-  nextSelectMapcode: 201130
+  nextSelectMapCode: 201130
 --- !u!1 &601651777780013674
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,25 +356,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: htrf
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 4900000, guid: 2b8bf484f58366e4eb5bbce858ec39bb, type: 3}
-    interactionPlayType: 2
+    interactionPlayType: 4
     miniGame: {fileID: 0}
-    dialogueData:
-      dialogues:
-      - name: "\uC2A4\uD54F"
-        expression: 0
-        anim_name: Speat
-        contents: "\uC5EC\uAE34 \uC2DC\uC7A5 \uACE8\uBAA9\uC778\uB370 \uB098\uB9CC
-          \uB530\uB77C\uC624\uBA74 \uB3FC. \uC774 \uACE8\uBAA9 \uB05D\uCABD\uC73C\uB85C
-          \uAC00\uBA74 \uC788\uC5B4."
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 0
-        anim_name: Rau
-        contents: "\uC77C\uB2E8 \uC2A4\uD54F\uC744 \uB530\uB77C\uAC00\uBCF4\uC790."
-        sfx: 
-      dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
@@ -389,18 +372,21 @@ MonoBehaviour:
       interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
-    isFocusObject: 0
-    isMain: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    timelines: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
-    isContinue: 0
+    isNextInteractable: 0
+    isNextInteract: 0
     isWait: 0
     waitInteractionData:
       waitInteractions: []
@@ -409,6 +395,41 @@ MonoBehaviour:
       isInteractable: 1
       isInteracted: 0
     debugTaskData: []
+    dialogueData:
+      dialogueElements:
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC5EC\uAE34 \uC2DC\uC7A5 \uACE8\uBAA9\uC778\uB370 \uB098\uB9CC
+          \uB530\uB77C\uC624\uBA74 \uB3FC. \uC774 \uACE8\uBAA9 \uB05D\uCABD\uC73C\uB85C
+          \uAC00\uBA74 \uC788\uC5B4."
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC77C\uB2E8 \uC2A4\uD54F\uC744 \uB530\uB77C\uAC00\uBCF4\uC790."
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      dialogueIdx: 0
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -669,63 +690,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 123131321
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 4900000, guid: f5501df58107fa647b31fdc5143cd9ca, type: 3}
     interactionPlayType: 2
     miniGame: {fileID: 0}
-    dialogueData:
-      dialogues:
-      - name: "\uCE7C\uAD6D\uC218 \uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uC5B4\uC774 \uC6D0\uB9C8\uC744 \uD615\uC528~ \uCE7C\uAD6D\uC218\uC880
-          \uBA39\uACE0\uAC00~ \uB9DB\uC788\uC5B4~"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 7
-        anim_name: Rau
-        contents: "\uC5D0\u2026? \uC800 \uC5EC\uC794\uB370\u2026"
-        sfx: 
-      - name: "\uCE7C\uAD6D\uC218 \uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uC5B4\uB77C? \uC120\uBA38\uC2B4\uAC19\uC544\uC11C \uAC19\uC740
-          \uB0A8\uC794 \uC904 \uC54C\uC558\uC9C0~\uD5C8\uD5C8 \uBBF8\uC548\uD600~"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 7
-        anim_name: Rau
-        contents: "\uC544\u2026\uB124\u2026"
-        sfx: 
-      - name: "\uCE7C\uAD6D\uC218 \uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uC544\uBB34\uD2BC \uC544\uAC00\uC528 \uBC25 \uC548\uBA39\uC5C8\uC73C\uBA74
-          \uBA39\uACE0 \uAC00~"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 0
-        anim_name: Rau
-        contents: "\uC544 \uC9C0\uAE08, \uCE5C\uAD6C \uC18C\uAC1C\uB85C \uB2E4\uB978\uB370
-          \uAC00\uACE0 \uC788\uB294 \uAE38\uC774\uC5B4\uC11C\uC694\u2026\uB124.."
-        sfx: 
-      - name: "\uCE7C\uAD6D\uC218 \uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uC544~ \uAC70\uCC38 \uC544\uAC00\uC528\uAC00 \uBE44\uC2F8\uAC8C
-          \uAD74\uAE30\uB294~\uBA39\uACE0\uAC00\uBA74 \uB418\uC796\uC5B4~"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 9
-        anim_name: Rau
-        contents: "\uC544..; \uAD1C\uCC2E\uC2B5\uB2C8\uB2E4\u2026"
-        sfx: 
-      - name: "\uCE7C\uAD6D\uC218 \uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uB5BC\uC789\u2026"
-        sfx: 
-      dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
@@ -738,18 +706,21 @@ MonoBehaviour:
       interactionEvents: []
     interactionMethod: 1
     isViewChange: 0
-    isFocusObject: 0
-    isMain: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    timelines: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
-    isContinue: 0
+    isNextInteractable: 0
+    isNextInteract: 0
     isWait: 0
     waitInteractionData:
       waitInteractions: []
@@ -758,6 +729,149 @@ MonoBehaviour:
       isInteractable: 1
       isInteracted: 0
     debugTaskData: []
+    dialogueData:
+      dialogueElements:
+      - name: "\uCE7C\uAD6D\uC218 \uAC00\uAC8C \uC8FC\uC778"
+        expression: 0
+        anim_name: NPC_Citizen_M
+        contents: "\uC5B4\uC774 \uC6D0\uB9C8\uC744 \uD615\uC528~ \uCE7C\uAD6D\uC218\uC880
+          \uBA39\uACE0\uAC00~ \uB9DB\uC788\uC5B4~"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB77C\uC6B0"
+        expression: 7
+        anim_name: Rau
+        contents: "\uC5D0\u2026? \uC800 \uC5EC\uC794\uB370\u2026"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uCE7C\uAD6D\uC218 \uAC00\uAC8C \uC8FC\uC778"
+        expression: 0
+        anim_name: NPC_Citizen_M
+        contents: "\uC5B4\uB77C? \uC120\uBA38\uC2B4\uAC19\uC544\uC11C \uAC19\uC740
+          \uB0A8\uC794 \uC904 \uC54C\uC558\uC9C0~\uD5C8\uD5C8 \uBBF8\uC548\uD600~"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB77C\uC6B0"
+        expression: 7
+        anim_name: Rau
+        contents: "\uC544\u2026\uB124\u2026"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uCE7C\uAD6D\uC218 \uAC00\uAC8C \uC8FC\uC778"
+        expression: 0
+        anim_name: NPC_Citizen_M
+        contents: "\uC544\uBB34\uD2BC \uC544\uAC00\uC528 \uBC25 \uC548\uBA39\uC5C8\uC73C\uBA74
+          \uBA39\uACE0 \uAC00~"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC544 \uC9C0\uAE08, \uCE5C\uAD6C \uC18C\uAC1C\uB85C \uB2E4\uB978\uB370
+          \uAC00\uACE0 \uC788\uB294 \uAE38\uC774\uC5B4\uC11C\uC694\u2026\uB124.."
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uCE7C\uAD6D\uC218 \uAC00\uAC8C \uC8FC\uC778"
+        expression: 0
+        anim_name: NPC_Citizen_M
+        contents: "\uC544~ \uAC70\uCC38 \uC544\uAC00\uC528\uAC00 \uBE44\uC2F8\uAC8C
+          \uAD74\uAE30\uB294~\uBA39\uACE0\uAC00\uBA74 \uB418\uC796\uC5B4~"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB77C\uC6B0"
+        expression: 9
+        anim_name: Rau
+        contents: "\uC544..; \uAD1C\uCC2E\uC2B5\uB2C8\uB2E4\u2026"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uCE7C\uAD6D\uC218 \uAC00\uAC8C \uC8FC\uC778"
+        expression: 0
+        anim_name: NPC_Citizen_M
+        contents: "\uB5BC\uC789\u2026"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      dialogueIdx: 0
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -859,61 +973,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 125155
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 4900000, guid: edc03e778b225174faed97f09d6e1697, type: 3}
     interactionPlayType: 2
     miniGame: {fileID: 0}
-    dialogueData:
-      dialogues:
-      - name: "\uB5A1\uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uC6D0\uB9C8\uC744 \uC544\uAC00\uC528~ \uB5A1\uD55C\uBC88 \uBCF4\uACE0\uAC00~"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 5
-        anim_name: Rau
-        contents: "\uC624 \uB5A1 \uC88B\uC544\uD558\uB294\uB370!"
-        sfx: 
-      - name: "\uB5A1\uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uD63C\uC790 \uC5EC\uD589\uC628\uAC70\uC57C?"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 1
-        anim_name: Rau
-        contents: "\uB124 \uD734\uD559\uD558\uACE0 \uD63C\uC790 \uC5EC\uD589\uC654\uC5B4\uC694"
-        sfx: 
-      - name: "\uB5A1\uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uC5EC\uC790 \uD63C\uC790\uC11C \uB3CC\uC544\uB2E4\uB2C8\uBA74
-          \uBABB \uC368~"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 9
-        anim_name: Rau
-        contents: "\uB124\u2026?"
-        sfx: 
-      - name: "\uB5A1\uAC00\uAC8C \uC8FC\uC778"
-        expression: 0
-        anim_name: NPC_Citizen_M
-        contents: "\uC5EC\uC790 \uD63C\uC790 \uC704\uD5D8\uD558\uAC8C \uB3CC\uC544\uB2E4\uB2C8\uBA74
-          \uC5B4\uC9F8~"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 0
-        anim_name: Rau
-        contents: "\uC544\u2026\uB124\u2026"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 9
-        anim_name: Rau
-        contents: "\uC544\uB2C8 \uC5EC\uAE30 \uC0AC\uB78C\uB4E4\uC740 \uC65C \uC774\uB9AC
-          \uC774\uC0C1\uD55C \uB9D0\uB4E4\uB9CC \uD55C\uB2F4.."
-        sfx: 
-      dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
@@ -926,18 +989,21 @@ MonoBehaviour:
       interactionEvents: []
     interactionMethod: 1
     isViewChange: 0
-    isFocusObject: 0
-    isMain: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    timelines: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
-    isContinue: 0
+    isNextInteractable: 0
+    isNextInteract: 0
     isWait: 0
     waitInteractionData:
       waitInteractions: []
@@ -946,6 +1012,147 @@ MonoBehaviour:
       isInteractable: 1
       isInteracted: 0
     debugTaskData: []
+    dialogueData:
+      dialogueElements:
+      - name: "\uB5A1\uAC00\uAC8C \uC8FC\uC778"
+        expression: 0
+        anim_name: NPC_Citizen_M
+        contents: "\uC6D0\uB9C8\uC744 \uC544\uAC00\uC528~ \uB5A1\uD55C\uBC88 \uBCF4\uACE0\uAC00~"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB77C\uC6B0"
+        expression: 5
+        anim_name: Rau
+        contents: "\uC624 \uB5A1 \uC88B\uC544\uD558\uB294\uB370!"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB5A1\uAC00\uAC8C \uC8FC\uC778"
+        expression: 0
+        anim_name: NPC_Citizen_M
+        contents: "\uD63C\uC790 \uC5EC\uD589\uC628\uAC70\uC57C?"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB77C\uC6B0"
+        expression: 1
+        anim_name: Rau
+        contents: "\uB124 \uD734\uD559\uD558\uACE0 \uD63C\uC790 \uC5EC\uD589\uC654\uC5B4\uC694"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB5A1\uAC00\uAC8C \uC8FC\uC778"
+        expression: 0
+        anim_name: NPC_Citizen_M
+        contents: "\uC5EC\uC790 \uD63C\uC790\uC11C \uB3CC\uC544\uB2E4\uB2C8\uBA74
+          \uBABB \uC368~"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB77C\uC6B0"
+        expression: 9
+        anim_name: Rau
+        contents: "\uB124\u2026?"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB5A1\uAC00\uAC8C \uC8FC\uC778"
+        expression: 0
+        anim_name: NPC_Citizen_M
+        contents: "\uC5EC\uC790 \uD63C\uC790 \uC704\uD5D8\uD558\uAC8C \uB3CC\uC544\uB2E4\uB2C8\uBA74
+          \uC5B4\uC9F8~"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uC544\u2026\uB124\u2026"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB77C\uC6B0"
+        expression: 9
+        anim_name: Rau
+        contents: "\uC544\uB2C8 \uC5EC\uAE30 \uC0AC\uB78C\uB4E4\uC740 \uC65C \uC774\uB9AC
+          \uC774\uC0C1\uD55C \uB9D0\uB4E4\uB9CC \uD55C\uB2F4.."
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      dialogueIdx: 0
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -6058,15 +6265,9 @@ PrefabInstance:
     - {fileID: 2314799671188072220, guid: bf43b3b0bfb904f4f8c96920d82b7301, type: 3}
     - {fileID: 5549365963257205283, guid: bf43b3b0bfb904f4f8c96920d82b7301, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: bf43b3b0bfb904f4f8c96920d82b7301, type: 3}
---- !u!4 &1144652082667391957 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 558958713594332998, guid: bf43b3b0bfb904f4f8c96920d82b7301,
-    type: 3}
-  m_PrefabInstance: {fileID: 586399221350616211}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &3748486721824517950 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4334154079639249837, guid: bf43b3b0bfb904f4f8c96920d82b7301,
+--- !u!95 &3360367069684686664 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2774537292278305755, guid: bf43b3b0bfb904f4f8c96920d82b7301,
     type: 3}
   m_PrefabInstance: {fileID: 586399221350616211}
   m_PrefabAsset: {fileID: 0}
@@ -6130,12 +6331,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 586399221350616211}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5368723130412494120 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4801619789447668155, guid: bf43b3b0bfb904f4f8c96920d82b7301,
-    type: 3}
-  m_PrefabInstance: {fileID: 586399221350616211}
-  m_PrefabAsset: {fileID: 0}
 --- !u!95 &3184244685935562601 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 2599697764798825466, guid: bf43b3b0bfb904f4f8c96920d82b7301,
@@ -6160,21 +6355,33 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 586399221350616211}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &3360367069684686664 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 2774537292278305755, guid: bf43b3b0bfb904f4f8c96920d82b7301,
-    type: 3}
-  m_PrefabInstance: {fileID: 586399221350616211}
-  m_PrefabAsset: {fileID: 0}
 --- !u!95 &6525521321756639812 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5957138527218142935, guid: bf43b3b0bfb904f4f8c96920d82b7301,
     type: 3}
   m_PrefabInstance: {fileID: 586399221350616211}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &3748486721824517950 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4334154079639249837, guid: bf43b3b0bfb904f4f8c96920d82b7301,
+    type: 3}
+  m_PrefabInstance: {fileID: 586399221350616211}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1144652082667391957 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 558958713594332998, guid: bf43b3b0bfb904f4f8c96920d82b7301,
+    type: 3}
+  m_PrefabInstance: {fileID: 586399221350616211}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5368723130412494121 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4801619789447668154, guid: bf43b3b0bfb904f4f8c96920d82b7301,
+    type: 3}
+  m_PrefabInstance: {fileID: 586399221350616211}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5368723130412494120 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4801619789447668155, guid: bf43b3b0bfb904f4f8c96920d82b7301,
     type: 3}
   m_PrefabInstance: {fileID: 586399221350616211}
   m_PrefabAsset: {fileID: 0}

@@ -8,6 +8,7 @@ namespace Utility.Interaction
 {
     public class InteractableCollider : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField] private InteractionObject interactionObject;
     
         [FormerlySerializedAs("useExclamationMark")] [Header("#Mark setting")]
@@ -18,7 +19,7 @@ namespace Utility.Interaction
         [SerializeField] private Vector3 markOffset;
         [ConditionalHideInInspector("useMark")]
         [SerializeField] private bool isWorld;
-
+#pragma warning restore 0649
         private void Start()
         {
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");

@@ -6,8 +6,10 @@ namespace Utility.Preference.Audio
 {
     public class VibeToggle : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField] private Button vibeToggle;
         [SerializeField] private Animator vibeAnimator;
+#pragma warning restore 0649
         
         private static readonly int Vibe = Animator.StringToHash("Vibe");
 

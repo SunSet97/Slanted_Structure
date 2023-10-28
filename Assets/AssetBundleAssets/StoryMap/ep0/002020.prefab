@@ -294,12 +294,61 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 123
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 4900000, guid: a364bbb1d3686a543a80121aea97658c, type: 3}
-    interactionPlayType: 2
+    interactionPlayType: 4
     miniGame: {fileID: 0}
+    dialoguePrintSec: 0
+    animator: {fileID: 0}
+    interactionStartActions:
+      interactionEvents: []
+    interactionEndActions:
+      interactionEvents:
+      - eventType: 4
+        clearBox: {fileID: 0}
+        activeObjs:
+          actives: []
+        movables:
+          movables: []
+        playableList:
+          playableObjs:
+          - miniGame: {fileID: 3343356934018250019}
+            isPlay: 1
+        interactObjs:
+          interacts: []
+        interactionObjs:
+          interactions: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
+    interactionMethod: 3
+    isViewChange: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
+    interactionCamera:
+      camDis: {x: 0, y: 0, z: 0}
+      camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
+    playableDirector: {fileID: 0}
+    cinematics: []
+    inGames: []
+    isLoop: 0
+    isNextInteractable: 0
+    isNextInteract: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
+    serializedInteractionData:
+      id: 0
+      isInteractable: 1
+      isInteracted: 0
+    debugTaskData: []
     dialogueData:
-      dialogues:
+      dialogueElements:
       - name: "\uD3EC\uC8FC\uB4E4"
         expression: 0
         anim_name: NPC_Citizen_M
@@ -351,54 +400,6 @@ MonoBehaviour:
           camRot: {x: 0, y: 0, z: 0}
         trackTransform: {fileID: 0}
       dialogueIdx: 0
-    dialoguePrintSec: 0
-    animator: {fileID: 0}
-    interactionStartActions:
-      interactionEvents: []
-    interactionEndActions:
-      interactionEvents:
-      - eventType: 4
-        clearBox: {fileID: 0}
-        activeObjs:
-          actives: []
-        movables:
-          movables: []
-        playableList:
-          playableObjs:
-          - miniGame: {fileID: 3343356934018250019}
-            isPlay: 1
-        interactObjs:
-          interacts: []
-        interactionObjs:
-          interactions: []
-    onSuccessEndAction:
-      interactionEvents: []
-    onFailEndAction:
-      interactionEvents: []
-    interactionMethod: 3
-    isViewChange: 0
-    isTrackTransform: 0
-    isTrackMainCharacter: 0
-    trackTransform: {fileID: 0}
-    interactionCamera:
-      camDis: {x: 0, y: 0, z: 0}
-      camRot: {x: 0, y: 0, z: 0}
-    isCameraHold: 0
-    isTeleport: 0
-    teleportTarget: {fileID: 0}
-    timelines: []
-    cinematics: []
-    inGames: []
-    isLoop: 0
-    isContinue: 0
-    isWait: 0
-    waitInteractionData:
-      waitInteractions: []
-    serializedInteractionData:
-      id: 0
-      isInteractable: 1
-      isInteracted: 0
-    debugTaskData: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -452,15 +453,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b31600ebb60d14c9e0212bbddd902d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptDesription: "\uC2A4\uD54F \uD29C\uD1A0\uB9AC\uC5BC_\uB7F0\uAC8C\uC784\n\uBC30\uACBD:
-    \uBD80\uB3C4\uC2EC \uB4B7\uACE8\uBAA9\n\uAC8C\uC784 \uBDF0:\uC0AC\uC774\uB4DC
-    \uBDF0(perspective)\n\uAC8C\uC784 \uD50C\uB808\uC774: \uB7F0 \uAC8C\uC784\n\uB2A5\uB825:
-    O\n"
   mapCode: 002020
   location: "\uBD80\uB3C4\uC2EC \uB4B7\uACE8\uBAA9"
   date: 3 YEARS AGO DAY??
   time: 23:00
-  method: 2
+  characterMoveType: 2
   nextMapcode: 002021
   rightIsForward: 0
   waypoint: {fileID: 0}
@@ -474,10 +471,8 @@ MonoBehaviour:
   fadeInSec: 1
   bgm: {fileID: 0}
   characters: []
-  clearBoxSetting: {fileID: 2584970956351160312}
   clearBoxList:
   - {fileID: 1065795165318000329}
-  positionSetting: {fileID: 3345937350307993779}
   positionSets:
   - who: 4
     startPosition: {fileID: 3345937350515191303}
@@ -1626,7 +1621,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 0
-  nextSelectMapcode: 002021
+  nextSelectMapCode: 002021
 --- !u!1 &7949725688338835047
 GameObject:
   m_ObjectHideFlags: 0

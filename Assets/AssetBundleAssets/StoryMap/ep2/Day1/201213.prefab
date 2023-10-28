@@ -27,7 +27,7 @@ Transform:
   m_LocalPosition: {x: 4.02, y: -0.10699999, z: 8.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4742306464162053584}
+  m_Father: {fileID: 8020672507609466289}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -26.849, z: 0}
 --- !u!1 &5307817466510601739
@@ -59,7 +59,7 @@ Transform:
   m_Children:
   - {fileID: 8020672506640408402}
   m_Father: {fileID: 8020672506707882250}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6000865570588597392
 GameObject:
@@ -105,12 +105,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: sdadad
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 4900000, guid: 41254968139b58e42a5983a9e78ddc21, type: 3}
     interactionPlayType: 2
     miniGame: {fileID: 0}
+    dialoguePrintSec: 0
+    animator: {fileID: 0}
+    interactionStartActions:
+      interactionEvents: []
+    interactionEndActions:
+      interactionEvents:
+      - eventType: 1
+        clearBox: {fileID: 8020672506640408403}
+        activeObjs:
+          actives: []
+        movables:
+          movables: []
+        playableList:
+          playableObjs: []
+        interactObjs:
+          interacts: []
+        interactionObjs:
+          interactions: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
+    interactionMethod: 3
+    isViewChange: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
+    interactionCamera:
+      camDis: {x: 0, y: 0, z: 0}
+      camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
+    playableDirectors: []
+    playableDirector: {fileID: 0}
+    cinematics: []
+    inGames: []
+    isLoop: 0
+    isNextInteractable: 0
+    isNextInteract: 0
+    isWait: 0
+    waitInteractionData:
+      waitInteractions: []
+    serializedInteractionData:
+      id: 0
+      isInteractable: 1
+      isInteracted: 0
+    debugTaskData: []
     dialogueData:
-      dialogues:
+      dialogueElements:
       - name: "\uB77C\uC6B0"
         expression: 5
         anim_name: Rau
@@ -253,352 +301,13 @@ MonoBehaviour:
           camDis: {x: 0, y: 0, z: 0}
           camRot: {x: 0, y: 0, z: 0}
         trackTransform: {fileID: 0}
-      - name: "\uB77C\uC6B0"
-        expression: 1
-        anim_name: Rau
-        contents: "\uC5EC\uAE30, \uC9C0\uAC11\uC774\uC5D0\uC694. \uB2E4\uD589\uD788
-          \uC7A1\uD600\uC11C \uB2E4\uD589\uC774\uC5D0\uC694."
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: ???
-        expression: 1
-        anim_name: Oun
-        contents: "\uC815\uB9D0 \uAC10\uC0AC\uD569\uB2C8\uB2E4. \uB355\uBD84\uC5D0
-          \uD070 \uB3C8\uC744 \uC783\uC5B4\uBC84\uB9AC\uC9C0 \uC54A\uC558\uC5B4\uC694."
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: "\uB77C\uC6B0"
-        expression: 1
-        anim_name: Rau
-        contents: "\uB2F9\uC5F0\uD788 \uB3C4\uC640\uC57C \uD558\uB294 \uC77C\uC744
-          \uD588\uC744 \uBFD0\uC774\uC5D0\uC694."
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: ???
-        expression: 0
-        anim_name: Oun
-        contents: "\uD639\uC2DC \uC2E4\uB840\uAC00 \uC548\uB41C\uB2E4\uBA74 \uBCF4\uB2F5\uD574\uB4DC\uB824\uB3C4
-          \uB420\uAE4C\uC694..?"
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: "\uB77C\uC6B0"
-        expression: 5
-        anim_name: Rau
-        contents: "\uC557\u2026! \uC544\uB2C8\uC5D0\uC694! \uAD1C\uCC2E\uC2B5\uB2C8\uB2E4..!
-          \uB2F9\uC5F0\uD788 \uD574\uC57C\uD560 \uC77C\uC744 \uD55C\uAC70\uC9C0 \uBCF4\uB2F5\uBC1B\uC73C\uB824\uACE0
-          \uD55C\uAC8C \uC544\uB2C8\uC5D0\uC694."
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: ???
-        expression: 0
-        anim_name: Oun
-        contents: "\uC544\uB2C8\uC5D0\uC694 \uC548\uADF8\uB7EC\uBA74 \uC81C\uAC00
-          \uBD88\uD3B8\uD560 \uAC83 \uAC19\uC544\uC694. \uADF8\uB9AC\uACE0\u2026"
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: 
-        expression: 0
-        anim_name: 
-        contents: "\uB2E4\uB978 \uC138\uBAA8\uC778\uB4E4\uACFC \uC870\uAE08 \uB2E4\uB978
-          \uBA38\uB9AC \uBAA8\uC591\uC744 \uAC00\uC9C4 \uC0AC\uB78C\uC740 \uC6B0\uBB3C\uCB48\uBB3C\uD574
-          \uD558\uB354\uB2C8 \uC785\uC744 \uC5F4\uC5C8\uB2E4"
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: ???
-        expression: 0
-        anim_name: Oun
-        contents: "\uC0AC\uC2E4 \uC81C\uAC00 \uC6D0\uC778\uC774\uB791 \uC774\uC57C\uAE30\uB97C
-          \uB098\uB204\uACE0 \uC2F6\uC5C8\uB358 \uAC83\uB3C4 \uC788\uAC70\uB4E0\uC694.
-          \uADF8\uB7F0\uB370 \uCC98\uC74C \uBCF8 \uC6D0\uC778 \uBD84\uC774 \uC800\uB97C
-          \uB3C4\uC640\uC8FC\uC168\uB2E4\uB2C8\u2026!"
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: ???
-        expression: 0
-        anim_name: Oun
-        contents: "\uADF8\uB798\uC11C \uC2E4\uB840\uAC00 \uC548\uB41C\uB2E4\uBA74
-          \uBCF4\uB2F5\uD574\uB4DC\uB9B4 \uACB8 \uC774\uC57C\uAE30\uB97C \uB098\uB20C
-          \uC218 \uC788\uC744\uAE4C\uC694..?"
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: "\uB77C\uC6B0"
-        expression: 0
-        anim_name: Rau
-        contents: "\uC774\uC57C\uAE30 \uB098\uB204\uB294 \uAC70\uC57C \uD070 \uBB38\uC81C
-          \uC544\uB2C8\uC8E0. \uADF8\uB7F0\uB370 \uAF2D \uBCF4\uB2F5 \uBC1B\uC744
-          \uD544\uC694\uB294 \uC5C6\uC5B4\uC694"
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: ???
-        expression: 0
-        anim_name: Oun
-        contents: "\uD639\uC2DC \uC544\uC9C1 \uC544\uCE68 \uC548\uB4DC\uC168\uB098\uC694\u2026?
-          \uC548\uB4DC\uC168\uC73C\uBA74 \uC81C\uAC00 \uB300\uC811\uD574\uB4DC\uB9B4\uAED8\uC694."
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: "\uB77C\uC6B0"
-        expression: 0
-        anim_name: Rau
-        contents: "\uC557\u2026\uC544\uC9C1 \uC548 \uBA39\uAE34 \uD588\uB294\uB370
-          \uC815\uB9D0 \uAD1C\uCC2E\u2026(\uAF2C\uB974\uB975)"
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: 
-        expression: 0
-        anim_name: 
-        contents: "\uB77C\uC6B0\uC758 \uBC43\uC18D\uC758 \uAF2C\uB974\uB975 \uC18C\uB9AC\uB294
-          \uBBFC\uB9DD\uD560 \uC815\uB3C4\uB85C \uD06C\uAC8C \uB0AC\uB2E4."
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: ???
-        expression: 1
-        anim_name: Oun
-        contents: "\uBC30\uACE0\uD504\uC2E0 \uAC83 \uAC19\uC740\uB370 \uAC19\uC774
-          \uBC25\uC774\uB098 \uAC19\uC774 \uBA39\uC73C\uBA74\uC11C \uC774\uC57C\uAE30
-          \uB098\uB220\uC694"
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
       dialogueIdx: 0
-    dialoguePrintSec: 0
-    animator: {fileID: 0}
-    interactionStartActions:
-      interactionEvents: []
-    interactionEndActions:
-      interactionEvents:
-      - eventType: 1
-        clearBox: {fileID: 8020672506640408403}
-        activeObjs:
-          actives: []
-        movables:
-          movables: []
-        playableList:
-          playableObjs: []
-        interactObjs:
-          interacts: []
-        interactionObjs:
-          interactions: []
-    onSuccessEndAction:
-      interactionEvents: []
-    onFailEndAction:
-      interactionEvents: []
-    interactionMethod: 3
-    isViewChange: 0
-    isTrackTransform: 0
-    isTrackMainCharacter: 0
-    trackTransform: {fileID: 0}
-    interactionCamera:
-      camDis: {x: 0, y: 0, z: 0}
-      camRot: {x: 0, y: 0, z: 0}
-    isCameraHold: 0
-    isTeleport: 0
-    teleportTarget: {fileID: 0}
-    timelines: []
-    cinematics: []
-    inGames: []
-    isLoop: 0
-    isContinue: 0
-    isWait: 0
-    waitInteractionData:
-      waitInteractions: []
-    serializedInteractionData:
-      id: 0
-      isInteractable: 1
-      isInteracted: 0
-    debugTaskData: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}
   useGizmos: 0
   gizmosRadius: 5
   gizmosColor: {r: 0, g: 0, b: 0, a: 0}
---- !u!1 &7237970781096729530
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4742306464162053584}
-  m_Layer: 0
-  m_Name: 1 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4742306464162053584
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7237970781096729530}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 2154184272620214591}
-  m_Father: {fileID: 8020672507609466289}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8020672505900557876
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8020672505900557877}
-  m_Layer: 0
-  m_Name: 0 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8020672505900557877
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8020672505900557876}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 8020672506947753038}
-  m_Father: {fileID: 8020672507609466289}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8020672506640408401
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,7 +383,6 @@ Transform:
   m_Children:
   - {fileID: 8020672507609466289}
   - {fileID: 454389599813414944}
-  - {fileID: 1456173986760093566}
   - {fileID: 6537753412436363782}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -691,13 +399,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b31600ebb60d14c9e0212bbddd902d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptDesription: "Episode2 \uB77C\uC6B0_\uC624\uC6B4_\uC18C\uB9E4\uCE58\uAE30\uC774\uD6C4\n\uAC15\uB3C4\uB97C
-    \uBABB\uC7A1\uC558\uC744 \uB54C"
   mapCode: 201213
   location: "\uB3C4\uC2EC \uC18D \uAD11\uC7A5"
   date: DAY02
   time: 11:00
-  method: 1
+  characterMoveType: 1
   nextMapcode: 201220
   rightIsForward: 0
   waypoint: {fileID: 0}
@@ -711,10 +417,8 @@ MonoBehaviour:
   fadeInSec: 1
   bgm: {fileID: 0}
   characters: []
-  clearBoxSetting: {fileID: 5307817466510601739}
   clearBoxList:
   - {fileID: 8020672506640408403}
-  positionSetting: {fileID: 9053458524384439495}
   positionSets:
   - who: 2
     startPosition: {fileID: 8020672506947753038}
@@ -768,8 +472,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4996677520214037691}
-  m_Father: {fileID: 8020672505900557877}
-  m_RootOrder: 0
+  m_Father: {fileID: 8020672507609466289}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 57.792004, z: 0}
 --- !u!1 &8020672507609466288
 GameObject:
@@ -798,40 +502,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8020672505900557877}
-  - {fileID: 4742306464162053584}
+  - {fileID: 2154184272620214591}
+  - {fileID: 8020672506947753038}
   m_Father: {fileID: 8020672506707882250}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &9053458524384439495
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1456173986760093566}
-  m_Layer: 0
-  m_Name: Position Setting
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1456173986760093566
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9053458524384439495}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 8020672506707882250}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5851845646759388689
 PrefabInstance:

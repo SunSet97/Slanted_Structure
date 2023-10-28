@@ -11,10 +11,12 @@ namespace Utility.Core
     {
         public static JoystickController Instance { get; private set; }
         
+#pragma warning disable 0649
         [Header("조이스틱")] [SerializeField] private Joystick dynamicJoystick;
         [SerializeField] private Joystick fixedJoyStick;
         [SerializeField] private Button jumpButton;
-
+#pragma warning restore 0649
+        
         [Header("For Debug")]
         public Vector2 inputDirection;
         public float inputDegree;

@@ -33,10 +33,10 @@ namespace Utility.Utils
                 return _instance;
             }
         }
-
+#pragma warning disable 0649
         [SerializeField] private CanvasGroup sceneLoaderCanvasGroup;
         [SerializeField] private Image progressBar;
-
+#pragma warning restore 0649
         private UnityAction onSceneLoaded;
 
         private string loadSceneName;

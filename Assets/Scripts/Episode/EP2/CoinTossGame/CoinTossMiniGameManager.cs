@@ -10,6 +10,7 @@ namespace Episode.EP2.CoinTossGame
 {
     public class CoinTossMiniGameManager : MiniGame
     {
+#pragma warning disable 0649
         [SerializeField] private GameObject coinPrefab;
 
         [SerializeField] private Transform throwPos;
@@ -33,7 +34,8 @@ namespace Episode.EP2.CoinTossGame
         [SerializeField] private float minPower = .3f;
 
         [SerializeField] private float throwAngleRange = 45f;
-
+#pragma warning restore 0649
+        
         private int tossStep;
         private int tryNum;
 

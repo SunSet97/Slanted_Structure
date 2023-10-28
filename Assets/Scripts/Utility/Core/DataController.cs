@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Data;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,6 +19,7 @@ namespace Utility.Core
     {
         public static DataController Instance { get; private set; }
 
+#pragma warning disable 0649
         [Header("캐릭터")] [SerializeField] private CharacterManager[] characters;
         public float jumpForce;
         public float gravityScale;
@@ -37,7 +39,9 @@ namespace Utility.Core
         
         public float camOrthographicSize;
         public CharRelationshipData charRelationshipData;
-
+#pragma warning restore 0649
+        
+        
         [NonSerialized] public Camera Cam;
         [NonSerialized] public MapData CurrentMap;
         [NonSerialized] public List<InteractionObject> InteractionObjects;
@@ -135,18 +139,9 @@ namespace Utility.Core
             return Array.Find(characters, item => item.who == characterTypeType);
         }
 
-        public CharacterManager[] GetFollowCharacters()
+        public CharacterManager[] GetFollowCharacters(List<MapData.CharacterPositionSet> positionSets)
         {
-            List<CharacterManager> characterManagers = new List<CharacterManager>();
-            foreach (var positionSet in CurrentMap.positionSets)
-            {
-                if (positionSet.isFollow)
-                {
-                    characterManagers.Add(GetCharacter(positionSet.who));
-                }
-            }
-
-            return characterManagers.ToArray();
+            return positionSets.Where(item => item.isFollow).Select(positionSet => GetCharacter(positionSet.who)).ToArray();
         }
 
         public void ChangeMap(string desMapCode, SaveData saveData = null)
@@ -183,8 +178,6 @@ namespace Utility.Core
             Debug.Log($"Instantiate -> {nextMap.mapCode}");
 
             SetByChangedMap(saveData);
-
-            CurrentMap.Initialize();
 
             LoadData(saveData);
 

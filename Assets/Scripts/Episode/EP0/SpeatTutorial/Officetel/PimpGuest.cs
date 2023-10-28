@@ -8,6 +8,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
 {
     public class PimpGuest : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField] private TextAsset jsonFile;
 
         [Header("스핏")] [Space(10)] [SerializeField]
@@ -24,6 +25,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
         [SerializeField] private int nextDirection;
         
         [SerializeField] private int floor;
+#pragma warning restore 0649
 
         private PimpMiniGameManager pimpMiniGameManager;
         private CharacterController characterController;

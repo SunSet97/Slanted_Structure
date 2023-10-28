@@ -46,13 +46,13 @@ namespace Utility.Interaction
 
     public enum InteractionPlayType
     {
-        None = -1,
-        Portal,
-        Animation,
-        Dialogue,
-        Task,
-        Game,
-        Cinematic,
+        None = 0,
+        Portal = 1,
+        Animation = 2,
+        Dialogue = 4,
+        Task = 8,
+        Game = 16,
+        Cinematic = 32,
         // FadeOut
     }
 
@@ -105,7 +105,7 @@ namespace Utility.Interaction
     [Serializable]
     public class InteractionData
     {
-        [Header("Continuous 혹은 Dialogue인 경우에만 값을 넣으시오")]
+        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Task | InteractionPlayType.Dialogue, false, true)]
         public TextAsset jsonFile;
 
         [Header("인터렉션 방식")] public InteractionPlayType interactionPlayType;
@@ -153,8 +153,10 @@ namespace Utility.Interaction
 
         [ConditionalHideInInspector("isTeleport")]
         public Transform teleportTarget;
-
-        [FormerlySerializedAs("timelines")] [Header("시네마틱")] public PlayableDirector[] playableDirectors;
+        
+        [Header("타임라인")]
+        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Cinematic)]
+        public PlayableDirector playableDirector;
         public GameObject[] cinematics;
         public GameObject[] inGames;
 

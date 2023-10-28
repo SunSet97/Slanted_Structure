@@ -10,6 +10,7 @@ namespace Utility.Preference
     {
         public static PlayUIController Instance { get; private set; }
 
+#pragma warning disable 0649
         public Transform mapUi;
         public Transform worldSpaceUI;
 
@@ -31,7 +32,8 @@ namespace Utility.Preference
         
         [Header("Check Panel")] [Space(10)] [SerializeField]
         private CheckPanel checkPanel;
-
+#pragma warning restore 0649
+        
         [NonSerialized] public Canvas Canvas;
         private static readonly int IsOpen = Animator.StringToHash("IsOpen");
 

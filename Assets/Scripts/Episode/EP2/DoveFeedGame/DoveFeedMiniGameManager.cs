@@ -16,12 +16,14 @@ namespace Episode.EP2.DoveFeedGame
             Bad = 4
         }
         
+#pragma warning disable 0649
         [Header("Ring")]
         [SerializeField] private Button clearButton;
         [SerializeField] private RingCreator ringCreator;
         [SerializeField] private RectTransform[] targets;
         [Range(0, 1)] [SerializeField] private float noteSpeed;
-
+#pragma warning restore 0649
+        
         // [Header("비둘기")]
         // [SerializeField] private Animator dove;
         

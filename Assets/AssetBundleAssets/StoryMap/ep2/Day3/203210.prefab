@@ -91,37 +91,6 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!1 &4700175154334676728
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4218353106869322121}
-  m_Layer: 0
-  m_Name: 1 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4218353106869322121
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4700175154334676728}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4719751338407491149}
-  m_Father: {fileID: 6362254535440612985}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5351299300399848942
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,8 +118,8 @@ Transform:
   m_LocalPosition: {x: 1.4, y: -0.06, z: -4.91}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4218353106869322121}
-  m_RootOrder: 0
+  m_Father: {fileID: 6362254535440612985}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: -93.455, z: 0}
 --- !u!1 &5999817421522818865
 GameObject:
@@ -195,47 +164,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b271028685442642a66f88df9bbe5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPlayType: 2
-  jsonFile: {fileID: 4900000, guid: 4bdcf390158a58a458413c0a970f5338, type: 3}
-  gamePlayableGame: {fileID: 0}
-  dialogueData:
-    dialogueIdx: 0
-    dialogues:
-    - name: 
-      expression: 0
-      anim_name: 
-      contents: "\uB77C\uC6B0\uB294 \uC624\uB298\uC740 \uC624\uC6B4\uC744 \uBCF4\uAE30\uB85C
-        \uD588\uB2E4."
-    - name: 
-      expression: 0
-      anim_name: 
-      contents: "\uC624\uC6B4\uC758 \uD559\uAD50 \uC55E\uC5D0\uC11C \uB77C\uC6B0\uAC00
-        \uC11C\uC788\uB2E4."
-    - name: 
-      expression: 0
-      anim_name: 
-      contents: "\uADF8\uB584 \uC624\uC6B4\uC774 \uD559\uAD50\uC5D0\uC11C \uB098\uC628\uB2E4."
-  dialogueEndAction: []
-  dialogueEndActions:
-    interactionEvents: []
-  taskEndActions:
-    interactionEvents: []
-  cinematicEndAction:
-    interactionEvents: []
+  id: 
+  interactionData: []
   useOutline: 0
   color: 0
   outline: {fileID: 0}
-  outlineRadius: 5
-  interactionMethod: 3
-  isViewChange: 0
-  dialogueCamera:
-    camDis: {x: 0, y: 0, z: 0}
-    camRot: {x: 0, y: 0, z: 0}
-  timelines: []
-  cinematics: []
-  inGames: []
-  isLoopDialogue: 0
-  taskDataDebug: []
+  useGizmos: 0
+  gizmosRadius: 5
+  gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &6362254535141502772
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,7 +200,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5697976370031820714}
-  m_Father: {fileID: 6362254536310298727}
+  m_Father: {fileID: 6362254535440612985}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 214.05199, z: 0}
 --- !u!1 &6362254535440612984
@@ -294,8 +230,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6362254536310298727}
-  - {fileID: 4218353106869322121}
+  - {fileID: 6362254535141502773}
+  - {fileID: 4719751338407491149}
   m_Father: {fileID: 6362254535811528115}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -357,8 +293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 0
-  jsonFile: {fileID: 0}
-  nextSelectMapcode: 203220
+  nextSelectMapCode: 203220
 --- !u!1 &6362254535811528114
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,73 +341,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b31600ebb60d14c9e0212bbddd902d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptDesription: "Episode2-Day3_\uC624\uC6B4_\uD559\uAD50 \uC55E"
   mapCode: 203210
   location: "\uD559\uAD50 \uC55E"
   date: DAY04
   time: 13:00
-  method: 1
+  characterMoveType: 1
   nextMapcode: 203220
+  rightIsForward: 0
+  waypoint: {fileID: 0}
   map: {fileID: 1451924006629376565}
   ui: {fileID: 0}
   skyboxSetting: {fileID: 2100000, guid: 340135c2e274e0e44a070fb8890fbed5, type: 2}
   isOrthographic: 1
   orthographicSize: 6
-  cameraBound: {fileID: 0}
-  BGM: {fileID: 0}
+  useFadeOut: 0
+  fadeOutSec: 1
+  fadeInSec: 1
+  bgm: {fileID: 0}
   characters: []
-  clearBoxSetting: {fileID: 7720731831600634607}
   clearBoxList:
   - {fileID: 6362254535734482516}
   positionSets:
-  - index: 0
-    who: 2
+  - who: 2
     startPosition: {fileID: 6362254535141502773}
-    posSet: {fileID: 6362254536310298727}
     isMain: 1
-  - index: 1
-    who: 1
+    isFollow: 0
+  - who: 1
     startPosition: {fileID: 4719751338407491149}
-    posSet: {fileID: 4218353106869322121}
     isMain: 0
+    isFollow: 0
+  isCustomJumpForce: 0
+  jumpForce: 0
+  isCustomGravityScale: 0
+  gravityScale: 0
   cameraViewType: 0
   camDis: {x: 0, y: 7.6, z: 8.99}
   camRot: {x: 39.689, y: 170.507, z: 1.312}
-  positionSetting: {fileID: 6362254535440612984}
+  useFieldOfView: 0
+  fieldOfView: 0
+  useClippingPlanes: 0
+  farClipPlane: 0
+  usePostProcessing: 0
   isJoystickInputUse: 0
   isJoystickNone: 1
+  isJoystickControlDisable: 0
   joystickType: 0
---- !u!1 &6362254536310298726
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6362254536310298727}
-  m_Layer: 0
-  m_Name: 0 Position
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6362254536310298727
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6362254536310298726}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 6362254535141502773}
-  m_Father: {fileID: 6362254535440612985}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7720731831600634607
 GameObject:
   m_ObjectHideFlags: 0

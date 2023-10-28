@@ -171,26 +171,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 324
-  interactions:
+  interactionData:
   - jsonFile: {fileID: 4900000, guid: a6d6156f8e860be4f961d86bb4cd696b, type: 3}
-    interactionPlayType: 2
+    interactionPlayType: 4
     miniGame: {fileID: 0}
-    dialogueData:
-      dialogues:
-      - name: "\uC2A4\uD54F"
-        expression: 0
-        anim_name: Speat
-        contents: "\uC880 \uAE38\uC774 \uD5D8\uD558\uB2C8\uAE4C \uC870\uC2EC\uD574\uC11C
-          \uC798 \uB530\uB77C\uC640 \uC54C\uC558\uC9C0?"
-        sfx: 
-      - name: "\uB77C\uC6B0"
-        expression: 0
-        anim_name: Rau
-        contents: "\uBA3C\uC800 \uB9E8 \uC67C\uCABD\uC73C\uB85C \uAC00\uC788\uB294
-          \uC2A4\uD54F\uC744 \uB530\uB77C \uC7A5\uC560\uBB3C\uB4E4\uC744 \uB118\uC5B4
-          \uAC00\uBCF4\uC790"
-        sfx: 
-      dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
@@ -211,18 +195,27 @@ MonoBehaviour:
           interacts: []
         interactionObjs:
           interactions: []
+    onSuccessEndAction:
+      interactionEvents: []
+    onFailEndAction:
+      interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
-    isFocusObject: 0
-    isMain: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
-    timelines: []
+    isCameraHold: 0
+    isTeleport: 0
+    teleportTarget: {fileID: 0}
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
-    isContinue: 0
+    isNextInteractable: 0
+    isNextInteract: 0
     isWait: 0
     waitInteractionData:
       waitInteractions: []
@@ -231,6 +224,42 @@ MonoBehaviour:
       isInteractable: 1
       isInteracted: 0
     debugTaskData: []
+    dialogueData:
+      dialogueElements:
+      - name: "\uC2A4\uD54F"
+        expression: 0
+        anim_name: Speat
+        contents: "\uC880 \uAE38\uC774 \uD5D8\uD558\uB2C8\uAE4C \uC870\uC2EC\uD574\uC11C
+          \uC798 \uB530\uB77C\uC640 \uC54C\uC558\uC9C0?"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      - name: "\uB77C\uC6B0"
+        expression: 0
+        anim_name: Rau
+        contents: "\uBA3C\uC800 \uB9E8 \uC67C\uCABD\uC73C\uB85C \uAC00\uC788\uB294
+          \uC2A4\uD54F\uC744 \uB530\uB77C \uC7A5\uC560\uBB3C\uB4E4\uC744 \uB118\uC5B4
+          \uAC00\uBCF4\uC790"
+        sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
+      dialogueIdx: 0
   useOutline: 0
   color: 0
   outline: {fileID: 0}
@@ -413,7 +442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 1
-  nextSelectMapcode: 206220
+  nextSelectMapCode: 206220
 --- !u!1 &3032535199441030873
 GameObject:
   m_ObjectHideFlags: 0
@@ -1094,12 +1123,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b31600ebb60d14c9e0212bbddd902d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptDesription: "Episode2-Day4 \uC2A4\uD54F_\uBD80\uB3C4\uC2EC\uC758 \uB4B7\uACE8\uBAA9q"
   mapCode: 206220
   location: 
   date: 
   time: 
-  method: 0
+  characterMoveType: 0
   nextMapcode: 206230
   rightIsForward: 0
   waypoint: {fileID: 0}
@@ -1113,23 +1141,29 @@ MonoBehaviour:
   fadeInSec: 1
   bgm: {fileID: 0}
   characters: []
-  clearBoxSetting: {fileID: 840397620770398358}
   clearBoxList:
   - {fileID: 6402695764329872773}
   - {fileID: 2239795754546406154}
-  positionSetting: {fileID: 6402695764158438384}
   positionSets:
   - who: 2
     startPosition: {fileID: 6402695763069972232}
     isMain: 1
     isFollow: 0
-    playGravity: 0
-    jumpForce: 0
+  isCustomJumpForce: 0
+  jumpForce: 0
+  isCustomGravityScale: 0
+  gravityScale: 0
   cameraViewType: 0
   camDis: {x: 0, y: 2, z: 5.97}
   camRot: {x: 0, y: 180, z: 0}
+  useFieldOfView: 0
+  fieldOfView: 0
+  useClippingPlanes: 0
+  farClipPlane: 0
+  usePostProcessing: 0
   isJoystickInputUse: 1
   isJoystickNone: 0
+  isJoystickControlDisable: 0
   joystickType: 1
 --- !u!1 &6402695763069972279
 GameObject:
@@ -1251,7 +1285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 1
-  nextSelectMapcode: 204130
+  nextSelectMapCode: 204130
 --- !u!64 &4447778189900332974
 MeshCollider:
   m_ObjectHideFlags: 0

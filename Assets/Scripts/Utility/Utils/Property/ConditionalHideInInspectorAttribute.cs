@@ -11,12 +11,15 @@ namespace Utility.Utils.Property
         public string ComparedProperty { get; private set; }
         public object ComparedPropertyValue { get; private set; }
         public bool IsNegative { get; private set; }
-
-        public ConditionalHideInInspectorAttribute(string comparedProperty, object comparedPropertyValue, bool isNegative = false)
+        public bool IsBit { get; private set; }
+        
+        public ConditionalHideInInspectorAttribute(string comparedProperty, object comparedPropertyValue,
+            bool isNegative = false, bool isBit = false)
         {
             ComparedProperty = comparedProperty;
             ComparedPropertyValue = comparedPropertyValue;
             IsNegative = isNegative;
+            IsBit = isBit;
         }
         
         public ConditionalHideInInspectorAttribute(string comparedProperty, bool isNegative = false)
@@ -80,18 +83,24 @@ namespace Utility.Utils.Property
                     return conditionalAttribute.IsNegative ? !ComparedField.boolValue : ComparedField.boolValue;
                 case "Enum":
                 {
+                    if (conditionalAttribute.IsBit)
+                    {
+                        if (conditionalAttribute.IsNegative)
+                        {
+                            return (ComparedField.intValue & (int) conditionalAttribute.ComparedPropertyValue) == 0;
+                        }
+
+                        return (ComparedField.intValue & (int) conditionalAttribute.ComparedPropertyValue) != 0;
+                    }
+
                     // Debug.Log(ComparedField.intValue);
                     // Debug.Log((int)Attribute.comparedPropertyValue);
-                    if (conditionalAttribute.IsNegative ? !ComparedField.intValue.Equals((int)conditionalAttribute.ComparedPropertyValue) : ComparedField.intValue.Equals((int)conditionalAttribute.ComparedPropertyValue))
-                    {
-                        return true;
-                    }
+                    return conditionalAttribute.IsNegative ? !ComparedField.intValue.Equals((int)conditionalAttribute.ComparedPropertyValue) : ComparedField.intValue.Equals((int)conditionalAttribute.ComparedPropertyValue);
                     //if((ComparedField.intValue & (int)Attribute.ComparedValue) != 0)
                     //{
                     //    Debug.Log(ComparedField.intValue + "   " + (int)Attribute.ComparedValue);
                     //}
                     //return (ComparedField.intValue & (int)Attribute.ComparedValue) != 0;
-                    return false;
                 }
             }
 

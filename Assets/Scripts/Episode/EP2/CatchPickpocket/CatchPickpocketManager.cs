@@ -18,7 +18,7 @@ namespace Episode.EP2.CatchPickpocket
             Left,
             Right
         }
-
+#pragma warning disable 0649
         [Header("Response UI")] [SerializeField]
         private Animator responseUi;
 
@@ -49,11 +49,13 @@ namespace Episode.EP2.CatchPickpocket
 
         [Header("라우~소매치기 성공 거리")] [SerializeField]
         private float clearDis;
-
+#pragma warning restore 0649
+        
+        
         private Path currentPath;
         private Path targetPath;
         private bool isMoving;
-        private bool isStop;
+        // private bool isStop;
         private CharacterManager mainCharacter;
         private float time;
         private Vector3 runDirection;
@@ -221,14 +223,14 @@ namespace Episode.EP2.CatchPickpocket
             mainCharacter.TryJump();
             
             // isStop = true;
-            if (isStop)
-            {
-                // obstacle.Stop
-            }
-            else
-            {
-                // obstacle.Move
-            }
+            // if (isStop)
+            // {
+            //     // obstacle.Stop
+            // }
+            // else
+            // {
+            //     // obstacle.Move
+            // }
         }
 
         private bool CheckDrag()

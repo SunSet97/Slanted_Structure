@@ -18,8 +18,7 @@ namespace Utility.Map
         Other,
         Waypoint
     }
-    
-    [ExecuteInEditMode]
+
     public class MapData : MonoBehaviour
     {
         [Serializable]
@@ -38,14 +37,6 @@ namespace Utility.Map
             public bool isFollow;
         }
 
-        #region Default
-
-        [TextArea(7, int.MaxValue)] [SerializeField]
-        private string scriptDesription =
-            "맵 자동 생성 및 맵 정보 포함 스크립트이며\n인스펙터 창에서 각각의 이름에 마우스를 갖다대면 설명을 볼 수 있습니다.\n(Edit mode에서도 바로 사용 가능)";
-
-        #endregion
-
         #region 맵 설정
 
         [Header("#Map Setting")] [Tooltip("맵의 코드이며 변경시 오브젝트의 이름도 같이 변경 됩니다.(코드는 반드시 6자리)")]
@@ -55,7 +46,11 @@ namespace Utility.Map
         public string date;
         public string time;
 
-        [FormerlySerializedAs("moveType")] [FormerlySerializedAs("method")] [Space(15)] [ConditionalHideInInspector("isJoystickInputUse")] [Tooltip("이 맵의 조이스틱 입력 방식입니다.")]
+        [FormerlySerializedAs("moveType")]
+        [FormerlySerializedAs("method")]
+        [Space(15)]
+        [ConditionalHideInInspector("isJoystickInputUse")]
+        [Tooltip("이 맵의 조이스틱 입력 방식입니다.")]
         public CharacterMoveType characterMoveType;
 
         [Tooltip("클리어시 넘어갈 다음 맵의 맵 코드입니다.")] public string nextMapcode = "000000";
@@ -89,69 +84,18 @@ namespace Utility.Map
 
         public float fadeInSec = 1f;
 
-        [FormerlySerializedAs("BGM")] [Header("BGM입니다")]
+        [FormerlySerializedAs("BGM")] [Header("BGM")]
         public AudioClip bgm;
 
         [Header("애니메이션 실행되는 캐릭터 넣으세요")] public List<AnimationCharacterSet> characters;
 
-        [Header("#클리어 박스")]
-        [ContextMenuItem("Create ClearBox", "CreateClearBox")]
-        [Tooltip("인스펙터 설정창에서 클리어박스를 생성하세요.")]
-        [SerializeField]
-        private GameObject clearBoxSetting;
-
-        [SerializeField] private List<CheckMapClear> clearBoxList = new List<CheckMapClear>();
-
-        private void CreateDefaultSetting()
-        {
-            GameObject temp = new GameObject();
-            if (map == null)
-            {
-                map = Instantiate(temp, transform.position, Quaternion.identity, transform);
-                map.name = "Map Name";
-            }
-
-            if (clearBoxSetting == null)
-            {
-                clearBoxSetting = Instantiate(temp, transform.position, Quaternion.identity, transform);
-                clearBoxSetting.name = "ClearBox Setting";
-            }
-
-            if (positionSetting == null) // 캐릭터 위치 세팅 오브젝트 생성 및 이름 설정
-            {
-                positionSetting = Instantiate(temp, transform.position, Quaternion.identity, transform);
-                positionSetting.name = "Position Setting";
-            }
-
-            DestroyImmediate(temp);
-        }
+        [Header("#클리어 박스")] [SerializeField] private List<CheckMapClear> clearBoxList = new List<CheckMapClear>();
 
         #endregion
 
-        #region 위치 설정
+        [Header("캐릭터 세팅")] public List<CharacterPositionSet> positionSets;
 
-        [Header("#Position Setting")]
-        [ContextMenuItem("Remove/Rau", "RemoveRauPosition")]
-        [ContextMenuItem("Remove/Oun", "RemoveOunPosition")]
-        [ContextMenuItem("Remove/Speat", "RemoveSpeatPosition")]
-        [ContextMenuItem("Remove/SpeatAdult", "RemoveSpeatAdultPosition")]
-        [ContextMenuItem("Remove/SpeatChild", "RemoveSpeatChildPosition")]
-        [ContextMenuItem("Remove/SpeatAdolescene", "RemoveSpeatAdolescenePosition")]
-        [ContextMenuItem("Remove/All", "RemoveAllPosition")]
-        [ContextMenuItem("Create/Rau", "CreateRauPosition")]
-        [ContextMenuItem("Create/Oun", "CreateOunPosition")]
-        [ContextMenuItem("Create/Speat", "CreateSpeatPosition")]
-        [ContextMenuItem("Create/SpeatAdult", "CreateSpeatAdultPosition")]
-        [ContextMenuItem("Create/SpeatChild", "CreateSpeatChildPosition")]
-        [ContextMenuItem("Create/SpeatAdolescene", "CreateSpeatAdolescenePosition")]
-        [ContextMenuItem("Create/All", "CreateAllPosition")]
-        [Tooltip("인스펙터를 우클릭하여 원하는 캐릭터의 시작위치와 목표위치를 생성 및 제거하세요.")]
-        [SerializeField]
-        private GameObject positionSetting; // auto setting
-
-        public List<CharacterPositionSet> positionSets; // auto setting
-
-        [Space(10)] public bool isCustomJumpForce;
+        [Header("맵 세팅")] [Space(20)] public bool isCustomJumpForce;
 
         [ConditionalHideInInspector("isCustomJumpForce")]
         public float jumpForce;
@@ -161,139 +105,9 @@ namespace Utility.Map
         [ConditionalHideInInspector("isCustomGravityScale")]
         public float gravityScale;
 
-        //ContextMenu 연결
-        public void CreateClearBox()
-        {
-            Transform instant = new GameObject().transform;
-            Transform clearBox = Instantiate(instant, positionSetting.transform.position, Quaternion.identity,
-                clearBoxSetting.transform);
-            clearBox.name = "Clear Box";
-            clearBox.gameObject.AddComponent<BoxCollider>();
-            clearBox.GetComponent<BoxCollider>().isTrigger = true;
-            clearBox.gameObject.AddComponent<CheckMapClear>();
-            DestroyImmediate(instant.gameObject);
-            clearBoxList.Add(clearBox.GetComponent<CheckMapClear>());
-        }
-
-        public void CreateSpeatPosition()
-        {
-            CreatePositionSetting(CharacterType.Speat);
-        }
-
-        public void CreateOunPosition()
-        {
-            CreatePositionSetting(CharacterType.Oun);
-        }
-
-        public void CreateRauPosition()
-        {
-            CreatePositionSetting(CharacterType.Rau);
-        }
-
-        public void CreateSpeatAdolescenePosition()
-        {
-            CreatePositionSetting(CharacterType.Speat_Adolescene);
-        }
-
-        public void CreateSpeatAdultPosition()
-        {
-            CreatePositionSetting(CharacterType.Speat_Adult);
-        }
-
-        public void CreateSpeatChildPosition()
-        {
-            CreatePositionSetting(CharacterType.Speat_Child);
-        }
-
-        public void CreateAllPosition()
-        {
-            CreateSpeatPosition();
-            CreateOunPosition();
-            CreateRauPosition();
-            CreateSpeatAdolescenePosition();
-            CreateSpeatAdultPosition();
-            CreateSpeatChildPosition();
-        }
-
-        void CreatePositionSetting(CharacterType createWho)
-        {
-            CharacterPositionSet temp = new CharacterPositionSet();
-            Transform instant = new GameObject().transform;
-            temp.who = createWho;
-            temp.startPosition =
-                Instantiate(instant, positionSetting.transform.position, Quaternion.identity,
-                    positionSetting.transform);
-            temp.startPosition.name = createWho + " Start Position";
-            DestroyImmediate(instant.gameObject);
-            positionSets.Add(temp);
-        }
-
-        public void RemoveSpeatPosition()
-        {
-            RemovePositionSetting(CharacterType.Speat);
-        }
-
-        public void RemoveOunPosition()
-        {
-            RemovePositionSetting(CharacterType.Oun);
-        }
-
-        public void RemoveRauPosition()
-        {
-            RemovePositionSetting(CharacterType.Rau);
-        }
-
-        public void RemoveSpeatAdolescenePosition()
-        {
-            RemovePositionSetting(CharacterType.Speat_Adolescene);
-        }
-
-        public void RemoveSpeatAdultPosition()
-        {
-            RemovePositionSetting(CharacterType.Speat_Adult);
-        }
-
-        public void RemoveSpeatChildPosition()
-        {
-            RemovePositionSetting(CharacterType.Speat_Child);
-        }
-
-        public void RemoveAllPosition()
-        {
-            RemoveSpeatPosition();
-            RemoveOunPosition();
-            RemoveRauPosition();
-            RemoveSpeatAdolescenePosition();
-            RemoveSpeatAdultPosition();
-            RemoveSpeatChildPosition();
-        }
-
-        private void RemovePositionSetting(CharacterType removeWho)
-        {
-            if (positionSets.Exists(item => item.who == removeWho))
-            {
-                CharacterPositionSet temp = positionSets.Find(item => item.who == removeWho);
-                positionSets.Remove(temp);
-            }
-        }
-
-        private void PositionSettingUpdate()
-        {
-            foreach (CharacterPositionSet item in positionSets)
-            {
-                if (item.startPosition)
-                {
-                    item.startPosition.name = item.who + " Start Position";
-                }
-            }
-        }
-
-        #endregion
-
-        [Space(10)] public CameraViewType cameraViewType;
+        [Space(20)] [Header("카메라")] public CameraViewType cameraViewType;
         public Vector3 camDis;
         public Vector3 camRot;
-
         public bool useFieldOfView;
 
         [ConditionalHideInInspector("useFieldOfView")]
@@ -306,37 +120,35 @@ namespace Utility.Map
 
         public bool usePostProcessing;
 
-        private void Start()
-        {
-            if (!Application.isPlaying)
-            {
-                CreateDefaultSetting();
-            }
-        }
+        [Header("조이스틱")] [Space(20)] [Header("조이스틱 인풋 사용 유무")]
+        public bool isJoystickInputUse;
 
-        private void FixedUpdate()
-        {
-            if (!Application.isPlaying)
-            {
-                PositionSettingUpdate();
-            }
-            else
-            {
-                PlayerFixedUpdate();
-            }
-        }
+        [Header("조이스틱 존재 유무")] public bool isJoystickNone;
+        [Header("조이스틱 컨트롤 불가능 유무")] public bool isJoystickControlDisable;
 
-        public void Initialize()
+        [ConditionalHideInInspector("isJoystickInputUse")]
+        public JoystickType joystickType;
+
+        private CharacterManager mainCharacter;
+        private CharacterManager[] followCharacters;
+
+        private void Awake()
         {
-            if (name != mapCode)
+            if (Application.isEditor)
             {
-                name = mapCode;
+                if (name != mapCode)
+                {
+                    name = mapCode;
+                }
+
+                if (ui != null)
+                {
+                    ui.name = map.name;
+                }
             }
 
             if (ui != null)
             {
-                ui.name = map.name;
-
                 ui.SetParent(PlayUIController.Instance.mapUi);
                 ui.offsetMax = new Vector2(0, 0);
                 ui.offsetMin = new Vector2(0, 0);
@@ -346,20 +158,48 @@ namespace Utility.Map
             AudioController.Instance.PlayBgm(bgm);
 
             mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
-            followCharacters = DataController.Instance.GetFollowCharacters();
+            followCharacters = DataController.Instance.GetFollowCharacters(positionSets);
         }
 
-        public void SetNextMapCode(string nextMapCode)
+        private void FixedUpdate()
         {
-            clearBoxList[0].nextSelectMapcode = nextMapCode;
+            PlayerFixedUpdate();
         }
 
-        public void MapClear(float waitTime)
+        private void PlayerFixedUpdate()
         {
-            Invoke("MapClear", waitTime);
+            if (mainCharacter == null)
+            {
+                return;
+            }
+
+            if (isJoystickInputUse)
+            {
+                JoystickController.Instance.UpdateJoystickInput(characterMoveType);
+            }
+
+            mainCharacter.MoveCharacter(characterMoveType, isJoystickInputUse);
+
+            if (followCharacters != null)
+            {
+                foreach (var followCharacter in followCharacters)
+                {
+                    followCharacter.FollowMainCharacter(characterMoveType);
+                }
+            }
         }
 
-        public void MapClear()
+        public void SetClearMapCode(string nextMapCode)
+        {
+            clearBoxList[0].nextSelectMapCode = nextMapCode;
+        }
+
+        public void ClearMap(float waitTime)
+        {
+            Invoke("ClearMap", waitTime);
+        }
+
+        public void ClearMap()
         {
             if (clearBoxList?.Count > 0)
             {
@@ -384,42 +224,6 @@ namespace Utility.Map
             }
 
             Destroy(gameObject);
-        }
-
-        [Header("조이스틱 인풋 사용 유무")] public bool isJoystickInputUse;
-
-        [Header("조이스틱 존재 유무")] public bool isJoystickNone;
-
-        [Header("조이스틱 컨트롤 불가능 유무")]
-        public bool isJoystickControlDisable;
-
-        [ConditionalHideInInspector("isJoystickInputUse")]
-        public JoystickType joystickType;
-
-        private CharacterManager mainCharacter;
-        private CharacterManager[] followCharacters;
-
-        private void PlayerFixedUpdate()
-        {
-            if (mainCharacter == null)
-            {
-                return;
-            }
-
-            if (isJoystickInputUse)
-            {
-                JoystickController.Instance.UpdateJoystickInput(characterMoveType);
-            }
-
-            mainCharacter.MoveCharacter(characterMoveType, isJoystickInputUse);
-
-            if (followCharacters != null)
-            {
-                foreach (var followCharacter in followCharacters)
-                {
-                    followCharacter.FollowMainCharacter(characterMoveType);
-                }
-            }
         }
 
         private void OnDrawGizmos()

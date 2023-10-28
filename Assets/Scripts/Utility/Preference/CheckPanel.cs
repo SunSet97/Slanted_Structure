@@ -11,12 +11,12 @@ namespace Utility.Preference
             Yes,
             No
         }
-
+#pragma warning disable 0649
         [SerializeField] private Button yesButton;
         [SerializeField] private Button noButton;
         
         [SerializeField] private Text checkText;
-
+#pragma warning restore 0649
         public void SetText(string text)
         {
             checkText.text = text;

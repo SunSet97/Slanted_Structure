@@ -10,8 +10,9 @@ namespace Utility.Timeline.CustomTimeline.CinematicCharacter
     {
         //[SerializeField] private CustomEnum.Character who;
 
+#pragma warning disable 0649
         [SerializeField] private Expression expression;
-
+#pragma warning restore 0649
 
 
         //private CustomEnum.Expression previousEmotion = CustomEnum.Expression.NONE;

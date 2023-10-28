@@ -8,6 +8,7 @@ namespace Episode.EP2.ThrowCanGame
 {
     public class RingCreator : MonoBehaviour
     {
+#pragma warning disable 0649
         [SerializeField] private LineRenderer lineRenderer;
         [SerializeField] private Image ringImage;
         [SerializeField] private GameObject rangeParent;
@@ -15,6 +16,7 @@ namespace Episode.EP2.ThrowCanGame
         [SerializeField] private float ringWidth;
 
         [NonSerialized] public float Radius;
+#pragma warning restore 0649
         
         private float originalRadius;
 

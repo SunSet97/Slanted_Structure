@@ -11,7 +11,9 @@ namespace Utility.Timeline.CustomTimeline.Character
     {
         //[SerializeField] private CustomEnum.Character who;
 
+#pragma warning disable 0649
         [SerializeField] private Expression expression;
+#pragma warning restore 0649
 
 
 
@@ -37,9 +39,7 @@ namespace Utility.Timeline.CustomTimeline.Character
 
         //#endregion
     
-        #region 시네마틱 캐릭터에 사용
-    
-        // 시네마틱 캐릭터를 사용하는 경우 사용
+        //시네마틱 캐릭터에 사용
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
             base.ProcessFrame(playable, info, playerData);
@@ -48,7 +48,5 @@ namespace Utility.Timeline.CustomTimeline.Character
             var character = DataController.Instance.GetCharacter(cinCharacter);
             character.Emotion = expression;
         }
-    
-        #endregion
     }
 }

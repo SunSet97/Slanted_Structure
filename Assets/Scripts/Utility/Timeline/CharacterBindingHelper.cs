@@ -8,9 +8,11 @@ namespace Utility.Timeline
 {
     public class CharacterBindingHelper : MonoBehaviour
     {
+#pragma warning disable 0649
         public CharacterType who;
         [SerializeField] private PlayableDirector[] playableDirectors;
-
+#pragma warning restore 0649
+        
         private void Awake()
         {
             var animator = GetComponent<Animator>();

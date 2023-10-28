@@ -9,7 +9,9 @@ namespace Utility.Utils.Json
     {
         private class Wrapper<T>
         {
+#pragma warning disable 0649
             public T[] wrapper;
+#pragma warning restore 0649
         }
 
         public static T[] FromJsonArray<T>(string json)

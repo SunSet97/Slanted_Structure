@@ -77,9 +77,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b31600ebb60d14c9e0212bbddd902d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptDesription: "\uC778\uACF5 \uD638\uC218 \uBCA4\uCE58\n\uBE44\uB458\uAE30\uB098
-    \uC624\uB9AC\uB4E4\uC5D0\uAC8C \uBC25\uC744 \uC8FC\uB294 \uC778\uD130\uB809\uC158\n\n+\uB300\uD654\uC2DC
-    \uCE74\uBA54\uB77C \uBDF0\ndir(2.9,1.13,2.26)\nrot(16.88,218.1)"
   mapCode: 205130
   location: "\uC778\uACF5\uD638\uC218"
   date: DAY06
@@ -98,10 +95,8 @@ MonoBehaviour:
   fadeInSec: 1
   bgm: {fileID: 0}
   characters: []
-  clearBoxSetting: {fileID: 2605623699351195845}
   clearBoxList:
   - {fileID: 44233077663622425}
-  positionSetting: {fileID: 132210625347605053}
   positionSets:
   - who: 2
     startPosition: {fileID: 1508624755088979051}
@@ -296,7 +291,7 @@ MonoBehaviour:
   id: 
   interactionData:
   - jsonFile: {fileID: 4900000, guid: 0f2d9c65d92798b44b5dc741c997a94d, type: 3}
-    interactionPlayType: 2
+    interactionPlayType: 4
     miniGame: {fileID: 0}
     dialoguePrintSec: 0
     animator: {fileID: 0}
@@ -319,7 +314,7 @@ MonoBehaviour:
     isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    playableDirectors: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
@@ -461,30 +456,14 @@ MonoBehaviour:
         trackTransform: {fileID: 0}
       dialogueIdx: 0
   - jsonFile: {fileID: 0}
-    interactionPlayType: 4
+    interactionPlayType: 16
     miniGame: {fileID: 0}
     dialoguePrintSec: 0
     animator: {fileID: 0}
     interactionStartActions:
       interactionEvents: []
     interactionEndActions:
-      interactionEvents:
-      - eventType: 6
-        clearBox: {fileID: 0}
-        activeObjs:
-          actives: []
-        movables:
-          movables: []
-        playableList:
-          playableObjs: []
-        interactObjs:
-          interacts: []
-        interactionObjs:
-          interactions:
-          - interactObj: {fileID: 545124889379819695}
-            index: 2
-            waitSeconds: 0
-            useFadeOut: 0
+      interactionEvents: []
     onSuccessEndAction:
       interactionEvents: []
     onFailEndAction:
@@ -500,12 +479,12 @@ MonoBehaviour:
     isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    playableDirectors: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
     isNextInteractable: 0
-    isNextInteract: 0
+    isNextInteract: 1
     isWait: 0
     waitInteractionData:
       waitInteractions: []
@@ -518,7 +497,7 @@ MonoBehaviour:
       dialogueElements: []
       dialogueIdx: 0
   - jsonFile: {fileID: 4900000, guid: 4406bcc34be0c894f976de01b51c03b4, type: 3}
-    interactionPlayType: 2
+    interactionPlayType: 4
     miniGame: {fileID: 0}
     dialoguePrintSec: 0
     animator: {fileID: 0}
@@ -541,7 +520,7 @@ MonoBehaviour:
     isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    playableDirectors: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
@@ -1213,7 +1192,7 @@ MonoBehaviour:
         trackTransform: {fileID: 0}
       dialogueIdx: 0
   - jsonFile: {fileID: 0}
-    interactionPlayType: 4
+    interactionPlayType: 16
     miniGame: {fileID: 0}
     dialoguePrintSec: 0
     animator: {fileID: 0}
@@ -1252,7 +1231,7 @@ MonoBehaviour:
     isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    playableDirectors: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
@@ -1270,7 +1249,7 @@ MonoBehaviour:
       dialogueElements: []
       dialogueIdx: 0
   - jsonFile: {fileID: 4900000, guid: 3ab0ff1b92335c4409d1f0da057e5932, type: 3}
-    interactionPlayType: 2
+    interactionPlayType: 4
     miniGame: {fileID: 0}
     dialoguePrintSec: 0
     animator: {fileID: 0}
@@ -1293,7 +1272,7 @@ MonoBehaviour:
     isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    playableDirectors: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
@@ -1918,7 +1897,7 @@ MonoBehaviour:
         trackTransform: {fileID: 0}
       dialogueIdx: 0
   - jsonFile: {fileID: 0}
-    interactionPlayType: 4
+    interactionPlayType: 16
     miniGame: {fileID: 0}
     dialoguePrintSec: 0
     animator: {fileID: 0}
@@ -1957,7 +1936,7 @@ MonoBehaviour:
     isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    playableDirectors: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
@@ -1974,124 +1953,8 @@ MonoBehaviour:
     dialogueData:
       dialogueElements: []
       dialogueIdx: 0
-  - jsonFile: {fileID: 4900000, guid: 4d2c1b566e1ae1845a252701b9c21ad1, type: 3}
-    interactionPlayType: 2
-    miniGame: {fileID: 0}
-    dialoguePrintSec: 0
-    animator: {fileID: 0}
-    interactionStartActions:
-      interactionEvents: []
-    interactionEndActions:
-      interactionEvents: []
-    onSuccessEndAction:
-      interactionEvents: []
-    onFailEndAction:
-      interactionEvents: []
-    interactionMethod: 2
-    isViewChange: 0
-    isTrackTransform: 0
-    isTrackMainCharacter: 0
-    trackTransform: {fileID: 0}
-    interactionCamera:
-      camDis: {x: 0, y: 0, z: 0}
-      camRot: {x: 0, y: 0, z: 0}
-    isCameraHold: 0
-    isTeleport: 0
-    teleportTarget: {fileID: 0}
-    playableDirectors: []
-    cinematics: []
-    inGames: []
-    isLoop: 0
-    isNextInteractable: 0
-    isNextInteract: 1
-    isWait: 0
-    waitInteractionData:
-      waitInteractions: []
-    serializedInteractionData:
-      id: 0
-      isInteractable: 1
-      isInteracted: 0
-    debugTaskData: []
-    dialogueData:
-      dialogueElements:
-      - name: "\uB77C\uC6B0\uB300\uD6541"
-        expression: 0
-        anim_name: 
-        contents: 
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: 
-        expression: 0
-        anim_name: 
-        contents: 
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: 
-        expression: 0
-        anim_name: 
-        contents: 
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: 
-        expression: 0
-        anim_name: 
-        contents: 
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      - name: 
-        expression: 0
-        anim_name: 
-        contents: 
-        sfx: 
-        printSec: 0
-        nextSec: 0
-        isViewChange: 0
-        isOriginalCamInfo: 0
-        isTrackTransform: 0
-        isTrackMainCharacter: 0
-        camOffsetInfo:
-          camDis: {x: 0, y: 0, z: 0}
-          camRot: {x: 0, y: 0, z: 0}
-        trackTransform: {fileID: 0}
-      dialogueIdx: 0
   - jsonFile: {fileID: 0}
-    interactionPlayType: 0
+    interactionPlayType: 1
     miniGame: {fileID: 0}
     dialoguePrintSec: 0
     animator: {fileID: 0}
@@ -2114,7 +1977,7 @@ MonoBehaviour:
     isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
-    playableDirectors: []
+    playableDirector: {fileID: 0}
     cinematics: []
     inGames: []
     isLoop: 0
@@ -2301,7 +2164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrigger: 0
-  nextSelectMapcode: 206110
+  nextSelectMapCode: 206110
 --- !u!1 &6459680923671341419
 GameObject:
   m_ObjectHideFlags: 0
