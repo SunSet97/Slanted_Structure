@@ -6,12 +6,11 @@
         _MainTex("Albedo(RGB)",2D) = "White"{}
         _BrightDark("Brightness$Darkness",Range(-1,1)) = 0
         _RampTex("Ramp",2D) = "White"{}
-        _AlphaValue("Alpha",Range(0,1))=1
     }
     SubShader
     {
         //Tags { "RenderType"="Opaque" }
-        Tags { "RenderType"="Transparent" "Queue"="Transparent" }
+        Tags { "RenderType"="Opaque" }
         //Blend SrcAlpha OneMinusSrcAlpha
         //ZwRITE off
 
@@ -25,7 +24,6 @@
         sampler2D _RampTex;
         float _BrightDark;
         fixed4 _Color;
-        float _AlphaValue;
 
         struct Input
         {
@@ -35,7 +33,7 @@
         void surf(Input IN, inout SurfaceOutput o)
         {
             o.Albedo = tex2D(_MainTex, IN.uv_MainTex).rgb * _Color;
-            o.Alpha = _AlphaValue*tex2D(_MainTex, IN.uv_MainTex).a;
+            o.Alpha =tex2D(_MainTex, IN.uv_MainTex).a;
         }
         //view벡터는 외각선 전용, Light벡터는 음영전용
         fixed4 LightingToon(SurfaceOutput s, float3 lightDir, float3 viewDir, float3 atten)//빛의 방향과 표면의 법선에 대한 내적 계산
@@ -56,7 +54,7 @@
             
             float4 final;
             final.rgb = s.Albedo*Ramp.rgb* _BrightDark;
-            final.a = _AlphaValue*s.Alpha;
+            final.a = s.Alpha;
             return final;
         }
         ENDCG

@@ -242,6 +242,7 @@ MonoBehaviour:
   usePostProcessing: 0
   isJoystickInputUse: 1
   isJoystickNone: 0
+  isJoystickControlDisable: 0
   joystickType: 0
 --- !u!1 &1295089235837433860
 GameObject:
@@ -333,6 +334,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isTrigger: 1
   nextSelectMapcode: 000000
+--- !u!135 &7850283821170018154
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1907020673888627421}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.08
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5736475530547590559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,27 +371,77 @@ MonoBehaviour:
         anim_name: Rau
         contents: "\uC77C\uB2E8 \uD55C\uC785 \uBA39\uC5B4\uBCFC\uAE4C...?"
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 7
         anim_name: Rau
         contents: '....'
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 6
         anim_name: Rau
         contents: '........................'
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 6
         anim_name: Rau
         contents: "\uBCA0\uC774\uCEE8\uC774 \uB3CC\uAC19\uC544.... \uAD1C\uD788 \uC640\uADF8\uC791\uC774
           \uC544\uB2C8\uC5C8\uC5B4..."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 6
         anim_name: Rau
         contents: "\uBC30\uB294 \uACE0\uD508\uB370...\uBA39\uAE30\uAC00 \uD798\uB4E4\uB2E4...\uC5B4\uCA4C\uC9C0..."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
@@ -423,11 +487,13 @@ MonoBehaviour:
       interactionEvents: []
     interactionMethod: 0
     isViewChange: 0
-    isFocusObject: 0
-    isMain: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
     isTeleport: 1
     teleportTarget: {fileID: 1689966428270311632}
     timelines: []
@@ -453,27 +519,77 @@ MonoBehaviour:
         anim_name: Rau
         contents: "\uC77C\uB2E8 \uD55C\uC785 \uBA39\uC5B4\uBCFC\uAE4C...?"
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 7
         anim_name: Rau
         contents: '....'
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 6
         anim_name: Rau
         contents: '........................'
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 6
         anim_name: Rau
         contents: "\uBCA0\uC774\uCEE8\uC774 \uB3CC\uAC19\uC544.... \uAD1C\uD788 \uC640\uADF8\uC791\uC774
           \uC544\uB2C8\uC5C8\uC5B4..."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 6
         anim_name: Rau
         contents: "\uBC30\uB294 \uACE0\uD508\uB370...\uBA39\uAE30\uAC00 \uD798\uB4E4\uB2E4...\uC5B4\uCA4C\uC9C0..."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
@@ -519,11 +635,13 @@ MonoBehaviour:
       interactionEvents: []
     interactionMethod: 2
     isViewChange: 0
-    isFocusObject: 0
-    isMain: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
     timelines:
@@ -550,93 +668,263 @@ MonoBehaviour:
         anim_name: Speat
         contents: "\uC800\uAE30 \uD639\uC2DC \uC5EC\uAE30 \uC790\uB9AC \uC5C6\uC8E0?"
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 3
         anim_name: Rau
         contents: "\uB124..? \uB124..."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: ??
         expression: 0
         anim_name: Speat
         contents: "\uC544 \uADF8\uB7FC \uC800 \uC5EC\uAE30 \uC549\uC544\uB3C4 \uB418\uC8E0?"
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 5
         anim_name: Rau
         contents: "\uC608??"
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: ??
         expression: 0
         anim_name: Speat
         contents: "\uC5EC\uAE30\uAC00 \uAC00\uC7A5 \uC2F8\uC11C \uC0AC\uB78C\uB4E4\uC774
           \uB9CE\uC544\uC11C \uD569\uC11D\uD558\uB294 \uACBD\uC6B0 \uB9CE\uAC70\uB4E0\uC694."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: ??
         expression: 0
         anim_name: Speat
         contents: "\uB531\uBCF4\uB2C8\uAE4C \uC5EC\uAE30 \uCC98\uC74C\uC640\uBCF4\uB098\uBCF4\uB124\uC694?"
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 3
         anim_name: Rau
         contents: "\uC5B4\uC81C \uCC98\uC74C \uC654\uC5B4\uC694..."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: ??
         expression: 0
         anim_name: Speat
         contents: "\uC544\uC774\uACE0...\uD558\uD544 \uACE8\uB77C\uB3C4 \uADF8\uAC78
           \uACE8\uB790\uC5B4."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: ??
         expression: 0
         anim_name: Speat
         contents: "\uC81C\uC77C \uAC00\uC131\uBE44 \uB5A8\uC5B4\uC9C0\uACE0 \uB9DB\uC5C6\uB294
           \uAC74\uB370..."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 6
         anim_name: Rau
         contents: " \uC73C\uC545...\uC54C\uBC14\uC0DD\uC774 \uC774\uAC70 \uCD94\uCC9C\uD574\uC92C\uB294\uB370.."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: ??
         expression: 0
         anim_name: Speat
         contents: "\uADF8\uAC70 \uC7AC\uACE0 \uB5A8\uC774\uD558\uB824\uACE0 \uADF8\uB7F0\uAC70
           \uAC19\uC740\uB370..."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: ??
         expression: 0
         anim_name: Speat
         contents: "\uC544\uC774\uACE0..\uC18D \uB2E4\uBCA0\uB838\uACA0\uB2E4.."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 3
         anim_name: Rau
         contents: "\uD639\uC2DC \uC5EC\uAE30 \uB2E4\uB978 \uAD1C\uCC2E\uC740\uB370
           \uC544\uC2DC\uB098\uC694?"
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: ??
         expression: 0
         anim_name: Speat
         contents: "\uC74C...\uC77C\uB2E8 \uC774\uB984\uC774 \uBB50\uC57C?"
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 0
         anim_name: Rau
         contents: "\uC557, \uC800\uB294 \uB77C\uC6B0\uB77C\uACE0 \uD574\uC694. \uC6D0
           \uB9C8\uC744\uC5D0\uC11C \uC654\uC5B4\uC694."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: ??
         expression: 0
         anim_name: Speat
         contents: "\uB531\uBD10\uB3C4 \uC6D0\uB9C8\uC744 \uC0AC\uB78C\uC778\uAC70
           \uC54C\uC9C0. "
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uC2A4\uD54F"
         expression: 0
         anim_name: Speat
         contents: "\uB098\uB294 \uC2A4\uD54F\uC774\uB77C\uACE0 \uD574"
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uC2A4\uD54F"
         expression: 0
         anim_name: Speat
@@ -644,11 +932,31 @@ MonoBehaviour:
           \uBA39\uB294 \uACF3\uC774\uB2C8\uAE4C \uB0B4\uAC00 \uC544\uB294 \uB9DB\uC9D1\uC73C\uB85C
           \uAC00\uBCF4\uC790\uACE0."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uC2A4\uD54F"
         expression: 0
         anim_name: Speat
         contents: " \uB098 \uB530\uB77C\uC640."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
@@ -698,11 +1006,13 @@ MonoBehaviour:
       interactionEvents: []
     interactionMethod: 2
     isViewChange: 0
-    isFocusObject: 0
-    isMain: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
     timelines: []
@@ -728,27 +1038,77 @@ MonoBehaviour:
         anim_name: Rau
         contents: "\uC77C\uB2E8 \uD55C\uC785 \uBA39\uC5B4\uBCFC\uAE4C...?"
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 7
         anim_name: Rau
         contents: '....'
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 6
         anim_name: Rau
         contents: '........................'
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 6
         anim_name: Rau
         contents: "\uBCA0\uC774\uCEE8\uC774 \uB3CC\uAC19\uC544.... \uAD1C\uD788 \uC640\uADF8\uC791\uC774
           \uC544\uB2C8\uC5C8\uC5B4..."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 6
         anim_name: Rau
         contents: "\uBC30\uB294 \uACE0\uD508\uB370...\uBA39\uAE30\uAC00 \uD798\uB4E4\uB2E4...\uC5B4\uCA4C\uC9C0..."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
@@ -778,11 +1138,13 @@ MonoBehaviour:
       interactionEvents: []
     interactionMethod: 2
     isViewChange: 0
-    isFocusObject: 0
-    isMain: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
     timelines:
@@ -939,24 +1301,6 @@ RectTransform:
   m_AnchoredPosition: {x: 960, y: 540}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5094666217415788784
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3451227557676281854}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  outlineWidth: 8
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!114 &5840225068213764482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -981,34 +1325,94 @@ MonoBehaviour:
         anim_name: NPC_Citizen_W
         contents: "\uB124...\uC5B4\uC11C\uC624\uC138\uC694..\uD558\uC554..."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 0
         anim_name: Rau
         contents: " \uC5B4... \uB124... \uD639\uC2DC \uC5EC\uAE30\uC11C \uC81C\uC77C
           \uB9CE\uC774 \uBA39\uB294 \uAC8C \uBB54\uAC00\uC694"
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uC54C\uBC14\uC0DD"
         expression: 0
         anim_name: NPC_Citizen_W
         contents: "\uC74C...\uADF8\uB0E5 \uBB34\uB09C\uD558\uAC8C \uBA39\uB294\uAC70\uB85C
           \uCD94\uCC9C\uD574\uB4DC\uB9B4\uAED8\uC694..."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 0
         anim_name: Rau
         contents: "\uC557 \uB124 \uAC10\uC0AC\uD569\uB2C8\uB2E4!"
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uC54C\uBC14\uC0DD"
         expression: 0
         anim_name: NPC_Citizen_W
         contents: "\uC5EC\uAE30 \uBCA0\uC774\uCEE8 '\uC640\uADF8\uC791' \uBC84\uAC70
           \uC138\uD2B8\uC785\uB2C8\uB2E4."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       - name: "\uB77C\uC6B0"
         expression: 7
         anim_name: Rau
         contents: "\uC557? \uC774\uB807\uAC8C \uBC14\uB85C \uB098\uC628\uB2E4\uACE0..?\uBD88\uC548\uD55C\uB370.."
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
@@ -1036,11 +1440,13 @@ MonoBehaviour:
       interactionEvents: []
     interactionMethod: 0
     isViewChange: 0
-    isFocusObject: 0
-    isMain: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
     timelines: []
@@ -1058,7 +1464,7 @@ MonoBehaviour:
     debugTaskData: []
   useOutline: 0
   color: 2
-  outline: {fileID: 5094666217415788784}
+  outline: {fileID: 0}
   useGizmos: 0
   gizmosRadius: 5
   gizmosColor: {r: 0, g: 0, b: 0, a: 0}
@@ -1183,6 +1589,16 @@ MonoBehaviour:
         contents: "\uD328\uC2A4\uD2B8 \uD478\uB4DC\uC810\uC5D0 \uB4E4\uC5B4\uC624\uAE34
           \uD588\uB294\uB370 \uBB50\uBA39\uC9C0...?"
         sfx: 
+        printSec: 0
+        nextSec: 0
+        isViewChange: 0
+        isOriginalCamInfo: 0
+        isTrackTransform: 0
+        isTrackMainCharacter: 0
+        camOffsetInfo:
+          camDis: {x: 0, y: 0, z: 0}
+          camRot: {x: 0, y: 0, z: 0}
+        trackTransform: {fileID: 0}
       dialogueIdx: 0
     dialoguePrintSec: 0
     animator: {fileID: 0}
@@ -1196,11 +1612,13 @@ MonoBehaviour:
       interactionEvents: []
     interactionMethod: 3
     isViewChange: 0
-    isFocusObject: 0
-    isMain: 0
+    isTrackTransform: 0
+    isTrackMainCharacter: 0
+    trackTransform: {fileID: 0}
     interactionCamera:
       camDis: {x: 0, y: 0, z: 0}
       camRot: {x: 0, y: 0, z: 0}
+    isCameraHold: 0
     isTeleport: 0
     teleportTarget: {fileID: 0}
     timelines: []
@@ -1388,6 +1806,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 80189023716130447, guid: a6d894731640db04188175c428b46680,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 164848688749486046, guid: a6d894731640db04188175c428b46680,
         type: 3}
@@ -3854,6 +4277,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1943113066138487556, guid: a6d894731640db04188175c428b46680,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1957938236312470337, guid: a6d894731640db04188175c428b46680,
         type: 3}
       propertyPath: m_Layer
@@ -4058,6 +4486,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -9.970732e-11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094498066302897003, guid: a6d894731640db04188175c428b46680,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2166119616355876850, guid: a6d894731640db04188175c428b46680,
         type: 3}
@@ -4912,7 +5345,7 @@ PrefabInstance:
     - target: {fileID: 2788056134076187908, guid: a6d894731640db04188175c428b46680,
         type: 3}
       propertyPath: m_Intensity
-      value: 0.2
+      value: 0.42
       objectReference: {fileID: 0}
     - target: {fileID: 2788056134076187908, guid: a6d894731640db04188175c428b46680,
         type: 3}
@@ -4922,12 +5355,12 @@ PrefabInstance:
     - target: {fileID: 2788056134076187908, guid: a6d894731640db04188175c428b46680,
         type: 3}
       propertyPath: m_Color.g
-      value: 0.6037736
+      value: 0.8867924
       objectReference: {fileID: 0}
     - target: {fileID: 2788056134076187908, guid: a6d894731640db04188175c428b46680,
         type: 3}
       propertyPath: m_Color.b
-      value: 0.6037736
+      value: 0.8867924
       objectReference: {fileID: 0}
     - target: {fileID: 2788056134076187908, guid: a6d894731640db04188175c428b46680,
         type: 3}
@@ -6344,6 +6777,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3959714817884304161, guid: a6d894731640db04188175c428b46680,
+        type: 3}
+      propertyPath: m_Radius
+      value: 4.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3966852475525968817, guid: a6d894731640db04188175c428b46680,
         type: 3}
       propertyPath: m_Enabled
@@ -6828,6 +7266,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.4334122
+      objectReference: {fileID: 0}
+    - target: {fileID: 4293416529738729980, guid: a6d894731640db04188175c428b46680,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4301659281512705520, guid: a6d894731640db04188175c428b46680,
         type: 3}
@@ -7474,6 +7917,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4638656113835914078, guid: a6d894731640db04188175c428b46680,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4669744399401202334, guid: a6d894731640db04188175c428b46680,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -7778,6 +8226,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -9.970797e-11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4802213838400046650, guid: a6d894731640db04188175c428b46680,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4822244487843162980, guid: a6d894731640db04188175c428b46680,
         type: 3}
@@ -8954,6 +9407,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.0017224811
       objectReference: {fileID: 0}
+    - target: {fileID: 5640712124913365028, guid: a6d894731640db04188175c428b46680,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5648096784473329185, guid: a6d894731640db04188175c428b46680,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -9053,6 +9511,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.010069221
+      objectReference: {fileID: 0}
+    - target: {fileID: 5767894600886313884, guid: a6d894731640db04188175c428b46680,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5777669490406679668, guid: a6d894731640db04188175c428b46680,
         type: 3}
@@ -9528,6 +9991,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.16344021
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170467637539670221, guid: a6d894731640db04188175c428b46680,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170467637539670221, guid: a6d894731640db04188175c428b46680,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.93
       objectReference: {fileID: 0}
     - target: {fileID: 6192890364997398051, guid: a6d894731640db04188175c428b46680,
         type: 3}
@@ -10403,6 +10876,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ReceiveShadows
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6865761291961372192, guid: a6d894731640db04188175c428b46680,
+        type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6880303218729716202, guid: a6d894731640db04188175c428b46680,
         type: 3}
@@ -13515,6 +13993,12 @@ PrefabInstance:
     - {fileID: 502182416093836142, guid: a6d894731640db04188175c428b46680, type: 3}
     - {fileID: 922677781840839633, guid: a6d894731640db04188175c428b46680, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a6d894731640db04188175c428b46680, type: 3}
+--- !u!4 &1855026703144033773 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 596573264471843861, guid: a6d894731640db04188175c428b46680,
+    type: 3}
+  m_PrefabInstance: {fileID: 1295089236106902008}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &5757804123848964347 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6782069832345878787, guid: a6d894731640db04188175c428b46680,
@@ -13584,12 +14068,6 @@ Transform:
 --- !u!1 &3451227557676281854 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4475502577458353670, guid: a6d894731640db04188175c428b46680,
-    type: 3}
-  m_PrefabInstance: {fileID: 1295089236106902008}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1855026703144033773 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 596573264471843861, guid: a6d894731640db04188175c428b46680,
     type: 3}
   m_PrefabInstance: {fileID: 1295089236106902008}
   m_PrefabAsset: {fileID: 0}
@@ -14059,7 +14537,7 @@ PrefabInstance:
     - target: {fileID: 6149318734316858801, guid: f68897aeae0c05a4f8edb73c385bc8bd,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506875957148119002, guid: f68897aeae0c05a4f8edb73c385bc8bd,
         type: 3}

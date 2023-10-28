@@ -1,4 +1,4 @@
-﻿Shader "Custom/ToonFresnel_NoShadow"
+﻿Shader "Custom/ToonFresnel_oneLight"
 {
     Properties
     {
@@ -17,7 +17,8 @@
 
         CGPROGRAM
         // Physically based Standard lighting model, and enable shadows on all light types
-        #pragma surface surf Toon novertexlights noforwardadd 
+        #pragma surface surf Toon
+        
         sampler2D _MainTex;
         sampler2D _BumpMap;
         sampler2D _RampTex;
@@ -51,9 +52,9 @@
             {
                 cel = -1;//아웃라인
             }
-            float4 final;
-            final.rgb = s.Albedo * _LightColor0.rgb*2.5*atten+_BrightDark;
-            final.a = s.Alpha;
+            fixed4 final;
+            final.rgb = s.Albedo * _LightColor0.rgb *(cel*atten)+_BrightDark;
+            final.a =s.Alpha;
             return final;
         }
         ENDCG
