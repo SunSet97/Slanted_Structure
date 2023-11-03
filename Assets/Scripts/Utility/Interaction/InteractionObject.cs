@@ -301,6 +301,7 @@ namespace Utility.Interaction
                     case TaskContentType.Dialogue:
                         var path = currentTask.nextFile;
                         var jsonString = DialogueController.ConvertPathToJson(path);
+                        DialogueController.Instance.debugTaskData = taskData;
                         Debug.Log($"대화 파일 경로 - {path}");
                         DialogueController.Instance.AddDialogueEndAction(() =>
                         {
@@ -348,6 +349,7 @@ namespace Utility.Interaction
                             taskData.taskIndex++;
                             StartTaskAction(interactionDatum);
                         });
+                        DialogueController.Instance.debugTaskData = taskData;
                         var dialogueElement = new DialogueElement
                         {
                             name = currentTask.name,
@@ -625,6 +627,7 @@ namespace Utility.Interaction
                         taskData.taskIndex++;
                         StartTaskAction(interactionDatum);
                     });
+                    DialogueController.Instance.debugTaskData = taskData;
                     DialogueController.Instance.StartConversation(jsonString);
                     //다음 인덱스의 타입
                     break;

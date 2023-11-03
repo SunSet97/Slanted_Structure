@@ -320,7 +320,7 @@ namespace Utility.Dialogue
             if (IsDialogueEnd())
             {
                 var taskData = debugTaskData;
-                if (taskData.tasks.Count > taskData.taskIndex + 1 && taskData.tasks[taskData.taskIndex + 1].order.Equals(taskData.taskOrder) && taskData.tasks[taskData.taskIndex + 1].taskContentType == TaskContentType.Choice)
+                if (taskData != null && taskData.tasks.Count > taskData.taskIndex + 1 && taskData.tasks[taskData.taskIndex + 1].order.Equals(taskData.taskOrder) && taskData.tasks[taskData.taskIndex + 1].taskContentType == TaskContentType.Choice)
                 {
                     EndConversation();
                 }   
