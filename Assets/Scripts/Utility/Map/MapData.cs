@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 using Utility.Audio;
 using Utility.Character;
 using Utility.Core;
-using Utility.UI.Preference;
+using Utility.UI;
 using Utility.Utils.Property;
 using Utility.WayPoint;
 
@@ -63,10 +63,7 @@ namespace Utility.Map
         [ConditionalHideInInspector("isJoystickInputUse")]
         public Waypoint waypoint;
 
-        [Space(15)] [Tooltip("맵의 이름은 사용자가 원하는 대로 변경하면 되며 맵 구성 어셋들은 이 오브젝트의 자식으로 설정해주면 됩니다.")]
-        public GameObject map; // auto setting
-
-        [Tooltip("이 맵의 전용 UI를 넣어주시면 됩니다.")] public RectTransform ui;
+        [Space(15)] [Tooltip("이 맵의 전용 UI를 넣어주시면 됩니다.")] public RectTransform ui;
 
         [Tooltip("이 맵의 전용 SkyBox를 넣어주시면 됩니다.")]
         public Material skyboxSetting;
@@ -76,6 +73,9 @@ namespace Utility.Map
 
         [ConditionalHideInInspector("isOrthographic")]
         public float orthographicSize;
+
+        [Header("메뉴 비활성화 여부")]
+        public bool isMenuInactive;
 
         [Header("FadeOut")] [Space(10)] public bool useFadeOut;
 
@@ -105,7 +105,7 @@ namespace Utility.Map
         [ConditionalHideInInspector("isCustomGravityScale")]
         public float gravityScale;
 
-        [Space(20)] [Header("카메라")] public CameraViewType cameraViewType;
+        [Header("카메라")] [Space(20)] public CameraViewType cameraViewType;
         public Vector3 camDis;
         public Vector3 camRot;
         public bool useFieldOfView;
@@ -120,7 +120,7 @@ namespace Utility.Map
 
         public bool usePostProcessing;
 
-        [Header("조이스틱")] [Space(20)] [Header("조이스틱 인풋 사용 유무")]
+        [Header("조이스틱 인풋 사용 유무")] [Header("조이스틱")] [Space(20)]
         public bool isJoystickInputUse;
 
         [Header("조이스틱 존재 유무")] public bool isJoystickNone;
@@ -132,21 +132,8 @@ namespace Utility.Map
         private CharacterManager mainCharacter;
         private CharacterManager[] followCharacters;
 
-        private void Awake()
+        public void Init()
         {
-            if (Application.isEditor)
-            {
-                if (name != mapCode)
-                {
-                    name = mapCode;
-                }
-
-                if (ui != null)
-                {
-                    ui.name = map.name;
-                }
-            }
-
             if (ui != null)
             {
                 ui.SetParent(PlayUIController.Instance.mapUi);

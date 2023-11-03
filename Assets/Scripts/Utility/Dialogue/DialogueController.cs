@@ -11,7 +11,7 @@ using UnityEngine.UI;
 using Utility.Audio;
 using Utility.Core;
 using Utility.Timeline;
-using Utility.UI.Preference;
+using Utility.UI;
 using Utility.Utils;
 
 namespace Utility.Dialogue

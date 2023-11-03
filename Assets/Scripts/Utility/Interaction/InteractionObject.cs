@@ -14,7 +14,7 @@ using Utility.Dialogue;
 using Utility.Game;
 using Utility.Interaction.Click;
 using Utility.Map;
-using Utility.UI.Preference;
+using Utility.UI;
 using Utility.Utils;
 using Utility.Utils.Json;
 using Utility.Utils.Property;

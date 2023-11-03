@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using Utility.UI.Preference;
+using Utility.UI;
 using Random = UnityEngine.Random;
 
 namespace Utility.Core

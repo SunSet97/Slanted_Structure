@@ -11,6 +11,7 @@ using Utility.Interaction;
 using Utility.Interaction.Click;
 using Utility.Map;
 using Utility.Save;
+using Utility.UI;
 using Utility.Utils;
 
 namespace Utility.Core
@@ -178,6 +179,7 @@ namespace Utility.Core
             Debug.Log($"Instantiate -> {nextMap.mapCode}");
 
             SetByChangedMap(saveData);
+            CurrentMap.Init();
 
             LoadData(saveData);
 
@@ -250,6 +252,8 @@ namespace Utility.Core
 
             RenderSettings.skybox = CurrentMap.skyboxSetting;
             DynamicGI.UpdateEnvironment();
+            
+            PlayUIController.Instance.SetMenuActive(!CurrentMap.isMenuInactive);
             
             var cameraMoving = Cam.GetComponent<CameraMoving>();
             cameraMoving.Initialize(CurrentMap.cameraViewType, GetCharacter(CharacterType.Main)?.transform);

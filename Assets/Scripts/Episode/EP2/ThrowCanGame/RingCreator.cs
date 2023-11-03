@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Utility.Core;
-using Utility.UI.Preference;
+using Utility.UI;
 
 namespace Episode.EP2.ThrowCanGame
 {

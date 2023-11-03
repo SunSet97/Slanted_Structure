@@ -95,7 +95,7 @@ namespace Utility.UI.Save
                                 checkPanel.SetListener(CheckPanel.ButtonType.Yes, () =>
                                 {
                                     gameObject.SetActive(false);
-
+                                    Time.timeScale = 1;
                                     SaveManager.Load(t);
                                     SceneLoader.Instance.AddOnLoadListener(() =>
                                     {

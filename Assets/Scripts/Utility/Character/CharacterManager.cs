@@ -4,7 +4,6 @@ using UnityEngine;
 using Utility.Core;
 using Utility.Dialogue;
 using Utility.Map;
-using static Data.CustomEnum;
 
 namespace Utility.Character
 {

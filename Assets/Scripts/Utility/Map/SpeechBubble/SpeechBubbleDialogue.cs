@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Utility.Core;
 using Utility.Dialogue;
-using Utility.UI.Preference;
+using Utility.UI;
 using Random = UnityEngine.Random;
 
 namespace Utility.Map.SpeechBubble
@@ -170,7 +170,7 @@ namespace Utility.Map.SpeechBubble
 
         private void OnDestroy()
         {
-            if (speechBubble.gameObject)
+            if (speechBubble.gameObject != null)
             {
                 Destroy(speechBubble.gameObject);
             }

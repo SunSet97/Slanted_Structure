@@ -49,8 +49,8 @@ namespace Utility.Utils
         
         public void LoadScene(string sceneName, int idx = -1)
         {
+            Debug.Log($"Load Scene {sceneName}, {idx}");
             gameObject.SetActive(true);
-            Debug.Log("로드");
             SceneManager.sceneLoaded += LoadSceneEnd;
             loadSceneName = sceneName;
             StartCoroutine(Load(sceneName, idx));
@@ -112,13 +112,11 @@ namespace Utility.Utils
 
         public void AddOnLoadListener(UnityAction t)
         {
-            Debug.Log("Add Scene Load");
             onSceneLoaded += t;
         }
 
         public void RemoveAllListener()
         {
-            Debug.Log("Remove Scene Load");
             onSceneLoaded = () => { };
         }
 

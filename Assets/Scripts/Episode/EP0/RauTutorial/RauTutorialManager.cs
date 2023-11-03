@@ -233,7 +233,7 @@ namespace Episode.EP0.RauTutorial
             JoystickController.Instance.SetJoystickArea(JoystickAreaType.Default);
         }
 
-        private IEnumerator MoveGrass(Transform grassTrans, Transform destGrass, Vector3 moveDelta)
+        private static IEnumerator MoveGrass(Transform grassTrans, Transform destGrass, Vector3 moveDelta)
         {
             destGrass.gameObject.SetActive(false);
             grassTrans.position = destGrass.position;
@@ -328,6 +328,7 @@ namespace Episode.EP0.RauTutorial
         // 나무 숲
         private void Forest()
         {
+            JoystickController.Instance.SetJoystickArea(JoystickAreaType.Full);
             DataController.Instance.camOffsetInfo = viewQuarter;
 
             ChangeJoystickSetting(CharacterMoveType.AllDirection, AxisOptions.Both);
@@ -343,7 +344,6 @@ namespace Episode.EP0.RauTutorial
             DataController.Instance.camOffsetInfo = viewForward;
             ChangeJoystickSetting(CharacterMoveType.Other, AxisOptions.Vertical); // 이동 해제, 위아래 스와이프만 가능하도록 변경
             rau.PickUpCharacter();
-            JoystickController.Instance.SetJoystickArea(JoystickAreaType.Full);
             while (true)
             {
                 TouchSlide();
@@ -361,7 +361,6 @@ namespace Episode.EP0.RauTutorial
                     // 둘러보기, 전방향 이동 튜토리얼
                     ChangeJoystickSetting(CharacterMoveType.AllDirection, 0); // 전방향 이동
                     rau.UseJoystickCharacter();
-                    JoystickController.Instance.SetJoystickArea(JoystickAreaType.Default);
                     yield break;
                 }
 

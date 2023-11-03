@@ -5,7 +5,7 @@ using Utility.Core;
 using Utility.UI.Utils;
 using Utility.Utils;
 
-namespace Utility.UI.Preference
+namespace Utility.UI
 {
     public class PlayUIController : MonoBehaviour
     {
@@ -72,6 +72,7 @@ namespace Utility.UI.Preference
             
             diaryButton.onClick.AddListener(() =>
             {
+                Time.timeScale = 0;
                 JoystickController.Instance.StopSaveLoadJoyStick(true);
                 diaryPanel.SetActive(!diaryPanel.activeSelf);
                 preferencePanel.SetActive(false);
@@ -81,10 +82,12 @@ namespace Utility.UI.Preference
             {
                 JoystickController.Instance.StopSaveLoadJoyStick(false);
                 diaryPanel.SetActive(false);
+                Time.timeScale = 1;
             });
 
             preferenceButton.onClick.AddListener(() =>
             {
+                Time.timeScale = 0;
                 JoystickController.Instance.StopSaveLoadJoyStick(true);
                 preferencePanel.SetActive(!preferencePanel.activeSelf);
                 diaryPanel.SetActive(false);
@@ -94,6 +97,7 @@ namespace Utility.UI.Preference
             {
                 JoystickController.Instance.StopSaveLoadJoyStick(false);
                 preferencePanel.SetActive(false);
+                Time.timeScale = 1;
             });
             
             checkPanel.SetListener(CheckPanel.ButtonType.No, () => { checkPanel.gameObject.SetActive(false);});
