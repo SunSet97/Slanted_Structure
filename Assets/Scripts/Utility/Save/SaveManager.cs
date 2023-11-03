@@ -11,9 +11,9 @@ namespace Utility.Save
 {
     public static class SaveManager
     {
-        private static readonly string SaveDirectoryPath = $"{Application.persistentDataPath}\\SaveData";
-        private static string SaveFilePath(int index) => $"{SaveDirectoryPath}\\saveData{index}.save";
-        private static string SaveCoverFilePath(int index) => $"{SaveDirectoryPath}\\saveCoverData{index}.save";
+        private static readonly string SaveDirectoryPath = $"{Application.persistentDataPath}/SaveData";
+        private static string SaveFilePath(int index) => $"{SaveDirectoryPath}/saveData{index}.save";
+        private static string SaveCoverFilePath(int index) => $"{SaveDirectoryPath}/saveCoverData{index}.save";
 
 
         private static readonly byte[] EncryptKey = Encoding.UTF8.GetBytes("SA3*FDN&48SDFhuj34VMK34KV~3gd$");
@@ -35,6 +35,19 @@ namespace Utility.Save
 #endif
             _saveDatas = new Dictionary<int, SaveData>();
             _saveCoverDatas = new Dictionary<int, SaveCoverData>();
+            
+            Debug.Log($"존재여부: {Directory.Exists(SaveDirectoryPath)}, {SaveDirectoryPath}");
+            if (!Directory.Exists(SaveDirectoryPath))
+            {
+                try
+                {
+                    Directory.CreateDirectory(SaveDirectoryPath);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e);
+                }
+            }
         }
 
         public static async Task SaveAsync(int idx, SaveData saveData, Action saveEndAction = null)
