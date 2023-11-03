@@ -288,7 +288,7 @@ namespace Utility.Character
             CharacterAnimator.SetFloat(DirectionHash, joystickAngle);
         }
 
-        public void MoveCharacter(CharacterMoveType characterMoveType, bool isJoystickInputUse)
+        public void Move(CharacterMoveType characterMoveType, bool isJoystickInputUse, bool isJoystickControlDisable)
         {
             // 
             // Jump를 해서 isGround는 false이지만 아직 점프는 안한 상태
@@ -329,7 +329,7 @@ namespace Utility.Character
                     Jump();
                 }
             }
-            
+
             // 캐릭터를 이 함수로 조종할 수 있을때 (조이스틱 외 미포함)
             if (!IsMove)
             {
@@ -337,7 +337,7 @@ namespace Utility.Character
             }
             
 
-            if (!DataController.Instance.CurrentMap.isJoystickControlDisable && isJoystickInputUse)
+            if (!isJoystickControlDisable && isJoystickInputUse)
             {
                 var characterForward2D =
                     new Vector2(Vector3.Dot(transform.forward, DataController.Instance.Cam.transform.right),
@@ -345,7 +345,7 @@ namespace Utility.Character
 
                 var joystickDir = new Vector2(JoystickController.Instance.inputDirection.x,
                     JoystickController.Instance.inputDirection.y);
-
+                
                 var joystickDeltaAngle = Vector2.SignedAngle(joystickDir, characterForward2D);
 
                 if (characterMoveType == CharacterMoveType.OneDirection)
@@ -380,9 +380,7 @@ namespace Utility.Character
                 CharacterAnimator.SetFloat(SpeedHash, JoystickController.Instance.inputDegree);
             }
 
-            // Debug.Log($"전: {transform.position}");
             CharacterController.Move((MoveHorizontal + MoveVerical) * Time.fixedDeltaTime);
-            // Debug.Log($"후: {transform.position}");
         }
 
         public void FollowMainCharacter(CharacterMoveType characterMoveType)

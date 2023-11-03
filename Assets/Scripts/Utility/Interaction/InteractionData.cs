@@ -83,8 +83,6 @@ namespace Utility.Interaction
         public int id;
         public bool isInteractable = true;
 
-        [NonSerialized] public Stack<TaskData> JsonTask;
-
         [Header("디버깅용")] [SerializeField] internal bool isInteracted;
     }
 
@@ -173,11 +171,13 @@ namespace Utility.Interaction
 
         [Header("Serialized Data")] [Space(10)]
         public SerializedInteractionData serializedInteractionData;
-
+        
         [Header("디버깅용")] [Space(10)] public List<TaskData> debugTaskData;
 
         [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
         public DialogueData dialogueData;
+        
+        [NonSerialized] public Stack<TaskData> JsonTask;
 
         private CamInfo savedCamInfo;
         private CameraViewType savedCamViewType;

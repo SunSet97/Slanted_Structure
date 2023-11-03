@@ -10,6 +10,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utility.Audio;
 using Utility.Core;
+using Utility.Interaction;
 using Utility.Timeline;
 using Utility.UI;
 using Utility.Utils;
@@ -96,14 +97,16 @@ namespace Utility.Dialogue
             }
             
             Debug.Log("대화 시작");
-
+            
             JoystickController.Instance.ResetJoyStickState();
             JoystickController.Instance.StopSaveLoadJoyStick(true);
+            PlayUIController.Instance.SetMenuActive(false);
+            
             dialogueData.Init(jsonString, printSec);
             IsDialogue = true;
-            dialoguePanel.SetActive(true);
-            PlayUIController.Instance.SetMenuActive(false);
             isUnfolding = false;
+            dialoguePanel.SetActive(true);
+            
             savedCamViewType = DataController.Instance.Cam.GetComponent<CameraMoving>().ViewType; 
             savedTrackTransform = DataController.Instance.Cam.GetComponent<CameraMoving>().TrackTransform;
             savedCamInfo = DataController.Instance.camOffsetInfo;
@@ -111,6 +114,32 @@ namespace Utility.Dialogue
             ProgressDialogue();
         }
 
+        public void StartConversation(DialogueElement dialogueElement, float printSec = 0f)
+        {
+            if (IsDialogue)
+            {
+                Debug.Log("대화중임");
+                return;
+            }
+            
+            Debug.Log("대화 시작");
+            
+            JoystickController.Instance.ResetJoyStickState();
+            JoystickController.Instance.StopSaveLoadJoyStick(true);
+            PlayUIController.Instance.SetMenuActive(false);
+            
+            dialogueData.Init(dialogueElement, printSec);
+            IsDialogue = true;
+            isUnfolding = false;
+            dialoguePanel.SetActive(true);
+            
+            savedCamViewType = DataController.Instance.Cam.GetComponent<CameraMoving>().ViewType; 
+            savedTrackTransform = DataController.Instance.Cam.GetComponent<CameraMoving>().TrackTransform;
+            savedCamInfo = DataController.Instance.camOffsetInfo;
+
+            ProgressDialogue();
+        }
+        
         private void OnInputDialogue()
         {
             if (isUnfolding)
@@ -285,19 +314,17 @@ namespace Utility.Dialogue
             var dialogueItem = dialogueData.dialogueElements[dialogueData.dialogueIdx];
             dialogueNameText.text = dialogueItem.name;
             dialogueContentText.text = dialogueItem.contents;
-
-            // if (currentDialogueData.dialogueElements.Length > currentDialogueData.index + 1 &&
-            //     currentDialogueData.dialogueElements[currentDialogueData.index + 1].dialogueType == DialogueType.Choice)
-            // {
-            //     currentDialogueData.index++;
-            //     InitChoice();
-            // }
-            // else
-            // {
-            //     blinkingIndicator.SetActive(true);
-            //     _onComplete?.Invoke();
-            // }
+            
             dialogueData.dialogueIdx++;
+
+            if (IsDialogueEnd())
+            {
+                var taskData = debugTaskData;
+                if (taskData.tasks.Count > taskData.taskIndex + 1 && taskData.tasks[taskData.taskIndex + 1].order.Equals(taskData.taskOrder) && taskData.tasks[taskData.taskIndex + 1].taskContentType == TaskContentType.Choice)
+                {
+                    EndConversation();
+                }   
+            }
         }
 
         public void EndConversation()
@@ -324,17 +351,22 @@ namespace Utility.Dialogue
             dialogueData.EndDialogue();
         }
 
-        public void OpenChoicePanel(TaskData taskData)
+        public void OpenChoicePanel(TaskData taskData, UnityAction<int> choiceAction)
         {
             if (!int.TryParse(taskData.tasks[taskData.taskIndex].nextFile, out var choiceCount))
             {
-                Debug.LogError($"선택지 Excel 오류 - taskIndex - {taskData.taskIndex}, {taskData.tasks[taskData.taskIndex].nextFile}");
+                Debug.LogError(
+                    $"선택지 Excel 오류 - taskIndex - {taskData.taskIndex}, {taskData.tasks[taskData.taskIndex].nextFile}");
+                return;
             }
 
             if (taskData.tasks.Count <= taskData.taskIndex + choiceCount)
             {
                 Debug.LogError("선택지 개수 오류 - IndexOverFlow");
+                return;
             }
+
+            dialogueData.ChooseAction += choiceAction;
             
             var relationshipData = DataController.Instance.GetRelationshipData();
 
@@ -384,11 +416,6 @@ namespace Utility.Dialogue
             {
                 choiceButtons[choiceIndex].SetActive(false);
             }
-        }
-
-        public void SetChoiceAction(UnityAction<int> choiceAction)
-        {
-            dialogueData.ChooseAction += choiceAction;
         }
 
         public void AddDialogueEndAction(UnityAction endAction)

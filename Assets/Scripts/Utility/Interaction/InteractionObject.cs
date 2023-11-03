@@ -79,7 +79,7 @@ namespace Utility.Interaction
                     {
                         if (interaction.interactionPlayType == InteractionPlayType.Dialogue)
                         {
-                            interaction.dialogueData = new DialogueData();
+                            interaction.dialogueData = new  DialogueData();
                             interaction.dialogueData.Init(interaction.jsonFile.text);
                         }
                         else if (interaction.interactionPlayType == InteractionPlayType.Task)
@@ -133,7 +133,7 @@ namespace Utility.Interaction
         private void StackNewTask(string jsonRoute)
         {
             DialogueController.Instance.debugTaskData = null;
-            GetInteractionData().serializedInteractionData.JsonTask = new Stack<TaskData>();
+            GetInteractionData().JsonTask = new Stack<TaskData>();
             GC.Collect();
             PushTask(jsonRoute);
             StopAllCoroutines();
@@ -148,7 +148,7 @@ namespace Utility.Interaction
                 tasks = JsontoString.FromJsonList<Task>(jsonString)
             };
             var interactionDatum = GetInteractionData();
-            interactionDatum.serializedInteractionData.JsonTask.Push(taskData);
+            interactionDatum.JsonTask.Push(taskData);
             DialogueController.Instance.debugTaskData = taskData;
         }
 
@@ -210,14 +210,14 @@ namespace Utility.Interaction
                     break;
                 case InteractionPlayType.Task:
                 {
-                    if (interactionDatum.jsonFile && interactionDatum.serializedInteractionData.JsonTask == null)
+                    if (interactionDatum.jsonFile && interactionDatum.JsonTask == null)
                     {
-                        interactionDatum.serializedInteractionData.JsonTask = new Stack<TaskData>();
+                        interactionDatum.JsonTask = new Stack<TaskData>();
                         PushTask(interactionDatum.jsonFile.text);
                     }
 
-                    if (interactionDatum.serializedInteractionData.JsonTask == null ||
-                        interactionDatum.serializedInteractionData.JsonTask.Count == 0)
+                    if (interactionDatum.JsonTask == null ||
+                        interactionDatum.JsonTask.Count == 0)
                     {
                         Debug.LogError("task파일 없음 오류오류");
                     }
@@ -281,9 +281,9 @@ namespace Utility.Interaction
         
         private void StartTaskAction(InteractionData interactionDatum)
         {
-            var taskData = interactionDatum.serializedInteractionData.JsonTask.Peek();
+            var taskData = interactionDatum.JsonTask.Peek();
 
-            // If (!Task End)
+            // If is not End
             if (taskData.tasks.Count > taskData.taskIndex &&
                 taskData.tasks[taskData.taskIndex].order.Equals(taskData.taskOrder))
             {
@@ -331,20 +331,32 @@ namespace Utility.Interaction
                         break;
                     case TaskContentType.Choice:
                         Debug.Log("선택지 열기");
-                        DialogueController.Instance.SetChoiceAction(ExecuteChoiceAction);
-                        DialogueController.Instance.OpenChoicePanel(taskData);
+                        DialogueController.Instance.OpenChoicePanel(taskData, ExecuteChoiceAction);
                         break;
                     case TaskContentType.ChoiceDialogue:
                         //선택지에서 대화를 고른 경우
                         Debug.Log("선택지 선택 - 단순 대화");
-                        interactionDatum.serializedInteractionData.JsonTask.Peek().taskIndex++;
+                        interactionDatum.JsonTask.Peek().taskIndex++;
                         StartTaskAction(interactionDatum);
                         break;
                     case TaskContentType.ImmediateChoice:
                         ExecuteChoiceByRelationship();
                         break;
                     case TaskContentType.DialogueElement:
-                        // asdad
+                        DialogueController.Instance.AddDialogueEndAction(() =>
+                        {
+                            taskData.taskIndex++;
+                            StartTaskAction(interactionDatum);
+                        });
+                        var dialogueElement = new DialogueElement
+                        {
+                            name = currentTask.name,
+                            expression = (Expression)currentTask.order,
+                            anim_name = currentTask.condition,
+                            contents = currentTask.increaseVar
+                        };
+                        
+                        DialogueController.Instance.StartConversation(dialogueElement);
                         // 대화 실행
                         break;
                     // TaskEnd 보다는 TaskReset이라는 말이 어울린다
@@ -356,8 +368,8 @@ namespace Utility.Interaction
                             interactionDatum.serializedInteractionData.isInteracted = false;
                         }
 
-                        interactionDatum.serializedInteractionData.JsonTask.Pop();
-                        if (interactionDatum.serializedInteractionData.JsonTask.Count > 0)
+                        interactionDatum.JsonTask.Pop();
+                        if (interactionDatum.JsonTask.Count > 0)
                         {
                             Debug.LogError("Task 엑셀 관련 오류");
                         }
@@ -446,7 +458,7 @@ namespace Utility.Interaction
                                 inGame.SetActive(true);
                             }
                             
-                            interactionDatum.serializedInteractionData.JsonTask.Peek().taskIndex++;
+                            interactionDatum.JsonTask.Peek().taskIndex++;
                             StartTaskAction(interactionDatum);
                         }));
 
@@ -471,11 +483,11 @@ namespace Utility.Interaction
                 if (taskData.tasks.Count == taskData.taskIndex)
                 {
                     DialogueController.Instance.debugTaskData = null;
-                    interactionDatum.serializedInteractionData.JsonTask.Pop();
+                    interactionDatum.JsonTask.Pop();
 
-                    if (interactionDatum.serializedInteractionData.JsonTask.Count > 1)
+                    if (interactionDatum.JsonTask.Count > 1)
                     {
-                        interactionDatum.serializedInteractionData.JsonTask.Peek().taskIndex++;
+                        interactionDatum.JsonTask.Peek().taskIndex++;
                         StartTaskAction(interactionDatum);
                     }
                     else
@@ -488,9 +500,9 @@ namespace Utility.Interaction
 
         private void EndInteraction(InteractionData interactionDatum, bool isSuccess = false)
         {
-            if (interactionDatum.isNextInteractable)
+            if (interactionDatum.isNextInteractable || interactionDatum.isNextInteract)
             {
-                InteractIndex = (InteractIndex + 1) % interactionData.Count;
+                InteractIndex++;
             }
 
             interactionDatum.EndAction(isSuccess);
@@ -512,7 +524,7 @@ namespace Utility.Interaction
         private void ExecuteChoiceAction(int index)
         {
             var interaction = GetInteractionData();
-            var taskData = interaction.serializedInteractionData.JsonTask.Peek();
+            var taskData = interaction.JsonTask.Peek();
             var originTaskIndex = taskData.taskIndex;
             var choiceTargetIndex = originTaskIndex + index;
             var curTask = taskData.tasks[choiceTargetIndex];
@@ -542,7 +554,7 @@ namespace Utility.Interaction
         private void ExecuteChoiceByRelationship()
         {
             var interaction = GetInteractionData();
-            var currentTaskData = interaction.serializedInteractionData.JsonTask.Peek();
+            var currentTaskData = interaction.JsonTask.Peek();
             var originTaskIndex = currentTaskData.taskIndex;
             var taskCount = int.Parse(currentTaskData.tasks[originTaskIndex].nextFile);
 
@@ -591,7 +603,7 @@ namespace Utility.Interaction
 
         private void ChoiceAction(InteractionData interactionDatum, int targetTaskIndex)
         {
-            var taskData = interactionDatum.serializedInteractionData.JsonTask.Peek();
+            var taskData = interactionDatum.JsonTask.Peek();
             var targetTask = taskData.tasks[targetTaskIndex];
 
             Debug.Log($"선택지 실행 - {targetTask.taskContentType}");

@@ -165,7 +165,7 @@ namespace Utility.Map
                 JoystickController.Instance.UpdateJoystickInput(characterMoveType);
             }
 
-            mainCharacter.MoveCharacter(characterMoveType, isJoystickInputUse);
+            mainCharacter.Move(characterMoveType, isJoystickInputUse, isJoystickControlDisable);
 
             if (followCharacters != null)
             {

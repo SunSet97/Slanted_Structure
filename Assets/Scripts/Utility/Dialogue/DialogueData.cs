@@ -37,6 +37,23 @@ namespace Utility.Dialogue
 
             dialogueIdx = 0;
         }
+        
+        public void Init(DialogueElement dialogueElement, float dialoguePrintSec = 0f, float nextSec = 0f)
+        {
+            dialogueElements = new[] { dialogueElement };
+            if (Application.isPlaying && Mathf.Approximately(dialoguePrintSec, 0))
+            {
+                dialoguePrintSec = DataController.Instance.dialoguePrintSec;
+            }
+
+            foreach (var dialogue in dialogueElements)
+            {
+                dialogue.printSec = dialoguePrintSec;
+                dialogue.nextSec = nextSec;
+            }
+
+            dialogueIdx = 0;
+        }
 
         public void EndDialogue()
         {
