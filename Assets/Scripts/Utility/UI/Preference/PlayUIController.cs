@@ -2,9 +2,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Utility.Core;
+using Utility.UI.Utils;
 using Utility.Utils;
 
-namespace Utility.Preference
+namespace Utility.UI.Preference
 {
     public class PlayUIController : MonoBehaviour
     {

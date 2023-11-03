@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utility.Audio;
 
-namespace Utility.Preference.Audio
+namespace Utility.UI.Preference.Audio
 {
     public class AudioSlider : MonoBehaviour
     {

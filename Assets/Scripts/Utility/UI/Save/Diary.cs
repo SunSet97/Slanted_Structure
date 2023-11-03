@@ -3,9 +3,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utility.Core;
 using Utility.Save;
+using Utility.UI.Utils;
 using Utility.Utils;
 
-namespace Utility.Preference
+namespace Utility.UI.Save
 {
     public class Diary : MonoBehaviour
     {
@@ -19,7 +20,7 @@ namespace Utility.Preference
 #pragma warning disable 0649
         [SerializeField] private ButtonType defaultButtonType;
 
-        [SerializeField] private Transform diarySaveParent;
+        [SerializeField] private DiaryItem[] diaryItems;
 
         [SerializeField] private Button saveButton;
         [SerializeField] private Button loadButton;
@@ -28,7 +29,7 @@ namespace Utility.Preference
         [Header("덮어쓰기")] [Space(15)] [SerializeField]
         private CheckPanel checkPanel;
 #pragma warning restore 0649
-        
+
         private int coverIdx;
 
         private RectMask2D saveMask;
@@ -48,12 +49,11 @@ namespace Utility.Preference
 
             checkPanel.SetListener(CheckPanel.ButtonType.No, () => { checkPanel.gameObject.SetActive(false); });
 
-            for (var idx = 0; idx < diarySaveParent.childCount; idx++)
+            for (var idx = 0; idx < diaryItems.Length; idx++)
             {
-                var button = diarySaveParent.GetChild(idx).GetComponentInChildren<Button>();
                 var t = idx;
-                button.onClick.RemoveAllListeners();
-                button.onClick.AddListener(() =>
+                diaryItems[idx].button.onClick.RemoveAllListeners();
+                diaryItems[idx].button.onClick.AddListener(() =>
                 {
                     if (focusedButton == ButtonType.Save)
                     {
@@ -67,7 +67,7 @@ namespace Utility.Preference
                                 SaveManager.Save(coverIdx, saveData, () =>
                                 {
                                     Debug.Log(coverIdx + "저장");
-                                    UpdateDiary();
+                                    UpdateDisplay();
                                     checkPanel.gameObject.SetActive(false);
                                 });
                             });
@@ -79,7 +79,7 @@ namespace Utility.Preference
                             SaveManager.Save(t, saveData, () =>
                             {
                                 Debug.Log(t + "저장");
-                                UpdateDiary();
+                                UpdateDisplay();
                             });
                         }
                     }
@@ -133,7 +133,7 @@ namespace Utility.Preference
                             if (SaveManager.Has(t))
                             {
                                 SaveManager.Delete(t);
-                                UpdateDiary();
+                                UpdateDisplay();
                             }
                         });
                         checkPanel.gameObject.SetActive(true);
@@ -156,13 +156,11 @@ namespace Utility.Preference
                 loadMask.enabled = true;
                 deleteMask.enabled = true;
 
-                for (var idx = 0; idx < diarySaveParent.childCount; idx++)
+                for (var idx = 0; idx < diaryItems.Length; idx++)
                 {
-                    if (!SaveManager.Has(idx))
-                    {
-                        var button = diarySaveParent.GetChild(idx).GetComponent<Button>();
-                        button.interactable = true;
-                    }
+                    if (SaveManager.Has(idx)) continue;
+                    var button = diaryItems[idx].button;
+                    button.interactable = true;
                 }
             }
             else if (buttonType == ButtonType.Load)
@@ -176,18 +174,11 @@ namespace Utility.Preference
                 loadMask.enabled = false;
                 deleteMask.enabled = true;
 
-                for (var idx = 0; idx < diarySaveParent.childCount; idx++)
+                for (var idx = 0; idx < diaryItems.Length; idx++)
                 {
-                    var button = diarySaveParent.GetChild(idx).GetComponent<Button>();
+                    var button = diaryItems[idx].button;
 
-                    if (!SaveManager.Has(idx))
-                    {
-                        button.interactable = false;
-                    }
-                    else
-                    {
-                        button.interactable = true;
-                    }
+                    button.interactable = SaveManager.Has(idx);
                 }
             }
             else if (buttonType == ButtonType.Delete)
@@ -201,18 +192,11 @@ namespace Utility.Preference
                 loadMask.enabled = true;
                 deleteMask.enabled = false;
 
-                for (var idx = 0; idx < diarySaveParent.childCount; idx++)
+                for (var idx = 0; idx < diaryItems.Length; idx++)
                 {
-                    var button = diarySaveParent.GetChild(idx).GetComponent<Button>();
+                    var button = diaryItems[idx].button;
 
-                    if (!SaveManager.Has(idx))
-                    {
-                        button.interactable = false;
-                    }
-                    else
-                    {
-                        button.interactable = true;
-                    }
+                    button.interactable = SaveManager.Has(idx);
                 }
             }
         }
@@ -220,17 +204,17 @@ namespace Utility.Preference
         private void OnEnable()
         {
             FocusButton(defaultButtonType);
-            UpdateDiary();
+            UpdateDisplay();
         }
 
-        private async void UpdateDiary()
+        private async void UpdateDisplay()
         {
-            for (var idx = 0; idx < diarySaveParent.childCount; idx++)
+            for (var idx = 0; idx < diaryItems.Length; idx++)
             {
+                var diaryItem = diaryItems[idx];
+                diaryItem.SetText("", "", "");
                 if (SaveManager.Has(idx))
                 {
-                    var diaryContentText = diarySaveParent.GetChild(idx).GetComponentInChildren<Text>();
-                    diaryContentText.text = "";
                     if (!SaveManager.IsCoverLoaded(idx))
                     {
                         var task = SaveManager.LoadCoverAsync(idx);
@@ -238,13 +222,7 @@ namespace Utility.Preference
                     }
 
                     var saveCoverData = SaveManager.GetCoverData(idx);
-                    diaryContentText.text = saveCoverData.location;
-                    Debug.Log(diaryContentText.text);
-                }
-                else
-                {
-                    var text = diarySaveParent.GetChild(idx).GetComponentInChildren<Text>();
-                    text.text = "";
+                    diaryItem.SetText(saveCoverData.location, saveCoverData.date, saveCoverData.time);
                 }
             }
         }

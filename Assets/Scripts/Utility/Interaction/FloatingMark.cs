@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using Utility.Core;
-using Utility.Preference;
+using Utility.UI.Preference;
 
 namespace Utility.Interaction
 {

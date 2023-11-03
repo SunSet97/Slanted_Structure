@@ -129,9 +129,9 @@ namespace Utility.Core
             return mapData;
         }
 
-        public CharacterManager GetCharacter(Character.CharacterType characterTypeType)
+        public CharacterManager GetCharacter(CharacterType characterTypeType)
         {
-            if (characterTypeType == Character.CharacterType.Main)
+            if (characterTypeType == CharacterType.Main)
             {
                 return mainChar;
             }
@@ -246,12 +246,13 @@ namespace Utility.Core
 
             JoystickController.Instance.Initialize(CurrentMap.joystickType);
             JoystickController.Instance.SetJoyStickState(!CurrentMap.isJoystickNone);
+            JoystickController.Instance.SetJoystickArea(CustomEnum.JoystickAreaType.Default);
 
             RenderSettings.skybox = CurrentMap.skyboxSetting;
             DynamicGI.UpdateEnvironment();
             
             var cameraMoving = Cam.GetComponent<CameraMoving>();
-            cameraMoving.Initialize(CurrentMap.cameraViewType, GetCharacter(Character.CharacterType.Main)?.transform);
+            cameraMoving.Initialize(CurrentMap.cameraViewType, GetCharacter(CharacterType.Main)?.transform);
 
             Cam.farClipPlane = CurrentMap.useClippingPlanes ? CurrentMap.farClipPlane : defaultFarClipPlane;
             Cam.fieldOfView = CurrentMap.useFieldOfView ? CurrentMap.fieldOfView : defaultFieldOfView;

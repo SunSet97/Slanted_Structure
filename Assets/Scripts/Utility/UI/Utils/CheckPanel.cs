@@ -2,7 +2,7 @@
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Utility.Preference
+namespace Utility.UI.Utils
 {
     public class CheckPanel : MonoBehaviour
     {

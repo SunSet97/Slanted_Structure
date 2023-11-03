@@ -10,8 +10,8 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utility.Audio;
 using Utility.Core;
-using Utility.Preference;
 using Utility.Timeline;
+using Utility.UI.Preference;
 using Utility.Utils;
 
 namespace Utility.Dialogue
@@ -356,7 +356,8 @@ namespace Utility.Dialogue
                 //양수인 경우 이상, 음수인 경우 이하
                 if (choiceTask.order >= 0)
                 {
-                    if (conditions[0] < relationshipData[0] || conditions[1] < relationshipData[1] || conditions[2] < relationshipData[2])
+                    if (conditions[0] < relationshipData[0] || conditions[1] < relationshipData[1] ||
+                        conditions[2] < relationshipData[2])
                     {
                         choiceButtons[choiceIndex].SetActive(false);
                         continue;
@@ -367,7 +368,8 @@ namespace Utility.Dialogue
                 }
                 else
                 {
-                    if (conditions[0] > relationshipData[0] || conditions[1] > relationshipData[1] || conditions[2] > relationshipData[2])
+                    if (conditions[0] > relationshipData[0] || conditions[1] > relationshipData[1] ||
+                        conditions[2] > relationshipData[2])
                     {
                         choiceButtons[choiceIndex].SetActive(false);
                         continue;
@@ -395,15 +397,10 @@ namespace Utility.Dialogue
             dialogueData.DialogueEndAction += endAction;
         }
 
-        private void RemoveChoice()
-        {
-            choiceButtons[0].transform.parent.gameObject.SetActive(false);
-        }
-
         // 선택지를 눌렀을 때 불리는 함수, Index 1부터 시작
         public void OnClickChoice(int index)
         {
-            RemoveChoice();
+            choicePanel.gameObject.SetActive(false);
             JoystickController.Instance.StopSaveLoadJoyStick(false);
             var tAction = dialogueData.ChooseAction;
             dialogueData.ChooseAction = null;
@@ -423,7 +420,7 @@ namespace Utility.Dialogue
 
         public void SetInputEnable(bool isEnable)
         {
-            Debug.Log($"Input Eanble? {isEnable}");
+            Debug.Log($"Input Enable? {isEnable}");
             dialogueInputArea.raycastTarget = isEnable;
         }
 

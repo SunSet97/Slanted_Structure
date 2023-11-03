@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 using Utility.Audio;
 using Utility.Character;
 using Utility.Core;
-using Utility.Preference;
+using Utility.UI.Preference;
 using Utility.Utils.Property;
 using Utility.WayPoint;
 

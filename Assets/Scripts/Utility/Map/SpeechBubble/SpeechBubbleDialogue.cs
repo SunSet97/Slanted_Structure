@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Utility.Core;
 using Utility.Dialogue;
-using Utility.Preference;
+using Utility.UI.Preference;
 using Random = UnityEngine.Random;
 
 namespace Utility.Map.SpeechBubble

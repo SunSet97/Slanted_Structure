@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Serialization;
 using Utility.Core;
-using Utility.Preference;
+using Utility.UI.Preference;
 using Utility.Utils.Property;
 
 namespace Utility.Interaction
