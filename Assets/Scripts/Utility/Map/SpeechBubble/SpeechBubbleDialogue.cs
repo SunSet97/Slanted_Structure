@@ -21,26 +21,24 @@ namespace Utility.Map.SpeechBubble
 
     public class SpeechBubbleDialogue : MonoBehaviour
     {
-        private enum SpeechBubbleType
+        private enum SpeechBubblePlayType
         {
             Loop,
             Once
         }
 
-        private enum RandomSecond
+        private enum SpeechDelayType
         {
             Custom,
             Random
         }
         
 #pragma warning disable 0649
-        [FormerlySerializedAs("speechBubbleDialogueType")] [Header("말풍선 대화 타입 선택")] [SerializeField]
-        private SpeechBubbleType speechBubbleType;
+        [FormerlySerializedAs("speechBubbleType")] [FormerlySerializedAs("speechBubbleDialogueType")] [Header("말풍선 대화 타입 선택")] [SerializeField]
+        private SpeechBubblePlayType speechBubblePlayType;
 
-        [Header("말풍선 보이는, 안보이는 시간 타입 선택")] [SerializeField]
-        private RandomSecond randomSecond;
-
-        private SpeechBubble speechBubble;
+        [FormerlySerializedAs("randomSecond")] [Header("말풍선 보이는, 안보이는 시간 타입 선택")] [SerializeField]
+        private SpeechDelayType speechDelayType;
 
         [Header("말풍선")] [Header("말풍선 대사 입력")] [SerializeField]
         public Script[] bubbleScripts;
@@ -51,7 +49,7 @@ namespace Utility.Map.SpeechBubble
         [SerializeField] private int bubbleIndex;
 #pragma warning restore 0649
         
-        private bool isBubble;
+        private SpeechBubble speechBubble;
         private bool isCharacterInRange;
 
         private void Start()
@@ -75,7 +73,7 @@ namespace Utility.Map.SpeechBubble
 
         private void Update()
         {
-            if (isBubble)
+            if (speechBubble.gameObject.activeSelf)
             {
                 SetSpeechBubblePosition();
             }
@@ -83,7 +81,7 @@ namespace Utility.Map.SpeechBubble
 
         private void UpdateDialogue()
         {
-            if (randomSecond == RandomSecond.Random)
+            if (speechDelayType == SpeechDelayType.Random)
             {
                 bubbleScripts[bubbleIndex].appearSec = Random.Range(1, bubbleScripts[bubbleIndex].randomRange);
                 bubbleScripts[bubbleIndex].disappearSec = Random.Range(1, bubbleScripts[bubbleIndex].randomRange);
@@ -110,20 +108,13 @@ namespace Utility.Map.SpeechBubble
         private IEnumerator StartSpeechBubble()
         {
             bubbleIndex %= bubbleScripts.Length;
-
-            isBubble = true;
-            speechBubble.gameObject.SetActive(true);
-
-            UpdateDialogue();
-
             var bubbleScript = bubbleScripts[bubbleIndex];
-
-            bubbleIndex++;
-
+            
+            speechBubble.gameObject.SetActive(true);
+            UpdateDialogue();
             yield return new WaitForSeconds(bubbleScript.appearSec);
             speechBubble.gameObject.SetActive(false);
-
-            isBubble = false;
+            bubbleIndex++;
 
             yield return new WaitForSeconds(bubbleScript.disappearSec);
 
@@ -131,29 +122,30 @@ namespace Utility.Map.SpeechBubble
             {
                 DialogueController.Instance.AddDialogueEndAction(() =>
                 {
-                    if (isCharacterInRange && IsBubbleEnable())
+                    if (IsBubbleEnable())
                     {
                         StartCoroutine(StartSpeechBubble());
                     }
                 });
             }
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(gameObject.transform.position, 5);
+            else
+            {
+                if (IsBubbleEnable())
+                {
+                    StartCoroutine(StartSpeechBubble());
+                }
+            }
         }
 
         private void OnTriggerEnter(Collider other)
         {
+            isCharacterInRange = true;
+            
             if (IsBubbleEnable())
             {
                 StopAllCoroutines();
                 StartCoroutine(StartSpeechBubble());
             }
-
-            isCharacterInRange = true;
         }
 
         private void OnTriggerExit(Collider other)
@@ -163,9 +155,10 @@ namespace Utility.Map.SpeechBubble
 
         private bool IsBubbleEnable()
         {
-            return !isBubble && (speechBubbleType == SpeechBubbleType.Loop ||
-                                 (speechBubbleType == SpeechBubbleType.Once &&
-                                  bubbleIndex != bubbleScripts.Length));
+            return isCharacterInRange && !speechBubble.gameObject.activeSelf &&
+                   (speechBubblePlayType == SpeechBubblePlayType.Loop ||
+                    (speechBubblePlayType == SpeechBubblePlayType.Once &&
+                     bubbleIndex != bubbleScripts.Length));
         }
 
         private void OnDestroy()

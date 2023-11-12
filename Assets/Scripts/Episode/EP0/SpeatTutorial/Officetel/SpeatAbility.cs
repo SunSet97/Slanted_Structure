@@ -201,7 +201,7 @@ namespace Episode.EP0.SpeatTutorial.Officetel
 
         private void PassDoor()
         {
-            if (IsPassing || !ObjectClicker.Instance.TouchDisplay(out RaycastHit[] hits))
+            if (IsPassing || !ObjectClicker.Instance.TouchDisplay(out var hits))
             {
                 return;
             }

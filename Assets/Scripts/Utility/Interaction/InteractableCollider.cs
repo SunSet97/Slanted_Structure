@@ -48,18 +48,21 @@ namespace Utility.Interaction
 
         private void Update()
         {
-            if (interactionObject.GetInteractionData().serializedInteractionData.isInteractable && useMark && interactionObject.ExclamationMark.activeSelf)
+            if (!interactionObject.ExclamationMark.activeSelf ||
+                !interactionObject.GetInteractionData().serializedInteractionData.isInteractable || !useMark)
             {
-                if (isWorld)
-                {
-                    interactionObject.ExclamationMark.transform.position = markOffset + interactionObject.transform.position;
-                }
-                else
-                {
-                    var screenPoint =
-                        DataController.Instance.Cam.WorldToScreenPoint(interactionObject.transform.position + markOffset);
-                    interactionObject.ExclamationMark.transform.position = screenPoint;
-                }
+                return;
+            }
+            
+            if (isWorld)
+            {
+                interactionObject.ExclamationMark.transform.position = markOffset + interactionObject.transform.position;
+            }
+            else
+            {
+                var screenPoint =
+                    DataController.Instance.Cam.WorldToScreenPoint(interactionObject.transform.position + markOffset);
+                interactionObject.ExclamationMark.transform.position = screenPoint;
             }
         }
 

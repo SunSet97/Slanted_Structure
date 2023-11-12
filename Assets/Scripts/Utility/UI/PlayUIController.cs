@@ -115,6 +115,11 @@ namespace Utility.UI
         
         public void SetMenuActive(bool isActive)
         {
+            if (isActive && DataController.Instance.CurrentMap.isMenuInactive)
+            {
+                return;
+            }
+
             Debug.Log($"메뉴 패널 {isActive}");
             if (!isActive)
             {

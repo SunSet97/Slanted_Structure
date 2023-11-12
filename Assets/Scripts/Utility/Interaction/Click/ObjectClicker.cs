@@ -19,8 +19,9 @@ namespace Utility.Interaction.Click
         [NonSerialized]
         public bool IsCustomUse;
 
-        private readonly List<IClickable> clickables = new List<IClickable>();
-
+        private readonly List<IClickable> clickableList = new List<IClickable>();
+        private readonly RaycastHit[] results = new RaycastHit[5];
+        
         private void Awake()
         {
             Instance = this;
@@ -53,29 +54,31 @@ namespace Utility.Interaction.Click
 
         private void AddClick(IClickable clickable)
         {
-            if (clickables.Contains(clickable))
+            if (clickableList.Contains(clickable))
             {
                 return;
             }
-            clickables.Add(clickable);
+            
             if (!gameObject.activeSelf)
             {
-                gameObject.SetActive(true);
-                Debug.Log("클리커 활성화" + gameObject.activeSelf);
+                Debug.Log($"클리커 활성화");
             }
+            
+            clickableList.Add(clickable);
+            gameObject.SetActive(true);
         }
 
         private void RemoveClick(IClickable clickable)
         {
-            if (!clickables.Contains(clickable))
+            if (!clickableList.Contains(clickable))
             {
                 return;
             }
-            clickables.Remove(clickable);
-            if (clickables.Count == 0)
+            clickableList.Remove(clickable);
+            if (clickableList.Count == 0)
             {
                 gameObject.SetActive(false);
-                Debug.Log("클리커 비활성화" + gameObject.activeSelf);
+                Debug.Log($"클리커 비활성화");
             }
         }
 
@@ -96,14 +99,16 @@ namespace Utility.Interaction.Click
             Debug.Log("클릭");
             var ray = DataController.Instance.Cam.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 20f, Color.red, 5f);
-            var hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
-            foreach (var hit in hits)
+            var count = Physics.RaycastNonAlloc(ray, results, Mathf.Infinity, layerMask);
+            for (var i = 0; i < count; i++)
             {
-                if (hit.collider.isTrigger && hit.collider.TryGetComponent(out IClickable clickable))
+                var hit = results[i];
+                if (!hit.collider.isTrigger || !hit.collider.TryGetComponent(out IClickable clickable))
                 {
-                    clickable.Click();
-                    Debug.Log("됨");
+                    continue;
                 }
+                
+                clickable.Click();
             }
         }
         
@@ -115,17 +120,23 @@ namespace Utility.Interaction.Click
                 return false;
             }
 
-            Ray ray = DataController.Instance.Cam.ScreenPointToRay(Input.mousePosition);
+            var ray = DataController.Instance.Cam.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 20f, Color.red, 5f);
-            hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
+            var count = Physics.RaycastNonAlloc(ray, results, Mathf.Infinity, layerMask);
+            hits = new RaycastHit[count];
+            for (var index = 0; index < hits.Length; index++)
+            {
+                hits[index] = results[count];
+            }
+
             return true;
         }
 
-        public void Reset()
+        public void Clear()
         {
             gameObject.SetActive(false);
             IsCustomUse = false;
-            clickables.Clear();
+            clickableList.Clear();
         }
     }
 }

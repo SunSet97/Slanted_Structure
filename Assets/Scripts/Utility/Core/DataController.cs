@@ -170,10 +170,10 @@ namespace Utility.Core
 
             storyMaps = LoadMap(desMapCode);
 
-            ObjectClicker.Instance.Reset();
-
-            var nextMap = Array.Find(storyMaps, mapData => mapData.mapCode.Equals(desMapCode));
+            ObjectClicker.Instance.Clear();
             InteractionObjects.Clear();
+            
+            var nextMap = Array.Find(storyMaps, mapData => mapData.mapCode.Equals(desMapCode));
 
             CurrentMap = Instantiate(nextMap, mapGenerate);
             Debug.Log($"Instantiate -> {nextMap.mapCode}");

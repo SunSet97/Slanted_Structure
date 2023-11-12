@@ -39,7 +39,9 @@ namespace Utility.Map
 
         #region 맵 설정
 
-        [Header("#Map Setting")] [Tooltip("맵의 코드이며 변경시 오브젝트의 이름도 같이 변경 됩니다.(코드는 반드시 6자리)")]
+        [Header("#Map Setting")] 
+        public string uniqueName;
+        [Tooltip("맵의 코드이며 변경시 오브젝트의 이름도 같이 변경 됩니다.(코드는 반드시 6자리)")]
         public string mapCode = "000000"; // auto setting
 
         public string location;
@@ -89,7 +91,7 @@ namespace Utility.Map
 
         [Header("애니메이션 실행되는 캐릭터 넣으세요")] public List<AnimationCharacterSet> characters;
 
-        [Header("#클리어 박스")] [SerializeField] private List<CheckMapClear> clearBoxList = new List<CheckMapClear>();
+        [Header("#클리어 박스")] [SerializeField] internal List<CheckMapClear> clearBoxList = new List<CheckMapClear>();
 
         #endregion
 
