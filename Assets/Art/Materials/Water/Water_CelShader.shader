@@ -12,6 +12,7 @@ Shader "Custom/Water_CelShader"
         _WavePower("Wave Power", float) = 0.2
         _WaveTilling("Wave Tilling", float) = 25
         _NormalTiling("Normal Tile", float) = 1
+        _Angle("Rotate Angle",float)=0
 
     }
     CGINCLUDE
@@ -48,6 +49,7 @@ Shader "Custom/Water_CelShader"
                 float4 posWorld : TEXCOORD1;
                 float4 posObject : TEXCOORD2;
                 float4 screenPos: TEXCOORD3;
+                
 
                 half3 tspace0 : TEXCOORD4; // tangent.x, bitangent.x, normal.x
                 half3 tspace1 : TEXCOORD5; // tangent.y, bitangent.y, normal.y
@@ -67,6 +69,7 @@ Shader "Custom/Water_CelShader"
             float _WaveSpeed;
             float _WavePower;
             float _WaveTilling;
+            float _Angle;
 
             v2f vert (appdata v,float4 tangent : TANGENT)
             {
@@ -90,6 +93,15 @@ Shader "Custom/Water_CelShader"
                 o.viewDir= normalize(UnityWorldSpaceViewDir(o.posWorld));
                 
                 o.uv=TRANSFORM_TEX(v.uv,_MainTex);
+                //rotate
+                float2 pivot=float2(0.5,0.5);
+                float cosAngle =cos(_Angle);
+                float sinAngle =sin(_Angle);
+                float2x2 rot=float2x2(cosAngle,-sinAngle,sinAngle,cosAngle);
+                o.uv=o.uv-pivot;
+                o.uv=mul(rot,o.uv);
+                o.uv+=pivot;
+                
                 
                 o.screenPos=ComputeScreenPos(o.pos);    
                 return o;

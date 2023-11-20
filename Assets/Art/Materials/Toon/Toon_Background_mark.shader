@@ -7,6 +7,7 @@
         _MainTex("Albedo(RGB)",2D) = "White"{}
         _MarkTex("Emission",2D) = "White"{}
         _RampTex("Ramp",2D) = "White"{}
+        _Outline("Outline Width",Range(0,1))=0.3
         _Speed("Blink",float)=0.01
         _CelShadingLevels("Levels",Range(0,1))=0.8
         _BrightDark("Brightness$Darkness",Range(-1,1))=0
@@ -28,6 +29,7 @@
         fixed4 _Color;
         float _BrightDark;
         float _Speed;
+        float _Outline;
         
         struct Input
         {
@@ -47,11 +49,20 @@
         //view벡터는 외각선 전용, Light벡터는 음영전용
         fixed4 LightingToon(SurfaceOutput s, float3 lightDir, float3 viewDir, float3 atten)//빛의 방향과 표면의 법선에 대한 내적 계산
         {  
-            float NdotL = pow(dot(s.Normal, lightDir) * 0.5 + 0.5,3);//pow(x,y)>x의 y승//0~1의 사이 값으로 바꾼 뒤 3승
+            float NdotL = pow(dot(s.Normal, lightDir) * 0.5 + 0.5,1.2);//pow(x,y)>x의 y승//0~1의 사이 값으로 바꾼 뒤 3승
             //빛의 방향과 표면의 법선에 대해 내적한 뒤, 전반적인 그래프의 값을 올려주고 모두 양수로 만든다.(그래프가 보다 더 완만해지게 됨)
             half cel = floor((NdotL * _CelShadingLevels) / (_CelShadingLevels - 0.5));//ramp파일 대신 스냅
             //floor(x):x보다 크지 않은 정수 중 가장 큰 정수를 반환(반내림)
-            float rim = abs(dot(s.Normal, viewDir));//외각선 내각을 절대값으로 변경
+            float3 WV_Normal=mul(UNITY_MATRIX_MV,s.Normal);
+            float3 WV_viewDir=mul(UNITY_MATRIX_MV,viewDir);
+            float rim = dot(WV_Normal, WV_viewDir);//외각선 내각을 절대값으로 변경
+            if (rim > _Outline) 
+            {
+            }
+            else//rim이 작으면 노말벡터와 외각선 벡터가 수직에 가까움
+            {
+                cel = -1;//아웃라인
+            }
             float4 final;
             final.rgb = s.Albedo * _LightColor0.rgb *(cel*atten)+_BrightDark;
             final.a = s.Alpha;
