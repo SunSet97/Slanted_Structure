@@ -11,6 +11,7 @@ namespace TitleScene
     {
 #pragma warning disable 0649
         [SerializeField] private string mapCode;
+        [SerializeField] private int step;
 
         [SerializeField] private Button newStartButton;
 
@@ -36,7 +37,7 @@ namespace TitleScene
                 {
                     if (Application.isEditor)
                     {
-                        DataController.Instance.GameStart(mapCode);
+                        DataController.Instance.GameStart(mapCode, step);
                     }
                     else
                     {

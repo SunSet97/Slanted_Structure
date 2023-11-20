@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Data;
 using UnityEngine;
@@ -42,12 +43,10 @@ namespace Utility.Core
         public CharRelationshipData charRelationshipData;
 #pragma warning restore 0649
         
-        
         [NonSerialized] public Camera Cam;
         [NonSerialized] public MapData CurrentMap;
         [NonSerialized] public List<InteractionObject> InteractionObjects;
 
-        private MapData[] storyMaps;
         private CharacterManager mainChar;
 
         private UnityAction onLoadMap;
@@ -81,53 +80,109 @@ namespace Utility.Core
             camOffsetInfo = new CamInfo();
         }
 
-        public void GameStart(string mapCode = "001010", SaveData save = null)
+        public void GameStart(SaveData save)
         {
             MobileAdsManager.ADCount++;
             Debug.Log("게임 시작");
             Init();
-            ChangeMap(mapCode, save);
+            ChangeMap(save.saveCoverData.mapCode, save);
         }
-
-
-        private MapData[] LoadMap(string desMapCode)
+        
+        public void GameStart(string mapCode = "001010", int desStep = -1)
         {
-            var mapCode = CurrentMap ? CurrentMap.mapCode : "999999";
+            MobileAdsManager.ADCount++;
+            Debug.Log("게임 시작");
+            Init();
+            ChangeMap(mapCode, null, desStep);
+        }
+        
+        private MapData LoadMap(string desMapCode, int desStep = -1)
+        {
+            var mapCode = CurrentMap ? CurrentMap.mapCode : "";
             Debug.Log($"{mapCode} -> {desMapCode}");
-            var curEp = int.Parse(mapCode.Substring(0, 1));
+            var curEp = CurrentMap ? int.Parse(mapCode.Substring(0, 1)) : -1;
             var desEp = int.Parse(desMapCode.Substring(0, 1));
 
-            var curDay = int.Parse(mapCode.Substring(1, 2));
-            var desDay = int.Parse(desMapCode.Substring(1, 2));
+            var curStep = CurrentMap ? CurrentMap.step : -1;
 
-            // Debug.Log($"Cur ep: {curEp}, day: {curDay}");
-            // Debug.Log($"Des ep: {desEp}, day: {desDay}");
-            if (curEp == desEp && curDay == desDay)
+            if (AssetBundleMap.Contains($"map/ep{curEp}/step{curStep}"))
             {
-                Debug.Log("이미 있음");
-                return storyMaps;
+                var curMapDB = AssetBundleMap.GetAssetBundle($"map/ep{curEp}/step{curStep}");
+                var assetNames = curMapDB.GetAllAssetNames();
+
+                // if did not Loaded (destination Map is Next Step or Next Episode)
+                if (!assetNames.Any(item => item.Contains(desMapCode)))
+                {
+                    if (desStep == -1)
+                    {
+                        // if Next Step
+                        if (curEp == desEp)
+                        {
+                            desStep = curStep + 1;
+                        }
+                        // if Next Ep
+                        else
+                        {
+                            desStep = 0;
+                        }
+                    }
+
+                    // LoadAssetWithSubAsset 찾아볼 필요 있음
+                    AssetBundleMap.RemoveAssetBundle($"dialogue/ep{curEp}/step{curStep}");
+                    AssetBundleMap.AddAssetBundle($"dialogue/ep{desEp}/step{desStep}",
+                        $"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}/step{desStep}");
+
+                    AssetBundleMap.RemoveAssetBundle($"map/ep{curEp}/step{curStep}");
+                    AssetBundleMap.AddAssetBundle($"map/ep{desEp}/step{desStep}",
+                        $"{Application.dataPath}/AssetBundles/map/ep{desEp}/step{desStep}");
+                }
+                else
+                {
+                    if (desStep == -1)
+                    {
+                        desStep = curStep;
+                    }
+                }
             }
-
-            AssetBundleMap.RemoveAssetBundle($"ep{curEp}/day{curDay}");
-            AssetBundleMap.AddAssetBundle($"ep{desEp}/day{desDay}",
-                $"{Application.dataPath}/AssetBundles/map/ep{desEp}/day{desDay}");
-
-            if (curEp != desEp)
+            else
             {
-                AssetBundleMap.RemoveAssetBundle($"ep{curEp}");
-                AssetBundleMap.AddAssetBundle($"ep{desEp}", $"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}");
+                AssetBundleMap.AddAssetBundle($"dialogue/ep{desEp}/step{desStep}",
+                    $"{Application.dataPath}/AssetBundles/dialogue/ep{desEp}/step{desStep}");
+                AssetBundleMap.AddAssetBundle($"map/ep{desEp}/step{desStep}",
+                    $"{Application.dataPath}/AssetBundles/map/ep{desEp}/step{desStep}");
             }
-
-            var mapDB = AssetBundleMap.GetAssetBundle($"ep{desEp}/day{desDay}");
-            var mapDataObjects = mapDB.LoadAllAssets<GameObject>();
-            var mapData = new MapData[mapDataObjects.Length];
-            for (var i = 0; i < mapDataObjects.Length; i++)
+            
+            var mapDB = AssetBundleMap.GetAssetBundle($"map/ep{desEp}/step{desStep}");
+            
+            var mapDBNames = mapDB.GetAllAssetNames();
+            if (mapDBNames.Any(item => Path.GetFileNameWithoutExtension(item).Equals(desMapCode)))
             {
-                mapData[i] = mapDataObjects[i].GetComponent<MapData>();
-                Debug.Log(mapData[i].mapCode);
-            }
+                var mapDataObject = mapDB.LoadAsset<GameObject>($"{desMapCode}").GetComponent<MapData>();
 
-            return mapData;
+                return mapDataObject;
+            }
+            else
+            {
+                var mapDataTable = mapDB.LoadAsset<MapDataTable>("MapData Table");
+                var mapDataProps = Array.Find(mapDataTable.mapData,
+                    dataProps => { return dataProps.mapCode.Any(codeProps => codeProps.mapCode == desMapCode); });
+                
+                var mapDataObject = mapDB.LoadAsset<GameObject>(mapDataProps.name).GetComponent<MapData>();
+                Debug.Log($"{mapDataObject.mapCode} ->{mapDataObject}");
+                
+                var mapCodeProps = Array.Find(mapDataProps.mapCode, item => item.mapCode == desMapCode);
+                mapDataObject.mapCode = mapCodeProps.mapCode;
+                mapDataObject.date = mapCodeProps.date;
+                mapDataObject.time = mapCodeProps.time;
+                mapDataObject.nextMapcode = mapCodeProps.nextMapCode;
+                for (var index = 0; index < mapDataObject.clearBoxList.Count; index++)
+                {
+                    var checkMapClear = mapDataObject.clearBoxList[index];
+                    checkMapClear.nextSelectMapCode = mapCodeProps.clearBoxNextMapCode[index];
+                }
+
+                return mapDataObject;
+            }
         }
 
         public CharacterManager GetCharacter(CharacterType characterTypeType)
@@ -145,7 +200,7 @@ namespace Utility.Core
             return positionSets.Where(item => item.isFollow).Select(positionSet => GetCharacter(positionSet.who)).ToArray();
         }
 
-        public void ChangeMap(string desMapCode, SaveData saveData = null)
+        public void ChangeMap(string desMapCode, SaveData saveData = null, int desStep = -1)
         {
             Debug.Log($"Change Map {(CurrentMap != null ? CurrentMap.mapCode : "")} -> {desMapCode}");
 
@@ -168,15 +223,17 @@ namespace Utility.Core
                 CurrentMap.DestroyMap();
             }
 
-            storyMaps = LoadMap(desMapCode);
-
             ObjectClicker.Instance.Clear();
             InteractionObjects.Clear();
+
+            if (saveData != null)
+            {
+                desStep = saveData.saveCoverData.step;
+            }
             
-            var nextMap = Array.Find(storyMaps, mapData => mapData.mapCode.Equals(desMapCode));
+            var nextMap = LoadMap(desMapCode, desStep);
 
             CurrentMap = Instantiate(nextMap, mapGenerate);
-            Debug.Log($"Instantiate -> {nextMap.mapCode}");
 
             SetByChangedMap(saveData);
             CurrentMap.Init();
@@ -200,7 +257,7 @@ namespace Utility.Core
                 onLoadMap = () => { };
             }
         }
-
+        
         public void AddOnLoadMap(UnityAction onLoadMap)
         {
             this.onLoadMap += onLoadMap;

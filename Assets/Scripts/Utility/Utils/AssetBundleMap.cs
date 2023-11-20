@@ -33,5 +33,10 @@ namespace Utility.Utils
         {
             return AssetBundleDB[key];
         }
+        
+        public static bool Contains(string key)
+        {
+            return AssetBundleDB.ContainsKey(key);
+        }
     }
 }

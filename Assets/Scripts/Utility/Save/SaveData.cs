@@ -45,6 +45,7 @@ namespace Utility.Save
     public class SaveCoverData
     {
         public string mapCode;
+        public int step;
         public string location;
         public string date;
         public string time;

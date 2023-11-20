@@ -101,7 +101,7 @@ namespace Utility.UI.Save
                                     {
                                         var saveData = SaveManager.GetSaveData(t);
                                         saveData.Debug();
-                                        DataController.Instance.GameStart(saveData.saveCoverData.mapCode, saveData);
+                                        DataController.Instance.GameStart(saveData);
 
                                         SceneLoader.Instance.RemoveAllListener();
                                     });
@@ -117,7 +117,7 @@ namespace Utility.UI.Save
                                 {
                                     var saveData = SaveManager.GetSaveData(t);
                                     saveData.Debug();
-                                    DataController.Instance.GameStart(saveData.saveCoverData.mapCode, saveData);
+                                    DataController.Instance.GameStart(saveData);
 
                                     SceneLoader.Instance.RemoveAllListener();
                                 });

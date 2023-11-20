@@ -48,8 +48,8 @@ namespace Utility.Interaction
 
         private void Update()
         {
-            if (!interactionObject.ExclamationMark.activeSelf ||
-                !interactionObject.GetInteractionData().serializedInteractionData.isInteractable || !useMark)
+            if (!useMark || !interactionObject.ExclamationMark.activeSelf ||
+                !interactionObject.GetInteractionData().serializedInteractionData.isInteractable)
             {
                 return;
             }

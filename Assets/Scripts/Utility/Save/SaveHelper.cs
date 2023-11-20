@@ -42,6 +42,7 @@ namespace Utility.Save
                 {
                     mapCode = DataController.Instance.CurrentMap.mapCode,
                     location = DataController.Instance.CurrentMap.location,
+                    step =  DataController.Instance.CurrentMap.step,
                     date = DataController.Instance.CurrentMap.date,
                     time = DataController.Instance.CurrentMap.time
                 },
