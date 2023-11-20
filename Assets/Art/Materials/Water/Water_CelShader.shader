@@ -11,6 +11,8 @@ Shader "Custom/Water_CelShader"
         _WaveSpeed("Wave Speed", float) = 0.05
         _WavePower("Wave Power", float) = 0.2
         _WaveTilling("Wave Tilling", float) = 25
+        _DistortIntensity("Distortion Intensity", Range(0,1))=0.5
+        _DistortSpeed("Distortion Speed", float) = 0.01
         _NormalTiling("Normal Tile", float) = 1
         _Angle("Rotate Angle",float)=0
 
@@ -67,6 +69,8 @@ Shader "Custom/Water_CelShader"
             float _SpacPow;
             float dotData;
             float _WaveSpeed;
+            float _DistortSpeed;
+            float _DistortIntensity;
             float _WavePower;
             float _WaveTilling;
             float _Angle;
@@ -110,8 +114,10 @@ Shader "Custom/Water_CelShader"
             fixed4 frag(v2f i):SV_Target
             {  
                 fixed4 _texColor;
-                float4 fNormal1=tex2D(_BumpMap,_NormalTiling*(i.uv)+float2(_Time.y*_WaveSpeed,0.0f));
-                float4 fNormal2=tex2D(_BumpMap2,_NormalTiling*(i.uv)-float2(_Time.y*_WaveSpeed,0.0f));
+                //grab
+                float4 fNoise=tex2D(_MainTex,i.uv+(_Time.x*_DistortSpeed));
+                float4 fNormal1=tex2D(_BumpMap,_NormalTiling*(i.uv)+float2(_Time.y*_WaveSpeed,0.0f)+float2(fNoise.r*_DistortIntensity,0));
+                float4 fNormal2=tex2D(_BumpMap2,_NormalTiling*(i.uv)-float2(_Time.y*_WaveSpeed,0.0f)+float2(0,-fNoise.r*_DistortIntensity));
                 half3 tnormal=UnpackNormal((fNormal1+fNormal2)/2);
                 i.normal.x=dot(i.tspace0, tnormal);
                 i.normal.y=dot(i.tspace1, tnormal);
@@ -135,13 +141,14 @@ Shader "Custom/Water_CelShader"
                 
                 half3 worldRefl = reflect(-i.viewDir, i.normal);
 
+                
+
                 // same as in previous shader
                 half4 skyData = texCUBE(_CubeMap,worldRefl);//UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, worldRefl);
                 half3 skyColor = DecodeHDR (skyData, unity_SpecCube0_HDR);
 
 
-                //grab
-                float4 fNoise=tex2D(_MainTex,i.uv+_Time.x);
+                
 
 
                 //light
@@ -162,7 +169,7 @@ Shader "Custom/Water_CelShader"
 
 
                 //refraction
-                float3 fGrab=tex2D(_GrabTexture, (i.screenPos/(i.screenPos.a+0.0000001)).xy + i.normal.xy*0.1*fNoise);//(_GrabTexture,scrPos.xy+fNoise.r*0.05);
+                float3 fGrab=tex2D(_GrabTexture, (i.screenPos/(i.screenPos.a+0.0000001)).xy + i.normal.xy*fNoise.r*_DistortIntensity);//(_GrabTexture,scrPos.xy+fNoise.r*0.05);
                 
                 float3 water=lerp(fGrab,skyColor*cel,dotData).rgb;//lerp(fGrab,fRefl,pow(dot(o.Normal,IN.viewDir),dotData)).rgb;
 
