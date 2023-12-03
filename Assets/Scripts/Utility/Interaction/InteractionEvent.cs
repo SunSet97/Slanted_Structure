@@ -75,7 +75,7 @@ namespace Utility.Interaction
         {
             public InteractionObject interactObj;
             public int index;
-            public int waitSeconds;
+            public float waitSeconds;
             public bool useFadeOut;
         }
 

@@ -81,6 +81,17 @@ Shader "Custom/Water_CelShader"
                 v.pos.y+=sin((abs(v.uv.x*2-1)*_WaveTilling)+sin(_Time.y*1))*_WavePower;//abs함수로 감싸면 -1~0~1이 1~0~1으로 바뀌면서 지그재그 됨.
                 o.pos =  UnityObjectToClipPos(v.pos);
 
+                o.uv=TRANSFORM_TEX(v.uv,_MainTex);
+                o.uv*=_NormalTiling;
+                //rotate
+                float2 pivot=float2(0.5,0.5);
+                float cosAngle =cos(_Angle);
+                float sinAngle =sin(_Angle);
+                float2x2 rot=float2x2(cosAngle,-sinAngle,sinAngle,cosAngle);
+                o.uv=o.uv-pivot;
+                o.uv=mul(rot,o.uv);
+                o.uv+=pivot;
+
                 half3 wTangent = UnityObjectToWorldDir(tangent.xyz);
                 // compute bitangent from cross product of normal and tangent
                 half tangentSign = tangent.w * unity_WorldTransformParams.w;
@@ -92,15 +103,7 @@ Shader "Custom/Water_CelShader"
 
                 o.viewDir= normalize(UnityWorldSpaceViewDir(o.posWorld));
                 
-                o.uv=TRANSFORM_TEX(v.uv,_MainTex);
-                //rotate
-                float2 pivot=float2(0.5,0.5);
-                float cosAngle =cos(_Angle);
-                float sinAngle =sin(_Angle);
-                float2x2 rot=float2x2(cosAngle,-sinAngle,sinAngle,cosAngle);
-                o.uv=o.uv-pivot;
-                o.uv=mul(rot,o.uv);
-                o.uv+=pivot;
+                
                 
                 
                 o.screenPos=ComputeScreenPos(o.pos);    
@@ -110,8 +113,8 @@ Shader "Custom/Water_CelShader"
             fixed4 frag(v2f i):SV_Target
             {  
                 fixed4 _texColor;
-                float4 fNormal1=tex2D(_BumpMap,_NormalTiling*(i.uv)+float2(_Time.y*_WaveSpeed,0.0f));
-                float4 fNormal2=tex2D(_BumpMap2,_NormalTiling*(i.uv)-float2(_Time.y*_WaveSpeed,0.0f));
+                float4 fNormal1=tex2D(_BumpMap,i.uv+float2(_Time.y*_WaveSpeed,0.0f));
+                float4 fNormal2=tex2D(_BumpMap2,i.uv-float2(_Time.y*_WaveSpeed,0.0f));
                 half3 tnormal=UnpackNormal((fNormal1+fNormal2)/2);
                 i.normal.x=dot(i.tspace0, tnormal);
                 i.normal.y=dot(i.tspace1, tnormal);

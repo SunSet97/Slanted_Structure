@@ -677,7 +677,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -710,7 +710,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 2
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -928,6 +928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapCode: 002031
+  step: 0
   location: "\uD558\uC218\uAD6C \uB0B4 \uC544\uC9C0\uD2B8"
   date: 3 YEARS AGO DAY??
   time: 01:00
@@ -935,11 +936,11 @@ MonoBehaviour:
   nextMapcode: 101010
   rightIsForward: 0
   waypoint: {fileID: 0}
-  map: {fileID: 6623560086354657274}
   ui: {fileID: 0}
   skyboxSetting: {fileID: 2100000, guid: 9dad9c36f34ca4e4b915520faa1718f9, type: 2}
   isOrthographic: 0
   orthographicSize: 0
+  isMenuInactive: 0
   useFadeOut: 1
   fadeOutSec: 1
   fadeInSec: 1
@@ -1434,7 +1435,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8574158704812787867}
-  m_LocalRotation: {x: 0.016469724, y: -0.6929703, z: 0.015838139, w: 0.720604}
+  m_LocalRotation: {x: 0.016469726, y: -0.6929703, z: 0.01583814, w: 0.720604}
   m_LocalPosition: {x: 1.3699999, y: -0.13000011, z: -0.09000015}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1545,7 +1546,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -2320,6 +2321,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5129714956537560626}
     m_Modifications:
+    - target: {fileID: 1074481512295302887, guid: 291c41a1456b3f147acf12e25bf42ce6,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1645367691613319739, guid: 291c41a1456b3f147acf12e25bf42ce6,
         type: 3}
       propertyPath: m_Name
@@ -3439,15 +3445,15 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4578307844694410151}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &5601724315349414440 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8229264196738806159, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
-    type: 3}
-  m_PrefabInstance: {fileID: 4578307844694410151}
-  m_PrefabAsset: {fileID: 0}
 --- !u!95 &7650207260317032092 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6170938929142471995, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
+    type: 3}
+  m_PrefabInstance: {fileID: 4578307844694410151}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5601724315349414440 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8229264196738806159, guid: 1ecea6a8f3cd88b49b6622b87a5956c3,
     type: 3}
   m_PrefabInstance: {fileID: 4578307844694410151}
   m_PrefabAsset: {fileID: 0}
