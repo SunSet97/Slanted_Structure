@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Net.NetworkInformation;
 using Episode.EP2.ThrowCanGame;
 using UnityEngine;
 using UnityEngine.UI;

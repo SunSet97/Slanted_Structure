@@ -9,17 +9,24 @@ namespace Episode.EP2.DoveFeedGame
         [Header("Ring")] [SerializeField] private RingNoteGame ringNoteGame;
 #pragma warning restore 0649
         
-        // [Header("비둘기")]
-        // [SerializeField] private Animator dove;
+        [Header("비둘기")]
+        [SerializeField] private Animator dove;
+        [SerializeField] private Animator doveUiAnimator;
         
+        private static readonly int EatHash = Animator.StringToHash("Eat");
+        private static readonly int PatternHash = Animator.StringToHash("Pattern");
+        private static readonly int PreenHash = Animator.StringToHash("Preen");
+        private static readonly int AttackHash = Animator.StringToHash("Attack");
+        private static readonly int PlayHash = Animator.StringToHash("Play");
+
         public override void Play()
         {
             base.Play();
             
-            ringNoteGame.PlayGame(EndTimingGame);
+            ringNoteGame.PlayGame(EndRingNoteGame);
         }
         
-        private void EndTimingGame(ResultState result)
+        private void EndRingNoteGame(ResultState result)
         {
             FeedDove(result);
         }
@@ -29,29 +36,35 @@ namespace Episode.EP2.DoveFeedGame
             // 먹이 주기
             if (type == ResultState.Perfect || type == ResultState.Good)
             {
-                if (type == ResultState.Perfect)
+                switch (type)
                 {
-                    // dove.SetInteger("Attack", (int)type);
+                    case ResultState.Perfect:
+                        doveUiAnimator.SetInteger(PatternHash, 1);
+                        break;
+                    case ResultState.Good:
+                        doveUiAnimator.SetInteger(PatternHash, 2);
+                        break;
                 }
-                else if (type == ResultState.Good)
-                {
-                    // dove.SetInteger("Attack", (int)type);
-                }
-
+                
+                dove.SetTrigger(EatHash);
+                doveUiAnimator.SetTrigger(PlayHash);
                 Debug.Log($"성공 {type}");
                 Invoke(nameof(Success), 1f);
             }
             else
             {
-                if (type == ResultState.NotBad)
+                switch (type)
                 {
-                    // dove.SetInteger("Attack", (int)type);
+                    case ResultState.NotBad:
+                        dove.SetTrigger(PreenHash);
+                        doveUiAnimator.SetInteger(PatternHash, 3);
+                        break;
+                    case ResultState.Bad:
+                        dove.SetTrigger(AttackHash);
+                        doveUiAnimator.SetInteger(PatternHash, 4);
+                        break;
                 }
-                else if (type == ResultState.Bad)
-                {
-                    // dove.SetInteger("Attack", (int)type);
-                }
-
+                doveUiAnimator.SetTrigger(PlayHash);
                 Debug.Log($"실패 {type}");
                 Invoke(nameof(Fail), 1f);
             }
