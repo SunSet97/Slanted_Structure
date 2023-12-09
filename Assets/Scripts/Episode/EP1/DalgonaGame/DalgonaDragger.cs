@@ -1,106 +1,138 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Episode.EP1.DalgonaGame
 {
     public class DalgonaDragger : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
-        public Sprite[] imageChange;
+        [FormerlySerializedAs("imageChange")] [SerializeField]
+        private Sprite[] dalgonaSprites;
+        [SerializeField] private Sprite[] failSprites;
+        
+        [SerializeField] private Image[] dragZone;
+        [SerializeField] private Image deadZone;
+        
         public int standardCut;
 
-        private Action onEndAction;
+        private Action<bool> onEndGameAction;
         private GraphicRaycaster dalgonaRaycaster;
-        private bool isPointIn;
+        private Image dalgonaImage;
+
+        private int index;
+        private bool wasPointIn;
         private Vector2 dragBeginPos;
-        private List<RaycastResult> results;
 
-        public void Init(Action onDragEndAction)
+        private readonly List<RaycastResult> results = new List<RaycastResult>();
+
+        public void Init(Action<bool> onEndGame)
         {
-            onEndAction = onDragEndAction;
+            onEndGameAction = onEndGame;
             dalgonaRaycaster = GetComponentInParent<GraphicRaycaster>();
-            results = new List<RaycastResult>();
-            
-            for (var idx = 0; idx < transform.childCount; idx++)
-            {
-                var child = transform.GetChild(idx);
-                child.gameObject.tag = "Untagged";
-                child.GetComponent<Image>().raycastTarget = false;
-            }
+            dalgonaImage = transform.GetComponent<Image>();
+            deadZone.alphaHitTestMinimumThreshold = .1f;
 
-            var dalgonaImage = transform.GetComponent<Image>();
-            var initChild = transform.GetChild(0);
-            initChild.GetComponent<Image>().raycastTarget = true;
-            initChild.gameObject.tag = "DalgonaBoundary";
-            dalgonaImage.sprite = imageChange[0];
+            for (var idx = 0; idx < dragZone.Length; idx++)
+            {
+                SetChildImageRayCast(false, idx);
+            }
         }
 
         public void Play()
         {
             gameObject.SetActive(true);
+
+            SetChildImageRayCast(true, 0);
+            dalgonaImage.sprite = dalgonaSprites[0];
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            dragBeginPos = eventData.position;
             results.Clear();
+            dragBeginPos = eventData.position;
             dalgonaRaycaster.Raycast(eventData, results);
 
             if (results.Count == 0)
             {
-                if (isPointIn && CheckDistance(eventData.position))
+                if (wasPointIn)
                 {
-                    ChangeNextStep();
+                    CheckClear(eventData.position);
                 }
 
-                isPointIn = false;
+                wasPointIn = false;
             }
+            else
+            {
+                if (results.Any(item => item.isValid && item.gameObject == deadZone.gameObject))
+                {
+                    StartCoroutine(EndPlay(false));
+                    return;
+                }
 
-            var result = results.Find(raycastResult => raycastResult.gameObject.tag.Equals("DalgonaBoundary"));
+                var result = results.Find(raycastResult => raycastResult.gameObject.tag.Equals("DalgonaBoundary"));
 
-            isPointIn = result.isValid;
+                wasPointIn = result.isValid;
+            }
         }
 
         public void OnDrag(PointerEventData eventData)
         {
+            Debug.LogWarning($"Length - {Vector2.Distance(eventData.position, dragBeginPos)}, {standardCut}");
             results.Clear();
             dalgonaRaycaster.Raycast(eventData, results);
 
+            if (results.Any(item => item.isValid && item.gameObject == deadZone.gameObject))
+            {
+                StartCoroutine(EndPlay(false));
+                return;
+            }
+            
             var result = results.Find(raycastResult => raycastResult.gameObject.tag.Equals("DalgonaBoundary"));
 
             if (result.isValid)
             {
-                if (isPointIn)
+                if (wasPointIn)
                 {
-                    if (CheckDistance(eventData.position))
-                    {
-                        ChangeNextStep();
-                    }
+                    CheckClear(eventData.position);
                 }
                 else
                 {
                     dragBeginPos = eventData.position;
-                    isPointIn = true;
+                    wasPointIn = true;
                 }
             }
-            else if (isPointIn)
+            else if (wasPointIn)
             {
-                if (CheckDistance(eventData.position))
-                {
-                    ChangeNextStep();
-                }
-
-                isPointIn = false;
+                wasPointIn = false;
+                
+                CheckClear(eventData.position);
             }
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            if (results.Any(item => item.isValid && item.gameObject == deadZone.gameObject))
+            {
+                StartCoroutine(EndPlay(false));
+                return;
+            }
+            
             Debug.Log("측정 길이: " + CheckDistance(eventData.position) + " " +
                       Vector2.Distance(eventData.position, dragBeginPos) + ":" + standardCut);
-            if (CheckDistance(eventData.position) && isPointIn)
+            if (wasPointIn)
+            {
+                CheckClear(eventData.position);
+            }
+        }
+
+        private void CheckClear(Vector2 point)
+        {
+            if (CheckDistance(point))
             {
                 ChangeNextStep();
             }
@@ -108,7 +140,7 @@ namespace Episode.EP1.DalgonaGame
 
         private bool CheckDistance(Vector2 currentPos)
         {
-            float dist = Vector2.Distance(currentPos, dragBeginPos);
+            var dist = Vector2.Distance(currentPos, dragBeginPos);
             Debug.Log(dist);
             if (dist > standardCut)
             {
@@ -120,28 +152,55 @@ namespace Episode.EP1.DalgonaGame
 
         private void ChangeNextStep()
         {
-            isPointIn = false;
+            wasPointIn = false;
             dragBeginPos = Vector3.zero;
 
-            var dalgonaImage = transform.GetComponent<Image>();
-            var curIndex = Array.IndexOf(imageChange, dalgonaImage.sprite);
+            var curIndex = Array.IndexOf(dalgonaSprites, dalgonaImage.sprite);
+            var nextIndex = curIndex + 1;
 
-            var child = transform.GetChild(curIndex);
-            child.GetComponent<Image>().raycastTarget = false;
-            child.gameObject.tag = "Untagged";
-
-            if (curIndex + 1 < imageChange.Length && curIndex + 1 < transform.childCount)
+            SetChildImageRayCast(false, curIndex);
+            dalgonaImage.sprite = dalgonaSprites[nextIndex];
+            
+            if (!IsLast())
             {
-                var nextChild = transform.GetChild(curIndex + 1);
-                nextChild.GetComponent<Image>().raycastTarget = true;
-                nextChild.gameObject.tag = "DalgonaBoundary";
-                dalgonaImage.sprite = imageChange[curIndex + 1];
+                SetChildImageRayCast(true, nextIndex);
             }
             else
             {
-                dalgonaImage.sprite = imageChange[curIndex + 1];
-                gameObject.SetActive(false);
-                onEndAction();
+                StartCoroutine(EndPlay(true));
+            }
+        }
+
+        private bool IsLast()
+        {
+            var nextIndex = Array.IndexOf(dalgonaSprites, dalgonaImage.sprite) + 1;
+            return nextIndex >= dalgonaSprites.Length || nextIndex >= dragZone.Length;
+        }
+
+        private IEnumerator EndPlay(bool isSuccess)
+        {
+            if (!isSuccess)
+            {
+                dalgonaImage.sprite = failSprites[index];
+            }
+            
+            yield return new WaitForSeconds(1f);
+            gameObject.SetActive(false);
+            onEndGameAction(isSuccess);   
+        }
+
+        private void SetChildImageRayCast(bool isActive, int zoneIndex)
+        {
+            if (isActive)
+            {
+                index = zoneIndex;
+                dragZone[zoneIndex].raycastTarget = true;
+                dragZone[zoneIndex].gameObject.tag = "DalgonaBoundary";
+            }
+            else
+            {
+                dragZone[zoneIndex].raycastTarget = false;
+                dragZone[zoneIndex].gameObject.tag = "Untagged";
             }
         }
     }
