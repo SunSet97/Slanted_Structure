@@ -10,6 +10,7 @@ Shader "Custom/Water_CelShader"
         _SpacPow ("Specular",float)=2
         _WaveSpeed("Wave Speed", float) = 0.05
         _WavePower("Wave Power", float) = 0.2
+        _NoiseIntensity("Noise Intensity",float)=0.1
         _WaveTilling("Wave Tilling", float) = 25
         _NormalTiling("Normal Tile", float) = 1
         _Angle("Rotate Angle",float)=0
@@ -70,6 +71,7 @@ Shader "Custom/Water_CelShader"
             float _WavePower;
             float _WaveTilling;
             float _Angle;
+            float _NoiseIntensity;
 
             v2f vert (appdata v,float4 tangent : TANGENT)
             {
@@ -165,7 +167,7 @@ Shader "Custom/Water_CelShader"
 
 
                 //refraction
-                float3 fGrab=tex2D(_GrabTexture, (i.screenPos/(i.screenPos.a+0.0000001)).xy + i.normal.xy*0.1*fNoise);//(_GrabTexture,scrPos.xy+fNoise.r*0.05);
+                float3 fGrab=tex2D(_GrabTexture, (i.screenPos/(i.screenPos.a+0.0000001)).xy + i.normal.xy*_NoiseIntensity*fNoise);//(_GrabTexture,scrPos.xy+fNoise.r*0.05);
                 
                 float3 water=lerp(fGrab,skyColor*cel,dotData).rgb;//lerp(fGrab,fRefl,pow(dot(o.Normal,IN.viewDir),dotData)).rgb;
 
