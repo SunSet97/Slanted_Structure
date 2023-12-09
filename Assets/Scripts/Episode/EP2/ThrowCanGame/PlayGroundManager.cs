@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.UI;
 using Utility.Game;
 
 namespace Episode.EP2.ThrowCanGame
@@ -16,14 +14,6 @@ namespace Episode.EP2.ThrowCanGame
             [Range(0, 1)] public float plusY;
             public ResultState resultType;
         }
-
-        public enum ResultState
-        {
-            Perfect,
-            Good,
-            NotBad,
-            Bad
-        }
         
 #pragma warning disable 0649
         [Header("Can")]
@@ -32,89 +22,40 @@ namespace Episode.EP2.ThrowCanGame
         [SerializeField] private Transform destPoint;
         [FormerlySerializedAs("throwCans")] [SerializeField] private ThrowProps[] throwProps;
 
-        [Header("Ring")]
-        [SerializeField] private Button clearButton;
-        [SerializeField] private RectTransform[] targets;
-        [SerializeField] private RingCreator ringCreator;
-        [Range(0, 1)] [SerializeField] private float noteSpeed;
+        [Header("Ring")] [SerializeField] private RingNoteGame ringNoteGame;
 #pragma warning restore 0649
-        
-        private void Start()
-        {
-            clearButton.onClick.AddListener(ClearCheck);
-        }
 
         public override void Play()
         {
             base.Play();
             
-            ringCreator.Initialize();
-            StartCoroutine(UpdateGame());
+            ringNoteGame.PlayGame(EndTimingGame);
         }
 
-        private IEnumerator UpdateGame()
+        private void EndTimingGame(ResultState result)
         {
-            while (targets[2].localScale.x * 0.3 * targets[2].rect.width <= ringCreator.Radius * 2)
-            {
-                ringCreator.DisplayUpdate(noteSpeed);
-                yield return null;
-            }
-
-            EndTimingGame(ResultState.Bad);
+            ThrowCan(result);
         }
         
-        private void ClearCheck()
-        {
-            if (!IsPlay)
-            {
-                return;
-            }
-
-            ResultState result;
-            if (ringCreator.Radius * 2 <= targets[2].localScale.x * targets[2].rect.width)
-            {
-                Debug.Log("유후! 바로 들어감");
-                result = ResultState.Perfect;
-            }
-            else if (ringCreator.Radius * 2 <= targets[1].localScale.x * targets[1].rect.width)
-            {
-                Debug.Log("아싸! 한번 튕기고 들어감");
-                result = ResultState.Good;
-            }
-            else if (ringCreator.Radius * 2 <= targets[0].localScale.x * targets[0].rect.width)
-            {
-                Debug.Log("아깝다! 한번 튕기고 안들어감");
-                result = ResultState.NotBad;
-            }
-            else
-            {
-                Debug.Log("앗! 안들어감");
-                result = ResultState.Bad;
-            }
-
-            StopAllCoroutines();
-            EndTimingGame(result);
-        }
-        
-        private void ThrowCan(ResultState type)
+        private void ThrowCan(ResultState result)
         {
             var can = Instantiate(canPrefab);
             can.GetComponent<Can>().OnCollisionEnter += () =>
             {
-                if (type == ResultState.Perfect || type == ResultState.Good)
+                if (result == ResultState.Perfect || result == ResultState.Good)
                 {
-                    Debug.Log($"성공 {type}");
+                    Debug.Log($"성공 {result}");
                     Invoke(nameof(Success), 1f);
                 }
                 else
                 {
-                    Debug.Log($"실패 {type}");
+                    Debug.Log($"실패 {result}");
                     Invoke(nameof(Fail), 1f);
                 }
             };
             can.transform.position = startPoint.position;
 
-            var index = Array.FindIndex(throwProps, item => item.resultType == type);
+            var index = Array.FindIndex(throwProps, item => item.resultType == result);
 
             var canDir = (destPoint.position - startPoint.position).normalized;
             canDir.y = throwProps[index].plusY;
@@ -124,12 +65,6 @@ namespace Episode.EP2.ThrowCanGame
             var throwRigid = can.GetComponent<Rigidbody>();
             throwRigid.AddForce(canDir * throwProps[index].power, ForceMode.Impulse);
             throwRigid.AddTorque(canDir * throwProps[index].power, ForceMode.Impulse);
-        }
-
-        private void EndTimingGame(ResultState result)
-        {
-            ringCreator.End();
-            ThrowCan(result);
         }
 
         private void Success()

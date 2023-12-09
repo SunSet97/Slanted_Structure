@@ -4,6 +4,7 @@ using Data;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Serialization;
+using UnityEngine.Timeline;
 using Utility.Character;
 using Utility.Core;
 using Utility.Dialogue;
@@ -26,7 +27,7 @@ namespace Utility.Interaction
         Play = 8,
         FadeIn = 9,
         FadeOut = 10,
-        Timeline = 11,
+        CutScene = 11,
         ImmediateChoice = 12,
         ClearMap = 13,
         ChoiceDialogue = 99
@@ -53,6 +54,7 @@ namespace Utility.Interaction
         Task = 8,
         Game = 16,
         Cinematic = 32,
+        CutScene = 64,
         // FadeOut
     }
 
@@ -99,6 +101,28 @@ namespace Utility.Interaction
         
         public int interactIndex;
     }
+
+    [Serializable]
+    public class MiniGameData
+    {
+        public MiniGame miniGame;
+        public InteractionEvents onSuccessEndAction;
+        public InteractionEvents onFailEndAction;
+    }
+    
+    [Serializable]
+    public class CinematicData
+    {
+        public PlayableDirector playableDirector;
+        public GameObject[] cinematics;
+        public GameObject[] inGames;
+    }
+    
+    [Serializable]
+    public class CutSceneData
+    {
+        public TimelineAsset timelineAsset;
+    }
     
     [Serializable]
     public class InteractionData
@@ -110,7 +134,7 @@ namespace Utility.Interaction
 
         [FormerlySerializedAs("game")] [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Game)]
         public MiniGame miniGame;
-
+        
         [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Dialogue)]
         public float dialoguePrintSec;
 
@@ -145,19 +169,27 @@ namespace Utility.Interaction
         [ConditionalHideInInspector("isViewChange")]
         public CamInfo interactionCamera;
 
-        public bool isCameraHold;
+        [FormerlySerializedAs("isCameraViewReset")] [ConditionalHideInInspector("isViewChange")] [FormerlySerializedAs("isCameraHold")]
+        public bool isCameraViewHold;
 
         [Header("캐릭터 이동")] public bool isTeleport;
 
         [ConditionalHideInInspector("isTeleport")]
         public Transform teleportTarget;
-        
-        [Header("타임라인")]
+
         [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Cinematic)]
         public PlayableDirector playableDirector;
         public GameObject[] cinematics;
         public GameObject[] inGames;
-
+        
+        // [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Game)]
+        // public MiniGameData miniGameData;
+        // [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.Cinematic)]
+        // public CinematicData cinematicData;
+        [ConditionalHideInInspector("interactionPlayType", InteractionPlayType.CutScene)]
+        public CutSceneData cutSceneData;
+        
+        
         [Header("Interaction State")] [Space(10)]
         public bool isLoop;
         [FormerlySerializedAs("isContinue")] [ConditionalHideInInspector("isNextInteract", true)]
@@ -260,7 +292,7 @@ namespace Utility.Interaction
 
         public void EndAction(bool isSuccess = false)
         {
-            if (!isCameraHold)
+            if (!isCameraViewHold)
             {
                 var cameraMoving = DataController.Instance.Cam.GetComponent<CameraMoving>();
 

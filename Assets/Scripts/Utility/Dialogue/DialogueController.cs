@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using Data;
 using UnityEngine;
 using UnityEngine.Events;
@@ -453,10 +452,10 @@ namespace Utility.Dialogue
 
         public static string ConvertPathToJson(string path)
         {
-            var directoryPath = path.Split('/')[0];
-            var desEp = directoryPath.Last();
+            var desEp = int.Parse(DataController.Instance.CurrentMap.mapCode.Substring(0, 1));
+            var desStep = DataController.Instance.CurrentMap.step;
             var dialogueName = path.Split('/')[1];
-            var assetBundle = AssetBundleMap.GetAssetBundle($"ep{desEp}");
+            var assetBundle = AssetBundleMap.GetAssetBundle($"dialogue/ep{desEp}/step{desStep}");
             return assetBundle.LoadAsset<TextAsset>(dialogueName).text;
         }
     }

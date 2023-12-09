@@ -71,7 +71,9 @@ namespace Episode.EP2.CatchPickpocket
         public override void EndPlay(bool isSuccess)
         {
             mainCharacter.CharacterAnimator.SetFloat("JumpSpeed", 1);
-            
+            renderCamera.gameObject.SetActive(false);
+            DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
+            pickpocket.gameObject.SetActive(false);
             StopAllCoroutines();
             Destroy(mainCharacter.gameObject.GetComponent<CatchPickpocketPlayer>());
             JoystickController.Instance.SetJoystickArea(CustomEnum.JoystickAreaType.Default);
@@ -80,8 +82,7 @@ namespace Episode.EP2.CatchPickpocket
                 DataController.Instance.CurrentMap.ResetMap();
             }
 
-            OnEndPlay?.Invoke(isSuccess);
-            IsPlay = false;
+            base.EndPlay(isSuccess);
         }
 
         public override void Play()
@@ -102,15 +103,19 @@ namespace Episode.EP2.CatchPickpocket
             originCharacterYPos = -float.MaxValue;
             JoystickController.Instance.SetJoystickArea(CustomEnum.JoystickAreaType.Full);
             runDirection = Vector3.forward;
+            
+            DataController.Instance.CurrentMap.ui.gameObject.SetActive(true);
 
             mainCharacter = DataController.Instance.GetCharacter(CharacterType.Main);
             mainCharacter.CharacterAnimator.applyRootMotion = false;
             mainCharacter.gameObject.AddComponent<CatchPickpocketPlayer>().Init(OnTrigger);
 
+            renderCamera.gameObject.SetActive(true);
             renderCamera.transform.SetParent(mainCharacter.transform);
             renderCamera.transform.localPosition = cameraPositionOffset;
             renderCamera.transform.localEulerAngles = cameraAnglesOffset;
 
+            pickpocket.gameObject.SetActive(true);
             pickpocket.transform.position = mainCharacter.transform.position + new Vector3(0, 0, 10);
 
             JoystickController.Instance.SetVisible(false);

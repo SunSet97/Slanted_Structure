@@ -234,7 +234,6 @@ namespace Utility.Core
             var nextMap = LoadMap(desMapCode, desStep);
 
             CurrentMap = Instantiate(nextMap, mapGenerate);
-
             SetByChangedMap(saveData);
             CurrentMap.Init();
 
@@ -331,7 +330,7 @@ namespace Utility.Core
             }
         }
 
-        public void UpdateLikeable(int[] rauLikeables)
+        public void UpdateRelationShipData(int[] rauLikeables)
         {
             charRelationshipData.selfEstm += rauLikeables[0];
             charRelationshipData.intimacySpRau += rauLikeables[1];

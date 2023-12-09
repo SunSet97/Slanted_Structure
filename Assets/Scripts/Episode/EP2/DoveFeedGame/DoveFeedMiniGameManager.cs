@@ -1,56 +1,29 @@
-﻿using System.Collections;
-using Episode.EP2.ThrowCanGame;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using Utility.Game;
 
 namespace Episode.EP2.DoveFeedGame
 {
     public class DoveFeedMiniGameManager : MiniGame
     {
-        private enum ResultState
-        {
-            Perfect = 1,
-            Good = 2,
-            NotBad = 3,
-            Bad = 4
-        }
-        
 #pragma warning disable 0649
-        [Header("Ring")]
-        [SerializeField] private Button clearButton;
-        [SerializeField] private RingCreator ringCreator;
-        [SerializeField] private RectTransform[] targets;
-        [Range(0, 1)] [SerializeField] private float noteSpeed;
+        [Header("Ring")] [SerializeField] private RingNoteGame ringNoteGame;
 #pragma warning restore 0649
         
         // [Header("비둘기")]
         // [SerializeField] private Animator dove;
         
-        private void Start()
-        {
-            clearButton.onClick.AddListener(ClearCheck);
-        }
-
         public override void Play()
         {
             base.Play();
             
-            ringCreator.Initialize();
-            StartCoroutine(UpdateGame());
+            ringNoteGame.PlayGame(EndTimingGame);
         }
         
-        private IEnumerator UpdateGame()
+        private void EndTimingGame(ResultState result)
         {
-            while (targets[2].localScale.x * 0.3 * targets[2].rect.width <= ringCreator.Radius * 2)
-            {
-                ringCreator.DisplayUpdate(noteSpeed);
-                yield return null;
-            }
-
-            EndTimingGame(ResultState.Bad);
+            FeedDove(result);
         }
-
+        
         private void FeedDove(ResultState type)
         {
             // 먹이 주기
@@ -84,45 +57,6 @@ namespace Episode.EP2.DoveFeedGame
             }
         }
 
-        private void ClearCheck()
-        {
-            if (!IsPlay)
-            {
-                return;
-            }
-            
-            ResultState result;
-            if (ringCreator.Radius * 2 <= targets[2].localScale.x * targets[2].rect.width)
-            {
-                Debug.Log("유후! 바로 들어감");
-                result = ResultState.Perfect;
-            }
-            else if (ringCreator.Radius * 2 <= targets[1].localScale.x * targets[1].rect.width)
-            {
-                Debug.Log("아싸! 한번 튕기고 들어감");
-                result = ResultState.Good;
-            }
-            else if (ringCreator.Radius * 2 <= targets[0].localScale.x * targets[0].rect.width)
-            {
-                Debug.Log("아깝다! 한번 튕기고 안들어감");
-                result = ResultState.NotBad;
-            }
-            else
-            {
-                Debug.Log("앗! 안들어감");
-                result = ResultState.Bad;
-            }
-
-            StopAllCoroutines();
-            EndTimingGame(result);
-        }
-        
-        private void EndTimingGame(ResultState result)
-        {
-            ringCreator.End();
-            FeedDove(result);
-        }
-        
         private void Success()
         {
             EndPlay(true);

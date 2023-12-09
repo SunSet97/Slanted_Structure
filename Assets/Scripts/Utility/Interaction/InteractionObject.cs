@@ -27,7 +27,7 @@ namespace Utility.Interaction
     {
 #pragma warning disable 0649
         public string id;
-        [FormerlySerializedAs("interactions")] public List<InteractionData> interactionData;
+        [FormerlySerializedAs("interactions")] public InteractionData[] interactionData;
 
         [Header("아웃라인 설정")] [Space(20)] [SerializeField]
         private bool useOutline;
@@ -73,7 +73,7 @@ namespace Utility.Interaction
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
-                if (interactionData != null && interactionData.Count > 0)
+                if (interactionData != null && interactionData.Length > 0)
                 {
                     foreach (var interaction in interactionData)
                     {
@@ -276,6 +276,55 @@ namespace Utility.Interaction
 
                     return;
                 }
+                case InteractionPlayType.CutScene:
+                {
+                    if (interactionDatum.cutSceneData.timelineAsset == null)
+                    {
+                        Debug.LogError("타임라인 오류");
+                        return;
+                    }
+
+                    DialogueController.Instance.playableDirector.playableAsset =
+                        interactionDatum.cutSceneData.timelineAsset;
+
+                    BindPlayableDirector(DialogueController.Instance.playableDirector);
+
+                    foreach (var interactionInGame in interactionDatum.inGames)
+                    {
+                        interactionInGame.SetActive(false);
+                    }
+
+                    foreach (var interactionCinematic in interactionDatum.cinematics)
+                    {
+                        interactionCinematic.SetActive(true);
+                    }
+
+                    DialogueController.Instance.playableDirector.Play();
+
+                    JoystickController.Instance.StopSaveLoadJoyStick(true);
+                    PlayUIController.Instance.SetMenuActive(false);
+
+                    StartCoroutine(WaitTimelineEnd(DialogueController.Instance.playableDirector, () =>
+                    {
+                        PlayUIController.Instance.SetMenuActive(true);
+                        JoystickController.Instance.StopSaveLoadJoyStick(false);
+                        DataController.Instance.GetCharacter(CharacterType.Main)?.UseJoystickCharacter();
+
+                        foreach (var cinematic in interactionDatum.cinematics)
+                        {
+                            cinematic.SetActive(false);
+                        }
+
+                        foreach (var inGame in interactionDatum.inGames)
+                        {
+                            inGame.SetActive(true);
+                        }
+
+                        interactionDatum.JsonTask.Peek().taskIndex++;
+                        StartTaskAction(interactionDatum);
+                    }));
+                    break;
+                }
             }
         }
         
@@ -414,7 +463,7 @@ namespace Utility.Interaction
                         }
 
                         break;
-                    case TaskContentType.Timeline:
+                    case TaskContentType.CutScene:
                         var episodeIndex = int.Parse(currentTask.nextFile.Substring(0, 1));
                         var timelineAsset = Resources.Load<TimelineAsset>($"Timeline/Episode {episodeIndex}/{currentTask.nextFile}");
                         
@@ -539,7 +588,7 @@ namespace Utility.Interaction
             // 성향 변화
             curTask.increaseVar = curTask.increaseVar.Replace("m", "-");
             var changeVal = Array.ConvertAll(curTask.increaseVar.Split(','), int.Parse);
-            DataController.Instance.UpdateLikeable(changeVal);
+            DataController.Instance.UpdateRelationShipData(changeVal);
 
             //다음 맵 코드 변경
             if (curTask.order != 0)
@@ -689,7 +738,7 @@ namespace Utility.Interaction
                 var animationEvent = new AnimationEvent
                 {
                     time = animatorClipInfo.clip.length,
-                    intParameter = interactionData.FindIndex(item => item == interactionDatum),
+                    intParameter = Array.FindIndex(interactionData, item => item == interactionDatum),
                     functionName = nameof(EndAnimation)
                 };
                 animatorClipInfo.clip.AddEvent(animationEvent);
@@ -799,7 +848,7 @@ namespace Utility.Interaction
 
         public InteractionData GetInteractionData(int index)
         {
-            if (interactionData == null || interactionData.Count <= index)
+            if (interactionData == null || interactionData.Length <= index)
             {
                 Debug.LogError("인터랙션 데이터 설정 오류");
                 return null;
@@ -810,7 +859,7 @@ namespace Utility.Interaction
 
         public InteractionData GetInteractionData()
         {
-            if (interactionData == null || interactionData.Count == 0 || interactionData.Count <= InteractIndex)
+            if (interactionData == null || interactionData.Length == 0 || interactionData.Length <= InteractIndex)
             {
                 Debug.LogError("인터랙션 데이터 설정 오류");
                 return null;
@@ -830,7 +879,7 @@ namespace Utility.Interaction
                 serializedInteractionData = new List<SerializedInteractionData>()
             };
 
-            for (var index = 0; index < interactionData.Count; index++)
+            for (var index = 0; index < interactionData.Length; index++)
             {
                 var interaction = interactionData[index];
                 interaction.serializedInteractionData.id = index;

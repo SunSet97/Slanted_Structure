@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utility.Core;
 using Utility.UI;
@@ -10,7 +11,7 @@ namespace Episode.EP2.ThrowCanGame
     {
 #pragma warning disable 0649
         [SerializeField] private LineRenderer lineRenderer;
-        [SerializeField] private Image ringImage;
+        [FormerlySerializedAs("ringImage")] [SerializeField] private Image startLine;
         [SerializeField] private GameObject rangeParent;
         [SerializeField] private int segments;
         [SerializeField] private float ringWidth;
@@ -39,9 +40,9 @@ namespace Episode.EP2.ThrowCanGame
             lineRenderer.endWidth = ringWidth;
             lineRenderer.startWidth = ringWidth;
             lineRenderer.alignment = LineAlignment.TransformZ;
-            originalRadius = ringImage.rectTransform.localScale.x / 3
-                         * Mathf.Pow(ringImage.sprite.rect.width, 2)
-                         / ringImage.sprite.pixelsPerUnit
+            originalRadius = startLine.rectTransform.localScale.x / 3
+                         * Mathf.Pow(startLine.sprite.rect.width, 2)
+                         / startLine.sprite.pixelsPerUnit
                          / 2;
             
             Radius = originalRadius;

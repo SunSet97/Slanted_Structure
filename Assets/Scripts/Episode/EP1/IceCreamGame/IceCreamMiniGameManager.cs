@@ -20,22 +20,31 @@ namespace Episode.EP1.IceCreamGame
 
 #pragma warning disable 0649
         [SerializeField] private GameObject iceCreamPanel;
-        [SerializeField] private IceCreamClicker iceCreamClicker;
+
+        [Header("Seller")] [SerializeField] private Image sellerImage;
+        [SerializeField] private Sprite[] sellerSprites;
+
+        [Header("Ice Cream")] [SerializeField] private IceCreamClicker iceCreamClicker;
         [SerializeField] private Transform iceCream;
         [SerializeField] private Transform[] wayPoint;
         [SerializeField] private Transform destTransform;
         [SerializeField] private Button clickMissCheckButton;
-        [SerializeField] private Image sellerImage;
-        [SerializeField] private Sprite[] sellerSprites;
 
-        [SerializeField] [Range(10, 20)] private float horizontalSpeed = 11f;
-        [SerializeField] [Range(5, 10)] private float verticalSpeed = 11f;
+        [Header("Ice Cream - Parameter Value")] [SerializeField] [Range(10, 20)]
+        private float horizontalSpeed = 11f;
+
+        [SerializeField] [Range(5, 10)] private float verticalSpeed = 10f;
+        [SerializeField] private int clearCount;
+
+        [Header("Timer")] [SerializeField] private Text timerText;
+        [SerializeField] private float timerSec;
 #pragma warning restore 0649
-        
+
         private int successCount;
         private Vector3 originPos;
+        private Coroutine moveVerticalCoroutine;
 
-        private bool IsEnable
+        private bool IsClickEnable
         {
             set
             {
@@ -49,23 +58,29 @@ namespace Episode.EP1.IceCreamGame
             base.Play();
             JoystickController.Instance.StopSaveLoadJoyStick(true);
             iceCreamPanel.SetActive(true);
-            
-            IsEnable = false;
+
+            IsClickEnable = false;
             iceCreamClicker.Init(() =>
             {
-                StopAllCoroutines();
-                IsEnable = false;
+                IsClickEnable = false;
                 successCount++;
 
-                StartCoroutine(successCount == 3
-                    ? MoveToOrigin(SellerEmotion.Surprise, 1f, () => { EndPlay(true); })
-                    : MoveToOrigin(SellerEmotion.Surprise, 1f, () => { StartCoroutine(StartPattern()); }));
+                if (successCount == clearCount)
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(MoveToOrigin(SellerEmotion.Surprise, 1f, () => { EndPlay(true); }));
+                }
+                else
+                {
+                    StopCoroutine(moveVerticalCoroutine);
+                    StartCoroutine(MoveToOrigin(SellerEmotion.Surprise, 1f, () => { StartCoroutine(StartPattern()); }));
+                }
             });
 
             clickMissCheckButton.onClick.AddListener(() =>
             {
-                StopAllCoroutines();
-                IsEnable = false;
+                StopCoroutine(moveVerticalCoroutine);
+                IsClickEnable = false;
 
                 StartCoroutine(MoveToOrigin(SellerEmotion.Smile, 1f, () => { StartCoroutine(StartPattern()); }));
             });
@@ -75,6 +90,8 @@ namespace Episode.EP1.IceCreamGame
             iceCream.position = iceCreamPos;
 
             StartCoroutine(StartPattern());
+
+            StartCoroutine(StartTimer());
         }
 
         public override void EndPlay(bool isSuccess)
@@ -86,10 +103,8 @@ namespace Episode.EP1.IceCreamGame
 
         private IEnumerator StartPattern()
         {
-            Debug.Log("시작");
             var moveCount = Random.Range(4, 7);
             var horizontalMoveCounting = 0;
-            Debug.Log(moveCount);
             while (horizontalMoveCounting < moveCount)
             {
                 float tarPosX;
@@ -101,10 +116,9 @@ namespace Episode.EP1.IceCreamGame
 
                 while (Mathf.Abs(iceCream.position.x - tarPosX) > 0.01f)
                 {
-                    var position = iceCream.position;
-                    Vector2 moveTowards = Vector2.MoveTowards(position,
-                        new Vector2(tarPosX, position.y), 100 * horizontalSpeed * Time.deltaTime);
-                    iceCream.position = moveTowards;
+                    iceCream.position = Vector3.MoveTowards(iceCream.position,
+                        new Vector3(tarPosX, iceCream.position.y, iceCream.position.z),
+                        100 * horizontalSpeed * Time.deltaTime);
 
                     yield return null;
                 }
@@ -112,64 +126,88 @@ namespace Episode.EP1.IceCreamGame
                 horizontalMoveCounting++;
             }
 
-            StartCoroutine(MoveVertical());
+            moveVerticalCoroutine = StartCoroutine(MoveVertical());
         }
 
         private IEnumerator MoveVertical()
         {
             originPos = iceCream.position;
-            IsEnable = true;
+            IsClickEnable = true;
 
             SetSellerEmotion(SellerEmotion.Joyful);
-            
+
             var sec = 0f;
             const float downSec = 1f;
-            while (sec <= downSec / verticalSpeed)
+            while (sec <= downSec)
             {
                 sec += Time.deltaTime * verticalSpeed;
-                Vector3 switchPosition = originPos;
-                switchPosition.y = Mathf.Lerp(originPos.y, destTransform.position.y, sec / (downSec));
+                var t = sec / downSec;
+                var switchPosition = originPos;
+                switchPosition.y = Mathf.Lerp(originPos.y, destTransform.position.y, t);
                 iceCream.position = switchPosition;
                 yield return null;
             }
 
             yield return new WaitForSeconds(Random.Range(1f, 1.5f));
 
-            SetSellerEmotion(SellerEmotion.Smile);
-            sec = 0f;
-            const float upSec = 3f;
-            while (sec <= upSec)
-            {
-                sec += Time.deltaTime * verticalSpeed;
-                Vector3 switchPosition = originPos;
-                switchPosition.y = Mathf.Lerp(destTransform.position.y, originPos.y, sec / (upSec));
-                iceCream.position = switchPosition;
-                yield return null;
-            }
+            StartCoroutine(MoveToOrigin(SellerEmotion.Smile, 1f, () => { StartCoroutine(StartPattern()); }));
 
-            IsEnable = false;
-            yield return new WaitForSeconds(.5f);
-            StartCoroutine(StartPattern());
+            // sec = 0f;
+            // const float upSec = 3f;
+            // while (sec <= upSec)
+            // {
+            //     sec += Time.deltaTime * verticalSpeed;
+            //     var t = sec / upSec;
+            //     var switchPosition = originPos;
+            //     switchPosition.y = Mathf.Lerp(destTransform.position.y, originPos.y, t);
+            //     iceCream.position = switchPosition;
+            //     yield return null;
+            // }
+            //
+            // IsClickEnable = false;
+            // SetSellerEmotion(SellerEmotion.Default);
+            // yield return new WaitForSeconds(1f);
+            // StartCoroutine(StartPattern());
         }
 
         private IEnumerator MoveToOrigin(SellerEmotion emotion, float waitSec, Action onEndAction)
         {
+            Debug.Log("Move to Origin");
             SetSellerEmotion(emotion);
-            var waitForFixedUpdate = new WaitForFixedUpdate();
             do
             {
-                var moveTowards = Vector3.Lerp(iceCream.position, originPos, 0.02f * Random.Range(1, 10));
-                iceCream.position = moveTowards;
-                yield return waitForFixedUpdate;
-            } while (Vector3.Distance(originPos, iceCream.position) >= .1f);
+                iceCream.position = Vector3.MoveTowards(iceCream.position,
+                    new Vector3(iceCream.position.x, originPos.y, iceCream.position.z),
+                    100 * verticalSpeed * Time.deltaTime);
+                yield return null;
+            } while (Mathf.Abs(originPos.y - iceCream.position.y) >= .1f);
 
             SetSellerEmotion(SellerEmotion.Default);
             iceCream.position = originPos;
 
             yield return new WaitForSeconds(waitSec);
 
-            onEndAction();
+            onEndAction?.Invoke();
         }
+
+        private IEnumerator StartTimer()
+        {
+            var t = timerSec;
+            while (t >= 0)
+            {
+                timerText.text = $"{t:0}";
+                t -= Time.deltaTime;
+                yield return null;
+            }
+
+            Debug.Log($"End Timer");
+
+            StopAllCoroutines();
+            IsClickEnable = false;
+
+            StartCoroutine(MoveToOrigin(SellerEmotion.Smile, 1f, () => { EndPlay(false); }));
+        }
+
 
         private void SetSellerEmotion(SellerEmotion emotion)
         {

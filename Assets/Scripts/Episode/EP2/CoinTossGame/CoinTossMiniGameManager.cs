@@ -10,6 +10,11 @@ namespace Episode.EP2.CoinTossGame
 {
     public class CoinTossMiniGameManager : MiniGame
     {
+        private enum ChargeStepType
+        {
+            None, Direction, Power, Hold
+        }
+        
 #pragma warning disable 0649
         [SerializeField] private GameObject coinPrefab;
 
@@ -19,7 +24,8 @@ namespace Episode.EP2.CoinTossGame
         [SerializeField] private Transform directionArrow;
         [SerializeField] private GameObject powerPanel;
         [SerializeField] private Transform powerArrow;
-
+        [SerializeField] private GameObject remainCoinPanel;
+        [SerializeField] private Text remainCoinText;
         [SerializeField] private Button gameStartButton;
 
         [Header("-Toss")] [SerializeField] private EventTrigger tossButtonTrigger;
@@ -36,8 +42,53 @@ namespace Episode.EP2.CoinTossGame
         [SerializeField] private float throwAngleRange = 45f;
 #pragma warning restore 0649
         
-        private int tossStep;
         private int tryNum;
+        private int TryNum
+        {
+            get => tryNum;
+            set
+            {
+                tryNum = value;
+                remainCoinText.text = $"X{MaximumTryCount - tryNum}";
+            }
+        }
+        private const int MaximumTryCount = 5;
+        private ChargeStepType chargeStep;
+
+        private ChargeStepType ChargeStep
+        {
+            get => chargeStep;
+            set
+            {
+                switch (value)
+                {
+                    case ChargeStepType.Direction:
+                        directionPanel.SetActive(true);
+                        powerPanel.SetActive(true);
+                        tossButtonTrigger.gameObject.SetActive(true);
+                        // directionPanel.SetEnable(true);
+                        // powerPanel.SetEnable(false);
+                        break;
+                    case ChargeStepType.Power:
+                        directionPanel.SetActive(true);
+                        powerPanel.SetActive(true);
+                        tossButtonTrigger.gameObject.SetActive(true);
+                        // directionPanel.고정
+                        // powerPanel.SetEnable(true);
+                        break;
+                    case ChargeStepType.None:
+                        directionPanel.SetActive(false);
+                        powerPanel.SetActive(false);
+                        tossButtonTrigger.gameObject.SetActive(false);
+                        break;
+                    case ChargeStepType.Hold:
+                        tossButtonTrigger.gameObject.SetActive(false);
+                        break;
+                }
+
+                chargeStep = value;
+            }
+        }
 
         private Vector3 initialThrowEulerAngle;
         private Vector3 initialDirectionArrowEulerAngles;
@@ -66,14 +117,14 @@ namespace Episode.EP2.CoinTossGame
         public override void Play()
         {
             base.Play();
+            TryNum = 0;
             initialThrowEulerAngle = throwPos.eulerAngles;
             initialDirectionArrowEulerAngles = directionArrow.eulerAngles;
             initialPowerArrowPos = powerArrow.localPosition;
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(true);
             gameStartButton.gameObject.SetActive(true);
-            directionPanel.SetActive(false);
-            powerPanel.SetActive(false);
-            tossButtonTrigger.gameObject.SetActive(false);
+            remainCoinPanel.SetActive(false);
+            ChargeStep = ChargeStepType.None;
             ResetUI();
         }
 
@@ -81,16 +132,14 @@ namespace Episode.EP2.CoinTossGame
         public override void EndPlay(bool isSuccess)
         {
             base.EndPlay(isSuccess);
-            directionPanel.SetActive(false);
-            powerPanel.SetActive(false);
-            tossButtonTrigger.gameObject.SetActive(false);
+            ChargeStep = ChargeStepType.None;
+            remainCoinPanel.SetActive(false);
             DataController.Instance.CurrentMap.ui.gameObject.SetActive(false);
         }
 
         private void ResetUI(Action onEndAction = null)
         {
             StartCoroutine(ResetCoroutine(onEndAction));
-            tossStep = 0;
         }
 
         private IEnumerator ResetCoroutine(Action onEndAction)
@@ -113,18 +162,17 @@ namespace Episode.EP2.CoinTossGame
         private void StartButton()
         {
             gameStartButton.gameObject.SetActive(false);
-            tossButtonTrigger.gameObject.SetActive(true);
-            directionPanel.SetActive(true);
-            powerPanel.SetActive(true);
+            remainCoinPanel.SetActive(true);
+            ChargeStep = ChargeStepType.Direction;
         }
 
         private void OnPointerDown(BaseEventData _)
         {
-            if (tossStep == 0)
+            if (ChargeStep == ChargeStepType.Direction)
             {
                 StartCoroutine(ChargeDirection());
             }
-            else if (tossStep == 1)
+            else if (ChargeStep == ChargeStepType.Power)
             {
                 StartCoroutine(ChargePower());
             }
@@ -134,14 +182,14 @@ namespace Episode.EP2.CoinTossGame
         {
             StopAllCoroutines();
 
-            if (tossStep == 0)
+            if (ChargeStep == ChargeStepType.Direction)
             {
-                tossStep++;
+                ChargeStep = ChargeStepType.Power;
             }
-            else if (tossStep == 1)
+            else if (ChargeStep == ChargeStepType.Power)
             {
-                tryNum++;
-                tossButtonTrigger.gameObject.SetActive(false);
+                TryNum++;
+                ChargeStep = ChargeStepType.Hold;
                 
                 var angle = directionArrow.localEulerAngles.z;
                 
@@ -170,27 +218,27 @@ namespace Episode.EP2.CoinTossGame
                 tossedCoin.Init(throwPos.forward, tossPow, 5f, isClear =>
                 {
                     Debug.Log($"성공여부: {isClear}");
-                    // if (isClear)
-                    // {
-                    //     // 성공
-                    //     EndPlay(true);
-                    // }
-                    // else
-                    // {
-                    //     // 실패
-                    //     if (tryNum >= 5)
-                    //     {
-                    //         Debug.Log("끝남");
-                    //         EndPlay(false);
-                    //     }
-                    //     else
-                    //     {
+                    if (isClear)
+                    {
+                        // 성공
+                        EndPlay(true);
+                    }
+                    else
+                    {
+                        // 실패
+                        if (TryNum >= MaximumTryCount)
+                        {
+                            Debug.Log("끝남");
+                            EndPlay(false);
+                        }
+                        else
+                        {
                             ResetUI(() =>
                             {
-                                tossButtonTrigger.gameObject.SetActive(true);
+                                ChargeStep = ChargeStepType.Direction;
                             });
-                            // }
-                    // }
+                        }
+                    }
                 });
             }
         }

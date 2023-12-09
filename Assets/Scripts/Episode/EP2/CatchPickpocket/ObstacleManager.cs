@@ -12,6 +12,7 @@ namespace Episode.EP2.CatchPickpocket
             
             foreach (var animator in animators)
             {
+                animator.enabled = true;
                 animator.gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
                 animator.speed = speed;
             }

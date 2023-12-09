@@ -8,8 +8,8 @@ namespace Utility.Utils
     [Serializable]
     public struct Ending
     {
-        public Sprite endingSprite;
         public int endingIndex;
+        public Sprite endingSprite;
     }
     
     public class EndingHelper : MonoBehaviour
@@ -31,6 +31,7 @@ namespace Utility.Utils
                     {
                         _instance = Create();
                     }
+                    DontDestroyOnLoad(_instance);
                 }
 
                 return _instance;
