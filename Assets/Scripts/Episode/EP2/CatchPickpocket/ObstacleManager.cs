@@ -1,20 +1,39 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Episode.EP2.CatchPickpocket
 {
     public class ObstacleManager : MonoBehaviour
     {
-        [SerializeField] private Animator[] animators;
-        
+        [Serializable]
+        private class Obstacle
+        {
+            public Animator animator;
+            public float realMoveSpeed;
+            public float animationMoveSpeed;
+        }
+
+        [SerializeField] private Obstacle[] obstacles;
+
+        public int index;
+
         public void Initialize(float speed)
         {
-            animators = GetComponentsInChildren<Animator>(true);
-            
-            foreach (var animator in animators)
+            foreach (var obstacle in obstacles)
             {
-                animator.enabled = true;
-                animator.gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
-                animator.speed = speed;
+                obstacle.animator.enabled = true;
+                obstacle.animator.gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
+                obstacle.animator.speed = speed * obstacle.animationMoveSpeed;
+            }
+        }
+
+        public void Move(float deltaTime)
+        {
+            foreach (var obstacle in obstacles)
+            {
+                obstacle.animator.transform.Translate(obstacle.realMoveSpeed * deltaTime *
+                                                      obstacle.animator.transform.InverseTransformDirection(
+                                                          obstacle.animator.transform.forward));
             }
         }
     }
