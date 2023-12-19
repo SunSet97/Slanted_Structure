@@ -19,6 +19,12 @@ namespace Utility.Dialogue
     [RequireComponent(typeof(Animator))]
     public class DialogueController : MonoBehaviour
     {
+        private enum InputAreaType
+        {
+            Dialogue,
+            System
+        }
+        
         public static DialogueController Instance { get; private set; }
 
         public GameObject dialoguePanel;
@@ -26,7 +32,9 @@ namespace Utility.Dialogue
 #pragma warning disable 0649
         [Header("UI")] [FormerlySerializedAs("dialogueBox")] [SerializeField]
         private Image dialogueInputArea;
-
+        [SerializeField]
+        private Image systemDialogueInputArea;
+        
         [SerializeField] private Animator charEmotionAnimator;
         [SerializeField] private Text dialogueNameText;
         [SerializeField] private Text dialogueContentText;
@@ -77,6 +85,7 @@ namespace Utility.Dialogue
                 choiceTexts[index] = choiceButtons[index].GetComponentInChildren<Text>(true);
             }
 
+            systemDialogueInputArea.alphaHitTestMinimumThreshold = 0.1f;
             dialogueInputArea.alphaHitTestMinimumThreshold = 0.1f;
             var eventTrigger = dialogueInputArea.GetComponent<EventTrigger>();
             var entryPointerUp = new EventTrigger.Entry
@@ -84,6 +93,9 @@ namespace Utility.Dialogue
                 eventID = EventTriggerType.PointerUp
             };
             entryPointerUp.callback.AddListener(data => { OnInputDialogue(); });
+            eventTrigger.triggers.Add(entryPointerUp);
+            
+            eventTrigger = systemDialogueInputArea.GetComponent<EventTrigger>();
             eventTrigger.triggers.Add(entryPointerUp);
         }
 
@@ -184,17 +196,19 @@ namespace Utility.Dialogue
 
                 if (charEmotionAnimator)
                 {
-                    string animatorPath = "Character_dialogue/" + dialogueDataItem.anim_name;
+                    var animatorPath = "Character_dialogue/" + dialogueDataItem.anim_name;
                     charEmotionAnimator.runtimeAnimatorController =
                         Resources.Load(animatorPath) as RuntimeAnimatorController;
                     if (charEmotionAnimator.runtimeAnimatorController != null)
                     {
                         charEmotionAnimator.GetComponent<Image>().enabled = true;
                         charEmotionAnimator.SetInteger(EmotionHash, (int)dialogueDataItem.expression);
+                        UpdateInputArea(InputAreaType.Dialogue);
                     }
                     else
                     {
                         charEmotionAnimator.GetComponent<Image>().enabled = false;
+                        UpdateInputArea(InputAreaType.System);
                         // Debug.LogError("Dialogue 애니메이션 세팅 오류");
                     }
                 }
@@ -417,6 +431,20 @@ namespace Utility.Dialogue
             }
         }
 
+        private void UpdateInputArea(InputAreaType inputAreaType)
+        {
+            if (inputAreaType == InputAreaType.Dialogue)
+            {
+                dialogueInputArea.gameObject.SetActive(true);
+                systemDialogueInputArea.gameObject.SetActive(false);
+            }
+            else if (inputAreaType == InputAreaType.System)
+            {
+                dialogueInputArea.gameObject.SetActive(false);
+                systemDialogueInputArea.gameObject.SetActive(true);
+            }
+        }
+
         public void AddDialogueEndAction(UnityAction endAction)
         {
             Debug.Log("Add Dialogue EndAction");
@@ -448,6 +476,7 @@ namespace Utility.Dialogue
         {
             Debug.Log($"Input Enable? {isEnable}");
             dialogueInputArea.raycastTarget = isEnable;
+            systemDialogueInputArea.raycastTarget = isEnable;
         }
 
         public static string ConvertPathToJson(string path)
