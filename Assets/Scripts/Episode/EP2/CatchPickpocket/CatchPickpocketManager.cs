@@ -169,8 +169,9 @@ namespace Episode.EP2.CatchPickpocket
 
             var obstacleManager = ObjectPoolHelper.Get(patternPrefabs[randomRange]).GetComponent<ObstacleManager>();
             obstacleManager.transform.parent = obstacleRoot;
-            obstacleManager.transform.position = spawnTransform.transform.position;
-            obstacleManager.transform.localEulerAngles = Vector3.zero;
+            obstacleManager.transform.SetPositionAndRotation(spawnTransform.transform.position, Quaternion.identity);
+            // obstacleManager.transform.position = spawnTransform.transform.position;
+            // obstacleManager.transform.localEulerAngles = Vector3.zero;
             // pattern.transform.LookAt(pattern.transform.position - Vector3.forward);
 
             spawnedList.Add(obstacleManager);
@@ -188,6 +189,7 @@ namespace Episode.EP2.CatchPickpocket
                 // // if 카메라 뒤에 있으면 Release
                 // if (mainCharacter.transform.position.z - 10 < obstacleManager.transform.position.z)
                 // {
+                //     obstacleManager.gameObject.SetActive(false);
                 //     ObjectPoolHelper.Release(patternPrefabs[obstacleManager.index], obstacleManager.gameObject);
                 // }
             }

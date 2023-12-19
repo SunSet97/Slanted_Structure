@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Utility.Core;
 using Utility.UI;
+using Utility.Utils;
 
 namespace Utility.Interaction
 {
@@ -11,62 +12,77 @@ namespace Utility.Interaction
         [SerializeField] private Vector3 markOffset;
         [SerializeField] private bool isWorld;
 #pragma warning restore 0649
-        
+
         private GameObject floatingMark;
 
         private void Start()
         {
-            if (isWorld)
-            {
-                floatingMark = Instantiate(markPrefab, PlayUIController.Instance.worldSpaceUI);
-            }
-            else
-            {
-                floatingMark = Instantiate(markPrefab, PlayUIController.Instance.mapUi);
-            }
-
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
-            floatingMark.SetActive(false);
         }
 
         private void OnDestroy()
         {
             if (floatingMark)
             {
-                Destroy(floatingMark);
+                ActiveFloatingMark(false);
             }
         }
 
         private void Update()
         {
-            if (floatingMark.activeSelf)
+            if (!floatingMark) return;
+
+            if (isWorld)
             {
-                if (isWorld)
-                {
-                    floatingMark.transform.position = markOffset + transform.position;
-                }
-                else
-                {
-                    var screenPoint =
-                        DataController.Instance.Cam.WorldToScreenPoint(transform.position + markOffset);
-                    floatingMark.transform.position = screenPoint;
-                }
+                floatingMark.transform.position = markOffset + transform.position;
+            }
+            else
+            {
+                var screenPoint =
+                    DataController.Instance.Cam.WorldToScreenPoint(transform.position + markOffset);
+                floatingMark.transform.position = screenPoint;
             }
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (floatingMark)
+            if (markPrefab)
             {
-                floatingMark.SetActive(true);
+                ActiveFloatingMark(true);
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (floatingMark)
+            if (markPrefab)
+            {
+                ActiveFloatingMark(false);
+            }
+        }
+
+        private void ActiveFloatingMark(bool isActive)
+        {
+            if (isActive)
+            {
+                floatingMark = ObjectPoolHelper.Get(markPrefab);
+                if (isWorld)
+                {
+                    floatingMark.transform.parent = PlayUIController.Instance.worldSpaceUI;
+                }
+                else
+                {
+                    floatingMark.transform.parent = PlayUIController.Instance.mapUi;
+                }
+
+                floatingMark.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+                floatingMark.SetActive(true);
+            }
+            else
             {
                 floatingMark.SetActive(false);
+                floatingMark.transform.parent = null;
+                ObjectPoolHelper.Release(markPrefab, floatingMark);
+                floatingMark = null;
             }
         }
     }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Utility.Character;
 using Utility.Core;
 using Utility.Game;
+using Utility.Utils;
 using Random = UnityEngine.Random;
 
 namespace Episode.EP0.SpeatTutorial.Backstreet
@@ -217,14 +218,17 @@ namespace Episode.EP0.SpeatTutorial.Backstreet
                             level = 2;
                         }
 
-                        trailData.trail = Instantiate(patterns[level][Random.Range(0, patterns[level].Length)],
-                            trailData.transform);
+                        var trail = ObjectPoolHelper.Get(patterns[level][Random.Range(0, patterns[level].Length)].gameObject);
+                        trail.transform.parent = trailData.transform;
+                        trailData.trail = trail.GetComponent<Trail>();
                         trailData.trail.gameObject.SetActive(true);
                     }
                     // else if (remainingDistance > endDistance)
                     else
                     {
-                        trailData.trail = Instantiate(patterns[0][0], trailData.transform);
+                        var trail = ObjectPoolHelper.Get(patterns[0][0].gameObject);
+                        trail.transform.parent = trailData.transform;
+                        trailData.trail = trail.GetComponent<Trail>();
                         trailData.trail.gameObject.SetActive(true);
                         Debug.Log($"남은거리: {remainingDistance}, 생성");
                     }

@@ -50,8 +50,10 @@ namespace Utility.Interaction
         [NonSerialized] public GameObject ExclamationMark;
 
         [NonSerialized] public int InteractIndex;
+
+        [NonSerialized] public Action<bool> OnActiveAction;
 #pragma warning restore 0649
-        
+
         private void Awake()
         {
             if (!Application.isPlaying)
@@ -79,7 +81,7 @@ namespace Utility.Interaction
                     {
                         if (interaction.interactionPlayType == InteractionPlayType.Dialogue)
                         {
-                            interaction.dialogueData = new  DialogueData();
+                            interaction.dialogueData = new DialogueData();
                             interaction.dialogueData.Init(interaction.jsonFile.text);
                         }
                         else if (interaction.interactionPlayType == InteractionPlayType.Task)
@@ -129,7 +131,7 @@ namespace Utility.Interaction
                 else if (color == OutlineColor.White) outline.OutlineColor = Color.white;
             }
         }
-        
+
         private void StackNewTask(string jsonRoute)
         {
             DialogueController.Instance.debugTaskData = null;
@@ -251,7 +253,7 @@ namespace Utility.Interaction
                     {
                         interactionCinematic.SetActive(true);
                     }
-                    
+
                     interactionDatum.playableDirector.Play();
 
                     StartCoroutine(WaitCinematicEnd(interactionDatum, () =>
@@ -260,7 +262,7 @@ namespace Utility.Interaction
                         DataController.Instance.GetCharacter(CharacterType.Main)?.UseJoystickCharacter();
                         PlayUIController.Instance.SetMenuActive(true);
                         Debug.Log("타임라인 끝");
-                        
+
                         foreach (var interactionInGame in interactionDatum.inGames)
                         {
                             interactionInGame.SetActive(true);
@@ -327,7 +329,7 @@ namespace Utility.Interaction
                 }
             }
         }
-        
+
         private void StartTaskAction(InteractionData interactionDatum)
         {
             var taskData = interactionDatum.JsonTask.Peek();
@@ -406,7 +408,7 @@ namespace Utility.Interaction
                             anim_name = currentTask.condition,
                             contents = currentTask.increaseVar
                         };
-                        
+
                         DialogueController.Instance.StartConversation(dialogueElement);
                         // 대화 실행
                         break;
@@ -465,14 +467,15 @@ namespace Utility.Interaction
                         break;
                     case TaskContentType.CutScene:
                         var episodeIndex = int.Parse(currentTask.nextFile.Substring(0, 1));
-                        var timelineAsset = Resources.Load<TimelineAsset>($"Timeline/Episode {episodeIndex}/{currentTask.nextFile}");
-                        
-                        if(timelineAsset == null)
+                        var timelineAsset =
+                            Resources.Load<TimelineAsset>($"Timeline/Episode {episodeIndex}/{currentTask.nextFile}");
+
+                        if (timelineAsset == null)
                         {
                             Debug.LogError("타임라인 오류");
                             return;
                         }
-                        
+
                         DialogueController.Instance.playableDirector.playableAsset = timelineAsset;
 
                         BindPlayableDirector(DialogueController.Instance.playableDirector);
@@ -486,7 +489,7 @@ namespace Utility.Interaction
                         {
                             interactionCinematic.SetActive(true);
                         }
-                        
+
                         DialogueController.Instance.playableDirector.Play();
 
                         JoystickController.Instance.StopSaveLoadJoyStick(true);
@@ -508,7 +511,7 @@ namespace Utility.Interaction
                             {
                                 inGame.SetActive(true);
                             }
-                            
+
                             interactionDatum.JsonTask.Peek().taskIndex++;
                             StartTaskAction(interactionDatum);
                         }));
@@ -561,7 +564,7 @@ namespace Utility.Interaction
             if (interactionDatum.isNextInteract)
             {
                 StartInteraction();
-            } 
+            }
             else if (GetInteractionData().interactionMethod != InteractionMethod.Trigger)
             {
                 OnColEnter();
@@ -794,7 +797,7 @@ namespace Utility.Interaction
                 Debug.LogError($"PlayableDirector 오류 - {playableDirector}");
                 return;
             }
-            
+
             var timelineAsset = playableDirector.playableAsset as TimelineAsset;
             if (timelineAsset == null)
             {
@@ -819,7 +822,7 @@ namespace Utility.Interaction
                     {
                         playableDirector.SetGenericBinding(trackAsset,
                             DialogueController.Instance.dialogueBindAnimator);
-                    }   
+                    }
                 }
 
                 if (trackAsset.isSubTrack)
@@ -955,11 +958,7 @@ namespace Utility.Interaction
                 outline.enabled = isActive;
             }
 
-            Debug.Log(ExclamationMark);
-            if (ExclamationMark)
-            {
-                ExclamationMark.SetActive(isActive);
-            }
+            OnActiveAction?.Invoke(isActive);
 
             if (GetInteractionData().interactionMethod == InteractionMethod.Touch)
             {

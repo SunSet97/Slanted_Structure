@@ -5,6 +5,7 @@ using UnityEngine.Serialization;
 using Utility.Core;
 using Utility.Dialogue;
 using Utility.UI;
+using Utility.Utils;
 using Random = UnityEngine.Random;
 
 namespace Utility.Map.SpeechBubble
@@ -32,9 +33,12 @@ namespace Utility.Map.SpeechBubble
             Custom,
             Random
         }
-        
+
 #pragma warning disable 0649
-        [FormerlySerializedAs("speechBubbleType")] [FormerlySerializedAs("speechBubbleDialogueType")] [Header("말풍선 대화 타입 선택")] [SerializeField]
+        [FormerlySerializedAs("speechBubbleType")]
+        [FormerlySerializedAs("speechBubbleDialogueType")]
+        [Header("말풍선 대화 타입 선택")]
+        [SerializeField]
         private SpeechBubblePlayType speechBubblePlayType;
 
         [FormerlySerializedAs("randomSecond")] [Header("말풍선 보이는, 안보이는 시간 타입 선택")] [SerializeField]
@@ -48,32 +52,31 @@ namespace Utility.Map.SpeechBubble
 
         [SerializeField] private int bubbleIndex;
 #pragma warning restore 0649
-        
+
         private SpeechBubble speechBubble;
         private bool isCharacterInRange;
+
+        /// <summary>
+        /// 추후에 Resource말고 다른거로 가져오게 변경
+        /// </summary>
+        private GameObject prefab;
 
         private void Start()
         {
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
             if (isWorld)
             {
-                speechBubble =
-                    Instantiate(Resources.Load<GameObject>("SpeechBubbleWorld"), PlayUIController.Instance.worldSpaceUI)
-                        .GetComponent<SpeechBubble>();
+                prefab = Resources.Load<GameObject>("SpeechBubbleWorld");
             }
             else
             {
-                speechBubble =
-                    Instantiate(Resources.Load<GameObject>("SpeechBubbleCanvas"), PlayUIController.Instance.mapUi)
-                        .GetComponent<SpeechBubble>();
+                prefab = Resources.Load<GameObject>("SpeechBubbleCanvas");
             }
-
-            speechBubble.gameObject.SetActive(false);
         }
 
         private void Update()
         {
-            if (speechBubble.gameObject.activeSelf)
+            if (speechBubble)
             {
                 SetSpeechBubblePosition();
             }
@@ -109,11 +112,12 @@ namespace Utility.Map.SpeechBubble
         {
             bubbleIndex %= bubbleScripts.Length;
             var bubbleScript = bubbleScripts[bubbleIndex];
-            
-            speechBubble.gameObject.SetActive(true);
+
+            ActiveSpeechBubble(true);
+
             UpdateDialogue();
             yield return new WaitForSeconds(bubbleScript.appearSec);
-            speechBubble.gameObject.SetActive(false);
+            ActiveSpeechBubble(false);
             bubbleIndex++;
 
             yield return new WaitForSeconds(bubbleScript.disappearSec);
@@ -137,10 +141,36 @@ namespace Utility.Map.SpeechBubble
             }
         }
 
+        private void ActiveSpeechBubble(bool isActive)
+        {
+            if (isActive)
+            {
+                speechBubble = ObjectPoolHelper.Get(prefab).GetComponent<SpeechBubble>();
+                if (isWorld)
+                {
+                    speechBubble.transform.parent = PlayUIController.Instance.worldSpaceUI;
+                }
+                else
+                {
+                    speechBubble.transform.parent = PlayUIController.Instance.mapUi;
+                }
+
+                speechBubble.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+                speechBubble.gameObject.SetActive(true);
+            }
+            else
+            {
+                speechBubble.gameObject.SetActive(false);
+                speechBubble.transform.parent = null;
+                ObjectPoolHelper.Release(prefab, speechBubble.gameObject);
+                speechBubble = null;
+            }
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             isCharacterInRange = true;
-            
+
             if (IsBubbleEnable())
             {
                 StopAllCoroutines();
@@ -155,7 +185,7 @@ namespace Utility.Map.SpeechBubble
 
         private bool IsBubbleEnable()
         {
-            return isCharacterInRange && !speechBubble.gameObject.activeSelf &&
+            return isCharacterInRange && !speechBubble &&
                    (speechBubblePlayType == SpeechBubblePlayType.Loop ||
                     (speechBubblePlayType == SpeechBubblePlayType.Once &&
                      bubbleIndex != bubbleScripts.Length));
@@ -163,10 +193,10 @@ namespace Utility.Map.SpeechBubble
 
         private void OnDestroy()
         {
-            if (speechBubble.gameObject != null)
-            {
-                Destroy(speechBubble.gameObject);
-            }
+            if (!Application.isPlaying || !speechBubble)
+                return;
+
+            ActiveSpeechBubble(false);
         }
     }
 }

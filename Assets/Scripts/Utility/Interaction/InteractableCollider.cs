@@ -2,6 +2,7 @@
 using UnityEngine.Serialization;
 using Utility.Core;
 using Utility.UI;
+using Utility.Utils;
 using Utility.Utils.Property;
 
 namespace Utility.Interaction
@@ -10,59 +11,74 @@ namespace Utility.Interaction
     {
 #pragma warning disable 0649
         [SerializeField] private InteractionObject interactionObject;
-    
+
         [FormerlySerializedAs("useExclamationMark")] [Header("#Mark setting")]
         public bool useMark;
-        [ConditionalHideInInspector("useMark")]
-        [SerializeField] private GameObject markPrefab;
-        [ConditionalHideInInspector("useMark")]
-        [SerializeField] private Vector3 markOffset;
-        [ConditionalHideInInspector("useMark")]
-        [SerializeField] private bool isWorld;
+
+        [ConditionalHideInInspector("useMark")] [SerializeField]
+        private GameObject markPrefab;
+
+        [ConditionalHideInInspector("useMark")] [SerializeField]
+        private Vector3 markOffset;
+
+        [ConditionalHideInInspector("useMark")] [SerializeField]
+        private bool isWorld;
 #pragma warning restore 0649
         private void Start()
         {
             gameObject.layer = LayerMask.NameToLayer("OnlyPlayerCheck");
-            if (useMark)
+            interactionObject.OnActiveAction = isActive =>
             {
-                if (isWorld)
-                {
-                    interactionObject.ExclamationMark = Instantiate(markPrefab, PlayUIController.Instance.worldSpaceUI);
-                }
-                else
-                {
-                    interactionObject.ExclamationMark = Instantiate(markPrefab, PlayUIController.Instance.mapUi);
-                }
-
-                interactionObject.ExclamationMark.SetActive(false);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            if (useMark)
-            {
-                Destroy(interactionObject.ExclamationMark);
-            }
+                if (!useMark) return;
+                ActiveExclamationMark(isActive);
+            };
         }
 
         private void Update()
         {
-            if (!useMark || !interactionObject.ExclamationMark.activeSelf ||
+            if (!useMark || !interactionObject.ExclamationMark ||
                 !interactionObject.GetInteractionData().serializedInteractionData.isInteractable)
             {
                 return;
             }
-            
+
             if (isWorld)
             {
-                interactionObject.ExclamationMark.transform.position = markOffset + interactionObject.transform.position;
+                interactionObject.ExclamationMark.transform.position =
+                    markOffset + interactionObject.transform.position;
             }
             else
             {
                 var screenPoint =
                     DataController.Instance.Cam.WorldToScreenPoint(interactionObject.transform.position + markOffset);
                 interactionObject.ExclamationMark.transform.position = screenPoint;
+            }
+        }
+
+        private void ActiveExclamationMark(bool isActive)
+        {
+            if (isActive)
+            {
+                interactionObject.ExclamationMark = ObjectPoolHelper.Get(markPrefab);
+
+                if (isWorld)
+                {
+                    interactionObject.ExclamationMark.transform.parent = PlayUIController.Instance.worldSpaceUI;
+                }
+                else
+                {
+                    interactionObject.ExclamationMark.transform.parent = PlayUIController.Instance.mapUi;
+                }
+
+                interactionObject.ExclamationMark.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+                interactionObject.ExclamationMark.SetActive(true);
+            }
+            else
+            {
+                interactionObject.ExclamationMark.SetActive(false);
+                interactionObject.ExclamationMark.transform.parent = null;
+                ObjectPoolHelper.Release(markPrefab, interactionObject.ExclamationMark);
+                interactionObject.ExclamationMark = null;
             }
         }
 
@@ -74,6 +90,14 @@ namespace Utility.Interaction
         private void OnTriggerExit(Collider other)
         {
             interactionObject.OnExit();
+        }
+
+        private void OnDestroy()
+        {
+            if (interactionObject.ExclamationMark)
+            {
+                ActiveExclamationMark(false);
+            }
         }
     }
 }
