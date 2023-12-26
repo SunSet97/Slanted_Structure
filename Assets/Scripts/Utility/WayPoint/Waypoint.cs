@@ -183,6 +183,7 @@ namespace Utility.WayPoint
 #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
+            if (waypoints.Count == 0) return;
             for (var i = 0; i < waypoints.Count; i++)
             {
                 Gizmos.color = Color.blue * 0.7f;

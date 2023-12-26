@@ -13,15 +13,15 @@ namespace Episode.EP2.PlatformGame
         
         public void ActiveButton(bool isActive, UnityAction unityAction = default)
         {
-            interactionButton.gameObject.SetActive(isActive);
-            if (unityAction == default)
-            {
-                interactionButton.onClick.RemoveAllListeners();
-            }
-            else
-            {
-                interactionButton.onClick.AddListener(unityAction);
-            }
+            // interactionButton.gameObject.SetActive(isActive);
+            // if (unityAction == default)
+            // {
+            //     interactionButton.onClick.RemoveAllListeners();
+            // }
+            // else
+            // {
+            //     interactionButton.onClick.AddListener(unityAction);
+            // }
         }
     }
 }
