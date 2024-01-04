@@ -90,7 +90,7 @@ namespace Utility.Core
 
             var camTransform = cam.transform;
             camTransform.rotation = Quaternion.Euler(DataController.Instance.camOffsetInfo.camRot);
-            PlayUIController.Instance.worldSpaceUI.rotation = camTransform.rotation;
+            // PlayUIController.Instance.worldSpaceUI.rotation = camTransform.rotation;
 
             if (ViewType.Equals(CameraViewType.FixedView))
             {

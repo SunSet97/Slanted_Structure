@@ -78,7 +78,7 @@ namespace Utility.Map.SpeechBubble
         {
             if (speechBubble)
             {
-                SetSpeechBubblePosition();
+                SetSpeechBubblePositionAndRotation();
             }
         }
 
@@ -94,11 +94,14 @@ namespace Utility.Map.SpeechBubble
             speechBubble.SetContext(bubbleScripts[bubbleIndex].dialogue);
         }
 
-        private void SetSpeechBubblePosition()
+        private void SetSpeechBubblePositionAndRotation()
         {
             if (isWorld)
             {
                 speechBubble.transform.position = (Vector3)speechPos + transform.position;
+                var transformEulerAngles = speechBubble.transform.eulerAngles;
+                transformEulerAngles.y = DataController.Instance.Cam.transform.rotation.y;
+                speechBubble.transform.eulerAngles = transformEulerAngles;
             }
             else
             {

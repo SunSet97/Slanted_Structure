@@ -26,6 +26,7 @@ namespace Utility.UI.Preference.Audio
         {
             AudioLoader.LoadAudio(out var audioValue);
             audioSlider.value = audioValue;
+            muteAnimator.SetBool(Mute, Mathf.Approximately(audioValue, 0));
         }
     }
 }

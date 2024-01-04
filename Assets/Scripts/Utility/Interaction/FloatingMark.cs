@@ -35,6 +35,9 @@ namespace Utility.Interaction
             if (isWorld)
             {
                 floatingMark.transform.position = markOffset + transform.position;
+                var transformEulerAngles = floatingMark.transform.eulerAngles;
+                transformEulerAngles.y = DataController.Instance.Cam.transform.rotation.y;
+                floatingMark.transform.eulerAngles = transformEulerAngles;
             }
             else
             {

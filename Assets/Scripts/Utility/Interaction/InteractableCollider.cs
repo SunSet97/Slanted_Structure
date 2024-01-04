@@ -46,6 +46,9 @@ namespace Utility.Interaction
             {
                 interactionObject.ExclamationMark.transform.position =
                     markOffset + interactionObject.transform.position;
+                var transformEulerAngles = interactionObject.ExclamationMark.transform.eulerAngles;
+                transformEulerAngles.y = DataController.Instance.Cam.transform.rotation.y;
+                interactionObject.ExclamationMark.transform.eulerAngles = transformEulerAngles;
             }
             else
             {
